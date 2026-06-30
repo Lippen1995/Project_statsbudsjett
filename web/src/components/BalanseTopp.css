@@ -1,0 +1,77 @@
+.balanse-topp {
+  padding: 20px 24px;
+}
+
+.balanse-rad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.balanse-kort {
+  text-align: center;
+  min-width: 160px;
+}
+
+.balanse-kort--teal .kort-verdi { color: var(--teal); }
+.balanse-kort--rust .kort-verdi { color: var(--rust); }
+
+.kort-tittel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.kort-verdi {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.kort-serie {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+.balanse-diff {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 120px;
+}
+
+.diff-tall {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.diff-tall.positiv { color: var(--teal); }
+.diff-tall.negativ { color: var(--rust); }
+
+.diff-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.prognose-merke {
+  font-size: 0.7rem;
+  background: var(--gold-light);
+  color: var(--gold);
+  border: 1px solid #e8d5a0;
+  border-radius: 3px;
+  padding: 1px 6px;
+  margin-top: 2px;
+}
+
+.balanse-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  margin-top: 12px;
+}

@@ -1,0 +1,4 @@
+{
+  "_comment": "Aliaser for kapitler som har endret nummer over tid. Format: {nytt_kap: [{gammelt_kap, fra_år, til_år}]}",
+  "alignments": []
+}
