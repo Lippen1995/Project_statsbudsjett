@@ -1,0 +1,56 @@
+name: Debug – inspiser datakilder
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/debug-kilder.yml'
+
+jobs:
+  inspiser:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hent /last-ned-siden og finn lenker
+        run: |
+          echo "=== /last-ned HTML (lenker og script-referanser) ==="
+          curl -sL "https://statsregnskapet.dfo.no/last-ned" -o lastned.html
+          echo "--- Størrelse: $(wc -c < lastned.html) bytes ---"
+          echo "--- href/src med csv/last/download/api: ---"
+          grep -oiE '(href|src)="[^"]*"' lastned.html | grep -iE 'csv|last|download|api|fil' | sort -u || true
+          echo "--- Alle a-href: ---"
+          grep -oiE 'href="[^"]*"' lastned.html | sort -u | head -60 || true
+          echo "--- script src (SPA-bundler): ---"
+          grep -oiE 'src="[^"]*\.js[^"]*"' lastned.html | sort -u || true
+
+      - name: Sjekk vanlige API-endepunkter
+        run: |
+          for path in \
+            "/api/nedlasting" \
+            "/api/filer" \
+            "/api/download" \
+            "/last-ned/filer" \
+            "/api/regnskap" \
+            ; do
+            echo "=== GET https://statsregnskapet.dfo.no$path ==="
+            curl -sL -o resp.txt -w "HTTP %{http_code}, %{size_download} bytes, type=%{content_type}\n" \
+              "https://statsregnskapet.dfo.no$path" || true
+            head -c 500 resp.txt; echo; echo "---"
+          done
+
+      - name: Let etter data-URL-er i JS-bundler
+        run: |
+          # SPA-er legger ofte API-ruter i JS-bundlene
+          for src in $(grep -oiE 'src="[^"]*\.js[^"]*"' lastned.html | sed 's/src="//;s/"//' | head -5); do
+            case "$src" in
+              http*) url="$src" ;;
+              *) url="https://statsregnskapet.dfo.no$src" ;;
+            esac
+            echo "=== Søker i $url ==="
+            curl -sL "$url" -o bundle.js || continue
+            grep -oE '"[^"]*(csv|nedlast|download|api/[a-z]+)[^"]*"' bundle.js | sort -u | head -40 || true
+          done
+
+      - name: Test SSB API-metadata
+        run: |
+          echo "=== GET tabell 07459 metadata ==="
+          curl -s "https://data.ssb.no/api/v0/no/table/07459" | python3 -m json.tool | head -100
