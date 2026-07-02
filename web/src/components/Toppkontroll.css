@@ -1,0 +1,97 @@
+.toppkontroll {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.kontroll-gruppe {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.side-knapp {
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.side-knapp:hover { border-color: #aaa; color: var(--text); }
+.side-knapp.aktiv-rust {
+  background: var(--rust);
+  color: white;
+  border-color: var(--rust);
+}
+.side-knapp.aktiv-teal {
+  background: var(--teal);
+  color: white;
+  border-color: var(--teal);
+}
+
+.aarsvelger {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 160px;
+}
+
+.kontroll-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+#aarsslider {
+  width: 140px;
+  accent-color: var(--teal);
+}
+
+.slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  width: 140px;
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  font-family: var(--mono);
+}
+
+.toggles { gap: 12px; flex-wrap: wrap; }
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle input { display: none; }
+
+.toggle-track {
+  width: 32px; height: 18px;
+  background: var(--border);
+  border-radius: 10px;
+  position: relative;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.toggle input:checked ~ .toggle-track { background: var(--teal); }
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  background: white;
+  border-radius: 50%;
+  transition: left 0.15s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+.toggle input:checked ~ .toggle-track .toggle-thumb { left: 16px; }
+
+.toggle-label { font-size: 0.8rem; color: var(--text-muted); }

@@ -1,0 +1,139 @@
+.artskonto-tom {
+  min-height: 100px;
+}
+
+.tom-tekst {
+  font-size: 0.82rem;
+  color: var(--text-faint);
+  margin-top: 8px;
+}
+
+.pivot-header {
+  margin-bottom: 12px;
+}
+
+.pivot-header-tittel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pivot-header-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.pivot-liste {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pivot-gruppe {
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: border-color 0.1s;
+}
+.pivot-gruppe:has(.pivot-gruppe-header:hover) {
+  border-color: var(--border);
+}
+
+.pivot-gruppe-header {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pivot-bar-wrapper {
+  height: 2px;
+  background: var(--bg);
+}
+.pivot-bar {
+  height: 100%;
+  transition: width 0.3s;
+}
+.pivot-bar--rust { background: var(--rust); opacity: 0.4; }
+.pivot-bar--teal { background: var(--teal); opacity: 0.4; }
+
+.pivot-gruppe-rad {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+}
+
+.pg-kode {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  min-width: 32px;
+}
+
+.pg-navn {
+  flex: 1;
+  font-size: 0.82rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pg-andel {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  font-family: var(--mono);
+  min-width: 40px;
+  text-align: right;
+}
+
+.pg-belop {
+  font-size: 0.82rem;
+  font-weight: 500;
+  min-width: 70px;
+  text-align: right;
+}
+
+.pg-pil {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  margin-left: 2px;
+}
+
+.pivot-detaljer {
+  background: var(--bg);
+  padding: 4px 0;
+}
+
+.pivot-post {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 16px;
+  border-left: 2px solid var(--border);
+  margin-left: 8px;
+}
+
+.pp-ak {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  min-width: 36px;
+}
+
+.pp-navn {
+  flex: 1;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pp-belop {
+  font-size: 0.78rem;
+  color: var(--text);
+  text-align: right;
+}
