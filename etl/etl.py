@@ -39,7 +39,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def run(years=None, force=False, inspect=False):
+def run(years=None, force=False):
     if years is None:
         years = YEARS
 
@@ -50,7 +50,7 @@ def run(years=None, force=False, inspect=False):
 
     # 1. Last ned
     logger.info("STEG 1: Nedlasting")
-    files = download_all(years=years, force=force, inspect=inspect)
+    files = download_all(years=years, force=force)
 
     # 2. Parse regnskap
     logger.info("\nSTEG 2: Parser regnskapsdata")
@@ -121,15 +121,19 @@ def run(years=None, force=False, inspect=False):
 
 
 # --- Kjente totaler for sanity-sjekk ---
-# Kilde: Statsbudsjettet / Meld. St. 3 (Statsrekneskapen)
-# Totale statsutgifter inkl. finanstransaksjoner, i mrd. kr
+# Kilde: Meld. St. 3 (Statsrekneskapen) — statsbudsjettets utgifter
+# UTENOM lånetransaksjoner (90-poster) og SPU-overføringer, i mill. kr.
 KJENTE_TOTALER_U = {
-    2020: 1_850_000,   # ~1 850 mrd. kr = 1 850 000 mill. kr (grov referanse)
-    2021: 1_900_000,
-    2022: 1_950_000,
+    2019: 1_378_000,
+    2020: 1_583_000,
+    2023: 1_782_000,
 }
-# Toleranse: ±20% (departementsstrukturen kan gi avvik i enkeltår)
-TOLERANSE = 0.20
+# Toleranse: ±15 % (avgrensningen av «utenom lånetransaksjoner» varierer noe)
+TOLERANSE = 0.15
+
+# Grov rimelighetsramme for alle år (fanger enhetsfeil kroner vs. mill.)
+RIMELIG_MIN = 800_000     # 800 mrd.
+RIMELIG_MAX = 3_000_000   # 3 000 mrd.
 
 
 def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict):
@@ -137,20 +141,40 @@ def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict):
 
     all_r = pd.concat(list(regnskap_frames.values()), ignore_index=True)
     u = all_r[all_r["er_utgift"] == True]
+    u_ordinaer = u[(u["fin"] == False) & (u["transfer"] == False)]
 
-    # Sjekk 1: Total utgifter per år
+    feil = []
+
+    # Sjekk 1: Kjente publiserte totaler (utgifter ekskl. fin/SPU)
     for year, expected in KJENTE_TOTALER_U.items():
         if year not in regnskap_frames:
             continue
-        actual = u[u["aar"] == year]["belop_mill"].sum()
+        actual = u_ordinaer[u_ordinaer["aar"] == year]["belop_mill"].sum()
         lo, hi = expected * (1 - TOLERANSE), expected * (1 + TOLERANSE)
         if not (lo <= actual <= hi):
-            logger.warning(
-                f"  [SANITY FAIL] Utgifter {year}: {actual:.0f} mill. "
-                f"(forventet ~{expected:.0f}, ±{TOLERANSE*100:.0f}%)"
+            feil.append(
+                f"Utgifter {year} (ekskl. fin/SPU): {actual:,.0f} mill. — "
+                f"forventet {expected:,.0f} ±{TOLERANSE*100:.0f}%"
             )
         else:
-            logger.info(f"  [SANITY OK] Utgifter {year}: {actual:.0f} mill. (ref ~{expected:.0f})")
+            logger.info(f"  [SANITY OK] Utgifter {year}: {actual:,.0f} mill. (ref {expected:,.0f})")
+
+    # Sjekk 1b: Grov rimelighet for alle regnskapsår
+    for year in sorted(regnskap_frames.keys()):
+        actual = u_ordinaer[u_ordinaer["aar"] == year]["belop_mill"].sum()
+        if not (RIMELIG_MIN <= actual <= RIMELIG_MAX):
+            feil.append(
+                f"Utgifter {year} (ekskl. fin/SPU) urimelig: {actual:,.0f} mill. "
+                f"(forventet {RIMELIG_MIN:,}–{RIMELIG_MAX:,})"
+            )
+
+    if feil:
+        for f in feil:
+            logger.error(f"  [SANITY FAIL] {f}")
+        raise SystemExit(
+            "Sanity-sjekk feilet — tallene stemmer ikke med publiserte totaler. "
+            "Se feilene over. Ingen output skrives."
+        )
 
     # Sjekk 2: Befolkning er rimelig
     for year, pop in befolkning.items():
@@ -178,8 +202,7 @@ def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Statens regnskap ETL")
     parser.add_argument("--force", action="store_true", help="Re-last ned cache")
-    parser.add_argument("--inspect", action="store_true", help="Skriv ut kildefiler")
     parser.add_argument("--years", nargs="+", type=int, default=YEARS)
     args = parser.parse_args()
 
-    run(years=args.years, force=args.force, inspect=args.inspect)
+    run(years=args.years, force=args.force)

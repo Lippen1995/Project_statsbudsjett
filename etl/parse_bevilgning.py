@@ -1,116 +1,140 @@
 """
-Parser for DFØ bevilgningshistorikk CSV.
-Returnerer saldert og revidert budsjett per år/kapittel/post.
+Parser for DFØ bevilgninger_full_historikk.csv.
+
+Faktisk skjema (verifisert 2026-07, se docs/data-schema.md):
+  - Separator ';', kvotert, Latin-1, desimalkomma, beløp i kroner
+  - Én rad per bevilgningsvedtak per kap/post/år
+  - 'Bevilgning'-kolonnen beskriver vedtaket, f.eks. "Overført fra 2013",
+    "Saldert budsjett", RNB-/nysalderings-proposisjoner m.m.
+
+Kolonner:
+  År, Periode, Tildelings_periode, Programområde_id, Programområde,
+  Programkategori_id, Programkategori, Fagdepartement_id, Fagdepartement,
+  Kapittel_id, Kapittel, Post_id, Post, Post_type,
+  Bevilgning_beløp, Bevilgning_overføres_beløp, Bevilgning_overført_beløp, Bevilgning
+
+Serie-definisjon:
+  saldert  = sum av rader klassifisert som saldert budsjett
+  revidert = saldert + alle endringsvedtak gjennom året
+             (RNB, nysaldering, tilleggsbevilgninger)
+  Overføringer fra tidligere år ("Overført fra ...") holdes utenfor begge —
+  de er disponible midler, ikke årets bevilgningsvedtak.
 """
 import logging
 from pathlib import Path
+
 import pandas as pd
-from parse_regnskap import _read_csv, _normalize_columns, _to_amount
+
+from parse_regnskap import _to_amount
 
 logger = logging.getLogger(__name__)
 
-BEVILGNING_COL_MAP = {
-    "Periode": "aar",
-    "periode": "aar",
-    "Departement": "dept_kode",
-    "departement": "dept_kode",
-    "Departementnavn": "dept_navn",
-    "departementnavn": "dept_navn",
-    "Kapittel": "kap",
-    "kapittel": "kap",
-    "Kapittelnavn": "kap_navn",
-    "kapittelnavn": "kap_navn",
-    "Post": "post",
-    "post": "post",
-    "Postnavn": "post_navn",
-    "postnavn": "post_navn",
-    "Bevilgningstype": "bev_type",
-    "bevilgningstype": "bev_type",
-    "Belop": "belop",
-    "belop": "belop",
-    "Beløp": "belop",
-    "beløp": "belop",
+USECOLS = [
+    "År", "Fagdepartement_id", "Fagdepartement",
+    "Kapittel_id", "Kapittel", "Post_id", "Post", "Post_type",
+    "Bevilgning_beløp", "Bevilgning",
+]
+
+RENAME = {
+    "År": "aar",
+    "Fagdepartement_id": "dept_kode",
+    "Fagdepartement": "dept_navn",
+    "Kapittel_id": "kap",
+    "Kapittel": "kap_navn",
+    "Post_id": "post_id6",
+    "Post": "post_navn",
+    "Post_type": "post_type",
+    "Bevilgning_beløp": "belop",
+    "Bevilgning": "bev_tekst",
 }
 
-# Mappping av DFØ bevilgningstype-strenger til våre serienavn
-SALDERT_KEYWORDS = {"saldert"}
-REVIDERT_KEYWORDS = {"revidert", "nysaldering", "tilleggsbevilgning"}
+
+def _klassifiser(tekst: str) -> str:
+    """Klassifiser et bevilgningsvedtak ut fra 'Bevilgning'-teksten."""
+    s = (tekst or "").lower()
+    if "overført fra" in s or "overfort fra" in s:
+        return "overfort"      # disponibel overføring, ikke årets vedtak
+    if "saldert" in s:
+        return "saldert"
+    return "endring"           # RNB, nysaldering, tilleggsprop. mv.
 
 
-def _classify_bev_type(bev_type: str) -> str:
-    s = bev_type.lower()
-    for kw in SALDERT_KEYWORDS:
-        if kw in s:
-            return "saldert"
-    for kw in REVIDERT_KEYWORDS:
-        if kw in s:
-            return "revidert"
-    return "annet"
-
-
-def parse_bevilgning(path: Path) -> pd.DataFrame:
+def parse_bevilgning(paths: list) -> pd.DataFrame:
     """
-    Les bevilgningshistorikk og returner DataFrame med kolonner:
+    Les bevilgningshistorikken og returner én rad per aar/kap/post:
       aar, dept_kode, dept_navn, kap, kap_navn, post, post_navn,
       saldert (mill. kr), revidert (mill. kr)
-
-    For hvert år/kap/post: saldert = første salderte bevilgning,
-    revidert = siste reviderte/nysalderte (hvis finnes, ellers = saldert).
     """
-    logger.info(f"  Parser bevilgningshistorikk: {path.name}")
-    df = _read_csv(path)
-    df = _normalize_columns(df)
-
-    col_map = {c: BEVILGNING_COL_MAP[c] for c in df.columns if c in BEVILGNING_COL_MAP}
-    if not col_map:
-        raise ValueError(
-            f"Fant ingen kjente kolonner i {path.name}.\n"
-            f"Faktiske kolonner: {list(df.columns)}\n"
-            "Oppdater BEVILGNING_COL_MAP i parse_bevilgning.py."
+    if isinstance(paths, (str, Path)):
+        paths = [Path(paths)]
+    frames = []
+    for path in paths:
+        path = Path(path)
+        if path.suffix.lower() != ".csv":
+            continue
+        logger.info(f"  Parser {path.name}")
+        df = pd.read_csv(
+            path, sep=";", quotechar='"', encoding="latin-1",
+            dtype=str, usecols=lambda c: c in USECOLS, low_memory=False,
         )
-    df = df.rename(columns=col_map)
+        frames.append(df)
 
-    required = {"aar", "kap", "post", "belop", "bev_type"}
-    missing = required - set(df.columns)
+    if not frames:
+        raise ValueError(f"Ingen CSV-filer å parse: {paths}")
+
+    df = pd.concat(frames, ignore_index=True)
+
+    missing = set(USECOLS) - set(df.columns)
     if missing:
-        raise ValueError(f"Mangler kolonner i bevilgning: {missing}")
+        raise ValueError(
+            f"Bevilgningsfilen mangler kolonner: {missing}.\n"
+            f"Faktiske kolonner: {list(df.columns)}\n"
+            "Oppdater USECOLS/RENAME i parse_bevilgning.py og docs/data-schema.md."
+        )
 
-    df["belop_mill"] = _to_amount(df["belop"]).abs() / 1000.0
+    df = df.rename(columns=RENAME)
+    df["belop_mill"] = _to_amount(df["belop"]) / 1e6
+    df = df.dropna(subset=["belop_mill"])
     df["aar"] = pd.to_numeric(df["aar"], errors="coerce").astype("Int64")
+    df = df.dropna(subset=["aar"])
+
     df["kap"] = df["kap"].str.strip().str.zfill(4)
-    df["post"] = df["post"].str.strip().str.zfill(2)
-    df["serie"] = df["bev_type"].apply(_classify_bev_type)
+    df["post"] = df["post_id6"].str.strip().str[-2:]
+    df["serie"] = df["bev_tekst"].apply(_klassifiser)
 
-    # Behold bare saldert og revidert
-    df = df[df["serie"].isin(["saldert", "revidert"])].copy()
+    # Logg de faktiske vedtakstypene så klassifiseringen kan verifiseres i CI-loggen
+    fordeling = df.groupby("serie").size().to_dict()
+    logger.info(f"  Vedtakstype-fordeling: {fordeling}")
+    topp = df["bev_tekst"].value_counts().head(20)
+    logger.info("  Vanligste 'Bevilgning'-tekster:")
+    for tekst, antall in topp.items():
+        logger.info(f"    {antall:>7} × {tekst[:90]}")
 
-    # Aggreger: for hvert aar/kap/post, ta sum per serie
-    # (saldert budsjett er én rad per post, men vær robust)
-    grp_cols = ["aar", "dept_kode", "dept_navn", "kap", "kap_navn", "post", "post_navn", "serie"]
-    grp_cols = [c for c in grp_cols if c in df.columns]
+    if fordeling.get("saldert", 0) == 0:
+        logger.warning(
+            "  [ADVARSEL] Ingen rader klassifisert som 'saldert' — "
+            "sjekk tekstene over og juster _klassifiser() i parse_bevilgning.py."
+        )
 
-    agg = (
-        df.groupby(grp_cols, dropna=False)["belop_mill"]
-        .sum()
-        .reset_index()
+    grp_cols = ["aar", "dept_kode", "dept_navn", "kap", "kap_navn", "post", "post_navn"]
+
+    saldert = (
+        df[df["serie"] == "saldert"]
+        .groupby(grp_cols, dropna=False)["belop_mill"].sum()
+        .rename("saldert")
+    )
+    # revidert = saldert + endringer (alle årets vedtak unntatt overføringer)
+    revidert = (
+        df[df["serie"].isin(["saldert", "endring"])]
+        .groupby(grp_cols, dropna=False)["belop_mill"].sum()
+        .rename("revidert")
     )
 
-    # Pivot til wide: saldert | revidert
-    wide = agg.pivot_table(
-        index=[c for c in grp_cols if c != "serie"],
-        columns="serie",
-        values="belop_mill",
-        aggfunc="sum",
-    ).reset_index()
+    wide = pd.concat([saldert, revidert], axis=1).reset_index()
+    wide["saldert"] = wide["saldert"].fillna(0.0)
 
-    wide.columns.name = None
-    if "saldert" not in wide.columns:
-        wide["saldert"] = float("nan")
-    if "revidert" not in wide.columns:
-        wide["revidert"] = float("nan")
-
-    # Revidert fallback = saldert hvis ikke oppgitt
-    wide["revidert"] = wide["revidert"].fillna(wide["saldert"])
-
-    logger.info(f"  -> {len(wide)} poster, år: {sorted(wide['aar'].dropna().unique().tolist())}")
+    logger.info(
+        f"  -> {len(wide)} poster over årene "
+        f"{int(wide['aar'].min())}–{int(wide['aar'].max())}"
+    )
     return wide

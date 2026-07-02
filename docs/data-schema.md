@@ -1,195 +1,208 @@
 # Data Schema – Statens regnskap
 
-> **Merk:** Dette dokumentet er basert på kjent offentlig dokumentasjon av DFØs filer og bør verifiseres mot de faktiske nedlastede filene ved å kjøre `make etl --inspect-only` eller ved å åpne en rå CSV-fil fra `etl/raw/`.
+**Status: VERIFISERT** mot faktiske nedlastede filer 2026-07-02
+(via GitHub Actions-kjøring, se `.github/workflows/debug-kilder.yml`).
 
 ## Kilder
 
-| Kilde | URL | Oppdateringsfrekvens |
-|-------|-----|---------------------|
-| DFØ Statsregnskapet – Regnskapsdata | `https://statsregnskapet.dfo.no/last-ned` | Månedlig |
-| DFØ Statsregnskapet – Bevilgningshistorikk | `https://statsregnskapet.dfo.no/last-ned` | Månedlig |
+| Kilde | URL | Oppdatering |
+|-------|-----|-------------|
+| DFØ Statsregnskapet | `https://statsregnskapet.dfo.no/last-ned` | Månedlig |
 | SSB Folkemengde (tabell 07459) | `https://data.ssb.no/api/v0/no/table/07459` | Årlig |
 
----
+## Faktiske nedlastings-URL-er (verifisert)
 
-## 1. Regnskapsdata (faktiske utgifter og inntekter)
-
-### Filnavn / URL-mønster
 ```
-https://statsregnskapet.dfo.no/last-ned?filnavn=regnskapsdata_{YEAR}.csv
+https://statsregnskapet.dfo.no/nedlasting/statsregnskapet_aar_{YYYY}.zip     # 2014–2025
+https://statsregnskapet.dfo.no/nedlasting/bevilgninger_full_historikk.zip   # alle år
+https://statsregnskapet.dfo.no/nedlasting/statsregnskapet_beskrivelse_av_kolonner.csv
+https://statsregnskapet.dfo.no/nedlasting/bevilgninger_beskrivelse_av_kolonner.csv
 ```
-Eksempel: `regnskapsdata_2023.csv`
 
-### Filformat
-| Egenskap | Verdi |
-|----------|-------|
-| Separator | `;` (semikolon) |
-| Desimalskilletegn | `,` (komma) |
-| Tegnsett | `ISO-8859-1` (Latin-1) |
-| Tittelrad | Ja (første rad) |
-
-### Kolonner (faktisk skjema, verifisert mot nedlastede filer)
-
-| Kolonnenavn | Type | Beskrivelse |
-|-------------|------|-------------|
-| `Periode` | heltall | Regnskapsår, f.eks. `2023` |
-| `Virksomhet` | streng | Virksomhetsnummer (4 siffer) |
-| `Virksomhetnavn` | streng | Virksomhetens navn |
-| `Departement` | streng | Departementsnummer (2 siffer) |
-| `Departementnavn` | streng | Departementets navn |
-| `Kapittel` | streng/heltall | Kapittelnummer (3–4 siffer) |
-| `Kapittelnavn` | streng | Kapitterets navn |
-| `Post` | streng/heltall | Postnummer (2 siffer) |
-| `Postnavn` | streng | Postens navn |
-| `Artstype` | streng | Artskontotype/klasse |
-| `Artskonto` | streng | Artskontonummer (4 siffer) |
-| `Artskontonavn` | streng | Artskontobeskrivelse |
-| `Belopstegn` | streng | `D` = debet (utgift/kostnad), `K` = kredit (inntekt) |
-| `Belop` | desimaltall | Beløp i kroner (tusen kr) – **NB: alltid positivt, bruk Belopstegn** |
-
-### Belopstegn-konvensjon
-- `D` (debet) → utgift/kostnad → **positivt beløp** i vår modell
-- `K` (kredit) → inntekt → **negativt beløp** etter sign-flip i ETL
-
-### Spesielle tilfeller
-- **90-poster**: postnummer ≥ 90 indikerer finanstransaksjoner (utlån, aksjer, avdrag).
-- **Nettobudsjetterte virksomheter**: (universiteter, høyskoler) rapporterer artskonto men ikke alltid kapittel/post etter 2018. Disse havner på kapittel `0000` og flagges med `netto=True`.
-- **Inntektskapitler**: 5000-serien (skatt, avgift, utbytte) og utgiftskapittel+3000 (eks. kap. 732 → inntektskap. 3732).
+Hver ZIP inneholder én CSV med samme navn. `statsregnskapet_aar_2023.csv`
+er ~134 MB / ~285 000 rader. Det finnes også `statsregnskapet_SRS_aar_*.zip`
+(periodisert SRS-regnskap per virksomhet, 2016–) som vi ikke bruker.
 
 ---
 
-## 2. Bevilgningshistorikk (vedtatt budsjett)
+## 1. Regnskap: `statsregnskapet_aar_{YYYY}.csv`
 
-### Filnavn / URL-mønster
+| Egenskap | Verdi (verifisert) |
+|----------|--------------------|
+| Separator | `;` — alle felt kvotert med `"` |
+| Desimaltegn | `,` (tre desimaler, øre) |
+| Tegnsett | ISO-8859-1 (Latin-1) |
+| Granularitet | Én rad per måned (`Periode` = ÅÅÅÅMM) per kontering |
+| Beløpsenhet | Kroner (med øre) |
+| Fortegn | Debet positivt (utgift), kredit negativt (inntekt) |
+
+### Kolonner (fra `statsregnskapet_beskrivelse_av_kolonner.csv`)
+
+| Kolonne | Forklaring |
+|---------|-----------|
+| `År` | Regnskapsår |
+| `Periode` | Regnskapsperiode (ÅÅÅÅMM) |
+| `Konto_no` / `Konto` | Statskontonummer/-navn |
+| `Programområde_id` / `Programområde` | Formål |
+| `Programkategori_id` / `Programkategori` | Nivå under formål |
+| `Fagdepartement_id` / `Fagdepartement` | Departementet som disponerer bevilgningen (2 siffer) |
+| `Kapittel_id` / `Kapittel` | Kapittel (4 siffer, f.eks. `1320`) |
+| `Post_id` / `Post` | Post — **6 siffer: kapittel (4) + post (2)**, f.eks. `132001` |
+| `Post_type` | Tekstlig posttype (se under) |
+| `Kontoklasse_id` / `Kontoklasse` | Øverste artskontonivå (1 siffer, standard kontoplan) |
+| `Kontogruppe_id` / `Kontogruppe` | Andre nivå (2 siffer) |
+| `Artskonto_id` / `Artskonto` | Artskonto på **tresiffernivå** (NS 4102-basert) |
+| `Fagdepartement_Virksomhet_id` / `_Virksomhet` | Departementet virksomheten tilhører |
+| `Virksomhet_id` / `Virksomhet` | Org.nr. og navn på konterende virksomhet |
+| `Regnskapsfører_id` / `Regnskapsfører` | Underliggende enhet |
+| `Beløp` | Kroner og øre, signert |
+
+### Post_type-verdier (fra kolonnebeskrivelsen)
+
+| Postnummer | Type |
+|------------|------|
+| 01–29 | Utgifter til drift |
+| 30–49 | Investeringer |
+| 50–59 | Overføringer til andre |
+| 60–69 | Overføringer til kommuneforvaltningen |
+| 70–85 | Andre overføringer (tilskudd) |
+| 90–99 | **Utlån, kapitaltilskudd og aksjer** (→ `fin`-flagg) |
+
+### Eksempelrad (faktisk)
+
 ```
-https://statsregnskapet.dfo.no/last-ned?filnavn=bevilgningshistorikk.csv
+"2023";"202302";"132001";"Driftsutgifter";"21";"Innenlands transport";"2130";"Veiformål";
+"13";"Samferdselsdepartementet";"1320";"Statens vegvesen";"132001";"Driftsutgifter";
+"Utgifter til drift";"3";"Salgs- og driftsinntekt";"30";"Salgsinntekt, avgiftspliktig";
+"301";"Salgsinntekt varer, avgiftspliktig, fortsettelse";"13";"Samferdselsdepartementet";
+"971032081";"Statens vegvesen";"971032081";"Statens vegvesen";"-847732,870"
 ```
-Én fil med alle år.
 
-### Filformat
-| Egenskap | Verdi |
-|----------|-------|
-| Separator | `;` |
-| Desimalskilletegn | `,` |
-| Tegnsett | `ISO-8859-1` |
-
-### Kolonner
-
-| Kolonnenavn | Type | Beskrivelse |
-|-------------|------|-------------|
-| `Periode` | heltall | Budsjettår |
-| `Departement` | streng | Departementsnummer |
-| `Departementnavn` | streng | |
-| `Kapittel` | streng | Kapittelnummer |
-| `Kapittelnavn` | streng | |
-| `Post` | streng | Postnummer |
-| `Postnavn` | streng | |
-| `Bevilgningstype` | streng | `Saldert budsjett`, `Revidert nasjonalbudsjett`, `Nysaldering` |
-| `Belop` | desimaltall | Beløp i tusen kroner (positiv for utgifter, kan være negativ) |
-
-### Bevilgningstyper vi bruker
-- `Saldert budsjett` → `saldert` i datamodellen
-- `Revidert nasjonalbudsjett` / `Nysaldering` → siste verdi per år → `revidert` i datamodellen
+Merk: salgsinntekter kan konteres (kreditert, negativt) på utgiftskapitler —
+summen per post er det offisielle regnskapstallet for posten.
 
 ---
 
-## 3. SSB Folkemengde
+## 2. Bevilgninger: `bevilgninger_full_historikk.csv`
 
-### API
-```
-POST https://data.ssb.no/api/v0/no/table/07459
-Content-Type: application/json
-```
+Samme filformat (`;`, kvotert, Latin-1, desimalkomma, kroner).
+Én rad per **bevilgningsvedtak** per kap/post/år (~55 000 rader totalt).
 
-### Query-payload (PX-API JSON)
+| Kolonne | Forklaring |
+|---------|-----------|
+| `År`, `Periode`, `Tildelings_periode` | År; periode; når proposisjonen ble fremmet |
+| `Programområde*`, `Programkategori*`, `Fagdepartement*` | Som i regnskapet |
+| `Kapittel_id`/`Kapittel`, `Post_id`/`Post`, `Post_type` | Som i regnskapet (Post_id 6 siffer) |
+| `Bevilgning_beløp` | Bevilget beløp (kroner) |
+| `Bevilgning_overføres_beløp` | Kan overføres til neste år |
+| `Bevilgning_overført_beløp` | Overført fra forrige år |
+| `Bevilgning` | **Tekstlig vedtaksbeskrivelse**, f.eks. «Overført fra 2013», «Saldert budsjett …», proposisjonsreferanser |
+
+### Serie-avledning i ETL (`parse_bevilgning.py`)
+
+- `saldert` = sum av rader der `Bevilgning`-teksten inneholder «saldert»
+- `revidert` = saldert + alle andre vedtak («endring»: RNB, nysaldering, tilleggsproposisjoner)
+- Rader med «Overført fra …» holdes **utenfor** begge serier (disponible
+  overføringer, ikke årets vedtak)
+- ETL logger de 20 vanligste `Bevilgning`-tekstene per kjøring slik at
+  klassifiseringen kan verifiseres i CI-loggen
+
+---
+
+## 3. SSB Folkemengde (tabell 07459)
+
+`GET https://data.ssb.no/api/v0/no/table/07459` gir metadata. Variabler (verifisert):
+
+| Kode | elimination | Verdier |
+|------|-------------|---------|
+| `Region` | true | 994 (inkl. `0` = Hele landet) |
+| `Kjonn` | true | 2 |
+| `Alder` | true | 106 |
+| `ContentsCode` | false | 1 (`Personer1`) |
+| `Tid` | false | 41 (1986–2026) |
+
+### Fungerende spørring (verifisert, HTTP 200)
+
 ```json
+POST https://data.ssb.no/api/v0/no/table/07459
 {
   "query": [
     {"code": "Region", "selection": {"filter": "item", "values": ["0"]}},
+    {"code": "ContentsCode", "selection": {"filter": "item", "values": ["Personer1"]}},
     {"code": "Tid", "selection": {"filter": "all", "values": ["*"]}}
   ],
   "response": {"format": "json-stat2"}
 }
 ```
 
-### Response
-JSON-stat2-format. Nøkkelfelt:
-- `dimension.Tid.category.index` → årstall-labels
-- `value` → folkemengde (antall personer)
+`Kjonn` og `Alder` utelates (elimination=true → API-et summerer).
+ETL bygger spørringen dynamisk fra metadata (`_build_ssb_query` i `download.py`).
+Svar: JSON-stat2 med `dimension.Tid.category.index` → årsindeks og `value` → folketall.
+Folketallet er per 1.1. i året.
 
 ---
 
 ## 4. Normalisert output (`/web/public/data/`)
 
-### Filer
+| Fil | Innhold |
+|-----|---------|
+| `utgifter.json` | Utgiftshierarki: departement → kapittel → post (kap. 0001–2999) |
+| `inntekter.json` | Inntektshierarki (kap. 3000–5999) |
+| `befolkning.json` | `{år: folketall}` |
+| `meta.json` | Årsintervall, oppdateringstid, kilder |
 
-| Fil | Beskrivelse |
-|-----|-------------|
-| `utgifter.json` | Brutto utgiftshierarki (departement→kapittel→post) |
-| `inntekter.json` | Brutto inntektshierarki |
-| `befolkning.json` | `{år: antall}` oppslag |
-| `meta.json` | Siste oppdateringstidspunkt, årsintervall, datakilder |
+**Beløpsenhet i output: millioner kroner** (1 desimal).
+Utgifter positive; inntekter positive (fortegn snus for kap. ≥ 3000 i ETL).
 
-### Node-skjema (TypeScript-definisjon)
+### Node-skjema
 
 ```typescript
 interface BudsjettNode {
-  id: string;           // f.eks. "u-732-72" (type-kapittel-post)
+  id: string;              // "u-13-1320-01" (side-dept-kap-post)
   navn: string;
-  tag?: string;         // "Kap. 732" / "Post 72"
+  tag?: string;            // "Kap. 1320" / "Post 01"
   niva: "departement" | "kapittel" | "post";
   children?: BudsjettNode[];
-  serier?: {
-    [year: number]: {
-      regnskap: number | null;   // null hvis ikke tilgjengelig
+  serier: {
+    [year: string]: {
+      regnskap: number | null;   // null = ikke (fullt) regnskapsført
       saldert: number | null;
       revidert: number | null;
     }
   };
-  artskonto?: {
-    [year: number]: {
-      [artskontoId: string]: {
+  artskonto?: {              // kun post-nivå
+    [year: string]: {
+      [artskontoId: string]: {   // 3-siffer artskonto
         navn: string;
-        belop: number;
+        klasse: string;          // kontoklasse-id (1 siffer)
+        klasseNavn: string;      // fra faktiske rader
+        belop: number;           // mill. kr
       }
     }
   };
-  fin?: boolean;        // 90-post (finanstransaksjon)
-  transfer?: boolean;   // SPU-overføring (kap. 2800, 5800 mv.)
-  netto?: boolean;      // nettobudsjettert virksomhet
+  fin?: boolean;           // post 90–99
+  transfer?: boolean;      // kap. 2800/5800 (SPU)
 }
 ```
 
-### Beløpskonvensjon
-- **Alle beløp i millioner kroner** (avrundet til 1 desimal)
-- Utgifter: **positive tall**
-- Inntekter: **positive tall** (brutto, ikke nettotall)
-
 ---
 
-## 5. Kjente datafallgruver
+## 5. Datafallgruver (håndtert i ETL)
 
-### Departementsstrukturen endres
-Departementer slås sammen og splittes over tid. Eksempler:
-- Justis- og beredskapsdepartementet fikk endret kapittelnummer
-- Kommunal- og moderniseringsdepartementet ble til KDD og SPD i 2022
-
-Mappping-filer i `etl/mappings/`:
-- `dept_mapping.json` – stabile ID-er på tvers av år
-- `kap_mapping.json` – kapittelnummer-aliaser (omstrukturering over år)
-
-### Netto vs brutto
-Nettobudsjetterte virksomheter (primært universiteter/høyskoler, helseforetak):
-- Rapporterer artskonto men ikke kapittel/post etter 2018
-- Aggregeres under `kapittel=0000` i virksomhetens departement
-- Flagges med `netto=True` og logges til `etl/warnings.log`
-
-### Statsfondsoverføringer
-- Kap. 2800 / 5800: overføringer til/fra Statens pensjonsfond utland
-- Flagges med `transfer=True`
-- Beløpene er svært store og forvrenger samlede stats tall uten filter
-
-### 90-poster
-- Post 90–99: utlån, avdrag, aksjer, finanstransaksjoner
-- Flagges med `fin=True`
-- Bør ikke inngå i ordinære drifts-/overføringsaggregater
+1. **90-poster og SPU**: post ≥ 90 → `fin: true`; kap. 2800/5800 → `transfer: true`.
+   Frontend filtrerer dem bort som standard.
+2. **Nettobudsjetterte virksomheter** (universiteter/høyskoler m.fl.): rapporterer
+   artskonto men mangler gyldig `Kapittel_id`/`Post_id`. ETL flagger radene,
+   logger antall og beløp til `etl/warnings.log`, og ekskluderer dem fra
+   kapittel/post-hierarkiet.
+3. **Fortegn**: debet positivt, kredit negativt. Inntektskapitler krediteres —
+   ETL snur fortegnet for kap. ≥ 3000 slik at inntekter er positive.
+4. **Månedsrader**: regnskapet har én rad per måned; ETL summerer til årsnivå.
+5. **Prognoseår**: siste budsjettår har bevilgning men ikke (fullt) regnskap.
+   `regnskap` er tallet som faktisk er bokført så langt (eller `null`);
+   frontend viser saldert som stiplet prognose.
+6. **Struktuendringer over tid**: departementsnumrene i filene er allerede
+   normalisert av DFØ til dagens struktur (f.eks. står 2014-rader med
+   «Kommunal- og distriktsdepartementet», som ble opprettet i 2022) —
+   historiske tidsserier per departement er dermed konsistente i kildedataene.
+   `etl/mappings/` beholdes for ev. fremtidige avvik.

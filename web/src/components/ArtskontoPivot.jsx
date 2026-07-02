@@ -2,19 +2,6 @@ import React, { useState, useMemo } from 'react'
 import './ArtskontoPivot.css'
 import { formatMillKr } from '../lib/format'
 
-const KLASSER = {
-  '0': 'Lønn og sosiale utg.',
-  '1': 'Kjøp av varer/tjenester',
-  '2': 'Finansposter',
-  '3': 'Stønader til hushold.',
-  '4': 'Overf. til private',
-  '5': 'Overf. til kommuner',
-  '6': 'Overf. til næringsliv',
-  '7': 'Internasjonal bistand',
-  '8': 'Investeringer',
-  '9': 'Fin.transaksjoner',
-}
-
 export default function ArtskontoPivot({ node, valgtAar, side }) {
   const [åpneKlasser, setÅpneKlasser] = useState(new Set())
 
@@ -25,14 +12,15 @@ export default function ArtskontoPivot({ node, valgtAar, side }) {
     if (!artskonto) return []
     const g = {}
     for (const [ak, data] of Object.entries(artskonto)) {
-      const klasse = ak[0] ?? 'X'
-      if (!g[klasse]) g[klasse] = { klasse, navn: KLASSER[klasse] ?? `Klasse ${klasse}`, poster: [], total: 0 }
+      // Kontoklasse-id og -navn kommer fra de faktiske regnskapsradene
+      const klasse = data.klasse ?? ak[0] ?? '?'
+      if (!g[klasse]) g[klasse] = { klasse, navn: data.klasseNavn ?? `Klasse ${klasse}`, poster: [], total: 0 }
       g[klasse].poster.push({ ak, navn: data.navn, belop: data.belop })
       g[klasse].total += data.belop
     }
     return Object.values(g)
-      .sort((a, b) => b.total - a.total)
-      .map(g => ({ ...g, poster: g.poster.sort((a, b) => b.belop - a.belop) }))
+      .sort((a, b) => Math.abs(b.total) - Math.abs(a.total))
+      .map(g => ({ ...g, poster: g.poster.sort((a, b) => Math.abs(b.belop) - Math.abs(a.belop)) }))
   }, [artskonto])
 
   const totalArtskonto = grupper.reduce((s, g) => s + g.total, 0)

@@ -1,8 +1,11 @@
 """
 Bygg brutto inntekts- og utgiftshierarkier fra normaliserte DataFrames.
 
-Hierarki: departement → kapittel → post
-Artskonto er en kryssdimensjon på bladnivå (ikke eget nivå i treet).
+Hierarki: departement → kapittel → post.
+Artskonto er en kryssdimensjon på post-nivå (ikke et eget nivå i treet),
+med kontoklasse-navn hentet fra de faktiske radene.
+
+Utgiftskapitler: 0001–2999. Inntektskapitler: 3000–5999.
 """
 import json
 import logging
@@ -14,13 +17,9 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
-# Inntektskapitler: 1xxx–5xxx, eksklusive utgiftskapitler
-# Enkelt heuristikk: kapitler >= 3000 på inntektssiden, < 3000 på utgiftssiden
-# (det faktiske skillet er er_utgift-kolonnen fra regnskapet)
-
 
 def _node_id(prefix: str, dept: str, kap: str = None, post: str = None) -> str:
-    parts = [prefix, dept.strip().zfill(2) if dept else "00"]
+    parts = [prefix, (dept or "00").strip().zfill(2)]
     if kap:
         parts.append(kap.strip())
     if post:
@@ -28,55 +27,43 @@ def _node_id(prefix: str, dept: str, kap: str = None, post: str = None) -> str:
     return "-".join(parts)
 
 
+def _tom_serie():
+    return {"regnskap": None, "saldert": None, "revidert": None}
+
+
 def build_hierarchies(
-    regnskap_frames: dict,   # {år: DataFrame} fra parse_regnskap
+    regnskap_frames: dict,      # {år: DataFrame} fra parse_regnskap
     bevilgning_df: pd.DataFrame,
     years: list,
     output_dir: Path,
 ) -> None:
-    """
-    Bygg utgifter.json og inntekter.json.
-    Lagrer til output_dir.
-    """
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Slå sammen alle regnskapsår
     all_regnskap = pd.concat(list(regnskap_frames.values()), ignore_index=True)
 
-    # Split: utgifter vs inntekter (basert på er_utgift-flagg fra Belopstegn)
-    regnskap_u = all_regnskap[all_regnskap["er_utgift"] == True].copy()
-    regnskap_i = all_regnskap[all_regnskap["er_utgift"] == False].copy()
+    regnskap_u = all_regnskap[all_regnskap["er_utgift"]]
+    regnskap_i = all_regnskap[~all_regnskap["er_utgift"]]
 
-    # Bevilgning: del opp etter om kapitlet er inntekts- eller utgiftskapittel
-    # Inntektskapitler i bevilgning er typisk 3xxx, 4xxx, 5xxx
-    bevilgning_u = bevilgning_df[bevilgning_df["kap"].astype(str) < "3000"].copy()
-    bevilgning_i = bevilgning_df[bevilgning_df["kap"].astype(str) >= "3000"].copy()
+    bevilgning_df = bevilgning_df.copy()
+    bevilgning_u = bevilgning_df[bevilgning_df["kap"] < "3000"]
+    bevilgning_i = bevilgning_df[bevilgning_df["kap"] >= "3000"]
 
     logger.info("Bygger utgiftshierarki...")
     utgifter = _build_tree(regnskap_u, bevilgning_u, years, prefix="u")
     _save_json(utgifter, output_dir / "utgifter.json")
-    logger.info(f"  -> {len(utgifter)} departementer")
 
     logger.info("Bygger inntektshierarki...")
     inntekter = _build_tree(regnskap_i, bevilgning_i, years, prefix="i")
     _save_json(inntekter, output_dir / "inntekter.json")
-    logger.info(f"  -> {len(inntekter)} departementer")
 
 
-def _build_tree(
-    regnskap: pd.DataFrame,
-    bevilgning: pd.DataFrame,
-    years: list,
-    prefix: str,
-) -> list:
-    """
-    Bygg en liste av departement-noder (toppnivå).
-    Hvert node følger BudsjettNode-skjemaet.
-    """
-    # --- Regnskap-aggregering per år/dept/kap/post ---
-    grp_regnskap = (
-        regnskap[~regnskap["netto"]]  # Ekskluder nettobudsjetterte
-        .groupby(["aar", "dept_kode", "kap", "post"], dropna=False)
+def _build_tree(regnskap: pd.DataFrame, bevilgning: pd.DataFrame,
+                years: list, prefix: str) -> list:
+    """Bygg liste av departement-noder etter BudsjettNode-skjemaet."""
+
+    # --- Aggreger regnskap til post-nivå ---
+    grp = (
+        regnskap.groupby(["aar", "dept_kode", "kap", "post"], dropna=False)
         .agg(
             belop_mill=("belop_mill", "sum"),
             dept_navn=("dept_navn", "first"),
@@ -88,165 +75,191 @@ def _build_tree(
         .reset_index()
     )
 
-    # --- Artskonto per år/kap/post ---
-    artskonto_grp = (
-        regnskap[~regnskap["netto"]]
-        .dropna(subset=["artskonto"])
+    # --- Artskonto per år/kap/post (med kontoklasse fra dataene) ---
+    ak_grp = (
+        regnskap.dropna(subset=["artskonto"])
         .groupby(["aar", "kap", "post", "artskonto"], dropna=False)
         .agg(
             belop_mill=("belop_mill", "sum"),
             artskonto_navn=("artskonto_navn", "first"),
+            klasse_id=("klasse_id", "first"),
+            klasse_navn=("klasse_navn", "first"),
         )
         .reset_index()
     )
 
-    # --- Bevilgning-oppslag per år/kap/post ---
-    bev_lookup: dict[tuple, dict] = {}
-    for _, row in bevilgning.iterrows():
-        key = (int(row["aar"]) if pd.notna(row["aar"]) else 0,
-               str(row["kap"]), str(row["post"]))
-        bev_lookup[key] = {
-            "saldert": round(float(row["saldert"]), 1) if pd.notna(row.get("saldert")) else None,
-            "revidert": round(float(row["revidert"]), 1) if pd.notna(row.get("revidert")) else None,
-        }
-
-    # --- Bygg tre-struktur ---
-    # dept_kode → {kap → {post → data}}
     tree: dict[str, Any] = {}
+    post_index: dict[tuple, dict] = {}   # (kap, post) -> post_node
 
-    for _, row in grp_regnskap.iterrows():
-        aar = int(row["aar"])
-        dept = str(row["dept_kode"]).strip().zfill(2) if pd.notna(row.get("dept_kode")) else "00"
-        kap = str(row["kap"]).strip()
-        post = str(row["post"]).strip()
-        belop = round(float(row["belop_mill"]), 1)
-
-        # Init dept
+    def _get_dept(dept: str, navn: str) -> dict:
         if dept not in tree:
             tree[dept] = {
                 "id": _node_id(prefix, dept),
-                "navn": str(row.get("dept_navn", dept)),
-                "tag": f"Dept. {dept}",
+                "navn": navn,
                 "niva": "departement",
                 "children_map": {},
-                "serier": defaultdict(lambda: {"regnskap": None, "saldert": None, "revidert": None}),
+                "serier": defaultdict(_tom_serie),
             }
+        return tree[dept]
 
-        dept_node = tree[dept]
-        # Akkumuler på departement-nivå
-        if dept_node["serier"][aar]["regnskap"] is None:
-            dept_node["serier"][aar]["regnskap"] = 0.0
-        dept_node["serier"][aar]["regnskap"] = round(
-            dept_node["serier"][aar]["regnskap"] + belop, 1
-        )
+    for row in grp.itertuples(index=False):
+        aar = int(row.aar)
+        dept = str(row.dept_kode).strip().zfill(2) if pd.notna(row.dept_kode) else "00"
+        kap, post = str(row.kap), str(row.post)
+        belop = round(float(row.belop_mill), 1)
 
-        # Init kap
-        if kap not in dept_node["children_map"]:
-            dept_node["children_map"][kap] = {
+        dept_node = _get_dept(dept, str(row.dept_navn))
+        s = dept_node["serier"][aar]
+        s["regnskap"] = round((s["regnskap"] or 0.0) + belop, 1)
+
+        kap_map = dept_node["children_map"]
+        if kap not in kap_map:
+            kap_map[kap] = {
                 "id": _node_id(prefix, dept, kap),
-                "navn": str(row.get("kap_navn", kap)),
-                "tag": f"Kap. {kap}",
+                "navn": str(row.kap_navn),
+                "tag": f"Kap. {kap.lstrip('0') or '0'}",
                 "niva": "kapittel",
                 "children_map": {},
-                "serier": defaultdict(lambda: {"regnskap": None, "saldert": None, "revidert": None}),
-                "fin": bool(row.get("fin", False)),
-                "transfer": bool(row.get("transfer", False)),
+                "serier": defaultdict(_tom_serie),
+                "transfer": bool(row.transfer),
             }
+        kap_node = kap_map[kap]
+        s = kap_node["serier"][aar]
+        s["regnskap"] = round((s["regnskap"] or 0.0) + belop, 1)
 
-        kap_node = dept_node["children_map"][kap]
-        if kap_node["serier"][aar]["regnskap"] is None:
-            kap_node["serier"][aar]["regnskap"] = 0.0
-        kap_node["serier"][aar]["regnskap"] = round(
-            kap_node["serier"][aar]["regnskap"] + belop, 1
-        )
-
-        # Init post
-        if post not in kap_node["children_map"]:
-            kap_node["children_map"][post] = {
+        post_map = kap_node["children_map"]
+        if post not in post_map:
+            post_map[post] = {
                 "id": _node_id(prefix, dept, kap, post),
-                "navn": str(row.get("post_navn", post)),
+                "navn": str(row.post_navn),
                 "tag": f"Post {post}",
                 "niva": "post",
-                "serier": defaultdict(lambda: {"regnskap": None, "saldert": None, "revidert": None}),
+                "serier": defaultdict(_tom_serie),
                 "artskonto": defaultdict(dict),
-                "fin": bool(row.get("fin", False)),
-                "transfer": bool(row.get("transfer", False)),
+                "fin": bool(row.fin),
+                "transfer": bool(row.transfer),
             }
+            post_index[(kap, post)] = post_map[post]
+        post_node = post_map[post]
+        s = post_node["serier"][aar]
+        s["regnskap"] = round((s["regnskap"] or 0.0) + belop, 1)
 
-        post_node = kap_node["children_map"][post]
-        if post_node["serier"][aar]["regnskap"] is None:
-            post_node["serier"][aar]["regnskap"] = 0.0
-        post_node["serier"][aar]["regnskap"] = round(
-            post_node["serier"][aar]["regnskap"] + belop, 1
-        )
+    # --- Bevilgning (saldert/revidert) på post-nivå ---
+    ukjente_bev = 0
+    for row in bevilgning.itertuples(index=False):
+        if pd.isna(row.aar):
+            continue
+        aar = int(row.aar)
+        node = post_index.get((str(row.kap), str(row.post)))
+        if node is None:
+            # Post finnes i bevilgning men ikke i regnskapet (f.eks. budsjettår
+            # uten regnskap ennå, eller post som aldri ble brukt). Opprett den.
+            dept = str(row.dept_kode).strip().zfill(2) if pd.notna(row.dept_kode) else "00"
+            dept_node = _get_dept(dept, str(row.dept_navn))
+            kap, post = str(row.kap), str(row.post)
+            kap_map = dept_node["children_map"]
+            if kap not in kap_map:
+                kap_map[kap] = {
+                    "id": _node_id(prefix, dept, kap),
+                    "navn": str(row.kap_navn),
+                    "tag": f"Kap. {kap.lstrip('0') or '0'}",
+                    "niva": "kapittel",
+                    "children_map": {},
+                    "serier": defaultdict(_tom_serie),
+                }
+            kap_node = kap_map[kap]
+            if post not in kap_node["children_map"]:
+                post_nr = int(post) if post.isdigit() else 0
+                kap_node["children_map"][post] = {
+                    "id": _node_id(prefix, dept, kap, post),
+                    "navn": str(row.post_navn),
+                    "tag": f"Post {post}",
+                    "niva": "post",
+                    "serier": defaultdict(_tom_serie),
+                    "artskonto": defaultdict(dict),
+                    "fin": post_nr >= 90,
+                    "transfer": kap in {"2800", "5800"},
+                }
+                post_index[(kap, post)] = kap_node["children_map"][post]
+            node = post_index[(kap, post)]
+            ukjente_bev += 1
 
-    # --- Fyll inn bevilgning ---
-    for (aar, kap, post), bev in bev_lookup.items():
-        for dept_key, dept_node in tree.items():
-            if kap in dept_node["children_map"]:
-                kap_node = dept_node["children_map"][kap]
-                if post in kap_node["children_map"]:
-                    post_node = kap_node["children_map"][post]
-                    s = post_node["serier"][aar]
-                    s["saldert"] = bev["saldert"]
-                    s["revidert"] = bev["revidert"]
-                    break
+        s = node["serier"][aar]
+        if pd.notna(row.saldert):
+            s["saldert"] = round(float(row.saldert), 1)
+        if pd.notna(row.revidert):
+            s["revidert"] = round(float(row.revidert), 1)
 
-    # Rull opp budsjett til kapittel- og departementnivå
+    if ukjente_bev:
+        logger.info(f"  {ukjente_bev} bevilgningsposter uten regnskapsrader (opprettet som noder)")
+
+    # --- Rull budsjettserier opp til kapittel og departement ---
+    alle_aar = set(years) | {int(a) for a in bevilgning["aar"].dropna().unique()}
     for dept_node in tree.values():
         for kap_node in dept_node["children_map"].values():
-            for aar in years:
-                sal_sum = sum(
-                    p["serier"][aar]["saldert"] or 0
-                    for p in kap_node["children_map"].values()
-                    if p["serier"][aar]["saldert"] is not None
-                )
-                rev_sum = sum(
-                    p["serier"][aar]["revidert"] or 0
-                    for p in kap_node["children_map"].values()
-                    if p["serier"][aar]["revidert"] is not None
-                )
-                if sal_sum:
-                    kap_node["serier"][aar]["saldert"] = round(sal_sum, 1)
-                if rev_sum:
-                    kap_node["serier"][aar]["revidert"] = round(rev_sum, 1)
+            for aar in alle_aar:
+                sal = rev = None
+                for p in kap_node["children_map"].values():
+                    ps = p["serier"].get(aar)
+                    if not ps:
+                        continue
+                    if ps["saldert"] is not None:
+                        sal = (sal or 0.0) + ps["saldert"]
+                    if ps["revidert"] is not None:
+                        rev = (rev or 0.0) + ps["revidert"]
+                if sal is not None:
+                    kap_node["serier"][aar]["saldert"] = round(sal, 1)
+                if rev is not None:
+                    kap_node["serier"][aar]["revidert"] = round(rev, 1)
+        for aar in alle_aar:
+            sal = rev = None
+            for kap_node in dept_node["children_map"].values():
+                ks = kap_node["serier"].get(aar)
+                if not ks:
+                    continue
+                if ks["saldert"] is not None:
+                    sal = (sal or 0.0) + ks["saldert"]
+                if ks["revidert"] is not None:
+                    rev = (rev or 0.0) + ks["revidert"]
+            if sal is not None:
+                dept_node["serier"][aar]["saldert"] = round(sal, 1)
+            if rev is not None:
+                dept_node["serier"][aar]["revidert"] = round(rev, 1)
 
-            for aar in years:
-                sal = kap_node["serier"][aar]["saldert"]
-                rev = kap_node["serier"][aar]["revidert"]
-                if sal:
-                    s = dept_node["serier"][aar]
-                    s["saldert"] = round((s["saldert"] or 0) + sal, 1)
-                if rev:
-                    s = dept_node["serier"][aar]
-                    s["revidert"] = round((s["revidert"] or 0) + rev, 1)
+    # --- Artskonto på post-nivå ---
+    ak_uten_post = 0
+    for row in ak_grp.itertuples(index=False):
+        node = post_index.get((str(row.kap), str(row.post)))
+        if node is None:
+            ak_uten_post += 1
+            continue
+        belop = round(float(row.belop_mill), 1)
+        if belop == 0:
+            continue
+        node["artskonto"][int(row.aar)][str(row.artskonto)] = {
+            "navn": str(row.artskonto_navn),
+            "klasse": str(row.klasse_id) if pd.notna(row.klasse_id) else "?",
+            "klasseNavn": str(row.klasse_navn) if pd.notna(row.klasse_navn) else "Ukjent",
+            "belop": belop,
+        }
+    if ak_uten_post:
+        logger.warning(f"  [ADVARSEL] {ak_uten_post} artskontorader uten matchende post — logget, ignorert")
 
-    # --- Fyll artskonto på post-bladnivå ---
-    for _, row in artskonto_grp.iterrows():
-        aar = int(row["aar"])
-        kap = str(row["kap"]).strip()
-        post = str(row["post"]).strip()
-        ak = str(row["artskonto"]).strip()
-        belop = round(float(row["belop_mill"]), 1)
-        navn = str(row.get("artskonto_navn", ak))
+    # --- Serialiser ---
+    sorterings_aar = max(years)
 
-        for dept_node in tree.values():
-            if kap in dept_node["children_map"]:
-                kap_node = dept_node["children_map"][kap]
-                if post in kap_node["children_map"]:
-                    kap_node["children_map"][post]["artskonto"][aar][ak] = {
-                        "navn": navn,
-                        "belop": belop,
-                    }
-                    break
+    def _sort_key(n):
+        return n.get("serier", {}).get(str(sorterings_aar), {}).get("regnskap") or 0
 
-    # --- Serialiser til liste (fjern children_map hjelpesstruktur) ---
-    def _serialize_node(node: dict) -> dict:
+    def _ser(node: dict) -> dict:
         out = {
             "id": node["id"],
             "navn": node["navn"],
             "niva": node["niva"],
-            "serier": {str(y): _serialize_serie(node["serier"].get(y, {})) for y in years},
+            "serier": {
+                str(a): dict(node["serier"][a])
+                for a in sorted(node["serier"].keys())
+            },
         }
         if node.get("tag"):
             out["tag"] = node["tag"]
@@ -254,32 +267,23 @@ def _build_tree(
             out["fin"] = True
         if node.get("transfer"):
             out["transfer"] = True
-        if "artskonto" in node and node["artskonto"]:
-            out["artskonto"] = {str(y): dict(v) for y, v in node["artskonto"].items() if v}
-        if "children_map" in node and node["children_map"]:
+        if node.get("artskonto"):
+            out["artskonto"] = {
+                str(a): v for a, v in sorted(node["artskonto"].items()) if v
+            }
+        if node.get("children_map"):
             out["children"] = sorted(
-                [_serialize_node(c) for c in node["children_map"].values()],
-                key=lambda x: x.get("serier", {}).get(str(max(years)), {}).get("regnskap") or 0,
-                reverse=True,
+                (_ser(c) for c in node["children_map"].values()),
+                key=_sort_key, reverse=True,
             )
         return out
 
-    def _serialize_serie(s: dict) -> dict:
-        return {
-            "regnskap": s.get("regnskap"),
-            "saldert": s.get("saldert"),
-            "revidert": s.get("revidert"),
-        }
-
-    nodes = sorted(
-        [_serialize_node(n) for n in tree.values()],
-        key=lambda x: x.get("serier", {}).get(str(max(years)), {}).get("regnskap") or 0,
-        reverse=True,
-    )
+    nodes = sorted((_ser(n) for n in tree.values()), key=_sort_key, reverse=True)
+    logger.info(f"  -> {len(nodes)} departementer")
     return nodes
 
 
 def _save_json(data: Any, path: Path) -> None:
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=None), encoding="utf-8")
-    size_kb = path.stat().st_size // 1024
-    logger.info(f"  Skrev {path.name} ({size_kb} KB)")
+    path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")),
+                    encoding="utf-8")
+    logger.info(f"  Skrev {path.name} ({path.stat().st_size // 1024} KB)")
