@@ -2,38 +2,27 @@ name: Deploy til GitHub Pages
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["ETL – hent og prosesser data"]
-    types: [completed]
+  workflow_call:        # kjedes fra ETL-workflowen
   push:
     paths:
       - 'web/**'
       - '.github/workflows/deploy.yml'
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: pages-deploy
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
-    # Ved workflow_run: bare deploy hvis ETL lyktes
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
-      - name: Sjekk ut repo (med evt. ETL-committede data)
+      - name: Sjekk ut siste versjon av branchen (inkl. ev. ETL-datacommit)
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || github.ref }}
-
-      - name: Konfigurer GitHub Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
+          ref: ${{ github.ref_name }}
 
       - name: Sett opp Node
         uses: actions/setup-node@v4
@@ -46,24 +35,21 @@ jobs:
         working-directory: web
         run: |
           npm ci
-          # Sjekk at data finnes – uten data er appen tom
           if [ ! -f public/data/meta.json ]; then
-            echo "::warning::web/public/data/ mangler – kjør ETL-workflowen først. Deployer likevel (viser feilmelding i appen)."
+            echo "::warning::web/public/data/ mangler – kjør ETL-workflowen først."
           fi
           npm run build
 
-      - name: Last opp Pages-artefakt
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: web/dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy til GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publiser til gh-pages-branchen
+        working-directory: web/dist
+        run: |
+          git init -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "deploy: ${{ github.sha }}"
+          git push --force \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" \
+            gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

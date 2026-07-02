@@ -59,3 +59,9 @@ jobs:
             git commit -m "chore: oppdater data fra DFØ og SSB (automatisk ETL)"
             git push
           fi
+
+  deploy:
+    needs: etl
+    uses: ./.github/workflows/deploy.yml
+    permissions:
+      contents: write

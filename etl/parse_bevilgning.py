@@ -50,10 +50,16 @@ RENAME = {
 
 
 def _klassifiser(tekst: str) -> str:
-    """Klassifiser et bevilgningsvedtak ut fra 'Bevilgning'-teksten."""
+    """Klassifiser et bevilgningsvedtak ut fra 'Bevilgning'-teksten.
+
+    Faktiske tekster (fra CI-logg 2026-07): "2014.01.01 Saldert budsjett 2014",
+    "2023.05.11 Prp: p118/22-23 i490/22-23", "Overfort fra 2020",
+    "Overfores til 2026".
+    """
     s = (tekst or "").lower()
-    if "overført fra" in s or "overfort fra" in s:
-        return "overfort"      # disponibel overføring, ikke årets vedtak
+    if ("overført fra" in s or "overfort fra" in s
+            or "overføres til" in s or "overfores til" in s):
+        return "overfort"      # overføring mellom år, ikke årets vedtak
     if "saldert" in s:
         return "saldert"
     return "endring"           # RNB, nysaldering, tilleggsprop. mv.
