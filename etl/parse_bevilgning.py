@@ -108,6 +108,11 @@ def parse_bevilgning(paths: list) -> pd.DataFrame:
     df["post"] = df["post_id6"].str.strip().str[-2:]
     df["serie"] = df["bev_tekst"].apply(_klassifiser)
 
+    # Inntektskapitler (>= 3000) føres med kredit-fortegn (negativt) i
+    # kildefilen — snu til positivt, samme konvensjon som parse_regnskap
+    er_inntekt = df["kap"] >= "3000"
+    df.loc[er_inntekt, "belop_mill"] = -df.loc[er_inntekt, "belop_mill"]
+
     # Logg de faktiske vedtakstypene så klassifiseringen kan verifiseres i CI-loggen
     fordeling = df.groupby("serie").size().to_dict()
     logger.info(f"  Vedtakstype-fordeling: {fordeling}")

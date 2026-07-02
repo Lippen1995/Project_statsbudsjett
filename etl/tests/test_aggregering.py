@@ -230,6 +230,20 @@ def test_parse_bevilgning_saldert_og_revidert(tmp_path):
     # Overføringen på 5 mill. skal IKKE inngå i noen av seriene
 
 
+def test_parse_bevilgning_inntektskapittel_flippes(tmp_path):
+    # Inntektskapitler (>= 3000) føres med kredit-fortegn i kildefilen
+    rader = [
+        _bev_rad(2026, "14", "FIN", "5501", "Skatter", "550170", "Trinnskatt",
+                 "-5000000000,000", "Saldert budsjett 2026"),
+    ]
+    p = tmp_path / "bevilgninger_full_historikk.csv"
+    p.write_bytes((BEV_HEADER + "\n" + "\n".join(rader) + "\n").encode("latin-1"))
+
+    df = parse_bevilgning([p])
+    rad = df.iloc[0]
+    assert abs(rad["saldert"] - 5000.0) < 0.001   # 5 mrd., positiv
+
+
 # --- Hierarkibygging ---
 
 def _regnskap_df(rows):

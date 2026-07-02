@@ -37,6 +37,24 @@
   font-size: 0.75rem;
   color: var(--text-faint);
   margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.kort-budsjett {
+  font-size: 0.85rem;
+  color: var(--gold);
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+
+.kb-label {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .balanse-diff {

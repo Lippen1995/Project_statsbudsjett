@@ -4,7 +4,6 @@ import Toppkontroll from './components/Toppkontroll'
 import BalanseTopp from './components/BalanseTopp'
 import Drilldown from './components/Drilldown'
 import Historikkgraf from './components/Historikkgraf'
-import ArtskontoPivot from './components/ArtskontoPivot'
 import Footer from './components/Footer'
 import './App.css'
 
@@ -27,11 +26,12 @@ export default function App() {
       .catch(e => setFeil(e.message))
   }, [])
 
-  const handleDrill = useCallback((node, parent) => {
-    setSti(prev => {
-      if (parent) return [...prev, node]
-      return [node]
-    })
+  const handleDrill = useCallback((node) => {
+    setSti(prev => [...prev, node])
+    setFokusNode(node)
+  }, [])
+
+  const handleFokus = useCallback((node) => {
     setFokusNode(node)
   }, [])
 
@@ -119,6 +119,7 @@ export default function App() {
               sti={sti}
               fokusNode={fokusNode}
               onDrill={handleDrill}
+              onFokus={handleFokus}
               onBreadcrumb={handleBreadcrumb}
               onToppnivaa={handleToppnivaa}
             />
@@ -132,13 +133,6 @@ export default function App() {
                 budsjettAar={meta.siste_budsjett_aar}
                 perPerson={perPerson}
                 befolkning={befolkning}
-                side={side}
-              />
-            </section>
-            <section className="panel artskonto-panel">
-              <ArtskontoPivot
-                node={fokusNode}
-                valgtAar={valgtAar}
                 side={side}
               />
             </section>
