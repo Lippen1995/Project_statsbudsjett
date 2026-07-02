@@ -28,6 +28,70 @@ export function getVerdi(node, year, serie = 'regnskap') {
   return node?.serier?.[year]?.[serie] ?? null
 }
 
+/**
+ * Rekursiv sum for en node: summerer bladnodene.
+ * VIKTIG: bruk denne (ikke node.serier direkte) på aggregerte nivåer når
+ * trærne er filtrert — de forhåndsberegnede seriene på departement/kapittel
+ * inkluderer fin/SPU-poster selv om barna er filtrert bort.
+ */
+export function sumVerdi(node, year, serie = 'regnskap') {
+  if (node.children?.length) {
+    return node.children.reduce((s, c) => s + (sumVerdi(c, year, serie) ?? 0), 0)
+  }
+  return getVerdi(node, year, serie) ?? 0
+}
+
+/**
+ * Bygg et pseudo-tre av kontoklasser → artskontoer fra en post-nodes
+ * artskonto-data, med serier per år (kun regnskap — budsjett vedtas
+ * ikke på artskontonivå). Brukes for å drille forbi post-nivået.
+ */
+export function byggArtskontoTre(node) {
+  if (!node?.artskonto) return []
+  const klasser = {}   // klasseId → klassenode
+  const kontoer = {}   // artskontoId → kontonode
+
+  for (const [aar, konti] of Object.entries(node.artskonto)) {
+    for (const [ak, d] of Object.entries(konti)) {
+      const klasseId = d.klasse ?? ak[0] ?? '?'
+      if (!klasser[klasseId]) {
+        klasser[klasseId] = {
+          id: `${node.id}-ak${klasseId}`,
+          navn: d.klasseNavn ?? `Kontoklasse ${klasseId}`,
+          tag: `Klasse ${klasseId}`,
+          niva: 'kontoklasse',
+          serier: {},
+          childrenMap: {},
+        }
+      }
+      const kl = klasser[klasseId]
+      if (!kl.serier[aar]) kl.serier[aar] = { regnskap: 0, saldert: null, revidert: null }
+      kl.serier[aar].regnskap += d.belop
+
+      const kontoKey = `${klasseId}-${ak}`
+      if (!kontoer[kontoKey]) {
+        kontoer[kontoKey] = {
+          id: `${node.id}-akk${ak}`,
+          navn: d.navn ?? `Artskonto ${ak}`,
+          tag: `Konto ${ak}`,
+          niva: 'artskonto',
+          serier: {},
+        }
+        kl.childrenMap[ak] = kontoer[kontoKey]
+      }
+      const ko = kontoer[kontoKey]
+      if (!ko.serier[aar]) ko.serier[aar] = { regnskap: 0, saldert: null, revidert: null }
+      ko.serier[aar].regnskap += d.belop
+    }
+  }
+
+  return Object.values(klasser).map(kl => ({
+    ...kl,
+    childrenMap: undefined,
+    children: Object.values(kl.childrenMap),
+  }))
+}
+
 /** Summer alle direktebarn (brukes for % av parent) */
 export function sumBarn(node, year, serie = 'regnskap') {
   if (!node.children) return getVerdi(node, year, serie)

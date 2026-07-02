@@ -43,6 +43,21 @@
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nivaa-merke {
+  font-size: 0.65rem;
+  font-weight: 500;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--teal-light);
+  color: var(--teal);
+  border-radius: 3px;
+  padding: 2px 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .soke-input {

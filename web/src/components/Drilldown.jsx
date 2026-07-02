@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from 'react'
-import { filtrerNoder, perInnbygger } from '../lib/data'
+import { filtrerNoder, sumVerdi, byggArtskontoTre, perInnbygger } from '../lib/data'
 import { formatMillKr } from '../lib/format'
 import './Drilldown.css'
 
 export default function Drilldown({
   hierarki, side, valgtAar, perPerson, befolkning,
-  skjulFin, sti, fokusNode, onDrill, onBreadcrumb, onToppnivaa,
+  skjulFin, sti, fokusNode, onDrill, onFokus, onBreadcrumb, onToppnivaa,
 }) {
   const [sokeTekst, setSokeTekst] = useState('')
 
@@ -14,18 +14,24 @@ export default function Drilldown({
     [hierarki, skjulFin]
   )
 
+  // Gjeldende nivå: barn av siste breadcrumb-node.
+  // På post-nivå (ingen children) går vi videre til artskonto-treet —
+  // kontoklasser og enkeltkontoer vises som rader i samme liste.
   const gjeldende = useMemo(() => {
     if (sti.length === 0) return rotNoder
     const siste = sti[sti.length - 1]
-    const barn = filtrerNoder(siste.children ?? [], { skjulFin })
-    return barn
+    if (siste.children?.length) {
+      return filtrerNoder(siste.children, { skjulFin })
+    }
+    if (siste.niva === 'post') {
+      return byggArtskontoTre(siste)
+    }
+    return []
   }, [sti, rotNoder, skjulFin])
 
-  const erPrognose = valgtAar > (gjeldende[0]?.serier ? Object.keys(gjeldende[0].serier).length : 0)
+  const erArtskontoNivaa = gjeldende[0]?.niva === 'kontoklasse' || gjeldende[0]?.niva === 'artskonto'
 
-  const serie = 'regnskap'  // Vi viser alltid regnskap i drilldown
-
-  const skaler = (v) => perPerson ? perInnbygger(v, befolkning, valgtAar) : v
+  const skaler = (v) => perPerson ? (perInnbygger(v, befolkning, valgtAar) ?? v) : v
 
   const filtrert = useMemo(() => {
     if (!sokeTekst) return gjeldende
@@ -33,7 +39,14 @@ export default function Drilldown({
     return gjeldende.filter(n => n.navn.toLowerCase().includes(q) || (n.tag ?? '').toLowerCase().includes(q))
   }, [gjeldende, sokeTekst])
 
-  const totalBrutto = filtrert.reduce((s, n) => s + (n.serier?.[valgtAar]?.[serie] ?? 0), 0)
+  // Rekursiv sum av filtrerte bladnoder — se sumVerdi
+  const rader = useMemo(() =>
+    filtrert
+      .map(n => ({ node: n, verdi: sumVerdi(n, valgtAar, 'regnskap') }))
+      .sort((a, b) => Math.abs(b.verdi) - Math.abs(a.verdi)),
+    [filtrert, valgtAar]
+  )
+  const totalBrutto = rader.reduce((s, r) => s + r.verdi, 0)
 
   return (
     <div className="drilldown">
@@ -43,6 +56,7 @@ export default function Drilldown({
           <span className="drilldown-total num">
             {formatMillKr(skaler(totalBrutto))}
             {perPerson && ' /person'}
+            {erArtskontoNivaa && <span className="nivaa-merke">artskonto</span>}
           </span>
           <input
             className="soke-input"
@@ -56,15 +70,19 @@ export default function Drilldown({
       </div>
 
       <div className="drilldown-liste" role="list">
-        {filtrert.length === 0 && (
-          <p className="ingen-treff">Ingen treff</p>
+        {rader.length === 0 && (
+          <p className="ingen-treff">
+            {sokeTekst ? 'Ingen treff' : 'Ingen underliggende data for dette året'}
+          </p>
         )}
-        {filtrert.map(node => {
-          const v = node.serier?.[valgtAar]?.[serie] ?? 0
-          const andel = totalBrutto > 0 ? (v / totalBrutto) * 100 : 0
-          const skalerV = skaler(v)
+        {rader.map(({ node, verdi }) => {
+          const andel = totalBrutto !== 0 ? (verdi / totalBrutto) * 100 : 0
+          const skalerV = skaler(verdi)
           const erFokus = fokusNode?.id === node.id
-          const harBarn = (node.children?.length ?? 0) > 0
+          // Poster kan drilles videre til artskonto; kontoklasser til enkeltkontoer
+          const kanDrilles = (node.children?.length ?? 0) > 0
+            || node.niva === 'post'
+          const handleKlikk = () => kanDrilles ? onDrill(node) : onFokus(node)
 
           return (
             <div
@@ -72,28 +90,28 @@ export default function Drilldown({
               className={`drilldown-rad ${erFokus ? 'fokus' : ''}`}
               role="listitem"
               tabIndex={0}
-              onClick={() => onDrill(node, sti[sti.length - 1])}
-              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onDrill(node, sti[sti.length - 1])}
+              onClick={handleKlikk}
+              onMouseEnter={() => onFokus(node)}
+              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && handleKlikk()}
               aria-label={`${node.navn}: ${formatMillKr(skalerV)}`}
-              aria-expanded={harBarn ? erFokus : undefined}
             >
               <div className="rad-bar-wrapper">
                 <div
                   className={`rad-bar rad-bar--${side === 'utgifter' ? 'rust' : 'teal'}`}
-                  style={{ width: `${Math.min(andel, 100)}%` }}
+                  style={{ width: `${Math.min(Math.abs(andel), 100)}%` }}
                 />
               </div>
               <div className="rad-innhold">
                 <div className="rad-venstre">
                   <span className="rad-navn">{node.navn}</span>
                   {node.tag && <span className="rad-tag">{node.tag}</span>}
-                  {node.fin && <span className="merke merke--fin">fin.</span>}
+                  {node.fin && <span className="merke merke--fin">90-post</span>}
                   {node.transfer && <span className="merke merke--spu">SPU</span>}
                 </div>
                 <div className="rad-hoyre">
                   <span className="rad-belop num">{formatMillKr(skalerV)}</span>
-                  <span className="rad-andel">{andel.toFixed(1)} %</span>
-                  {harBarn && <span className="rad-pil" aria-hidden>›</span>}
+                  <span className="rad-andel">{Math.abs(andel).toFixed(1)} %</span>
+                  <span className="rad-pil" aria-hidden>{kanDrilles ? '›' : ''}</span>
                 </div>
               </div>
             </div>
