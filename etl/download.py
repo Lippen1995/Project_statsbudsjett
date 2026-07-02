@@ -1,14 +1,20 @@
 """
 Download og caching av råfiler fra DFØ Statsregnskapet og SSB.
 Feiler høyt hvis en kilde ikke kan nås — ingen fallback til mock-data.
+
+Faktiske filer (verifisert mot statsregnskapet.dfo.no/last-ned 2026-07):
+  /nedlasting/statsregnskapet_aar_{YYYY}.zip   – regnskap per år (2014–)
+  /nedlasting/bevilgninger_full_historikk.zip  – bevilgningshistorikk, alle år
+  /nedlasting/statsregnskapet_beskrivelse_av_kolonner.csv
+  /nedlasting/bevilgninger_beskrivelse_av_kolonner.csv
 """
-import os
-import sys
-import time
+import io
+import json
 import logging
-import hashlib
-import requests
+import zipfile
 from pathlib import Path
+
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -16,153 +22,204 @@ RAW_DIR = Path(__file__).parent / "raw"
 RAW_DIR.mkdir(exist_ok=True)
 
 BASE_URL = "https://statsregnskapet.dfo.no"
-SSB_API = "https://data.ssb.no/api/v0/no/table/07459"
+SSB_TABLE_URL = "https://data.ssb.no/api/v0/no/table/07459"
 
 HEADERS = {
-    "User-Agent": "statsbudsjett-visualisering/1.0 (open source; github.com)",
-    "Accept": "text/csv,application/json,*/*",
+    "User-Agent": "statsbudsjett-visualisering/1.0 (open source)",
+    "Accept": "*/*",
 }
 
 YEARS = list(range(2014, 2026))  # 2014–2025
 
 
-def _cache_path(name: str) -> Path:
-    return RAW_DIR / name
+class KildeFeil(SystemExit):
+    """Nedlasting eller validering av kildefil feilet."""
 
 
-def _download(url: str, dest: Path, force: bool = False) -> Path:
-    if dest.exists() and not force:
-        logger.info(f"  CACHE HIT: {dest.name}")
-        return dest
-
-    logger.info(f"  GET {url}")
+def _get(url: str, timeout: int = 300) -> requests.Response:
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=120, stream=True)
+        resp = requests.get(url, headers=HEADERS, timeout=timeout)
         resp.raise_for_status()
+        return resp
     except requests.exceptions.ConnectionError as e:
-        raise SystemExit(
-            f"\nFEIL: Kan ikke koble til {url}\n"
-            f"  {e}\n"
-            "ETL krever nettverkstilgang til statsregnskapet.dfo.no og data.ssb.no.\n"
-            "Sjekk at du kjører dette utenfor et begrenset nettverk."
+        raise KildeFeil(
+            f"\nFEIL: Kan ikke koble til {url}\n  {e}\n"
+            "ETL krever nettverkstilgang til statsregnskapet.dfo.no og data.ssb.no."
         ) from e
     except requests.exceptions.HTTPError as e:
-        raise SystemExit(
-            f"\nFEIL: HTTP {resp.status_code} fra {url}\n{e}"
+        raise KildeFeil(f"\nFEIL: HTTP {resp.status_code} fra {url}\n{e}") from e
+
+
+def _validate_not_html(content: bytes, url: str) -> None:
+    """Feil høyt hvis serveren returnerte en HTML-side i stedet for data."""
+    head = content[:512].lstrip().lower()
+    if head.startswith(b"<!doctype") or head.startswith(b"<html"):
+        raise KildeFeil(
+            f"\nFEIL: {url} returnerte HTML i stedet for data.\n"
+            "URL-mønsteret er sannsynligvis feil eller filen finnes ikke.\n"
+            "Ingen fallback – rett opp URL-en i download.py."
+        )
+
+
+def _download_zip_extract(url: str, dest_dir: Path, force: bool = False) -> list[Path]:
+    """Last ned en ZIP og pakk ut CSV-innholdet til dest_dir. Returner utpakkede filer."""
+    if dest_dir.exists() and not force:
+        existing = sorted(dest_dir.glob("*"))
+        if existing:
+            logger.info(f"  CACHE HIT: {dest_dir.name}/ ({len(existing)} filer)")
+            return existing
+
+    logger.info(f"  GET {url}")
+    resp = _get(url)
+    _validate_not_html(resp.content, url)
+
+    try:
+        zf = zipfile.ZipFile(io.BytesIO(resp.content))
+    except zipfile.BadZipFile as e:
+        raise KildeFeil(
+            f"\nFEIL: {url} er ikke en gyldig ZIP-fil "
+            f"({len(resp.content)} bytes, starter med {resp.content[:40]!r})"
         ) from e
 
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    with open(dest, "wb") as f:
-        for chunk in resp.iter_content(chunk_size=65536):
-            f.write(chunk)
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    extracted = []
+    for name in zf.namelist():
+        if name.endswith("/"):
+            continue
+        target = dest_dir / Path(name).name
+        target.write_bytes(zf.read(name))
+        extracted.append(target)
+        logger.info(f"  -> {target.relative_to(RAW_DIR)} ({target.stat().st_size // 1024} KB)")
 
-    size_kb = dest.stat().st_size // 1024
-    logger.info(f"  -> {dest.name} ({size_kb} KB)")
-    return dest
-
-
-def download_regnskap(year: int, force: bool = False) -> Path:
-    """Last ned regnskapsdata for et gitt år."""
-    filename = f"regnskapsdata_{year}.csv"
-    url = f"{BASE_URL}/last-ned?filnavn={filename}"
-    dest = _cache_path(filename)
-    return _download(url, dest, force=force)
+    if not extracted:
+        raise KildeFeil(f"\nFEIL: ZIP fra {url} var tom.")
+    return extracted
 
 
-def download_bevilgning(force: bool = False) -> Path:
-    """Last ned bevilgningshistorikk (alle år, én fil)."""
-    filename = "bevilgningshistorikk.csv"
-    url = f"{BASE_URL}/last-ned?filnavn={filename}"
-    dest = _cache_path(filename)
-    return _download(url, dest, force=force)
+def download_regnskap(year: int, force: bool = False) -> list[Path]:
+    """Last ned regnskaps-ZIP for et år og pakk ut. Returnerer CSV-filstier."""
+    url = f"{BASE_URL}/nedlasting/statsregnskapet_aar_{year}.zip"
+    dest_dir = RAW_DIR / f"regnskap_{year}"
+    return _download_zip_extract(url, dest_dir, force=force)
+
+
+def download_bevilgning(force: bool = False) -> list[Path]:
+    """Last ned bevilgningshistorikk-ZIP (alle år) og pakk ut."""
+    url = f"{BASE_URL}/nedlasting/bevilgninger_full_historikk.zip"
+    dest_dir = RAW_DIR / "bevilgninger"
+    return _download_zip_extract(url, dest_dir, force=force)
+
+
+def download_kolonnebeskrivelser(force: bool = False) -> dict:
+    """Last ned kolonnebeskrivelsene (for dokumentasjon/validering)."""
+    files = {}
+    for name in ["statsregnskapet_beskrivelse_av_kolonner.csv",
+                 "bevilgninger_beskrivelse_av_kolonner.csv"]:
+        dest = RAW_DIR / name
+        if dest.exists() and not force:
+            files[name] = dest
+            continue
+        url = f"{BASE_URL}/nedlasting/{name}"
+        logger.info(f"  GET {url}")
+        resp = _get(url)
+        _validate_not_html(resp.content, url)
+        dest.write_bytes(resp.content)
+        files[name] = dest
+    return files
+
+
+def _build_ssb_query(metadata: dict) -> dict:
+    """
+    Bygg en gyldig PX-API-spørring fra tabellens metadata.
+    Strategi: Region=0 (hele landet), Tid=alle, ContentsCode=Personer*.
+    Variabler med elimination=true utelates (summeres automatisk av API-et).
+    Variabler med elimination=false og ikke i listen over: velg første verdi.
+    """
+    query = []
+    for var in metadata["variables"]:
+        code = var["code"]
+        if code == "Region":
+            if "0" not in var["values"]:
+                raise KildeFeil("FEIL: SSB tabell 07459 mangler Region='0' (hele landet).")
+            query.append({"code": "Region", "selection": {"filter": "item", "values": ["0"]}})
+        elif code == "Tid":
+            query.append({"code": "Tid", "selection": {"filter": "all", "values": ["*"]}})
+        elif code == "ContentsCode":
+            personer = [v for v, t in zip(var["values"], var["valueTexts"])
+                        if "person" in t.lower()]
+            valgt = personer[0] if personer else var["values"][0]
+            query.append({"code": "ContentsCode", "selection": {"filter": "item", "values": [valgt]}})
+        elif var.get("elimination", False):
+            continue  # API-et aggregerer bort denne dimensjonen
+        else:
+            # Ikke-eliminerbar dimensjon vi ikke kjenner: ta første verdi og logg
+            logger.warning(
+                f"  [ADVARSEL] SSB-variabel '{code}' kan ikke elimineres – "
+                f"velger første verdi '{var['values'][0]}' ({var['valueTexts'][0]})"
+            )
+            query.append({"code": code, "selection": {"filter": "item", "values": [var["values"][0]]}})
+    return {"query": query, "response": {"format": "json-stat2"}}
 
 
 def download_befolkning(force: bool = False) -> Path:
-    """Hent folkemengde per år fra SSB (tabell 07459)."""
-    dest = _cache_path("ssb_befolkning.json")
+    """Hent folkemengde per år fra SSB (tabell 07459), metadata-drevet spørring."""
+    dest = RAW_DIR / "ssb_befolkning.json"
     if dest.exists() and not force:
         logger.info(f"  CACHE HIT: {dest.name}")
         return dest
 
-    payload = {
-        "query": [
-            {"code": "Region", "selection": {"filter": "item", "values": ["0"]}},
-            {"code": "Kjonn", "selection": {"filter": "item", "values": ["0"]}},
-            {"code": "Alder", "selection": {"filter": "item", "values": ["000"]}},
-            {"code": "Tid", "selection": {"filter": "all", "values": ["*"]}},
-        ],
-        "response": {"format": "json-stat2"},
-    }
+    logger.info(f"  GET {SSB_TABLE_URL} (metadata)")
+    metadata = _get(SSB_TABLE_URL, timeout=60).json()
+    payload = _build_ssb_query(metadata)
 
-    logger.info(f"  POST {SSB_API}")
+    logger.info(f"  POST {SSB_TABLE_URL}")
     try:
         resp = requests.post(
-            SSB_API, json=payload, headers={**HEADERS, "Content-Type": "application/json"},
-            timeout=60
+            SSB_TABLE_URL, json=payload,
+            headers={**HEADERS, "Content-Type": "application/json"},
+            timeout=120,
         )
         resp.raise_for_status()
     except requests.exceptions.ConnectionError as e:
-        raise SystemExit(
-            f"\nFEIL: Kan ikke koble til SSB API ({SSB_API})\n{e}\n"
-            "ETL krever nettverkstilgang til data.ssb.no."
-        ) from e
+        raise KildeFeil(f"\nFEIL: Kan ikke koble til SSB API\n{e}") from e
     except requests.exceptions.HTTPError as e:
-        raise SystemExit(f"\nFEIL: HTTP {resp.status_code} fra SSB API\n{e}") from e
+        raise KildeFeil(
+            f"\nFEIL: HTTP {resp.status_code} fra SSB API.\n"
+            f"Spørring: {json.dumps(payload, ensure_ascii=False)}\n"
+            f"Svar: {resp.text[:500]}"
+        ) from e
 
     dest.write_bytes(resp.content)
     logger.info(f"  -> {dest.name}")
     return dest
 
 
-def inspect_file(path: Path, n_rows: int = 5) -> None:
-    """Skriv ut de første n radene av en fil – brukes for skjema-verifisering."""
-    import chardet
-
-    raw = path.read_bytes()[:4096]
-    detected = chardet.detect(raw)
-    encoding = detected.get("encoding", "utf-8") or "utf-8"
-
-    print(f"\n=== {path.name} ===")
-    print(f"Encoding (detektert): {encoding} (confidence={detected.get('confidence'):.0%})")
-    print(f"Størrelse: {path.stat().st_size // 1024} KB")
-
-    with open(path, encoding=encoding, errors="replace") as f:
-        for i, line in enumerate(f):
-            print(line.rstrip())
-            if i >= n_rows:
-                break
-
-
-def download_all(years=None, force: bool = False, inspect: bool = False) -> dict:
-    """Last ned alle kildefiler. Returnerer {navn: Path}."""
+def download_all(years=None, force: bool = False) -> dict:
+    """Last ned alle kildefiler. Returnerer {nøkkel: Path eller [Path]}."""
     if years is None:
         years = YEARS
 
     files = {}
 
+    logger.info("--- Laster ned kolonnebeskrivelser ---")
+    files["beskrivelser"] = download_kolonnebeskrivelser(force=force)
+
     logger.info("--- Laster ned regnskapsdata ---")
     for year in years:
         try:
-            p = download_regnskap(year, force=force)
-            files[f"regnskap_{year}"] = p
-            if inspect:
-                inspect_file(p)
-        except SystemExit as e:
-            # Manglende fremtidige år er OK – logg og fortsett
-            if year >= 2025:
+            files[f"regnskap_{year}"] = download_regnskap(year, force=force)
+        except KildeFeil as e:
+            # Manglende fremtidige/pågående år er OK – logg og fortsett
+            if year >= max(years) - 1:
                 logger.warning(f"  Hopper over {year}: {e}")
             else:
                 raise
 
     logger.info("--- Laster ned bevilgningshistorikk ---")
     files["bevilgning"] = download_bevilgning(force=force)
-    if inspect:
-        inspect_file(files["bevilgning"])
 
     logger.info("--- Laster ned befolkning fra SSB ---")
     files["befolkning"] = download_befolkning(force=force)
-    if inspect:
-        inspect_file(files["befolkning"])
 
     return files
 
@@ -172,9 +229,8 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     parser = argparse.ArgumentParser()
-    parser.add_argument("--force", action="store_true", help="Tving re-nedlasting")
-    parser.add_argument("--inspect", action="store_true", help="Skriv ut topplinjer av filene")
+    parser.add_argument("--force", action="store_true")
     parser.add_argument("--years", nargs="+", type=int, default=YEARS)
     args = parser.parse_args()
 
-    download_all(years=args.years, force=args.force, inspect=args.inspect)
+    download_all(years=args.years, force=args.force)
