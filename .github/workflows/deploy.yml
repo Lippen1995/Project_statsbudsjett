@@ -30,6 +30,11 @@ jobs:
         with:
           ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || github.ref }}
 
+      - name: Konfigurer GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
       - name: Sett opp Node
         uses: actions/setup-node@v4
         with:
