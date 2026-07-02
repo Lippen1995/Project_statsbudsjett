@@ -4,6 +4,10 @@ on:
   workflow_dispatch:        # Manuell kjøring fra Actions-fanen
   schedule:
     - cron: '0 6 5 * *'     # Den 5. hver måned kl 06:00 UTC (DFØ oppdaterer månedlig)
+  push:
+    paths:
+      - '.github/workflows/etl.yml'
+      - 'etl/**'
 
 permissions:
   contents: write
