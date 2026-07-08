@@ -6,6 +6,14 @@ Webapplikasjon som visualiserer det norske statsbudsjettet og -regnskapet med ek
 
 ## Funksjonalitet
 
+To visninger deler samme datagrunnlag:
+
+- **Forklart** – klarspråklig inngang for folk flest. Hele budsjettet regnet om
+  til kroner per innbygger, med plain-tekst-forklaring av hva hvert område
+  betaler for og hvor pengene kommer fra, samt hva som økte og ble kuttet mest
+  mot året før. Klikk på et område for å hoppe rett inn i analyseverktøyet.
+- **Utforsk** – analyseverktøyet med full drilldown og alle detaljer:
+
 - Brutto inntekter og utgifter per år (2014→siste regnskapsår)
 - Klikkbart hierarki: departement → kapittel → post
 - Historikkgraf med regnskap, saldert budsjett og prognose-forlengelse

@@ -4,6 +4,7 @@ import {
   lesHashTilstand, skrivHashTilstand, finnStiFraIds,
 } from './lib/data'
 import Toppkontroll from './components/Toppkontroll'
+import Forklart from './components/Forklart'
 import BalanseTopp from './components/BalanseTopp'
 import Drilldown from './components/Drilldown'
 import Historikkgraf from './components/Historikkgraf'
@@ -16,6 +17,7 @@ import './App.css'
 export default function App() {
   const [data, setData] = useState(null)
   const [feil, setFeil] = useState(null)
+  const [view, setView] = useState('forklart')   // 'forklart' | 'utforsk'
   const [side, setSide] = useState('utgifter')
   const [valgtAar, setValgtAar] = useState(null)
   const [modus, setModus] = useState('lopende')
@@ -33,6 +35,7 @@ export default function App() {
         setData(d)
         const hash = lesHashTilstand()
         const hierarki = hash?.side === 'inntekter' ? d.inntekter : d.utgifter
+        if (hash) setView('utforsk')   // delt lenke → åpne analyseverktøyet direkte
         if (hash?.side) setSide(hash.side)
         setValgtAar(hash?.aar ?? d.meta.siste_regnskap_aar)
         if (hash?.modus && MODUSER.some(m => m.id === hash.modus)) setModus(hash.modus)
@@ -46,11 +49,11 @@ export default function App() {
       .catch(e => setFeil(e.message))
   }, [])
 
-  // --- Synk tilstand → URL-hash (delbare lenker) ---
+  // --- Synk tilstand → URL-hash (delbare lenker, kun i analysevisning) ---
   useEffect(() => {
-    if (!data || !valgtAar) return
+    if (!data || !valgtAar || view !== 'utforsk') return
     skrivHashTilstand({ side, aar: valgtAar, modus, skjulFin, sti })
-  }, [data, side, valgtAar, modus, skjulFin, sti])
+  }, [data, view, side, valgtAar, modus, skjulFin, sti])
 
   // --- Lazy-last detaljer (artskonto/virksomheter) når fokus er en post ---
   useEffect(() => {
@@ -84,6 +87,24 @@ export default function App() {
   const handleNaviger = useCallback((stiNoder) => {
     setSti(stiNoder)
     setFokusNode(stiNoder[stiNoder.length - 1] ?? null)
+  }, [])
+
+  // Åpne analyseverktøyet fra «Forklart», eventuelt drillet inn på en node
+  const aapneUtforsk = useCallback((nySide, stiNoder = []) => {
+    setSide(nySide)
+    setSti(stiNoder)
+    setFokusNode(stiNoder[stiNoder.length - 1] ?? null)
+    setPinnedNode(null)
+    setSkjulFin(true)
+    setView('utforsk')
+    window.scrollTo({ top: 0 })
+  }, [])
+
+  const byttView = useCallback((nyView) => {
+    setView(nyView)
+    if (nyView === 'forklart' && window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search)
+    }
   }, [])
 
   if (feil) return (
@@ -122,23 +143,37 @@ export default function App() {
               </p>
             </div>
           </div>
-          <Toppkontroll
-            side={side}
-            setSide={s => { setSide(s); setSti([]); setFokusNode(null); setPinnedNode(null) }}
-            valgtAar={valgtAar}
-            setValgtAar={setValgtAar}
-            aarMin={meta.regnskap_aar[0]}
-            aarMax={meta.siste_budsjett_aar}
-            modus={modus}
-            setModus={setModus}
-            moduser={tilgjengeligeModuser}
-            skjulFin={skjulFin}
-            setSkjulFin={setSkjulFin}
-          />
+          <div className="view-tabs" role="tablist" aria-label="Visning">
+            <button role="tab" aria-selected={view === 'forklart'}
+              className={`view-tab ${view === 'forklart' ? 'aktiv' : ''}`}
+              onClick={() => byttView('forklart')}>Forklart</button>
+            <button role="tab" aria-selected={view === 'utforsk'}
+              className={`view-tab ${view === 'utforsk' ? 'aktiv' : ''}`}
+              onClick={() => byttView('utforsk')}>Utforsk</button>
+          </div>
+          {view === 'utforsk' && (
+            <Toppkontroll
+              side={side}
+              setSide={s => { setSide(s); setSti([]); setFokusNode(null); setPinnedNode(null) }}
+              valgtAar={valgtAar}
+              setValgtAar={setValgtAar}
+              aarMin={meta.regnskap_aar[0]}
+              aarMax={meta.siste_budsjett_aar}
+              modus={modus}
+              setModus={setModus}
+              moduser={tilgjengeligeModuser}
+              skjulFin={skjulFin}
+              setSkjulFin={setSkjulFin}
+            />
+          )}
         </div>
       </header>
 
       <main className="app-main">
+        {view === 'forklart' ? (
+          <Forklart data={data} onAapneUtforsk={aapneUtforsk} />
+        ) : (
+        <>
         <BalanseTopp
           utgifter={data.utgifter}
           inntekter={data.inntekter}
@@ -192,6 +227,8 @@ export default function App() {
         </div>
 
         <Stortinget politikk={data.politikk} />
+        </>
+        )}
       </main>
 
       <Footer meta={meta} onVisOmTallene={() => setVisOmTallene(true)} />
