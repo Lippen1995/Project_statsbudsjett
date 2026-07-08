@@ -1,0 +1,14 @@
+{
+  "_comment": "Mapping fra historiske kommunenummer til stabilt (nåværende) nummer, slik at tidsserier er sammenhengende over kommunereformen 2020. Format: {gammelt_nr: {\"ny\": nytt_nr, \"navn\": nytt_navn}}. KOSTRA rapporterer hvert år med det årets kommunenummer; ved sammenslåing summeres beløpene på det nye nummeret i ETL (etl/kostra.py). Ukjente numre beholdes uendret.",
+  "_status": "INKOMPLETT – kun et utvalg entydige, veldokumenterte 2020-sammenslåinger. MÅ kompletteres mot SSB klassifikasjon 131 (Standard for kommuneinndeling) før KOSTRA-tidsserier på tvers av reformen presenteres som fullstendige. Kilde: https://www.ssb.no/klass/klassifikasjoner/131",
+
+  "1601": {"ny": "5001", "navn": "Trondheim"},
+  "1662": {"ny": "5001", "navn": "Trondheim"},
+
+  "1001": {"ny": "4204", "navn": "Kristiansand"},
+  "1017": {"ny": "4204", "navn": "Kristiansand"},
+  "1018": {"ny": "4204", "navn": "Kristiansand"},
+
+  "1141": {"ny": "1103", "navn": "Stavanger"},
+  "1142": {"ny": "1103", "navn": "Stavanger"}
+}

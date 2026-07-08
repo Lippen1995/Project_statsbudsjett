@@ -9,6 +9,7 @@ import Drilldown from './components/Drilldown'
 import Historikkgraf from './components/Historikkgraf'
 import Virksomheter from './components/Virksomheter'
 import Stortinget from './components/Stortinget'
+import Kostra from './components/Kostra'
 import OmTallene from './components/OmTallene'
 import Footer from './components/Footer'
 import './App.css'
@@ -192,6 +193,8 @@ export default function App() {
         </div>
 
         <Stortinget politikk={data.politikk} />
+
+        <Kostra kostra={data.kostra} />
       </main>
 
       <Footer meta={meta} onVisOmTallene={() => setVisOmTallene(true)} />

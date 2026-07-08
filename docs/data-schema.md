@@ -261,3 +261,78 @@ publiseres uten partifordeling (aldri gjettet).
 |-----|---------|
 | `politikk.json` | Budsjettsaker per sesjon, med nøkkelvoteringer og partifordeling (for/mot) |
 | `detaljer/votering-{id}.json` | Representantnivå per votering (lazy-lastet) |
+
+---
+
+## 7. KOSTRA – kommunale og fylkeskommunale regnskapstall (data.ssb.no)
+
+**Status: PROBET 2026-07-08 (via GitHub Actions) – SSB var nede.**
+v2-beta tabellsøk svarte `503 Service Unavailable`; v0-metadata for alle
+kandidat-tabeller svarte `400 Bad Request` / timeout. Dette er samme SSB-utfall
+som gjør at KPI/BNP hoppes over i denne perioden – ikke et KOSTRA-spesifikt
+problem. **Skjemaet under er derfor IKKE endelig verifisert mot live metadata.**
+
+ETL-en (`etl/kostra.py`) er bygget **metadata-drevet og selv-validerende**: den
+leser tabellens faktiske variabler ved kjøretid, klassifiserer dimensjonene på
+tekst/kode, bygger spørringen dynamisk, og **feiler høyt (skip via `_valgfri`)
+hvis SSB er nede eller skjemaet ikke gjenkjennes**. Ingen verdikoder er
+hardkodet, og ingen tall fabrikkeres. Når SSB svarer igjen henter den
+månedlige ETL-en (`etl.yml`) KOSTRA automatisk. Re-kjør
+`.github/workflows/debug-kilder.yml` (nå med 07459-kontroll + v2-fallback) for
+å bekrefte tabell-ID og dimensjonskoder og fylle inn tabellen under.
+
+### Datamodell
+
+Samme form som statsregnskapet: **enhet → funksjon → beløp over år** (art er en
+kryssdimensjon som aggregeres bort i hovedtabellen; kan legges til per enhet
+senere, jf. `KOSTRA_DRIFT_KANDIDATER`).
+
+### Kandidat-tabeller (TIL BEKREFTELSE)
+
+`etl/kostra.py` prøver disse i rekkefølge og bruker den første som gir gyldig
+KOSTRA-formet metadata (region + funksjon + Tid):
+
+```
+12134  Detaljerte regnskapstall, driftsregnskapet (kommune) – etter region/funksjon/art
+12167  (kandidat) kommunekonsern, drift
+13924  (kandidat)
+```
+
+### Dimensjoner (forventet – klassifiseres på tekst/kode i ETL)
+
+| Rolle | Gjenkjennes på | Typisk SSB-kode | Behandling i ETL |
+|-------|----------------|-----------------|------------------|
+| region | tekst/kode `region\|kommun\|fylke` | `Region` / `KOKkommuneregion0000` | `filter: all` – alle enheter |
+| funksjon | tekst/kode `funksjon` | `KOKfunksjon0000` | `filter: all` – tjenesteområder |
+| art | tekst/kode `art` | `KOKart0000` | utelates (aggregeres) i hovedtabell |
+| contents | kode `ContentsCode` | `ContentsCode` | velger regnskapsbeløp i kr (ikke per innbygger/%) |
+| tid | kode `Tid` | `Tid` | `filter: all` |
+| øvrige | – | – | elimineres hvis mulig, ellers første verdi |
+
+**Enhet (Region-verdi) klassifiseres** som `land` / `fylke` / `kommune` /
+`gruppe` på kode-mønster + etikett (`_klassifiser_enhet`). Kommunenummer
+normaliseres til stabile ID-er over 2020-reformen via
+`etl/mappings/kommune_mapping.json` (per nå et **inkomplett** utvalg entydige
+sammenslåinger – må kompletteres mot SSB klass/131).
+
+**Enhet:** KOSTRA oppgir vanligvis beløp i **1000 kr**. ETL leser enheten fra
+ContentsCode-teksten og konverterer til **mill. kr** (`_velg_contents`:
+«1000 kr» → faktor 1e-3, ellers kr → 1e-6).
+
+### Reconciliation / sanity (`kostra.sanity_kostra`)
+
+1. Enhetens totalserie må være lik summen av funksjonene (byggekonsistens) —
+   ellers `KildeFeil` (ingen output).
+2. Finnes en `land`-enhet: totalen sammenlignes mot summen av kommune-enhetene
+   per år; avvik logges som advarsel (scope/aggregering kan variere) — felles
+   ikke pipelinen.
+
+### Output
+
+| Fil | Innhold |
+|-----|---------|
+| `kostra.json` | `{tabell, aar:[…], enheter:[…]}`. Hver enhet: `{id:"kostra-{nr}", navn, type:"kommune\|fylke\|land\|gruppe", niva:"enhet", serier:{år:{regnskap}}, children:[funksjonsnoder]}`. Funksjonsnode: `{id:"kostra-{nr}-f{funk}", navn, tag:"Funksjon {kode}", niva:"funksjon", serier:{år:{regnskap}}}`. Beløp i **mill. kr**. |
+
+Frontend (`web/src/components/Kostra.jsx`) lastes valgfritt via
+`lib/data.js` (`loadAll` → `kostra`); seksjonen skjules helt hvis `kostra.json`
+mangler.

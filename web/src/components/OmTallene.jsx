@@ -76,6 +76,16 @@ export default function OmTallene({ onLukk, meta }) {
             kontoplan – lønn, kjøp av varer og tjenester, investeringer, overføringer osv.
           </p>
 
+          <h3>Kommune- og fylkesregnskap (KOSTRA)</h3>
+          <p>
+            KOSTRA-seksjonen viser kommunenes og fylkeskommunenes driftsutgifter fordelt på
+            funksjon (tjenesteområde – skole, helse, omsorg osv.), hentet fra <a
+            href="https://www.ssb.no/offentlig-sektor/kostra" target="_blank"
+            rel="noopener noreferrer">SSB KOSTRA</a>. Tall for kommuner som ble slått sammen i
+            2020 summeres på det nye kommunenummeret, slik at tidsserier henger sammen.
+            Seksjonen vises kun når KOSTRA-data er tilgjengelig fra SSB.
+          </p>
+
           <h3>Nettobudsjetterte virksomheter</h3>
           <p>
             Universiteter, høyskoler og enkelte andre virksomheter rapporterer kostnader på

@@ -12,6 +12,8 @@ Webapplikasjon som visualiserer det norske statsbudsjettet og -regnskapet med ek
 - Artskonto-pivot (lønn, kjøp, overføringer, investeringer …)
 - Per-innbygger-skalering (SSB folkemengde)
 - Filter for finanstransaksjoner og SPU-overføringer
+- Stortingets budsjettbehandling (voteringer per parti)
+- **KOSTRA**: kommune-/fylkesregnskap fordelt på funksjon (tjenesteområde), per enhet og år (valgfritt – vises når SSB-data er hentet)
 
 ## Forutsetninger
 
@@ -58,10 +60,12 @@ Project_statsbudsjett/
 │   ├── parse_regnskap.py    Parser for regnskapsdata-CSV
 │   ├── parse_bevilgning.py  Parser for bevilgningshistorikk-CSV
 │   ├── parse_befolkning.py  Parser for SSB JSON-stat2
+│   ├── stortinget.py        Stortingets budsjettbehandling (data.stortinget.no)
+│   ├── kostra.py            KOSTRA kommune/fylke (SSB, metadata-drevet, valgfritt)
 │   ├── build_hierarchy.py   Bygger JSON-hierarkier
 │   ├── requirements.txt
 │   ├── raw/                 Nedlastede råfiler (gitignored)
-│   ├── mappings/            Departementsaliaser mv.
+│   ├── mappings/            Departementsaliaser + kommune_mapping.json (2020-reformen)
 │   └── tests/               Enhetstester
 ├── web/                     Frontend (Vite + React + Recharts)
 │   ├── src/
@@ -75,15 +79,22 @@ Project_statsbudsjett/
 
 ## Videre arbeid
 
-Neste datadimensjon er **KOSTRA (kommune-/fylkesregnskap)**. Se
-[`docs/ROADMAP-KOSTRA.md`](docs/ROADMAP-KOSTRA.md) for plan og metodikk.
+**KOSTRA (kommune-/fylkesregnskap)** er lagt til som valgfri datadimensjon
+(`etl/kostra.py` + `web/src/components/Kostra.jsx`). ETL-en er metadata-drevet
+og henter KOSTRA automatisk når SSBs API svarer; se
+[`docs/ROADMAP-KOSTRA.md`](docs/ROADMAP-KOSTRA.md) og
+[`docs/data-schema.md`](docs/data-schema.md) §7. Gjenstår: bekrefte tabell-ID/
+dimensjonskoder mot live SSB-metadata (SSB var nede ved bygging), komplettere
+kommune-mappingen, og evt. legge til art-nivå + per-innbygger-sammenligning.
 
 ## Datakilder
 
 | Kilde | Lisens |
 |-------|--------|
 | [DFØ Statsregnskapet](https://statsregnskapet.dfo.no) | NLOD |
-| [SSB Folkemengde](https://www.ssb.no/befolkning) | CC BY 4.0 |
+| [SSB Folkemengde, KPI, nasjonalregnskap](https://www.ssb.no) | CC BY 4.0 |
+| [SSB KOSTRA](https://www.ssb.no/offentlig-sektor/kostra) | CC BY 4.0 |
+| [Stortinget (data.stortinget.no)](https://data.stortinget.no) | NLOD |
 
 ## Datafallgruver
 

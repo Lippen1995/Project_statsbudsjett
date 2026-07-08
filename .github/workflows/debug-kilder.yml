@@ -59,9 +59,24 @@ jobs:
               with urllib.request.urlopen(req, timeout=60) as r:
                   return r.status, r.read()
 
-          # Sterke kandidater for «enhet → funksjon → art → beløp over år».
-          # Vi PRØVER dem — de som ikke finnes gir HTTP-feil som logges.
+          def dump_metadata(md):
+              print("TITTEL:", md.get("title",""))
+              for v in md.get("variables", []):
+                  code = v.get("code"); text = v.get("text","")
+                  elim = v.get("elimination", False)
+                  vals = v.get("values", []); txts = v.get("valueTexts", [])
+                  print(f"\n  VAR {code!r} ({text}) elimination={elim} n={len(vals)}")
+                  for val, t in list(zip(vals, txts))[:12]:
+                      print(f"      {val!r} = {t}")
+                  if len(vals) > 12:
+                      print(f"      … ({len(vals)-12} flere)")
+
+          # 07459 (folkemengde) er KONTROLL: den fungerer normalt. Svarer den
+          # 200 mens KOSTRA-tabellene feiler, er det tabell-ID-ene som er feil.
+          # Svarer ALLE feil, er SSB nede (da hopper ETL over KOSTRA og henter
+          # seg inn automatisk senere).
           kandidater = [
+              "07459",  # KONTROLL – folkemengde (kjent fungerende)
               "12134",  # Detaljerte regnskapstall driftsregnskapet (kommune)
               "12135",  # Detaljerte regnskapstall investeringsregnskapet (kommune)
               "12167",  # drift, kommunekonsern (?)
@@ -72,23 +87,35 @@ jobs:
           ]
           for tid in kandidater:
               url = f"https://data.ssb.no/api/v0/no/table/{tid}"
-              print(f"\n{'='*70}\n=== TABELL {tid} ===\n{url}")
+              print(f"\n{'='*70}\n=== TABELL {tid} (v0) ===\n{url}")
+              ok = False
               try:
                   status, body = hent(url)
                   print("HTTP", status)
-                  if status != 200:
-                      print(body[:400].decode("utf-8","replace")); continue
-                  md = json.loads(body)
-                  print("TITTEL:", md.get("title",""))
-                  for v in md.get("variables", []):
-                      code = v.get("code"); text = v.get("text","")
-                      elim = v.get("elimination", False)
-                      vals = v.get("values", []); txts = v.get("valueTexts", [])
-                      print(f"\n  VAR {code!r} ({text}) elimination={elim} n={len(vals)}")
-                      for val, t in list(zip(vals, txts))[:12]:
-                          print(f"      {val!r} = {t}")
-                      if len(vals) > 12:
-                          print(f"      … ({len(vals)-12} flere)")
+                  if status == 200:
+                      dump_metadata(json.loads(body)); ok = True
+                  else:
+                      print(body[:400].decode("utf-8","replace"))
+              except Exception as e:
+                  print("FEIL:", type(e).__name__, e)
+              if ok:
+                  continue
+              # Fallback: PxWebApi v2-beta metadata (SSB migrerer mellom versjonene)
+              v2 = (f"https://data.ssb.no/api/pxwebapi/v2-beta/tables/{tid}/metadata"
+                    "?lang=no&outputFormat=json-px")
+              print(f"--- {tid} (v2-beta) ---\n{v2}")
+              try:
+                  status, body = hent(v2)
+                  print("HTTP", status)
+                  if status == 200:
+                      md = json.loads(body)
+                      # json-px legger variabler under 'variables'; ellers dump nøkler
+                      if md.get("variables"):
+                          dump_metadata(md)
+                      else:
+                          print("nøkler:", list(md.keys())[:20])
+                  else:
+                      print(body[:400].decode("utf-8","replace"))
               except Exception as e:
                   print("FEIL:", type(e).__name__, e)
           PY

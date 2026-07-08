@@ -24,6 +24,7 @@ from parse_bevilgning import parse_bevilgning
 from parse_befolkning import parse_befolkning, parse_ssb_aarsserie
 from build_hierarchy import build_hierarchies, _save_json
 import stortinget
+import kostra
 
 OUTPUT_DIR = Path(__file__).parent.parent / "web" / "public" / "data"
 RAW_DIR = Path(__file__).parent / "raw"
@@ -147,6 +148,17 @@ def run(years=None, force=False):
     logger.info("\nSTEG 6b: Stortingets budsjettbehandling")
     politikk = _valgfri(
         lambda: _bygg_politikk(force=force), "Politikk (Stortinget)", kilde="Stortinget")
+
+    # 6c. KOSTRA (kommunale/fylkeskommunale regnskapstall, data.ssb.no).
+    # TILLEGGSDATA — kommune-dimensjonen ved siden av statsregnskapet. Hvis
+    # SSBs KOSTRA-API er nede/endret (vi har sett v0 400 og v2-beta 503) hopper
+    # vi over (frontend skjuler seksjonen) og henter oss inn automatisk neste
+    # kjøring. Metadata-drevet — fabrikkerer aldri tall.
+    logger.info("\nSTEG 6c: KOSTRA (kommune/fylke) fra SSB")
+    kostra_data = _valgfri(
+        lambda: kostra.bygg_kostra(OUTPUT_DIR, force=force), "KOSTRA", kilde="SSB")
+    if not kostra_data:
+        logger.warning("  [ADVARSEL] Ingen KOSTRA-data — kommune-seksjon skjules i frontend")
 
     # 7. Skriv befolkning og meta
     logger.info("\nSTEG 7: Skriver støttefiler")

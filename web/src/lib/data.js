@@ -21,7 +21,7 @@ async function loadJSON(path, { optional = false } = {}) {
 }
 
 export async function loadAll() {
-  const [meta, utgifter, inntekter, befolkning, kpi, bnp, politikk] = await Promise.all([
+  const [meta, utgifter, inntekter, befolkning, kpi, bnp, politikk, kostra] = await Promise.all([
     loadJSON('./data/meta.json'),
     loadJSON('./data/utgifter.json'),
     loadJSON('./data/inntekter.json'),
@@ -29,8 +29,9 @@ export async function loadAll() {
     loadJSON('./data/kpi.json', { optional: true }),
     loadJSON('./data/bnp.json', { optional: true }),
     loadJSON('./data/politikk.json', { optional: true }),
+    loadJSON('./data/kostra.json', { optional: true }),
   ])
-  return { meta, utgifter, inntekter, befolkning, kpi, bnp, politikk }
+  return { meta, utgifter, inntekter, befolkning, kpi, bnp, politikk, kostra }
 }
 
 /** Lazy-last representantnivå for én votering (detaljer/votering-{id}.json) */
