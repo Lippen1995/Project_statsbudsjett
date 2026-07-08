@@ -36,10 +36,20 @@ def build_hierarchies(
     bevilgning_df: pd.DataFrame,
     years: list,
     output_dir: Path,
+    virk_frames: dict = None,   # {år: virk_df} fra parse_regnskap(med_virksomheter=True)
 ) -> None:
+    """
+    Skriver hovedtrærne (utgifter.json/inntekter.json, uten artskonto og
+    virksomheter — små, lastes ved oppstart) og detaljfiler per departement
+    (data/detaljer/{u|i}-{dept}.json — lazy-lastes ved drilldown).
+    """
     output_dir.mkdir(parents=True, exist_ok=True)
+    detalj_dir = output_dir / "detaljer"
+    detalj_dir.mkdir(exist_ok=True)
 
     all_regnskap = pd.concat(list(regnskap_frames.values()), ignore_index=True)
+    all_virk = (pd.concat(list(virk_frames.values()), ignore_index=True)
+                if virk_frames else None)
 
     regnskap_u = all_regnskap[all_regnskap["er_utgift"]]
     regnskap_i = all_regnskap[~all_regnskap["er_utgift"]]
@@ -48,18 +58,30 @@ def build_hierarchies(
     bevilgning_u = bevilgning_df[bevilgning_df["kap"] < "3000"]
     bevilgning_i = bevilgning_df[bevilgning_df["kap"] >= "3000"]
 
-    logger.info("Bygger utgiftshierarki...")
-    utgifter = _build_tree(regnskap_u, bevilgning_u, years, prefix="u")
-    _save_json(utgifter, output_dir / "utgifter.json")
+    for prefix, reg, bev in [("u", regnskap_u, bevilgning_u),
+                             ("i", regnskap_i, bevilgning_i)]:
+        navn = "utgifter" if prefix == "u" else "inntekter"
+        logger.info(f"Bygger {navn}shierarki...")
+        virk = None
+        if all_virk is not None:
+            virk = all_virk[all_virk["er_utgift"] == (prefix == "u")]
+        nodes, detaljer = _build_tree(reg, bev, years, prefix=prefix, virk=virk)
+        _save_json(nodes, output_dir / f"{navn}.json")
+        for dept, dept_detaljer in detaljer.items():
+            _save_json(dept_detaljer, detalj_dir / f"{prefix}-{dept}.json")
+        logger.info(f"  {len(detaljer)} detaljfiler skrevet til detaljer/")
 
-    logger.info("Bygger inntektshierarki...")
-    inntekter = _build_tree(regnskap_i, bevilgning_i, years, prefix="i")
-    _save_json(inntekter, output_dir / "inntekter.json")
+
+MAX_VIRKSOMHETER = 12   # per post/år; resten samles i «Øvrige»
 
 
 def _build_tree(regnskap: pd.DataFrame, bevilgning: pd.DataFrame,
-                years: list, prefix: str) -> list:
-    """Bygg liste av departement-noder etter BudsjettNode-skjemaet."""
+                years: list, prefix: str, virk: pd.DataFrame = None):
+    """
+    Bygg liste av departement-noder etter BudsjettNode-skjemaet.
+    Returnerer (nodes, detaljer) der detaljer =
+    {dept_kode: {post_node_id: {"artskonto": {...}, "virksomheter": {...}}}}.
+    """
 
     # --- Aggreger regnskap til post-nivå ---
     grp = (
@@ -245,13 +267,41 @@ def _build_tree(regnskap: pd.DataFrame, bevilgning: pd.DataFrame,
     if ak_uten_post:
         logger.warning(f"  [ADVARSEL] {ak_uten_post} artskontorader uten matchende post — logget, ignorert")
 
-    # --- Serialiser ---
+    # --- Virksomheter på post-nivå (topp N + «Øvrige» per år) ---
+    if virk is not None and len(virk):
+        virk_grp = (
+            virk.groupby(["aar", "kap", "post", "virk_id", "virk_navn"], dropna=False)
+            ["belop_mill"].sum().reset_index()
+        )
+        for (aar, kap, post), gruppe in virk_grp.groupby(["aar", "kap", "post"]):
+            node = post_index.get((str(kap), str(post)))
+            if node is None:
+                continue
+            gruppe = gruppe.reindex(
+                gruppe["belop_mill"].abs().sort_values(ascending=False).index
+            )
+            topp = gruppe.head(MAX_VIRKSOMHETER)
+            rest = gruppe["belop_mill"].iloc[MAX_VIRKSOMHETER:].sum()
+            v = {}
+            for r in topp.itertuples(index=False):
+                belop = round(float(r.belop_mill), 1)
+                if belop == 0:
+                    continue
+                v[str(r.virk_id)] = {"navn": str(r.virk_navn), "belop": belop}
+            if abs(rest) >= 0.05:
+                v["_ovrige"] = {"navn": f"Øvrige ({len(gruppe) - len(topp)} virksomheter)",
+                                "belop": round(float(rest), 1)}
+            if v:
+                node.setdefault("virksomheter", defaultdict(dict))[int(aar)] = v
+
+    # --- Serialiser: hovedtre uten artskonto/virksomheter (de går i detaljfiler) ---
     sorterings_aar = max(years)
+    detaljer: dict[str, dict] = {}   # dept_kode -> {post_id: {artskonto, virksomheter}}
 
     def _sort_key(n):
         return n.get("serier", {}).get(str(sorterings_aar), {}).get("regnskap") or 0
 
-    def _ser(node: dict) -> dict:
+    def _ser(node: dict, dept_kode: str) -> dict:
         out = {
             "id": node["id"],
             "navn": node["navn"],
@@ -267,20 +317,33 @@ def _build_tree(regnskap: pd.DataFrame, bevilgning: pd.DataFrame,
             out["fin"] = True
         if node.get("transfer"):
             out["transfer"] = True
+
+        detalj = {}
         if node.get("artskonto"):
-            out["artskonto"] = {
+            detalj["artskonto"] = {
                 str(a): v for a, v in sorted(node["artskonto"].items()) if v
             }
+        if node.get("virksomheter"):
+            detalj["virksomheter"] = {
+                str(a): v for a, v in sorted(node["virksomheter"].items()) if v
+            }
+        if detalj:
+            detaljer.setdefault(dept_kode, {})[node["id"]] = detalj
+            out["harDetaljer"] = True
+
         if node.get("children_map"):
             out["children"] = sorted(
-                (_ser(c) for c in node["children_map"].values()),
+                (_ser(c, dept_kode) for c in node["children_map"].values()),
                 key=_sort_key, reverse=True,
             )
         return out
 
-    nodes = sorted((_ser(n) for n in tree.values()), key=_sort_key, reverse=True)
+    nodes = sorted(
+        (_ser(n, dept) for dept, n in tree.items()),
+        key=_sort_key, reverse=True,
+    )
     logger.info(f"  -> {len(nodes)} departementer")
-    return nodes
+    return nodes, detaljer
 
 
 def _save_json(data: Any, path: Path) -> None:

@@ -93,3 +93,5 @@
   color: var(--text-faint);
   margin-top: 12px;
 }
+
+.modus-note { margin-left: 8px; color: var(--gold); }

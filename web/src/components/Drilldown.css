@@ -60,6 +60,23 @@
   letter-spacing: 0.05em;
 }
 
+.topprad-hoyre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ikon-knapp {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  color: var(--text-muted);
+}
+.ikon-knapp:hover { color: var(--text); border-color: #aaa; }
+
 .soke-input {
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -70,6 +87,16 @@
   color: var(--text);
 }
 .soke-input:focus { outline: 2px solid var(--focus); border-color: transparent; }
+
+.rad-sti {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .drilldown-liste {
   overflow-y: auto;

@@ -161,6 +161,103 @@ def _build_ssb_query(metadata: dict) -> dict:
     return {"query": query, "response": {"format": "json-stat2"}}
 
 
+def _download_ssb_tabell(tabell_id: str, dest: Path, *,
+                         contents_hint: str = None,
+                         var_hints: dict = None,
+                         force: bool = False) -> Path:
+    """
+    Generisk SSB-nedlaster: bygger spørring fra tabellens metadata.
+    - Tid: alle verdier
+    - ContentsCode: verdi hvis tekst matcher contents_hint, ellers første
+    - Andre variabler: verdi hvis tekst matcher var_hints[kode], ellers
+      utelatt (elimination=true) eller første verdi
+    Feiler høyt med metadata i loggen hvis spørringen avvises.
+    """
+    if dest.exists() and not force:
+        logger.info(f"  CACHE HIT: {dest.name}")
+        return dest
+
+    url = f"https://data.ssb.no/api/v0/no/table/{tabell_id}"
+    logger.info(f"  GET {url} (metadata)")
+    metadata = _get(url, timeout=60).json()
+
+    query = []
+    for var in metadata["variables"]:
+        code = var["code"]
+        if code == "Tid":
+            query.append({"code": "Tid", "selection": {"filter": "all", "values": ["*"]}})
+            continue
+        hint = (contents_hint if code == "ContentsCode"
+                else (var_hints or {}).get(code))
+        if hint:
+            treff = [v for v, t in zip(var["values"], var["valueTexts"])
+                     if hint.lower() in t.lower()]
+            valgt = treff[0] if treff else var["values"][0]
+            query.append({"code": code, "selection": {"filter": "item", "values": [valgt]}})
+            logger.info(f"    {code}: '{valgt}' (hint: '{hint}', treff: {len(treff)})")
+        elif var.get("elimination", False):
+            continue
+        else:
+            query.append({"code": code, "selection": {"filter": "item", "values": [var["values"][0]]}})
+            logger.info(f"    {code}: første verdi '{var['values'][0]}' ({var['valueTexts'][0]})")
+
+    payload = {"query": query, "response": {"format": "json-stat2"}}
+    logger.info(f"  POST {url}")
+    resp = requests.post(url, json=payload,
+                         headers={**HEADERS, "Content-Type": "application/json"},
+                         timeout=120)
+    if resp.status_code != 200:
+        variabler = [
+            f"{v['code']} (elim={v.get('elimination')}): {v['valueTexts'][:5]}"
+            for v in metadata["variables"]
+        ]
+        raise KildeFeil(
+            f"\nFEIL: HTTP {resp.status_code} fra SSB tabell {tabell_id}.\n"
+            f"Spørring: {json.dumps(payload, ensure_ascii=False)}\n"
+            f"Tilgjengelige variabler:\n  " + "\n  ".join(variabler) + "\n"
+            f"Svar: {resp.text[:400]}"
+        )
+
+    dest.write_bytes(resp.content)
+    logger.info(f"  -> {dest.name}")
+    return dest
+
+
+def download_kpi(force: bool = False) -> Path:
+    """
+    KPI totalindeks per år. Prøver årsgjennomsnitt-tabellen først,
+    faller tilbake på månedstabellen 03013 (parseren snitter månedene).
+    """
+    dest = _cache_json("ssb_kpi.json")
+    feil = []
+    for tabell in ["08981", "03013"]:
+        try:
+            return _download_ssb_tabell(
+                tabell, dest,
+                contents_hint="konsumprisindeks",
+                var_hints={"Konsumgrp": "totalindeks", "VareTjenestegruppe": "totalindeks"},
+                force=force,
+            )
+        except KildeFeil as e:
+            feil.append(f"tabell {tabell}: {e}")
+            logger.warning(f"  KPI-tabell {tabell} feilet — prøver neste")
+    raise KildeFeil("\nFEIL: Ingen KPI-tabell fungerte:\n" + "\n---\n".join(feil))
+
+
+def download_bnp(force: bool = False) -> Path:
+    """BNP i løpende priser per år (nasjonalregnskapet, tabell 09189)."""
+    return _download_ssb_tabell(
+        "09189", _cache_json("ssb_bnp.json"),
+        contents_hint="løpende priser",
+        var_hints={"Makrost": "bruttonasjonalprodukt"},
+        force=force,
+    )
+
+
+def _cache_json(name: str) -> Path:
+    return RAW_DIR / name
+
+
 def download_befolkning(force: bool = False) -> Path:
     """Hent folkemengde per år fra SSB (tabell 07459), metadata-drevet spørring."""
     dest = RAW_DIR / "ssb_befolkning.json"

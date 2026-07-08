@@ -5,7 +5,7 @@ export default function Toppkontroll({
   side, setSide,
   valgtAar, setValgtAar,
   aarMin, aarMax,
-  perPerson, setPerPerson,
+  modus, setModus, moduser,
   skjulFin, setSkjulFin,
 }) {
   return (
@@ -46,13 +46,20 @@ export default function Toppkontroll({
         </div>
       </div>
 
+      <div className="kontroll-gruppe modusvelger" role="group" aria-label="Visningsmodus">
+        {moduser.map(m => (
+          <button
+            key={m.id}
+            className={`modus-knapp ${modus === m.id ? 'aktiv' : ''}`}
+            onClick={() => setModus(m.id)}
+            aria-pressed={modus === m.id}
+          >
+            {m.label}
+          </button>
+        ))}
+      </div>
+
       <div className="kontroll-gruppe toggles">
-        <Toggle
-          id="per-person"
-          label="Per innbygger"
-          checked={perPerson}
-          onChange={setPerPerson}
-        />
         <Toggle
           id="skjul-fin"
           label="Skjul finanstransaksjoner"

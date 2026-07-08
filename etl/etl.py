@@ -18,10 +18,10 @@ from pathlib import Path
 # Legg til etl/ i import-path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from download import download_all, YEARS
+from download import download_all, download_kpi, download_bnp, YEARS
 from parse_regnskap import parse_regnskap
 from parse_bevilgning import parse_bevilgning
-from parse_befolkning import parse_befolkning
+from parse_befolkning import parse_befolkning, parse_ssb_aarsserie
 from build_hierarchy import build_hierarchies, _save_json
 
 OUTPUT_DIR = Path(__file__).parent.parent / "web" / "public" / "data"
@@ -52,14 +52,22 @@ def run(years=None, force=False):
     logger.info("STEG 1: Nedlasting")
     files = download_all(years=years, force=force)
 
+    # 1b. KPI og BNP fra SSB (for faste kroner og %-av-BNP)
+    logger.info("\nSTEG 1b: KPI og BNP fra SSB")
+    kpi_path = download_kpi(force=force)
+    bnp_path = download_bnp(force=force)
+
     # 2. Parse regnskap
     logger.info("\nSTEG 2: Parser regnskapsdata")
     regnskap_frames = {}
+    virk_frames = {}
     for year in years:
         key = f"regnskap_{year}"
         if key in files:
             try:
-                regnskap_frames[year] = parse_regnskap(files[key], year)
+                grp, virk = parse_regnskap(files[key], year, med_virksomheter=True)
+                regnskap_frames[year] = grp
+                virk_frames[year] = virk
             except Exception as e:
                 if year >= 2025:
                     logger.warning(f"  Hopper over {year}: {e}")
@@ -73,21 +81,26 @@ def run(years=None, force=False):
     logger.info("\nSTEG 3: Parser bevilgningshistorikk")
     bevilgning_df = parse_bevilgning(files["bevilgning"])
 
-    # 4. Parse befolkning
-    logger.info("\nSTEG 4: Parser befolkningsdata (SSB)")
+    # 4. Parse befolkning, KPI og BNP
+    logger.info("\nSTEG 4: Parser befolkning, KPI og BNP (SSB)")
     befolkning = parse_befolkning(files["befolkning"])
+    kpi = parse_ssb_aarsserie(kpi_path, "KPI")
+    bnp = parse_ssb_aarsserie(bnp_path, "BNP")
 
     # 5. Sanity-sjekk
     logger.info("\nSTEG 5: Sanity-sjekk")
-    sanity_check(regnskap_frames, bevilgning_df, befolkning)
+    sanity_check(regnskap_frames, bevilgning_df, befolkning, kpi, bnp)
 
     # 6. Bygg hierarkier
     logger.info("\nSTEG 6: Bygger hierarkier")
-    build_hierarchies(regnskap_frames, bevilgning_df, years, OUTPUT_DIR)
+    build_hierarchies(regnskap_frames, bevilgning_df, years, OUTPUT_DIR,
+                      virk_frames=virk_frames)
 
     # 7. Skriv befolkning og meta
     logger.info("\nSTEG 7: Skriver støttefiler")
     _save_json(befolkning, OUTPUT_DIR / "befolkning.json")
+    _save_json({str(a): round(v, 2) for a, v in kpi.items()}, OUTPUT_DIR / "kpi.json")
+    _save_json({str(a): round(v, 1) for a, v in bnp.items()}, OUTPUT_DIR / "bnp.json")
 
     actual_years = sorted(regnskap_frames.keys())
     budget_years = sorted(bevilgning_df["aar"].dropna().unique().tolist())
@@ -98,6 +111,8 @@ def run(years=None, force=False):
         "siste_regnskap_aar": max(actual_years),
         "siste_budsjett_aar": max(int(y) for y in budget_years),
         "enhet": "mill_kr",
+        "kpi_basisaar": max(a for a in kpi if a <= max(actual_years)),
+        "bnp_enhet": "mill_kr",
         "kilder": [
             {
                 "navn": "DFØ Statsregnskapet",
@@ -105,8 +120,8 @@ def run(years=None, force=False):
                 "lisens": "Norsk lisens for offentlige data (NLOD)"
             },
             {
-                "navn": "SSB Folkemengde",
-                "url": "https://www.ssb.no/befolkning/statistikker/folkemengde",
+                "navn": "SSB Folkemengde, KPI og nasjonalregnskap",
+                "url": "https://www.ssb.no",
                 "lisens": "CC BY 4.0"
             }
         ]
@@ -136,7 +151,8 @@ RIMELIG_MIN = 800_000     # 800 mrd.
 RIMELIG_MAX = 3_000_000   # 3 000 mrd.
 
 
-def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict):
+def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict,
+                 kpi: dict = None, bnp: dict = None):
     import pandas as pd
 
     all_r = pd.concat(list(regnskap_frames.values()), ignore_index=True)
@@ -195,6 +211,44 @@ def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict):
     neg = all_r[all_r["belop_mill"] < 0]
     if len(neg) > 0:
         logger.warning(f"  [ADVARSEL] {len(neg)} rader med negativt belop_mill")
+
+    # Sjekk 5: Bruttobalanse — statsregnskapet er dobbelt bokholderi;
+    # totale utgifter (inkl. fin/SPU) skal omtrent balansere totale inntekter
+    i_alle = all_r[all_r["er_utgift"] == False]
+    for year in sorted(regnskap_frames.keys()):
+        tu = u[u["aar"] == year]["belop_mill"].sum()
+        ti = i_alle[i_alle["aar"] == year]["belop_mill"].sum()
+        if tu > 0 and abs(tu - ti) / tu > 0.10:
+            logger.warning(
+                f"  [ADVARSEL] Bruttobalanse {year}: utgifter {tu:,.0f} vs "
+                f"inntekter {ti:,.0f} mill. (avvik {abs(tu-ti)/tu*100:.1f} %)"
+            )
+
+    # Sjekk 6: År-over-år-hopp på totalnivå (> 30 % → mulig databrudd)
+    aar_liste = sorted(regnskap_frames.keys())
+    for forrige, denne in zip(aar_liste, aar_liste[1:]):
+        v0 = u_ordinaer[u_ordinaer["aar"] == forrige]["belop_mill"].sum()
+        v1 = u_ordinaer[u_ordinaer["aar"] == denne]["belop_mill"].sum()
+        if v0 > 0 and abs(v1 - v0) / v0 > 0.30:
+            logger.warning(
+                f"  [ADVARSEL] Y/Y-hopp {forrige}→{denne}: "
+                f"{(v1-v0)/v0*100:+.0f} % på totale utgifter (ekskl. fin/SPU) — "
+                "sjekk for databrudd eller strukturendring"
+            )
+
+    # Sjekk 7: KPI og BNP er rimelige
+    if kpi:
+        for aar, v in kpi.items():
+            if not (10 <= v <= 500):
+                raise ValueError(f"KPI {aar} urimelig: {v} (forventet indeks 10–500)")
+    if bnp:
+        for aar in [a for a in bnp if a >= 2014]:
+            # BNP i mill. kr: 2 000–10 000 mrd. for Norge etter 2014
+            if not (2_000_000 <= bnp[aar] <= 10_000_000):
+                raise ValueError(
+                    f"BNP {aar} urimelig: {bnp[aar]:,.0f} mill. "
+                    "(forventet 2 000 000–10 000 000). Feil enhet fra SSB-tabellen?"
+                )
 
     logger.info(f"  Sanity-sjekk fullført. Regnskap: {sorted(regnskap_frames.keys())}")
 

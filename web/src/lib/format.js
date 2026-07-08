@@ -18,6 +18,18 @@ export function formatMillKr(v, { compact = true } = {}) {
   return sign + NB.format(abs) + ' mill. kr'
 }
 
+/** Formater en verdi etter visningsmodus (mill. kr / kr per person / % av BNP) */
+export function formatVerdi(v, modus = 'lopende') {
+  if (v == null) return '–'
+  if (modus === 'person') {
+    return new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(Math.round(v)) + ' kr'
+  }
+  if (modus === 'bnp') {
+    return new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 2 }).format(v) + ' %'
+  }
+  return formatMillKr(v)
+}
+
 export function formatPct(v) {
   if (v == null) return '–'
   return NB_PCT.format(v / 100)

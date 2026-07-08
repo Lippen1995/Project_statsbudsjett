@@ -1,95 +1,117 @@
 import React, { useMemo } from 'react'
 import {
   ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, ReferenceLine, Bar
+  Tooltip, ResponsiveContainer, ReferenceLine, ReferenceDot, Bar
 } from 'recharts'
-import { byggTidsserie, byggYoY, perInnbygger } from '../lib/data'
-import { formatMillKr, formatAvvik, formatCAGR, formatTotalEndring } from '../lib/format'
+import { byggTidsserie, byggYoY, transformVerdi } from '../lib/data'
+import { formatVerdi, formatAvvik, formatCAGR, formatTotalEndring } from '../lib/format'
 import './Historikkgraf.css'
 
 const RUST = '#b84c2e'
 const TEAL = '#0d7c6e'
 const GOLD = '#b08c3a'
-const TEAL_LIGHT = '#e6f4f1'
-const RUST_LIGHT = '#fdf0ec'
+const BLAA = '#3b6ea5'   // sammenligningsserie
 
-export default function Historikkgraf({ node, years, budsjettAar, perPerson, befolkning, side }) {
-  const alle = useMemo(() => {
-    if (!node?.serier) return []
-    const extraYears = budsjettAar > Math.max(...years) ? [...years, budsjettAar] : years
-    return byggTidsserie(node, extraYears)
-  }, [node, years, budsjettAar])
+// Kjente hendelser som forklarer hopp i grafene
+const HENDELSER = [
+  { aar: 2020, tekst: 'Pandemien' },
+  { aar: 2022, tekst: 'Strømstøtte / Ukraina' },
+]
 
+export default function Historikkgraf({
+  node, years, budsjettAar, modus, modusCtx, side, pinnedNode, onPin,
+}) {
   const sisteRegnskapsAar = Math.max(...years)
+  const extraYears = budsjettAar > sisteRegnskapsAar ? [...years, budsjettAar] : years
+
+  const skaler = (v, aar) => transformVerdi(v, aar, modus, modusCtx)
+
+  const alle = useMemo(
+    () => node?.serier ? byggTidsserie(node, extraYears) : [],
+    [node, extraYears]
+  )
+
+  const pinnetSerie = useMemo(
+    () => pinnedNode?.serier ? byggTidsserie(pinnedNode, extraYears) : null,
+    [pinnedNode, extraYears]
+  )
 
   const data = useMemo(() => {
-    return alle.map(d => {
-      const scale = v => {
-        if (v == null) return null
-        return perPerson ? perInnbygger(v, befolkning, d.aar) : v
-      }
+    return alle.map((d, i) => {
       const erPrognose = d.aar > sisteRegnskapsAar
+      const p = pinnetSerie?.[i]
       return {
         aar: d.aar,
-        regnskap: erPrognose ? null : scale(d.regnskap),
-        regnskapPrognose: erPrognose ? scale(d.saldert) : null,
-        saldert: scale(d.saldert),
-        revidert: d.revidert !== d.saldert ? scale(d.revidert) : null,
+        areaRegnskap: erPrognose ? null : skaler(d.regnskap, d.aar),
+        regnskapPrognose: erPrognose ? skaler(d.saldert, d.aar) : null,
+        saldert: skaler(d.saldert, d.aar),
+        revidert: (d.revidert != null && d.revidert !== d.saldert) ? skaler(d.revidert, d.aar) : null,
+        sammenlign: p ? skaler(erPrognose ? p.saldert : p.regnskap, d.aar) : null,
         erPrognose,
       }
     })
-  }, [alle, perPerson, befolkning, sisteRegnskapsAar])
+  }, [alle, pinnetSerie, modus, modusCtx, sisteRegnskapsAar])
 
-  // For area: legg til broen (siste regnskapsår → prognoseår)
-  const dataForArea = useMemo(() => {
-    return data.map((d, i) => {
-      if (!d.erPrognose) return { ...d, areaRegnskap: d.regnskap }
-      // Prognose: vis ingenting i area
-      return { ...d, areaRegnskap: null }
-    })
-  }, [data])
-
-  const yoyData = useMemo(() => {
-    const regnskapsData = alle.filter(d => d.aar <= sisteRegnskapsAar)
-    return byggYoY(regnskapsData)
-  }, [alle, sisteRegnskapsAar])
+  const yoyData = useMemo(
+    () => byggYoY(alle.filter(d => d.aar <= sisteRegnskapsAar)),
+    [alle, sisteRegnskapsAar]
+  )
 
   const regnskapsSerier = alle.filter(d => d.aar <= sisteRegnskapsAar && d.regnskap != null)
   const forsteReg = regnskapsSerier[0]?.regnskap
   const sisteReg = regnskapsSerier[regnskapsSerier.length - 1]?.regnskap
   const antallRegAar = regnskapsSerier.length - 1
-
   const sisteSaldert = alle.find(d => d.aar === sisteRegnskapsAar)?.saldert
+
+  // CAGR/endring gir bare mening på løpende/faste kroner
+  const visVekst = modus === 'lopende' || modus === 'fast'
   const avvik = formatAvvik(sisteReg, sisteSaldert)
-  const cagr = formatCAGR(forsteReg, sisteReg, antallRegAar)
-  const endring = formatTotalEndring(forsteReg, sisteReg)
+  const cagr = visVekst ? formatCAGR(forsteReg, sisteReg, antallRegAar) : null
+  const endring = visVekst ? formatTotalEndring(forsteReg, sisteReg) : null
 
   const farge = side === 'utgifter' ? RUST : TEAL
-  const flate = side === 'utgifter' ? RUST_LIGHT : TEAL_LIGHT
 
   const formatYAxis = v => {
     if (v == null) return ''
-    if (perPerson) return new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(Math.round(v))
+    if (modus === 'person') return new Intl.NumberFormat('nb-NO', { notation: 'compact' }).format(v)
+    if (modus === 'bnp') return v.toFixed(0) + '%'
     if (Math.abs(v) >= 1000) return (v / 1000).toFixed(0) + ' mrd'
     return v.toFixed(0)
   }
 
   if (!node || alle.length === 0) return (
-    <div className="historikk-tom">
-      <p>Velg en post i hierarkiet for å se historikk</p>
-    </div>
+    <div className="historikk-tom"><p>Velg en post i hierarkiet for å se historikk</p></div>
   )
+
+  const hendelserIVindu = HENDELSER.filter(h => h.aar >= years[0] && h.aar <= sisteRegnskapsAar)
+  const erPinnet = pinnedNode?.id === node.id
 
   return (
     <div className="historikk">
       <div className="historikk-header">
-        <h3 className="historikk-tittel">{node.navn}</h3>
-        {node.tag && <span className="historikk-tag">{node.tag}</span>}
+        <div className="historikk-tittelrad">
+          <h3 className="historikk-tittel">{node.navn}</h3>
+          {node.tag && <span className="historikk-tag">{node.tag}</span>}
+        </div>
+        {onPin && node.id !== 'rot' && (
+          <button
+            className={`pin-knapp ${erPinnet ? 'aktiv' : ''}`}
+            onClick={() => onPin(erPinnet ? null : node)}
+            title={erPinnet ? 'Fjern sammenligning' : 'Fest som sammenligning'}
+          >
+            {erPinnet ? '📌 festet' : '📌 sammenlign'}
+          </button>
+        )}
       </div>
+      {pinnedNode && !erPinnet && (
+        <p className="sammenlign-note">
+          <span className="sml-dot" style={{ background: BLAA }} /> {pinnedNode.navn}
+          <button className="sml-fjern" onClick={() => onPin(null)}>×</button>
+        </p>
+      )}
 
-      {/* Hovvedgraf: regnskap + budsjettlinjer */}
       <ResponsiveContainer width="100%" height={200}>
-        <ComposedChart data={dataForArea} margin={{ top: 4, right: 16, bottom: 0, left: 0 }}>
+        <ComposedChart data={data} margin={{ top: 4, right: 16, bottom: 0, left: 0 }}>
           <defs>
             <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor={farge} stopOpacity={0.15} />
@@ -97,84 +119,42 @@ export default function Historikkgraf({ node, years, budsjettAar, perPerson, bef
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-          <XAxis
-            dataKey="aar"
-            tick={{ fontSize: 11, fill: '#9ca3af' }}
-            tickLine={false}
-            axisLine={{ stroke: '#e5e7eb' }}
-          />
-          <YAxis
-            tickFormatter={formatYAxis}
-            tick={{ fontSize: 11, fill: '#9ca3af' }}
-            tickLine={false}
-            axisLine={false}
-            width={52}
-          />
-          <Tooltip content={<GrafTooltip perPerson={perPerson} farge={farge} />} />
+          <XAxis dataKey="aar" tick={{ fontSize: 11, fill: '#9ca3af' }} tickLine={false} axisLine={{ stroke: '#e5e7eb' }} />
+          <YAxis tickFormatter={formatYAxis} tick={{ fontSize: 11, fill: '#9ca3af' }} tickLine={false} axisLine={false} width={52} />
+          <Tooltip content={<GrafTooltip modus={modus} farge={farge} pinnetNavn={pinnedNode?.navn} />} />
 
-          {/* Flate: regnskapstall */}
-          <Area
-            type="monotone"
-            dataKey="areaRegnskap"
-            stroke={farge}
-            strokeWidth={2}
-            fill="url(#areaGrad)"
-            dot={false}
-            activeDot={{ r: 4, fill: farge }}
-            connectNulls={false}
-            name="Regnskap"
-          />
+          {hendelserIVindu.map(h => (
+            <ReferenceLine key={h.aar} x={h.aar} stroke="#cbd5e1" strokeDasharray="2 2"
+              label={{ value: h.tekst, position: 'top', fontSize: 9, fill: '#94a3b8' }} />
+          ))}
 
-          {/* Stiplet forlengelse: prognoseår */}
-          <Line
-            type="monotone"
-            dataKey="regnskapPrognose"
-            stroke={farge}
-            strokeWidth={2}
-            strokeDasharray="6 4"
-            dot={{ r: 4, fill: 'white', stroke: farge, strokeWidth: 2 }}
-            connectNulls={false}
-            name="Prognose (saldert)"
-          />
-
-          {/* Saldert budsjett: prikket linje */}
-          <Line
-            type="monotone"
-            dataKey="saldert"
-            stroke={GOLD}
-            strokeWidth={1.5}
-            strokeDasharray="3 3"
-            dot={false}
-            activeDot={false}
-            name="Saldert budsjett"
-          />
-
-          {/* Revidert budsjett hvis avviker */}
-          <Line
-            type="monotone"
-            dataKey="revidert"
-            stroke="#9ca3af"
-            strokeWidth={1}
-            strokeDasharray="2 4"
-            dot={false}
-            activeDot={false}
-            name="Revidert budsjett"
-          />
+          <Area type="monotone" dataKey="areaRegnskap" stroke={farge} strokeWidth={2}
+            fill="url(#areaGrad)" dot={false} activeDot={{ r: 4, fill: farge }}
+            connectNulls={false} name="Regnskap" />
+          <Line type="monotone" dataKey="regnskapPrognose" stroke={farge} strokeWidth={2}
+            strokeDasharray="6 4" dot={{ r: 4, fill: 'white', stroke: farge, strokeWidth: 2 }}
+            connectNulls={false} name="Prognose (saldert)" />
+          <Line type="monotone" dataKey="saldert" stroke={GOLD} strokeWidth={1.5}
+            strokeDasharray="3 3" dot={false} activeDot={false} name="Saldert budsjett" />
+          <Line type="monotone" dataKey="revidert" stroke="#9ca3af" strokeWidth={1}
+            strokeDasharray="2 4" dot={false} activeDot={false} name="Revidert budsjett" />
+          {pinnedNode && !erPinnet && (
+            <Line type="monotone" dataKey="sammenlign" stroke={BLAA} strokeWidth={1.5}
+              dot={false} activeDot={{ r: 3, fill: BLAA }} connectNulls={false} name="Sammenligning" />
+          )}
         </ComposedChart>
       </ResponsiveContainer>
 
-      {/* Avvik og nøkkeltall */}
-      {avvik && (
-        <p className="avvik-tekst">{avvik}</p>
+      {avvik && <p className="avvik-tekst">{avvik}</p>}
+
+      {(cagr || endring) && (
+        <div className="nokkeltal">
+          {cagr && <Nokkeltal label={`CAGR ${years[0]}–${sisteRegnskapsAar}`} verdi={cagr} />}
+          {endring && <Nokkeltal label="Total endring" verdi={endring} />}
+        </div>
       )}
 
-      <div className="nokkeltal">
-        {cagr && <Nokkeltal label={`CAGR ${years[0]}–${sisteRegnskapsAar}`} verdi={cagr} />}
-        {endring && <Nokkeltal label="Total endring" verdi={endring} />}
-      </div>
-
-      {/* Y/Y-vekststripe */}
-      {yoyData.length > 1 && (
+      {visVekst && yoyData.length > 1 && (
         <div className="yoy-seksjon">
           <p className="yoy-label">År/år-vekst (regnskap)</p>
           <ResponsiveContainer width="100%" height={60}>
@@ -183,17 +163,8 @@ export default function Historikkgraf({ node, years, budsjettAar, perPerson, bef
               <XAxis dataKey="aar" tick={{ fontSize: 10, fill: '#9ca3af' }} tickLine={false} axisLine={false} />
               <YAxis hide />
               <ReferenceLine y={0} stroke="#e5e7eb" />
-              <Bar
-                dataKey="yoy"
-                fill={farge}
-                radius={[2, 2, 0, 0]}
-                maxBarSize={24}
-                label={false}
-              />
-              <Tooltip
-                formatter={(v) => v != null ? `${v >= 0 ? '+' : ''}${v.toFixed(1)} %` : '–'}
-                labelFormatter={v => `${v}`}
-              />
+              <Bar dataKey="yoy" fill={farge} radius={[2, 2, 0, 0]} maxBarSize={24} />
+              <Tooltip formatter={v => v != null ? `${v >= 0 ? '+' : ''}${v.toFixed(1)} %` : '–'} labelFormatter={v => `${v}`} />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -211,15 +182,10 @@ function Nokkeltal({ label, verdi }) {
   )
 }
 
-function GrafTooltip({ active, payload, label, perPerson, farge }) {
+function GrafTooltip({ active, payload, label, modus, farge, pinnetNavn }) {
   if (!active || !payload?.length) return null
-
-  const fmt = v => v == null ? '–' : perPerson
-    ? new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(Math.round(v)) + ' kr'
-    : formatMillKr(v)
-
+  const fmt = v => formatVerdi(v, modus)
   const row = payload[0]?.payload ?? {}
-
   return (
     <div className="graf-tooltip panel">
       <div className="tt-aar">{label}</div>
@@ -239,6 +205,13 @@ function GrafTooltip({ active, payload, label, perPerson, farge }) {
           <span className="tt-dot" style={{ background: '#9ca3af' }} />
           <span>Revidert</span>
           <span className="num">{fmt(row.revidert)}</span>
+        </div>
+      )}
+      {row.sammenlign != null && (
+        <div className="tt-rad">
+          <span className="tt-dot" style={{ background: '#3b6ea5' }} />
+          <span>{pinnetNavn ?? 'Sammenligning'}</span>
+          <span className="num">{fmt(row.sammenlign)}</span>
         </div>
       )}
     </div>

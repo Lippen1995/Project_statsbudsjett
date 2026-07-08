@@ -1,43 +1,37 @@
 import React from 'react'
-import { filtrerNoder, sumVerdi, perInnbygger } from '../lib/data'
-import { formatMillKr } from '../lib/format'
+import { filtrerNoder, sumVerdi, transformVerdi } from '../lib/data'
+import { formatVerdi } from '../lib/format'
 import './BalanseTopp.css'
 
-function summer(hierarki, aar, serie, skjulFin) {
+function summer(hierarki, aar, serie, skjulFin, modus, ctx) {
   const noder = skjulFin ? filtrerNoder(hierarki, { skjulFin: true }) : hierarki
-  // sumVerdi (rekursiv) — forhåndsberegnede serier på toppnivå
-  // inkluderer fin/SPU selv når barna er filtrert bort
-  return noder.reduce((s, n) => s + sumVerdi(n, aar, serie), 0)
+  const raa = noder.reduce((s, n) => s + sumVerdi(n, aar, serie), 0)
+  return transformVerdi(raa, aar, modus, ctx)
 }
 
-const fmtKr = v =>
-  new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(Math.round(v)) + ' kr'
-
-export default function BalanseTopp({ utgifter, inntekter, valgtAar, perPerson, befolkning, skjulFin, meta }) {
+export default function BalanseTopp({ utgifter, inntekter, valgtAar, modus, modusCtx, skjulFin, meta }) {
   if (!valgtAar) return null
 
   const sisteRegnskapsAar = meta.siste_regnskap_aar
   const sisteBudsjettAar = meta.siste_budsjett_aar
   const erPrognoseAar = valgtAar > sisteRegnskapsAar
 
-  // Primærserie for valgt år: regnskap, eller saldert hvis regnskap ikke finnes ennå
   const primaerSerie = erPrognoseAar ? 'saldert' : 'regnskap'
   const primaerLabel = erPrognoseAar
     ? `Saldert budsjett ${valgtAar}`
     : `Regnskap ${valgtAar}`
 
-  const skaler = (v, aar) => perPerson ? (perInnbygger(v, befolkning, aar) ?? v) : v
+  const uPrimaer = summer(utgifter, valgtAar, primaerSerie, skjulFin, modus, modusCtx)
+  const iPrimaer = summer(inntekter, valgtAar, primaerSerie, skjulFin, modus, modusCtx)
 
-  const uPrimaer = skaler(summer(utgifter, valgtAar, primaerSerie, skjulFin), valgtAar)
-  const iPrimaer = skaler(summer(inntekter, valgtAar, primaerSerie, skjulFin), valgtAar)
-
-  // Sekundærtall: siste vedtatte budsjett (vises alltid, med årstall)
-  const uBudsjett = skaler(summer(utgifter, sisteBudsjettAar, 'saldert', skjulFin), sisteBudsjettAar)
-  const iBudsjett = skaler(summer(inntekter, sisteBudsjettAar, 'saldert', skjulFin), sisteBudsjettAar)
+  const uBudsjett = summer(utgifter, sisteBudsjettAar, 'saldert', skjulFin, modus, modusCtx)
+  const iBudsjett = summer(inntekter, sisteBudsjettAar, 'saldert', skjulFin, modus, modusCtx)
   const visBudsjettlinje = !(erPrognoseAar && valgtAar === sisteBudsjettAar)
 
-  const diff = iPrimaer - uPrimaer
-  const fmt = v => perPerson ? fmtKr(v) : formatMillKr(v)
+  const diff = (iPrimaer ?? 0) - (uPrimaer ?? 0)
+  const fmt = v => formatVerdi(v, modus)
+  const modusSuffiks = modus === 'fast' ? ` (faste ${modusCtx.basisAar}-kr)`
+    : modus === 'bnp' ? ' (% av BNP)' : modus === 'person' ? ' (per innbygger)' : ''
 
   return (
     <div className="balanse-topp panel">
@@ -79,11 +73,10 @@ export default function BalanseTopp({ utgifter, inntekter, valgtAar, perPerson, 
           )}
         </div>
       </div>
-      {skjulFin && (
-        <p className="balanse-note">
-          Finanstransaksjoner (90-poster) og SPU-overføringer er skjult
-        </p>
-      )}
+      <p className="balanse-note">
+        {skjulFin && 'Finanstransaksjoner (90-poster) og SPU-overføringer er skjult'}
+        {modusSuffiks && <span className="modus-note">{modusSuffiks}</span>}
+      </p>
     </div>
   )
 }

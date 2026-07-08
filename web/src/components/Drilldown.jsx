@@ -1,11 +1,15 @@
 import React, { useMemo, useState } from 'react'
-import { filtrerNoder, sumVerdi, byggArtskontoTre, perInnbygger } from '../lib/data'
-import { formatMillKr } from '../lib/format'
+import {
+  filtrerNoder, sumVerdi, byggArtskontoTre, transformVerdi,
+  byggSokeindeks, sokGlobalt, lastNedCSV,
+} from '../lib/data'
+import { formatVerdi } from '../lib/format'
 import './Drilldown.css'
 
 export default function Drilldown({
-  hierarki, side, valgtAar, perPerson, befolkning,
-  skjulFin, sti, fokusNode, onDrill, onFokus, onBreadcrumb, onToppnivaa,
+  hierarki, side, valgtAar, modus, modusCtx,
+  skjulFin, sti, fokusNode, fokusDetaljer,
+  onDrill, onFokus, onBreadcrumb, onToppnivaa, onNaviger,
 }) {
   const [sokeTekst, setSokeTekst] = useState('')
 
@@ -14,9 +18,12 @@ export default function Drilldown({
     [hierarki, skjulFin]
   )
 
-  // Gjeldende nivå: barn av siste breadcrumb-node.
-  // På post-nivå (ingen children) går vi videre til artskonto-treet —
-  // kontoklasser og enkeltkontoer vises som rader i samme liste.
+  const sokeindeks = useMemo(() => byggSokeindeks(rotNoder), [rotNoder])
+  const globaleTreff = useMemo(
+    () => sokeTekst.trim().length >= 2 ? sokGlobalt(sokeindeks, sokeTekst.trim()) : null,
+    [sokeindeks, sokeTekst]
+  )
+
   const gjeldende = useMemo(() => {
     if (sti.length === 0) return rotNoder
     const siste = sti[sti.length - 1]
@@ -24,29 +31,69 @@ export default function Drilldown({
       return filtrerNoder(siste.children, { skjulFin })
     }
     if (siste.niva === 'post') {
-      return byggArtskontoTre(siste)
+      return byggArtskontoTre(siste, fokusDetaljer)
     }
     return []
-  }, [sti, rotNoder, skjulFin])
+  }, [sti, rotNoder, skjulFin, fokusDetaljer])
 
   const erArtskontoNivaa = gjeldende[0]?.niva === 'kontoklasse' || gjeldende[0]?.niva === 'artskonto'
+  const skaler = v => transformVerdi(v, valgtAar, modus, modusCtx)
 
-  const skaler = (v) => perPerson ? (perInnbygger(v, befolkning, valgtAar) ?? v) : v
-
-  const filtrert = useMemo(() => {
-    if (!sokeTekst) return gjeldende
-    const q = sokeTekst.toLowerCase()
-    return gjeldende.filter(n => n.navn.toLowerCase().includes(q) || (n.tag ?? '').toLowerCase().includes(q))
-  }, [gjeldende, sokeTekst])
-
-  // Rekursiv sum av filtrerte bladnoder — se sumVerdi
   const rader = useMemo(() =>
-    filtrert
+    gjeldende
       .map(n => ({ node: n, verdi: sumVerdi(n, valgtAar, 'regnskap') }))
       .sort((a, b) => Math.abs(b.verdi) - Math.abs(a.verdi)),
-    [filtrert, valgtAar]
+    [gjeldende, valgtAar]
   )
   const totalBrutto = rader.reduce((s, r) => s + r.verdi, 0)
+
+  const eksporter = () => {
+    const csvRader = rader.map(({ node, verdi }) => ({
+      navn: node.navn,
+      tag: node.tag,
+      verdi: Math.round(skaler(verdi) * 10) / 10,
+      andel: totalBrutto !== 0 ? (verdi / totalBrutto) * 100 : 0,
+    }))
+    const stinavn = sti.length ? sti[sti.length - 1].navn : `alle-${side}`
+    lastNedCSV(csvRader, `statsregnskap-${stinavn}-${valgtAar}.csv`.replace(/[^\wæøåÆØÅ.-]+/g, '_'))
+  }
+
+  // Globalt søk aktivt → vis trefflista med full sti
+  if (globaleTreff) {
+    return (
+      <div className="drilldown">
+        <div className="drilldown-header">
+          <div className="drilldown-topprad">
+            <span className="drilldown-total">{globaleTreff.length} treff</span>
+            <input className="soke-input" type="search" placeholder="Søk i alle poster…"
+              value={sokeTekst} onChange={e => setSokeTekst(e.target.value)} autoFocus
+              aria-label="Globalt søk" />
+          </div>
+        </div>
+        <div className="drilldown-liste" role="list">
+          {globaleTreff.length === 0 && <p className="ingen-treff">Ingen treff</p>}
+          {globaleTreff.map(({ node, sti: nodeSti }) => {
+            const v = skaler(sumVerdi(node, valgtAar, 'regnskap'))
+            return (
+              <div key={node.id} className="drilldown-rad" role="listitem" tabIndex={0}
+                onClick={() => { onNaviger([...nodeSti, node]); setSokeTekst('') }}
+                onKeyDown={e => (e.key === 'Enter') && (onNaviger([...nodeSti, node]), setSokeTekst(''))}>
+                <div className="rad-innhold">
+                  <div className="rad-venstre">
+                    <span className="rad-navn">{node.navn}</span>
+                    <span className="rad-sti">
+                      {[side === 'utgifter' ? 'Utgifter' : 'Inntekter', ...nodeSti.map(n => n.tag ?? n.navn)].join(' › ')}
+                    </span>
+                  </div>
+                  <span className="rad-belop num">{formatVerdi(v, modus)}</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="drilldown">
@@ -54,34 +101,27 @@ export default function Drilldown({
         <Breadcrumb sti={sti} onToppnivaa={onToppnivaa} onBreadcrumb={onBreadcrumb} side={side} />
         <div className="drilldown-topprad">
           <span className="drilldown-total num">
-            {formatMillKr(skaler(totalBrutto))}
-            {perPerson && ' /person'}
+            {formatVerdi(skaler(totalBrutto), modus)}
             {erArtskontoNivaa && <span className="nivaa-merke">artskonto</span>}
           </span>
-          <input
-            className="soke-input"
-            type="search"
-            placeholder="Søk…"
-            value={sokeTekst}
-            onChange={e => setSokeTekst(e.target.value)}
-            aria-label="Søk i poster"
-          />
+          <div className="topprad-hoyre">
+            <button className="ikon-knapp" onClick={eksporter} title="Last ned som CSV" aria-label="Last ned som CSV">↓ CSV</button>
+            <input className="soke-input" type="search" placeholder="Søk…"
+              value={sokeTekst} onChange={e => setSokeTekst(e.target.value)}
+              aria-label="Søk i poster" />
+          </div>
         </div>
       </div>
 
       <div className="drilldown-liste" role="list">
         {rader.length === 0 && (
-          <p className="ingen-treff">
-            {sokeTekst ? 'Ingen treff' : 'Ingen underliggende data for dette året'}
-          </p>
+          <p className="ingen-treff">Ingen underliggende data for dette året</p>
         )}
         {rader.map(({ node, verdi }) => {
           const andel = totalBrutto !== 0 ? (verdi / totalBrutto) * 100 : 0
           const skalerV = skaler(verdi)
           const erFokus = fokusNode?.id === node.id
-          // Poster kan drilles videre til artskonto; kontoklasser til enkeltkontoer
-          const kanDrilles = (node.children?.length ?? 0) > 0
-            || node.niva === 'post'
+          const kanDrilles = (node.children?.length ?? 0) > 0 || node.niva === 'post'
           const handleKlikk = () => kanDrilles ? onDrill(node) : onFokus(node)
 
           return (
@@ -92,8 +132,8 @@ export default function Drilldown({
               tabIndex={0}
               onClick={handleKlikk}
               onMouseEnter={() => onFokus(node)}
-              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && handleKlikk()}
-              aria-label={`${node.navn}: ${formatMillKr(skalerV)}`}
+              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), handleKlikk())}
+              aria-label={`${node.navn}: ${formatVerdi(skalerV, modus)}`}
             >
               <div className="rad-bar-wrapper">
                 <div
@@ -109,7 +149,7 @@ export default function Drilldown({
                   {node.transfer && <span className="merke merke--spu">SPU</span>}
                 </div>
                 <div className="rad-hoyre">
-                  <span className="rad-belop num">{formatMillKr(skalerV)}</span>
+                  <span className="rad-belop num">{formatVerdi(skalerV, modus)}</span>
                   <span className="rad-andel">{Math.abs(andel).toFixed(1)} %</span>
                   <span className="rad-pil" aria-hidden>{kanDrilles ? '›' : ''}</span>
                 </div>

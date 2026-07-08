@@ -32,6 +32,7 @@ USECOLS = [
     "År", "Fagdepartement_id", "Fagdepartement",
     "Kapittel_id", "Kapittel", "Post_id", "Post", "Post_type",
     "Kontoklasse_id", "Kontoklasse", "Artskonto_id", "Artskonto",
+    "Virksomhet_id", "Virksomhet",
     "Beløp",
 ]
 
@@ -48,6 +49,8 @@ RENAME = {
     "Kontoklasse": "klasse_navn",
     "Artskonto_id": "artskonto",
     "Artskonto": "artskonto_navn",
+    "Virksomhet_id": "virk_id",
+    "Virksomhet": "virk_navn",
     "Beløp": "belop",
 }
 
@@ -65,7 +68,7 @@ def _to_amount(series: pd.Series) -> pd.Series:
     )
 
 
-def parse_regnskap(paths: list, year: int) -> pd.DataFrame:
+def parse_regnskap(paths: list, year: int, med_virksomheter: bool = False):
     """
     Les regnskaps-CSV(er) for ett år og returner normalisert DataFrame,
     aggregert til årsnivå per dept/kap/post/artskonto.
@@ -74,6 +77,9 @@ def parse_regnskap(paths: list, year: int) -> pd.DataFrame:
       aar, dept_kode, dept_navn, kap, kap_navn, post, post_navn,
       klasse_id, klasse_navn, artskonto, artskonto_navn,
       belop_mill (signert, mill. kr), er_utgift, fin, transfer, netto
+
+    Med med_virksomheter=True returneres (df, virk_df) der virk_df er
+    aggregert per aar/kap/post/virksomhet (for «hvem bruker pengene»).
     """
     if isinstance(paths, (str, Path)):
         paths = [Path(paths)]
@@ -160,4 +166,22 @@ def parse_regnskap(paths: list, year: int) -> pd.DataFrame:
         f"  -> {len(grp)} aggregerte rader. "
         f"Utgifter: {total_u:,.0f} mill., inntekter: {total_i:,.0f} mill."
     )
-    return grp
+
+    if not med_virksomheter:
+        return grp
+
+    # Virksomhetsdimensjon: hvem konterer på posten («hvem bruker pengene»)
+    if "virk_id" in ok.columns:
+        virk = (
+            ok.groupby(
+                ["aar", "kap", "post", "virk_id", "virk_navn", "er_utgift"],
+                dropna=False,
+            )["belop_mill"]
+            .sum()
+            .reset_index()
+        )
+    else:
+        logger.warning("  [ADVARSEL] Virksomhet-kolonner mangler — virk_df blir tom")
+        virk = pd.DataFrame(columns=["aar", "kap", "post", "virk_id", "virk_navn",
+                                     "er_utgift", "belop_mill"])
+    return grp, virk
