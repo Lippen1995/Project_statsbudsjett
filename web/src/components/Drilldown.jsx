@@ -42,12 +42,16 @@ export default function Drilldown({
   const erArtskontoNivaa = gjeldende[0]?.niva === 'kontoklasse' || gjeldende[0]?.niva === 'artskonto'
   const skaler = v => transformVerdi(v, valgtAar, modus, modusCtx)
 
-  const rader = useMemo(() =>
-    gjeldende
+  const rader = useMemo(() => {
+    // På artskonto-nivå bygges nodene på tvers av alle år; kontoklasser/konti
+    // uten beløp i valgt år skal ikke vises som tomme «0 mill.»-rader.
+    // (Beløp er avrundet til 1 desimal, så < 0,05 vises som 0.)
+    const erAk = gjeldende[0]?.niva === 'kontoklasse' || gjeldende[0]?.niva === 'artskonto'
+    return gjeldende
       .map(n => ({ node: n, verdi: sumVerdi(n, valgtAar, 'regnskap') }))
-      .sort((a, b) => Math.abs(b.verdi) - Math.abs(a.verdi)),
-    [gjeldende, valgtAar]
-  )
+      .filter(r => !erAk || Math.abs(r.verdi) >= 0.05)
+      .sort((a, b) => Math.abs(b.verdi) - Math.abs(a.verdi))
+  }, [gjeldende, valgtAar])
   const totalBrutto = rader.reduce((s, r) => s + r.verdi, 0)
 
   const eksporter = () => {
