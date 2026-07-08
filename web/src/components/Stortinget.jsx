@@ -87,17 +87,23 @@ function Votering({ v }) {
         </span>
       </div>
 
-      <div className="st-bar" role="img"
-        aria-label={`${v.antall_for} for, ${v.antall_mot} mot`}>
-        <div className="st-bar-for" style={{ width: `${forAndel}%` }} />
-        <div className="st-bar-mot" style={{ width: `${100 - forAndel}%` }} />
-      </div>
-      <div className="st-bar-tall num">
-        <span className="st-for">{v.antall_for ?? 0} for</span>
-        <span className="st-mot">{v.antall_mot ?? 0} mot</span>
-      </div>
+      {v.akklamasjon ? (
+        <p className="st-akklamasjon">Avgjort ved akklamasjon (ingen opptelling)</p>
+      ) : (
+        <>
+          <div className="st-bar" role="img"
+            aria-label={`${v.antall_for} for, ${v.antall_mot} mot`}>
+            <div className="st-bar-for" style={{ width: `${forAndel}%` }} />
+            <div className="st-bar-mot" style={{ width: `${100 - forAndel}%` }} />
+          </div>
+          <div className="st-bar-tall num">
+            <span className="st-for">{v.antall_for ?? 0} for</span>
+            <span className="st-mot">{v.antall_mot ?? 0} mot</span>
+          </div>
+        </>
+      )}
 
-      {harFordeling ? (
+      {!v.akklamasjon && (harFordeling ? (
         <div className="st-partier">
           <div className="st-parti-kol">
             <span className="st-kol-tittel">For</span>
@@ -112,7 +118,7 @@ function Votering({ v }) {
         </div>
       ) : (
         <p className="st-ingen-fordeling">Partifordeling ikke tilgjengelig (reconcilerte ikke)</p>
-      )}
+      ))}
     </div>
   )
 }

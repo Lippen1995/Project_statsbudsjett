@@ -9,31 +9,47 @@ on:
 jobs:
   inspiser:
     runs-on: ubuntu-latest
-    env:
-      UA: "statsbudsjett-visualisering/1.0 (+https://github.com/Lippen1995/Project_statsbudsjett; åpne data)"
     steps:
-      - name: robots.txt for begge nettsteder
+      - name: votering-kode semantikk (voteringsresultat)
         run: |
-          for host in www.regjeringen.no www.statsbudsjettet.no; do
-            echo "==================== robots.txt: $host ===================="
-            curl -s -A "$UA" "https://$host/robots.txt" -w "\n[HTTP %{http_code}]\n" | head -c 1500
-            echo ""
-          done
+          # 26651 var tvetydig: for=33 mot=68 (sum 101, 68 fraværende)
+          echo "=== voteringsresultat for 26651 ==="
+          curl -s "https://data.stortinget.no/eksport/voteringsresultat?voteringid=26651&format=json" -o /tmp/vr.json
+          python3 -c "
+          import json
+          from collections import Counter
+          d=json.load(open('/tmp/vr.json'))
+          rl=d.get('voteringsresultat_liste') or []
+          print('antall rader:', len(rl))
+          print('ALLE FELT i én rad:')
+          for k,v in rl[0].items():
+              print('   ', k, '=', (json.dumps(v, ensure_ascii=False)[:80] if isinstance(v,(dict,list)) else v))
+          print()
+          print('Fordeling på votering-kode:', dict(Counter(r.get('votering') for r in rl)))
+          # Finnes en tekstlig variant?
+          for felt in ['votering','votering_resultat','fast_vararepresentant','representant']:
+              vals = set(str(r.get(felt)) for r in rl)
+              if felt != 'representant':
+                  print(f'unike {felt}:', list(vals)[:6])
+          "
 
-      - name: Ærlig henting med skikkelig User-Agent
+      - name: Sammenlign med kjent enkel votering (for=2)
         run: |
-          echo "=== regjeringen.no forside ==="
-          curl -s -A "$UA" -H "Accept: text/html" -w "HTTP %{http_code} | %{size_download} bytes | %{content_type}\n" \
-            "https://www.regjeringen.no/no/id4/" -o /tmp/reg.html
-          head -c 200 /tmp/reg.html; echo; echo "---"
-
-          echo "=== regjeringen.no – Prop 1 S (statsbudsjettet) tema-side ==="
-          curl -s -A "$UA" -H "Accept: text/html" -w "HTTP %{http_code} | %{size_download} bytes\n" \
-            "https://www.regjeringen.no/no/tema/okonomi-og-budsjett/norsk_okonomi/statsbudsjettet/id1437/" -o /tmp/tema.html
-          grep -oiE 'href="[^"]*(statsbudsjett|prop|id[0-9]+)[^"]*"' /tmp/tema.html | sort -u | head -15 || echo "  ingen lenker"
-
-          echo "=== statsbudsjettet.no forside ==="
-          curl -s -A "$UA" -H "Accept: text/html" -w "HTTP %{http_code} | %{size_download} bytes | %{content_type}\n" \
-            "https://www.statsbudsjettet.no" -o /tmp/sb.html
-          head -c 200 /tmp/sb.html; echo
-          grep -oiE '(href|src)="[^"]*(api|\.json|budsjett|kapittel)[^"]*"' /tmp/sb.html | sort -u | head -20 || echo "  ingen data-lenker"
+          echo "=== 26238 (for=2 mot=101) — hvilken kode har de 2 som stemte for? ==="
+          curl -s "https://data.stortinget.no/eksport/voteringsresultat?voteringid=26238&format=json" -o /tmp/v2.json
+          python3 -c "
+          import json
+          from collections import Counter
+          d=json.load(open('/tmp/v2.json'))
+          rl=d.get('voteringsresultat_liste') or []
+          print('kodefordeling:', dict(Counter(r.get('votering') for r in rl)))
+          # De som ikke er flertallskoden — vis parti
+          from collections import Counter as C
+          c=C(r.get('votering') for r in rl)
+          minoritet=min(c, key=c.get)
+          print('minste kode:', minoritet, '(', c[minoritet], 'stk)')
+          for r in rl:
+              if r.get('votering')==minoritet:
+                  rep=r.get('representant') or {}
+                  print('   ', rep.get('etternavn'), (rep.get('parti') or {}).get('navn'))
+          "

@@ -157,3 +157,10 @@
 @media (max-width: 640px) {
   .st-partier { grid-template-columns: 1fr; }
 }
+
+.st-akklamasjon {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 4px 0;
+}
