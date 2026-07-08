@@ -39,6 +39,22 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def _valgfri_ssb(funk, navn):
+    """
+    Kjør en SSB-avhengig funksjon som gir en TILLEGGSSERIE (KPI/BNP).
+    Returner resultatet, eller None hvis SSB-APIet feiler — da hopper vi over
+    serien i stedet for å felle hele ETL-en. Vi fabrikkerer aldri erstatningstall.
+    """
+    try:
+        return funk()
+    except SystemExit as e:
+        logger.warning(f"  [ADVARSEL] {navn} kunne ikke hentes fra SSB — hopper over.\n{e}")
+        return None
+    except Exception as e:
+        logger.warning(f"  [ADVARSEL] {navn} feilet ({type(e).__name__}): {e} — hopper over.")
+        return None
+
+
 def run(years=None, force=False):
     if years is None:
         years = YEARS
@@ -52,10 +68,13 @@ def run(years=None, force=False):
     logger.info("STEG 1: Nedlasting")
     files = download_all(years=years, force=force)
 
-    # 1b. KPI og BNP fra SSB (for faste kroner og %-av-BNP)
+    # 1b. KPI og BNP fra SSB (for faste kroner og %-av-BNP).
+    # Dette er TILLEGGSSERIER for ekstra visningsmoduser — hvis SSB-APIet er
+    # nede eller endret, hopper vi over dem (frontend skjuler modusene) i
+    # stedet for å felle hele pipeline. Vi fabrikkerer ALDRI erstatningstall.
     logger.info("\nSTEG 1b: KPI og BNP fra SSB")
-    kpi_path = download_kpi(force=force)
-    bnp_path = download_bnp(force=force)
+    kpi_path = _valgfri_ssb(lambda: download_kpi(force=force), "KPI")
+    bnp_path = _valgfri_ssb(lambda: download_bnp(force=force), "BNP")
 
     # 2. Parse regnskap
     logger.info("\nSTEG 2: Parser regnskapsdata")
@@ -84,8 +103,8 @@ def run(years=None, force=False):
     # 4. Parse befolkning, KPI og BNP
     logger.info("\nSTEG 4: Parser befolkning, KPI og BNP (SSB)")
     befolkning = parse_befolkning(files["befolkning"])
-    kpi = parse_ssb_aarsserie(kpi_path, "KPI")
-    bnp = parse_ssb_aarsserie(bnp_path, "BNP")
+    kpi = _valgfri_ssb(lambda: parse_ssb_aarsserie(kpi_path, "KPI"), "KPI") if kpi_path else None
+    bnp = _valgfri_ssb(lambda: parse_ssb_aarsserie(bnp_path, "BNP"), "BNP") if bnp_path else None
 
     # 5. Sanity-sjekk
     logger.info("\nSTEG 5: Sanity-sjekk")
@@ -99,8 +118,6 @@ def run(years=None, force=False):
     # 7. Skriv befolkning og meta
     logger.info("\nSTEG 7: Skriver støttefiler")
     _save_json(befolkning, OUTPUT_DIR / "befolkning.json")
-    _save_json({str(a): round(v, 2) for a, v in kpi.items()}, OUTPUT_DIR / "kpi.json")
-    _save_json({str(a): round(v, 1) for a, v in bnp.items()}, OUTPUT_DIR / "bnp.json")
 
     actual_years = sorted(regnskap_frames.keys())
     budget_years = sorted(bevilgning_df["aar"].dropna().unique().tolist())
@@ -111,7 +128,6 @@ def run(years=None, force=False):
         "siste_regnskap_aar": max(actual_years),
         "siste_budsjett_aar": max(int(y) for y in budget_years),
         "enhet": "mill_kr",
-        "kpi_basisaar": max(a for a in kpi if a <= max(actual_years)),
         "bnp_enhet": "mill_kr",
         "kilder": [
             {
@@ -126,6 +142,16 @@ def run(years=None, force=False):
             }
         ]
     }
+    if kpi:
+        _save_json({str(a): round(v, 2) for a, v in kpi.items()}, OUTPUT_DIR / "kpi.json")
+        meta["kpi_basisaar"] = max(a for a in kpi if a <= max(actual_years))
+    else:
+        logger.warning("  [ADVARSEL] Ingen KPI — 'faste kroner'-modus deaktiveres i frontend")
+    if bnp:
+        _save_json({str(a): round(v, 1) for a, v in bnp.items()}, OUTPUT_DIR / "bnp.json")
+    else:
+        logger.warning("  [ADVARSEL] Ingen BNP — '% av BNP'-modus deaktiveres i frontend")
+
     _save_json(meta, OUTPUT_DIR / "meta.json")
 
     logger.info(f"\n{'='*60}")

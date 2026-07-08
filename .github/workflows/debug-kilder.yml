@@ -1,31 +1,18 @@
 name: Debug – inspiser datakilder
 
+# Kjøres kun manuelt (Actions-fanen → Run workflow). Brukes til å inspisere
+# faktiske SSB-/DFØ-metadata når skjema eller API-endepunkter endrer seg.
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/debug-kilder.yml'
 
 jobs:
   inspiser:
     runs-on: ubuntu-latest
     steps:
-      - name: Finn KPI/BNP-tabeller som svarer i v0-APIet
+      - name: Sjekk SSB-tabeller (v0 metadata)
         run: |
-          # 07459 er kjent å fungere — referanse
-          for t in 07459 03013 1086 1087 08981 08183 09189 09190 11721 09842; do
+          for t in 07459 03013 09189; do
             code=$(curl -s -o /tmp/r.json -w "%{http_code}" "https://data.ssb.no/api/v0/no/table/$t")
-            titkey=$(python3 -c "import json;d=json.load(open('/tmp/r.json'));print('title=',repr(d.get('title'))[:60],'| keys=',list(d.keys())[:6])" 2>/dev/null || echo "IKKE-JSON")
-            echo "$t -> HTTP $code | $titkey"
+            echo "$t -> HTTP $code"
+            head -c 400 /tmp/r.json; echo; echo "---"
           done
-
-      - name: Full metadata for første KPI-treff (03013 via v0 uten /no/)
-        run: |
-          echo "=== prøv uten språk-segment ==="
-          curl -s -o /tmp/a.json -w "HTTP %{http_code}\n" "https://data.ssb.no/api/v0/en/table/03013"
-          head -c 300 /tmp/a.json; echo
-          echo "=== prøv nyere v2-beta ==="
-          curl -s -o /tmp/b.json -w "HTTP %{http_code}\n" "https://data.ssb.no/api/pxwebapi/v2-beta/tables/03013/metadata?lang=no"
-          head -c 600 /tmp/b.json; echo
-          curl -s -o /tmp/c.json -w "HTTP %{http_code}\n" "https://data.ssb.no/api/pxwebapi/v2-beta/tables/09189/metadata?lang=no"
-          head -c 600 /tmp/c.json; echo
