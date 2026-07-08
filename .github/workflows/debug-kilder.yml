@@ -10,42 +10,36 @@ jobs:
   inspiser:
     runs-on: ubuntu-latest
     steps:
-      - name: v2-beta metadata for KPI (03013) og BNP (09189)
+      - name: data.stortinget.no – åpent API for proposisjoner/budsjett
         run: |
-          for t in 03013 09189; do
-            echo "==================== v2 METADATA $t ===================="
-            curl -s -w "\nHTTP %{http_code}\n" \
-              "https://data.ssb.no/api/pxwebapi/v2-beta/tables/$t/metadata?lang=no&outputFormat=json-stat2" \
-              -o /tmp/m.json
-            head -c 200 /tmp/m.json; echo
-            python3 -c "
+          echo "=== Sesjoner ==="
+          curl -s "https://data.stortinget.no/eksport/sesjoner?format=json" | head -c 600; echo; echo "---"
+          echo "=== Saker i inneværende sesjon (budsjett?) — søk ==="
+          curl -s "https://data.stortinget.no/eksport/saker?sesjonid=2024-2025&format=json" -o /tmp/saker.json
+          echo "HTTP-størrelse: $(wc -c < /tmp/saker.json) bytes"
+          python3 -c "
           import json
-          d=json.load(open('/tmp/m.json'))
-          print('TOPPNØKLER:', list(d.keys()))
-          dims = d.get('dimension') or {}
-          role = (d.get('role') or {})
-          print('dimension-koder:', list(dims.keys()))
-          for code, dim in dims.items():
-              cat = dim.get('category', {})
-              idx = cat.get('index') or {}
-              lab = cat.get('label') or {}
-              items = list(idx.items())[:6] if isinstance(idx, dict) else list(enumerate(idx))[:6]
-              print(f'  {code} ({dim.get(\"label\")}):')
-              for k,_ in items:
-                  print(f'      {k} = {lab.get(k, \"\")}')
-              print(f'      (... {len(idx)} verdier)')
-          " 2>/dev/null || { echo "  (kunne ikke parse som json-stat2)"; head -c 1500 /tmp/m.json; }
-            echo ""
-          done
+          d=json.load(open('/tmp/saker.json'))
+          print('toppnøkler:', list(d.keys())[:10])
+          saker = d.get('saker_liste') or []
+          bud = [s for s in saker if 'budsjett' in (s.get('tittel','') or '').lower()][:8]
+          for s in bud:
+              print('  ', s.get('id'), '|', (s.get('tittel','')[:80]))
+          " 2>/dev/null || head -c 800 /tmp/saker.json
 
-      - name: v2-beta data-spørring (GET med valueCodes)
+      - name: statsbudsjettet.no – finnes strukturert data/API?
         run: |
-          echo "=== KPI 03013: totalindeks, alle år ==="
+          echo "=== statsbudsjettet.no forside (leter etter api/data/json-lenker) ==="
+          curl -sL "https://www.statsbudsjettet.no" -o /tmp/sb.html -w "HTTP %{http_code}, %{size_download} bytes, %{content_type}\n"
+          grep -oiE '(href|src)="[^"]*"' /tmp/sb.html | grep -iE 'api|\.json|data|last.?ned|download|export' | sort -u | head -30 || echo "  ingen åpenbare data-lenker"
+          echo "--- script-bundler (SPA?) ---"
+          grep -oiE 'src="[^"]*\.js[^"]*"' /tmp/sb.html | sort -u | head -10 || true
+
+      - name: regjeringen.no – Prop 1 S dokument-API
+        run: |
+          echo "=== regjeringen.no søk-API for statsbudsjett-dokumenter ==="
           curl -s -w "\nHTTP %{http_code}\n" \
-            "https://data.ssb.no/api/pxwebapi/v2-beta/tables/03013/data?lang=no&format=json-stat2&valueCodes%5BKonsumgrp%5D=TOTAL&valueCodes%5BTid%5D=*" \
-            | head -c 900
-          echo ""
-          echo "=== BNP 09189: alle år, første makrostørrelse ==="
-          curl -s -w "\nHTTP %{http_code}\n" \
-            "https://data.ssb.no/api/pxwebapi/v2-beta/tables/09189/data?lang=no&format=json-stat2&valueCodes%5BTid%5D=*" \
-            | head -c 900
+            "https://www.regjeringen.no/no/dokument/dep/fin/proposisjonar-og-meldingar/proposisjonar-til-stortinget/id1753/?term=Prop.%201%20S" \
+            -o /tmp/reg.html
+          echo "størrelse: $(wc -c < /tmp/reg.html) bytes"
+          grep -oiE 'href="[^"]*prop[^"]*"' /tmp/reg.html | sort -u | head -15 || echo "  ingen prop-lenker funnet"
