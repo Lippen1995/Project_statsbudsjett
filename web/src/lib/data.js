@@ -83,13 +83,37 @@ export function filtrerNoder(nodes, { skjulFin = true } = {}) {
     .filter(Boolean)
 }
 
-/** Bygg tidsserie for en node over alle år */
-export function byggTidsserie(node, years) {
+/**
+ * Sum en serie for en node over ett år, med samme filtrering som tabellen.
+ * Rekurserer til bladnodene og hopper over fin/SPU-undertrær når skjulFin er på,
+ * slik at grafen ikke får med 90-poster (lånetransaksjoner) som tabellen skjuler.
+ * Bevarer null (ingen data) i stedet for å tolke det som 0, så grafen får hull.
+ */
+function sumSerieFiltrert(node, year, serie, skjulFin) {
+  if (skjulFin && (node.fin || node.transfer)) return null
+  if (node.children?.length) {
+    let sum = 0, harData = false
+    for (const c of node.children) {
+      const v = sumSerieFiltrert(c, year, serie, skjulFin)
+      if (v != null) { sum += v; harData = true }
+    }
+    return harData ? sum : null
+  }
+  return node.serier?.[year]?.[serie] ?? null
+}
+
+/**
+ * Bygg tidsserie for en node over alle år.
+ * Med skjulFin bygges serien fra de filtrerte barna (som tabellen) i stedet for
+ * den forhåndsberegnede node.serier, som inkluderer fin/SPU-poster.
+ */
+export function byggTidsserie(node, years, skjulFin = false) {
+  const brukFilter = skjulFin && node?.children?.length
   return years.map(y => ({
     aar: y,
-    regnskap: node?.serier?.[y]?.regnskap ?? null,
-    saldert: node?.serier?.[y]?.saldert ?? null,
-    revidert: node?.serier?.[y]?.revidert ?? null,
+    regnskap: brukFilter ? sumSerieFiltrert(node, y, 'regnskap', true) : (node?.serier?.[y]?.regnskap ?? null),
+    saldert: brukFilter ? sumSerieFiltrert(node, y, 'saldert', true) : (node?.serier?.[y]?.saldert ?? null),
+    revidert: brukFilter ? sumSerieFiltrert(node, y, 'revidert', true) : (node?.serier?.[y]?.revidert ?? null),
   }))
 }
 

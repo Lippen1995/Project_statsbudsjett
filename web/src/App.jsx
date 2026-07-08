@@ -172,12 +172,13 @@ export default function App() {
           <aside className="side-seksjon">
             <section className="panel historikk-panel">
               <Historikkgraf
-                node={fokusNode ?? { id: 'rot', navn: side === 'utgifter' ? 'Alle utgifter' : 'Alle inntekter', serier: byggRotSerier(hierarki, meta.regnskap_aar.concat(meta.siste_budsjett_aar !== meta.siste_regnskap_aar ? [meta.siste_budsjett_aar] : [])) }}
+                node={fokusNode ?? { id: 'rot', navn: side === 'utgifter' ? 'Alle utgifter' : 'Alle inntekter', children: hierarki, serier: byggRotSerier(hierarki, meta.regnskap_aar.concat(meta.siste_budsjett_aar !== meta.siste_regnskap_aar ? [meta.siste_budsjett_aar] : [])) }}
                 years={meta.regnskap_aar}
                 budsjettAar={meta.siste_budsjett_aar}
                 modus={modus}
                 modusCtx={modusCtx}
                 side={side}
+                skjulFin={skjulFin}
                 pinnedNode={pinnedNode}
                 onPin={setPinnedNode}
               />

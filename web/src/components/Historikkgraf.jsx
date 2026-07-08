@@ -19,7 +19,7 @@ const HENDELSER = [
 ]
 
 export default function Historikkgraf({
-  node, years, budsjettAar, modus, modusCtx, side, pinnedNode, onPin,
+  node, years, budsjettAar, modus, modusCtx, side, pinnedNode, onPin, skjulFin,
 }) {
   const sisteRegnskapsAar = Math.max(...years)
   const extraYears = budsjettAar > sisteRegnskapsAar ? [...years, budsjettAar] : years
@@ -27,13 +27,13 @@ export default function Historikkgraf({
   const skaler = (v, aar) => transformVerdi(v, aar, modus, modusCtx)
 
   const alle = useMemo(
-    () => node?.serier ? byggTidsserie(node, extraYears) : [],
-    [node, extraYears]
+    () => (node?.serier || node?.children) ? byggTidsserie(node, extraYears, skjulFin) : [],
+    [node, extraYears, skjulFin]
   )
 
   const pinnetSerie = useMemo(
-    () => pinnedNode?.serier ? byggTidsserie(pinnedNode, extraYears) : null,
-    [pinnedNode, extraYears]
+    () => (pinnedNode?.serier || pinnedNode?.children) ? byggTidsserie(pinnedNode, extraYears, skjulFin) : null,
+    [pinnedNode, extraYears, skjulFin]
   )
 
   const data = useMemo(() => {
