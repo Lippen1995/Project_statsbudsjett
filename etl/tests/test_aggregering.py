@@ -266,7 +266,7 @@ def test_bygg_tre_aggregering():
         [2023, "07", "HOD", "0732", "RHF", "71", "Annet",
          "6", "Tilskudd", "601", "Tilskudd", 50.0, True, False, False, False],
     ])
-    nodes = _build_tree(regnskap, _bev_df([]), [2023], prefix="u")
+    nodes, _ = _build_tree(regnskap, _bev_df([]), [2023], prefix="u")
 
     assert len(nodes) == 1
     dept = nodes[0]
@@ -285,7 +285,7 @@ def test_bygg_tre_budsjett_rulles_opp():
     bev = _bev_df([
         [2023, "07", "HOD", "0732", "RHF", "70", "Tilskudd", 100.0, 110.0],
     ])
-    nodes = _build_tree(regnskap, bev, [2023], prefix="u")
+    nodes, _ = _build_tree(regnskap, bev, [2023], prefix="u")
     dept = nodes[0]
     post = dept["children"][0]["children"][0]
     assert post["serier"]["2023"]["saldert"] == 100.0
@@ -304,27 +304,31 @@ def test_bygg_tre_budsjettaar_uten_regnskap():
     bev = _bev_df([
         [2025, "07", "HOD", "0732", "RHF", "70", "Tilskudd", 105.0, 105.0],
     ])
-    nodes = _build_tree(regnskap, bev, [2024], prefix="u")
+    nodes, _ = _build_tree(regnskap, bev, [2024], prefix="u")
     post = nodes[0]["children"][0]["children"][0]
     assert post["serier"]["2024"]["regnskap"] == 95.0
     assert post["serier"]["2025"]["saldert"] == 105.0
     assert post["serier"]["2025"]["regnskap"] is None
 
 
-def test_bygg_tre_artskonto():
+def test_bygg_tre_artskonto_i_detaljer():
     regnskap = _regnskap_df([
         [2023, "07", "HOD", "0732", "RHF", "70", "Tilskudd",
          "5", "Lønnskostnad", "500", "Lønn fast ansatte", 60.0, True, False, False, False],
         [2023, "07", "HOD", "0732", "RHF", "70", "Tilskudd",
          "6", "Annen driftskostnad", "601", "Leie lokaler", 40.0, True, False, False, False],
     ])
-    nodes = _build_tree(regnskap, _bev_df([]), [2023], prefix="u")
+    nodes, detaljer = _build_tree(regnskap, _bev_df([]), [2023], prefix="u")
     post = nodes[0]["children"][0]["children"][0]
-    ak = post["artskonto"]["2023"]
+    # Hovedtreet er slanket: artskonto ligger i detaljer, ikke på noden
+    assert "artskonto" not in post
+    assert post["harDetaljer"] is True
+    assert post["serier"]["2023"]["regnskap"] == 100.0
+
+    ak = detaljer["07"][post["id"]]["artskonto"]["2023"]
     assert ak["500"]["belop"] == 60.0
     assert ak["500"]["klasseNavn"] == "Lønnskostnad"
     assert ak["601"]["belop"] == 40.0
-    assert post["serier"]["2023"]["regnskap"] == 100.0
 
 
 def test_bygg_tre_fin_flagg():
@@ -332,6 +336,67 @@ def test_bygg_tre_fin_flagg():
         [2023, "07", "HOD", "0732", "RHF", "90", "Utlån",
          "9", "Finans", "901", "Utlån", 500.0, True, True, False, False],
     ])
-    nodes = _build_tree(regnskap, _bev_df([]), [2023], prefix="u")
+    nodes, _ = _build_tree(regnskap, _bev_df([]), [2023], prefix="u")
     post = nodes[0]["children"][0]["children"][0]
     assert post.get("fin") == True
+
+
+# --- SSB årsserie-parser (KPI/BNP) ---
+
+def test_parse_ssb_aarsserie_aarlig(tmp_path):
+    from parse_befolkning import parse_ssb_aarsserie
+    ssb = {
+        "dimension": {"Tid": {"category": {"index": {"2022": 0, "2023": 1}}}},
+        "value": [118.0, 124.5],
+    }
+    p = tmp_path / "kpi.json"
+    p.write_text(json.dumps(ssb), encoding="utf-8")
+    r = parse_ssb_aarsserie(p, "KPI")
+    assert r == {2022: 118.0, 2023: 124.5}
+
+
+def test_parse_ssb_aarsserie_maanedlig_snittes(tmp_path):
+    from parse_befolkning import parse_ssb_aarsserie
+    ssb = {
+        "dimension": {"Tid": {"category": {"index": {
+            "2023M01": 0, "2023M02": 1, "2024M01": 2,
+        }}}},
+        "value": [100.0, 102.0, 110.0],
+    }
+    p = tmp_path / "kpi_mnd.json"
+    p.write_text(json.dumps(ssb), encoding="utf-8")
+    r = parse_ssb_aarsserie(p, "KPI")
+    assert abs(r[2023] - 101.0) < 0.001   # snitt av 100 og 102
+    assert abs(r[2024] - 110.0) < 0.001
+
+
+# --- Virksomhetsdimensjon ---
+
+def test_parse_regnskap_med_virksomheter(tmp_path):
+    rader = [
+        _regnskap_rad(2023, 202301, "13", "SD", "1320", "SVV",
+                      "132001", "Drift", "Utgifter til drift",
+                      "6", "Kostnad", "601", "Leie", "1000000,000"),
+    ]
+    df, virk = parse_regnskap([_skriv_regnskap(tmp_path, rader)], 2023,
+                              med_virksomheter=True)
+    assert len(virk) == 1
+    assert virk.iloc[0]["virk_id"] == "999999999"
+    assert virk.iloc[0]["virk_navn"] == "Testvirksomhet"
+    assert abs(virk.iloc[0]["belop_mill"] - 1.0) < 0.001
+
+
+def test_bygg_tre_virksomheter_i_detaljer():
+    regnskap = _regnskap_df([
+        [2023, "13", "SD", "1320", "SVV", "01", "Drift",
+         "6", "Kostnad", "601", "Leie", 100.0, True, False, False, False],
+    ])
+    virk = pd.DataFrame([
+        [2023, "1320", "01", "971032081", "Statens vegvesen", True, 100.0],
+    ], columns=["aar", "kap", "post", "virk_id", "virk_navn", "er_utgift", "belop_mill"])
+
+    nodes, detaljer = _build_tree(regnskap, _bev_df([]), [2023], prefix="u", virk=virk)
+    post = nodes[0]["children"][0]["children"][0]
+    d = detaljer["13"][post["id"]]
+    assert d["virksomheter"]["2023"]["971032081"]["belop"] == 100.0
+    assert d["virksomheter"]["2023"]["971032081"]["navn"] == "Statens vegvesen"

@@ -29,6 +29,22 @@
 }
 .footer-attributt a:hover { text-decoration: underline; }
 
+.footer-hoyre {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-lenke {
+  border: none;
+  background: none;
+  font-size: 0.78rem;
+  color: var(--teal);
+  padding: 0;
+  text-decoration: underline;
+}
+.footer-lenke:hover { color: var(--text); }
+
 .footer-dato {
   font-size: 0.75rem;
   color: var(--text-faint);

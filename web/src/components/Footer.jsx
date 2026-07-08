@@ -1,7 +1,7 @@
 import React from 'react'
 import './Footer.css'
 
-export default function Footer({ meta }) {
+export default function Footer({ meta, onVisOmTallene }) {
   if (!meta) return null
   const oppdatert = meta.oppdatert
     ? new Date(meta.oppdatert).toLocaleDateString('nb-NO', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -18,11 +18,12 @@ export default function Footer({ meta }) {
             </span>
           ))}
         </div>
-        {oppdatert && (
-          <span className="footer-dato">
-            Sist oppdatert: {oppdatert}
-          </span>
-        )}
+        <div className="footer-hoyre">
+          {onVisOmTallene && (
+            <button className="footer-lenke" onClick={onVisOmTallene}>Om tallene</button>
+          )}
+          {oppdatert && <span className="footer-dato">Sist oppdatert: {oppdatert}</span>}
+        </div>
       </div>
     </footer>
   )

@@ -1,0 +1,42 @@
+.virk-panel { padding: 20px; }
+
+.virk-header { margin-bottom: 12px; }
+.virk-tittel { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.virk-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+.virk-liste { display: flex; flex-direction: column; gap: 2px; }
+
+.virk-rad { border-radius: 4px; }
+.virk-ovrige { opacity: 0.7; }
+
+.virk-bar-wrapper { height: 2px; background: var(--bg); }
+.virk-bar { height: 100%; }
+.virk-bar--rust { background: var(--rust); opacity: 0.4; }
+.virk-bar--teal { background: var(--teal); opacity: 0.4; }
+
+.virk-innhold {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+}
+.virk-navn {
+  flex: 1;
+  font-size: 0.82rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.virk-andel {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  font-family: var(--mono);
+  min-width: 42px;
+  text-align: right;
+}
+.virk-belop {
+  font-size: 0.82rem;
+  min-width: 74px;
+  text-align: right;
+}

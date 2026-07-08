@@ -12,11 +12,47 @@
 
 .historikk-header {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 8px;
   margin-bottom: 12px;
-  flex-wrap: wrap;
 }
+
+.historikk-tittelrad {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.pin-knapp {
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 14px;
+  padding: 3px 10px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.pin-knapp:hover { border-color: #aaa; color: var(--text); }
+.pin-knapp.aktiv { background: #eaf1f8; color: #3b6ea5; border-color: #b9d0e6; }
+
+.sammenlign-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.sml-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.sml-fjern {
+  border: none; background: none; color: var(--text-faint);
+  font-size: 1rem; line-height: 1; padding: 0 4px;
+}
+.sml-fjern:hover { color: var(--rust); }
 
 .historikk-tittel {
   font-size: 0.95rem;

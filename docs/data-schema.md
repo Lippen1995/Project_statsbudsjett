@@ -146,10 +146,17 @@ Folketallet er per 1.1. i året.
 
 | Fil | Innhold |
 |-----|---------|
-| `utgifter.json` | Utgiftshierarki: departement → kapittel → post (kap. 0001–2999) |
+| `utgifter.json` | Utgiftshierarki: departement → kapittel → post (kap. 0001–2999). **Slanket** — artskonto/virksomheter ligger i detaljfiler. Poster med detaljer har `harDetaljer: true`. |
 | `inntekter.json` | Inntektshierarki (kap. 3000–5999) |
+| `detaljer/{u\|i}-{dept}.json` | Lazy-lastet per departement: `{postNodeId: {artskonto, virksomheter}}` |
 | `befolkning.json` | `{år: folketall}` |
-| `meta.json` | Årsintervall, oppdateringstid, kilder |
+| `kpi.json` | `{år: KPI-totalindeks}` (SSB 08981/03013) — for faste kroner |
+| `bnp.json` | `{år: BNP løpende priser, mill. kr}` (SSB 09189) — for %-av-BNP |
+| `meta.json` | Årsintervall, oppdateringstid, kilder, `kpi_basisaar` |
+
+**Ytelse:** hovedtrærne lastes ved oppstart (~1–2 MB); artskonto og
+virksomheter (det store volumet) lastes først når man driller til en post,
+fra `detaljer/`-filen for postens departement.
 
 **Beløpsenhet i output: millioner kroner** (1 desimal).
 Utgifter positive; inntekter positive (fortegn snus for kap. ≥ 3000 i ETL).
