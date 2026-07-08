@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { filtrerNoder, sumVerdi } from '../lib/data'
-import { forklarDepartement, forklarInntekt } from '../lib/forklaringer'
+import { forklarDepartement, forklarInntekt, grupperInntekt, INNTEKT_GRUPPER } from '../lib/forklaringer'
 import './Forklart.css'
 
 const NB0 = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -11,6 +11,9 @@ const PETRO = new Set(['5507', '5508', '5440', '5445', '5446', '5685'])
 function kapNr(tag) { return String(tag ?? '').match(/\d{3,4}/)?.[0] ?? '' }
 const erPetro = (tag) => PETRO.has(kapNr(tag))
 const erLaan = (tag) => kapNr(tag) === '5999'   // statslånemidler = finansiering, ikke inntekt
+
+// De store inntektskildene vises som egne rader; resten grupperes i temaer.
+const HOVEDKAP = new Set(['5501', '5521', '5700'])
 
 /** kr per innbygger, avrundet til nærmeste hundrelapp for lesbarhet */
 function perInnbygger(millKr, folk) {
@@ -111,16 +114,26 @@ export default function Forklart({ data, onAapneUtforsk }) {
   }, [filtrertUtg, aar, fjor, harFjor, folk])
 
   // --- Hvor kommer pengene fra? (skatt + oljepengebruk) --------------------
+  // De fire store kildene (oljepengebruk + de tre store skattene) vises som
+  // egne rader. Alt annet samles i tematiske grupper, så «Annet» blir minimal.
   const innRader = useMemo(() => {
-    const fondRad = fondUttak > 0
-      ? { node: { id: 'fond-uttak', navn: 'Overføring fra Oljefondet', tag: 'Kap. 5800' },
-          mill: fondUttak, forklaring: forklarInntekt('Kap. 5800'), erFond: true }
-      : null
-    const alle = [...innByKat.ordRader, ...(fondRad ? [fondRad] : [])]
+    const hoved = []
+    const grupper = {}
+    for (const r of innByKat.ordRader) {
+      if (HOVEDKAP.has(kapNr(r.node.tag))) { hoved.push(r); continue }
+      const g = grupperInntekt(r.node.tag, r.node.navn)
+      const bøtte = (grupper[g] ??= { key: g, gruppe: INNTEKT_GRUPPER[g], mill: 0, antall: 0, erGruppe: true })
+      bøtte.mill += r.mill
+      bøtte.antall += 1
+    }
+    if (fondUttak > 0) hoved.push({
+      node: { id: 'fond-uttak', navn: 'Overføring fra Oljefondet', tag: 'Kap. 5800' },
+      mill: fondUttak, forklaring: forklarInntekt('Kap. 5800'), erFond: true,
+    })
+    const annetMill = grupper.annet?.mill ?? 0
+    const rader = [...hoved, ...Object.values(grupper).filter(g => g.key !== 'annet')]
       .sort((a, b) => b.mill - a.mill)
-    const topp = alle.slice(0, 8)
-    const restMill = alle.slice(8).reduce((s, r) => s + r.mill, 0)
-    return { topp, restMill }
+    return { rader, annetMill }
   }, [innByKat, fondUttak])
 
   const finansiering = innByKat.ordinaer + fondUttak
@@ -287,22 +300,29 @@ export default function Forklart({ data, onAapneUtforsk }) {
           <span className="fk-seksjon-sum">{krFmt(perInnbygger(finansiering, folk))} per innbygger</span>
         </div>
         <ul className="fk-liste">
-          {innRader.topp.map(r => {
+          {innRader.rader.map(r => {
             const perPerson = perInnbygger(r.mill, folk)
             const andel = finansiering ? (r.mill / finansiering) * 100 : 0
-            const klikk = r.erFond
+            const ikon = r.erGruppe ? r.gruppe.ikon : (r.forklaring?.ikon ?? '💠')
+            const tittel = r.erGruppe ? r.gruppe.kort : (r.forklaring?.kort ?? r.node.navn)
+            const tekst = r.erGruppe ? r.gruppe.tekst : (r.forklaring?.tekst ?? r.node.navn)
+            const key = r.erGruppe ? r.key : r.node.id
+            // Grupper og oljefondsraden dekker mange kapitler → åpne hele
+            // inntektssiden. Enkeltkapitler drilles rett inn.
+            const klikk = (r.erGruppe || r.erFond)
               ? () => onAapneUtforsk('inntekter', [], { skjulFin: false })
               : () => onAapneUtforsk('inntekter', [r.dept, r.node])
             return (
-              <li key={r.node.id}>
+              <li key={key}>
                 <button className={`fk-rad ${r.erFond ? 'fk-rad--fond' : ''}`} onClick={klikk}>
-                  <span className="fk-ikon" aria-hidden>{r.forklaring?.ikon ?? '💠'}</span>
+                  <span className="fk-ikon" aria-hidden>{ikon}</span>
                   <span className="fk-rad-midt">
                     <span className="fk-rad-tittel">
-                      {r.forklaring?.kort ?? r.node.navn}
+                      {tittel}
+                      {r.erGruppe && <span className="fk-gruppe-merke">{r.antall} kapitler</span>}
                       <span className="fk-andel">{andel.toFixed(0)} %</span>
                     </span>
-                    <span className="fk-rad-tekst">{r.forklaring?.tekst ?? r.node.navn}</span>
+                    <span className="fk-rad-tekst">{tekst}</span>
                     <span className="fk-bar-spor">
                       <span className={`fk-bar ${r.erFond ? 'fk-bar--gold' : 'fk-bar--teal'}`}
                         style={{ width: `${Math.min(andel, 100)}%` }} />
@@ -316,16 +336,21 @@ export default function Forklart({ data, onAapneUtforsk }) {
               </li>
             )
           })}
-          {innRader.restMill > 0 && (
+          {innRader.annetMill > 0 && (
             <li>
               <div className="fk-rad fk-rad--rest">
-                <span className="fk-ikon" aria-hidden>➕</span>
+                <span className="fk-ikon" aria-hidden>{INNTEKT_GRUPPER.annet.ikon}</span>
                 <span className="fk-rad-midt">
-                  <span className="fk-rad-tittel">Andre inntekter og avgifter</span>
-                  <span className="fk-rad-tekst">Mindre skatter, avgifter, gebyrer og renteinntekter.</span>
+                  <span className="fk-rad-tittel">
+                    {INNTEKT_GRUPPER.annet.kort}
+                    <span className="fk-andel">
+                      {(finansiering ? (innRader.annetMill / finansiering) * 100 : 0).toFixed(1)} %
+                    </span>
+                  </span>
+                  <span className="fk-rad-tekst">{INNTEKT_GRUPPER.annet.tekst}</span>
                 </span>
                 <span className="fk-rad-hoyre">
-                  <span className="fk-perperson num">{krFmt(perInnbygger(innRader.restMill, folk))}</span>
+                  <span className="fk-perperson num">{krFmt(perInnbygger(innRader.annetMill, folk))}</span>
                   <span className="fk-perperson-lab">per innbygger</span>
                 </span>
               </div>
