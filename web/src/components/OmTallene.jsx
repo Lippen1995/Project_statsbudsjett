@@ -34,24 +34,21 @@ export default function OmTallene({ onLukk, meta }) {
             er bruttobudsjettert: de fører utgifter og inntekter separat, ikke som et nettotall.
           </p>
 
-          <h3>Hva postnummeret betyr</h3>
+          <h3>Posttype og formål</h3>
           <p>
-            Hver post har et nummer som følger statens standard kontoplan
-            (bevilgningsreglementet). Nummeret forteller <em>hva slags</em> utgift eller
-            inntekt det er – derfor viser hver post en liten type-merkelapp og en forklaring
-            når du borer helt ned til postnivå. Grovinndelingen:
+            Alle forklaringer på postnivå kommer rett fra DFØs egne felt – ingenting er
+            skrevet på fritt grunnlag:
           </p>
           <ul>
-            <li><strong>Utgifter:</strong> 01–29 drift · 30–49 investeringer · 50–59 til statlige
-              mottakere/fond · 60–69 til kommuner · 70–89 tilskudd og stønader til private ·
-              90–99 lånetransaksjoner.</li>
-            <li><strong>Inntekter:</strong> 01–29 salg og gebyrer · 30–49 salg av eiendom ·
-              50–69 overføringer · 70–89 skatter og avgifter · 90–99 tilbakebetalinger.</li>
+            <li><strong>Posttype</strong> – DFØs tekstlige <code>Post_type</code> (f.eks.
+              «Utgifter til drift», «Andre overføringer», «Utlån, kapitaltilskudd og aksjer»).
+              Følger statens standard kontoplan, der postnummeret bestemmer typen: 01–29 drift,
+              30–49 investeringer, 50–69 overføringer til stat/kommune, 70–89 tilskudd og
+              stønader / skatter og avgifter, 90–99 lånetransaksjoner.</li>
+            <li><strong>Formål</strong> – DFØs <code>Programområde</code> ›
+              <code>Programkategori</code>, som viser hva kapitlet er til (f.eks.
+              «Innenlands transport › Veiformål»).</li>
           </ul>
-          <p>
-            For gjengangere med et veldefinert innhold (de store skattene, folketrygdytelsene,
-            rammetilskudd m.m.) viser vi i tillegg en klarspråklig forklaring av selve ordningen.
-          </p>
 
           <h3>Finanstransaksjoner (90-poster)</h3>
           <p>

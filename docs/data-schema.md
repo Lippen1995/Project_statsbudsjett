@@ -68,6 +68,21 @@ er ~134 MB / ~285 000 rader. Det finnes også `statsregnskapet_SRS_aar_*.zip`
 | 70–85 | Andre overføringer (tilskudd) |
 | 90–99 | **Utlån, kapitaltilskudd og aksjer** (→ `fin`-flagg) |
 
+### Kildebaserte klassifiseringer i hierarkiet
+
+Følgende DFØ-felt tas med i `utgifter.json`/`inntekter.json` og vises i
+frontend som forklaring på hva en post er (ingen fritekst – rett fra kilden):
+
+| Node | Felt | DFØ-kolonne |
+|------|------|-------------|
+| post | `postType` | `Post_type` (tekstlig posttype) |
+| kapittel | `omrade` | `Programområde` (formål, øverste nivå) |
+| kapittel | `kategori` | `Programkategori` (formål, nivå under) |
+
+Feltene er valgfrie: mangler de i en kildefil (eller for rene budsjettposter),
+utelates de, og frontend faller tilbake på posttype utledet av postnummeret
+(statens standard kontoplan).
+
 ### Eksempelrad (faktisk)
 
 ```

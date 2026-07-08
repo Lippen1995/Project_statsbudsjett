@@ -196,6 +196,36 @@
   line-height: 1.4;
   color: var(--text-muted);
   max-width: 78ch;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.formaal-merke {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--teal);
+  background: var(--teal-light);
+  border-radius: 3px;
+  padding: 1px 6px;
+  flex-shrink: 0;
+}
+
+.formaal-linje {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.82rem;
+  color: var(--text);
+  flex-wrap: wrap;
+}
+.formaal-kilde {
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  font-style: italic;
 }
 
 .rad-hoyre {

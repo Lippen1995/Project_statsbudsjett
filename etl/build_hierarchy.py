@@ -84,16 +84,22 @@ def _build_tree(regnskap: pd.DataFrame, bevilgning: pd.DataFrame,
     """
 
     # --- Aggreger regnskap til post-nivå ---
+    agg_kwargs = dict(
+        belop_mill=("belop_mill", "sum"),
+        dept_navn=("dept_navn", "first"),
+        kap_navn=("kap_navn", "first"),
+        post_navn=("post_navn", "first"),
+        fin=("fin", "first"),
+        transfer=("transfer", "first"),
+    )
+    # Kildebaserte klassifiseringer fra DFØ (tas med når de finnes i dataene):
+    #   post_type – tekstlig posttype ; omrade/kategori – programområde/-kategori (formål)
+    for kol in ("post_type", "omrade", "kategori"):
+        if kol in regnskap.columns:
+            agg_kwargs[kol] = (kol, "first")
     grp = (
         regnskap.groupby(["aar", "dept_kode", "kap", "post"], dropna=False)
-        .agg(
-            belop_mill=("belop_mill", "sum"),
-            dept_navn=("dept_navn", "first"),
-            kap_navn=("kap_navn", "first"),
-            post_navn=("post_navn", "first"),
-            fin=("fin", "first"),
-            transfer=("transfer", "first"),
-        )
+        .agg(**agg_kwargs)
         .reset_index()
     )
 
@@ -124,6 +130,13 @@ def _build_tree(regnskap: pd.DataFrame, bevilgning: pd.DataFrame,
             }
         return tree[dept]
 
+    def _tekst(v):
+        """Ren tekstverdi eller None (filtrer bort NaN/tomt/'nan')."""
+        if v is None or (isinstance(v, float) and pd.isna(v)):
+            return None
+        s = str(v).strip()
+        return s if s and s.lower() != "nan" else None
+
     for row in grp.itertuples(index=False):
         aar = int(row.aar)
         dept = str(row.dept_kode).strip().zfill(2) if pd.notna(row.dept_kode) else "00"
@@ -145,6 +158,13 @@ def _build_tree(regnskap: pd.DataFrame, bevilgning: pd.DataFrame,
                 "serier": defaultdict(_tom_serie),
                 "transfer": bool(row.transfer),
             }
+            # DFØs formålsklassifisering (programområde › programkategori)
+            omrade = _tekst(getattr(row, "omrade", None))
+            kategori = _tekst(getattr(row, "kategori", None))
+            if omrade:
+                kap_map[kap]["omrade"] = omrade
+            if kategori:
+                kap_map[kap]["kategori"] = kategori
         kap_node = kap_map[kap]
         s = kap_node["serier"][aar]
         s["regnskap"] = round((s["regnskap"] or 0.0) + belop, 1)
@@ -161,6 +181,10 @@ def _build_tree(regnskap: pd.DataFrame, bevilgning: pd.DataFrame,
                 "fin": bool(row.fin),
                 "transfer": bool(row.transfer),
             }
+            # DFØs tekstlige posttype (kildebasert)
+            ptype = _tekst(getattr(row, "post_type", None))
+            if ptype:
+                post_map[post]["postType"] = ptype
             post_index[(kap, post)] = post_map[post]
         post_node = post_map[post]
         s = post_node["serier"][aar]
@@ -317,6 +341,13 @@ def _build_tree(regnskap: pd.DataFrame, bevilgning: pd.DataFrame,
             out["fin"] = True
         if node.get("transfer"):
             out["transfer"] = True
+        # Kildebaserte klassifiseringer (DFØ)
+        if node.get("postType"):
+            out["postType"] = node["postType"]
+        if node.get("omrade"):
+            out["omrade"] = node["omrade"]
+        if node.get("kategori"):
+            out["kategori"] = node["kategori"]
 
         detalj = {}
         if node.get("artskonto"):

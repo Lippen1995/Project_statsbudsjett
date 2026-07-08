@@ -29,7 +29,8 @@ SPU_KAPITLER = {"2800", "5800"}
 
 # Kolonner vi faktisk trenger (usecols sparer minne — filene er ~130 MB/år)
 USECOLS = [
-    "År", "Fagdepartement_id", "Fagdepartement",
+    "År", "Programområde", "Programkategori",
+    "Fagdepartement_id", "Fagdepartement",
     "Kapittel_id", "Kapittel", "Post_id", "Post", "Post_type",
     "Kontoklasse_id", "Kontoklasse", "Artskonto_id", "Artskonto",
     "Virksomhet_id", "Virksomhet",
@@ -38,6 +39,8 @@ USECOLS = [
 
 RENAME = {
     "År": "aar",
+    "Programområde": "omrade",
+    "Programkategori": "kategori",
     "Fagdepartement_id": "dept_kode",
     "Fagdepartement": "dept_navn",
     "Kapittel_id": "kap",
@@ -148,10 +151,14 @@ def parse_regnskap(paths: list, year: int, med_virksomheter: bool = False):
     ok["transfer"] = ok["kap"].isin(SPU_KAPITLER)
 
     # Aggreger måneder → år, per dept/kap/post/artskonto
+    # Kildebaserte klassifiseringer (DFØ): posttype-tekst og formål
+    # (programområde/-kategori) tas med som grupperingsnøkler. De er
+    # funksjonelt bestemt av post/kapittel, så radantallet endres ikke.
     grp = (
         ok.groupby(
             ["aar", "dept_kode", "dept_navn", "kap", "kap_navn",
-             "post", "post_navn", "klasse_id", "klasse_navn",
+             "post", "post_navn", "post_type", "omrade", "kategori",
+             "klasse_id", "klasse_navn",
              "artskonto", "artskonto_navn", "er_utgift", "fin", "transfer"],
             dropna=False,
         )["belop_mill"]

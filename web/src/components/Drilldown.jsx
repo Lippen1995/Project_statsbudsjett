@@ -4,8 +4,14 @@ import {
   byggSokeindeks, sokGlobalt, lastNedCSV,
 } from '../lib/data'
 import { formatVerdi } from '../lib/format'
-import { forklarPost } from '../lib/postforklaring'
+import { posttypeFallback } from '../lib/postforklaring'
 import './Drilldown.css'
+
+/** DFØs formålsklassifisering «Programområde › Programkategori» (kildebasert) */
+function formaalTekst(node) {
+  const deler = [node?.omrade, node?.kategori].filter(Boolean)
+  return deler.length ? deler.join(' › ') : null
+}
 
 export default function Drilldown({
   hierarki, side, valgtAar, modus, modusCtx,
@@ -103,10 +109,18 @@ export default function Drilldown({
     )
   }
 
+  const headerFormaal = formaalTekst([...sti].reverse().find(n => n.niva === 'kapittel'))
+
   return (
     <div className="drilldown">
       <div className="drilldown-header">
         <Breadcrumb sti={sti} onToppnivaa={onToppnivaa} onBreadcrumb={onBreadcrumb} side={side} />
+        {headerFormaal && (
+          <div className="formaal-linje">
+            <span className="formaal-merke">Formål</span>{headerFormaal}
+            <span className="formaal-kilde">DFØ programområde › -kategori</span>
+          </div>
+        )}
         <div className="drilldown-topprad">
           <span className="drilldown-total num">
             {formatVerdi(skaler(totalBrutto), modus)}
@@ -131,7 +145,10 @@ export default function Drilldown({
           const erFokus = fokusNode?.id === node.id
           const kanDrilles = (node.children?.length ?? 0) > 0 || node.niva === 'post'
           const handleKlikk = () => kanDrilles ? onDrill(node) : onFokus(node)
-          const pf = node.niva === 'post' ? forklarPost(node.tag, node.navn, side) : null
+          // Kildebaserte klassifiseringer fra DFØ (reserve: statens kontoplan)
+          const posttype = node.niva === 'post'
+            ? (node.postType || posttypeFallback(node.tag, side)) : null
+          const formaal = node.niva === 'kapittel' ? formaalTekst(node) : null
 
           return (
             <div
@@ -142,7 +159,7 @@ export default function Drilldown({
               onClick={handleKlikk}
               onMouseEnter={() => onFokus(node)}
               onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), handleKlikk())}
-              aria-label={`${node.navn}: ${formatVerdi(skalerV, modus)}${pf ? `. ${pf.kort}: ${pf.tekst}` : ''}`}
+              aria-label={`${node.navn}: ${formatVerdi(skalerV, modus)}${posttype ? `. Posttype: ${posttype}` : ''}${formaal ? `. Formål: ${formaal}` : ''}`}
             >
               <div className="rad-bar-wrapper">
                 <div
@@ -154,7 +171,7 @@ export default function Drilldown({
                 <div className="rad-venstre">
                   <span className="rad-navn">{node.navn}</span>
                   {node.tag && <span className="rad-tag">{node.tag}</span>}
-                  {pf && <span className="post-type" title={pf.tekst}>{pf.kort}</span>}
+                  {posttype && <span className="post-type" title="Posttype (DFØ / statens kontoplan)">{posttype}</span>}
                   {node.fin && <span className="merke merke--fin">90-post</span>}
                   {node.transfer && <span className="merke merke--spu">SPU</span>}
                 </div>
@@ -164,7 +181,7 @@ export default function Drilldown({
                   <span className="rad-pil" aria-hidden>{kanDrilles ? '›' : ''}</span>
                 </div>
               </div>
-              {pf && <p className="rad-forklaring">{pf.tekst}</p>}
+              {formaal && <p className="rad-forklaring"><span className="formaal-merke">Formål</span>{formaal}</p>}
             </div>
           )
         })}

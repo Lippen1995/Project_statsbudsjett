@@ -331,6 +331,37 @@ def test_bygg_tre_artskonto_i_detaljer():
     assert ak["601"]["belop"] == 40.0
 
 
+def test_bygg_tre_kildefelt_posttype_og_formaal():
+    # DFØs kildefelt (post_type, omrade, kategori) skal følge med til nodene:
+    # posttype på post, formål (programområde/-kategori) på kapittel.
+    regnskap = _regnskap_df([
+        [2023, "13", "SD", "1320", "Statens vegvesen", "01", "Driftsutgifter",
+         "6", "Kostnad", "601", "Leie", 100.0, True, False, False, False],
+    ])
+    regnskap["post_type"] = "Utgifter til drift"
+    regnskap["omrade"] = "Innenlands transport"
+    regnskap["kategori"] = "Veiformål"
+
+    nodes, _ = _build_tree(regnskap, _bev_df([]), [2023], prefix="u")
+    kap = nodes[0]["children"][0]
+    post = kap["children"][0]
+    assert kap["omrade"] == "Innenlands transport"
+    assert kap["kategori"] == "Veiformål"
+    assert post["postType"] == "Utgifter til drift"
+
+
+def test_bygg_tre_uten_kildefelt_er_ok():
+    # Mangler kildefeltene (eldre data / budsjettposter) → ingen krasj, ingen felt
+    regnskap = _regnskap_df([
+        [2023, "13", "SD", "1320", "SVV", "01", "Drift",
+         "6", "Kostnad", "601", "Leie", 100.0, True, False, False, False],
+    ])
+    nodes, _ = _build_tree(regnskap, _bev_df([]), [2023], prefix="u")
+    post = nodes[0]["children"][0]["children"][0]
+    assert "postType" not in post
+    assert "omrade" not in nodes[0]["children"][0]
+
+
 def test_bygg_tre_fin_flagg():
     regnskap = _regnskap_df([
         [2023, "07", "HOD", "0732", "RHF", "90", "Utlån",
