@@ -1,0 +1,159 @@
+.stortinget-panel {
+  padding: 20px 24px;
+}
+
+.st-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.st-tittel {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.st-undertittel {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.st-sesjonvelger {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.st-sesjonvelger select {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 0.85rem;
+  font-family: var(--mono);
+  background: var(--panel);
+  color: var(--text);
+}
+
+.st-tom, .st-ingen-fordeling {
+  font-size: 0.82rem;
+  color: var(--text-faint);
+  padding: 8px 0;
+}
+
+.st-saker { display: flex; flex-direction: column; gap: 2px; }
+
+.st-sak { border-top: 1px solid var(--border); }
+.st-sak:last-child { border-bottom: 1px solid var(--border); }
+
+.st-sak-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 4px;
+  background: none;
+  border: none;
+  text-align: left;
+}
+.st-sak-header:hover { background: var(--bg); }
+
+.st-sak-pil { color: var(--text-faint); font-size: 0.8rem; width: 12px; }
+.st-sak-tittel {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.st-sak-antall {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+  font-family: var(--mono);
+}
+
+.st-voteringer {
+  padding: 4px 4px 12px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.st-votering {
+  border-left: 2px solid var(--border);
+  padding-left: 12px;
+}
+
+.st-vot-topp {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+.st-vot-tema { font-size: 0.83rem; color: var(--text); }
+
+.st-vedtatt {
+  font-size: 0.68rem;
+  padding: 1px 7px;
+  border-radius: 10px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.st-vedtatt.ja { background: var(--teal-light); color: var(--teal); }
+.st-vedtatt.nei { background: var(--rust-light); color: var(--rust); }
+
+.st-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg);
+}
+.st-bar-for { background: var(--teal); }
+.st-bar-mot { background: var(--rust); }
+
+.st-bar-tall {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  margin-top: 3px;
+}
+.st-for { color: var(--teal); }
+.st-mot { color: var(--rust); }
+
+.st-partier {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 8px;
+}
+.st-kol-tittel {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
+.st-parti-kol { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; }
+
+.st-parti-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.76rem;
+  color: var(--text);
+}
+.st-parti-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.st-parti-n { color: var(--text-muted); }
+.st-ingen { color: var(--text-faint); font-size: 0.8rem; }
+
+@media (max-width: 640px) {
+  .st-partier { grid-template-columns: 1fr; }
+}
