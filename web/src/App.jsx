@@ -159,7 +159,7 @@ export default function App() {
               skjulFin={skjulFin}
               sti={sti}
               fokusNode={fokusNode}
-              fokusDetaljer={fokusDetaljer}
+              detaljer={detaljer}
               onDrill={handleDrill}
               onFokus={handleFokus}
               onBreadcrumb={handleBreadcrumb}

@@ -8,7 +8,7 @@ import './Drilldown.css'
 
 export default function Drilldown({
   hierarki, side, valgtAar, modus, modusCtx,
-  skjulFin, sti, fokusNode, fokusDetaljer,
+  skjulFin, sti, fokusNode, detaljer,
   onDrill, onFokus, onBreadcrumb, onToppnivaa, onNaviger,
 }) {
   const [sokeTekst, setSokeTekst] = useState('')
@@ -31,10 +31,13 @@ export default function Drilldown({
       return filtrerNoder(siste.children, { skjulFin })
     }
     if (siste.niva === 'post') {
-      return byggArtskontoTre(siste, fokusDetaljer)
+      // Slå opp detaljene for posten i stien (siste) — IKKE for fokusNode.
+      // fokusNode endres ved hover (onFokus), så artskontoene forsvant når
+      // musa dro over en rad. Detaljene hører til den drillede posten.
+      return byggArtskontoTre(siste, detaljer?.[siste.id])
     }
     return []
-  }, [sti, rotNoder, skjulFin, fokusDetaljer])
+  }, [sti, rotNoder, skjulFin, detaljer])
 
   const erArtskontoNivaa = gjeldende[0]?.niva === 'kontoklasse' || gjeldende[0]?.niva === 'artskonto'
   const skaler = v => transformVerdi(v, valgtAar, modus, modusCtx)
