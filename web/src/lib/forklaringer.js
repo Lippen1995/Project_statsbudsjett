@@ -160,6 +160,13 @@ export const INNTEKT = {
     kort: 'Overføring fra Norges Bank',
     tekst: 'Utbytte og overføringer fra sentralbanken.',
   },
+  '5800': {
+    ikon: '🛟',
+    kort: 'Overføring fra Oljefondet',
+    tekst: 'Oljepengebruken: den delen av Oljefondet staten bruker for å få ' +
+      'budsjettet i balanse. Handlingsregelen sier at man over tid bare skal ' +
+      'bruke den forventede avkastningen (om lag 3 %).',
+  },
   '5440': {
     ikon: '🛢️',
     kort: 'Statens egne oljeinntekter (SDØE)',

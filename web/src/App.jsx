@@ -90,12 +90,12 @@ export default function App() {
   }, [])
 
   // Åpne analyseverktøyet fra «Forklart», eventuelt drillet inn på en node
-  const aapneUtforsk = useCallback((nySide, stiNoder = []) => {
+  const aapneUtforsk = useCallback((nySide, stiNoder = [], opts = {}) => {
     setSide(nySide)
     setSti(stiNoder)
     setFokusNode(stiNoder[stiNoder.length - 1] ?? null)
     setPinnedNode(null)
-    setSkjulFin(true)
+    setSkjulFin(opts.skjulFin ?? true)
     setView('utforsk')
     window.scrollTo({ top: 0 })
   }, [])

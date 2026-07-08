@@ -11,7 +11,10 @@ To visninger deler samme datagrunnlag:
 - **Forklart** – klarspråklig inngang for folk flest. Hele budsjettet regnet om
   til kroner per innbygger, med plain-tekst-forklaring av hva hvert område
   betaler for og hvor pengene kommer fra, samt hva som økte og ble kuttet mest
-  mot året før. Klikk på et område for å hoppe rett inn i analyseverktøyet.
+  mot året før. Viser også hvordan utgiftene finansieres (skatt vs. oljepengebruk)
+  og Oljefonds-mekanismen, slik at det går fram at oljeinntektene spares og bare
+  den regelstyrte overføringen fra fondet brukes på budsjettet. Klikk på et område
+  for å hoppe rett inn i analyseverktøyet.
 - **Utforsk** – analyseverktøyet med full drilldown og alle detaljer:
 
 - Brutto inntekter og utgifter per år (2014→siste regnskapsår)
