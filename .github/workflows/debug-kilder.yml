@@ -1,18 +1,51 @@
 name: Debug – inspiser datakilder
 
-# Kjøres kun manuelt (Actions-fanen → Run workflow). Brukes til å inspisere
-# faktiske SSB-/DFØ-metadata når skjema eller API-endepunkter endrer seg.
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/debug-kilder.yml'
 
 jobs:
   inspiser:
     runs-on: ubuntu-latest
     steps:
-      - name: Sjekk SSB-tabeller (v0 metadata)
+      - name: v2-beta metadata for KPI (03013) og BNP (09189)
         run: |
-          for t in 07459 03013 09189; do
-            code=$(curl -s -o /tmp/r.json -w "%{http_code}" "https://data.ssb.no/api/v0/no/table/$t")
-            echo "$t -> HTTP $code"
-            head -c 400 /tmp/r.json; echo; echo "---"
+          for t in 03013 09189; do
+            echo "==================== v2 METADATA $t ===================="
+            curl -s -w "\nHTTP %{http_code}\n" \
+              "https://data.ssb.no/api/pxwebapi/v2-beta/tables/$t/metadata?lang=no&outputFormat=json-stat2" \
+              -o /tmp/m.json
+            head -c 200 /tmp/m.json; echo
+            python3 -c "
+          import json
+          d=json.load(open('/tmp/m.json'))
+          print('TOPPNØKLER:', list(d.keys()))
+          dims = d.get('dimension') or {}
+          role = (d.get('role') or {})
+          print('dimension-koder:', list(dims.keys()))
+          for code, dim in dims.items():
+              cat = dim.get('category', {})
+              idx = cat.get('index') or {}
+              lab = cat.get('label') or {}
+              items = list(idx.items())[:6] if isinstance(idx, dict) else list(enumerate(idx))[:6]
+              print(f'  {code} ({dim.get(\"label\")}):')
+              for k,_ in items:
+                  print(f'      {k} = {lab.get(k, \"\")}')
+              print(f'      (... {len(idx)} verdier)')
+          " 2>/dev/null || { echo "  (kunne ikke parse som json-stat2)"; head -c 1500 /tmp/m.json; }
+            echo ""
           done
+
+      - name: v2-beta data-spørring (GET med valueCodes)
+        run: |
+          echo "=== KPI 03013: totalindeks, alle år ==="
+          curl -s -w "\nHTTP %{http_code}\n" \
+            "https://data.ssb.no/api/pxwebapi/v2-beta/tables/03013/data?lang=no&format=json-stat2&valueCodes%5BKonsumgrp%5D=TOTAL&valueCodes%5BTid%5D=*" \
+            | head -c 900
+          echo ""
+          echo "=== BNP 09189: alle år, første makrostørrelse ==="
+          curl -s -w "\nHTTP %{http_code}\n" \
+            "https://data.ssb.no/api/pxwebapi/v2-beta/tables/09189/data?lang=no&format=json-stat2&valueCodes%5BTid%5D=*" \
+            | head -c 900

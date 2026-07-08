@@ -140,6 +140,17 @@ ETL bygger spørringen dynamisk fra metadata (`_build_ssb_query` i `download.py`
 Svar: JSON-stat2 med `dimension.Tid.category.index` → årsindeks og `value` → folketall.
 Folketallet er per 1.1. i året.
 
+### API-versjoner og fallback
+
+SSB migrerer fra det klassiske v0-APIet (`/api/v0/no/table/{id}`) til
+PxWebApi 2.0 (`/api/pxwebapi/v2-beta/tables/{id}`). KPI (03013/08981) og BNP
+(09189) hentes derfor med **fallback**: `_download_ssb_tabell` prøver v0 først,
+så v2-beta. Alle forespørsler har retry med eksponentiell backoff (2/4/8/16s)
+på 429/5xx. KPI og BNP er tilleggsserier — hvis begge API-versjoner er nede
+(f.eks. SSB-utfall), hopper ETL over dem med advarsel og skriver ikke
+kpi.json/bnp.json; frontend skjuler da «faste kroner»/«% av BNP». Ingen
+fabrikkerte erstatningstall.
+
 ---
 
 ## 4. Normalisert output (`/web/public/data/`)
