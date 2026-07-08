@@ -8,7 +8,7 @@ import './Drilldown.css'
 
 export default function Drilldown({
   hierarki, side, valgtAar, modus, modusCtx,
-  skjulFin, sti, fokusNode, fokusDetaljer,
+  skjulFin, sti, fokusNode, detaljer,
   onDrill, onFokus, onBreadcrumb, onToppnivaa, onNaviger,
 }) {
   const [sokeTekst, setSokeTekst] = useState('')
@@ -31,20 +31,27 @@ export default function Drilldown({
       return filtrerNoder(siste.children, { skjulFin })
     }
     if (siste.niva === 'post') {
-      return byggArtskontoTre(siste, fokusDetaljer)
+      // Slå opp detaljene for posten i stien (siste) — IKKE for fokusNode.
+      // fokusNode endres ved hover (onFokus), så artskontoene forsvant når
+      // musa dro over en rad. Detaljene hører til den drillede posten.
+      return byggArtskontoTre(siste, detaljer?.[siste.id])
     }
     return []
-  }, [sti, rotNoder, skjulFin, fokusDetaljer])
+  }, [sti, rotNoder, skjulFin, detaljer])
 
   const erArtskontoNivaa = gjeldende[0]?.niva === 'kontoklasse' || gjeldende[0]?.niva === 'artskonto'
   const skaler = v => transformVerdi(v, valgtAar, modus, modusCtx)
 
-  const rader = useMemo(() =>
-    gjeldende
+  const rader = useMemo(() => {
+    // På artskonto-nivå bygges nodene på tvers av alle år; kontoklasser/konti
+    // uten beløp i valgt år skal ikke vises som tomme «0 mill.»-rader.
+    // (Beløp er avrundet til 1 desimal, så < 0,05 vises som 0.)
+    const erAk = gjeldende[0]?.niva === 'kontoklasse' || gjeldende[0]?.niva === 'artskonto'
+    return gjeldende
       .map(n => ({ node: n, verdi: sumVerdi(n, valgtAar, 'regnskap') }))
-      .sort((a, b) => Math.abs(b.verdi) - Math.abs(a.verdi)),
-    [gjeldende, valgtAar]
-  )
+      .filter(r => !erAk || Math.abs(r.verdi) >= 0.05)
+      .sort((a, b) => Math.abs(b.verdi) - Math.abs(a.verdi))
+  }, [gjeldende, valgtAar])
   const totalBrutto = rader.reduce((s, r) => s + r.verdi, 0)
 
   const eksporter = () => {
