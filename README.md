@@ -73,6 +73,11 @@ Project_statsbudsjett/
     └── data-schema.md       Faktisk filskjema, dokumentert
 ```
 
+## Videre arbeid
+
+Neste datadimensjon er **KOSTRA (kommune-/fylkesregnskap)**. Se
+[`docs/ROADMAP-KOSTRA.md`](docs/ROADMAP-KOSTRA.md) for plan og metodikk.
+
 ## Datakilder
 
 | Kilde | Lisens |
