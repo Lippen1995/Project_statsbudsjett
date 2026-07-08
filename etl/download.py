@@ -11,12 +11,59 @@ Faktiske filer (verifisert mot statsregnskapet.dfo.no/last-ned 2026-07):
 import io
 import json
 import logging
+import time
 import zipfile
 from pathlib import Path
 
 import requests
 
 logger = logging.getLogger(__name__)
+
+# Retry-oppførsel for eksterne API-er. SSB (og av og til DFØ) svarer 429/503
+# ved rate-limiting eller midlertidig overlast — da venter vi og prøver igjen
+# med eksponentiell backoff i stedet for å felle ETL-en.
+RETRY_STATUS = {429, 500, 502, 503, 504}
+RETRY_BACKOFF = [2, 4, 8, 16]   # sekunder mellom forsøk (5 forsøk totalt)
+
+
+def _sov(sekunder: float, grunn: str) -> None:
+    logger.info(f"    venter {sekunder:.0f}s ({grunn})")
+    time.sleep(sekunder)
+
+
+def _request_med_retry(metode: str, url: str, **kwargs) -> requests.Response:
+    """
+    Utfør en HTTP-forespørsel med retry + eksponentiell backoff.
+    Respekterer Retry-After-headeren når serveren oppgir den.
+    Kaster KildeFeil først når alle forsøk er brukt opp.
+    """
+    headers = {**HEADERS, **kwargs.pop("headers", {})}
+    siste_feil = None
+    for forsok in range(len(RETRY_BACKOFF) + 1):
+        try:
+            resp = requests.request(metode, url, headers=headers, **kwargs)
+        except requests.exceptions.ConnectionError as e:
+            siste_feil = f"tilkoblingsfeil: {e}"
+            resp = None
+        else:
+            if resp.status_code not in RETRY_STATUS:
+                return resp
+            siste_feil = f"HTTP {resp.status_code}"
+
+        if forsok < len(RETRY_BACKOFF):
+            vent = RETRY_BACKOFF[forsok]
+            # Respekter Retry-After hvis serveren oppgir den
+            if resp is not None:
+                ra = resp.headers.get("Retry-After")
+                if ra and ra.isdigit():
+                    vent = max(vent, int(ra))
+            _sov(vent, f"{siste_feil}, forsøk {forsok + 1}/{len(RETRY_BACKOFF)}")
+        else:
+            raise KildeFeil(
+                f"\nFEIL: {metode} {url} feilet etter {len(RETRY_BACKOFF) + 1} forsøk "
+                f"({siste_feil}). Sannsynlig midlertidig utfall eller rate-limiting."
+            )
+    raise KildeFeil(f"\nFEIL: {metode} {url}: {siste_feil}")
 
 RAW_DIR = Path(__file__).parent / "raw"
 RAW_DIR.mkdir(exist_ok=True)
@@ -37,17 +84,12 @@ class KildeFeil(SystemExit):
 
 
 def _get(url: str, timeout: int = 300) -> requests.Response:
-    try:
-        resp = requests.get(url, headers=HEADERS, timeout=timeout)
-        resp.raise_for_status()
-        return resp
-    except requests.exceptions.ConnectionError as e:
+    resp = _request_med_retry("GET", url, timeout=timeout)
+    if resp.status_code != 200:
         raise KildeFeil(
-            f"\nFEIL: Kan ikke koble til {url}\n  {e}\n"
-            "ETL krever nettverkstilgang til statsregnskapet.dfo.no og data.ssb.no."
-        ) from e
-    except requests.exceptions.HTTPError as e:
-        raise KildeFeil(f"\nFEIL: HTTP {resp.status_code} fra {url}\n{e}") from e
+            f"\nFEIL: HTTP {resp.status_code} fra {url}\n{resp.text[:300]}"
+        )
+    return resp
 
 
 def _validate_not_html(content: bytes, url: str) -> None:
@@ -203,9 +245,9 @@ def _download_ssb_tabell(tabell_id: str, dest: Path, *,
 
     payload = {"query": query, "response": {"format": "json-stat2"}}
     logger.info(f"  POST {url}")
-    resp = requests.post(url, json=payload,
-                         headers={**HEADERS, "Content-Type": "application/json"},
-                         timeout=120)
+    resp = _request_med_retry("POST", url, json=payload,
+                              headers={**HEADERS, "Content-Type": "application/json"},
+                              timeout=120)
     if resp.status_code != 200:
         variabler = [
             f"{v['code']} (elim={v.get('elimination')}): {v['valueTexts'][:5]}"
@@ -270,21 +312,16 @@ def download_befolkning(force: bool = False) -> Path:
     payload = _build_ssb_query(metadata)
 
     logger.info(f"  POST {SSB_TABLE_URL}")
-    try:
-        resp = requests.post(
-            SSB_TABLE_URL, json=payload,
-            headers={**HEADERS, "Content-Type": "application/json"},
-            timeout=120,
-        )
-        resp.raise_for_status()
-    except requests.exceptions.ConnectionError as e:
-        raise KildeFeil(f"\nFEIL: Kan ikke koble til SSB API\n{e}") from e
-    except requests.exceptions.HTTPError as e:
+    resp = _request_med_retry(
+        "POST", SSB_TABLE_URL, json=payload,
+        headers={"Content-Type": "application/json"}, timeout=120,
+    )
+    if resp.status_code != 200:
         raise KildeFeil(
             f"\nFEIL: HTTP {resp.status_code} fra SSB API.\n"
             f"Spørring: {json.dumps(payload, ensure_ascii=False)}\n"
             f"Svar: {resp.text[:500]}"
-        ) from e
+        )
 
     dest.write_bytes(resp.content)
     logger.info(f"  -> {dest.name}")
