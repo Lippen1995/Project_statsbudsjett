@@ -4,6 +4,7 @@ import {
   byggSokeindeks, sokGlobalt, lastNedCSV,
 } from '../lib/data'
 import { formatVerdi } from '../lib/format'
+import { forklarPost } from '../lib/postforklaring'
 import './Drilldown.css'
 
 export default function Drilldown({
@@ -130,6 +131,7 @@ export default function Drilldown({
           const erFokus = fokusNode?.id === node.id
           const kanDrilles = (node.children?.length ?? 0) > 0 || node.niva === 'post'
           const handleKlikk = () => kanDrilles ? onDrill(node) : onFokus(node)
+          const pf = node.niva === 'post' ? forklarPost(node.tag, node.navn, side) : null
 
           return (
             <div
@@ -140,7 +142,7 @@ export default function Drilldown({
               onClick={handleKlikk}
               onMouseEnter={() => onFokus(node)}
               onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), handleKlikk())}
-              aria-label={`${node.navn}: ${formatVerdi(skalerV, modus)}`}
+              aria-label={`${node.navn}: ${formatVerdi(skalerV, modus)}${pf ? `. ${pf.kort}: ${pf.tekst}` : ''}`}
             >
               <div className="rad-bar-wrapper">
                 <div
@@ -152,6 +154,7 @@ export default function Drilldown({
                 <div className="rad-venstre">
                   <span className="rad-navn">{node.navn}</span>
                   {node.tag && <span className="rad-tag">{node.tag}</span>}
+                  {pf && <span className="post-type" title={pf.tekst}>{pf.kort}</span>}
                   {node.fin && <span className="merke merke--fin">90-post</span>}
                   {node.transfer && <span className="merke merke--spu">SPU</span>}
                 </div>
@@ -161,6 +164,7 @@ export default function Drilldown({
                   <span className="rad-pil" aria-hidden>{kanDrilles ? '›' : ''}</span>
                 </div>
               </div>
+              {pf && <p className="rad-forklaring">{pf.tekst}</p>}
             </div>
           )
         })}

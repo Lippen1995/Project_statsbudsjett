@@ -178,6 +178,26 @@
 .merke--fin { background: #f0f0f0; color: var(--text-muted); }
 .merke--spu { background: var(--gold-light); color: var(--gold); }
 
+.post-type {
+  font-size: 0.65rem;
+  padding: 1px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  background: var(--teal-light);
+  color: var(--teal);
+  white-space: nowrap;
+  cursor: help;
+}
+
+.rad-forklaring {
+  padding: 0 20px 9px 20px;
+  margin-top: -3px;
+  font-size: 0.76rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  max-width: 78ch;
+}
+
 .rad-hoyre {
   display: flex;
   align-items: center;
