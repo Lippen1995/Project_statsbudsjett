@@ -73,8 +73,11 @@ def _bygg_politikk(force=False):
     logger.info(f"  Sesjoner: {nyeste}")
     detalj_dir = OUTPUT_DIR / "detaljer"
     data = stortinget.bygg_politikk(nyeste, detalj_dir=detalj_dir)
+    # Dropp tomme sesjoner (bl.a. framtidige sesjoner som finnes i API-et
+    # uten saker ennå) så frontend-velgeren bare viser reelle sesjoner
+    data = {s: saker for s, saker in data.items() if saker}
     n_saker = sum(len(v) for v in data.values())
-    logger.info(f"  -> {n_saker} budsjettsaker over {len(nyeste)} sesjoner")
+    logger.info(f"  -> {n_saker} budsjettsaker over {len(data)} sesjoner med data")
     return data
 
 
