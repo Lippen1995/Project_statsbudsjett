@@ -261,3 +261,27 @@ publiseres uten partifordeling (aldri gjettet).
 |-----|---------|
 | `politikk.json` | Budsjettsaker per sesjon, med nøkkelvoteringer og partifordeling (for/mot) |
 | `detaljer/votering-{id}.json` | Representantnivå per votering (lazy-lastet) |
+
+## Oljefondets markedsverdi og uttaksprosent
+
+For å vise oljepengebruken som andel av fondet (handlingsregelen) trengs
+Oljefondets (SPU) markedsverdi. Denne finnes ikke i regnskapsdataene — den
+avhenger av avkastning og valuta — og hentes fra en manuelt vedlikeholdt
+referansetabell: `etl/mappings/fondsverdi.json` (samme kategori som de øvrige
+mapping-filene). Tallene er årssluttverdier fra NBIMs årsrapporter.
+
+ETL (`_skriv_fondsverdi`) skriver `web/public/data/fondsverdi.json`
+(`år -> mill. kr`). Filen er valgfri: mangler den, skjules uttaksprosenten i
+frontend (aldri gjettet).
+
+**Metodikk:** uttaksprosenten for et budsjettår regnes som
+`overføring fra fondet (Kap. 5800) / fondets verdi ved INNGANGEN til året`,
+der inngangsverdien er verdien ved utgangen av året før. Dette er *faktisk*
+uttak som andel av fondsverdien. Merk at regjeringens offisielle uttaksprosent
+bruker det *strukturelle* oljekorrigerte underskuddet (glattet), ikke det
+faktiske uttaket, så tallene kan avvike noe. 3 %-rettesnoren gjelder over tid,
+ikke det enkelte år (jf. 2020: ~4 % under pandemien).
+
+| Fil | Innhold |
+|-----|---------|
+| `fondsverdi.json` | Oljefondets markedsverdi ved årsslutt (`år -> mill. kr`) |

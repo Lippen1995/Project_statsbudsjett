@@ -68,6 +68,11 @@ export default function Forklart({ data, onAapneUtforsk }) {
   const fondUttak = useMemo(() => sumFlagg(data.inntekter, 'transfer', aar), [data.inntekter, aar])
   const fondInn = useMemo(() => sumFlagg(data.utgifter, 'transfer', aar), [data.utgifter, aar])
 
+  // Uttaksprosent (handlingsregelen): uttaket målt mot fondets verdi ved
+  // INNGANGEN til året = verdien ved utgangen av året før.
+  const fondVerdiInngang = data.fondsverdi?.[String(aar - 1)] ?? null
+  const uttaksprosent = fondVerdiInngang ? (fondUttak / fondVerdiInngang) * 100 : null
+
   // Finansiering av utgiftene: skatt + oljepengebruk (+ resten = lån/annet)
   const skattAndel = totalUtg ? (innByKat.ordinaer / totalUtg) * 100 : 0
   const fondAndel = totalUtg ? (fondUttak / totalUtg) * 100 : 0
@@ -199,14 +204,26 @@ export default function Forklart({ data, onAapneUtforsk }) {
           <div className="fk-fond-boks fk-fond-boks--ut">
             <div className="fk-fond-lab">Til statsbudsjettet</div>
             <div className="fk-fond-verdi num">{krFmt(perInnbygger(fondUttak, folk))}</div>
-            <div className="fk-fond-sub">oljepengebruk (handlingsregelen)</div>
+            <div className="fk-fond-sub">oljepengebruk</div>
+            {uttaksprosent != null && (
+              <div className="fk-uttak-merke">
+                ≈ <b className="num">{uttaksprosent.toFixed(1).replace('.', ',')} %</b> av fondets verdi
+              </div>
+            )}
           </div>
         </div>
         <p className="fk-finans-note">
           Oljeinntektene går inn i fondet – de brukes ikke direkte på budsjettet. Hvor mye staten
-          tar ut, bestemmes ikke av årets oljeinntekter, men av <strong>handlingsregelen</strong>:
-          over tid skal man bare bruke den forventede avkastningen, om lag 3 % av fondets verdi.
-          Slik vokser fondet videre samtidig som avkastningen er med på å betale for velferden i dag.
+          tar ut, styres av <strong>handlingsregelen</strong>: over tid skal man bare bruke den
+          forventede avkastningen, om lag 3 % av fondets verdi.
+          {uttaksprosent != null && (
+            <>
+              {' '}I {aar} tok staten ut <strong>{uttaksprosent.toFixed(1).replace('.', ',')} %</strong> av
+              fondets verdi ved inngangen til året – {uttaksprosent <= 3
+                ? 'under rettesnoren på 3 %, så fondet vokste videre.'
+                : 'over rettesnoren på 3 %, altså en ekstra stor oljepengebruk dette året.'}
+            </>
+          )}
         </p>
       </section>
 

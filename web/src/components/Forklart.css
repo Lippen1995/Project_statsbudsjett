@@ -121,6 +121,19 @@
 }
 .fk-rad--fond .fk-rad-tittel { color: var(--gold); }
 
+.fk-uttak-merke {
+  margin-top: 8px;
+  display: inline-block;
+  align-self: flex-start;
+  background: var(--panel);
+  border: 1px solid #b9e0d8;
+  color: var(--teal);
+  font-size: 0.8rem;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+.fk-uttak-merke b { font-weight: 700; }
+
 /* --- Seksjon --- */
 .fk-seksjon { padding: 20px 24px; }
 .fk-seksjon-topp {

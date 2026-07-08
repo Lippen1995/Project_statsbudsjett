@@ -81,6 +81,33 @@ def _bygg_politikk(force=False):
     return data
 
 
+MAPPINGS_DIR = Path(__file__).parent / "mappings"
+
+
+def _skriv_fondsverdi():
+    """
+    Skriv Oljefondets markedsverdi (år -> mill. kr) til frontend.
+
+    Kilden er en manuelt vedlikeholdt referansetabell (etl/mappings/
+    fondsverdi.json) med tall fra NBIMs årsrapporter — samme kategori som de
+    øvrige mapping-filene. TILLEGGSDATA: mangler filen, hopper vi over den
+    (frontend skjuler uttaksprosenten). Vi fabrikkerer aldri erstatningstall.
+    """
+    kilde = MAPPINGS_DIR / "fondsverdi.json"
+    if not kilde.exists():
+        logger.warning("  [ADVARSEL] mangler mappings/fondsverdi.json — uttaksprosent skjules i frontend")
+        return
+    ref = json.loads(kilde.read_text(encoding="utf-8"))
+    enhet = ref.get("_enhet", "mrd_kr")
+    faktor = 1000 if enhet == "mrd_kr" else 1   # normaliser til mill_kr
+    ut = {str(a): round(float(v) * faktor) for a, v in ref.get("verdier", {}).items()}
+    if not ut:
+        logger.warning("  [ADVARSEL] mappings/fondsverdi.json har ingen verdier — hopper over")
+        return
+    _save_json(ut, OUTPUT_DIR / "fondsverdi.json")
+    logger.info(f"  Oljefond-verdi: {len(ut)} år (mill. kr) skrevet")
+
+
 def run(years=None, force=False):
     if years is None:
         years = YEARS
@@ -151,6 +178,7 @@ def run(years=None, force=False):
     # 7. Skriv befolkning og meta
     logger.info("\nSTEG 7: Skriver støttefiler")
     _save_json(befolkning, OUTPUT_DIR / "befolkning.json")
+    _skriv_fondsverdi()
     if politikk:
         _save_json(politikk, OUTPUT_DIR / "politikk.json")
     else:
@@ -176,6 +204,11 @@ def run(years=None, force=False):
                 "navn": "SSB Folkemengde, KPI og nasjonalregnskap",
                 "url": "https://www.ssb.no",
                 "lisens": "CC BY 4.0"
+            },
+            {
+                "navn": "NBIM – Oljefondets markedsverdi (årsrapporter)",
+                "url": "https://www.nbim.no",
+                "lisens": "©NBIM"
             }
         ]
     }

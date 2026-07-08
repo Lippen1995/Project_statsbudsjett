@@ -95,6 +95,7 @@ Neste datadimensjon er **KOSTRA (kommune-/fylkesregnskap)**. Se
 |-------|--------|
 | [DFØ Statsregnskapet](https://statsregnskapet.dfo.no) | NLOD |
 | [SSB Folkemengde](https://www.ssb.no/befolkning) | CC BY 4.0 |
+| [NBIM – Oljefondets markedsverdi](https://www.nbim.no) | Årsrapporter (referansetabell) |
 
 ## Datafallgruver
 

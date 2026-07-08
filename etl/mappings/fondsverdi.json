@@ -1,0 +1,20 @@
+{
+  "_beskrivelse": "Markedsverdi for Statens pensjonsfond utland (Oljefondet) ved utgangen av hvert år. Brukes til å vise oljepengebruken som andel av fondets verdi (handlingsregelen).",
+  "_enhet": "mrd_kr",
+  "_kilde": "Norges Bank Investment Management (NBIM), årsrapporter for Statens pensjonsfond utland. https://www.nbim.no",
+  "_note": "Verdi ved ÅRSSLUTT. Uttaksprosenten for et budsjettår regnes mot fondsverdien ved INNGANGEN til året, dvs. verdien ved utgangen av året før. Manuelt vedlikeholdt referansetabell (som øvrige filer i etl/mappings/); oppdateres når NBIM publiserer nye årstall.",
+  "verdier": {
+    "2013": 5038,
+    "2014": 6431,
+    "2015": 7475,
+    "2016": 7510,
+    "2017": 8488,
+    "2018": 8256,
+    "2019": 10088,
+    "2020": 10914,
+    "2021": 12340,
+    "2022": 12429,
+    "2023": 15765,
+    "2024": 19742
+  }
+}
