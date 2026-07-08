@@ -203,22 +203,104 @@ def _build_ssb_query(metadata: dict) -> dict:
     return {"query": query, "response": {"format": "json-stat2"}}
 
 
+def _hint_treff(vals, txts, hint):
+    """Returner første verdikode der teksten inneholder hint, ellers None."""
+    for v, t in zip(vals, txts):
+        if hint.lower() in (t or "").lower():
+            return v
+    return None
+
+
+def _download_ssb_v2(tabell_id: str, dest: Path, *,
+                     contents_hint=None, var_hints=None) -> Path:
+    """
+    Hent en SSB-serie via det nye PxWebApi 2.0 (v2-beta).
+    Metadata og data returneres som json-stat2. Vi leser dimensjonene fra
+    metadataen, bygger valueCodes (Tid=* + hint-matchede verdier), og henter
+    data. Skriver json-stat2 til dest — samme format parse_ssb_aarsserie leser.
+    """
+    base = f"https://data.ssb.no/api/pxwebapi/v2-beta/tables/{tabell_id}"
+    logger.info(f"  GET {base}/metadata (v2)")
+    meta = _request_med_retry(
+        "GET", f"{base}/metadata",
+        params={"lang": "no", "outputFormat": "json-stat2"}, timeout=60)
+    if meta.status_code != 200:
+        raise KildeFeil(f"\nFEIL: HTTP {meta.status_code} fra v2-metadata for {tabell_id}")
+    md = meta.json()
+
+    dims = md.get("dimension", {})
+    ids = md.get("id") or list(dims.keys())
+    roles = (md.get("role") or {})
+    tid_koder = set(roles.get("time", [])) | {"Tid"}
+    metric_koder = set(roles.get("metric", [])) | {"ContentsCode"}
+
+    params = {"lang": "no", "outputFormat": "json-stat2"}
+    for code in ids:
+        cat = dims.get(code, {}).get("category", {})
+        index = cat.get("index") or {}
+        koder = list(index.keys()) if isinstance(index, dict) else list(index)
+        labels = cat.get("label") or {}
+        txts = [labels.get(k, "") for k in koder]
+
+        if code in tid_koder:
+            params[f"valueCodes[{code}]"] = "*"
+            continue
+        hint = (contents_hint if code in metric_koder else (var_hints or {}).get(code))
+        valgt = (_hint_treff(koder, txts, hint) if hint else None) or (koder[0] if koder else None)
+        if valgt is not None:
+            params[f"valueCodes[{code}]"] = valgt
+            logger.info(f"    {code}: '{valgt}'" + (f" (hint '{hint}')" if hint else ""))
+
+    logger.info(f"  GET {base}/data (v2)")
+    resp = _request_med_retry("GET", f"{base}/data", params=params, timeout=120)
+    if resp.status_code != 200:
+        raise KildeFeil(
+            f"\nFEIL: HTTP {resp.status_code} fra v2-data for {tabell_id}.\n"
+            f"Params: {params}\nSvar: {resp.text[:300]}"
+        )
+    _validate_not_html(resp.content, f"{base}/data")
+    dest.write_bytes(resp.content)
+    logger.info(f"  -> {dest.name} (v2)")
+    return dest
+
+
 def _download_ssb_tabell(tabell_id: str, dest: Path, *,
                          contents_hint: str = None,
                          var_hints: dict = None,
                          force: bool = False) -> Path:
     """
-    Generisk SSB-nedlaster: bygger spørring fra tabellens metadata.
+    Generisk SSB-nedlaster. Prøver det gamle v0-APIet først, og faller tilbake
+    på det nye v2-beta-APIet (SSB migrerer mellom dem). Bygger spørring fra
+    tabellens metadata:
     - Tid: alle verdier
     - ContentsCode: verdi hvis tekst matcher contents_hint, ellers første
     - Andre variabler: verdi hvis tekst matcher var_hints[kode], ellers
       utelatt (elimination=true) eller første verdi
-    Feiler høyt med metadata i loggen hvis spørringen avvises.
+    Kaster KildeFeil hvis begge API-versjoner feiler.
     """
     if dest.exists() and not force:
         logger.info(f"  CACHE HIT: {dest.name}")
         return dest
 
+    try:
+        return _download_ssb_v0(tabell_id, dest,
+                                contents_hint=contents_hint, var_hints=var_hints)
+    except KildeFeil as e_v0:
+        logger.warning(f"  v0-API feilet for {tabell_id} — prøver v2-beta")
+        try:
+            return _download_ssb_v2(tabell_id, dest,
+                                    contents_hint=contents_hint, var_hints=var_hints)
+        except KildeFeil as e_v2:
+            raise KildeFeil(
+                f"\nFEIL: Både v0 og v2 feilet for tabell {tabell_id}.\n"
+                f"--- v0 ---{e_v0}\n--- v2 ---{e_v2}"
+            )
+
+
+def _download_ssb_v0(tabell_id: str, dest: Path, *,
+                     contents_hint: str = None,
+                     var_hints: dict = None) -> Path:
+    """Hent en SSB-serie via det klassiske v0-APIet (GET metadata + POST query)."""
     url = f"https://data.ssb.no/api/v0/no/table/{tabell_id}"
     logger.info(f"  GET {url} (metadata)")
     metadata = _get(url, timeout=60).json()
