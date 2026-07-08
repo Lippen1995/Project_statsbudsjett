@@ -23,6 +23,7 @@ from parse_regnskap import parse_regnskap
 from parse_bevilgning import parse_bevilgning
 from parse_befolkning import parse_befolkning, parse_ssb_aarsserie
 from build_hierarchy import build_hierarchies, _save_json
+import stortinget
 
 OUTPUT_DIR = Path(__file__).parent.parent / "web" / "public" / "data"
 RAW_DIR = Path(__file__).parent / "raw"
@@ -39,20 +40,42 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def _valgfri_ssb(funk, navn):
+def _valgfri(funk, navn, kilde="kilde"):
     """
-    Kjør en SSB-avhengig funksjon som gir en TILLEGGSSERIE (KPI/BNP).
-    Returner resultatet, eller None hvis SSB-APIet feiler — da hopper vi over
-    serien i stedet for å felle hele ETL-en. Vi fabrikkerer aldri erstatningstall.
+    Kjør en funksjon som gir TILLEGGSDATA fra en ekstern kilde (KPI/BNP/Stortinget).
+    Returner resultatet, eller None hvis kilden feiler — da hopper vi over
+    dataene i stedet for å felle hele ETL-en. Vi fabrikkerer aldri erstatningstall.
     """
     try:
         return funk()
     except SystemExit as e:
-        logger.warning(f"  [ADVARSEL] {navn} kunne ikke hentes fra SSB — hopper over.\n{e}")
+        logger.warning(f"  [ADVARSEL] {navn} kunne ikke hentes fra {kilde} — hopper over.\n{e}")
         return None
     except Exception as e:
         logger.warning(f"  [ADVARSEL] {navn} feilet ({type(e).__name__}): {e} — hopper over.")
         return None
+
+
+# Bakoverkompatibelt alias
+def _valgfri_ssb(funk, navn):
+    return _valgfri(funk, navn, kilde="SSB")
+
+
+# Antall nyeste stortingssesjoner vi henter budsjettbehandling for
+POLITIKK_SESJONER = 4
+
+
+def _bygg_politikk(force=False):
+    """Hent budsjettbehandlingen for de nyeste sesjonene fra Stortingets API."""
+    sesjoner = stortinget.hent_sesjoner()
+    # Sesjons-ID-er som «2024-2025» sorteres kronologisk som streng
+    nyeste = sorted(sesjoner, reverse=True)[:POLITIKK_SESJONER]
+    logger.info(f"  Sesjoner: {nyeste}")
+    detalj_dir = OUTPUT_DIR / "detaljer"
+    data = stortinget.bygg_politikk(nyeste, detalj_dir=detalj_dir)
+    n_saker = sum(len(v) for v in data.values())
+    logger.info(f"  -> {n_saker} budsjettsaker over {len(nyeste)} sesjoner")
+    return data
 
 
 def run(years=None, force=False):
@@ -115,9 +138,20 @@ def run(years=None, force=False):
     build_hierarchies(regnskap_frames, bevilgning_df, years, OUTPUT_DIR,
                       virk_frames=virk_frames)
 
+    # 6b. Stortingets behandling av budsjettet (data.stortinget.no).
+    # TILLEGGSDATA — hvis Stortingets API er nede hopper vi over (frontend
+    # skjuler seksjonen). Fabrikkerer aldri erstatningsdata.
+    logger.info("\nSTEG 6b: Stortingets budsjettbehandling")
+    politikk = _valgfri(
+        lambda: _bygg_politikk(force=force), "Politikk (Stortinget)", kilde="Stortinget")
+
     # 7. Skriv befolkning og meta
     logger.info("\nSTEG 7: Skriver støttefiler")
     _save_json(befolkning, OUTPUT_DIR / "befolkning.json")
+    if politikk:
+        _save_json(politikk, OUTPUT_DIR / "politikk.json")
+    else:
+        logger.warning("  [ADVARSEL] Ingen politikk-data — Stortinget-seksjon skjules i frontend")
 
     actual_years = sorted(regnskap_frames.keys())
     budget_years = sorted(bevilgning_df["aar"].dropna().unique().tolist())
