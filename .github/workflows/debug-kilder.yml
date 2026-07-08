@@ -9,57 +9,31 @@ on:
 jobs:
   inspiser:
     runs-on: ubuntu-latest
+    env:
+      UA: "statsbudsjett-visualisering/1.0 (+https://github.com/Lippen1995/Project_statsbudsjett; åpne data)"
     steps:
-      - name: Budsjettsak – detaljer, innstilling, publikasjoner
+      - name: robots.txt for begge nettsteder
         run: |
-          # 103528 = Tilleggsbevilgninger og omprioriteringer i statsbudsjettet 2025
-          echo "=== sak 103528 detaljer ==="
-          curl -s "https://data.stortinget.no/eksport/sak?sakid=103528&format=json" -o /tmp/sak.json
-          python3 -c "
-          import json
-          d=json.load(open('/tmp/sak.json'))
-          print('nøkler:', list(d.keys()))
-          for k in ['tittel','status','komite','type','dokumentgruppe']:
-              print(f'  {k}:', d.get(k))
-          " 2>/dev/null || head -c 800 /tmp/sak.json
+          for host in www.regjeringen.no www.statsbudsjettet.no; do
+            echo "==================== robots.txt: $host ===================="
+            curl -s -A "$UA" "https://$host/robots.txt" -w "\n[HTTP %{http_code}]\n" | head -c 1500
+            echo ""
+          done
 
-      - name: Voteringer for en budsjettsak
+      - name: Ærlig henting med skikkelig User-Agent
         run: |
-          echo "=== voteringer for sak 103528 ==="
-          curl -s "https://data.stortinget.no/eksport/voteringer?sakid=103528&format=json" -o /tmp/vot.json
-          echo "størrelse: $(wc -c < /tmp/vot.json) bytes"
-          python3 -c "
-          import json
-          d=json.load(open('/tmp/vot.json'))
-          print('nøkler:', list(d.keys()))
-          vl = d.get('sak_votering_liste') or []
-          print('antall voteringer:', len(vl))
-          for v in vl[:3]:
-              print('  votering', v.get('votering_id'), '| tema:', (v.get('votering_tema') or '')[:60],
-                    '| for:', v.get('antall_for'), 'mot:', v.get('antall_mot'))
-          " 2>/dev/null || head -c 800 /tmp/vot.json
+          echo "=== regjeringen.no forside ==="
+          curl -s -A "$UA" -H "Accept: text/html" -w "HTTP %{http_code} | %{size_download} bytes | %{content_type}\n" \
+            "https://www.regjeringen.no/no/id4/" -o /tmp/reg.html
+          head -c 200 /tmp/reg.html; echo; echo "---"
 
-      - name: Partifordeling i en enkelt votering
-        run: |
-          python3 -c "
-          import json
-          d=json.load(open('/tmp/vot.json'))
-          vl = d.get('sak_votering_liste') or []
-          print('bruk votering_id:', vl[0].get('votering_id') if vl else 'ingen')
-          " 2>/dev/null
-          VID=$(python3 -c "import json;d=json.load(open('/tmp/vot.json'));vl=d.get('sak_votering_liste') or [];print(vl[0]['votering_id'] if vl else '')" 2>/dev/null)
-          if [ -n "$VID" ]; then
-            echo "=== representantvotering for votering $VID ==="
-            curl -s "https://data.stortinget.no/eksport/voteringsresultat?voteringid=$VID&format=json" -o /tmp/vr.json
-            python3 -c "
-          import json
-          d=json.load(open('/tmp/vr.json'))
-          print('nøkler:', list(d.keys()))
-          rl = d.get('voteringsresultat_liste') or []
-          print('antall representanter:', len(rl))
-          for r in rl[:3]:
-              rep = r.get('representant') or {}
-              parti = (rep.get('parti') or {}).get('navn')
-              print('  ', rep.get('etternavn'), '|', parti, '| stemte:', r.get('votering'))
-          " 2>/dev/null || head -c 800 /tmp/vr.json
-          fi
+          echo "=== regjeringen.no – Prop 1 S (statsbudsjettet) tema-side ==="
+          curl -s -A "$UA" -H "Accept: text/html" -w "HTTP %{http_code} | %{size_download} bytes\n" \
+            "https://www.regjeringen.no/no/tema/okonomi-og-budsjett/norsk_okonomi/statsbudsjettet/id1437/" -o /tmp/tema.html
+          grep -oiE 'href="[^"]*(statsbudsjett|prop|id[0-9]+)[^"]*"' /tmp/tema.html | sort -u | head -15 || echo "  ingen lenker"
+
+          echo "=== statsbudsjettet.no forside ==="
+          curl -s -A "$UA" -H "Accept: text/html" -w "HTTP %{http_code} | %{size_download} bytes | %{content_type}\n" \
+            "https://www.statsbudsjettet.no" -o /tmp/sb.html
+          head -c 200 /tmp/sb.html; echo
+          grep -oiE '(href|src)="[^"]*(api|\.json|budsjett|kapittel)[^"]*"' /tmp/sb.html | sort -u | head -20 || echo "  ingen data-lenker"
