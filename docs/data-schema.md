@@ -224,3 +224,38 @@ interface BudsjettNode {
    «Kommunal- og distriktsdepartementet», som ble opprettet i 2022) —
    historiske tidsserier per departement er dermed konsistente i kildedataene.
    `etl/mappings/` beholdes for ev. fremtidige avvik.
+
+---
+
+## 6. Stortingets behandling av budsjettet (data.stortinget.no)
+
+**Status: VERIFISERT** mot faktiske API-svar 2026-07-08 (via GitHub Actions).
+
+Åpent JSON-API (også XML). `.NET`-datoformat: `/Date(ms+tz)/`. Ingen bot-vegg.
+statsbudsjettet.no og regjeringen.no svarer 403 på maskinelle kall — derfor
+brukes Stortingets API som strukturert kilde til den *politiske behandlingen*
+(selve Prop. 1 S-prosaen er ikke maskinlesbart tilgjengelig).
+
+### Endepunkter (alle med `&format=json`)
+
+| Endepunkt | Innhold |
+|-----------|---------|
+| `/eksport/sesjoner` | Alle stortingssesjoner (`sesjoner_liste`, `id` som «2024-2025») |
+| `/eksport/saker?sesjonid={id}` | `saker_liste` — alle saker; budsjettsaker har «budsjett» i `tittel` |
+| `/eksport/sak?sakid={id}` | Detaljer for én sak |
+| `/eksport/voteringer?sakid={id}` | `sak_votering_liste` — én rad per votering: `votering_id`, `votering_tema`, `antall_for`, `antall_mot`, `vedtatt` |
+| `/eksport/voteringsresultat?voteringid={id}` | `voteringsresultat_liste` — 169 representanter: `representant.etternavn`, `representant.parti.navn`, `votering` (tallkode) |
+
+### `votering`-tallkode
+
+Betydningen av tallkoden (for/mot/ikke tilstede) **verifiseres empirisk**, ikke
+gjettes: sum av representantstemmer per kode skal stemme med `antall_for` /
+`antall_mot` fra voteringen. ETL utleder mappingen og feiler hvis den ikke
+reconcilerer.
+
+### Output
+
+| Fil | Innhold |
+|-----|---------|
+| `politikk.json` | Budsjettsaker per sesjon, med nøkkelvoteringer og partifordeling (for/mot) |
+| `detaljer/votering-{id}.json` | Representantnivå per votering (lazy-lastet) |

@@ -9,43 +9,31 @@ on:
 jobs:
   inspiser:
     runs-on: ubuntu-latest
+    env:
+      UA: "statsbudsjett-visualisering/1.0 (+https://github.com/Lippen1995/Project_statsbudsjett; åpne data)"
     steps:
-      - name: v2-beta metadata for KPI (03013) og BNP (09189)
+      - name: robots.txt for begge nettsteder
         run: |
-          for t in 03013 09189; do
-            echo "==================== v2 METADATA $t ===================="
-            curl -s -w "\nHTTP %{http_code}\n" \
-              "https://data.ssb.no/api/pxwebapi/v2-beta/tables/$t/metadata?lang=no&outputFormat=json-stat2" \
-              -o /tmp/m.json
-            head -c 200 /tmp/m.json; echo
-            python3 -c "
-          import json
-          d=json.load(open('/tmp/m.json'))
-          print('TOPPNØKLER:', list(d.keys()))
-          dims = d.get('dimension') or {}
-          role = (d.get('role') or {})
-          print('dimension-koder:', list(dims.keys()))
-          for code, dim in dims.items():
-              cat = dim.get('category', {})
-              idx = cat.get('index') or {}
-              lab = cat.get('label') or {}
-              items = list(idx.items())[:6] if isinstance(idx, dict) else list(enumerate(idx))[:6]
-              print(f'  {code} ({dim.get(\"label\")}):')
-              for k,_ in items:
-                  print(f'      {k} = {lab.get(k, \"\")}')
-              print(f'      (... {len(idx)} verdier)')
-          " 2>/dev/null || { echo "  (kunne ikke parse som json-stat2)"; head -c 1500 /tmp/m.json; }
+          for host in www.regjeringen.no www.statsbudsjettet.no; do
+            echo "==================== robots.txt: $host ===================="
+            curl -s -A "$UA" "https://$host/robots.txt" -w "\n[HTTP %{http_code}]\n" | head -c 1500
             echo ""
           done
 
-      - name: v2-beta data-spørring (GET med valueCodes)
+      - name: Ærlig henting med skikkelig User-Agent
         run: |
-          echo "=== KPI 03013: totalindeks, alle år ==="
-          curl -s -w "\nHTTP %{http_code}\n" \
-            "https://data.ssb.no/api/pxwebapi/v2-beta/tables/03013/data?lang=no&format=json-stat2&valueCodes%5BKonsumgrp%5D=TOTAL&valueCodes%5BTid%5D=*" \
-            | head -c 900
-          echo ""
-          echo "=== BNP 09189: alle år, første makrostørrelse ==="
-          curl -s -w "\nHTTP %{http_code}\n" \
-            "https://data.ssb.no/api/pxwebapi/v2-beta/tables/09189/data?lang=no&format=json-stat2&valueCodes%5BTid%5D=*" \
-            | head -c 900
+          echo "=== regjeringen.no forside ==="
+          curl -s -A "$UA" -H "Accept: text/html" -w "HTTP %{http_code} | %{size_download} bytes | %{content_type}\n" \
+            "https://www.regjeringen.no/no/id4/" -o /tmp/reg.html
+          head -c 200 /tmp/reg.html; echo; echo "---"
+
+          echo "=== regjeringen.no – Prop 1 S (statsbudsjettet) tema-side ==="
+          curl -s -A "$UA" -H "Accept: text/html" -w "HTTP %{http_code} | %{size_download} bytes\n" \
+            "https://www.regjeringen.no/no/tema/okonomi-og-budsjett/norsk_okonomi/statsbudsjettet/id1437/" -o /tmp/tema.html
+          grep -oiE 'href="[^"]*(statsbudsjett|prop|id[0-9]+)[^"]*"' /tmp/tema.html | sort -u | head -15 || echo "  ingen lenker"
+
+          echo "=== statsbudsjettet.no forside ==="
+          curl -s -A "$UA" -H "Accept: text/html" -w "HTTP %{http_code} | %{size_download} bytes | %{content_type}\n" \
+            "https://www.statsbudsjettet.no" -o /tmp/sb.html
+          head -c 200 /tmp/sb.html; echo
+          grep -oiE '(href|src)="[^"]*(api|\.json|budsjett|kapittel)[^"]*"' /tmp/sb.html | sort -u | head -20 || echo "  ingen data-lenker"

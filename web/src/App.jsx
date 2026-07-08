@@ -8,6 +8,7 @@ import BalanseTopp from './components/BalanseTopp'
 import Drilldown from './components/Drilldown'
 import Historikkgraf from './components/Historikkgraf'
 import Virksomheter from './components/Virksomheter'
+import Stortinget from './components/Stortinget'
 import OmTallene from './components/OmTallene'
 import Footer from './components/Footer'
 import './App.css'
@@ -189,6 +190,8 @@ export default function App() {
             />
           </aside>
         </div>
+
+        <Stortinget politikk={data.politikk} />
       </main>
 
       <Footer meta={meta} onVisOmTallene={() => setVisOmTallene(true)} />
