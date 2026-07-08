@@ -246,12 +246,14 @@ brukes Stortingets API som strukturert kilde til den *politiske behandlingen*
 | `/eksport/voteringer?sakid={id}` | `sak_votering_liste` — én rad per votering: `votering_id`, `votering_tema`, `antall_for`, `antall_mot`, `vedtatt` |
 | `/eksport/voteringsresultat?voteringid={id}` | `voteringsresultat_liste` — 169 representanter: `representant.etternavn`, `representant.parti.navn`, `votering` (tallkode) |
 
-### `votering`-tallkode
+### `votering`-tallkode (verifisert enum)
 
-Betydningen av tallkoden (for/mot/ikke tilstede) **verifiseres empirisk**, ikke
-gjettes: sum av representantstemmer per kode skal stemme med `antall_for` /
-`antall_mot` fra voteringen. ETL utleder mappingen og feiler hvis den ikke
-reconcilerer.
+Bekreftet empirisk mot faktiske svar 2026-07: **`2` = for, `3` = mot,
+`1` = ikke tilstede**. ETL bruker denne faste mappingen (`stortinget.KODE`) og
+bruker `antall_for`/`antall_mot` kun som *verifisering* (reconcile). Voteringer
+uten opptelt resultat (`antall_* = -1`) er avgjort ved akklamasjon og merkes
+`akklamasjon: true` uten partifordeling. Voteringer som ikke reconcilerer
+publiseres uten partifordeling (aldri gjettet).
 
 ### Output
 

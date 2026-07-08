@@ -103,36 +103,28 @@ def hent_voteringer(sak_id) -> list:
     return ut
 
 
-def _utled_kodemapping(resultater: list, antall_for: int, antall_mot: int) -> dict:
-    """
-    Utled hvilken `votering`-tallkode som betyr «for» og hvilken «mot», ved å
-    matche antall per kode mot antall_for/antall_mot. Returnerer {kode: 'for'|'mot'}.
-    Feiler ikke her; kaller reconcilerer og logger.
-    """
-    from collections import Counter
-    tell = Counter(r.get("votering") for r in resultater)
-    mapping = {}
-    for kode, n in tell.items():
-        if n == antall_for and antall_for != antall_mot:
-            mapping[kode] = "for"
-        elif n == antall_mot and antall_for != antall_mot:
-            mapping[kode] = "mot"
-    return mapping
+# Bekreftet enum (verifisert empirisk mot data.stortinget.no 2026-07, se §6):
+# representantens `votering`-tallkode.
+KODE = {2: "for", 3: "mot", 1: "ikke_tilstede"}
 
 
 def hent_partifordeling(votering_id, antall_for: int, antall_mot: int):
     """
-    Returner (parti_for, parti_mot, ok) der parti_* = {parti: antall}.
-    ok=True hvis representantsummene reconcilerer med antall_for/antall_mot.
+    Returner (parti_for, parti_mot, ok, res) der parti_* = {parti: antall}.
+
+    Bruker den bekreftede kode-mappingen (2=for, 3=mot). `antall_for`/
+    `antall_mot` brukes kun som VERIFISERING: ok=True hvis representantsummene
+    stemmer. Voteringer uten opptelt resultat (akklamasjon; antall_* < 0)
+    regnes som ok med tom fordeling — det finnes ingenting å fordele.
     """
+    akklamasjon = (antall_for is None or antall_for < 0)
     d = _hent("voteringsresultat", voteringid=votering_id)
     res = d.get("voteringsresultat_liste", [])
-    mapping = _utled_kodemapping(res, antall_for, antall_mot)
 
     parti_for, parti_mot = {}, {}
     sum_for = sum_mot = 0
     for r in res:
-        retning = mapping.get(r.get("votering"))
+        retning = KODE.get(r.get("votering"))
         parti = ((r.get("representant") or {}).get("parti") or {}).get("navn") or "Ukjent"
         if retning == "for":
             parti_for[parti] = parti_for.get(parti, 0) + 1
@@ -140,6 +132,10 @@ def hent_partifordeling(votering_id, antall_for: int, antall_mot: int):
         elif retning == "mot":
             parti_mot[parti] = parti_mot.get(parti, 0) + 1
             sum_mot += 1
+
+    if akklamasjon:
+        # Ingen opptelt for/mot — behold ev. kodede stemmer, men ikke krev reconcile
+        return parti_for, parti_mot, True, res
 
     ok = (sum_for == (antall_for or 0)) and (sum_mot == (antall_mot or 0))
     return parti_for, parti_mot, ok, res
@@ -166,13 +162,15 @@ def bygg_politikk(sesjoner: list, maks_voteringer_per_sak: int = 40,
                     continue
                 pf, pm, ok, res = hent_partifordeling(
                     v["votering_id"], v["antall_for"] or 0, v["antall_mot"] or 0)
+                akklamasjon = (v["antall_for"] is None or v["antall_for"] < 0)
                 if not ok:
                     reconcile_feil += 1
                     logger.warning(
                         f"    [ADVARSEL] votering {v['votering_id']} reconcilerte ikke "
                         f"(for={v['antall_for']} mot={v['antall_mot']}) — hopper over partifordeling")
                     pf, pm = {}, {}
-                vot_ut.append({**v, "parti_for": pf, "parti_mot": pm})
+                vot_ut.append({**v, "parti_for": pf, "parti_mot": pm,
+                               "akklamasjon": akklamasjon})
                 if detalj_dir and res:
                     _skriv_detalj(detalj_dir, v["votering_id"], res)
             sak_ut.append({**sak, "voteringer": vot_ut})
