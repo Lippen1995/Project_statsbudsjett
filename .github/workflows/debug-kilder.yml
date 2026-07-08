@@ -10,48 +10,26 @@ jobs:
   inspiser:
     runs-on: ubuntu-latest
     steps:
-      - name: Dump metadata for KPI- og BNP-tabeller
+      - name: Rå metadata for KPI (03013) og BNP (09189)
         run: |
-          for t in 08981 03013 1086 09189 11721; do
-            echo "==================== TABELL $t ===================="
+          for t in 03013 09189; do
+            echo "==================== RÅ TABELL $t (første 2500 tegn) ===================="
+            curl -s "https://data.ssb.no/api/v0/no/table/$t" | head -c 2500
+            echo ""
+            echo "-------- topp-nøkler + variabler (robust) --------"
             curl -s "https://data.ssb.no/api/v0/no/table/$t" | python3 -c "
           import json,sys
-          try:
-              d=json.load(sys.stdin)
-          except Exception as e:
-              print('  (ikke gyldig JSON:', e, ')'); sys.exit()
-          print('TITTEL:', d.get('title'))
-          for v in d.get('variables', []):
-              print(f\"  VAR {v['code']} (elim={v.get('elimination')}):\")
-              for val, txt in list(zip(v['values'], v['valueTexts']))[:8]:
+          d=json.load(sys.stdin)
+          print('TOPPNØKLER:', list(d.keys()))
+          vars = d.get('variables') or (d.get('metadata') or {}).get('variables') or []
+          for v in vars:
+              code = v.get('code') or v.get('id')
+              print(f'  VAR {code} (elim={v.get(\"elimination\")}):')
+              vals = v.get('values') or list((v.get('category') or {}).get('index') or [])
+              txts = v.get('valueTexts') or list(((v.get('category') or {}).get('label') or {}).values())
+              for val, txt in list(zip(vals, txts))[:6]:
                   print(f'      {val} = {txt}')
-              if len(v['values']) > 8:
-                  print(f'      ... ({len(v[\"values\"])} verdier totalt)')
-          " || echo "  FEIL for $t"
+              print(f'      (... {len(vals)} verdier)')
+          "
             echo ""
           done
-
-      - name: Test KPI-spørring mot 03013
-        run: |
-          cat > q.json <<'EOF'
-          {"query":[
-            {"code":"Konsumgrp","selection":{"filter":"item","values":["TOTAL"]}},
-            {"code":"ContentsCode","selection":{"filter":"item","values":["KpiIndMnd"]}},
-            {"code":"Tid","selection":{"filter":"all","values":["*"]}}
-          ],"response":{"format":"json-stat2"}}
-          EOF
-          echo "=== 03013 med Konsumgrp=TOTAL, ContentsCode=KpiIndMnd ==="
-          curl -s -w "\nHTTP %{http_code}\n" -X POST -H "Content-Type: application/json" \
-            -d @q.json "https://data.ssb.no/api/v0/no/table/03013" | head -c 800
-
-      - name: Test BNP-spørring mot 09189
-        run: |
-          echo "=== 09189 metadata allerede dumpet over; test enkel spørring ==="
-          cat > b.json <<'EOF'
-          {"query":[
-            {"code":"ContentsCode","selection":{"filter":"item","values":["BNP"]}},
-            {"code":"Tid","selection":{"filter":"all","values":["*"]}}
-          ],"response":{"format":"json-stat2"}}
-          EOF
-          curl -s -w "\nHTTP %{http_code}\n" -X POST -H "Content-Type: application/json" \
-            -d @b.json "https://data.ssb.no/api/v0/no/table/09189" | head -c 800
