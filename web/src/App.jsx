@@ -35,7 +35,9 @@ export default function App() {
         setData(d)
         const hash = lesHashTilstand()
         const hierarki = hash?.side === 'inntekter' ? d.inntekter : d.utgifter
-        if (hash) setView('utforsk')   // delt lenke → åpne analyseverktøyet direkte
+        // Bare en reell dyplenke (en drillet sti) åpner analyseverktøyet direkte.
+        // En «naken» side/år-hash skal ikke overstyre Forklart som standardvisning.
+        if (hash?.stiIds?.length) setView('utforsk')
         if (hash?.side) setSide(hash.side)
         setValgtAar(hash?.aar ?? d.meta.siste_regnskap_aar)
         if (hash?.modus && MODUSER.some(m => m.id === hash.modus)) setModus(hash.modus)
