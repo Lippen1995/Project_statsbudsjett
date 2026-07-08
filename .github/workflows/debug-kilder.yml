@@ -10,36 +10,56 @@ jobs:
   inspiser:
     runs-on: ubuntu-latest
     steps:
-      - name: data.stortinget.no – åpent API for proposisjoner/budsjett
+      - name: Budsjettsak – detaljer, innstilling, publikasjoner
         run: |
-          echo "=== Sesjoner ==="
-          curl -s "https://data.stortinget.no/eksport/sesjoner?format=json" | head -c 600; echo; echo "---"
-          echo "=== Saker i inneværende sesjon (budsjett?) — søk ==="
-          curl -s "https://data.stortinget.no/eksport/saker?sesjonid=2024-2025&format=json" -o /tmp/saker.json
-          echo "HTTP-størrelse: $(wc -c < /tmp/saker.json) bytes"
+          # 103528 = Tilleggsbevilgninger og omprioriteringer i statsbudsjettet 2025
+          echo "=== sak 103528 detaljer ==="
+          curl -s "https://data.stortinget.no/eksport/sak?sakid=103528&format=json" -o /tmp/sak.json
           python3 -c "
           import json
-          d=json.load(open('/tmp/saker.json'))
-          print('toppnøkler:', list(d.keys())[:10])
-          saker = d.get('saker_liste') or []
-          bud = [s for s in saker if 'budsjett' in (s.get('tittel','') or '').lower()][:8]
-          for s in bud:
-              print('  ', s.get('id'), '|', (s.get('tittel','')[:80]))
-          " 2>/dev/null || head -c 800 /tmp/saker.json
+          d=json.load(open('/tmp/sak.json'))
+          print('nøkler:', list(d.keys()))
+          for k in ['tittel','status','komite','type','dokumentgruppe']:
+              print(f'  {k}:', d.get(k))
+          " 2>/dev/null || head -c 800 /tmp/sak.json
 
-      - name: statsbudsjettet.no – finnes strukturert data/API?
+      - name: Voteringer for en budsjettsak
         run: |
-          echo "=== statsbudsjettet.no forside (leter etter api/data/json-lenker) ==="
-          curl -sL "https://www.statsbudsjettet.no" -o /tmp/sb.html -w "HTTP %{http_code}, %{size_download} bytes, %{content_type}\n"
-          grep -oiE '(href|src)="[^"]*"' /tmp/sb.html | grep -iE 'api|\.json|data|last.?ned|download|export' | sort -u | head -30 || echo "  ingen åpenbare data-lenker"
-          echo "--- script-bundler (SPA?) ---"
-          grep -oiE 'src="[^"]*\.js[^"]*"' /tmp/sb.html | sort -u | head -10 || true
+          echo "=== voteringer for sak 103528 ==="
+          curl -s "https://data.stortinget.no/eksport/voteringer?sakid=103528&format=json" -o /tmp/vot.json
+          echo "størrelse: $(wc -c < /tmp/vot.json) bytes"
+          python3 -c "
+          import json
+          d=json.load(open('/tmp/vot.json'))
+          print('nøkler:', list(d.keys()))
+          vl = d.get('sak_votering_liste') or []
+          print('antall voteringer:', len(vl))
+          for v in vl[:3]:
+              print('  votering', v.get('votering_id'), '| tema:', (v.get('votering_tema') or '')[:60],
+                    '| for:', v.get('antall_for'), 'mot:', v.get('antall_mot'))
+          " 2>/dev/null || head -c 800 /tmp/vot.json
 
-      - name: regjeringen.no – Prop 1 S dokument-API
+      - name: Partifordeling i en enkelt votering
         run: |
-          echo "=== regjeringen.no søk-API for statsbudsjett-dokumenter ==="
-          curl -s -w "\nHTTP %{http_code}\n" \
-            "https://www.regjeringen.no/no/dokument/dep/fin/proposisjonar-og-meldingar/proposisjonar-til-stortinget/id1753/?term=Prop.%201%20S" \
-            -o /tmp/reg.html
-          echo "størrelse: $(wc -c < /tmp/reg.html) bytes"
-          grep -oiE 'href="[^"]*prop[^"]*"' /tmp/reg.html | sort -u | head -15 || echo "  ingen prop-lenker funnet"
+          python3 -c "
+          import json
+          d=json.load(open('/tmp/vot.json'))
+          vl = d.get('sak_votering_liste') or []
+          print('bruk votering_id:', vl[0].get('votering_id') if vl else 'ingen')
+          " 2>/dev/null
+          VID=$(python3 -c "import json;d=json.load(open('/tmp/vot.json'));vl=d.get('sak_votering_liste') or [];print(vl[0]['votering_id'] if vl else '')" 2>/dev/null)
+          if [ -n "$VID" ]; then
+            echo "=== representantvotering for votering $VID ==="
+            curl -s "https://data.stortinget.no/eksport/voteringsresultat?voteringid=$VID&format=json" -o /tmp/vr.json
+            python3 -c "
+          import json
+          d=json.load(open('/tmp/vr.json'))
+          print('nøkler:', list(d.keys()))
+          rl = d.get('voteringsresultat_liste') or []
+          print('antall representanter:', len(rl))
+          for r in rl[:3]:
+              rep = r.get('representant') or {}
+              parti = (rep.get('parti') or {}).get('navn')
+              print('  ', rep.get('etternavn'), '|', parti, '| stemte:', r.get('votering'))
+          " 2>/dev/null || head -c 800 /tmp/vr.json
+          fi
