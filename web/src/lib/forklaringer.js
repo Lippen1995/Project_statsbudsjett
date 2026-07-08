@@ -184,6 +184,67 @@ export const INNTEKT = {
   },
 }
 
+// --- Inntekter: tematiske grupper for den lange halen -----------------------
+// De fire store kildene (skatt, moms, trygdeavgift) og oljepengebruken vises
+// som egne rader. Alle øvrige inntektskapitler samles i disse temaene, slik at
+// samleposten «Annet» blir minimal i stedet for å sluke ~10 %.
+export const INNTEKT_GRUPPER = {
+  saeravgifter: {
+    ikon: '🧾',
+    kort: 'Særavgifter',
+    tekst: 'Avgifter på varer og bruk: kjøretøy, drivstoff, strøm, alkohol, ' +
+      'tobakk, dokumentavgift, CO₂ og toll.',
+  },
+  renterutbytte: {
+    ikon: '🏦',
+    kort: 'Renter og utbytte',
+    tekst: 'Utbytte fra statlig eide selskaper og Norges Bank, og renter på ' +
+      'statens innskudd, fordringer og utlån.',
+  },
+  laan: {
+    ikon: '💳',
+    kort: 'Tilbakebetaling av lån',
+    tekst: 'Avdrag på statlige utlån – Lånekassen, Husbanken, Innovasjon Norge ' +
+      'og boliglånsordningen. Dette er tilbakebetalt lån, ikke ny inntekt.',
+  },
+  virksomhet: {
+    ikon: '🏢',
+    kort: 'Virksomhetenes egne inntekter',
+    tekst: 'Gebyrer, salg og driftsinntekter i statlige etater og selskaper.',
+  },
+  andreskatt: {
+    ikon: '➕',
+    kort: 'Andre skatter og avgifter',
+    tekst: 'Finansskatt, sektoravgifter og mindre skatter og avgifter.',
+  },
+  annet: {
+    ikon: '❔',
+    kort: 'Annet',
+    tekst: 'Diverse småposter som ikke passer i kategoriene over.',
+  },
+}
+
+// Statsbank-/utlånskapitler der inntekten er avdrag (tilbakebetalt lån).
+const LAAN_KAP = new Set(['5310', '5312', '5325', '5326', '5327', '5341', '4565'])
+
+/**
+ * Grupper et inntektskapittel i et tema ut fra kapittelnummer/navn.
+ * Følger statsbudsjettets kapittelnummerering: 55xx = skatter/avgifter,
+ * 56xx = renter og utbytte, 3xxx/4xxx = virksomhetenes egne inntekter osv.
+ * De fire store kildene (5501, 5521, 5700) og oljepengebruken (5800) grupperes
+ * ikke her – de vises som egne rader.
+ */
+export function grupperInntekt(tag, navn) {
+  const nr = String(tag ?? '').match(/\d{3,4}/)?.[0] ?? ''
+  const n = parseInt(nr, 10)
+  if (/avdrag/i.test(navn ?? '') || LAAN_KAP.has(nr)) return 'laan'
+  if (nr === '5511' || nr === '5506' || (n >= 5526 && n <= 5567)) return 'saeravgifter'
+  if (nr === '5351' || (n >= 5600 && n <= 5693)) return 'renterutbytte'
+  if (nr === '5502' || nr === '5509' || (n >= 5568 && n <= 5599) || (n >= 5700 && n <= 5799)) return 'andreskatt'
+  if ((n >= 3000 && n <= 4999) || (n >= 5300 && n <= 5399)) return 'virksomhet'
+  return 'annet'
+}
+
 /** Slå opp forklaring for et utgiftsdepartement ut fra node-id (u-06 → "06"). */
 export function forklarDepartement(nodeId) {
   const kode = String(nodeId).split('-')[1]

@@ -180,6 +180,14 @@
   gap: 8px;
 }
 .fk-andel { font-size: 0.75rem; color: var(--text-faint); font-family: var(--mono); font-weight: 400; }
+.fk-gruppe-merke {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 1px 8px;
+}
 .fk-rad-tekst { font-size: 0.83rem; color: var(--text-muted); line-height: 1.4; }
 .fk-bar-spor {
   margin-top: 4px;
