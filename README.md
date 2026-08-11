@@ -11,7 +11,8 @@ posten. Alle seksjonene leser samme datagrunnlag:
 
 1. **Vokser staten raskere enn prisene?** – utgift per innbygger mot
    konsumprisindeksen, begge indeksert til startåret. Dra over grafen for å
-   snevre inn perioden. Krever `kpi.json` fra ETL-en.
+   snevre inn perioden. Krever `kpi.json` fra ETL-en; mangler serien, sier
+   seksjonen det i stedet for å skjule seg.
 2. **Hele budsjettet på ett kart** – squarified treemap, klikkbar nedover
    departement → kapittel → post.
 3. **Fra inntekt til utgift** – sankeydiagram fra inntektskildene, gjennom
@@ -132,5 +133,15 @@ Se [`docs/data-schema.md`](docs/data-schema.md) for detaljert dokumentasjon av:
 - **ETL**: Python 3.11, pandas, requests, chardet
 - **Frontend**: Vite, React. Forsidens grafer er håndtegnet SVG uten
   grafbibliotek; den klassiske visningen bruker Recharts.
+
+### SSB-tabeller
+
+Folketall hentes fra tabell 07459. KPI prøves i rekkefølgen 14711 → 08981 →
+14709 → 03013, og BNP fra 09189. SSB la om KPI til referanseår 2025=100 og
+avsluttet serien i 03013, som derfor bare ligger sist som nødutgang.
+Årstabellene har en månedsdimensjon der årsgjennomsnittet må velges eksplisitt —
+utelates den, aggregerer SSB over alle månedene. Både KPI og BNP beskjæres til
+året før første regnskapsår og utover; den historiske KPI-serien starter i 1865,
+og indeksverdiene der ligger under 1 med dagens referanseår.
 - **Dataformat**: Statisk JSON, ingen backend i drift
 - **Hosting**: Statisk (GitHub Pages, Cloudflare Pages o.l.)
