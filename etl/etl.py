@@ -159,6 +159,18 @@ def run(years=None, force=False):
     kpi = _valgfri_ssb(lambda: parse_ssb_aarsserie(kpi_path, "KPI"), "KPI") if kpi_path else None
     bnp = _valgfri_ssb(lambda: parse_ssb_aarsserie(bnp_path, "BNP"), "BNP") if bnp_path else None
 
+    # SSB-seriene rekker langt bakover – KPI-tabellen starter i 1865. Frontenden
+    # bruker bare regnskapsårene, og en historisk serie rebasert til 2025=100 har
+    # indeksverdier under 1 på 1800-tallet. Behold året før første regnskapsår og
+    # utover, slik at seriene kan indekseres fra starten av perioden.
+    fra_aar = min(years) - 1
+    if kpi:
+        kpi = {a: v for a, v in kpi.items() if a >= fra_aar}
+        logger.info(f"  KPI beskåret til {fra_aar}– ({len(kpi)} år)")
+    if bnp:
+        bnp = {a: v for a, v in bnp.items() if a >= fra_aar}
+        logger.info(f"  BNP beskåret til {fra_aar}– ({len(bnp)} år)")
+
     # 5. Sanity-sjekk
     logger.info("\nSTEG 5: Sanity-sjekk")
     sanity_check(regnskap_frames, bevilgning_df, befolkning, kpi, bnp)
@@ -334,9 +346,12 @@ def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict,
 
     # Sjekk 7: KPI og BNP er rimelige
     if kpi:
-        for aar, v in kpi.items():
-            if not (10 <= v <= 500):
-                raise ValueError(f"KPI {aar} urimelig: {v} (forventet indeks 10–500)")
+        # Bare årene vi viser. SSBs historiske KPI-serie starter i 1865, og med
+        # referanseår 2025=100 er indeksen der rundt 1 – fullt korrekt, men
+        # utenfor det et intervall for moderne år kan si noe om.
+        for aar in [a for a in kpi if a >= 2014]:
+            if not (10 <= kpi[aar] <= 500):
+                raise ValueError(f"KPI {aar} urimelig: {kpi[aar]} (forventet indeks 10–500)")
     if bnp:
         for aar in [a for a in bnp if a >= 2014]:
             # BNP i mill. kr: 2 000–10 000 mrd. for Norge etter 2014

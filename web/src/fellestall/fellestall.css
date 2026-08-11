@@ -1,0 +1,858 @@
+/**
+ * Fellestall – redaksjonell visning av statsfinansene.
+ *
+ * Alt er scopet under .ft, slik at det ikke kolliderer med det øvrige
+ * analyseverktøyet, som har sitt eget fargesystem i index.css.
+ */
+
+body.ft-body { background: #F7F5F0; }
+
+.ft {
+  --papir: #F7F5F0;
+  --ark: #FFFDF9;
+  --ink: #14161A;
+  --tekst: #3B3A36;
+  --dempet: #6B6A66;
+  --blek: #8C8A84;
+  --svak: #B4B0A8;
+  --strek: #E2DDD3;
+  --strek-mork: #2E3037;
+  --flate: #EDE9E1;
+  --rust: #C7462E;
+  --rust-mork: #9C3421;
+  --gronn: #14594F;
+  --gull: #E3B23C;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Libre Franklin', system-ui, sans-serif;
+  --spalte: 1180px;
+  --mykt: cubic-bezier(.22, .9, .3, 1);
+
+  min-height: 100vh;
+  background: var(--papir);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabulære tall i sidens egen skrift, ikke monospace-varianten i index.css */
+.ft .num {
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Rustfargede lenker med understrek gjelder bare lenker i løpende tekst.
+ * :where() gir regelen null spesifisitet på selve a-elementet, slik at
+ * navigasjon, logo og bunntekst kan overstyre den med sine egne klasser.
+ */
+.ft :where(a:not([class])) { color: var(--rust); text-decoration: none; border-bottom: 1px solid rgba(199, 70, 46, .35); }
+.ft :where(a:not([class])):hover { color: var(--rust-mork); border-bottom-color: var(--rust-mork); }
+.ft a { text-decoration: none; }
+.ft ::selection { background: #F2D9CF; }
+.ft input[type='range'] { accent-color: var(--rust); }
+.ft h1, .ft h2, .ft h3 { font-family: var(--serif); font-weight: 700; letter-spacing: -.02em; margin: 0; }
+
+.ft-skjult {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+@keyframes ftReisOpp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes ftTonInn { from { opacity: 0; } to { opacity: 1; } }
+
+.ft [data-avslor] { opacity: 0; }
+.ft [data-avslor].synlig { animation: ftReisOpp .85s var(--mykt) forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ft [data-avslor] { opacity: 1 !important; }
+  .ft *, .ft *::before, .ft *::after { animation: none !important; transition: none !important; }
+}
+
+/* --- Rammeverk ------------------------------------------------------------ */
+
+.ft-layout { display: flex; align-items: flex-start; }
+.ft-hovedspalte { flex: 1; min-width: 0; }
+
+.ft-sidemeny {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 236px;
+  flex-shrink: 0;
+  padding: 26px 24px 26px 32px;
+  border-right: 1px solid var(--strek);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.ft-merke-lenke { border: 0; color: inherit; display: block; }
+.ft-merke-lenke:hover { color: inherit; }
+.ft-logo { font-family: var(--serif); font-weight: 700; font-size: 21px; letter-spacing: -.01em; }
+.ft-logo span { color: var(--blek); font-weight: 400; }
+.ft-slagord { font-size: 11px; color: var(--blek); line-height: 1.4; margin-top: 4px; }
+
+.ft-aarblokk { display: flex; align-items: baseline; gap: 6px; cursor: pointer; }
+.ft-aarlabel { font-size: 11px; color: var(--blek); }
+
+.ft-select {
+  appearance: none;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--tekst);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  padding: 0 14px 0 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2.5 4.5L6 8l3.5-3.5' fill='none' stroke='%236B6A66' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+.ft-nav { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+.ft-navlenke {
+  border: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 7px 0 7px 9px;
+  border-left: 2px solid transparent;
+  font-size: 13.5px;
+  line-height: 1.3;
+  color: var(--blek);
+  font-weight: 500;
+}
+.ft-navlenke:hover { color: var(--ink); border-bottom: 0; }
+.ft-navlenke.aktiv { color: var(--ink); font-weight: 700; border-left-color: var(--rust); }
+.ft-navnr { font-size: 10px; color: var(--svak); flex-shrink: 0; }
+
+.ft-sidefot {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12.5px;
+  border-top: 1px solid var(--strek);
+  padding-top: 16px;
+}
+.ft-sidefot a { color: var(--dempet); border: 0; }
+
+.ft-toppbar {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(247, 245, 240, .92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--strek);
+}
+.ft-toppbar-inner {
+  max-width: var(--spalte);
+  margin: 0 auto;
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ft-toppaar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #D9D3C7;
+  border-radius: 6px;
+  background: var(--ark);
+  padding: 5px 9px;
+  cursor: pointer;
+}
+.ft-toppnav { display: flex; gap: 16px; font-size: 12.5px; font-weight: 500; flex-wrap: wrap; }
+.ft-toppnav a { border: 0; color: var(--dempet); }
+.ft-toppnavlenke.aktiv { color: var(--ink); font-weight: 700; }
+
+/* Under 1100 px byttes den faste sidemenyen ut med en klebrig topplinje */
+@media (max-width: 1100px) {
+  .ft-sidemeny { display: none; }
+  .ft-toppbar { display: block; }
+}
+
+/* --- Ingress ------------------------------------------------------------- */
+
+.ft-hero { max-width: var(--spalte); margin: 0 auto; padding: 72px 32px 48px; }
+.ft-kicker {
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--rust);
+  font-weight: 700;
+  margin-bottom: 20px;
+  animation: ftReisOpp .7s .05s var(--mykt) both;
+}
+.ft-hero h1 {
+  font-size: clamp(38px, 5.4vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -.025em;
+  max-width: 15ch;
+  text-wrap: balance;
+  animation: ftReisOpp .8s .12s var(--mykt) both;
+}
+.ft-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 56px;
+  margin-top: 32px;
+  align-items: start;
+}
+.ft-ingress {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--tekst);
+  max-width: 58ch;
+  text-wrap: pretty;
+  animation: ftReisOpp .8s .22s var(--mykt) both;
+}
+.ft-femtall {
+  border-left: 2px solid var(--ink);
+  padding-left: 20px;
+  animation: ftReisOpp .8s .32s var(--mykt) both;
+}
+.ft-femtall-rad {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--strek);
+  font-size: 13px;
+  color: var(--tekst);
+  line-height: 1.3;
+}
+.ft-femtall-rad span:last-child { font-weight: 700; font-size: 16px; white-space: nowrap; }
+.ft-femtall .ft-stikkord { margin-bottom: 12px; }
+
+/* --- Seksjoner ----------------------------------------------------------- */
+
+.ft-seksjon {
+  max-width: var(--spalte);
+  margin: 0 auto;
+  padding: 48px 32px 24px;
+  scroll-margin-top: 70px;
+}
+.ft-seksjon--mork {
+  max-width: none;
+  background: var(--ink);
+  color: var(--papir);
+  margin-top: 64px;
+  padding: 64px 0;
+}
+.ft-seksjon--mork h2 { color: var(--papir); }
+.ft-seksjon--mork .ft-seksjonstekst p { color: #A8A49B; }
+.ft-seksjon--mork .ft-seksjonstopp { border-top-color: var(--papir); }
+.ft-seksjon-innhold { max-width: var(--spalte); margin: 0 auto; padding: 0 32px; }
+
+.ft-seksjonstopp {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  border-top: 2px solid var(--ink);
+  padding-top: 16px;
+  flex-wrap: wrap;
+}
+.ft-seksjonstopp--bunn { align-items: flex-end; }
+.ft-seksjonstopp--luft { margin-top: 44px; }
+.ft-seksjonstekst { min-width: 0; }
+.ft-seksjonstekst h2 { font-size: clamp(26px, 3vw, 34px); }
+.ft-seksjonstekst h3 { font-size: 26px; }
+.ft-seksjonstekst p {
+  margin: 8px 0 0;
+  font-size: 15px;
+  color: var(--dempet);
+  max-width: 74ch;
+  text-wrap: pretty;
+}
+.ft-seksjonstall { display: flex; align-items: flex-end; gap: 20px; flex-shrink: 0; }
+.ft-hoyrestilt { text-align: right; flex-shrink: 0; }
+
+.ft-stikkord {
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--blek);
+  font-weight: 700;
+}
+.ft-stikkord--luft { margin-top: 22px; display: block; }
+.ft-stikkord--rad { height: 26px; display: flex; align-items: center; margin-bottom: 6px; }
+
+.ft-storTall { font-family: var(--serif); font-size: 32px; font-weight: 700; color: var(--rust); }
+.ft-storTall--ink { color: var(--ink); margin-top: 8px; }
+.ft-brodtekst {
+  margin: 14px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--tekst);
+  max-width: 80ch;
+  text-wrap: pretty;
+}
+.ft-brodtekst--liten { font-size: 13px; line-height: 1.6; color: var(--dempet); max-width: 74ch; }
+.ft-fotnote { font-size: 12px; color: var(--blek); line-height: 1.5; margin: 12px 0 0; max-width: 80ch; }
+
+.ft-knapp {
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.ft-knapp:hover:not(:disabled) { background: var(--ink); color: var(--papir); }
+.ft-knapp:disabled { opacity: .45; cursor: default; }
+.ft-knapp--mork { border-color: #3A3C42; color: #D8D4CC; margin-top: 12px; }
+.ft-knapp--mork:hover:not(:disabled) { background: #22242A; color: #fff; }
+.ft-knapp--luft { margin-top: 14px; }
+
+.ft-kort { background: var(--ark); border: 1px solid var(--strek); }
+.ft-skille { border: 0; height: 1px; background: var(--strek); margin: 16px 0; }
+.ft-grafflate { margin-top: 16px; padding: 16px 4px 4px; }
+.ft-graf-tom { font-size: 12px; color: var(--blek); padding: 12px 0; }
+
+.ft-tegnforklaring {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--dempet);
+}
+.ft-tegnforklaring span { display: flex; align-items: center; gap: 8px; }
+.ft-tegnforklaring--liten { gap: 14px; font-size: 11px; margin-top: 12px; }
+.ft-strek { width: 18px; height: 2px; display: block; flex-shrink: 0; }
+
+.ft-melding { padding: 80px 32px; text-align: center; color: var(--dempet); font-family: var(--sans); }
+.ft-melding h2 { font-family: var(--serif); margin-bottom: 8px; }
+
+/* --- Prisvekst ----------------------------------------------------------- */
+
+.ft-periodevelger { display: flex; align-items: flex-end; gap: 12px; text-align: right; }
+.ft-periode { font-size: 15px; font-weight: 600; margin-top: 4px; }
+
+/* Seksjon uten datagrunnlag: synlig, men tydelig tom */
+.ft-mangler {
+  margin-top: 20px;
+  padding: 20px 22px;
+  background: var(--ark);
+  border: 1px solid var(--strek);
+  border-left: 3px solid var(--gull);
+}
+.ft-mangler p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--tekst);
+  max-width: 82ch;
+  margin: 10px 0 0;
+}
+.ft-mangler code {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 12.5px;
+  background: var(--flate);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* --- Smuler og piller --------------------------------------------------- */
+
+.ft-smuler { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.ft-smuler--flat { gap: 4px; margin: 20px 0 12px; }
+
+.ft-pille {
+  border: 0;
+  background: var(--flate);
+  color: var(--tekst);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ft-pille.aktiv { background: var(--ink); color: var(--papir); }
+
+.ft-smule {
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blek);
+  cursor: pointer;
+  padding: 4px 0;
+}
+.ft-smule.aktiv { color: var(--ink); font-weight: 700; }
+.ft-smulepil { margin: 0 6px; color: var(--svak); }
+
+/* --- Budsjettkart ------------------------------------------------------- */
+
+.ft-kart-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  align-items: start;
+}
+.ft-kart-flate { background: var(--ark); border: 1px solid var(--strek); }
+.ft-kart-panel { padding: 20px; position: sticky; top: 82px; }
+.ft-kort-tittel { font-family: var(--serif); font-size: 22px; line-height: 1.15; font-weight: 600; margin-top: 10px; }
+.ft-kort-belop { font-size: 30px; font-weight: 700; color: var(--rust); margin-top: 12px; }
+.ft-kort-under { font-size: 13px; color: var(--dempet); margin-top: 2px; }
+.ft-kort-tekst { font-size: 13px; line-height: 1.5; color: var(--tekst); }
+.ft-kort-graf { margin-top: 14px; }
+.ft-kort-fot { font-size: 11px; color: var(--blek); margin-top: 8px; line-height: 1.4; }
+
+/* --- Flyten ------------------------------------------------------------- */
+
+.ft-sankey { margin-top: 24px; padding: 24px 20px; overflow-x: auto; }
+
+/* --- Søylerader (utgifter, mottakere, andeler) -------------------------- */
+
+.ft-bar { display: block; height: 5px; background: var(--flate); margin-top: 9px; }
+.ft-bar--tykk { height: 6px; }
+.ft-bar--tynn { height: 4px; margin-top: 6px; }
+.ft-bar-fyll { display: block; height: 100%; background: var(--rust); transition: width 1s var(--mykt); }
+.ft-bar-fyll--ink { background: var(--ink); }
+
+.ft-utgiftsliste { margin-top: 20px; border-top: 1px solid var(--strek); }
+.ft-utgiftsrad {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 26px 1fr 150px;
+  gap: 18px;
+  align-items: center;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--strek);
+  padding: 16px 6px;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+.ft-utgiftsrad:hover { background: var(--ark); }
+.ft-radnr { font-size: 12px; color: var(--svak); font-weight: 600; }
+.ft-radmidt { display: block; min-width: 0; }
+.ft-radtittel { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.ft-radnavn { font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+.ft-radandel { font-size: 12px; color: var(--blek); font-weight: 600; }
+.ft-radtekst { display: block; font-size: 13px; color: var(--dempet); margin-top: 3px; line-height: 1.4; }
+.ft-radhoyre { text-align: right; }
+.ft-radper { display: block; font-size: 19px; font-weight: 700; }
+.ft-radmill { display: block; font-size: 11px; color: var(--blek); }
+
+/* --- Endringer ---------------------------------------------------------- */
+
+.ft-velgerpar {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  border: 1px solid #DAD5CB;
+  background: var(--ark);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.ft-velger { display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 10px 14px 11px; cursor: pointer; }
+.ft-velger:hover { background: #F4F0E8; }
+.ft-velgerlabel { font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: #A5A199; font-weight: 700; }
+.ft-velger .ft-select { font-size: 14px; color: var(--ink); padding-right: 18px; }
+.ft-velgermot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  font-size: 12px;
+  color: #A5A199;
+  border-left: 1px solid #E7E2D9;
+  border-right: 1px solid #E7E2D9;
+  background: #F4F0E8;
+}
+
+.ft-endrkolonner { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 28px; }
+.ft-kolonnetittel {
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding-bottom: 8px;
+}
+.ft-kolonnetittel.opp { color: var(--rust); border-bottom: 2px solid var(--rust); }
+.ft-kolonnetittel.ned { color: var(--gronn); border-bottom: 2px solid var(--gronn); }
+
+.ft-endrrad {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--strek);
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: baseline;
+  padding: 11px 4px;
+}
+.ft-endrrad:hover { background: var(--ark); }
+.ft-endrnavn { font-size: 15px; font-weight: 500; }
+.ft-endrtall {
+  text-align: right;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.ft-endrdelta { font-weight: 700; }
+.ft-endrdelta.opp { color: var(--rust); }
+.ft-endrdelta.ned { color: var(--gronn); }
+.ft-endrpct { font-size: 12px; color: var(--blek); margin-left: 8px; }
+.ft-endrmrd { font-size: 12px; color: var(--blek); }
+
+/* --- Oljefondet --------------------------------------------------------- */
+
+.ft-fondtall, .ft-fondgrafer { display: grid; gap: 1px; background: var(--strek-mork); margin-top: 28px; }
+.ft-fondtall { grid-template-columns: repeat(3, 1fr); }
+.ft-fondtall > div { background: var(--ink); padding: 24px; }
+.ft-fondbelop { font-family: var(--serif); font-size: 36px; font-weight: 700; margin-top: 10px; color: var(--gull); }
+.ft-fondunder { font-size: 13px; color: #A8A49B; margin-top: 4px; }
+.ft-fondgrafer { grid-template-columns: 1fr 1fr; }
+.ft-fondgraf { background: #1B1D22; padding: 22px 20px 16px; }
+.ft-fondgraf-topp { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.ft-fondgraf-flate { margin-top: 14px; }
+.ft-fondcagr { font-size: 12px; font-weight: 700; color: var(--gull); white-space: nowrap; }
+.ft-fondnote { font-size: 12px; color: var(--blek); margin: 10px 0 0; line-height: 1.5; }
+.ft-seksjon--mork .ft-fotnote { color: var(--blek); }
+
+/* --- Lønnen din --------------------------------------------------------- */
+
+.ft-skatt-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: 40px;
+  margin-top: 28px;
+  align-items: start;
+}
+.ft-skattpanel { background: var(--ink); color: var(--papir); padding: 24px; }
+.ft-skattpanel .ft-stikkord { display: block; }
+.ft-skattfelt {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 12px;
+  border-bottom: 2px solid #3A3C42;
+  padding-bottom: 8px;
+}
+.ft-skattfelt input {
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: var(--papir);
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 700;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+.ft-skattfelt span { font-size: 16px; color: var(--blek); }
+.ft-skattpanel input[type='range'] { width: 100%; margin-top: 14px; }
+.ft-skattnokkel {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--blek);
+}
+.ft-skattnokkel span:last-child { font-weight: 700; }
+.ft-gull { color: var(--gull); }
+.ft-lys { color: #D8D4CC; }
+.ft-skattnote { font-size: 12px; color: var(--blek); line-height: 1.5; margin-top: 10px; }
+
+.ft-mottaker {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  gap: 20px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--strek);
+}
+.ft-mottakernavn { font-size: 19px; font-weight: 600; letter-spacing: -.01em; }
+.ft-mottakerbelop { text-align: right; font-size: 22px; font-weight: 700; }
+
+.ft-komponenter { margin-top: 22px; }
+.ft-komponent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 90px 110px;
+  gap: 12px;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--strek);
+  font-size: 14px;
+}
+.ft-komponenttil { font-size: 12px; color: var(--blek); }
+.ft-komponentbelop { text-align: right; font-weight: 700; font-size: 15px; }
+
+.ft-andelsliste { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+.ft-andelrad {
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: 16px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--strek);
+}
+.ft-andelnavn { font-size: 14px; font-weight: 500; }
+.ft-andelbelop { text-align: right; font-weight: 700; font-size: 15px; }
+
+.ft-personskatt {
+  margin-top: 36px;
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.ft-personrad { margin-bottom: 12px; }
+.ft-personrad-topp { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+.ft-personrad-topp span:last-child { font-weight: 700; white-space: nowrap; }
+
+/* --- Utforsk ------------------------------------------------------------ */
+
+.ft-verktoylinje {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--strek);
+}
+.ft-bytter { display: flex; background: var(--flate); border-radius: 999px; padding: 3px; gap: 2px; }
+.ft-bytte {
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  background: transparent;
+  color: var(--dempet);
+}
+.ft-bytte.aktiv { background: var(--ink); color: var(--papir); }
+
+.ft-seriegruppe {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid #DAD5CB;
+  background: var(--ark);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.ft-serieknapper { display: flex; align-items: center; gap: 2px; padding: 4px 5px; }
+.ft-serieknapper .ft-bytte { border-radius: 8px; padding: 6px 11px; }
+.ft-aarvalg {
+  display: flex;
+  align-items: center;
+  padding: 0 12px 0 13px;
+  border-left: 1px solid #E7E2D9;
+  background: #F4F0E8;
+  cursor: pointer;
+}
+.ft-aarvalg .ft-select { font-size: 14px; font-weight: 700; color: var(--ink); padding-right: 16px; }
+
+.ft-avkryss { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--tekst); cursor: pointer; }
+.ft-avkryss input { width: 15px; height: 15px; accent-color: var(--rust); }
+
+.ft-sok {
+  margin-left: auto;
+  flex: 0 1 240px;
+  padding: 9px 14px;
+  border: 1px solid #D7D2C8;
+  background: var(--ark);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  color: inherit;
+}
+
+.ft-utforsk-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 28px;
+  margin-top: 20px;
+  align-items: start;
+}
+.ft-utforsk-side { position: sticky; top: 82px; display: flex; flex-direction: column; gap: 24px; }
+
+.ft-nivaatopp {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--ink);
+}
+.ft-nivaasum { font-family: var(--serif); font-size: 26px; font-weight: 700; }
+.ft-nivaamerke { font-size: 12px; color: var(--blek); }
+.ft-graftittel {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ft-cagr { flex-shrink: 0; display: flex; align-items: baseline; gap: 6px; }
+.ft-cagr .num { font-family: var(--serif); font-size: 20px; font-weight: 700; }
+.ft-cagrperiode { font-size: 10px; color: var(--blek); white-space: nowrap; }
+
+.ft-utforskrad {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 130px 54px 16px;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 8px;
+  border: 0;
+  border-bottom: 1px solid var(--strek);
+  background: transparent;
+  font-family: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ft-utforskrad:hover, .ft-utforskrad.fokus { background: var(--ark); }
+.ft-utforskmidt { display: block; min-width: 0; }
+.ft-utforsktittel { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.ft-utforsknavn { font-size: 14px; font-weight: 500; }
+.ft-utforsktag { font-size: 11px; color: var(--blek); }
+.ft-merke {
+  font-size: 10px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--blek);
+  border: 1px solid var(--strek);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.ft-utforskbelop { text-align: right; font-size: 14px; font-weight: 600; }
+.ft-utforskandel { text-align: right; font-size: 12px; color: var(--blek); }
+.ft-utforskpil { color: var(--svak); font-size: 14px; }
+.ft-tommelding { font-size: 13px; color: var(--blek); padding: 18px 0; }
+.ft-arealblokk { border-top: 1px solid var(--strek); padding-top: 12px; }
+
+/* --- Om tallene --------------------------------------------------------- */
+
+.ft-metode { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; margin-top: 24px; }
+.ft-metode h3 { font-family: var(--sans); font-size: 15px; font-weight: 700; margin: 0 0 8px; letter-spacing: 0; }
+.ft-metode p { font-size: 14px; line-height: 1.6; color: var(--tekst); }
+.ft-metodefot {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid var(--strek);
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--blek);
+}
+
+/* --- Bunntekst ---------------------------------------------------------- */
+
+.ft-fot { background: var(--ink); color: var(--papir); margin-top: 56px; }
+.ft-fot-grid {
+  max-width: var(--spalte);
+  margin: 0 auto;
+  padding: 56px 32px 40px;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 40px;
+}
+.ft-logo--lys { font-size: 24px; }
+.ft-fot-slagord { font-size: 13px; color: #D8D4CC; margin-top: 6px; }
+.ft-fot-tekst { font-size: 13px; line-height: 1.6; color: #A8A49B; margin: 10px 0 0; max-width: 34ch; }
+.ft-fot-dato { font-size: 12px; color: var(--dempet); margin-top: 14px; }
+.ft-fot-lenker { display: flex; flex-direction: column; gap: 8px; font-size: 13px; margin-top: 12px; }
+.ft-fot-lenker a { color: #D8D4CC; border: 0; }
+.ft-fot-lenker a:hover { color: #fff; }
+.ft-fot-linje {
+  border-top: 1px solid var(--strek-mork);
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 18px 32px;
+  font-size: 12px;
+  color: var(--dempet);
+}
+
+/* --- Smalere skjermer --------------------------------------------------- */
+
+@media (max-width: 980px) {
+  .ft-hero-grid,
+  .ft-kart-grid,
+  .ft-utforsk-grid,
+  .ft-skatt-grid,
+  .ft-endrkolonner,
+  .ft-fondgrafer,
+  .ft-andelsliste,
+  .ft-personskatt,
+  .ft-metode,
+  .ft-fot-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .ft-fondtall { grid-template-columns: 1fr; }
+  .ft-kart-panel, .ft-utforsk-side { position: static; }
+  .ft-hero { padding: 40px 20px 32px; }
+  .ft-seksjon { padding: 36px 20px 20px; }
+  .ft-seksjon-innhold { padding: 0 20px; }
+  .ft-sok { margin-left: 0; flex-basis: 100%; }
+
+  /*
+   * Nedtrekkene er så brede som sitt lengste alternativ («Saldert budsjett
+   * 2014»), og periodetallene ligger i en flex-rad som ikke brøt. Begge må
+   * kunne krympe, ellers får siden vannrett rulling på mobil.
+   */
+  .ft-seksjonstall { flex-wrap: wrap; max-width: 100%; }
+  .ft-velgerpar, .ft-seriegruppe { flex-wrap: wrap; max-width: 100%; }
+  .ft-velger { flex: 1 1 45%; min-width: 0; }
+  .ft-serieknapper { flex-wrap: wrap; min-width: 0; }
+  .ft-select { max-width: 100%; }
+}
+
+@media (max-width: 640px) {
+  .ft-utgiftsrad { grid-template-columns: 22px 1fr; }
+  .ft-radhoyre { grid-column: 2; text-align: left; display: flex; gap: 10px; align-items: baseline; }
+  .ft-utforskrad { grid-template-columns: 1fr 100px 16px; }
+  .ft-utforskandel { display: none; }
+  .ft-mottaker { grid-template-columns: 1fr; gap: 8px; }
+  .ft-mottakerbelop { text-align: left; }
+  .ft-komponent { grid-template-columns: 1fr 90px; }
+  .ft-komponenttil { display: none; }
+}
