@@ -57,6 +57,37 @@ jobs:
           " || head -c 400 /tmp/sok.json
           done
 
+      - name: Sjekk ut repo
+        uses: actions/checkout@v4
+
+      - name: Sett opp Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Kjør den faktiske nedlasteren mot ekte SSB
+        run: |
+          pip install -q -r etl/requirements.txt
+          cd etl && python3 -c "
+          import logging
+          logging.basicConfig(level=logging.INFO, format='%(message)s')
+          from download import download_kpi, download_bnp
+          from parse_befolkning import parse_ssb_aarsserie
+
+          kpi = parse_ssb_aarsserie(download_kpi(force=True), 'KPI')
+          print()
+          print('=== KPI, årsgjennomsnitt ===')
+          for aar in sorted(kpi):
+              if aar >= 2010:
+                  print(f'  {aar}: {kpi[aar]}')
+          print('antall år:', len(kpi), '| spenn:', min(kpi), '-', max(kpi))
+          assert all(10 <= v <= 500 for v in kpi.values()), 'indeksverdi utenfor 10-500'
+
+          bnp = parse_ssb_aarsserie(download_bnp(force=True), 'BNP')
+          print('=== BNP ===')
+          print('antall år:', len(bnp), '| 2024:', bnp.get(2024))
+          "
+
       - name: Er v0-APIet i det hele fall i live?
         run: |
           echo "--- v0 tabell-liste (første 300 tegn) ---"

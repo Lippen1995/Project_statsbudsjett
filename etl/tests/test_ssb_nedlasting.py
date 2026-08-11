@@ -61,12 +61,13 @@ class SsbEtterligning(BaseHTTPRequestHandler):
     """Svarer som SSB v0: GET gir metadata, POST gir json-stat2."""
 
     mottatt_spørring = None
+    metadata = None          # settes per test; None betyr METADATA_03013
 
     def log_message(self, *a):
         pass
 
     def do_GET(self):
-        self._svar(METADATA_03013)
+        self._svar(self.metadata or METADATA_03013)
 
     def do_POST(self):
         lengde = int(self.headers.get("Content-Length", 0))
@@ -145,6 +146,42 @@ def test_kpi_ende_til_ende_gir_årsgjennomsnitt(ssb_server, tmp_path, monkeypatc
 
     # Månedene snittes per år: 2023 = (128 + 130) / 2, 2024 = (133 + 135) / 2
     assert serie == {2023: 129.0, 2024: 134.0}
+
+
+# Årstabellene (08981/14709) har en månedsdimensjon med elimination=true der
+# "90" er årsgjennomsnittet. Utelates den, aggregerer SSB over alle månedene.
+METADATA_MED_MAANED = {
+    "title": "08981: Konsumprisindeks (2015=100), etter måned, statistikkvariabel og år",
+    "variables": [
+        {
+            "code": "Maaned",
+            "text": "måned",
+            "values": ["90", "01", "02"],
+            "valueTexts": ["Årsgjennomsnitt", "Januar", "Februar"],
+            "elimination": True,
+        },
+        {
+            "code": "ContentsCode",
+            "text": "statistikkvariabel",
+            "values": ["KpiIndMnd"],
+            "valueTexts": ["Konsumprisindeks (2015=100)"],
+        },
+        {"code": "Tid", "text": "år", "values": ["2023", "2024"], "valueTexts": ["2023", "2024"]},
+    ],
+}
+
+
+def test_kpi_velger_årsgjennomsnitt_framfor_å_eliminere_måned(ssb_server, tmp_path, monkeypatch):
+    monkeypatch.setattr(download, "RAW_DIR", tmp_path)
+    monkeypatch.setattr(SsbEtterligning, "metadata", METADATA_MED_MAANED)
+
+    download.download_kpi(force=True)
+
+    valg = {q["code"]: q["selection"] for q in SsbEtterligning.mottatt_spørring["query"]}
+    assert "Maaned" in valg, (
+        "månedsdimensjonen må velges eksplisitt; utelatt lar SSB aggregere over alle månedene"
+    )
+    assert valg["Maaned"]["values"] == ["90"], "må velge årsgjennomsnittet"
 
 
 def test_kpi_bruker_cache_uten_nytt_kall(ssb_server, tmp_path, monkeypatch):

@@ -347,19 +347,37 @@ def _download_ssb_v0(tabell_id: str, dest: Path, *,
     return dest
 
 
+# KPI-tabeller i prioritert rekkefølge, med referanseår i parentes:
+#   14711  årsserie (2025=100), 1865–        – gjeldende, oppdateres
+#   08981  årstabell (2015=100) med månedsdimensjon der "90" = årsgjennomsnitt
+#   14709  som 08981, men (2025=100)
+#   03013  månedstabell (2015=100) – AVSLUTTET serie, parseren snitter månedene
+# SSB la om KPI til 2025=100 og avsluttet 03013-serien; den ligger sist bare som
+# nødutgang. Referanseåret betyr ingenting for oss – seriene indekseres til
+# første år i perioden uansett.
+KPI_TABELLER = ["14711", "08981", "14709", "03013"]
+
+
 def download_kpi(force: bool = False) -> Path:
     """
-    KPI totalindeks per år. Prøver årsgjennomsnitt-tabellen først,
-    faller tilbake på månedstabellen 03013 (parseren snitter månedene).
+    KPI totalindeks per år, fra den første tabellen som svarer.
+
+    Månedsdimensjonen må velges eksplisitt til årsgjennomsnittet. Den er
+    markert elimination=true, og uten hint ville nedlasteren utelate den – da
+    aggregerer SSB over alle månedene og indeksen blir meningsløs.
     """
     dest = _cache_json("ssb_kpi.json")
     feil = []
-    for tabell in ["08981", "03013"]:
+    for tabell in KPI_TABELLER:
         try:
             return _download_ssb_tabell(
                 tabell, dest,
                 contents_hint="konsumprisindeks",
-                var_hints={"Konsumgrp": "totalindeks", "VareTjenestegruppe": "totalindeks"},
+                var_hints={
+                    "Konsumgrp": "totalindeks",
+                    "VareTjenestegruppe": "totalindeks",
+                    "Maaned": "årsgjennomsnitt",
+                },
                 force=force,
             )
         except KildeFeil as e:
