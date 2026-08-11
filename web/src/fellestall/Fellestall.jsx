@@ -324,7 +324,7 @@ export default function Fellestall() {
             </div>
           </div>
           <div>
-            <div className="ft-stikkord">Om siden</div>
+            <div className="ft-stikkord">Kilder</div>
             <div className="ft-fot-lenker">
               <a href="#om-tallene">Metode og kilder</a>
               <a href="https://statsregnskapet.dfo.no" rel="noreferrer">DFØ Statsregnskapet</a>
@@ -332,9 +332,25 @@ export default function Fellestall() {
               <a href="https://www.nbim.no" rel="noreferrer">NBIM</a>
             </div>
           </div>
+          <div>
+            <div className="ft-stikkord">Om siden</div>
+            {/*
+              Tekstsidene er egne HTML-filer i public/, ikke ruter i appen: en
+              tilgjengelighetserklæring som krever JavaScript for å leses ville
+              motsi seg selv. Derfor vanlige lenker, ikke hash-navigasjon.
+            */}
+            <div className="ft-fot-lenker">
+              <a href="personvern.html">Personvern</a>
+              <a href="vilkar.html">Vilkår og kilder</a>
+              <a href="tilgjengelighet.html">Tilgjengelighet</a>
+            </div>
+          </div>
         </div>
         <div className="ft-fot-linje">
-          <span>Kilder: DFØ Statsregnskapet (NLOD) · SSB (CC BY 4.0) · NBIM</span>
+          <span>
+            Uavhengig, privat prosjekt – ikke tilknyttet noen offentlig etat.
+            Tall fra DFØ Statsregnskapet (NLOD) · SSB (CC BY 4.0) · NBIM
+          </span>
           <span>Ingen informasjonskapsler</span>
         </div>
       </footer>

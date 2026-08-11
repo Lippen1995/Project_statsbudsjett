@@ -876,8 +876,8 @@ body.ft-body { background: #F7F5F0; }
   margin: 0 auto;
   padding: 56px 32px 40px;
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr;
-  gap: 40px;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 36px;
 }
 .ft-logo--lys { font-size: 24px; }
 .ft-fot-slagord { font-size: 13px; color: #D8D4CC; margin-top: 6px; }

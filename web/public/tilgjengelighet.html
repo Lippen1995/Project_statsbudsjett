@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tilgjengelighet – Fellestall.no</title>
+<meta name="description" content="Hva som er testet og hva som gjenstår i arbeidet med å gjøre Fellestall.no tilgjengelig etter WCAG 2.1 nivå AA." />
+<link rel="canonical" href="https://fellestall.no/tilgjengelighet.html" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<meta name="theme-color" content="#14161A" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Playfair+Display:wght@700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+<link href="sider.css" rel="stylesheet" />
+</head>
+<body>
+<a class="hopp" href="#innhold">Hopp til innholdet</a>
+<header class="topp">
+  <div class="topp-inner">
+    <a class="logo" href="./">Fellestall<span>.no</span></a>
+    <a class="tilbake" href="./">← Tilbake til tallene</a>
+  </div>
+</header>
+
+<main id="innhold">
+  <h1>Tilgjengelighet</h1>
+  <p class="ingress">
+    Fellestall.no er bygget mot WCAG 2.1 nivå AA. Under står hva som er målt, hvordan,
+    og hva som ennå ikke er prøvd – det siste er like viktig som det første.
+  </p>
+  <p class="oppdatert">Sist oppdatert 11. august 2026</p>
+
+  <div class="boks">
+    <span class="merke">Om denne siden</span>
+    <p>
+      Dette er en frivillig redegjørelse, ikke en tilgjengelighetserklæring etter
+      regelverket. Kravet om å registrere en erklæring på <code>uustatus.no</code> gjelder
+      offentlige virksomheter og større private aktører. Fellestall.no er et privat
+      prosjekt og omfattes ikke, men innholdet – offentlige tall om fellesskapets penger
+      – bør være tilgjengelig for alle uansett hvem som har laget siden.
+    </p>
+  </div>
+
+  <h2>Hva som er testet</h2>
+  <p>
+    Målingene er gjort i en nettleser på det ferdig bygde nettstedet, ikke anslått ut fra
+    koden. Der en fargeverdi ser vilkårlig ut i kilden, står den målte kontrasten som en
+    kommentar ved siden av.
+  </p>
+  <div class="tabellramme">
+    <table>
+      <thead>
+        <tr><th>Krav</th><th>Hvordan det er prøvd</th><th>Resultat</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.4.3 Kontrast</td>
+          <td>Alle 446 tekstelementer i HTML og alle 191 tekster inne i grafene, målt mot
+              flaten de faktisk males på – ikke mot den antatte bakgrunnen</td>
+          <td>Alle over kravet</td>
+        </tr>
+        <tr>
+          <td>1.1.1 Tekstalternativ</td>
+          <td>Alle ti grafer har en beskrivelse som gjengir tallene, ikke bare formen.
+              Hver flis i budsjettkartet og hver stolpe i endringsgrafen har sin egen</td>
+          <td>10 av 10 grafer</td>
+        </tr>
+        <tr>
+          <td>2.1.1 Tastatur</td>
+          <td>Budsjettkartet og endringsgrafen betjenes med tabulator, og åpnes med Enter
+              eller mellomrom. Fokusrammen er tegnet inn i grafene selv, siden en vanlig
+              fokusramme ikke virker på SVG</td>
+          <td>Alle flater nåbare</td>
+        </tr>
+        <tr>
+          <td>2.4.1 Hoppe over innhold</td>
+          <td>Første tabulatorstopp er en lenke rett til innholdet</td>
+          <td>Ja</td>
+        </tr>
+        <tr>
+          <td>1.4.10 Tilpasning</td>
+          <td>320, 360 og 390 piksler bredde</td>
+          <td>Ingen vannrett rulling</td>
+        </tr>
+        <tr>
+          <td>1.4.4 Tekststørrelse</td>
+          <td>200 % tekststørrelse</td>
+          <td>Ingen vannrett rulling</td>
+        </tr>
+        <tr>
+          <td>1.4.12 Tekstavstand</td>
+          <td>Økt linjeavstand, bokstav- og ordmellomrom etter kravets verdier</td>
+          <td>Ingen tekst kuttes</td>
+        </tr>
+        <tr>
+          <td>2.3.3 Bevegelse</td>
+          <td>Innstillingen «redusert bevegelse» slår av animasjonene, og kontrasten er
+              målt på nytt i den tilstanden – den er ikke den samme som ellers</td>
+          <td>Begge tilstander over kravet</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Siden fungerer også uten JavaScript, i den forstand at den forklarer hva den er og
+    lenker videre til kildene. Grafene krever JavaScript for å regne om tallene mens du
+    utforsker dem, og det lar seg ikke omgå.
+  </p>
+
+  <h2>Hva som ikke er prøvd</h2>
+  <div class="boks aapen">
+    <span class="merke">Kjente hull</span>
+    <p>
+      <strong>Siden er ikke prøvd med skjermleser.</strong> Alle grafer har
+      tekstalternativ, roller og navn, og dette er kontrollert i koden og i nettleseren –
+      men ingen har lyttet gjennom siden med NVDA, JAWS eller VoiceOver. Det er forskjell
+      på riktig oppmerking og god opplesning, særlig for tabeller med mange rader og for
+      grafer med lange beskrivelser.
+    </p>
+    <p>
+      <strong>Ingen har prøvd siden med hjelpemidler i praksis.</strong> Bryterstyring,
+      talestyring, skjermforstørrer og øyestyring er ikke prøvd.
+    </p>
+    <p>
+      <strong>Kognitiv tilgjengelighet er ikke vurdert systematisk.</strong> Emnet er
+      krevende i seg selv, og noen forklaringer er nok fortsatt for tette.
+    </p>
+  </div>
+
+  <h2>Hvis noe ikke virker</h2>
+  <p>
+    Støter du på noe du ikke får tilgang til, er tallene alltid tilgjengelige direkte hos
+    kilden: <a href="https://statsregnskapet.dfo.no" rel="noreferrer">DFØ Statsregnskapet</a>
+    for bevilgninger og regnskap, og <a href="https://www.ssb.no" rel="noreferrer">SSB</a>
+    for folketall, konsumprisindeks og nasjonalregnskap.
+  </p>
+  <p>
+    Et kontaktpunkt for tilbakemeldinger er ikke satt opp ennå. Til det er på plass, kan
+    ikke denne siden love noen svarfrist – og da er det riktigere å si det enn å oppgi en.
+  </p>
+</main>
+
+<footer>
+  <div class="fot-inner">
+    <span class="smatt">Fellestall.no</span>
+    <span class="smatt">
+      <a href="./">Forsiden</a> ·
+      <a href="personvern.html">Personvern</a> ·
+      <a href="vilkar.html">Vilkår</a>
+    </span>
+  </div>
+</footer>
+</body>
+</html>

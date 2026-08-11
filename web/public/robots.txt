@@ -1,0 +1,9 @@
+# Fellestall.no – alt innhold er offentlig og kan indekseres.
+User-agent: *
+Allow: /
+
+# Datafilene er tallgrunnlaget, ikke sider. De er fritt tilgjengelige for
+# den som vil bruke dem, men har ingen verdi i et søkeresultat.
+Disallow: /data/
+
+Sitemap: https://fellestall.no/sitemap.xml
