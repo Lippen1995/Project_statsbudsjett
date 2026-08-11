@@ -229,6 +229,12 @@ export default function App() {
           </aside>
         </div>
 
+        {/*
+          data.politikk finnes ikke lenger: loadAll slutter å hente
+          politikk.json, siden forsiden ikke bruker den. Stortinget-komponenten
+          tåler null og viser da ingenting. Skal denne seksjonen migreres inn i
+          forsiden, hent dataene med hentPolitikk() fra lib/data.
+        */}
         <Stortinget politikk={data.politikk} />
         </>
         )}

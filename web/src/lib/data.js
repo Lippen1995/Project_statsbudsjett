@@ -21,7 +21,7 @@ async function loadJSON(path, { optional = false } = {}) {
 }
 
 export async function loadAll() {
-  const [meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, politikk, fondsverdi] =
+  const [meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, fondsverdi] =
     await Promise.all([
       loadJSON('./data/meta.json'),
       loadJSON('./data/utgifter.json'),
@@ -31,10 +31,19 @@ export async function loadAll() {
       loadJSON('./data/bnp.json', { optional: true }),
       // SSBs BNP-anslag for årene etter nasjonalregnskapet (tabell 12880)
       loadJSON('./data/bnp_prognose.json', { optional: true }),
-      loadJSON('./data/politikk.json', { optional: true }),
       loadJSON('./data/fondsverdi.json', { optional: true }),
     ])
-  return { meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, politikk, fondsverdi }
+  return { meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, fondsverdi }
+}
+
+/**
+ * Stortingets budsjettbehandling. Hentes for seg, ikke i loadAll: forsiden
+ * bruker den ikke ennå, og lastet den likevel ned og tolket 112 kB JSON ved
+ * hvert besøk. ETL-en fortsetter å lage filen – den skal inn i forsiden – men
+ * den skal ikke koste noe før noe faktisk viser den.
+ */
+export async function hentPolitikk() {
+  return loadJSON('./data/politikk.json', { optional: true })
 }
 
 /** Lazy-last representantnivå for én votering (detaljer/votering-{id}.json) */
