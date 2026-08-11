@@ -43,7 +43,14 @@ export default function LinjeGraf({
   if (velg) {
     svgProps.style = { ...svgProps.style, cursor: 'crosshair', userSelect: 'none' }
     svgProps.onMouseDown = (e) => { e.preventDefault(); const i = idxFra(e); setDragg({ a: i, b: i }) }
-    svgProps.onMouseMove = (e) => { if (dragg) setDragg((d) => ({ ...d, b: idxFra(e) })) }
+    // Indeksen må leses ut av hendelsen med én gang. Inne i en setState-
+    // oppdaterer kjører koden først ved neste render, og da har React nullet
+    // ut currentTarget – som felte hele treet midt i et dra.
+    svgProps.onMouseMove = (e) => {
+      if (!dragg) return
+      const i = idxFra(e)
+      setDragg((d) => (d ? { ...d, b: i } : d))
+    }
     svgProps.onMouseLeave = () => setDragg(null)
     svgProps.onMouseUp = () => {
       if (!dragg) return

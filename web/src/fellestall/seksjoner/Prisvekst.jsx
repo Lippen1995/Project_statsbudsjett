@@ -11,13 +11,46 @@ import { kr, pct, n0 } from '../tall'
  *
  * Perioden kan snevres inn ved å dra over grafen.
  */
+/**
+ * Uten prisindeks kan seksjonen ikke regnes ut. Den skjules ikke – da ser det
+ * ut som den ikke finnes – men sier hva som mangler og hvordan det fylles.
+ */
+function ManglerPrisindeks() {
+  return (
+    <section id="prisvekst" className="ft-seksjon" data-avslor>
+      <div className="ft-seksjonstekst ft-seksjonstopp">
+        <div>
+          <h2>Vokser staten raskere enn prisene?</h2>
+          <p>
+            Denne seksjonen setter utgiftene per innbygger mot konsumprisindeksen, så man kan se hvor mye
+            av veksten som er reell og hvor mye som bare er prisvekst.
+          </p>
+        </div>
+      </div>
+      <div className="ft-mangler">
+        <div className="ft-stikkord">Mangler datagrunnlag</div>
+        <p>
+          Konsumprisindeksen finnes ikke i datagrunnlaget. ETL-en henter KPI fra SSB som en
+          tilleggsserie, og hopper over den – uten å felle resten av kjøringen – hvis kilden svarer
+          uventet. Kjør <code>make etl</code> på nytt og se etter advarselen «Ingen KPI» i loggen.
+        </p>
+        <p>
+          Serien kan også legges inn manuelt: <code>web/public/data/kpi.json</code> med årstall som
+          nøkkel og totalindeksen som verdi – <code>{'{"2014": 97.9, "2015": 100, …}'}</code>. Basisåret
+          er valgfritt; seksjonen indekserer selv til det første året i perioden.
+        </p>
+      </div>
+    </section>
+  )
+}
+
 export default function Prisvekst({ data, uRot, aarListe }) {
   const [fra, setFra] = useState(null)
   const [til, setTil] = useState(null)
 
   const kpi = data.kpi ?? {}
   const mulige = aarListe.filter((y) => kpi[y] && data.befolkning?.[y])
-  if (mulige.length < 2) return null
+  if (mulige.length < 2) return <ManglerPrisindeks />
 
   const iFra = mulige.includes(fra) ? fra : mulige[0]
   const iTilValgt = mulige.includes(til) ? til : mulige[mulige.length - 1]

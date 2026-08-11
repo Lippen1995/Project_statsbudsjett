@@ -346,6 +346,29 @@ body.ft-body { background: #F7F5F0; }
 .ft-periodevelger { display: flex; align-items: flex-end; gap: 12px; text-align: right; }
 .ft-periode { font-size: 15px; font-weight: 600; margin-top: 4px; }
 
+/* Seksjon uten datagrunnlag: synlig, men tydelig tom */
+.ft-mangler {
+  margin-top: 20px;
+  padding: 20px 22px;
+  background: var(--ark);
+  border: 1px solid var(--strek);
+  border-left: 3px solid var(--gull);
+}
+.ft-mangler p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--tekst);
+  max-width: 82ch;
+  margin: 10px 0 0;
+}
+.ft-mangler code {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 12.5px;
+  background: var(--flate);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
 /* --- Smuler og piller --------------------------------------------------- */
 
 .ft-smuler { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }

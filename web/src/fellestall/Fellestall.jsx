@@ -154,12 +154,11 @@ export default function Fellestall() {
   const { meta } = data
   const aarListe = meta.regnskap_aar
 
-  // Prisvekstseksjonen krever KPI-serien fra SSB. Mangler kpi.json, skjuler
-  // seksjonen seg selv – da skal den heller ikke ligge igjen i menyen.
-  const harPrisvekst = aarListe.filter((y) => data.kpi?.[y] && data.befolkning?.[y]).length >= 2
-  const navLenker = SEKSJONER
-    .filter((s) => s.id !== 'prisvekst' || harPrisvekst)
-    .map((s, i) => ({ ...s, nr: String(i + 1).padStart(2, '0'), aktiv: aktivSeksjon === s.id }))
+  const navLenker = SEKSJONER.map((s, i) => ({
+    ...s,
+    nr: String(i + 1).padStart(2, '0'),
+    aktiv: aktivSeksjon === s.id,
+  }))
 
   const aarVelger = (
     <select className="ft-select" value={aar} onChange={(e) => setAar(+e.target.value)} aria-label="Regnskapsår">
