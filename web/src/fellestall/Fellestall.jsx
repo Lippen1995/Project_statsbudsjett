@@ -175,6 +175,7 @@ export default function Fellestall() {
 
   return (
     <div className="ft">
+      <a className="ft-hopp" href="#hovedinnhold">Hopp til innholdet</a>
       <div className="ft-layout">
         <aside className="ft-sidemeny">
           {merke}
@@ -195,7 +196,7 @@ export default function Fellestall() {
           </div>
         </aside>
 
-        <div className="ft-hovedspalte">
+        <div className="ft-hovedspalte" id="hovedinnhold">
           <div className="ft-toppbar">
             <div className="ft-toppbar-inner">
               {merke}

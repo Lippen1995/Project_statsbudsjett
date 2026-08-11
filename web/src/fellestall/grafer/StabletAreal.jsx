@@ -53,7 +53,17 @@ export default function StabletAreal({ serier, aar }) {
   const bx = hx + boksB + 8 > W ? Math.max(0, hx - boksB - 8) : hx + 8
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ display: 'block', overflow: 'visible' }}>
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      width="100%"
+      style={{ display: 'block', overflow: 'visible' }}
+      role="img"
+      aria-label={
+        `Sammensetning ${aar[0]} til ${aar[aar.length - 1]}, andel av totalen per år. ` +
+        `Siste år: ` + serier.map((s, i) =>
+          `${s.navn} ${pct((s.verdier[aar.length - 1] / (totaler[aar.length - 1] || 1)) * 100)}`).join(', ') + '.'
+      }
+    >
       {flater.map((d, si) => (
         <path
           key={`a${si}`}

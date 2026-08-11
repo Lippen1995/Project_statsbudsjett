@@ -5,19 +5,35 @@
  * for SVG-grafene, som setter fill/stroke i JS og ikke kan lese variabler.
  */
 
-export const RUST = '#C7462E'
+export const RUST = '#C5452E'
 export const GRONN = '#14594F'
 export const GULL = '#E3B23C'
-export const BLEK = '#8C8A84'
+/**
+ * Dempet tekst. Kontrastkravet går motsatt vei på de to bakgrunnene: BLEK gir
+ * 4,54:1 mot papir men bare 3,67:1 mot mørk, så mørke grafer må bruke
+ * BLEK_MORK (5,25:1 der).
+ *
+ * SVAK er under tekstkravet (3,00:1) og gjelder bare rene flater – rammer,
+ * skillelinjer og fyll. Et tegn som «›» er en tekstnode selv når det leses som
+ * et ikon, så piler skal bruke BLEK, ikke SVAK.
+ */
+export const BLEK = '#72706C'
+export const BLEK_MORK = '#8C8A84'
+export const SVAK = '#918E87'
 export const INK = '#14161A'
 export const BLAA = '#3C5A7D'
 export const PAPIR = '#F7F5F0'
 export const GRID = '#E2DDD3'
 export const GRID_MORK = '#2E3037'
 
-/** Kategorifarger for kart og arealgraf – dempet, i samme familie som RUST/GRØNN */
+/**
+ * Kategorifarger for kart og arealgraf – dempet, i samme familie som
+ * RUST/GRØNN. Flisene i arealgrafen har hvit tekst oppå seg, så hver farge må
+ * gi minst 4,5:1 mot hvitt. Det er grunnen til at gullfargen her (#8E6920) er
+ * mørkere enn GULL: den lyse varianten gir bare 3,25:1.
+ */
 export const PALETT = [
-  '#C7462E', '#14594F', '#B5872B', '#3C5A7D', '#8E4162', '#5F7A3E', '#A8582B', '#2F6E6A',
+  '#C5452E', '#14594F', '#8E6920', '#3C5A7D', '#8E4162', '#5F7A3E', '#A8582B', '#2F6E6A',
   '#7A4E8C', '#96442D', '#4A5B2E', '#6A6E76', '#B2603F', '#3E6B8E', '#874A4A', '#556B45',
 ]
 

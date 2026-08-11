@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import SvgTekst from './SvgTekst'
-import { BLEK, GRID, GRID_MORK, PAPIR, INK } from '../design'
+import { BLEK, BLEK_MORK, GRID, GRID_MORK, PAPIR, INK } from '../design'
 import { belopMill } from '../tall'
 
 /**
@@ -18,7 +18,7 @@ import { belopMill } from '../tall'
  */
 export default function LinjeGraf({
   serier, aar, W = 356, H = 150, fraNull = true, aksefmt, tips, velg, mork = false,
-  anslagFra = null,
+  anslagFra = null, beskrivelse,
 }) {
   const [hover, setHover] = useState(null)
   const [dragg, setDragg] = useState(null)
@@ -41,10 +41,25 @@ export default function LinjeGraf({
     return Math.max(0, Math.min(aar.length - 1, Math.round((px - ml) / steg)))
   }
 
+  // Tekstalternativ: en oppsummering av hva kurvene faktisk viser. Kallstedet
+  // kjenner enheten, så beskrivelsen kommer derfra; fallbacket dekker resten.
+  const forstSist = (s) => {
+    const p = s.punkter.filter((x) => x.v != null)
+    if (!p.length) return null
+    const f = (v) => (aksefmt ? aksefmt(v) : belopMill(v))
+    return `${f(p[0].v)} i ${aar[0]} til ${f(p[p.length - 1].v)} i ${aar[aar.length - 1]}`
+  }
+  const auto = serier
+    .map((s, i) => { const d = forstSist(s); return d ? `${s.navn ?? `serie ${i + 1}`}: ${d}` : null })
+    .filter(Boolean)
+    .join('. ')
+
   const svgProps = {
     viewBox: `0 0 ${W} ${H}`,
     width: '100%',
     style: { display: 'block', overflow: 'visible' },
+    role: 'img',
+    'aria-label': [beskrivelse, auto].filter(Boolean).join('. ') || 'Linjegraf',
   }
   if (velg) {
     svgProps.style = { ...svgProps.style, cursor: 'crosshair', userSelect: 'none' }
@@ -82,7 +97,7 @@ export default function LinjeGraf({
         return (
           <g key={`g${g}`}>
             <line x1={ml} x2={W - mr} y1={y(v)} y2={y(v)} stroke={mork ? GRID_MORK : GRID} strokeWidth={1} />
-            <SvgTekst x={ml - 6} y={y(v) + 3} size={9} fill={BLEK} anchor="end">
+            <SvgTekst x={ml - 6} y={y(v) + 3} size={9} fill={mork ? BLEK_MORK : BLEK} anchor="end">
               {aksefmt ? aksefmt(v) : belopMill(v)}
             </SvgTekst>
           </g>
@@ -162,7 +177,7 @@ export default function LinjeGraf({
             x={x(i, aar.length)}
             y={H - 4}
             size={9}
-            fill={BLEK}
+            fill={mork ? BLEK_MORK : BLEK}
             anchor={i === 0 ? 'start' : i === aar.length - 1 ? 'end' : 'middle'}
           >
             {a}

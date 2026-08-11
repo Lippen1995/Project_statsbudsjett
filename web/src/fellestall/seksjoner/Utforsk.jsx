@@ -140,8 +140,8 @@ export default function Utforsk({
   const tilVisning = (punkter) => punkter.map((p) => ({ v: u.modus === 'person' ? skaler(p.v) : p.v }))
 
   const graf = [
-    { farge: RUST, punkter: tilVisning(serieFor(fokus, 0)) },
-    { farge: BLEK, bredde: 1.5, stiplet: true, punkter: tilVisning(serieFor(fokus, 1)) },
+    { farge: RUST, navn: SERIER[0], punkter: tilVisning(serieFor(fokus, 0)) },
+    { farge: BLEK, bredde: 1.5, stiplet: true, navn: SERIER[1], punkter: tilVisning(serieFor(fokus, 1)) },
   ]
   if (u.pinnet) graf.push({ farge: GRONN, punkter: tilVisning(serieFor(u.pinnet, 0)) })
 
@@ -177,9 +177,9 @@ export default function Utforsk({
     belop.map((v, i) => ({ v: v ? (v / bnpFor(bnpAarListe[i])) * 100 : null }))
 
   const bnpBelop = harBnp ? bnpBelopFor(si) : []
-  const bnpGraf = [{ farge: RUST, punkter: bnpAndelFor(bnpBelop) }]
+  const bnpGraf = [{ farge: RUST, navn: SERIER[si], punkter: bnpAndelFor(bnpBelop) }]
   if (harBnp) {
-    bnpGraf.push({ farge: BLEK, bredde: 1.5, stiplet: true, punkter: bnpAndelFor(bnpBelopFor(bnpRefSi)) })
+    bnpGraf.push({ farge: BLEK, bredde: 1.5, stiplet: true, navn: SERIER[bnpRefSi], punkter: bnpAndelFor(bnpBelopFor(bnpRefSi)) })
   }
   if (harBnp && u.pinnet) {
     bnpGraf.push({
@@ -417,6 +417,7 @@ export default function Utforsk({
                 W={356}
                 H={160}
                 aksefmt={(v) => (u.modus === 'person' ? n0.format(v) : belopMill(v))}
+                beskrivelse={`Utvikling over tid for ${grafTittel}, ${u.modus === 'person' ? 'kroner per innbygger' : 'millioner kroner'}`}
                 tips={(i) => {
                   const r = graf[0].punkter[i]?.v
                   const sa = graf[1].punkter[i]?.v
@@ -467,6 +468,7 @@ export default function Utforsk({
                   H={150}
                   aksefmt={(v) => `${n1.format(v)} %`}
                   anslagFra={forsteAnslag >= 0 ? forsteAnslag : null}
+                  beskrivelse={`${grafTittel} som andel av BNP${anslagsAar.length ? `. ${anslagsAar.join(' og ')} måles mot BNP-anslag` : ''}`}
                   tips={(i) => {
                     const y = bnpAarListe[i]
                     const andel = bnpGraf[0].punkter[i]?.v

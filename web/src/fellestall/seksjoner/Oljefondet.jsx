@@ -74,9 +74,10 @@ export default function Oljefondet({ data, aar, aarListe, petro, fondUt, folk })
               <div className="ft-fondgraf-flate">
                 <LinjeGraf
                   serier={[
-                    { farge: GULL, punkter: pctAar.map((y) => ({ v: uttakPct(y) })) },
-                    { farge: '#6B6A66', stiplet: true, bredde: 1.5, punkter: pctAar.map(() => ({ v: RETTESNOR })) },
+                    { farge: GULL, navn: 'Faktisk uttak', punkter: pctAar.map((y) => ({ v: uttakPct(y) })) },
+                    { farge: '#6B6A66', stiplet: true, bredde: 1.5, navn: 'Rettesnor', punkter: pctAar.map(() => ({ v: RETTESNOR })) },
                   ]}
+                  beskrivelse="Uttak fra Oljefondet som andel av fondets verdi, mot rettesnoren på 3 prosent" 
                   aar={pctAar}
                   W={520}
                   H={230}
@@ -107,7 +108,8 @@ export default function Oljefondet({ data, aar, aarListe, petro, fondUt, folk })
               </div>
               <div className="ft-fondgraf-flate">
                 <LinjeGraf
-                  serier={[{ farge: GULL, punkter: perAar.map((y) => ({ v: uttakPer(y) })) }]}
+                  serier={[{ farge: GULL, navn: 'Uttak per innbygger', punkter: perAar.map((y) => ({ v: uttakPer(y) })) }]}
+                  beskrivelse="Uttak fra Oljefondet per innbygger, i løpende kroner" 
                   aar={perAar}
                   W={520}
                   H={230}

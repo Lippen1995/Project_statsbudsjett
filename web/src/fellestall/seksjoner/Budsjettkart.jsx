@@ -87,8 +87,10 @@ export default function Budsjettkart({ data, aar, aarListe, uRot, totalUtg, skju
             <LinjeGraf
               serier={[{
                 farge: RUST,
+                navn: info ? visNavn(info) : 'Alle utgifter',
                 punkter: aarListe.map((y) => ({ v: info ? verdi(info, y) : sumRot(uRot, y) })),
               }]}
+              beskrivelse={`Utvikling for ${info ? visNavn(info) : 'alle utgifter'}, i millioner kroner`}
               aar={aarListe}
               W={236}
               H={80}

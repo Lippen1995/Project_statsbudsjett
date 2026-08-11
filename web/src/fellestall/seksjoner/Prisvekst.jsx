@@ -104,9 +104,10 @@ export default function Prisvekst({ data, uRot, aarListe }) {
       <div className="ft-grafflate">
         <LinjeGraf
           serier={[
-            { farge: RUST, punkter: utgIdx },
-            { farge: BLAA, bredde: 1.8, punkter: kpiIdx },
+            { farge: RUST, punkter: utgIdx, navn: 'Utgift per innbygger' },
+            { farge: BLAA, bredde: 1.8, punkter: kpiIdx, navn: 'Konsumprisindeks' },
           ]}
+          beskrivelse={`Utgift per innbygger mot konsumprisindeksen, begge indeksert til ${basis} = 100`}
           aar={aar}
           W={1080}
           H={260}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SvgTekst, { kutt } from './SvgTekst'
 import { RUST, GRONN, INK, BLEK } from '../design'
 import { belopMill, medFortegn } from '../tall'
@@ -13,6 +13,7 @@ const W = 1080, H = 300, MT = 28, MB = 62
  * onDrill: (node) => void for én stolpe, (null, noder) => void for «Øvrige»
  */
 export default function Vannfall({ endr, onDrill }) {
+  const [fokus, setFokus] = useState(null)
   const topp = endr.slice(0, 6).concat(endr.filter((r) => r.delta < 0).slice(-4))
   const sett = new Set(topp.map((r) => r.node.i))
   const restRader = endr.filter((r) => !sett.has(r.node.i))
@@ -42,7 +43,16 @@ export default function Vannfall({ endr, onDrill }) {
   const xs = xFor(punkter.length)
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ display: 'block', overflow: 'visible' }}>
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      width="100%"
+      style={{ display: 'block', overflow: 'visible' }}
+      role="img"
+      aria-label={
+        `Vannfallsdiagram over endringer. Samlet ${medFortegn(sum, belopMill(Math.abs(sum)))} kroner. ` +
+        punkter.slice(0, 6).map((p) => `${p.navn} ${medFortegn(p.v, belopMill(Math.abs(p.v)))}`).join('. ')
+      }
+    >
       <line x1={0} x2={W} y1={y(0)} y2={y(0)} stroke="#DCD6CB" strokeWidth={1} />
 
       {punkter.map((p, i) => {
@@ -64,9 +74,23 @@ export default function Vannfall({ endr, onDrill }) {
               <rect
                 x={4 + i * kol} y={MT} width={kol} height={H - MT - MB}
                 fill="transparent" style={{ cursor: 'pointer' }} onClick={klikk}
+                tabIndex={0}
+                role="button"
+                aria-label={`${p.navn}: ${medFortegn(p.v, belopMill(Math.abs(p.v)))} kroner. Åpne for å bryte ned.`}
+                onFocus={() => setFokus(i)}
+                onBlur={() => setFokus(null)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); klikk() } }}
               >
                 <title>{p.navn}</title>
               </rect>
+            )}
+            {/* Fokusramme, siden outline ikke tegnes likt på SVG i alle nettlesere */}
+            {fokus === i && (
+              <rect
+                x={4 + i * kol + 1} y={MT + 1} width={kol - 2} height={H - MT - MB - 2}
+                fill="none" stroke={INK} strokeWidth={2} strokeDasharray="4 2"
+                style={{ pointerEvents: 'none' }}
+              />
             )}
             <rect
               x={x} y={topY} width={bw} height={Math.max(2, h)}

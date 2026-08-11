@@ -98,7 +98,17 @@ export default function Sankey({ kilder, mottakere }) {
   })
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ display: 'block', overflow: 'visible' }}>
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      width="100%"
+      style={{ display: 'block', overflow: 'visible' }}
+      role="img"
+      aria-label={
+        'Flyt fra inntekt til utgift. Inn: ' +
+        kilder.map((k) => `${k.navn} ${belopMill(k.mill)} kroner`).join(', ') +
+        '. Ut: ' + mottakere.map((m) => `${m.navn} ${belopMill(m.mill)} kroner`).join(', ') + '.'
+      }
+    >
       {barn}
     </svg>
   )

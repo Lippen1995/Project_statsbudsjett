@@ -1,25 +1,17 @@
-import React, { Suspense, lazy } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Fellestall from './fellestall/Fellestall.jsx'
 import './index.css'
 
-/**
- * Fellestall er forsiden. Det opprinnelige analyseverktøyet – med
- * Stortingets voteringer og virksomhetsnivået, som ikke har fått plass i den
- * nye visningen ennå – ligger på #klassisk. Det lastes bare når det brukes,
- * slik at CSS-en ikke blander seg inn i forsiden.
+/*
+ * Fellestall er hele nettstedet. Det opprinnelige analyseverktøyet (App.jsx og
+ * components/) er IKKE lenger nåbart: én offentlig flate betyr ett design å
+ * holde tilgjengelig. Stortingets voteringer og virksomhetsnivået finnes bare
+ * der, og skal migreres inn i forsiden – til da ligger filene i repoet som
+ * referanse for migreringen, ikke som død kode ved en forglemmelse.
  */
-const Klassisk = lazy(() => import('./App.jsx'))
-const visKlassisk = window.location.hash.includes('klassisk')
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {visKlassisk ? (
-      <Suspense fallback={<p style={{ padding: 40 }}>Laster …</p>}>
-        <Klassisk />
-      </Suspense>
-    ) : (
-      <Fellestall />
-    )}
+    <Fellestall />
   </React.StrictMode>
 )

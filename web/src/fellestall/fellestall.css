@@ -13,12 +13,12 @@ body.ft-body { background: #F7F5F0; }
   --ink: #14161A;
   --tekst: #3B3A36;
   --dempet: #6B6A66;
-  --blek: #8C8A84;
-  --svak: #B4B0A8;
+  --blek: #72706C;   /* småtekst på papir – 4,54:1 */
+  --svak: #918E87;   /* kun flater: rammer, fyll – 3,00:1, under tekstkravet */
   --strek: #E2DDD3;
   --strek-mork: #2E3037;
   --flate: #EDE9E1;
-  --rust: #C7462E;
+  --rust: #C5452E;   /* 4,52:1 – lenker i brødtekst */
   --rust-mork: #9C3421;
   --gronn: #14594F;
   --gull: #E3B23C;
@@ -59,7 +59,42 @@ body.ft-body { background: #F7F5F0; }
   width: 1px; height: 1px;
   overflow: hidden;
   clip-path: inset(50%);
+  white-space: nowrap;
 }
+
+/*
+ * Fokusmarkering i sidens egen palett. index.css setter en blå ring fra det
+ * klassiske verktøyets fargesystem; den kolliderer med papir og rust.
+ */
+.ft :is(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.ft-seksjon--mork :is(a, button, input, select, [tabindex]):focus-visible,
+.ft-skattpanel :is(a, button, input, select, [tabindex]):focus-visible,
+.ft-fot :is(a, button, input, select, [tabindex]):focus-visible {
+  outline-color: var(--papir);
+}
+/* SVG-elementer tar ikke outline likt i alle nettlesere – flatene i kartet
+   tegner sin egen fokusramme i stedet (se Treemap). */
+.ft svg [tabindex]:focus { outline: none; }
+.ft svg [tabindex]:focus-visible { outline: none; }
+
+/* Hopp til innhold: usynlig til den får fokus */
+.ft-hopp {
+  position: absolute;
+  left: 12px; top: -60px;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--papir);
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 0;
+  transition: top .15s;
+}
+.ft-hopp:focus { top: 12px; color: var(--papir); }
 
 @keyframes ftReisOpp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 @keyframes ftTonInn { from { opacity: 0; } to { opacity: 1; } }
@@ -131,7 +166,7 @@ body.ft-body { background: #F7F5F0; }
 }
 .ft-navlenke:hover { color: var(--ink); border-bottom: 0; }
 .ft-navlenke.aktiv { color: var(--ink); font-weight: 700; border-left-color: var(--rust); }
-.ft-navnr { font-size: 10px; color: var(--svak); flex-shrink: 0; }
+.ft-navnr { font-size: 10px; color: var(--blek); flex-shrink: 0; }
 
 .ft-sidefot {
   display: flex;
@@ -243,6 +278,13 @@ body.ft-body { background: #F7F5F0; }
   padding: 48px 32px 24px;
   scroll-margin-top: 70px;
 }
+/* På mørk grunn går den lyse retningen andre veien: #72706C gir bare 3,67:1
+   mot #14161A, mens #8C8A84 gir 5,25:1. Tokenet redefineres derfor per flate,
+   slik at alle etterkommere arver riktig verdi. */
+.ft-seksjon--mork,
+.ft-skattpanel,
+.ft-fot { --blek: #8C8A84; --svak: #A8A49B; --dempet: #807F7A; }
+
 .ft-seksjon--mork {
   max-width: none;
   background: var(--ink);
@@ -411,7 +453,9 @@ body.ft-body { background: #F7F5F0; }
   padding: 4px 0;
 }
 .ft-smule.aktiv { color: var(--ink); font-weight: 700; }
-.ft-smulepil { margin: 0 6px; color: var(--svak); }
+/* «›» ser ut som et ikon, men er en tekstnode, så tekstkravet på 4,5:1 gjelder
+   – ikke de 3:1 som gjelder grafiske objekter. Derfor --blek, ikke --svak. */
+.ft-smulepil { margin: 0 6px; color: var(--blek); }
 
 /* --- Budsjettkart ------------------------------------------------------- */
 
@@ -460,7 +504,7 @@ body.ft-body { background: #F7F5F0; }
   color: inherit;
 }
 .ft-utgiftsrad:hover { background: var(--ark); }
-.ft-radnr { font-size: 12px; color: var(--svak); font-weight: 600; }
+.ft-radnr { font-size: 12px; color: var(--blek); font-weight: 600; }
 .ft-radmidt { display: block; min-width: 0; }
 .ft-radtittel { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .ft-radnavn { font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
@@ -483,7 +527,10 @@ body.ft-body { background: #F7F5F0; }
 }
 .ft-velger { display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 10px 14px 11px; cursor: pointer; }
 .ft-velger:hover { background: #F4F0E8; }
-.ft-velgerlabel { font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: #A5A199; font-weight: 700; }
+/* 9 px er langt under grensen for «stor tekst», så disse må klare 4,5:1 mot
+   alle bakgrunnene de kan havne på: --ark i ro, #F4F0E8 ved hover og som fast
+   flate bak motstykket. Verdien er valgt for den mørkeste av dem. */
+.ft-velgerlabel { font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: #706D68; font-weight: 700; }
 .ft-velger .ft-select { font-size: 14px; color: var(--ink); padding-right: 18px; }
 .ft-velgermot {
   display: flex;
@@ -491,7 +538,7 @@ body.ft-body { background: #F7F5F0; }
   justify-content: center;
   width: 34px;
   font-size: 12px;
-  color: #A5A199;
+  color: #706D68;
   border-left: 1px solid #E7E2D9;
   border-right: 1px solid #E7E2D9;
   background: #F4F0E8;
@@ -669,7 +716,10 @@ body.ft-body { background: #F7F5F0; }
   cursor: pointer;
   white-space: nowrap;
   background: transparent;
-  color: var(--dempet);
+  /* Pillen står alltid på --flate, også inne i mørke seksjoner, så fargen
+     settes eksplisitt her i stedet for å arve --dempet – det tokenet er
+     redefinert lysere på mørk grunn og ville gitt 2,9:1 her. */
+  color: #6A6965;
 }
 .ft-bytte.aktiv { background: var(--ink); color: var(--papir); }
 
@@ -754,7 +804,7 @@ body.ft-body { background: #F7F5F0; }
   font-size: 9.5px;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--svak);
+  color: var(--blek);
   font-weight: 700;
 }
 .ft-tabellhode > span:not(:first-child) { text-align: right; }
@@ -793,7 +843,7 @@ body.ft-body { background: #F7F5F0; }
 .ft-utforskbelop { text-align: right; font-size: 14px; font-weight: 600; }
 .ft-utforskandel { text-align: right; font-size: 12px; color: var(--blek); }
 .ft-utforskbnp { text-align: right; font-size: 12px; color: var(--dempet); font-weight: 600; }
-.ft-utforskpil { color: var(--svak); font-size: 14px; }
+.ft-utforskpil { color: var(--blek); font-size: 14px; }
 
 .ft-nivaatopp--tynn { border-bottom-width: 1px; padding-bottom: 8px; align-items: center; }
 .ft-bnpsiste { font-size: 15px; font-weight: 700; color: var(--rust); white-space: nowrap; }
