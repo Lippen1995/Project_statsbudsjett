@@ -396,6 +396,23 @@ def download_bnp(force: bool = False) -> Path:
     )
 
 
+def download_bnp_prognose(force: bool = False) -> Path:
+    """
+    BNP i løpende priser med SSBs prognoser (tabell 12880, «Regnskap og
+    prognoser»). Rekker noen år lenger fram enn nasjonalregnskapet, slik at
+    budsjettår kan måles mot et anslag for BNP.
+
+    Tabellen blander regnskapsår og prognoseår uten å skille dem i dataene;
+    grensen settes i etl.py ut fra hvor nasjonalregnskapet (09189) slutter.
+    """
+    return _download_ssb_tabell(
+        "12880", _cache_json("ssb_bnp_prognose.json"),
+        contents_hint="løpende priser",
+        var_hints={"Makrost": "bruttonasjonalprodukt", "MakroStr": "bruttonasjonalprodukt"},
+        force=force,
+    )
+
+
 def _cache_json(name: str) -> Path:
     return RAW_DIR / name
 

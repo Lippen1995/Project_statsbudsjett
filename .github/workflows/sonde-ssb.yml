@@ -1,0 +1,74 @@
+name: Sonde – BNP-prognose (tabell 12880)
+
+# Midlertidig diagnose: bekrefter at nedlasteren treffer riktig variabel i
+# tabell 12880 («Regnskap og prognoser»), og skriver ut prognoseårene. Leser
+# bare data – skriver ingenting til repoet. Fjernes når serien er bekreftet.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/sonde-ssb.yml'
+
+jobs:
+  sonde:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Metadata for 12880
+        run: |
+          curl -s -H 'User-Agent: statsbudsjett-visualisering/1.0 (open source)' \
+            "https://data.ssb.no/api/v0/no/table/12880" -o /tmp/md.json
+          python3 -c "
+          import json
+          d = json.load(open('/tmp/md.json'))
+          print('TITTEL:', d['title'])
+          for v in d['variables']:
+              print()
+              print(' kode:', v['code'], '| elimination:', v.get('elimination'))
+              par = list(zip(v['values'], v['valueTexts']))
+              # vis treff på hintene våre, pluss de første verdiene
+              for kode, tekst in par:
+                  if any(h in tekst.lower() for h in ['bruttonasjonalprodukt', 'løpende priser']):
+                      print('   TREFF:', kode, '=', tekst)
+              print('   første 6:', par[:6])
+              if v['code'] == 'Tid':
+                  print('   siste 8 år:', v['values'][-8:])
+          "
+
+      - name: Sjekk ut repo
+        uses: actions/checkout@v4
+
+      - name: Sett opp Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Kjør nedlasteren og skriv ut prognoseårene
+        run: |
+          pip install -q -r etl/requirements.txt
+          cd etl && python3 -c "
+          import logging
+          logging.basicConfig(level=logging.INFO, format='%(message)s')
+          from download import download_bnp, download_bnp_prognose
+          from parse_befolkning import parse_ssb_aarsserie
+
+          bnp = parse_ssb_aarsserie(download_bnp(force=True), 'BNP')
+          pro = parse_ssb_aarsserie(download_bnp_prognose(force=True), 'BNP-prognose')
+          siste = max(bnp)
+          print()
+          print('=== nasjonalregnskap (09189) ===')
+          for a in sorted(bnp)[-3:]:
+              print(f'  {a}: {bnp[a]:,.0f} mill. kr')
+          print('siste regnskapsår:', siste)
+          print()
+          print('=== 12880, overlapp og prognose ===')
+          for a in sorted(pro):
+              if a >= siste - 2:
+                  merke = 'PROGNOSE' if a > siste else 'regnskap '
+                  avvik = ''
+                  if a in bnp:
+                      avvik = f'  (avvik mot 09189: {(pro[a]-bnp[a])/bnp[a]*100:+.2f} %)'
+                  print(f'  {a}: {pro[a]:,.0f} mill. kr  {merke}{avvik}')
+          print()
+          print('anslagsår som vil skrives:', [a for a in sorted(pro) if a > siste])
+          "

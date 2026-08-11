@@ -18,7 +18,7 @@ from pathlib import Path
 # Legg til etl/ i import-path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from download import download_all, download_kpi, download_bnp, YEARS
+from download import download_all, download_kpi, download_bnp, download_bnp_prognose, YEARS
 from parse_regnskap import parse_regnskap
 from parse_bevilgning import parse_bevilgning
 from parse_befolkning import parse_befolkning, parse_ssb_aarsserie
@@ -128,6 +128,7 @@ def run(years=None, force=False):
     logger.info("\nSTEG 1b: KPI og BNP fra SSB")
     kpi_path = _valgfri_ssb(lambda: download_kpi(force=force), "KPI")
     bnp_path = _valgfri_ssb(lambda: download_bnp(force=force), "BNP")
+    bnp_prognose_path = _valgfri_ssb(lambda: download_bnp_prognose(force=force), "BNP-prognose")
 
     # 2. Parse regnskap
     logger.info("\nSTEG 2: Parser regnskapsdata")
@@ -171,9 +172,27 @@ def run(years=None, force=False):
         bnp = {a: v for a, v in bnp.items() if a >= fra_aar}
         logger.info(f"  BNP beskåret til {fra_aar}– ({len(bnp)} år)")
 
+    # BNP-prognose: bare årene etter siste nasjonalregnskapsår er anslag. Tabell
+    # 12880 inneholder også regnskapsårene, men de skal komme fra 09189 – ellers
+    # ville et revidert nasjonalregnskap bli overskrevet av en prognoseserie.
+    bnp_prognose = (
+        _valgfri_ssb(lambda: parse_ssb_aarsserie(bnp_prognose_path, "BNP-prognose"), "BNP-prognose")
+        if bnp_prognose_path else None
+    )
+    if bnp_prognose and bnp:
+        siste_regnskap = max(bnp)
+        bnp_prognose = {a: v for a, v in bnp_prognose.items() if a > siste_regnskap}
+        logger.info(
+            f"  BNP-prognose: {len(bnp_prognose)} anslagsår "
+            f"({', '.join(str(a) for a in sorted(bnp_prognose)) or 'ingen'}) etter {siste_regnskap}"
+        )
+    elif bnp_prognose:
+        logger.warning("  [ADVARSEL] BNP-prognose uten BNP-regnskap — kan ikke skille anslag, hopper over")
+        bnp_prognose = None
+
     # 5. Sanity-sjekk
     logger.info("\nSTEG 5: Sanity-sjekk")
-    sanity_check(regnskap_frames, bevilgning_df, befolkning, kpi, bnp)
+    sanity_check(regnskap_frames, bevilgning_df, befolkning, kpi, bnp, bnp_prognose)
 
     # 6. Bygg hierarkier
     logger.info("\nSTEG 6: Bygger hierarkier")
@@ -234,6 +253,14 @@ def run(years=None, force=False):
     else:
         logger.warning("  [ADVARSEL] Ingen BNP — '% av BNP'-modus deaktiveres i frontend")
 
+    # Egen fil, ikke slått sammen med bnp.json: et anslag skal aldri kunne
+    # forveksles med et regnskapstall i frontenden.
+    if bnp_prognose:
+        _save_json({str(a): round(v, 1) for a, v in bnp_prognose.items()},
+                   OUTPUT_DIR / "bnp_prognose.json")
+    else:
+        logger.warning("  [ADVARSEL] Ingen BNP-prognose — budsjettår kan ikke måles mot BNP")
+
     _save_json(meta, OUTPUT_DIR / "meta.json")
 
     logger.info(f"\n{'='*60}")
@@ -260,7 +287,7 @@ RIMELIG_MAX = 3_000_000   # 3 000 mrd.
 
 
 def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict,
-                 kpi: dict = None, bnp: dict = None):
+                 kpi: dict = None, bnp: dict = None, bnp_prognose: dict = None):
     import pandas as pd
 
     all_r = pd.concat(list(regnskap_frames.values()), ignore_index=True)
@@ -352,6 +379,25 @@ def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict,
         for aar in [a for a in kpi if a >= 2014]:
             if not (10 <= kpi[aar] <= 500):
                 raise ValueError(f"KPI {aar} urimelig: {kpi[aar]} (forventet indeks 10–500)")
+    # Prognoseårene måles med samme ramme som regnskapsårene, og skal i tillegg
+    # ligge nær siste regnskapsår – et anslag som spretter er en parsefeil, ikke
+    # en spådom.
+    if bnp_prognose and bnp:
+        siste = max(bnp)
+        for aar in sorted(bnp_prognose):
+            v = bnp_prognose[aar]
+            if not (2_000_000 <= v <= 10_000_000):
+                raise ValueError(
+                    f"BNP-prognose {aar} urimelig: {v:,.0f} mill. "
+                    "(forventet 2 000 000–10 000 000)"
+                )
+            if abs(v - bnp[siste]) / bnp[siste] > 0.10 * (aar - siste):
+                raise ValueError(
+                    f"BNP-prognose {aar} spretter fra regnskapet: {v:,.0f} mot "
+                    f"{bnp[siste]:,.0f} mill. i {siste} — sjekk at tabell 12880 "
+                    "leses med riktig variabel"
+                )
+
     if bnp:
         for aar in [a for a in bnp if a >= 2014]:
             # BNP i mill. kr: 2 000–10 000 mrd. for Norge etter 2014

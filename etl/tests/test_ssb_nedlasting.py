@@ -221,3 +221,67 @@ def test_sanity_check_feller_urimelig_kpi_i_vist_periode():
     regnskap, bev = _minimalt_regnskap()
     with pytest.raises(ValueError, match="urimelig"):
         sanity_check(regnskap, bev, {2024: 5_500_000}, kpi={2024: 0.5}, bnp=None)
+
+
+# --- BNP-prognose (tabell 12880) ---
+
+METADATA_12880 = {
+    "title": "12880: Makroøkonomiske hovedstørrelser. Regnskap og prognoser",
+    "variables": [
+        {
+            "code": "Makrost",
+            "text": "makrostørrelse",
+            "values": ["kon.ktot", "bnp.bnpt"],
+            "valueTexts": ["Konsum i alt", "Bruttonasjonalprodukt"],
+        },
+        {
+            "code": "ContentsCode",
+            "text": "statistikkvariabel",
+            "values": ["FastePriser", "LopendePriser"],
+            "valueTexts": ["Faste 2022-priser, mill. kr", "Løpende priser, mill. kr"],
+        },
+        {"code": "Tid", "text": "år", "values": ["2024", "2025", "2026"],
+         "valueTexts": ["2024", "2025", "2026"]},
+    ],
+}
+
+
+def test_bnp_prognose_velger_bnp_i_lopende_priser(ssb_server, tmp_path, monkeypatch):
+    """Første verdi i begge dimensjonene er en annen serie – hintene må treffe."""
+    monkeypatch.setattr(download, "RAW_DIR", tmp_path)
+    monkeypatch.setattr(SsbEtterligning, "metadata", METADATA_12880)
+
+    download.download_bnp_prognose(force=True)
+
+    valg = {q["code"]: q["selection"] for q in SsbEtterligning.mottatt_spørring["query"]}
+    assert valg["ContentsCode"]["values"] == ["LopendePriser"], "må treffe løpende priser"
+    assert valg["Makrost"]["values"] == ["bnp.bnpt"], "må treffe bruttonasjonalprodukt"
+
+
+def test_prognose_beskjæres_til_år_etter_nasjonalregnskapet():
+    """
+    12880 inneholder både regnskaps- og prognoseår. Bare årene etter siste år i
+    09189 er anslag; resten skal komme fra nasjonalregnskapet.
+    """
+    bnp = {2024: 5_382_441.0, 2025: 5_511_334.0}
+    prognose = {2024: 5_380_000.0, 2025: 5_500_000.0, 2026: 5_700_000.0, 2027: 5_900_000.0}
+    siste = max(bnp)
+    beskaaret = {a: v for a, v in prognose.items() if a > siste}
+    assert sorted(beskaaret) == [2026, 2027]
+
+
+def test_sanity_check_feller_prognose_som_spretter():
+    """En prognose som hopper vilt fra regnskapet er en parsefeil, ikke en spådom."""
+    from etl import sanity_check
+    regnskap, bev = _minimalt_regnskap()
+    bnp = {2024: 5_400_000.0}
+    with pytest.raises(ValueError, match="spretter"):
+        sanity_check(regnskap, bev, {2024: 5_500_000}, kpi=None, bnp=bnp,
+                     bnp_prognose={2025: 9_000_000.0})
+
+
+def test_sanity_check_godtar_rimelig_prognose():
+    from etl import sanity_check
+    regnskap, bev = _minimalt_regnskap()
+    sanity_check(regnskap, bev, {2024: 5_500_000}, kpi=None,
+                 bnp={2024: 5_400_000.0}, bnp_prognose={2025: 5_600_000.0, 2026: 5_800_000.0})
