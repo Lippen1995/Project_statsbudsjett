@@ -80,7 +80,9 @@ footer .fot-inner {
   text-decoration: none;
   letter-spacing: -.01em;
 }
-.logo span { color: var(--rust); }
+/* Samme som .ft-logo span på forsiden: dempet farge, 600 fordi Playfair bare
+   lastes i 600 og 700. Logoen skal se ut som den samme logoen. */
+.logo span { color: var(--blek); font-weight: 600; }
 .tilbake { font-size: 14px; color: var(--blek); text-decoration: none; }
 .tilbake:hover { color: var(--ink); }
 

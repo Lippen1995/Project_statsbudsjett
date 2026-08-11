@@ -8,10 +8,9 @@
 <link rel="canonical" href="https://fellestall.no/personvern.html" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <meta name="theme-color" content="#14161A" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Playfair+Display:wght@700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
-<link href="sider.css" rel="stylesheet" />
+<!-- Skriftene ligger lokalt, ikke hos Google. Se web/scripts/hent_fonter.py. -->
+<link rel="stylesheet" href="fonter.css" />
+<link rel="stylesheet" href="sider.css" />
 </head>
 <body>
 <a class="hopp" href="#innhold">Hopp til innholdet</a>
@@ -56,8 +55,9 @@
 
   <h2>Hva som faktisk skjer teknisk</h2>
   <p>
-    To ting er verdt å være åpen om, fordi de innebærer at nettleseren din kontakter andre
-    enn Fellestall.no:
+    Nettleseren din henter alt fra ett sted: Fellestall.no. Skriftene, stilarkene,
+    programkoden og tallene ligger alle her – ingen forespørsler går til noe innholdsnett,
+    noen skrifttjeneste eller noe annet domene. Én ting er likevel verdt å være åpen om.
   </p>
 
   <h3>Nettstedet ligger hos GitHub Pages</h3>
@@ -70,13 +70,12 @@
     <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noreferrer">GitHubs personvernerklæring</a>.
   </p>
 
-  <h3>Skriftene hentes fra Google Fonts</h3>
+  <h3>Skriftene ligger her, ikke hos Google</h3>
   <p>
-    Typografien lastes i dag fra Google Fonts, som betyr at nettleseren din gjør en
-    forespørsel til <code>fonts.googleapis.com</code> og <code>fonts.gstatic.com</code>.
-    Google ser da IP-adressen din. Det er den ene tredjeparten siden er avhengig av, og
-    den skal bort: skriftene skal pakkes med nettstedet selv, slik at hele siden lastes
-    fra ett sted. Til det er gjort, står det her.
+    Typografien ble tidligere lastet fra Google Fonts, som betyr at nettleseren til hver
+    besøkende gjorde en forespørsel til <code>fonts.googleapis.com</code>, og at Google
+    dermed så IP-adressen. Skriftene ligger nå hos nettstedet selv, og de lenkene er borte.
+    Det var den ene tredjeparten siden hadde utover verten.
   </p>
 
   <h2>Tallgrunnlaget</h2>

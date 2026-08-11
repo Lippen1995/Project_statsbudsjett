@@ -128,7 +128,9 @@ body.ft-body { background: #F7F5F0; }
 .ft-merke-lenke { border: 0; color: inherit; display: block; }
 .ft-merke-lenke:hover { color: inherit; }
 .ft-logo { font-family: var(--serif); font-weight: 700; font-size: 21px; letter-spacing: -.01em; }
-.ft-logo span { color: var(--blek); font-weight: 400; }
+/* 600, ikke 400: Playfair lastes bare i 600 og 700, så en 400 her ville falt
+   tilbake på 600 uansett. Verdien sier nå det samme som nettleseren gjør. */
+.ft-logo span { color: var(--blek); font-weight: 600; }
 .ft-slagord { font-size: 11px; color: var(--blek); line-height: 1.4; margin-top: 4px; }
 
 .ft-aarblokk { display: flex; align-items: baseline; gap: 6px; cursor: pointer; }
