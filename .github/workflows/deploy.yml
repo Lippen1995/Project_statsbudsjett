@@ -17,6 +17,10 @@ concurrency:
 
 jobs:
   build-deploy:
+    # Bare main publiseres. Uten denne sperren force-pusher enhver push til
+    # web/** – også fra en feature-branch – den branchens bygg til gh-pages,
+    # og livesiden viser noe som aldri er slått sammen.
+    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     steps:
       - name: Sjekk ut siste versjon av branchen (inkl. ev. ETL-datacommit)
