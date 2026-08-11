@@ -29,11 +29,13 @@ export const GRID_MORK = '#2E3037'
 /**
  * Kategorifarger for kart og arealgraf – dempet, i samme familie som
  * RUST/GRØNN. Flisene i arealgrafen har hvit tekst oppå seg, så hver farge må
- * gi minst 4,5:1 mot hvitt. Det er grunnen til at gullfargen her (#8E6920) er
- * mørkere enn GULL: den lyse varianten gir bare 3,25:1.
+ * gi minst 4,5:1 mot hvitt. Det er grunnen til at gullfargen her (#977024) er
+ * mørkere enn GULL: den opprinnelige #B5872B gir bare 3,25:1. Verdien er den
+ * lyseste som klarer kravet – originalen nedskalert til 83 % – slik at fargen
+ * holder seg så nær utgangspunktet som mulig.
  */
 export const PALETT = [
-  '#C5452E', '#14594F', '#8E6920', '#3C5A7D', '#8E4162', '#5F7A3E', '#A8582B', '#2F6E6A',
+  '#C5452E', '#14594F', '#977024', '#3C5A7D', '#8E4162', '#5F7A3E', '#A8582B', '#2F6E6A',
   '#7A4E8C', '#96442D', '#4A5B2E', '#6A6E76', '#B2603F', '#3E6B8E', '#874A4A', '#556B45',
 ]
 
