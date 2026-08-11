@@ -266,7 +266,13 @@ body.ft-body { background: #F7F5F0; }
 }
 .ft-seksjonstopp--bunn { align-items: flex-end; }
 .ft-seksjonstopp--luft { margin-top: 44px; }
-.ft-seksjonstekst { min-width: 0; }
+
+/*
+ * Tekstkolonnen skal krympe framfor å presse tallene i høyre hjørne ned på en
+ * egen linje. Uten en liten flex-basis blir ingressens maksbredde lagt til
+ * grunn for om raden får plass, og da wrapper den på mellomstore skjermer.
+ */
+.ft-seksjonstekst { flex: 1 1 26ch; min-width: 0; }
 .ft-seksjonstekst h2 { font-size: clamp(26px, 3vw, 34px); }
 .ft-seksjonstekst h3 { font-size: 26px; }
 .ft-seksjonstekst p {
