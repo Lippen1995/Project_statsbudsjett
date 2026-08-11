@@ -343,6 +343,12 @@ body.ft-body { background: #F7F5F0; }
 .ft-tegnforklaring span { display: flex; align-items: center; gap: 8px; }
 .ft-tegnforklaring--liten { gap: 14px; font-size: 11px; margin-top: 12px; }
 .ft-strek { width: 18px; height: 2px; display: block; flex-shrink: 0; }
+/* Stiplet strek i tegnforklaringen, som den stiplede linjen i grafen */
+.ft-strek--stiplet {
+  height: 0;
+  border-top: 2px dashed var(--blek);
+  background: none !important;
+}
 
 .ft-melding { padding: 80px 32px; text-align: center; color: var(--dempet); font-family: var(--sans); }
 .ft-melding h2 { font-family: var(--serif); margin-bottom: 8px; }
