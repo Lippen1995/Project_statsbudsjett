@@ -3,7 +3,7 @@ import LinjeGraf from '../grafer/LinjeGraf'
 import StabletAreal from '../grafer/StabletAreal'
 import { RUST, GRONN, BLEK, NIVAANAVN, visNavn } from '../design'
 import { verdi, barn, rot, artskontoTre, detaljFil, sumRot } from '../kompakt'
-import { belopMill, kr, pct, n0, n1 } from '../tall'
+import { belopMill, kr, pct, pctBnp, n0, n1, n2 } from '../tall'
 
 const SERIER = ['Regnskap', 'Saldert budsjett', 'Revidert budsjett']
 
@@ -81,6 +81,12 @@ export default function Utforsk({
   const maks = Math.max(...rader.map((r) => Math.abs(r.verdi)), 1)
   const farge = erUtg ? RUST : GRONN
 
+  // Andel av BNP regnes alltid av beløpet i mill. kr, uavhengig av visningsmodus.
+  // BNP mangler for budsjettår som ennå ikke er nasjonalregnskapsført.
+  const bnpAar = data.bnp?.[aar] ?? null
+  const bnpAarListe = aarListe.filter((y) => data.bnp?.[y])
+  const harBnp = bnpAarListe.length > 1
+
   /**
    * Artskonto finnes bare i regnskapet, og en post uten detaljer skal ikke se
    * drillbar ut. harDetaljer fra ETL-en avgjør uten å måtte laste filen først.
@@ -146,6 +152,27 @@ export default function Utforsk({
     cagrFarge = rate >= 0 ? RUST : GRONN
     cagrPeriode = `${f.aar}–${l.aar}`
   }
+
+  /**
+   * Andel av BNP over tid for noden man står på. Regnskapsserien brukes, siden
+   * BNP er et regnskapstall – å måle et budsjettall mot faktisk BNP ville
+   * blande anslag og utfall. Er en node festet, vises den som andre linje.
+   */
+  const bnpBelop = harBnp
+    ? bnpAarListe.map((y) => (fokus ? verdi(fokus, y, 0, skjulFin) : sumRot(rotN, y, 0)))
+    : []
+  const bnpGraf = [{
+    farge: RUST,
+    punkter: bnpBelop.map((v, i) => ({ v: (v / data.bnp[bnpAarListe[i]]) * 100 })),
+  }]
+  if (harBnp && u.pinnet) {
+    bnpGraf.push({
+      farge: GRONN,
+      punkter: bnpAarListe.map((y) => ({ v: (verdi(u.pinnet, y, 0, skjulFin) / data.bnp[y]) * 100 })),
+    })
+  }
+  const bnpSisteAar = bnpAarListe[bnpAarListe.length - 1]
+  const bnpSerie = { belop: bnpBelop, siste: bnpBelop[bnpBelop.length - 1] }
 
   // Arealgrafen viser sammensetningen av nivået man står på, over hele perioden
   const arealNoder = (gjeldende.length ? gjeldende : rotN)
@@ -290,6 +317,17 @@ export default function Utforsk({
             </span>
           </div>
 
+          {/* To prosentkolonner ved siden av hverandre trenger ledetekst */}
+          {rader.length > 0 && (
+            <div className={`ft-tabellhode ${harBnp ? 'med-bnp' : ''}`}>
+              <span />
+              <span>{u.modus === 'person' ? 'Per innb.' : 'Beløp'}</span>
+              <span>Andel</span>
+              {harBnp && <span>% av BNP</span>}
+              <span />
+            </div>
+          )}
+
           {rader.map((r) => {
             const kanNed = r.node.l === 'p' ? harArtskonto(r.node) : (r.node.c?.length ?? 0) > 0
             const merke =
@@ -300,7 +338,7 @@ export default function Utforsk({
               <button
                 key={r.node.i}
                 type="button"
-                className={`ft-utforskrad ${u.fokus?.i === r.node.i ? 'fokus' : ''}`}
+                className={`ft-utforskrad ${harBnp ? 'med-bnp' : ''} ${u.fokus?.i === r.node.i ? 'fokus' : ''}`}
                 onClick={() => velgRad(r)}
               >
                 <span className="ft-utforskmidt">
@@ -318,6 +356,7 @@ export default function Utforsk({
                 </span>
                 <span className="num ft-utforskbelop">{fmt(r.verdi)}</span>
                 <span className="num ft-utforskandel">{pct(total ? Math.abs((r.verdi / total) * 100) : 0, 1)}</span>
+                {harBnp && <span className="num ft-utforskbnp">{pctBnp(r.verdi, bnpAar)}</span>}
                 <span className="ft-utforskpil">{kanNed ? '›' : ''}</span>
               </button>
             )
@@ -384,6 +423,44 @@ export default function Utforsk({
               {u.pinnet ? 'Fjern sammenligning' : 'Fest til sammenligning'}
             </button>
           </div>
+
+          {harBnp && (
+            <div className="ft-arealblokk">
+              <div className="ft-nivaatopp ft-nivaatopp--tynn">
+                <span className="ft-stikkord">Andel av BNP over tid</span>
+                <span className="ft-bnpsiste num">{pctBnp(bnpSerie.siste, data.bnp[bnpSisteAar])}</span>
+              </div>
+              <div className="ft-kort-graf">
+                <LinjeGraf
+                  serier={bnpGraf}
+                  aar={bnpAarListe}
+                  W={356}
+                  H={150}
+                  aksefmt={(v) => `${n1.format(v)} %`}
+                  tips={(i) => {
+                    const y = bnpAarListe[i]
+                    const andel = bnpGraf[0].punkter[i]?.v
+                    const pinnetAndel = bnpGraf[1]?.punkter[i]?.v
+                    return {
+                      tittel: `${y} · ${grafTittel}`,
+                      linjer: [
+                        { farge: RUST, tekst: `${andel == null ? '–' : n2.format(andel) + ' %'} av BNP` },
+                        { farge: 'transparent', tekst: `Beløp: ${belopMill(bnpSerie.belop[i])} kr` },
+                        { farge: 'transparent', tekst: `BNP: ${belopMill(data.bnp[y])} kr` },
+                        pinnetAndel != null
+                          ? { farge: GRONN, tekst: `${visNavn(u.pinnet)}: ${n2.format(pinnetAndel)} %` }
+                          : null,
+                      ],
+                    }
+                  }}
+                />
+              </div>
+              <p className="ft-kort-fot">
+                {grafTittel} som andel av bruttonasjonalproduktet, {bnpAarListe[0]}–{bnpSisteAar}. BNP i
+                løpende priser fra nasjonalregnskapet, så både teller og nevner er i årets kroner.
+              </p>
+            </div>
+          )}
 
           <div className="ft-arealblokk">
             <div className="ft-stikkord">Sammensetning over tid</div>

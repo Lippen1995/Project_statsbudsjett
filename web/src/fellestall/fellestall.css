@@ -705,7 +705,9 @@ body.ft-body { background: #F7F5F0; }
 
 .ft-utforsk-grid {
   display: grid;
-  grid-template-columns: 1fr 400px;
+  /* Sidespalten er smalere enn grafenes 356 px viewBox var før BNP-kolonnen kom
+     inn; tabellen trenger bredden mer, og grafene skalerer likevel. */
+  grid-template-columns: 1fr 360px;
   gap: 28px;
   margin-top: 20px;
   align-items: start;
@@ -735,6 +737,23 @@ body.ft-body { background: #F7F5F0; }
 .ft-cagr { flex-shrink: 0; display: flex; align-items: baseline; gap: 6px; }
 .ft-cagr .num { font-family: var(--serif); font-size: 20px; font-weight: 700; }
 .ft-cagrperiode { font-size: 10px; color: var(--blek); white-space: nowrap; }
+
+/* Kolonneledetekst – uten den er «Andel» og «% av BNP» ikke til å skille */
+.ft-tabellhode {
+  display: grid;
+  grid-template-columns: 1fr 130px 54px 16px;
+  gap: 12px;
+  padding: 8px 8px 6px;
+  border-bottom: 1px solid var(--strek);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--svak);
+  font-weight: 700;
+}
+.ft-tabellhode > span:not(:first-child) { text-align: right; }
+.ft-tabellhode.med-bnp,
+.ft-utforskrad.med-bnp { grid-template-columns: 1fr 110px 46px 62px 14px; }
 
 .ft-utforskrad {
   width: 100%;
@@ -767,7 +786,11 @@ body.ft-body { background: #F7F5F0; }
 }
 .ft-utforskbelop { text-align: right; font-size: 14px; font-weight: 600; }
 .ft-utforskandel { text-align: right; font-size: 12px; color: var(--blek); }
+.ft-utforskbnp { text-align: right; font-size: 12px; color: var(--dempet); font-weight: 600; }
 .ft-utforskpil { color: var(--svak); font-size: 14px; }
+
+.ft-nivaatopp--tynn { border-bottom-width: 1px; padding-bottom: 8px; align-items: center; }
+.ft-bnpsiste { font-size: 15px; font-weight: 700; color: var(--rust); white-space: nowrap; }
 .ft-tommelding { font-size: 13px; color: var(--blek); padding: 18px 0; }
 .ft-arealblokk { border-top: 1px solid var(--strek); padding-top: 12px; }
 
@@ -855,8 +878,14 @@ body.ft-body { background: #F7F5F0; }
 @media (max-width: 640px) {
   .ft-utgiftsrad { grid-template-columns: 22px 1fr; }
   .ft-radhoyre { grid-column: 2; text-align: left; display: flex; gap: 10px; align-items: baseline; }
-  .ft-utforskrad { grid-template-columns: 1fr 100px 16px; }
-  .ft-utforskandel { display: none; }
+  /* På mobil får bare beløpet plass; andel og BNP-kolonne faller bort */
+  .ft-utforskrad,
+  .ft-utforskrad.med-bnp,
+  .ft-tabellhode,
+  .ft-tabellhode.med-bnp { grid-template-columns: 1fr 100px 16px; }
+  .ft-utforskandel, .ft-utforskbnp,
+  .ft-tabellhode > span:nth-child(3),
+  .ft-tabellhode.med-bnp > span:nth-child(4) { display: none; }
   .ft-mottaker { grid-template-columns: 1fr; gap: 8px; }
   .ft-mottakerbelop { text-align: left; }
   .ft-komponent { grid-template-columns: 1fr 90px; }

@@ -16,9 +16,9 @@ export default function OmTallene({ meta, antallPoster }) {
         <div>
           <h3>Kilder</h3>
           <p>
-            Regnskaps- og bevilgningstall fra DFØ Statsregnskapet (NLOD). Folketall og konsumprisindeks fra
-            SSB (CC BY 4.0). Oljefondets markedsverdi ved årsslutt fra NBIMs årsrapporter.
-            Sist oppdatert {oppdatert}.
+            Regnskaps- og bevilgningstall fra DFØ Statsregnskapet (NLOD). Folketall, konsumprisindeks og
+            bruttonasjonalprodukt fra SSB (CC BY 4.0). Oljefondets markedsverdi ved årsslutt fra NBIMs
+            årsrapporter. Sist oppdatert {oppdatert}.
           </p>
         </div>
         <div>

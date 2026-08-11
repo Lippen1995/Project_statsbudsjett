@@ -10,6 +10,7 @@ const NF = (d) => new Intl.NumberFormat('nb-NO', { maximumFractionDigits: d, min
 
 export const n0 = NF(0)
 export const n1 = NF(1)
+export const n2 = NF(2)
 
 /** Beløp i mill. kr → «12,3 mrd.» / «450 mill.» */
 export function belopMill(v) {
@@ -30,6 +31,19 @@ export function kr(v) {
 export function pct(v, d = 0) {
   if (v == null) return '–'
   return NF(d).format(v) + ' %'
+}
+
+/**
+ * Andel av BNP. Postene spenner fra tolv prosent ned til noen tusendeler, så
+ * to desimaler er nødvendig – men et beløp som finnes skal ikke vises som
+ * «0,00 %», derfor terskelen.
+ */
+export function pctBnp(mill, bnpMill) {
+  if (!bnpMill) return '–'
+  const p = (mill / bnpMill) * 100
+  if (p === 0) return '0 %'
+  if (Math.abs(p) < 0.005) return (p < 0 ? '−' : '') + '<0,01 %'
+  return NF(2).format(p) + ' %'
 }
 
 /** Fortegn foran et tall, med typografisk minus */

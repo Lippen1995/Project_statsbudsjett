@@ -44,6 +44,7 @@ export function kompaktData(raa) {
     befolkning: raa.befolkning ?? {},
     fondsverdi: raa.fondsverdi ?? {},
     kpi: raa.kpi ?? {},
+    bnp: raa.bnp ?? {},
     utgifter: raa.utgifter.map(kompaktNode),
     inntekter: raa.inntekter.map(kompaktNode),
   }
