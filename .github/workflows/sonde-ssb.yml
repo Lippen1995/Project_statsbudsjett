@@ -7,6 +7,9 @@ name: Sonde – SSB KPI/BNP-tabeller
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/sonde-ssb.yml'
 
 jobs:
   sonde:
