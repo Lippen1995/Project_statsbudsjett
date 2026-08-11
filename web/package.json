@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "etl": "cd .. && python etl/etl.py",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sjekk": "node scripts/sjekk_publisering.mjs",
+    "fonter": "python3 scripts/hent_fonter.py"
   },
   "keywords": [],
   "author": "",
