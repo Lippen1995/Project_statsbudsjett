@@ -11,8 +11,14 @@ import { belopMill } from '../tall'
  * velg:   (fraIdx, tilIdx) => void slår på periodevalg ved dra
  * fraNull: false lar y-aksen starte over null (for indeksgrafer)
  */
+/**
+ * anslagFra: indeks der tallene går fra å være målt til å være anslått. Området
+ * fra og med der får en svak bakgrunn, og linjene tegnes stiplet, slik at en
+ * prognose ikke kan leses som et utfall.
+ */
 export default function LinjeGraf({
   serier, aar, W = 356, H = 150, fraNull = true, aksefmt, tips, velg, mork = false,
+  anslagFra = null,
 }) {
   const [hover, setHover] = useState(null)
   const [dragg, setDragg] = useState(null)
@@ -97,26 +103,53 @@ export default function LinjeGraf({
         />
       )}
 
+      {/* Anslagsområdet, tegnet under linjene */}
+      {anslagFra != null && anslagFra > 0 && anslagFra < aar.length && (
+        <g style={{ pointerEvents: 'none' }}>
+          <rect
+            x={x(anslagFra - 0.5, aar.length)}
+            y={mt}
+            width={Math.max(0, W - mr - x(anslagFra - 0.5, aar.length))}
+            height={H - mt - mb}
+            fill={mork ? 'rgba(247,245,240,.05)' : 'rgba(20,22,26,.045)'}
+          />
+          <line
+            x1={x(anslagFra - 0.5, aar.length)} x2={x(anslagFra - 0.5, aar.length)}
+            y1={mt} y2={H - mb}
+            stroke={mork ? '#5A5C63' : '#C9C4BA'} strokeWidth={1} strokeDasharray="2 3"
+          />
+        </g>
+      )}
+
       {serier.map((s, si) => {
+        // Punktene beholder sin indeks, så anslagsgrensen treffer riktig år selv
+        // om serien har hull
         const pts = s.punkter
-          .map((p, i) => (p.v == null ? null : [x(i, s.punkter.length), y(p.v)]))
+          .map((p, i) => (p.v == null ? null : { i, xy: [x(i, s.punkter.length), y(p.v)] }))
           .filter(Boolean)
         if (!pts.length) return null
+        const bane = (liste) =>
+          'M' + liste.map((p) => `${p.xy[0].toFixed(1)},${p.xy[1].toFixed(1)}`).join('L')
+        const grense = anslagFra == null ? pts.length : pts.findIndex((p) => p.i >= anslagFra)
+        const malt = grense < 0 ? pts : pts.slice(0, grense)
+        // Anslagsdelen starter på siste målte punkt, så linjen ikke får et brudd
+        const anslag = grense < 0 ? [] : pts.slice(Math.max(0, grense - 1))
+        const felles = {
+          fill: 'none',
+          stroke: s.farge,
+          strokeWidth: s.bredde ?? 2,
+          strokeLinejoin: 'round',
+          strokeLinecap: 'round',
+          style: { animation: `ftTonInn .8s ${120 + si * 130}ms ease both` },
+        }
+        const siste = pts[pts.length - 1].xy
         return (
           <g key={`l${si}`}>
-            {pts.length > 1 && (
-              <path
-                d={'M' + pts.map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('L')}
-                fill="none"
-                stroke={s.farge}
-                strokeWidth={s.bredde ?? 2}
-                strokeDasharray={s.stiplet ? '4 3' : undefined}
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                style={{ animation: `ftTonInn .8s ${120 + si * 130}ms ease both` }}
-              />
+            {malt.length > 1 && (
+              <path d={bane(malt)} {...felles} strokeDasharray={s.stiplet ? '4 3' : undefined} />
             )}
-            <circle cx={pts[pts.length - 1][0]} cy={pts[pts.length - 1][1]} r={3} fill={s.farge} />
+            {anslag.length > 1 && <path d={bane(anslag)} {...felles} strokeDasharray="3 3" />}
+            <circle cx={siste[0]} cy={siste[1]} r={3} fill={s.farge} />
           </g>
         )
       })}

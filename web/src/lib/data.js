@@ -21,17 +21,20 @@ async function loadJSON(path, { optional = false } = {}) {
 }
 
 export async function loadAll() {
-  const [meta, utgifter, inntekter, befolkning, kpi, bnp, politikk, fondsverdi] = await Promise.all([
-    loadJSON('./data/meta.json'),
-    loadJSON('./data/utgifter.json'),
-    loadJSON('./data/inntekter.json'),
-    loadJSON('./data/befolkning.json'),
-    loadJSON('./data/kpi.json', { optional: true }),
-    loadJSON('./data/bnp.json', { optional: true }),
-    loadJSON('./data/politikk.json', { optional: true }),
-    loadJSON('./data/fondsverdi.json', { optional: true }),
-  ])
-  return { meta, utgifter, inntekter, befolkning, kpi, bnp, politikk, fondsverdi }
+  const [meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, politikk, fondsverdi] =
+    await Promise.all([
+      loadJSON('./data/meta.json'),
+      loadJSON('./data/utgifter.json'),
+      loadJSON('./data/inntekter.json'),
+      loadJSON('./data/befolkning.json'),
+      loadJSON('./data/kpi.json', { optional: true }),
+      loadJSON('./data/bnp.json', { optional: true }),
+      // SSBs BNP-anslag for årene etter nasjonalregnskapet (tabell 12880)
+      loadJSON('./data/bnp_prognose.json', { optional: true }),
+      loadJSON('./data/politikk.json', { optional: true }),
+      loadJSON('./data/fondsverdi.json', { optional: true }),
+    ])
+  return { meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, politikk, fondsverdi }
 }
 
 /** Lazy-last representantnivå for én votering (detaljer/votering-{id}.json) */

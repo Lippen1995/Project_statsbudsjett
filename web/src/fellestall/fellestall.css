@@ -798,6 +798,7 @@ body.ft-body { background: #F7F5F0; }
 .ft-nivaatopp--tynn { border-bottom-width: 1px; padding-bottom: 8px; align-items: center; }
 .ft-bnpsiste { font-size: 15px; font-weight: 700; color: var(--rust); white-space: nowrap; }
 .ft-tommelding { font-size: 13px; color: var(--blek); padding: 18px 0; }
+.ft-anslagsnote { font-size: 11.5px; color: var(--blek); padding: 10px 8px 0; line-height: 1.5; }
 .ft-arealblokk { border-top: 1px solid var(--strek); padding-top: 12px; }
 
 /* --- Om tallene --------------------------------------------------------- */

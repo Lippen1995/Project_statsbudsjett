@@ -81,11 +81,19 @@ export default function Utforsk({
   const maks = Math.max(...rader.map((r) => Math.abs(r.verdi)), 1)
   const farge = erUtg ? RUST : GRONN
 
-  // Andel av BNP regnes alltid av beløpet i mill. kr, uavhengig av visningsmodus.
-  // BNP mangler for budsjettår som ennå ikke er nasjonalregnskapsført.
-  const bnpAar = data.bnp?.[aar] ?? null
-  const bnpAarListe = aarListe.filter((y) => data.bnp?.[y])
+  /**
+   * Andel av BNP regnes alltid av beløpet i mill. kr, uavhengig av visningsmodus.
+   *
+   * Budsjettår som ennå ikke er nasjonalregnskapsført dekkes av SSBs anslag
+   * (tabell 12880), slik at et budsjett kan måles mot BNP. Anslag og regnskap
+   * holdes fra hverandre: erAnslag styrer merking i tabell, graf og tooltip.
+   */
+  const bnpFor = (y) => data.bnp?.[y] ?? data.bnpPrognose?.[y] ?? null
+  const erAnslag = (y) => data.bnp?.[y] == null && data.bnpPrognose?.[y] != null
+  const bnpAar = bnpFor(aar)
+  const bnpAarListe = data.meta.budsjett_aar.filter((y) => bnpFor(y))
   const harBnp = bnpAarListe.length > 1
+  const forsteAnslag = bnpAarListe.findIndex((y) => erAnslag(y))
 
   /**
    * Artskonto finnes bare i regnskapet, og en post uten detaljer skal ikke se
@@ -166,7 +174,7 @@ export default function Utforsk({
     bnpAarListe.map((y) => (fokus ? verdi(fokus, y, serieIdx, skjulFin) : sumRot(rotN, y, serieIdx)))
   // 0 betyr «ingen tall for dette året», ikke null kroner – da skal linjen brytes
   const bnpAndelFor = (belop) =>
-    belop.map((v, i) => ({ v: v ? (v / data.bnp[bnpAarListe[i]]) * 100 : null }))
+    belop.map((v, i) => ({ v: v ? (v / bnpFor(bnpAarListe[i])) * 100 : null }))
 
   const bnpBelop = harBnp ? bnpBelopFor(si) : []
   const bnpGraf = [{ farge: RUST, punkter: bnpAndelFor(bnpBelop) }]
@@ -181,9 +189,7 @@ export default function Utforsk({
   }
   const bnpSisteAar = bnpAarListe[bnpAarListe.length - 1]
   const bnpSisteAndel = [...bnpGraf[0].punkter].reverse().find((p) => p.v != null)?.v ?? null
-
-  // Budsjettår uten nasjonalregnskap har ingen nevner å måles mot
-  const bnpUtenfor = data.meta.budsjett_aar.filter((y) => y > bnpSisteAar)
+  const anslagsAar = bnpAarListe.filter((y) => erAnslag(y))
 
   // Arealgrafen viser sammensetningen av nivået man står på, over hele perioden
   const arealNoder = (gjeldende.length ? gjeldende : rotN)
@@ -334,7 +340,11 @@ export default function Utforsk({
               <span />
               <span>{u.modus === 'person' ? 'Per innb.' : 'Beløp'}</span>
               <span>Andel</span>
-              {harBnp && <span>% av BNP</span>}
+              {harBnp && (
+                <span title={erAnslag(aar) ? `Målt mot SSBs BNP-anslag for ${aar}` : undefined}>
+                  {erAnslag(aar) ? '% av BNP*' : '% av BNP'}
+                </span>
+              )}
               <span />
             </div>
           )}
@@ -372,6 +382,12 @@ export default function Utforsk({
               </button>
             )
           })}
+
+          {harBnp && erAnslag(aar) && rader.length > 0 && (
+            <p className="ft-anslagsnote">
+              * BNP for {aar} er SSBs anslag (tabell 12880); nasjonalregnskapet rekker til {Math.max(...Object.keys(data.bnp ?? {}).map(Number))}.
+            </p>
+          )}
 
           {!rader.length && (
             <p className="ft-tommelding">
@@ -450,6 +466,7 @@ export default function Utforsk({
                   W={356}
                   H={150}
                   aksefmt={(v) => `${n1.format(v)} %`}
+                  anslagFra={forsteAnslag >= 0 ? forsteAnslag : null}
                   tips={(i) => {
                     const y = bnpAarListe[i]
                     const andel = bnpGraf[0].punkter[i]?.v
@@ -457,12 +474,15 @@ export default function Utforsk({
                     const pinnetAndel = bnpGraf[2]?.punkter[i]?.v
                     const somPct = (v) => (v == null ? '–' : `${n2.format(v)} %`)
                     return {
-                      tittel: `${y} · ${grafTittel}`,
+                      tittel: `${y}${erAnslag(y) ? ' · BNP-anslag' : ''} · ${grafTittel}`,
                       linjer: [
                         { farge: RUST, tekst: `${SERIER[si]}: ${somPct(andel)} av BNP` },
                         { farge: BLEK, tekst: `${SERIER[bnpRefSi]}: ${somPct(refAndel)}` },
                         { farge: 'transparent', tekst: `Beløp: ${belopMill(bnpBelop[i])} kr` },
-                        { farge: 'transparent', tekst: `BNP: ${belopMill(data.bnp[y])} kr` },
+                        {
+                          farge: 'transparent',
+                          tekst: `BNP${erAnslag(y) ? ' (anslag)' : ''}: ${belopMill(bnpFor(y))} kr`,
+                        },
                         pinnetAndel != null
                           ? { farge: GRONN, tekst: `${visNavn(u.pinnet)}: ${somPct(pinnetAndel)}` }
                           : null,
@@ -480,8 +500,10 @@ export default function Utforsk({
               </div>
               <p className="ft-kort-fot">
                 {grafTittel} som andel av bruttonasjonalproduktet, {bnpAarListe[0]}–{bnpSisteAar}. BNP i
-                løpende priser fra nasjonalregnskapet, så både teller og nevner er i årets kroner.
-                {bnpUtenfor.length > 0 && ` ${bnpUtenfor.join(' og ')} mangler fordi nasjonalregnskapet ennå ikke har BNP for året – budsjettandelen kan derfor ikke beregnes så langt fram.`}
+                løpende priser, så både teller og nevner er i årets kroner.
+                {anslagsAar.length > 0
+                  ? ` Det skraverte området (${anslagsAar.join(', ')}) måles mot SSBs BNP-anslag, ikke nasjonalregnskapet – andelen der endrer seg når anslaget revideres.`
+                  : ''}
               </p>
             </div>
           )}
