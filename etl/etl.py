@@ -28,6 +28,31 @@ import stortinget
 OUTPUT_DIR = Path(__file__).parent.parent / "web" / "public" / "data"
 RAW_DIR = Path(__file__).parent / "raw"
 WARNINGS_LOG = Path(__file__).parent / "warnings.log"
+STATUS_FIL = Path(__file__).parent / "status.json"
+
+
+class Advarselsamler(logging.Handler):
+    """
+    Samler advarslene mens de skjer, så de kan skrives ut som data til slutt.
+
+    Bakgrunnen er en feil som fikk stå lenge: KPI sluttet å komme fra SSB, og
+    fordi tilleggsseriene med vilje hoppes over uten å felle kjøringen, endte
+    advarselen i en loggfil ingen leste. Kjøringen var «grønn» i månedsvis mens
+    en hel seksjon manglet datagrunnlag.
+
+    Med advarslene som maskinlesbar status kan CI varsle på dem, og forskjellen
+    mellom «gikk bra» og «gikk, men uten KPI» blir synlig utenfra.
+    """
+
+    def __init__(self):
+        super().__init__(level=logging.WARNING)
+        self.meldinger = []
+
+    def emit(self, record):
+        self.meldinger.append(record.getMessage().strip())
+
+
+advarsler = Advarselsamler()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -38,6 +63,12 @@ logging.basicConfig(
     ],
 )
 logger = logging.getLogger(__name__)
+
+# Samleren henges på modulloggeren direkte, ikke via basicConfig. basicConfig er
+# nemlig et intet-kall hvis noe annet allerede har satt opp logging – slik
+# pytest gjør – og da ville varslingen stilltiende sluttet å virke. Det er samme
+# slags feil som statusfilen finnes for å fange, så den skal ikke gjentas her.
+logger.addHandler(advarsler)
 
 
 def _valgfri(funk, navn, kilde="kilde"):
@@ -302,11 +333,45 @@ def run(years=None, force=False):
 
     _save_json(meta, OUTPUT_DIR / "meta.json")
 
+    skriv_status(
+        vellykket=True,
+        serier={"kpi": bool(kpi), "bnp": bool(bnp), "bnp_prognose": bool(bnp_prognose),
+                "politikk": bool(politikk)},
+        aar=actual_years,
+    )
+
     logger.info(f"\n{'='*60}")
     logger.info("ETL fullført!")
     logger.info(f"Output: {OUTPUT_DIR}")
     logger.info(f"Advarsler/logg: {WARNINGS_LOG}")
+    if advarsler.meldinger:
+        logger.info(f"{len(advarsler.meldinger)} advarsler – se {STATUS_FIL.name}")
     logger.info(f"{'='*60}\n")
+
+
+def skriv_status(vellykket: bool, serier: dict | None = None,
+                 aar: list | None = None, feil: str | None = None):
+    """
+    Skriv etl/status.json: resultatet av kjøringen som data, ikke som prosa.
+
+    CI leser denne i stedet for å lete i loggen etter «[ADVARSEL]». Skillet som
+    betyr noe er ikke bare gikk/gikk ikke, men om noen av tilleggsseriene falt
+    ut – en kjøring kan lykkes og likevel etterlate en seksjon uten tall.
+    """
+    status = {
+        "tidspunkt": datetime.now(timezone.utc).isoformat(),
+        "vellykket": vellykket,
+        "advarsler": advarsler.meldinger,
+        "antall_advarsler": len(advarsler.meldinger),
+        "serier": serier or {},
+        "regnskap_aar": aar or [],
+    }
+    if feil:
+        status["feil"] = feil
+    # Skrives med json direkte, ikke _save_json: statusfilen hører til kjøringen
+    # og skal ikke havne i web/public/data sammen med tallene.
+    STATUS_FIL.write_text(json.dumps(status, ensure_ascii=False, indent=2), encoding="utf-8")
+    return status
 
 
 # --- Kjente totaler for sanity-sjekk ---
@@ -455,4 +520,12 @@ if __name__ == "__main__":
     parser.add_argument("--years", nargs="+", type=int, default=YEARS)
     args = parser.parse_args()
 
-    run(years=args.years, force=args.force)
+    try:
+        run(years=args.years, force=args.force)
+    except Exception as e:
+        # Også et sammenbrudd skal etterlate en status. Uten den kan CI ikke
+        # skille «kjøringen brøt sammen» fra «kjøringen startet aldri», og det
+        # er to helt ulike ting å varsle om.
+        logger.error(f"\nETL brøt sammen: {type(e).__name__}: {e}")
+        skriv_status(vellykket=False, feil=f"{type(e).__name__}: {e}")
+        raise

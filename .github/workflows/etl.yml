@@ -15,6 +15,12 @@ permissions:
 jobs:
   etl:
     runs-on: ubuntu-latest
+    # Løftes ut av jobben slik at varsle-jobben kan si hva som mangler
+    outputs:
+      advarsler: ${{ steps.status.outputs.advarsler }}
+      tomme_serier: ${{ steps.status.outputs.tomme_serier }}
+      mangler_status: ${{ steps.status.outputs.mangler_status }}
+      sammendrag: ${{ steps.status.outputs.sammendrag }}
     steps:
       - name: Sjekk ut repo
         uses: actions/checkout@v4
@@ -47,6 +53,37 @@ jobs:
         if: always()
         run: cat etl/warnings.log || true
 
+      # Statusfilen er kjøringens eget referat. Den leses her og sendes videre
+      # til varsle-jobben, slik at varselet kan si HVA som mangler – ikke bare
+      # at noe gikk galt.
+      - name: Les status fra ETL
+        id: status
+        if: always()
+        run: |
+          if [ ! -f etl/status.json ]; then
+            echo "advarsler=0" >> "$GITHUB_OUTPUT"
+            echo "mangler_status=true" >> "$GITHUB_OUTPUT"
+            echo "Ingen etl/status.json – ETL-en nådde aldri så langt."
+            exit 0
+          fi
+          echo "mangler_status=false" >> "$GITHUB_OUTPUT"
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, pathlib
+          s = json.loads(pathlib.Path("etl/status.json").read_text(encoding="utf-8"))
+          print(f"advarsler={s['antall_advarsler']}")
+          print(f"vellykket={str(s['vellykket']).lower()}")
+          tomme = [n for n, ok in s.get("serier", {}).items() if not ok]
+          print(f"tomme_serier={','.join(tomme)}")
+          # Flerlinjet utdata må rammes inn, ellers tolkes hver linje som en ny nøkkel
+          print("sammendrag<<SLUTT")
+          for a in s["advarsler"]:
+              print(f"- {a}")
+          if s.get("feil"):
+              print(f"- Sammenbrudd: {s['feil']}")
+          print("SLUTT")
+          PY
+          cat etl/status.json
+
       - name: Commit og push genererte data
         run: |
           git config user.name "github-actions[bot]"
@@ -59,6 +96,89 @@ jobs:
             git commit -m "chore: oppdater data fra DFØ og SSB (automatisk ETL)"
             git push
           fi
+
+  # Varsling. En månedlig kjøring som feiler i stillhet betyr at nettstedet
+  # viser gamle tall uten at noen vet det. Varselet går som en GitHub-sak, fordi
+  # det ikke krever hemmeligheter eller en tjeneste utenfor repoet – eieren blir
+  # varslet av GitHub selv.
+  #
+  # Det varsles på to ting, ikke bare én: at kjøringen feilet, OG at den lyktes
+  # med tomme tilleggsserier. Det siste er tilstanden som fikk stå i månedsvis
+  # med grønt merke da KPI forsvant.
+  varsle:
+    needs: etl
+    # Avbrutt kjøring varsles ikke: den er nesten alltid noe noen gjorde med vilje.
+    if: >-
+      always() && needs.etl.result != 'cancelled' &&
+      (needs.etl.result != 'success' || needs.etl.outputs.advarsler != '0')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Åpne eller oppdater sak
+        uses: actions/github-script@v7
+        # Verdiene sendes inn som miljøvariabler, ikke som ${{ }} rett i skriptet.
+        # Sammendraget inneholder unntaksmeldinger, og de kan i prinsippet bære
+        # tekst fra et svar fra SSB eller DFØ. Interpolert direkte i JavaScript
+        # ville en bakevendt hakeparentes eller ${ brutt skriptet – eller kjørt
+        # noe det ikke skulle.
+        env:
+          RESULTAT: ${{ needs.etl.result }}
+          TOMME_SERIER: ${{ needs.etl.outputs.tomme_serier }}
+          MANGLER_STATUS: ${{ needs.etl.outputs.mangler_status }}
+          SAMMENDRAG: ${{ needs.etl.outputs.sammendrag }}
+        with:
+          script: |
+            const resultat = process.env.RESULTAT
+            const tomme = process.env.TOMME_SERIER || ''
+            const manglerStatus = process.env.MANGLER_STATUS === 'true'
+            const sammendrag = process.env.SAMMENDRAG || ''
+            const kjoring = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+
+            const feilet = resultat !== 'success'
+            const tittel = feilet
+              ? 'ETL-kjøringen feilet'
+              : 'ETL-kjøringen gikk, men uten alle datakildene'
+
+            const kropp = [
+              feilet
+                ? `Kjøringen endte som **${resultat}**. Nettstedet viser fortsatt forrige datasett.`
+                : 'Kjøringen gikk gjennom, men én eller flere tilleggsserier kom ikke med. ' +
+                  'Nettstedet skjuler de tilhørende visningene, så mangelen er ikke synlig utenfra.',
+              '',
+              manglerStatus
+                ? 'Det ble ikke skrevet noen `etl/status.json` – ETL-en nådde aldri så langt.'
+                : (tomme ? `Serier uten data: \`${tomme}\`` : ''),
+              '',
+              sammendrag.trim() ? '**Fra loggen:**\n' + sammendrag : '',
+              '',
+              `[Se kjøringen](${kjoring})`,
+              '',
+              '<sub>Denne saken oppdateres av `etl.yml` i stedet for at det åpnes en ny ' +
+              'hver måned. Lukk den når årsaken er rettet – neste kjøring åpner den bare ' +
+              'igjen hvis problemet består.</sub>',
+            ].filter(l => l !== null).join('\n')
+
+            const { data: apne } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'etl-varsel', per_page: 20,
+            })
+
+            if (apne.length) {
+              // Kommentér på den åpne saken i stedet for å samle opp duplikater
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: apne[0].number,
+                body: `### ${tittel}\n\n${kropp}`,
+              })
+              core.notice(`Kommenterte på sak #${apne[0].number}`)
+            } else {
+              const { data: ny } = await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title: tittel, body: kropp, labels: ['etl-varsel'],
+              })
+              core.notice(`Åpnet sak #${ny.number}`)
+            }
 
   deploy:
     needs: etl
