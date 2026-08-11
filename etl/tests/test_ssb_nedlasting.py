@@ -190,3 +190,34 @@ def test_kpi_bruker_cache_uten_nytt_kall(ssb_server, tmp_path, monkeypatch):
     SsbEtterligning.mottatt_spørring = None
     download.download_kpi(force=False)
     assert SsbEtterligning.mottatt_spørring is None, "andre kall skal treffe cache"
+
+
+# --- Sanity-sjekk mot SSBs historiske serier ---
+
+def _minimalt_regnskap():
+    """Ett år med rimelige totaler, nok til at de øvrige sanity-sjekkene passerer."""
+    import pandas as pd
+    rader = [
+        {"aar": 2024, "er_utgift": True, "fin": False, "transfer": False, "belop_mill": 1_500_000.0},
+        {"aar": 2024, "er_utgift": False, "fin": False, "transfer": False, "belop_mill": 1_500_000.0},
+    ]
+    return {2024: pd.DataFrame(rader)}, pd.DataFrame([{"aar": 2024}])
+
+
+def test_sanity_check_godtar_historisk_kpi_serie():
+    """
+    SSBs KPI-tabell 14711 går tilbake til 1865, og med referanseår 2025=100 er
+    indeksen der rundt 1. Sjekken skal se på årene vi viser, ikke felle kjøringen
+    på et 1800-talls indekstall.
+    """
+    from etl import sanity_check
+    regnskap, bev = _minimalt_regnskap()
+    kpi = {1865: 1.0, 1900: 2.4, 2013: 76.3, 2024: 97.4, 2025: 100.0}
+    sanity_check(regnskap, bev, {2024: 5_500_000}, kpi=kpi, bnp=None)
+
+
+def test_sanity_check_feller_urimelig_kpi_i_vist_periode():
+    from etl import sanity_check
+    regnskap, bev = _minimalt_regnskap()
+    with pytest.raises(ValueError, match="urimelig"):
+        sanity_check(regnskap, bev, {2024: 5_500_000}, kpi={2024: 0.5}, bnp=None)
