@@ -61,6 +61,44 @@ def _valgfri_ssb(funk, navn):
     return _valgfri(funk, navn, kilde="SSB")
 
 
+def _normaliser_enhet(serie: dict, referanse: dict, navn: str) -> dict:
+    """
+    Skaler en serie til samme enhet som en referanseserie, utledet fra årene som
+    finnes i begge.
+
+    SSB oppgir samme størrelse i ulike enheter i ulike tabeller: 09189 har BNP i
+    mill. kr, mens 12880 har det i mrd. kr. Faktoren utledes framfor å hardkodes,
+    slik at en enhetsendring hos SSB blir fanget opp i stedet for å gi tall som
+    er tusen ganger for små. Krever at forholdet er en tierpotens – ellers er det
+    ikke en enhetsforskjell, og da skal vi ikke gjette.
+    """
+    import math
+
+    felles = sorted(set(serie) & set(referanse))
+    if not felles:
+        logger.warning(f"  [ADVARSEL] {navn}: ingen overlappende år — kan ikke fastslå enhet")
+        return serie
+
+    aar = felles[-1]
+    if not serie[aar]:
+        logger.warning(f"  [ADVARSEL] {navn}: {aar} er null i serien — kan ikke fastslå enhet")
+        return serie
+
+    forhold = referanse[aar] / serie[aar]
+    faktor = 10 ** round(math.log10(forhold))
+    avvik = abs(forhold / faktor - 1)
+    if avvik > 0.05:
+        raise ValueError(
+            f"{navn}: forholdet til referanseserien i {aar} er {forhold:.4f}, som ikke er "
+            f"en tierpotens (nærmeste er {faktor}, avvik {avvik*100:.1f} %). "
+            "Serien måler trolig noe annet enn referansen — sjekk variabelvalget."
+        )
+    if faktor != 1:
+        logger.info(f"  {navn}: skalert med {faktor} for å matche referanseserien (enhetsforskjell)")
+        return {a: v * faktor for a, v in serie.items()}
+    return serie
+
+
 # Antall nyeste stortingssesjoner vi henter budsjettbehandling for
 POLITIKK_SESJONER = 4
 
@@ -180,6 +218,7 @@ def run(years=None, force=False):
         if bnp_prognose_path else None
     )
     if bnp_prognose and bnp:
+        bnp_prognose = _normaliser_enhet(bnp_prognose, bnp, "BNP-prognose")
         siste_regnskap = max(bnp)
         bnp_prognose = {a: v for a, v in bnp_prognose.items() if a > siste_regnskap}
         logger.info(

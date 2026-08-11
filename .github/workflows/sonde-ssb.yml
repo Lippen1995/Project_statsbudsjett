@@ -52,8 +52,11 @@ jobs:
           from download import download_bnp, download_bnp_prognose
           from parse_befolkning import parse_ssb_aarsserie
 
+          from etl import _normaliser_enhet
+
           bnp = parse_ssb_aarsserie(download_bnp(force=True), 'BNP')
           pro = parse_ssb_aarsserie(download_bnp_prognose(force=True), 'BNP-prognose')
+          pro = _normaliser_enhet(pro, bnp, 'BNP-prognose')
           siste = max(bnp)
           print()
           print('=== nasjonalregnskap (09189) ===')

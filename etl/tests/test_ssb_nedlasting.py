@@ -285,3 +285,34 @@ def test_sanity_check_godtar_rimelig_prognose():
     regnskap, bev = _minimalt_regnskap()
     sanity_check(regnskap, bev, {2024: 5_500_000}, kpi=None,
                  bnp={2024: 5_400_000.0}, bnp_prognose={2025: 5_600_000.0, 2026: 5_800_000.0})
+
+
+# --- Enhetsnormalisering mellom SSB-tabeller ---
+
+def test_normaliser_enhet_oppdager_mrd_mot_mill():
+    """
+    12880 oppgir BNP i mrd. kr, 09189 i mill. kr. Faktoren skal utledes fra
+    overlappet, ikke hardkodes – ellers blir anslaget tusen ganger for lite.
+    """
+    from etl import _normaliser_enhet
+    mill = {2024: 5_382_441.0, 2025: 5_511_334.0}
+    mrd = {2024: 5_382.0, 2025: 5_511.0, 2026: 6_018.0}
+    ut = _normaliser_enhet(mrd, mill, "BNP-prognose")
+    assert ut[2026] == 6_018_000.0
+    assert abs(ut[2025] - mill[2025]) / mill[2025] < 0.001
+
+
+def test_normaliser_enhet_lar_samme_enhet_vaere():
+    from etl import _normaliser_enhet
+    a = {2024: 5_382_441.0, 2025: 5_511_334.0}
+    b = {2024: 5_382_400.0, 2025: 5_511_300.0, 2026: 5_700_000.0}
+    assert _normaliser_enhet(b, a, "BNP-prognose") == b
+
+
+def test_normaliser_enhet_feller_naar_forholdet_ikke_er_tierpotens():
+    """Et forhold som ikke er en tierpotens betyr feil variabel, ikke feil enhet."""
+    from etl import _normaliser_enhet
+    mill = {2025: 5_511_334.0}
+    feil_serie = {2025: 1_800_000.0, 2026: 1_900_000.0}   # forhold ~3,06
+    with pytest.raises(ValueError, match="tierpotens"):
+        _normaliser_enhet(feil_serie, mill, "BNP-prognose")
