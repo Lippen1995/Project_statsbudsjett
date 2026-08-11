@@ -143,5 +143,15 @@ avsluttet serien i 03013, som derfor bare ligger sist som nødutgang.
 utelates den, aggregerer SSB over alle månedene. Både KPI og BNP beskjæres til
 året før første regnskapsår og utover; den historiske KPI-serien starter i 1865,
 og indeksverdiene der ligger under 1 med dagens referanseår.
+
+**BNP-anslag.** Nasjonalregnskapet (09189) slutter ved siste regnskapsår, så
+budsjettår har ingen nevner å måles mot. Tabell 12880 («Regnskap og prognoser»)
+rekker til 2029 og skrives til `bnp_prognose.json`, beskåret til årene etter
+09189 — et anslag skal ikke kunne forveksles med et regnskapstall, og et revidert
+nasjonalregnskap skal ikke overskrives av en prognoseserie. 12880 oppgir beløp i
+**mrd. kr** mens 09189 bruker **mill. kr**; faktoren utledes fra årene som finnes
+i begge (`_normaliser_enhet`) framfor å hardkodes, og må være en tierpotens.
+Frontenden merker anslagsår overalt: stjerne med fotnote i tabellen, skravert
+område med stiplet linje i grafen, og «(anslag)» i tooltipen.
 - **Dataformat**: Statisk JSON, ingen backend i drift
 - **Hosting**: Statisk (GitHub Pages, Cloudflare Pages o.l.)
