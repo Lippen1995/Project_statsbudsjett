@@ -7,3 +7,8 @@ __pycache__/
 .pytest_cache/
 etl/warnings.log
 etl/status.json
+
+# Skjermbilder fra kontroll-skript. Ett slikt ble en gang lagt inn ved et
+# uhell fordi skriptet skrev til en relativ sti mens det sto i web/.
+skudd-*.png
+web/skudd-*.png
