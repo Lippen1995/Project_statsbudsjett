@@ -6,6 +6,9 @@ web/scripts/hent_fonter.py, og ligger lokalt av personvernhensyn – ikke fordi
 de er endret. Begge skriftene er lisensiert under SIL Open Font License 1.1,
 som uttrykkelig tillater videredistribusjon som del av et nettsted.
 
+Begge er variable skrifter: én fil dekker hele vektaksen, og @font-face-reglene
+i ../fonter.css peker på samme fil for hver vekt.
+
 Hver skrift har sin egen opphavsrettsangivelse, og begge lisenstekstene er
 gjengitt i sin helhet nedenfor slik lisensen krever.
 

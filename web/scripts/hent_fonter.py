@@ -94,7 +94,15 @@ def main() -> int:
         print("FEIL: fant ingen @font-face i svaret", file=sys.stderr)
         return 1
 
-    regler, hentet, hoppet = [], 0, 0
+    # Familiene her er variable skrifter: Google svarer med SAMME fil for alle
+    # vektene, og lar font-weight i @font-face peke ut punktet på vektaksen.
+    # Lagrer man den under ett filnavn per vekt, blir én delt adresse til fire
+    # ulike – og nettleseren laster samme skrift fire ganger. Filene navngis
+    # derfor etter innholdet, slik at like filer blir én fil og alle reglene
+    # peker på den.
+    filnavn_for_url: dict[str, str] = {}
+    regler, hentet, gjenbrukt, hoppet = [], 0, 0, 0
+
     for subsett, kropp in blokker:
         if subsett not in SUBSETT:
             hoppet += 1
@@ -104,11 +112,21 @@ def main() -> int:
         filurl = re.search(r"url\((https://[^)]+)\)", kropp).group(1)
         omraade = re.search(r"unicode-range: ([^;]+);", kropp).group(1)
 
-        filnavn = f"{familie.lower().replace(' ', '-')}-{vekt}-{subsett}.woff2"
-        data = hent(filurl)
-        (mappe / filnavn).write_bytes(data)
-        hentet += 1
-        print(f"  {filnavn}  {len(data) // 1024} kB")
+        if filurl in filnavn_for_url:
+            filnavn = filnavn_for_url[filurl]
+            gjenbrukt += 1
+            print(f"  {familie} {vekt}: samme fil som en tidligere vekt ({filnavn})")
+        else:
+            data = hent(filurl)
+            stamme = familie.lower().replace(" ", "-")
+            filnavn = f"{stamme}-{subsett}.woff2"
+            # Skulle en familie likevel komme i flere filer, skilles de med vekt
+            if (mappe / filnavn).exists() and (mappe / filnavn).read_bytes() != data:
+                filnavn = f"{stamme}-{vekt}-{subsett}.woff2"
+            (mappe / filnavn).write_bytes(data)
+            filnavn_for_url[filurl] = filnavn
+            hentet += 1
+            print(f"  {filnavn}  {len(data) // 1024} kB  (vekt {vekt})")
 
         regler.append(
             f"@font-face {{\n"
@@ -127,7 +145,10 @@ def main() -> int:
 
     (web / "public" / "fonter.css").write_text(STILARK_HODE + "\n" + "\n".join(regler) + "\n")
     total = sum(f.stat().st_size for f in mappe.glob("*.woff2"))
-    print(f"\nskrev public/fonter.css: {hentet} filer, {total // 1024} kB")
+    print(f"\nskrev public/fonter.css: {len(regler)} regler over {hentet} filer, {total // 1024} kB")
+    if gjenbrukt:
+        print(f"{gjenbrukt} vekter deler fil med en annen (variabel skrift) – "
+              "de lastes én gang, ikke én per vekt")
     print(f"hoppet over {hoppet} blokker i andre subsett")
     return 0
 
