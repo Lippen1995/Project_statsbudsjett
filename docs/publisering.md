@@ -140,7 +140,7 @@ trenger å være i produksjon.
   oppgi en adresse som ikke leses. Bruk ikke en jobbadresse: på et privat
   nettsted om statsfinanser leses en arbeidsgiveradresse som om arbeidsgiveren
   står bak.
-- **Nyttelast.** Forsiden laster ~620 kB komprimert ved første besøk, mest
+- **Nyttelast.** Forsiden laster ~500 kB komprimert ved første besøk, mest
   `utgifter.json` og `inntekter.json`. Å la ETL-en skrive det kompakte formatet
   direkte er målt til 13 % mindre over nettet (350 → 303 kB gzip) og sparer
   ~40 ms tolking på en stasjonær maskin. Det er mindre enn det ser ut som i rå
