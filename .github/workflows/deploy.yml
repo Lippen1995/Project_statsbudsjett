@@ -12,7 +12,12 @@ permissions:
   contents: write
 
 concurrency:
-  group: pages-deploy
+  # Gruppen må inneholde referansen. Med én felles gruppe for alle brancher
+  # havner også kjøringer fra feature-brancher i den, og selv om de bare hopper
+  # over jobben, avbryter de en utrulling fra main som er i gang. Det skjedde:
+  # en push til en feature-branch rett etter en push til main avbrøt
+  # main-utrullingen, og livesiden ble stående på forrige bygg.
+  group: pages-deploy-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
