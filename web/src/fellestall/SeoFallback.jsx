@@ -60,7 +60,6 @@ function Merke() {
     </a>
   )
 }
-
 export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026, oppdatert = '' }) {
   const oppdatertDato = oppdatert
     ? new Date(oppdatert).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -176,4 +175,3 @@ export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026,
     </div>
   )
 }
-
