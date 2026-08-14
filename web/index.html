@@ -3,14 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fellestall.no – en oversikt over norske statsfinanser</title>
-  <meta name="description" content="Statsbudsjettet og statsregnskapet, normalisert og forklart: kroner per innbygger, andeler og utvikling over tid – helt ned til den enkelte posten." />
+  <title>Statsbudsjettet og statsregnskapet forklart | Fellestall.no</title>
+  <meta name="description" content="Utforsk hvor skattepengene går i statsbudsjettet og statsregnskapet. Se beløp per innbygger, utvikling over tid og alle poster fra 2014 til 2026." />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="application-name" content="Fellestall.no" />
+  <meta name="color-scheme" content="light" />
 
   <!--
     Kanonisk adresse. Nettstedet ligger også på github.io-adressen mens det
     bygges; uten denne kan søkemotorer indeksere begge og dele opp treffene.
   -->
   <link rel="canonical" href="https://fellestall.no/" />
+  <link rel="alternate" hreflang="nb-NO" href="https://fellestall.no/" />
+  <link rel="alternate" hreflang="x-default" href="https://fellestall.no/" />
 
   <!--
     Ikoner. SVG-en er hovedformen; PNG-ene er for flater som ikke tar SVG.
@@ -30,10 +35,19 @@
   <meta property="og:title" content="Hvor blir det av skattepengene?" />
   <meta property="og:description" content="Statsbudsjettet og statsregnskapet, normalisert og forklart – kroner per innbygger, andeler av BNP og utvikling over tid, helt ned til den enkelte posten." />
   <meta property="og:image" content="https://fellestall.no/delingsbilde.png" />
+  <meta property="og:image:secure_url" content="https://fellestall.no/delingsbilde.png" />
+  <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Fellestall.no – budsjettkart der de største utgiftsområdene er tegnet som fliser etter størrelse." />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hvor blir det av skattepengene?" />
+  <meta name="twitter:description" content="Statsbudsjettet og statsregnskapet, normalisert og forklart – helt ned til den enkelte posten." />
+  <meta name="twitter:image" content="https://fellestall.no/delingsbilde.png" />
+  <meta name="twitter:image:alt" content="Fellestall.no – budsjettkart der de største utgiftsområdene er tegnet som fliser etter størrelse." />
+
+  <!-- Bygget legger inn oppdateringsdato, crawlbar førstegangsvisning og Dataset-data her. -->
+  <!-- SEO_DATA -->
 
   <!--
     Skriftene ligger hos nettstedet selv. Ingen preconnect og ingen lenke til
@@ -50,22 +64,6 @@
 </head>
 <body>
   <div id="root"></div>
-  <noscript>
-    <div style="max-width:60ch;margin:64px auto;padding:0 24px;font-family:system-ui,sans-serif;line-height:1.6;color:#3B3A36">
-      <h1 style="font-family:Georgia,serif;font-size:28px;color:#14161A">Fellestall.no</h1>
-      <p>
-        Denne siden viser statsbudsjettet og statsregnskapet som interaktive kart og grafer, og
-        krever JavaScript for å regne om tallene mens du utforsker dem.
-      </p>
-      <p>
-        Tallene er offentlige og finnes i sin helhet hos kilden:
-        <a href="https://statsregnskapet.dfo.no" style="color:#C5452E">DFØ Statsregnskapet</a>
-        for regnskap og bevilgninger, og
-        <a href="https://www.ssb.no" style="color:#C5452E">SSB</a>
-        for folketall, konsumprisindeks og nasjonalregnskap.
-      </p>
-    </div>
-  </noscript>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

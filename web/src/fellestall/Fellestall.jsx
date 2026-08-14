@@ -13,6 +13,7 @@ import Oljefondet from './seksjoner/Oljefondet'
 import DinAndel from './seksjoner/DinAndel'
 import Utforsk from './seksjoner/Utforsk'
 import OmTallene from './seksjoner/OmTallene'
+import SeoFallback from './SeoFallback'
 import './fellestall.css'
 
 const SEKSJON_IDER = SEKSJONER.map((s) => s.id)
@@ -149,7 +150,10 @@ export default function Fellestall() {
     )
   }
 
-  if (!data || !avledet) return <div className="ft-melding"><p>Laster data …</p></div>
+  if (!data || !avledet) {
+    const seoMeta = typeof window === 'undefined' ? {} : window.__FELLESTALL_SEO_META__
+    return <SeoFallback {...seoMeta} />
+  }
 
   const { meta } = data
   const aarListe = meta.regnskap_aar
@@ -177,13 +181,13 @@ export default function Fellestall() {
     <div className="ft">
       <a className="ft-hopp" href="#hovedinnhold">Hopp til innholdet</a>
       <div className="ft-layout">
-        <aside className="ft-sidemeny">
+        <aside className="ft-sidemeny" aria-label="Innholdsoversikt">
           {merke}
           <label className="ft-aarblokk">
             <span className="ft-aarlabel">Regnskapsår</span>
             {aarVelger}
           </label>
-          <nav className="ft-nav">
+          <nav className="ft-nav" aria-label="Hovedinnhold">
             {navLenker.map((n) => (
               <a key={n.id} href={`#${n.id}`} className={`ft-navlenke ${n.aktiv ? 'aktiv' : ''}`}>
                 <span className="ft-navnr num">{n.nr}</span>
@@ -196,7 +200,7 @@ export default function Fellestall() {
           </div>
         </aside>
 
-        <div className="ft-hovedspalte" id="hovedinnhold">
+        <main className="ft-hovedspalte" id="hovedinnhold">
           <div className="ft-toppbar">
             <div className="ft-toppbar-inner">
               {merke}
@@ -204,7 +208,7 @@ export default function Fellestall() {
                 <span className="ft-stikkord">År</span>
                 {aarVelger}
               </label>
-              <nav className="ft-toppnav">
+              <nav className="ft-toppnav" aria-label="Hovedinnhold">
                 {navLenker.map((n) => (
                   <a key={n.id} href={`#${n.id}`} className={`ft-toppnavlenke ${n.aktiv ? 'aktiv' : ''}`}>
                     {n.navn}
@@ -303,7 +307,7 @@ export default function Fellestall() {
           />
 
           <OmTallene meta={meta} antallPoster={avledet.antallPoster} />
-        </div>
+        </main>
       </div>
 
       <footer className="ft-fot">

@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/lag_sitemap.mjs && vite build && node scripts/sjekk_seo.mjs",
     "preview": "vite preview",
     "etl": "cd .. && python etl/etl.py",
     "test": "echo \"Error: no test specified\" && exit 1",
     "sjekk": "node scripts/sjekk_publisering.mjs",
+    "sjekk:seo": "node scripts/sjekk_seo.mjs",
     "fonter": "python3 scripts/hent_fonter.py"
   },
   "keywords": [],

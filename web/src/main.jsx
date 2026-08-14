@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { hydrateRoot } from 'react-dom/client'
 import Fellestall from './fellestall/Fellestall.jsx'
 import './index.css'
 
@@ -10,7 +10,7 @@ import './index.css'
  * der, og skal migreres inn i forsiden – til da ligger filene i repoet som
  * referanse for migreringen, ikke som død kode ved en forglemmelse.
  */
-ReactDOM.createRoot(document.getElementById('root')).render(
+hydrateRoot(document.getElementById('root'),
   <React.StrictMode>
     <Fellestall />
   </React.StrictMode>
