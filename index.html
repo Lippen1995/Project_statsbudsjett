@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Statsbudsjettet og statsregnskapet forklart | Fellestall.no</title>
+  <meta name="description" content="Utforsk hvor skattepengene går i statsbudsjettet og statsregnskapet. Se beløp per innbygger, utvikling over tid og alle poster fra 2014 til 2026." />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="application-name" content="Fellestall.no" />
+  <meta name="color-scheme" content="light" />
+
+  <!--
+    Kanonisk adresse. Nettstedet ligger også på github.io-adressen mens det
+    bygges; uten denne kan søkemotorer indeksere begge og dele opp treffene.
+  -->
+  <link rel="canonical" href="https://fellestall.no/" />
+  <link rel="alternate" hreflang="nb-NO" href="https://fellestall.no/" />
+  <link rel="alternate" hreflang="x-default" href="https://fellestall.no/" />
+
+  <!--
+    Ikoner. SVG-en er hovedformen; PNG-ene er for flater som ikke tar SVG.
+    Adressene er relative fordi vite bygger med base './': nettstedet skal
+    kunne ligge både på roten av fellestall.no og under en prosjektsti på
+    github.io mens det testes.
+  -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <meta name="theme-color" content="#14161A" />
+
+  <!-- Delingskort. og:image må være en absolutt adresse; relative virker ikke. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Fellestall.no" />
+  <meta property="og:locale" content="nb_NO" />
+  <meta property="og:url" content="https://fellestall.no/" />
+  <meta property="og:title" content="Hvor blir det av skattepengene?" />
+  <meta property="og:description" content="Statsbudsjettet og statsregnskapet, normalisert og forklart – kroner per innbygger, andeler av BNP og utvikling over tid, helt ned til den enkelte posten." />
+  <meta property="og:image" content="https://fellestall.no/delingsbilde.png" />
+  <meta property="og:image:secure_url" content="https://fellestall.no/delingsbilde.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Fellestall.no – budsjettkart der de største utgiftsområdene er tegnet som fliser etter størrelse." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hvor blir det av skattepengene?" />
+  <meta name="twitter:description" content="Statsbudsjettet og statsregnskapet, normalisert og forklart – helt ned til den enkelte posten." />
+  <meta name="twitter:image" content="https://fellestall.no/delingsbilde.png" />
+  <meta name="twitter:image:alt" content="Fellestall.no – budsjettkart der de største utgiftsområdene er tegnet som fliser etter størrelse." />
+
+  <!-- Bygget legger inn oppdateringsdato, crawlbar førstegangsvisning og Dataset-data her. -->
+  <meta property="og:updated_time" content="2026-08-11T13:56:12.156445+00:00" />
+  <script>window.__FELLESTALL_SEO_META__={"forsteAar":2014,"sisteBudsjettAar":2026,"oppdatert":"2026-08-11T13:56:12.156445+00:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://fellestall.no/#nettsted","url":"https://fellestall.no/","name":"Fellestall.no","alternateName":"Fellestall","description":"Statsbudsjettet og statsregnskapet, normalisert og forklart med kroner per innbygger, andeler og utvikling over tid.","inLanguage":"nb-NO","sameAs":"https://github.com/Lippen1995/Project_statsbudsjett"},{"@type":"Dataset","@id":"https://fellestall.no/#datasett","url":"https://fellestall.no/","name":"Norske statsfinanser – statsbudsjett og statsregnskap","alternateName":"Fellestall-datasettet","description":"Normaliserte tall for det norske statsbudsjettet og statsregnskapet, med utgifter og inntekter fra departement til kapittel, post og artskonto, supplert med folketall, konsumprisindeks, BNP og Oljefondets markedsverdi.","inLanguage":"nb-NO","dateModified":"2026-08-11T13:56:12.156445+00:00","temporalCoverage":"2014/2026","spatialCoverage":{"@type":"Country","name":"Norge"},"isAccessibleForFree":true,"keywords":["statsbudsjettet","statsregnskapet","statsfinanser","skattepenger","offentlige utgifter","Oljefondet","Norge"],"license":"https://fellestall.no/vilkar.html","isBasedOn":["https://statsregnskapet.dfo.no","https://www.ssb.no","https://www.nbim.no"],"variableMeasured":["Utgifter","Inntekter","Budsjett","Regnskap","Kroner per innbygger","Andel av BNP"],"distribution":[{"@type":"DataDownload","name":"Utgifter","encodingFormat":"application/json","contentUrl":"https://fellestall.no/data/utgifter.json"},{"@type":"DataDownload","name":"Inntekter","encodingFormat":"application/json","contentUrl":"https://fellestall.no/data/inntekter.json"},{"@type":"DataDownload","name":"Metadata og kildeinformasjon","encodingFormat":"application/json","contentUrl":"https://fellestall.no/data/meta.json"}],"mainEntityOfPage":{"@id":"https://fellestall.no/#nettsted"}}]}</script>
+
+  <!--
+    Skriftene ligger hos nettstedet selv. Ingen preconnect og ingen lenke til
+    Google: siden skal ikke sende besøkendes IP-adresse til en tredjepart for å
+    hente en skrift. Filene og stilarket lages av web/scripts/hent_fonter.py.
+
+    De to skriftene som lastes er de to som males. Inter og JetBrains Mono lå
+    her før uten å vises noe sted – .ft .num overstyrer monospace med sidens
+    egen skrift, og Inter fantes bare i <noscript>.
+  -->
+  <link rel="stylesheet" href="fonter.css" />
+  <link rel="preload" href="fonter/libre-franklin-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonter/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <script type="module" crossorigin src="./assets/index-BKf6hQjm.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CUO6z9H_.css">
+</head>
+<body>
+  <div id="root"><div class="ft"><a class="ft-hopp" href="#hovedinnhold">Hopp til innholdet</a><div class="ft-layout"><aside class="ft-sidemeny" aria-label="Innholdsoversikt"><a href="./" class="ft-merke-lenke" aria-label="Fellestall.no – forsiden"><div class="ft-logo">Fellestall<span>.no</span></div><div class="ft-slagord">En oversikt over norske statsfinanser</div></a><nav class="ft-nav" aria-label="Hovedinnhold"><a href="#prisvekst" class="ft-navlenke"><span class="ft-navnr num">01</span><span>Vokser staten?</span></a><a href="#kartet" class="ft-navlenke"><span class="ft-navnr num">02</span><span>Kartet</span></a><a href="#flyten" class="ft-navlenke"><span class="ft-navnr num">03</span><span>Flyten</span></a><a href="#utgifter" class="ft-navlenke"><span class="ft-navnr num">04</span><span>Hvor pengene går</span></a><a href="#endringer" class="ft-navlenke"><span class="ft-navnr num">05</span><span>Endringer</span></a><a href="#oljefondet" class="ft-navlenke"><span class="ft-navnr num">06</span><span>Oljefondet</span></a><a href="#din-andel" class="ft-navlenke"><span class="ft-navnr num">07</span><span>Lønnen din</span></a><a href="#utforsk" class="ft-navlenke"><span class="ft-navnr num">08</span><span>Utforsk</span></a></nav><div class="ft-sidefot"><a href="#om-tallene">Om tallene</a></div></aside><main class="ft-hovedspalte" id="hovedinnhold"><div class="ft-toppbar"><div class="ft-toppbar-inner"><a href="./" class="ft-merke-lenke" aria-label="Fellestall.no – forsiden"><div class="ft-logo">Fellestall<span>.no</span></div><div class="ft-slagord">En oversikt over norske statsfinanser</div></a><nav class="ft-toppnav" aria-label="Hovedinnhold"><a href="#prisvekst">Vokser staten?</a><a href="#kartet">Kartet</a><a href="#flyten">Flyten</a><a href="#utgifter">Hvor pengene går</a><a href="#endringer">Endringer</a><a href="#oljefondet">Oljefondet</a><a href="#din-andel">Lønnen din</a><a href="#utforsk">Utforsk</a><a href="#om-tallene">Om tallene</a></nav></div></div><header class="ft-hero"><div class="ft-kicker">Statsbudsjettet og statsregnskapet · 2014–2026</div><h1>Hvor blir det av skattepengene?</h1><div class="ft-hero-grid"><p class="ft-ingress">Hvert år fører staten regnskap over hver eneste krone, fordelt på departementer, kapitler og tusenvis av poster. Fellestall.no normaliserer de offentlige tallene og gjør dem forståelige som kroner per innbygger, andeler og utvikling over tid. Du kan utforske hele statsbudsjettet og statsregnskapet ned til den enkelte posten.</p><div class="ft-femtall" aria-label="Dette kan du utforske"><div class="ft-stikkord">Dette kan du utforske</div><div class="ft-femtall-rad"><span>Statsbudsjett og statsregnskap</span></div><div class="ft-femtall-rad"><span>Kroner per innbygger</span></div><div class="ft-femtall-rad"><span>Utvikling fra år til år</span></div><div class="ft-femtall-rad"><span>Oljefondet og handlingsregelen</span></div><div class="ft-femtall-rad"><span>Alle departementer og poster</span></div></div></div></header><section id="prisvekst" class="ft-seksjon"><div><div class="ft-seksjonstekst ft-seksjonstopp"><div><h2>Vokser staten raskere enn prisene?</h2><p>Sammenlign statens utgifter per innbygger med konsumprisindeksen, og se utviklingen fra 2014 og fremover.</p></div></div></div></section><section id="kartet" class="ft-seksjon"><div><div class="ft-seksjonstekst ft-seksjonstopp"><div><h2>Hele budsjettet på ett kart</h2><p>Se hvordan statsbudsjettet fordeler seg mellom departementer, kapitler og poster, med areal etter størrelsen på beløpet.</p></div></div></div></section><section id="flyten" class="ft-seksjon"><div><div class="ft-seksjonstekst ft-seksjonstopp"><div><h2>Fra inntekt til utgift</h2><p>Følg skatter, avgifter, andre inntekter og overføringen fra Oljefondet videre til områdene staten bruker penger på.</p></div></div></div></section><section id="utgifter" class="ft-seksjon"><div><div class="ft-seksjonstekst ft-seksjonstopp"><div><h2>Hvor pengene går</h2><p>Utforsk statens utgifter rangert i kroner per innbygger, fra pensjon, helse og kommuner til forsvar, utdanning og samferdsel.</p></div></div></div></section><section id="endringer" class="ft-seksjon"><div><div class="ft-seksjonstekst ft-seksjonstopp"><div><h2>Hva økte, hva ble kuttet</h2><p>Sammenlign regnskap og budsjett mellom år, og bryt de største økningene og kuttene ned til den enkelte budsjettposten.</p></div></div></div></section><section id="oljefondet" class="ft-seksjon ft-seksjon--mork"><div class="ft-seksjon-innhold"><div class="ft-seksjonstekst ft-seksjonstopp"><div><h2>Oljefondet: hva som spares, hva som brukes</h2><p>Se oljeinntektene som går inn i fondet, overføringen tilbake til statsbudsjettet og uttaket målt mot rettesnoren på 3 prosent.</p></div></div></div></section><section id="din-andel" class="ft-seksjon"><div><div class="ft-seksjonstekst ft-seksjonstopp"><div><h2>Hva staten får av lønnen din</h2><p>Beregn skatt fra lønn med Stortingets satser, og se hvordan statens del fordeler seg etter de faktiske utgiftene.</p></div></div></div></section><section id="utforsk" class="ft-seksjon"><div><div class="ft-seksjonstekst ft-seksjonstopp"><div><h2>Utforsk hver krone</h2><p>Søk i statsregnskapet og statsbudsjettet fra departement til kapittel, post og artskonto, med historikk og sammenligning over tid.</p></div></div></div></section><section id="om-tallene" class="ft-seksjon"><div class="ft-seksjonstekst ft-seksjonstopp"><div><h2>Om tallene</h2><p>Fellestall.no bygger på DFØ Statsregnskapet, Statistisk sentralbyrå og NBIM. Tallene er samlet i én modell for å gjøre budsjett, regnskap, prisvekst, folketall og nasjonalregnskap sammenlignbare. De interaktive grafene krever JavaScript.</p></div></div></section></main></div><footer class="ft-fot"><div class="ft-fot-grid"><div><div class="ft-logo ft-logo--lys">Fellestall<span>.no</span></div><div class="ft-fot-slagord">En oversikt over norske statsfinanser</div><p class="ft-fot-tekst">Statsbudsjettet og statsregnskapet, normalisert og forklart.</p><div class="ft-fot-dato">Sist oppdatert 11. august 2026</div></div><div><div class="ft-stikkord">Kilder</div><div class="ft-fot-lenker"><a href="https://statsregnskapet.dfo.no" rel="noreferrer">DFØ Statsregnskapet</a><a href="https://www.ssb.no" rel="noreferrer">SSB</a><a href="https://www.nbim.no" rel="noreferrer">NBIM</a></div></div><div><div class="ft-stikkord">Om siden</div><div class="ft-fot-lenker"><a href="personvern.html">Personvern</a><a href="vilkar.html">Vilkår og kilder</a><a href="tilgjengelighet.html">Tilgjengelighet</a></div></div></div><div class="ft-fot-linje"><span>Uavhengig, privat prosjekt – ikke tilknyttet noen offentlig etat.</span><span>Ingen informasjonskapsler</span></div></footer></div></div>
+</body>
+</html>
