@@ -11,7 +11,18 @@ kroner per innbygger, og velge mellom finansielle nøkkeltall og store
 tjenesteområder. Kartets oppsummering viser valgt område ved hover og ellers
 summen av alle synlige fylker eller kommuner, inkludert anslått folketall.
 Under kartet rangerer «Utforsk kommuner og fylker» de samme enhetene og viser
-historisk utvikling. En detaljside viser:
+historisk utvikling. Kolonneoverskriftene sorterer tabellen etter kroner per
+innbygger eller andel. Et klikk på en kommune eller et fylke åpner regnskapet
+inne i samme seksjon, uten navigasjon til en ny side:
+
+- kommune/fylke → inntekter, utgifter, investeringer og gjeld
+- utgifter → tjenesteområde → KOSTRA-funksjon → regnskapsart
+- investeringer → tjenesteområde → KOSTRA-funksjon
+- inntekter → inntektsart
+- gjeld stopper på totalen fordi kildetabellen ikke har en videre fordeling
+
+Brødsmuler lar brukeren gå tilbake ett eller flere nivåer. Detaljvisningen som
+også kan åpnes fra kartet viser:
 
 - driftsinntekter, driftsutgifter, netto driftsresultat og gjeld
 - inntekts- og utgiftsfordeling

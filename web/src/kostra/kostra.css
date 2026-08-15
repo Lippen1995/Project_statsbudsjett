@@ -37,6 +37,16 @@
 .ko-oppsummeringstall { margin-top: 13px; font-family: var(--serif); font-size: 30px; font-weight: 700; color: var(--rust); }
 .ko-datadekning { margin: 12px 0 0; font-size: 12px; line-height: 1.45; color: var(--blek); }
 .ko-utforsk-side .ft-kort-graf { margin-top: 10px; }
+.ko-tabellhode button { border: 0; padding: 0; background: transparent; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-align: right; cursor: pointer; }
+.ko-tabellhode button:hover, .ko-tabellhode button.aktiv { color: var(--tekst); }
+.ko-inline-status { margin-top: 20px; padding: 28px 0; border-top: 1px solid var(--strek); color: var(--blek); }
+.ko-inline-status button { display: block; margin-top: 12px; border: 0; padding: 0; background: transparent; color: var(--rust); font: inherit; cursor: pointer; }
+.ko-inline-smuler { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; color: var(--blek); font-size: 12px; }
+.ko-inline-smuler button { border: 0; padding: 0; background: transparent; color: var(--tekst); font: inherit; cursor: pointer; }
+.ko-utforsk .ft-tabellhode.ko-drilltabellhode,
+.ko-utforsk .ft-utforskrad.ko-drillrad { grid-template-columns: minmax(0, 1fr) 110px 100px 16px; }
+.ko-drillrad--data { cursor: default; }
+.ko-drillrad--data:hover { background: transparent; }
 
 .ko-detailhero { padding-bottom: 24px; }
 .ko-detailhero h1 { max-width: 18ch; }
@@ -94,6 +104,17 @@
   .ko-kartinfo { position: static; }
   .ko-kartflate { min-height: 500px; }.ko-kartflate svg { min-height: 430px; }
   .ko-nokkeltall { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .ko-utforsk .ft-tabellhode,
+  .ko-utforsk .ft-tabellhode.ko-drilltabellhode,
+  .ko-utforsk .ft-utforskrad,
+  .ko-utforsk .ft-utforskrad.ko-drillrad {
+    grid-template-columns: minmax(0, 1fr) 82px 54px 10px;
+    gap: 6px;
+  }
+  .ko-utforsk .ft-utforskandel { display: block; font-size: 10px; }
+  .ko-utforsk .ko-tabellhode > button:nth-child(3) { display: block; line-height: 1.2; }
 }
 @media (max-width: 560px) {
   .ko-hero { padding: 42px 20px 26px; }.ko-kartseksjon, .ko-detaljseksjon { padding-inline: 20px; }

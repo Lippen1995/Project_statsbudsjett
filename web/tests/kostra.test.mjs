@@ -12,6 +12,7 @@ import {
   summarizeKostraEntities,
 } from '../src/kostra/model.js'
 import { SEKSJONER } from '../src/fellestall/design.js'
+import { explorerDrillRows, explorerHistory, sortExplorerRows } from '../src/kostra/explorer.js'
 
 test('KOSTRA-kartet ligger på hovedsiden rett under Utforsk staten', () => {
   const utforsk = SEKSJONER.findIndex((section) => section.id === 'utforsk')
@@ -24,6 +25,56 @@ test('KOSTRA-ruter skiller fylkesdrill fra detaljsider', () => {
   assert.deepEqual(parseKostraRoute('#kostra/fylke/03'), { page: 'map', countyCode: '03' })
   assert.deepEqual(parseKostraRoute('#kostra/fylke/03/detaljer'), { page: 'detail', kind: 'county', code: '0300' })
   assert.deepEqual(parseKostraRoute('#kostra/kommune/0301'), { page: 'detail', kind: 'municipality', code: '0301' })
+})
+
+test('utforsk-tabellen kan sorteres etter per innbygger og andel', () => {
+  const rows = [
+    { code: 'a', perCapita: 10, share: 80 },
+    { code: 'b', perCapita: 30, share: 20 },
+  ]
+  assert.deepEqual(sortExplorerRows(rows, 'perCapita').map((row) => row.code), ['b', 'a'])
+  assert.deepEqual(sortExplorerRows(rows, 'perCapita', 'asc').map((row) => row.code), ['a', 'b'])
+  assert.deepEqual(sortExplorerRows(rows, 'share').map((row) => row.code), ['a', 'b'])
+})
+
+test('innebygd kommuneutforsker driller til dypeste tilgjengelige KOSTRA-nivå', () => {
+  const detail = {
+    latestYear: 2025,
+    overview: {
+      revenues: { 2025: { amount: 100, perCapita: 1_000 } },
+      expenses: { 2025: { amount: 90, perCapita: 900 } },
+      investments: { 2025: { amount: 20, perCapita: 200 } },
+      debt: { 2025: { amount: 70, perCapita: 700 } },
+    },
+    services: [{ code: 'FG1', name: 'Tjeneste', metrics: {
+      gross_expenses: { 2025: { amount: 40, perCapita: 400 } },
+      investments: { 2025: { amount: 5, perCapita: 50 } },
+    } }],
+    functions: [{ code: '100', name: 'Funksjon', serviceCodes: ['FG1'], metrics: {
+      gross_expenses: { 2025: { amount: 30, perCapita: 300 } },
+      investments: { 2025: { amount: 4, perCapita: 40 } },
+    } }],
+    accountingArts: { 100: [{ code: 'A1', name: 'Art', amount: 10 }] },
+    revenueBreakdown: [{ code: 'R1', name: 'Inntektsart', amount: 25 }],
+  }
+
+  assert.deepEqual(explorerDrillRows(detail, 2025, {}).map((row) => row.code), [
+    'revenues', 'expenses', 'investments', 'debt',
+  ])
+  assert.equal(explorerDrillRows(detail, 2025, { metricId: 'expenses' })[0].code, 'FG1')
+  assert.equal(explorerDrillRows(detail, 2025, { metricId: 'expenses', serviceCode: 'FG1' })[0].code, '100')
+  assert.equal(explorerDrillRows(detail, 2025, { metricId: 'expenses', serviceCode: 'FG1', functionCode: '100' })[0].code, 'A1')
+  assert.equal(explorerDrillRows(detail, 2025, { metricId: 'revenues' })[0].code, 'R1')
+  assert.deepEqual(explorerDrillRows(detail, 2025, {
+    metricId: 'investments', serviceCode: 'FG1', functionCode: '100',
+  }), [])
+  assert.deepEqual(explorerDrillRows(detail, 2025, { metricId: 'debt' }), [])
+
+  assert.deepEqual(explorerHistory(detail, [2024, 2025], {
+    metricId: 'expenses', serviceCode: 'FG1',
+  }), {
+    name: 'Tjeneste', points: [{ v: null }, { v: 40 }], fromZero: true,
+  })
 })
 
 test('sammenligningsgrunnlag brukes bare for per-innbyggerverdier', () => {

@@ -1,28 +1,44 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import LinjeGraf from '../fellestall/grafer/LinjeGraf'
 import { RUST } from '../fellestall/design'
+import { loadKostraDetail } from '../lib/kostra'
+import { sortExplorerRows } from './explorer'
 import { formatKostraValue, summarizeKostraEntities } from './model'
+import KostraInlineUtforsk from './KostraInlineUtforsk'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 
 export default function KostraUtforsk({
-  index, shapes, entities, metric, metricId, year, mode, hoverId, level, scopeName, onHover, onOpen,
+  index, shapes, entities, metric, metricId, year, mode, hoverId, level, scopeName, onHover,
 }) {
+  const [sortKey, setSortKey] = useState('perCapita')
+  const [sortDirection, setSortDirection] = useState('desc')
+  const [drillEntityId, setDrillEntityId] = useState(null)
+  const [detailState, setDetailState] = useState({ loading: false, detail: null, error: null })
+  const sectionRef = useRef(null)
+  const statusRef = useRef(null)
+  const returnFocusId = useRef(null)
   const allIds = useMemo(() => shapes.map((shape) => shape.id), [shapes])
   const selectedIds = hoverId ? [hoverId] : allIds
   const scopeSummary = summarizeKostraEntities(index, metricId, year, allIds)
   const summary = summarizeKostraEntities(index, metricId, year, selectedIds)
   const selectedEntity = hoverId ? entities.get(hoverId) : null
   const title = selectedEntity?.name ?? scopeName
-  const rows = shapes
+  const unsortedRows = shapes
     .map((shape) => ({
       shape,
       entity: entities.get(shape.id),
       summary: summarizeKostraEntities(index, metricId, year, [shape.id]),
     }))
-    .sort((a, b) => Math.abs(b.summary[mode] ?? 0) - Math.abs(a.summary[mode] ?? 0))
-  const max = Math.max(1, ...rows.map((row) => Math.abs(row.summary[mode] ?? 0)))
-  const shareTotal = rows.reduce((sum, row) => sum + Math.abs(row.summary.amount ?? 0), 0)
+  const shareTotal = unsortedRows.reduce((sum, row) => sum + Math.abs(row.summary.amount ?? 0), 0)
+  const rows = sortExplorerRows(unsortedRows.map((row) => ({
+    ...row,
+    perCapita: row.summary.perCapita,
+    share: Number.isFinite(row.summary.amount) && shareTotal
+      ? Math.abs(row.summary.amount) / shareTotal * 100
+      : null,
+  })), sortKey, sortDirection)
+  const max = Math.max(1, ...rows.map((row) => Math.abs(row.perCapita ?? 0)))
   const signedValues = rows.some((row) => (row.summary.amount ?? 0) < 0)
   const history = [{
     navn: title,
@@ -32,20 +48,87 @@ export default function KostraUtforsk({
       v: summarizeKostraEntities(index, metricId, itemYear, selectedIds)[mode],
     })),
   }]
+  const drillEntity = drillEntityId ? entities.get(drillEntityId) : null
+  const scopeKey = `${level}:${scopeName}`
+
+  useEffect(() => {
+    returnFocusId.current = null
+    setDrillEntityId(null)
+    setDetailState({ loading: false, detail: null, error: null })
+  }, [scopeKey])
+
+  useEffect(() => {
+    if (!drillEntity) return undefined
+    let active = true
+    setDetailState({ loading: true, detail: null, error: null })
+    loadKostraDetail(drillEntity.kind, drillEntity.code)
+      .then((detail) => {
+        if (!active) return
+        setDetailState(detail
+          ? { loading: false, detail, error: null }
+          : { loading: false, detail: null, error: 'Detaljdata er ikke tilgjengelig.' })
+      })
+      .catch((error) => {
+        if (active) setDetailState({ loading: false, detail: null, error: error.message })
+      })
+    return () => { active = false }
+  }, [drillEntity])
+
+  useEffect(() => {
+    if (drillEntityId && !detailState.detail) {
+      statusRef.current?.focus()
+      return
+    }
+    if (!drillEntityId && returnFocusId.current) {
+      const entityId = returnFocusId.current
+      requestAnimationFrame(() => {
+        sectionRef.current?.querySelector(`[data-entity-id="${entityId}"]`)?.focus()
+      })
+    }
+  }, [drillEntityId, detailState.detail])
+
+  const startDrill = (row) => {
+    onHover(null)
+    returnFocusId.current = row.entity?.id ?? row.shape.id
+    setDetailState({ loading: true, detail: null, error: null })
+    setDrillEntityId(row.entity?.id ?? row.shape.id)
+  }
+  const changeSort = (key) => {
+    setSortDirection((current) => sortKey === key && current === 'desc' ? 'asc' : 'desc')
+    setSortKey(key)
+  }
+  const sortArrow = (key) => sortKey === key ? (sortDirection === 'desc' ? ' ↓' : ' ↑') : ''
 
   return (
-    <section className="ft-seksjon ko-utforsk">
+    <section className="ft-seksjon ko-utforsk" ref={sectionRef}>
       <div className="ft-seksjonstekst ft-seksjonstopp">
         <div>
           <h3>Utforsk kommuner og fylker</h3>
           <p>
-            Samme valg som i kartet, rangert som en liste. Hold over et område for å se det alene,
-            eller la kartet stå urørt for å se summen av alle områdene som vises.
+            Samme valg som i kartet, rangert som en liste. Klikk på et område for å utforske
+            regnskapet videre her, uten å bytte side.
           </p>
         </div>
       </div>
 
-      <div className="ft-utforsk-grid">
+      {drillEntity ? (
+        detailState.detail ? (
+          <KostraInlineUtforsk
+            key={drillEntity.id}
+            index={index}
+            detail={detailState.detail}
+            entity={drillEntity}
+            year={year}
+            scopeName={scopeName}
+            onExit={() => setDrillEntityId(null)}
+          />
+        ) : (
+          <div className="ko-inline-status" role="status" tabIndex={-1} ref={statusRef}>
+            {detailState.loading ? 'Laster regnskapet…' : detailState.error}
+            {!detailState.loading && <button type="button" onClick={() => setDrillEntityId(null)}>Tilbake til listen</button>}
+          </div>
+        )
+      ) : <div className="ft-utforsk-grid">
         <div>
           <div className="ft-nivaatopp">
             <span className="ft-nivaasum num">{formatKostraValue(scopeSummary[mode], mode)}</span>
@@ -55,23 +138,32 @@ export default function KostraUtforsk({
           </div>
           <div className="ft-tabellhode ko-tabellhode">
             <span />
-            <span>{mode === 'perCapita' ? 'Per innb.' : 'Beløp'}</span>
-            <span>{signedValues ? 'Andel av utslag' : 'Andel'}</span>
+            <button
+              type="button"
+              className={sortKey === 'perCapita' ? 'aktiv' : ''}
+              aria-pressed={sortKey === 'perCapita'}
+              onClick={() => changeSort('perCapita')}
+            >Per innb.{sortArrow('perCapita')}</button>
+            <button
+              type="button"
+              className={sortKey === 'share' ? 'aktiv' : ''}
+              aria-pressed={sortKey === 'share'}
+              onClick={() => changeSort('share')}
+            >{signedValues ? 'Andel av utslag' : 'Andel'}{sortArrow('share')}</button>
             <span />
           </div>
           {rows.map((row) => {
-            const value = row.summary[mode]
-            const share = shareTotal ? Math.abs(row.summary.amount) / shareTotal * 100 : 0
             return (
               <button
                 type="button"
                 className={`ft-utforskrad ${hoverId === row.shape.id ? 'fokus' : ''}`}
                 key={row.shape.id}
+                data-entity-id={row.entity?.id ?? row.shape.id}
                 onMouseEnter={() => onHover(row.shape.id)}
                 onMouseLeave={() => onHover(null)}
                 onFocus={() => onHover(row.shape.id)}
                 onBlur={() => onHover(null)}
-                onClick={() => onOpen(row.shape)}
+                onClick={() => startDrill(row)}
               >
                 <span className="ft-utforskmidt">
                   <span className="ft-utforsktittel">
@@ -79,15 +171,15 @@ export default function KostraUtforsk({
                     <span className="ft-merke">{level === 'county' ? 'Fylke' : 'Kommune'}</span>
                   </span>
                   <span className="ft-bar ft-bar--tynn">
-                    <span className="ft-bar-fyll" style={{ width: `${Math.abs(value ?? 0) / max * 100}%` }} />
+                    <span className="ft-bar-fyll" style={{ width: `${Math.abs(row.perCapita ?? 0) / max * 100}%` }} />
                   </span>
                 </span>
-                <span className="num ft-utforskbelop">{formatKostraValue(value, mode)}</span>
+                <span className="num ft-utforskbelop">{formatKostraValue(row.perCapita, 'perCapita')}</span>
                 <span
                   className="num ft-utforskandel"
                   title={signedValues ? 'Andel av summen av absolutte utslag' : undefined}
                 >
-                  {Number.isFinite(row.summary.amount) ? `${populationFormat.format(share)} %` : '–'}
+                  {Number.isFinite(row.share) ? `${populationFormat.format(row.share)} %` : '–'}
                 </span>
                 <span className="ft-utforskpil">›</span>
               </button>
@@ -127,7 +219,7 @@ export default function KostraUtforsk({
             </div>
           </div>
         </aside>
-      </div>
+      </div>}
     </section>
   )
 }

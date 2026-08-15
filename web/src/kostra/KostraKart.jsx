@@ -188,7 +188,6 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
         level={level}
         scopeName={county?.name ?? 'Alle fylkeskommuner'}
         onHover={setHoverId}
-        onOpen={open}
       />
     </>
   )
