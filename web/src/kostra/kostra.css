@@ -33,6 +33,10 @@
 .ko-nokkeltall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--strek); margin-top: 28px; border: 1px solid var(--strek); }
 .ko-nokkeltall > div { background: var(--ark); padding: 19px; display: flex; flex-direction: column; gap: 11px; }
 .ko-nokkeltall strong { font-family: var(--serif); font-size: clamp(22px, 2.5vw, 31px); color: var(--ink); }
+.ko-grensehistorikk { margin: 20px 0 0; }
+.ko-grensehistorikk h2 { margin: 4px 0 10px; }
+.ko-grensehistorikk p { margin: 7px 0; color: var(--dempet); }
+.ko-grensehistorikk a { color: var(--rust); }
 .ko-detaljgrid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(240px, .7fr); gap: 28px; margin-top: 38px; }
 .ko-panel { border-top: 2px solid var(--ink); padding-top: 14px; min-width: 0; }
 .ko-panel h2, .ko-breakdown h3, .ko-drill h2 { font-family: var(--serif); font-size: 26px; margin: 4px 0 18px; }
@@ -76,4 +80,3 @@
   .ko-paneltopp { flex-direction: column; }.ko-paneltopp .ko-select { width: 100%; }
   .ko-drillhode, .ko-drillrader button { grid-template-columns: minmax(0, 1fr) 105px 10px; }
 }
-

@@ -49,19 +49,26 @@ enheter kommuner» og «Administrative enheter fylker».
 
 Importen bruker PxWebApi 2, har lokal rådatacache og deler uttrekk slik at de
 holder seg under SSBs grense på 800 000 celler. Alle kilder er CC BY 4.0.
+Den gjenbruker retry/`Retry-After`-håndteringen i `etl/download.py`.
+`_download_ssb_tabell` brukes ikke her fordi den bare henter én aggregert
+årsserie, mens KOSTRA krever kontrollerte uttrekk over region, funksjon, art
+og statistikkvariabel.
 
 ## Normalisert modell
 
 - `entity`: kommune, fylke, Norge eller KOSTRA-gruppe, med forelder,
   gruppetilhørighet og gyldighetsperiode.
 - `entity_code`: regionkoder og perioden koden er gyldig.
+- `entity_relation`: SSB Klass-overganger, klassifisert som rent kodebytte
+  eller reell grenseendring.
+- `dataset`: skiller regnskap, framtidige budsjetter og overføringer.
 - `classification`: funksjoner, tjenesteområder og regnskapsarter.
-- `fact`: én observasjon per enhet, år, mål, funksjon, art og kildetabell;
+- `fact`: én observasjon per datasett, enhet, år, mål, funksjon, art og kildetabell;
   inneholder både beløp i 1 000 kroner og verdi per innbygger.
 - `source_run`: tabell, kildetittel, hentetid og siste publiserte periode.
 
 Modellen er generell nok til at kommunebudsjetter og statlige overføringer kan
-legges til som nye kildetabeller og fakta uten å endre kart- eller detaljflaten.
+legges til som egne datasett uten å overskrive KOSTRA-regnskapet.
 
 ## Region-ID-er og historiske grenser
 
@@ -69,23 +76,28 @@ Kartet viser gjeldende grenser fra Kartverket. SSB-regionkoden er den eksterne
 nøkkelen, mens den interne nøkkelen inkluderer enhetstype, for eksempel
 `municipality:0301` og `county:03`.
 
-Historiske koder lagres som egne, inaktive enheter med `valid_from` og
-`valid_to` utledet fra SSBs regionetiketter. De kobles ikke automatisk til et
-dagens fylke eller en ny kommune. For en aktiv kommune brukes tidsserien som
-SSB selv publiserer på dagens regionkode; importen summerer aldri tidligere
-kommuner på egen hånd. Dermed oppstår verken dobbelttelling eller konstruerte
-tidsserier ved sammenslåinger og delinger.
+Historiske koder og fakta lagres som egne, inaktive enheter med `valid_from` og
+`valid_to`. Endringer hentes fra SSB Klass (kommuneinndeling 131 og
+fylkesinndeling 104). En én-til-én-overgang videreføres i historikk og kartdata
+som et rent kodebytte. Mange-til-én- og én-til-mange-overganger merkes som
+grenseendringer og holdes adskilt. Detaljsiden forklarer skillet og lenker til
+den historiske enheten. Importen summerer aldri tidligere kommuner på egen
+hånd, så det oppstår verken dobbelttelling eller konstruerte tidsserier.
 
 ## Publisert data-interface
 
 `web/public/data/kostra/` inneholder:
 
-- `index.json`: skjema-versjon, år, mål, aktive enheter, kilder og
+- `index.json`: skjema-versjon, år, mål, aktive/historiske enheter, kilder og
   forhåndsberegnede kartverdier.
 - `boundaries.json`: forenklede og ferdigprojiserte SVG-baner for rask kartstart.
 - `entities/municipality-{kode}.json`: kommuneoversikt, historikk,
   fordelinger og økonomisk drill-down.
 - `entities/county-{kode}.json`: tilsvarende for fylkeskommunen.
+
+Detaljfiler publiseres også for historiske enheter. `boundaryHistory` beskriver
+overgangen, mens serier for aktive enheter inkluderer dokumenterte rene
+kodebytter bakover i tid.
 
 Manglende kildeverdier beholdes som manglende data, ikke som null. Ingen
 placeholder- eller eksempelverdier publiseres.
@@ -102,4 +114,3 @@ cd web && npm test && npm run build
 Første import er størst. Senere kjøringer bruker filcache med mindre `--force`
 er valgt. Detaljfilene er bevisst større enn kartindeksen, men lastes bare når
 en bruker åpner den aktuelle kommunen eller fylkeskommunen.
-

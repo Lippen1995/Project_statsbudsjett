@@ -8,11 +8,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from kostra import (  # noqa: E402
     METRICS,
+    _import_overview,
+    classify_code_changes,
     create_database,
     entity_from_region,
     iter_jsonstat,
+    region_codes_for_import,
     write_frontend_data,
 )
+
+
+# Offisielt publisert i SSB-tabell 12137 for Oslo, 2024 (1000 kroner / kroner
+# per innbygger). Dette lille uttrekket gjør testen deterministisk samtidig som
+# parser og normalisering av beløp/per-innbygger avstemmes mot Statbank.
+OSLO_2024_REVENUES = {"amount": 86_642_212, "per_capita": 119_624}
 
 
 def _cube():
@@ -58,6 +67,32 @@ def test_regioner_beholder_kode_og_gyldighetsperiode():
     assert group["kind"] == "peer_group"
 
 
+def test_importlisten_beholder_historiske_regioner_uten_aa_blande_koder():
+    metadata = {"dimension": {"Region": {"category": {"label": {
+        "3103": "Moss", "3002": "Moss (2020-2023)", "0104": "Moss (-2019)", "EAK": "Landet",
+    }}}}}
+
+    assert region_codes_for_import(metadata, "Region", ["3103"], ["EAK"]) == [
+        "3103", "3002", "0104", "EAK",
+    ]
+
+
+def test_klass_skiller_kodebytte_fra_sammenslaaing():
+    changes = [
+        {"oldCode": "0104", "newCode": "3002", "changeOccurred": "2020-01-01"},
+        {"oldCode": "0136", "newCode": "3002", "changeOccurred": "2020-01-01"},
+        {"oldCode": "3002", "newCode": "3103", "changeOccurred": "2024-01-01"},
+    ]
+
+    relations = classify_code_changes(changes, "municipality")
+
+    assert relations == [
+        ("municipality:0104", "municipality:3002", 2020, "boundary_change"),
+        ("municipality:0136", "municipality:3002", 2020, "boundary_change"),
+        ("municipality:3002", "municipality:3103", 2024, "exact_successor"),
+    ]
+
+
 def test_frontenddata_har_kartverdier_og_lazy_detaljfil(tmp_path):
     db = create_database(tmp_path / "kostra.sqlite")
     entities = [
@@ -69,16 +104,24 @@ def test_frontenddata_har_kartverdier_og_lazy_detaljfil(tmp_path):
     db.executemany("INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)", entities)
     for entity_id, value in [("municipality:0301", 1000), ("country:EAK", 900)]:
         db.execute(
-            "INSERT INTO fact VALUES (?,?,?,?,?,?,?,?)",
-            (entity_id, 2025, "AGD13", "", "", value, value * 10, "12137"),
+            "INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)",
+            ("kostra_actuals", entity_id, 2025, "AGD13", "", "", value, value * 10, "12137"),
         )
     db.execute(
         "INSERT INTO classification VALUES (?,?,?,?)",
         ("function", "FGK8b", "Grunnskole", "service_area"),
     )
     db.execute(
-        "INSERT INTO fact VALUES (?,?,?,?,?,?,?,?)",
-        ("municipality:0301", 2025, "AGD10", "FGK8b", "", 400, 4000, "12362"),
+        "INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)",
+        ("kostra_actuals", "municipality:0301", 2025, "AGD10", "FGK8b", "", 400, 4000, "12362"),
+    )
+    db.execute(
+        "INSERT INTO dataset VALUES (?,?,?,?)",
+        ("municipal_budget", "Kommunebudsjett", "budget", "future-import"),
+    )
+    db.execute(
+        "INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)",
+        ("municipal_budget", "municipality:0301", 2025, "AGD13", "", "", 9999, 99999, "budget-test"),
     )
     db.commit()
 
@@ -91,3 +134,78 @@ def test_frontenddata_har_kartverdier_og_lazy_detaljfil(tmp_path):
     assert index["values"]["revenues"]["2025"]["municipality:0301"]["perCapita"] == 10000
     assert detail["services"][0]["code"] == "FGK8b"
     assert any(m["id"] == "debt" for m in METRICS)
+
+
+def test_ssb_12137_avstemmes_mot_publiserte_driftsinntekter_for_oslo_2024(tmp_path):
+    metadata = {
+        "id": ["KOKkommuneregion0000", "KOKregnskapsbegrep0000", "ContentsCode", "Tid"],
+        "dimension": {
+            "KOKkommuneregion0000": {"label": "Region", "category": {"label": {"0301": "Oslo"}}},
+            "KOKregnskapsbegrep0000": {
+                "label": "Regnskapsbegrep",
+                "category": {"label": {"AGD13": "Brutto driftsinntekter i alt"}},
+            },
+            "ContentsCode": {
+                "label": "Statistikkvariabel",
+                "category": {"label": {
+                    "Belop": "Brutto driftsinntekter i alt (1000 kr)",
+                    "PerInnbygger": "Brutto driftsinntekter per innbygger (kr)",
+                }},
+            },
+            "Tid": {"label": "År", "category": {"index": {"2024": 0}, "label": {"2024": "2024"}}},
+        },
+    }
+    cube = {
+        "id": metadata["id"],
+        "size": [1, 1, 2, 1],
+        "dimension": {
+            **metadata["dimension"],
+            "KOKkommuneregion0000": {"category": {"index": {"0301": 0}}},
+            "KOKregnskapsbegrep0000": {"category": {"index": {"AGD13": 0}}},
+            "ContentsCode": {"category": {"index": {"Belop": 0, "PerInnbygger": 1}}},
+        },
+        "value": [OSLO_2024_REVENUES["amount"], OSLO_2024_REVENUES["per_capita"]],
+    }
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:0301", "0301", "Oslo", "municipality", None, None, 1, None, None, "Oslo"),
+    )
+
+    _import_overview(db, "municipality", "12137", metadata, cube)
+
+    actual = db.execute(
+        "SELECT amount, per_capita FROM fact WHERE entity_id=? AND year=? AND metric_code=?",
+        ("municipality:0301", 2024, "AGD13"),
+    ).fetchone()
+    assert dict(actual) == OSLO_2024_REVENUES
+
+
+def test_eksport_kobler_rene_kodebytter_men_ikke_endrer_historiske_ider(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.executemany("INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)", [
+        ("municipality:3002", "3002", "Moss", "municipality", None, None, 0, 2020, 2023, "Moss (2020-2023)"),
+        ("municipality:3103", "3103", "Moss", "municipality", None, None, 1, 2024, None, "Moss"),
+    ])
+    db.execute(
+        "INSERT INTO entity_relation VALUES (?,?,?,?,?)",
+        ("municipality:3002", "municipality:3103", 2024, "exact_successor", "SSB Klass"),
+    )
+    db.executemany("INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)", [
+        ("kostra_actuals", "municipality:3002", 2023, "AGD13", "", "", 10, 100, "12137"),
+        ("kostra_actuals", "municipality:3103", 2024, "AGD13", "", "", 11, 110, "12137"),
+    ])
+    db.commit()
+
+    write_frontend_data(db, tmp_path / "data", {"county": {}, "municipality": {}})
+
+    root = tmp_path / "data" / "kostra"
+    index = json.loads((root / "index.json").read_text(encoding="utf-8"))
+    detail = json.loads((root / "entities" / "municipality-3103.json").read_text(encoding="utf-8"))
+    assert index["values"]["revenues"]["2023"]["municipality:3103"]["amount"] == 10
+    assert index["values"]["revenues"]["2023"]["municipality:3002"]["amount"] == 10
+    assert index["historicalEntities"][0]["id"] == "municipality:3002"
+    assert detail["overview"]["revenues"] == {
+        "2023": {"amount": 10.0, "perCapita": 100.0},
+        "2024": {"amount": 11.0, "perCapita": 110.0},
+    }

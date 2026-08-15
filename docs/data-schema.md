@@ -315,6 +315,12 @@ tjenesteområder/funksjoner og funksjon/regnskapsart. Beløpsenheten fra SSB er
 Normalisert SQLite-skjema ligger i `etl/kostra_schema.sql`. Den publiserte
 frontendmodellen ligger under `web/public/data/kostra/`:
 
+`fact.dataset_id` skiller dagens `kostra_actuals` fra framtidige kommunale
+budsjett- og overføringsdatasett. Eksporten velger datasett eksplisitt, så nye
+kilder kan ikke overskrive KOSTRA-regnskap for samme enhet, måltall og år.
+Utgåtte kommune- og fylkeskoder importeres med egne gyldighetsperioder; serier
+med ulike geografiske grenser blir bevisst ikke slått sammen.
+
 ```typescript
 interface KostraIndex {
   schemaVersion: 1;
@@ -329,6 +335,7 @@ interface KostraIndex {
     functionCode?: string;
   }>;
   entities: KostraEntity[];
+  historicalEntities: KostraEntity[];
   values: {
     [metricId: string]: {
       [year: string]: {

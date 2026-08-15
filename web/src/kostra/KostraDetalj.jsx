@@ -39,7 +39,8 @@ export default function KostraDetalj({ index, kind, code }) {
   }, [kind, code])
 
   const entityId = kind === 'county' ? `county:${code.slice(0, 2)}` : `municipality:${code}`
-  const entity = index.entities.find((item) => item.id === entityId)
+  const allEntities = [...index.entities, ...(index.historicalEntities ?? [])]
+  const entity = allEntities.find((item) => item.id === entityId)
   const metricDefs = index.metrics.filter((item) => item.category === 'finance')
   const selectedService = detail?.services.find((item) => item.code === serviceCode)
   const functions = detail?.functions.filter((item) => !serviceCode || item.serviceCodes?.includes(serviceCode)) ?? []
@@ -105,6 +106,29 @@ export default function KostraDetalj({ index, kind, code }) {
           ))}
         </div>
 
+        {detail.boundaryHistory?.length > 0 && (
+          <div className="ko-panel ko-grensehistorikk">
+            <span className="ft-stikkord">Historiske grenser og koder</span>
+            <h2>Sammenlignbarhet over tid</h2>
+            {detail.boundaryHistory.map((change) => {
+              const changedBoundary = change.relationType === 'boundary_change'
+              const previousHref = kind === 'county'
+                ? `#kostra/fylke/${change.sourceCode.slice(0, 2)}/detaljer`
+                : `#kostra/kommune/${change.sourceCode}`
+              return (
+                <p key={`${change.sourceId}-${change.targetId}-${change.changeYear}`}>
+                  <strong>{change.changeYear}:</strong>{' '}
+                  <a href={previousHref}>{change.sourceName} ({change.sourceCode})</a>
+                  {' → '}{change.targetName} ({change.targetCode}).{' '}
+                  {changedBoundary
+                    ? 'Geografien ble endret; seriene holdes derfor adskilt.'
+                    : 'Ren kodeendring dokumentert av SSB Klass; tidsserien videreføres.'}
+                </p>
+              )
+            })}
+          </div>
+        )}
+
         <div className="ko-detaljgrid">
           <div className="ko-panel">
             <div className="ko-paneltopp">
@@ -169,4 +193,3 @@ export default function KostraDetalj({ index, kind, code }) {
     </>
   )
 }
-

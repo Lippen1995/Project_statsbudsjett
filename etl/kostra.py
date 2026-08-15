@@ -13,7 +13,6 @@ import json
 import math
 import re
 import sqlite3
-import time
 import zipfile
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -23,6 +22,8 @@ from typing import Iterable
 from xml.etree import ElementTree
 
 import requests
+
+from download import _request_med_retry
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -193,19 +194,17 @@ class SsbClient:
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.force = force
-        self.session = requests.Session()
-        self.session.headers.update({"User-Agent": "Fellestall-KOSTRA/1.0 (https://fellestall.no)"})
 
     def _request(self, method: str, url: str, **kwargs) -> requests.Response:
-        for attempt in range(5):
-            response = self.session.request(method, url, timeout=180, **kwargs)
-            if response.status_code not in {429, 500, 502, 503, 504}:
-                response.raise_for_status()
-                return response
-            if attempt == 4:
-                response.raise_for_status()
-            time.sleep(min(2 ** attempt, 12))
-        raise RuntimeError("Uoppnåelig retry-tilstand")
+        headers = {
+            "User-Agent": "Fellestall-KOSTRA/1.0 (https://fellestall.no)",
+            **kwargs.pop("headers", {}),
+        }
+        response = _request_med_retry(
+            method, url, timeout=kwargs.pop("timeout", 180), headers=headers, **kwargs
+        )
+        response.raise_for_status()
+        return response
 
     def json(self, url: str, cache_name: str) -> dict:
         path = self.cache_dir / cache_name
@@ -264,25 +263,44 @@ def _series(rows: Iterable[sqlite3.Row]) -> dict[str, dict]:
     return result
 
 
+def _continuity_entity_ids(db: sqlite3.Connection, entity_id: str) -> list[str]:
+    """Følg bare dokumenterte én-til-én kodebytter bakover i tid."""
+    result, pending = [entity_id], [entity_id]
+    while pending:
+        target = pending.pop()
+        for row in db.execute(
+            "SELECT source_entity_id FROM entity_relation WHERE target_entity_id=? AND relation_type='exact_successor'",
+            (target,),
+        ):
+            if row[0] not in result:
+                result.append(row[0])
+                pending.append(row[0])
+    return result
+
+
 def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> dict:
     function_labels = _classification_labels(db, "function")
     art_labels = _classification_labels(db, "accounting_art")
+    series_entity_ids = _continuity_entity_ids(db, entity["id"])
+    entity_slots = ",".join("?" for _ in series_entity_ids)
 
     overview = {}
     for metric in METRICS:
         rows = db.execute(
             """SELECT year, amount, per_capita FROM fact
-               WHERE entity_id=? AND metric_code=? AND function_code='' AND accounting_art_code=''
+               WHERE dataset_id='kostra_actuals' AND entity_id IN (""" + entity_slots + """) AND metric_code=?
+                 AND function_code='' AND accounting_art_code=''
                ORDER BY year""",
-            (entity["id"], metric["code"]),
+            (*series_entity_ids, metric["code"]),
         )
         overview[metric["id"]] = _series(rows)
 
     service_rows = db.execute(
         """SELECT function_code, metric_code, year, amount, per_capita FROM fact
-           WHERE entity_id=? AND function_code LIKE 'FG%' AND accounting_art_code=''
+           WHERE dataset_id='kostra_actuals' AND entity_id IN (""" + entity_slots + """)
+             AND function_code LIKE 'FG%' AND accounting_art_code=''
            ORDER BY function_code, year""",
-        (entity["id"],),
+        series_entity_ids,
     ).fetchall()
     services = {}
     for row in service_rows:
@@ -298,9 +316,10 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
 
     function_rows = db.execute(
         """SELECT function_code, metric_code, year, amount, per_capita FROM fact
-           WHERE entity_id=? AND function_code GLOB '[0-9][0-9][0-9]' AND accounting_art_code=''
+           WHERE dataset_id='kostra_actuals' AND entity_id IN (""" + entity_slots + """)
+             AND function_code GLOB '[0-9][0-9][0-9]' AND accounting_art_code=''
            ORDER BY function_code, year""",
-        (entity["id"],),
+        series_entity_ids,
     ).fetchall()
     functions = {}
     for row in function_rows:
@@ -317,7 +336,8 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
 
     art_rows = db.execute(
         """SELECT function_code, accounting_art_code, amount FROM fact
-           WHERE entity_id=? AND year=? AND accounting_art_code<>'' AND amount IS NOT NULL
+           WHERE dataset_id='kostra_actuals' AND entity_id=? AND year=?
+             AND accounting_art_code<>'' AND amount IS NOT NULL
            ORDER BY function_code, accounting_art_code""",
         (entity["id"], latest_year),
     ).fetchall()
@@ -343,6 +363,19 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
             for code, amount in sorted(values.items(), key=lambda item: abs(item[1]), reverse=True)
         ]
 
+    boundary_history = [dict(row) for row in db.execute(
+        """SELECT r.change_year AS changeYear, r.relation_type AS relationType,
+                  source.id AS sourceId, source.code AS sourceCode, source.name AS sourceName,
+                  target.id AS targetId, target.code AS targetCode, target.name AS targetName
+           FROM entity_relation r
+           JOIN entity source ON source.id=r.source_entity_id
+           JOIN entity target ON target.id=r.target_entity_id
+           WHERE r.source_entity_id IN (""" + entity_slots + """)
+              OR r.target_entity_id IN (""" + entity_slots + """)
+           ORDER BY r.change_year""",
+        (*series_entity_ids, *series_entity_ids),
+    )]
+
     return {
         "schemaVersion": 1,
         "entity": entity,
@@ -353,6 +386,7 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         "services": list(services.values()),
         "functions": list(functions.values()),
         "accountingArts": arts_by_function,
+        "boundaryHistory": boundary_history,
         "comparisons": {
             "norwayEntityId": "country:EAK" if entity["kind"] == "municipality" else "country:EAFK",
             "peerGroupEntityId": entity.get("peer_group_id"),
@@ -369,7 +403,13 @@ def write_frontend_data(db: sqlite3.Connection, output_dir: Path | str, boundari
            ORDER BY CASE kind WHEN 'county' THEN 0 WHEN 'municipality' THEN 1 ELSE 2 END, name"""
     ).fetchall()
     entities = [dict(row) for row in entity_rows]
-    years = [row[0] for row in db.execute("SELECT DISTINCT year FROM fact ORDER BY year")]
+    historical_entities = [dict(row) for row in db.execute(
+        """SELECT * FROM entity WHERE active=0
+           ORDER BY kind, valid_to DESC, name"""
+    )]
+    years = [row[0] for row in db.execute(
+        "SELECT DISTINCT year FROM fact WHERE dataset_id='kostra_actuals' ORDER BY year"
+    )]
     latest_year = max(years) if years else datetime.now().year - 1
 
     service_metrics = [
@@ -387,17 +427,40 @@ def write_frontend_data(db: sqlite3.Connection, output_dir: Path | str, boundari
     ]
     all_metrics = [{**metric, "category": "finance"} for metric in METRICS] + service_metrics
     values = {metric["id"]: {} for metric in all_metrics}
+    exact_successors = {
+        row["source_entity_id"]: row["target_entity_id"]
+        for row in db.execute(
+            "SELECT source_entity_id, target_entity_id FROM entity_relation WHERE relation_type='exact_successor'"
+        )
+    }
+    active_ids = {entity["id"] for entity in entities}
+
+    def current_entity_id(entity_id: str) -> str:
+        original_id = entity_id
+        seen = set()
+        while entity_id in exact_successors and entity_id not in seen:
+            seen.add(entity_id)
+            entity_id = exact_successors[entity_id]
+        return entity_id if entity_id in active_ids else original_id
+
     for metric in all_metrics:
         function_code = metric.get("functionCode", "")
         rows = db.execute(
             """SELECT entity_id, year, amount, per_capita FROM fact
-               WHERE metric_code=? AND function_code=? AND accounting_art_code=''""",
+               WHERE dataset_id='kostra_actuals' AND metric_code=?
+                 AND function_code=? AND accounting_art_code=''""",
             (metric["code"], function_code),
         )
         for row in rows:
-            values[metric["id"]].setdefault(str(row["year"]), {})[row["entity_id"]] = {
+            export_entity_id = current_entity_id(row["entity_id"])
+            year_values = values[metric["id"]].setdefault(str(row["year"]), {})
+            point = {
                 "amount": row["amount"], "perCapita": row["per_capita"]
             }
+            # Behold original-ID for historiske detaljsider, og legg samme
+            # observasjon på aktiv ID når Klass dokumenterer et rent kodebytte.
+            year_values[row["entity_id"]] = point
+            year_values[export_entity_id] = point
 
     source_rows = [dict(row) for row in db.execute("SELECT * FROM source_run ORDER BY source_table")]
     index = {
@@ -407,16 +470,21 @@ def write_frontend_data(db: sqlite3.Connection, output_dir: Path | str, boundari
         "years": years,
         "metrics": all_metrics,
         "entities": entities,
+        "historicalEntities": historical_entities,
         "values": values,
         "sources": source_rows,
     }
     _write_json(output / "index.json", index)
     _write_json(output / "boundaries.json", {"schemaVersion": 1, **boundaries})
 
-    for entity in entities:
+    for entity in entities + historical_entities:
         if entity["kind"] not in {"municipality", "county"}:
             continue
-        detail = _entity_detail(db, entity, latest_year)
+        entity_latest_year = db.execute(
+            "SELECT MAX(year) FROM fact WHERE dataset_id='kostra_actuals' AND entity_id=?",
+            (entity["id"],),
+        ).fetchone()[0] or latest_year
+        detail = _entity_detail(db, entity, entity_latest_year)
         _write_json(output / "entities" / f"{entity['kind']}-{entity['code']}.json", detail)
 
 
@@ -470,9 +538,9 @@ def _upsert_fact(
     per_capita: float | None = None,
 ) -> None:
     db.execute(
-        """INSERT INTO fact(entity_id,year,metric_code,function_code,accounting_art_code,amount,per_capita,source_table)
-           VALUES (?,?,?,?,?,?,?,?)
-           ON CONFLICT(entity_id,year,metric_code,function_code,accounting_art_code,source_table)
+        """INSERT INTO fact(dataset_id,entity_id,year,metric_code,function_code,accounting_art_code,amount,per_capita,source_table)
+           VALUES ('kostra_actuals',?,?,?,?,?,?,?,?)
+           ON CONFLICT(dataset_id,entity_id,year,metric_code,function_code,accounting_art_code,source_table)
            DO UPDATE SET amount=COALESCE(excluded.amount,fact.amount),
                          per_capita=COALESCE(excluded.per_capita,fact.per_capita)""",
         (entity_id, year, metric_code, function_code, accounting_art_code, amount, per_capita, source_table),
@@ -545,6 +613,14 @@ def _import_details(db: sqlite3.Connection, kind: str, table: str, metadata: dic
 def _chunks(values: list[str], size: int = 85):
     for start in range(0, len(values), size):
         yield values[start:start + size]
+
+
+def region_codes_for_import(metadata: dict, dimension: str, current: list[str], comparisons: list[str]) -> list[str]:
+    """Velg aktive, historiske og sammenligningsregioner som tabellen faktisk tilbyr."""
+    available = _labels(metadata, dimension)
+    active = [code for code in current if code in available]
+    historical = [code for code in available if code.isdigit() and code not in active]
+    return active + historical + [code for code in comparisons if code in available]
 
 
 def _download_geojson(client: SsbClient, kind: str) -> dict:
@@ -700,6 +776,57 @@ def _attach_peer_groups(db: sqlite3.Connection, client: SsbClient) -> None:
         )
 
 
+def classify_code_changes(code_changes: list[dict], kind: str) -> list[tuple[str, str, int, str]]:
+    """Skill rene kodebytter fra sammenslåinger/delinger i Klass-endringer."""
+    candidates = [
+        row for row in code_changes
+        if row.get("oldCode") and row.get("newCode") and row["oldCode"] != row["newCode"]
+    ]
+    source_targets = defaultdict(set)
+    target_sources = defaultdict(set)
+    for row in candidates:
+        key = row["changeOccurred"]
+        source_targets[(key, row["oldCode"])].add(row["newCode"])
+        target_sources[(key, row["newCode"])].add(row["oldCode"])
+
+    relations = []
+    for row in candidates:
+        date = row["changeOccurred"]
+        relation_type = "exact_successor" if (
+            len(source_targets[(date, row["oldCode"])]) == 1
+            and len(target_sources[(date, row["newCode"])]) == 1
+        ) else "boundary_change"
+        relations.append((
+            _entity_id(kind, row["oldCode"]),
+            _entity_id(kind, row["newCode"]),
+            int(date[:4]),
+            relation_type,
+        ))
+    return relations
+
+
+def _attach_boundary_changes(db: sqlite3.Connection, client: SsbClient, latest_year: int) -> None:
+    for kind, classification_id in (("municipality", 131), ("county", 104)):
+        data = client.json(
+            f"{KLASS_API}/classifications/{classification_id}/changes"
+            f"?from=2014-01-01&to={latest_year + 1}-12-31",
+            f"klass-{kind}-changes.json",
+        )
+        for source_id, target_id, change_year, relation_type in classify_code_changes(
+            data.get("codeChanges", []), kind
+        ):
+            if source_id == target_id:
+                continue
+            exists = db.execute(
+                "SELECT COUNT(*) FROM entity WHERE id IN (?,?)", (source_id, target_id)
+            ).fetchone()[0]
+            if exists == 2:
+                db.execute(
+                    "INSERT OR REPLACE INTO entity_relation VALUES (?,?,?,?,?)",
+                    (source_id, target_id, change_year, relation_type, "SSB Klass"),
+                )
+
+
 def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
     geojson = {kind: _download_geojson(client, kind) for kind in ("municipality", "county")}
     boundaries, geo_entities = build_boundaries(geojson)
@@ -736,6 +863,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 _record_source(db, table, meta)
 
         _attach_peer_groups(db, client)
+        _attach_boundary_changes(db, client, latest_year)
         db.commit()
 
         for kind in ("county", "municipality"):
@@ -744,11 +872,14 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             region = config["region"]
             current = [entity["code"] for entity in geo_entities[kind]]
             comparison = ["EAFK"] if kind == "county" else ["EAK"] + [f"EKG{i:02d}" for i in range(1, 18)]
-            regions = current + [code for code in comparison if code in _labels(overview_meta, region)]
+            # Behold utgåtte koder og serier på geografien SSB faktisk
+            # publiserte. Ulike grenser blir aldri kunstig sydd sammen.
+            overview_regions = region_codes_for_import(overview_meta, region, current, comparison)
+            service_regions = region_codes_for_import(service_meta, region, current, comparison)
 
             concept_dim = _dimension_by_label(overview_meta, "regnskapsbegrep")
             overview_cube = client.data(config["overview"], {
-                region: regions,
+                region: overview_regions,
                 concept_dim: [metric["code"] for metric in METRICS],
                 "ContentsCode": ["*"],
                 "Tid": ["*"],
@@ -761,7 +892,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 code for code, label in _labels(service_meta, "ContentsCode").items()
                 if "andel" not in label.lower()
             ]
-            for region_chunk in _chunks(regions):
+            for region_chunk in _chunks(service_regions):
                 cube = client.data(config["service"], {
                     region: region_chunk,
                     service_function: ["*"],
