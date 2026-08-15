@@ -9,6 +9,7 @@ import {
   materialBoundaryHistory,
   parseKostraRoute,
   populationForEntity,
+  summarizeMunicipalities,
   summarizeKostraEntities,
 } from '../src/kostra/model.js'
 import { SEKSJONER } from '../src/fellestall/design.js'
@@ -169,6 +170,32 @@ test('kartsammendrag summerer beløp og vekter per innbygger med folketallet', (
     entities: 2,
     availableEntities: 1,
     complete: false,
+  })
+})
+
+test('fylkesoversikten skiller fylkeskommunens regnskap fra summen av kommunene', () => {
+  const index = {
+    entities: [
+      { id: 'county:46', kind: 'county' },
+      { id: 'municipality:4601', kind: 'municipality', parent_id: 'county:46' },
+      { id: 'municipality:4629', kind: 'municipality', parent_id: 'county:46' },
+      { id: 'municipality:0301', kind: 'municipality', parent_id: 'county:03' },
+    ],
+    values: { revenues: { 2025: {
+      'municipality:4601': { amount: 100, perCapita: 1_000 },
+      'municipality:4629': { amount: 50, perCapita: 2_500 },
+      'municipality:0301': { amount: 999, perCapita: 9_999 },
+    } } },
+  }
+
+  assert.deepEqual(summarizeMunicipalities(index, 'revenues', 2025, ['county:46']), {
+    amount: 150,
+    perCapita: 1_250,
+    population: 120,
+    entities: 2,
+    availableEntities: 2,
+    complete: true,
+    entityIds: ['municipality:4601', 'municipality:4629'],
   })
 })
 

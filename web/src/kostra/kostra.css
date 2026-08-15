@@ -29,6 +29,10 @@
 .ko-legende small { grid-column: 1 / -1; text-align: center; margin-top: 5px; }
 .ko-kartinfo { position: sticky; top: 82px; border-top: 2px solid var(--ink); padding-top: 14px; }
 .ko-kartinfo .ft-kort-tekst { border-top: 1px solid var(--strek); margin-top: 16px; padding-top: 14px; }
+.ko-kommunesum { display: flex; flex-direction: column; gap: 5px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--strek); }
+.ko-kommunesum span { color: var(--blek); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.ko-kommunesum strong { color: var(--rust); font-family: var(--serif); font-size: 23px; }
+.ko-kommunesum small { color: var(--blek); font-size: 10px; }
 .ko-handling { display: inline-block; margin-top: 18px; font-size: 13px; font-weight: 700; }
 .ko-innbyggere { display: flex; justify-content: space-between; gap: 18px; margin-top: 17px; padding: 11px 0; border-block: 1px solid var(--strek); font-size: 12px; color: var(--blek); }
 .ko-innbyggere strong { color: var(--tekst); white-space: nowrap; }
@@ -37,6 +41,9 @@
 .ko-oppsummeringstall { margin-top: 13px; font-family: var(--serif); font-size: 30px; font-weight: 700; color: var(--rust); }
 .ko-datadekning { margin: 12px 0 0; font-size: 12px; line-height: 1.45; color: var(--blek); }
 .ko-utforsk-side .ft-kort-graf { margin-top: 10px; }
+.ko-regnskapsvelger { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 18px; padding: 12px 0; border-block: 1px solid var(--strek); }
+.ko-regnskapsvelger > small { color: var(--blek); font-size: 10px; }
+.ko-regnskapsvelger .ft-bytte:disabled { opacity: .45; cursor: not-allowed; }
 .ko-tabellhode button { border: 0; padding: 0; background: transparent; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-align: right; cursor: pointer; }
 .ko-tabellhode button:hover, .ko-tabellhode button.aktiv { color: var(--tekst); }
 .ko-inline-status { margin-top: 20px; padding: 28px 0; border-top: 1px solid var(--strek); color: var(--blek); }

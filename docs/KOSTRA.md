@@ -10,6 +10,8 @@ Brukeren kan gå fra Norge til fylke og kommune, velge år, totalbeløp eller
 kroner per innbygger, og velge mellom finansielle nøkkeltall og store
 tjenesteområder. Kartets oppsummering viser valgt område ved hover og ellers
 summen av alle synlige fylker eller kommuner, inkludert anslått folketall.
+På fylkeskartet holdes fylkeskommuneregnskapet og summen av kommuneregnskapene
+adskilt og vises som to egne tall; de legges aldri sammen.
 Under kartet rangerer «Utforsk kommuner og fylker» de samme enhetene og viser
 historisk utvikling. Kolonneoverskriftene sorterer tabellen etter kroner per
 innbygger eller andel. Et klikk på en kommune eller et fylke åpner regnskapet
@@ -20,6 +22,11 @@ inne i samme seksjon, uten navigasjon til en ny side:
 - investeringer → tjenesteområde → KOSTRA-funksjon
 - inntekter → inntektsart
 - gjeld stopper på totalen fordi kildetabellen ikke har en videre fordeling
+
+På nasjonalt fylkesnivå kan tabellen bytte mellom fylkeskommunenes egne
+regnskaper og kommuneregnskap summert per fylke. Fra kommunesummen driller et
+fylke først til kommunelisten. Valget gjelder finansielle nøkkeltall;
+fylkeskommunale tjenesteområder har ikke en tilsvarende kommunesum.
 
 Brødsmuler lar brukeren gå tilbake ett eller flere nivåer. Detaljvisningen som
 også kan åpnes fra kartet viser:

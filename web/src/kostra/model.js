@@ -98,6 +98,15 @@ export function summarizeKostraEntities(index, metricId, year, entityIds) {
   }
 }
 
+/** Summer kommuneregnskap innenfor ett eller flere fylker, aldri fylkeskommuneregnskap. */
+export function summarizeMunicipalities(index, metricId, year, countyIds) {
+  const counties = new Set(countyIds)
+  const entityIds = (index?.entities ?? [])
+    .filter((entity) => entity.kind === 'municipality' && counties.has(entity.parent_id))
+    .map((entity) => entity.id)
+  return { ...summarizeKostraEntities(index, metricId, year, entityIds), entityIds }
+}
+
 export function choroplethColor(value, values) {
   if (value == null || !Number.isFinite(value)) return '#E3DED4'
   const sorted = values.filter(Number.isFinite).sort((a, b) => a - b)

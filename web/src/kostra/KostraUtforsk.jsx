@@ -3,32 +3,53 @@ import LinjeGraf from '../fellestall/grafer/LinjeGraf'
 import { RUST } from '../fellestall/design'
 import { loadKostraDetail } from '../lib/kostra'
 import { sortExplorerRows } from './explorer'
-import { formatKostraValue, summarizeKostraEntities } from './model'
+import { formatKostraValue, summarizeKostraEntities, summarizeMunicipalities } from './model'
 import KostraInlineUtforsk from './KostraInlineUtforsk'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
+
+function countyAreaName(entity) {
+  return entity?.name
+    .replace(/ fylkeskommune$/, '')
+    .replace(/^Oslo kommune.*$/, 'Oslo')
+}
 
 export default function KostraUtforsk({
   index, shapes, entities, metric, metricId, year, mode, hoverId, level, scopeName, onHover,
 }) {
   const [sortKey, setSortKey] = useState('perCapita')
   const [sortDirection, setSortDirection] = useState('desc')
+  const [accountScope, setAccountScope] = useState('county')
+  const [municipalityCountyId, setMunicipalityCountyId] = useState(null)
   const [drillEntityId, setDrillEntityId] = useState(null)
   const [detailState, setDetailState] = useState({ loading: false, detail: null, error: null })
   const sectionRef = useRef(null)
   const statusRef = useRef(null)
+  const groupHeadingRef = useRef(null)
   const returnFocusId = useRef(null)
+  const enteringGroup = useRef(false)
   const allIds = useMemo(() => shapes.map((shape) => shape.id), [shapes])
   const selectedIds = hoverId ? [hoverId] : allIds
   const scopeSummary = summarizeKostraEntities(index, metricId, year, allIds)
   const summary = summarizeKostraEntities(index, metricId, year, selectedIds)
   const selectedEntity = hoverId ? entities.get(hoverId) : null
   const title = selectedEntity?.name ?? scopeName
-  const unsortedRows = shapes
+  const municipalityScopeAvailable = level === 'county' && metric.category === 'finance'
+  const effectiveAccountScope = municipalityScopeAvailable ? accountScope : 'county'
+  const effectiveMunicipalityCountyId = municipalityScopeAvailable ? municipalityCountyId : null
+  const groupedMunicipalities = effectiveMunicipalityCountyId
+    ? [...entities.values()].filter((entity) => entity.kind === 'municipality' && entity.parent_id === effectiveMunicipalityCountyId)
+    : null
+  const tableShapes = groupedMunicipalities
+    ? groupedMunicipalities.map((entity) => ({ id: entity.id, code: entity.code, name: entity.name }))
+    : shapes
+  const unsortedRows = tableShapes
     .map((shape) => ({
       shape,
       entity: entities.get(shape.id),
-      summary: summarizeKostraEntities(index, metricId, year, [shape.id]),
+      summary: effectiveAccountScope === 'municipalities' && level === 'county' && !effectiveMunicipalityCountyId
+        ? summarizeMunicipalities(index, metricId, year, [shape.id])
+        : summarizeKostraEntities(index, metricId, year, [shape.id]),
     }))
   const shareTotal = unsortedRows.reduce((sum, row) => sum + Math.abs(row.summary.amount ?? 0), 0)
   const rows = sortExplorerRows(unsortedRows.map((row) => ({
@@ -40,12 +61,36 @@ export default function KostraUtforsk({
   })), sortKey, sortDirection)
   const max = Math.max(1, ...rows.map((row) => Math.abs(row.perCapita ?? 0)))
   const signedValues = rows.some((row) => (row.summary.amount ?? 0) < 0)
+  const tableSummary = effectiveMunicipalityCountyId
+    ? summarizeKostraEntities(index, metricId, year, groupedMunicipalities.map((entity) => entity.id))
+    : effectiveAccountScope === 'municipalities' && level === 'county'
+      ? summarizeMunicipalities(index, metricId, year, shapes.map((shape) => shape.id))
+      : scopeSummary
+  const municipalityView = effectiveAccountScope === 'municipalities' && level === 'county'
+  const activeCounty = effectiveMunicipalityCountyId
+    ? entities.get(effectiveMunicipalityCountyId)
+    : hoverId && level === 'county'
+      ? entities.get(hoverId)
+      : null
+  const explorerCountyIds = effectiveMunicipalityCountyId
+    ? [effectiveMunicipalityCountyId]
+    : hoverId && level === 'county'
+      ? [hoverId]
+      : shapes.map((shape) => shape.id)
+  const explorerSummary = municipalityView
+    ? summarizeMunicipalities(index, metricId, year, explorerCountyIds)
+    : summary
+  const explorerTitle = municipalityView
+    ? activeCounty ? `Kommunene i ${countyAreaName(activeCounty)}` : 'Sum av alle kommuner'
+    : title
   const history = [{
-    navn: title,
+    navn: explorerTitle,
     farge: RUST,
     bredde: 2.5,
     punkter: index.years.map((itemYear) => ({
-      v: summarizeKostraEntities(index, metricId, itemYear, selectedIds)[mode],
+      v: municipalityView
+        ? summarizeMunicipalities(index, metricId, itemYear, explorerCountyIds)[mode]
+        : summarizeKostraEntities(index, metricId, itemYear, selectedIds)[mode],
     })),
   }]
   const drillEntity = drillEntityId ? entities.get(drillEntityId) : null
@@ -53,9 +98,21 @@ export default function KostraUtforsk({
 
   useEffect(() => {
     returnFocusId.current = null
+    enteringGroup.current = false
+    setAccountScope('county')
+    setMunicipalityCountyId(null)
     setDrillEntityId(null)
     setDetailState({ loading: false, detail: null, error: null })
   }, [scopeKey])
+
+  useEffect(() => {
+    if (!municipalityScopeAvailable && accountScope === 'municipalities') {
+      returnFocusId.current = null
+      enteringGroup.current = false
+      setAccountScope('county')
+      setMunicipalityCountyId(null)
+    }
+  }, [accountScope, municipalityScopeAvailable])
 
   useEffect(() => {
     if (!drillEntity) return undefined
@@ -80,12 +137,19 @@ export default function KostraUtforsk({
       return
     }
     if (!drillEntityId && returnFocusId.current) {
+      if (enteringGroup.current && effectiveMunicipalityCountyId) {
+        enteringGroup.current = false
+        returnFocusId.current = null
+        groupHeadingRef.current?.focus()
+        return
+      }
       const entityId = returnFocusId.current
+      returnFocusId.current = null
       requestAnimationFrame(() => {
         sectionRef.current?.querySelector(`[data-entity-id="${entityId}"]`)?.focus()
       })
     }
-  }, [drillEntityId, detailState.detail])
+  }, [drillEntityId, detailState.detail, effectiveMunicipalityCountyId])
 
   const startDrill = (row) => {
     onHover(null)
@@ -93,11 +157,42 @@ export default function KostraUtforsk({
     setDetailState({ loading: true, detail: null, error: null })
     setDrillEntityId(row.entity?.id ?? row.shape.id)
   }
+  const openTableRow = (row) => {
+    if (effectiveAccountScope === 'municipalities' && level === 'county' && !effectiveMunicipalityCountyId) {
+      onHover(null)
+      returnFocusId.current = row.shape.id
+      enteringGroup.current = true
+      setMunicipalityCountyId(row.shape.id)
+      return
+    }
+    startDrill(row)
+  }
+  const exitMunicipalityGroup = () => {
+    returnFocusId.current = effectiveMunicipalityCountyId
+    setMunicipalityCountyId(null)
+  }
+  const changeAccountScope = (nextScope) => {
+    setAccountScope(nextScope)
+    setMunicipalityCountyId(null)
+  }
   const changeSort = (key) => {
     setSortDirection((current) => sortKey === key && current === 'desc' ? 'asc' : 'desc')
     setSortKey(key)
   }
   const sortArrow = (key) => sortKey === key ? (sortDirection === 'desc' ? ' ↓' : ' ↑') : ''
+  const selectedCounty = effectiveMunicipalityCountyId ? entities.get(effectiveMunicipalityCountyId) : null
+  const selectedCountyAreaName = countyAreaName(selectedCounty)
+  const inlineScopeName = selectedCounty ? `${selectedCountyAreaName} · kommuner` : scopeName
+  const rowBadge = effectiveMunicipalityCountyId || level === 'municipality'
+    ? 'Kommune'
+    : effectiveAccountScope === 'municipalities'
+      ? 'Sum kommuner'
+      : 'Fylkeskommune'
+  const tableMeta = effectiveMunicipalityCountyId
+    ? `${rows.length} kommuner i fylket`
+    : effectiveAccountScope === 'municipalities' && level === 'county'
+      ? `${tableSummary.entities} kommuner gruppert i ${rows.length} fylker`
+      : `${rows.length} ${level === 'county' ? 'fylkeskommuner' : 'kommuner'}`
 
   return (
     <section className="ft-seksjon ko-utforsk" ref={sectionRef}>
@@ -105,8 +200,8 @@ export default function KostraUtforsk({
         <div>
           <h3>Utforsk kommuner og fylker</h3>
           <p>
-            Samme valg som i kartet, rangert som en liste. Klikk på et område for å utforske
-            regnskapet videre her, uten å bytte side.
+            Skill mellom fylkeskommunenes egne regnskaper og kommunene summert per fylke.
+            Klikk på et område for å utforske regnskapet videre her, uten å bytte side.
           </p>
         </div>
       </div>
@@ -119,7 +214,7 @@ export default function KostraUtforsk({
             detail={detailState.detail}
             entity={drillEntity}
             year={year}
-            scopeName={scopeName}
+            scopeName={inlineScopeName}
             onExit={() => setDrillEntityId(null)}
           />
         ) : (
@@ -128,12 +223,43 @@ export default function KostraUtforsk({
             {!detailState.loading && <button type="button" onClick={() => setDrillEntityId(null)}>Tilbake til listen</button>}
           </div>
         )
-      ) : <div className="ft-utforsk-grid">
+      ) : <>
+        {level === 'county' && !effectiveMunicipalityCountyId && (
+          <div className="ko-regnskapsvelger">
+            <span className="ft-stikkord">Vis i tabellen</span>
+            <div className="ft-bytter" aria-label="Velg regnskapsgrunnlag">
+              <button
+                type="button"
+                className={`ft-bytte ${effectiveAccountScope === 'county' ? 'aktiv' : ''}`}
+                aria-pressed={effectiveAccountScope === 'county'}
+                onClick={() => changeAccountScope('county')}
+              >Fylkeskommunen</button>
+              <button
+                type="button"
+                className={`ft-bytte ${effectiveAccountScope === 'municipalities' ? 'aktiv' : ''}`}
+                aria-pressed={effectiveAccountScope === 'municipalities'}
+                disabled={!municipalityScopeAvailable}
+                title={municipalityScopeAvailable ? undefined : 'Kommunesum finnes ikke for fylkeskommunale tjenesteområder'}
+                onClick={() => changeAccountScope('municipalities')}
+              >Sum kommuner</button>
+            </div>
+            {!municipalityScopeAvailable && <small>Kommunesum kan velges for økonomiske nøkkeltall.</small>}
+          </div>
+        )}
+        <div className="ft-utforsk-grid">
         <div>
+          {selectedCounty && (
+            <nav className="ko-inline-smuler" aria-label="Utforskersti">
+              <button type="button" onClick={exitMunicipalityGroup}>Sum kommuner</button><span>›</span>
+              <span tabIndex={-1} ref={groupHeadingRef}>Kommunene i {selectedCountyAreaName}</span>
+            </nav>
+          )}
           <div className="ft-nivaatopp">
-            <span className="ft-nivaasum num">{formatKostraValue(scopeSummary[mode], mode)}</span>
+            <span className="ft-nivaasum num">
+              {formatKostraValue(tableSummary[mode], mode)}
+            </span>
             <span className="ft-nivaamerke">
-              {rows.length} {level === 'county' ? 'fylker' : 'kommuner'} · {metric.label.toLowerCase()} {year}
+              {tableMeta} · {metric.label.toLowerCase()} {year}
             </span>
           </div>
           <div className="ft-tabellhode ko-tabellhode">
@@ -156,19 +282,23 @@ export default function KostraUtforsk({
             return (
               <button
                 type="button"
-                className={`ft-utforskrad ${hoverId === row.shape.id ? 'fokus' : ''}`}
+                className={`ft-utforskrad ${!effectiveMunicipalityCountyId && hoverId === row.shape.id ? 'fokus' : ''}`}
                 key={row.shape.id}
                 data-entity-id={row.entity?.id ?? row.shape.id}
-                onMouseEnter={() => onHover(row.shape.id)}
-                onMouseLeave={() => onHover(null)}
-                onFocus={() => onHover(row.shape.id)}
-                onBlur={() => onHover(null)}
-                onClick={() => startDrill(row)}
+                onMouseEnter={() => { if (!effectiveMunicipalityCountyId) onHover(row.shape.id) }}
+                onMouseLeave={() => { if (!effectiveMunicipalityCountyId) onHover(null) }}
+                onFocus={() => { if (!effectiveMunicipalityCountyId) onHover(row.shape.id) }}
+                onBlur={() => { if (!effectiveMunicipalityCountyId) onHover(null) }}
+                onClick={() => openTableRow(row)}
               >
                 <span className="ft-utforskmidt">
                   <span className="ft-utforsktittel">
-                    <span className="ft-utforsknavn">{row.entity?.name ?? row.shape.name}</span>
-                    <span className="ft-merke">{level === 'county' ? 'Fylke' : 'Kommune'}</span>
+                    <span className="ft-utforsknavn">
+                      {effectiveAccountScope === 'municipalities' && level === 'county' && !effectiveMunicipalityCountyId
+                        ? countyAreaName(row.entity)
+                        : row.entity?.name ?? row.shape.name}
+                    </span>
+                    <span className="ft-merke">{rowBadge}</span>
                   </span>
                   <span className="ft-bar ft-bar--tynn">
                     <span className="ft-bar-fyll" style={{ width: `${Math.abs(row.perCapita ?? 0) / max * 100}%` }} />
@@ -189,18 +319,18 @@ export default function KostraUtforsk({
 
         <aside className="ft-utforsk-side ko-utforsk-side" aria-live="polite" aria-atomic="true">
           <div className="ko-oppsummering">
-            <div className="ft-stikkord">{hoverId ? (level === 'county' ? 'Fylke' : 'Kommune') : 'Sum av kartet'}</div>
-            <div className="ft-graftittel">{title}</div>
-            <div className="ko-oppsummeringstall num">{formatKostraValue(summary[mode], mode)}</div>
+            <div className="ft-stikkord">{municipalityView ? 'Kommuneregnskap' : hoverId ? (level === 'county' ? 'Fylkeskommune' : 'Kommune') : 'Sum av kartet'}</div>
+            <div className="ft-graftittel">{explorerTitle}</div>
+            <div className="ko-oppsummeringstall num">{formatKostraValue(explorerSummary[mode], mode)}</div>
             <div className="ko-innbyggere">
               <span>Innbyggere</span>
               <strong className="num">
-                {summary.population == null ? '–' : `ca. ${populationFormat.format(summary.population)}`}
+                {explorerSummary.population == null ? '–' : `ca. ${populationFormat.format(explorerSummary.population)}`}
               </strong>
             </div>
-            {!summary.complete && (
+            {!explorerSummary.complete && (
               <p className="ko-datadekning">
-                {summary.availableEntities} av {summary.entities} områder har data. Full sum kan ikke beregnes.
+                {explorerSummary.availableEntities} av {explorerSummary.entities} områder har data. Full sum kan ikke beregnes.
               </p>
             )}
           </div>
@@ -214,12 +344,12 @@ export default function KostraUtforsk({
                 H={160}
                 fraNull={metricId !== 'net_result'}
                 aksefmt={(value) => formatKostraValue(value, mode)}
-                beskrivelse={`${metric.label} for ${title}, ${index.years[0]}–${index.latestYear}`}
+                beskrivelse={`${metric.label} for ${explorerTitle}, ${index.years[0]}–${index.latestYear}`}
               />
             </div>
           </div>
         </aside>
-      </div>}
+      </div></>}
     </section>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { choroplethColor, formatKostraValue, mapValue, summarizeKostraEntities } from './model'
+import { choroplethColor, formatKostraValue, mapValue, summarizeKostraEntities, summarizeMunicipalities } from './model'
 import KostraUtforsk from './KostraUtforsk'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -47,6 +47,9 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
   const metric = metrics.find((item) => item.id === metricId) ?? metrics[0]
   const summaryIds = hoverId ? [hoverId] : shapes.map((shape) => shape.id)
   const summary = summarizeKostraEntities(index, metricId, year, summaryIds)
+  const municipalitySummary = level === 'county' && metric.category === 'finance'
+    ? summarizeMunicipalities(index, metricId, year, summaryIds)
+    : null
   const summaryName = hovered?.name ?? (county?.name ?? 'Alle fylkeskommuner')
   const viewBox = level === 'municipality' ? focusedViewBox(shapes, boundaries.viewBox) : boundaries.viewBox
   const hits = search.trim().length >= 2
@@ -156,17 +159,40 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
             </div>
           </div>
           <aside className="ko-kartinfo" aria-live="polite" aria-atomic="true">
-            <div className="ft-stikkord">{hovered ? (level === 'county' ? 'Fylke' : 'Kommune') : 'Sum av kartet'}</div>
+            <div className="ft-stikkord">
+              {level === 'county'
+                ? hovered ? 'Fylkeskommunens regnskap' : 'Sum av fylkeskommuneregnskapene'
+                : hovered ? 'Kommune' : 'Sum av kartet'}
+            </div>
             <div className="ft-kort-tittel">{summaryName}</div>
             <div className="ft-kort-belop num">{formatKostraValue(summary[mode], mode)}</div>
             <div className="ft-kort-under">{metric.label.toLowerCase()} · {year}</div>
+            {!summary.complete && (
+              <p className="ko-datadekning">
+                {summary.availableEntities} av {summary.entities} {level === 'county' ? 'fylkeskommuner' : 'kommuner'} har data.
+                Full sum kan ikke beregnes.
+              </p>
+            )}
+            {municipalitySummary && (
+              <div className="ko-kommunesum">
+                <span>Sum av kommuneregnskapene</span>
+                <strong className="num">{formatKostraValue(municipalitySummary[mode], mode)}</strong>
+                <small>
+                  {municipalitySummary.complete
+                    ? `${municipalitySummary.entities} kommuner i ${hovered ? 'fylket' : 'Norge'}`
+                    : `${municipalitySummary.availableEntities} av ${municipalitySummary.entities} kommuner har data`}
+                </small>
+              </div>
+            )}
             <div className="ko-innbyggere">
               <span>Innbyggere</span>
               <strong className="num">{summary.population == null ? '–' : `ca. ${populationFormat.format(summary.population)}`}</strong>
             </div>
             <p className="ft-kort-tekst">
-              {!summary.complete
-                ? `${summary.availableEntities} av ${summary.entities} ${level === 'county' ? 'fylkeskommuner' : 'kommuner'} har data. Full sum kan ikke beregnes.`
+              {level === 'county' && municipalitySummary
+                ? `${hovered ? 'Fylkeskommunen og kommunene i fylket' : 'Fylkeskommunene og kommunene'} er separate regnskaper og legges ikke sammen.${hovered ? ' Klikk for å se kommunene.' : ''}`
+                : !summary.complete
+                ? 'Valgt regnskapsgrunnlag har manglende data for dette året.'
                 : hovered
                 ? `Klikk for å ${level === 'county' ? 'se kommunene i fylket' : 'åpne regnskapet og sammenligningene'}.`
                 : `${summary.entities} ${level === 'county' ? 'fylkeskommuner' : 'kommuner'} er summert. Per innbygger er befolkningsvektet.`}
