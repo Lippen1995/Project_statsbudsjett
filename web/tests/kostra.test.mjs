@@ -4,9 +4,13 @@ import assert from 'node:assert/strict'
 import {
   choroplethColor,
   comparisonEntityIds,
+  countyGroupName,
+  displayEntityName,
   drillHistory,
+  findKostraEntities,
   mapValue,
   materialBoundaryHistory,
+  overviewComparisonRows,
   parseKostraRoute,
   populationForEntity,
   summarizeMunicipalities,
@@ -197,6 +201,55 @@ test('fylkesoversikten skiller fylkeskommunens regnskap fra summen av kommunene'
     complete: true,
     entityIds: ['municipality:4601', 'municipality:4629'],
   })
+})
+
+test('navn i fylkes- og kommunesøk er korte og entydige', () => {
+  const entities = [
+    { id: 'county:03', code: '0300', kind: 'county', active: true, name: 'Oslo kommune - Osloven tjïelte - Oslo suohkan - Oslo gielda' },
+    { id: 'municipality:0301', code: '0301', kind: 'municipality', active: true, name: 'Oslo - Oslove', parent_id: 'county:03' },
+    { id: 'county:46', code: '4600', kind: 'county', active: true, name: 'Vestland fylkeskommune' },
+    { id: 'municipality:4601', code: '4601', kind: 'municipality', active: true, name: 'Bergen' },
+    { id: 'municipality:1201', code: '1201', kind: 'municipality', active: 0, name: 'Bergen (-2019)' },
+  ]
+
+  assert.equal(displayEntityName(entities[0]), 'Oslo kommune')
+  assert.equal(displayEntityName(entities[1]), 'Oslo kommune')
+  assert.equal(countyGroupName(entities[2]), 'Vestland fylke')
+  assert.equal(countyGroupName(entities[0]), 'Oslo kommune')
+  assert.deepEqual(findKostraEntities(entities, 'bergen').map((entity) => entity.id), ['municipality:4601'])
+  assert.deepEqual(findKostraEntities(entities, 'oslo').map((entity) => entity.id), ['county:03', 'municipality:0301'])
+})
+
+test('toppoversikten sammenligner fylkeskommunen med kommunesummen for alle hovedposter', () => {
+  const index = {
+    entities: [
+      { id: 'county:46', kind: 'county' },
+      { id: 'municipality:4601', kind: 'municipality', parent_id: 'county:46' },
+      { id: 'municipality:4629', kind: 'municipality', parent_id: 'county:46' },
+    ],
+    values: Object.fromEntries([
+      ['revenues', 1_000, 600],
+      ['expenses', 900, 550],
+      ['net_result', 100, 50],
+      ['investments', 40, 30],
+      ['debt', 500, 300],
+      ['net_expenses', 700, 400],
+    ].map(([metric, countyAmount, municipalityAmount]) => [metric, { 2025: {
+      'county:46': { amount: countyAmount, perCapita: countyAmount },
+      'municipality:4601': { amount: municipalityAmount * 0.75, perCapita: municipalityAmount * 1.5 },
+      'municipality:4629': { amount: municipalityAmount * 0.25, perCapita: municipalityAmount * 0.5 },
+    } }])),
+  }
+
+  const rows = overviewComparisonRows(index, 2025, ['county:46'])
+  assert.deepEqual(rows.map((row) => row.id), [
+    'revenues', 'expenses', 'net_result', 'investments', 'result_after_investments', 'debt', 'net_expenses',
+  ])
+  const derived = rows.find((row) => row.id === 'result_after_investments')
+  assert.equal(derived.county.amount, 60)
+  assert.equal(derived.municipalities.amount, 20)
+  assert.equal(derived.county.perCapita, 60)
+  assert.equal(derived.municipalities.perCapita, 20)
 })
 
 test('kartsammendrag beholder innbyggertall selv om valgt nøkkeltall mangler', () => {

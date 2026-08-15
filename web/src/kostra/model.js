@@ -1,5 +1,71 @@
 const PALETTE = ['#F3E6D8', '#E9C7AF', '#D99D7D', '#C97052', '#9F3F2C']
 
+export const KOSTRA_OVERVIEW_METRICS = [
+  {
+    id: 'revenues',
+    label: 'Driftsinntekter',
+    description: 'Alle løpende inntekter i driftsregnskapet, blant annet skatt, rammetilskudd, gebyrer og andre overføringer.',
+  },
+  {
+    id: 'expenses',
+    label: 'Driftskostnader',
+    description: 'Brutto driftsutgifter: alle løpende utgifter til drift og tjenester, inkludert avskrivninger.',
+  },
+  {
+    id: 'net_result',
+    label: 'Netto driftsresultat',
+    description: 'Viser hva som er igjen etter driften og netto finansutgifter. Beløpet kan brukes til investeringer eller settes av til senere.',
+  },
+  {
+    id: 'investments',
+    label: 'Investeringsutgifter',
+    description: 'Brutto utgifter til varige investeringer som bygg, anlegg, transportmidler og annet utstyr.',
+  },
+  {
+    id: 'result_after_investments',
+    label: 'Driftsresultat etter investeringer',
+    description: 'Et utledet tall: netto driftsresultat minus brutto investeringsutgifter. Dette er ikke en egen offisiell KOSTRA-regnskapslinje.',
+  },
+  {
+    id: 'debt',
+    label: 'Netto lånegjeld',
+    description: 'Langsiktig gjeld fratrukket utlån og ubrukte lånemidler. Pensjonsforpliktelser er ikke med.',
+  },
+  {
+    id: 'net_expenses',
+    label: 'Netto driftsutgifter',
+    description: 'Driftsutgifter inkludert avskrivninger etter at direkte driftsinntekter er trukket fra. Viser behovet for finansiering fra frie inntekter.',
+  },
+]
+
+/** Vis den norske kortformen i grensesnittet, også når kilden har parallelle språkformer. */
+export function displayEntityName(entity) {
+  if (!entity) return ''
+  if (entity.id === 'county:03' || entity.id === 'municipality:0301' || /^Oslo(?: kommune)?\s*(?:-|$)/i.test(entity.name ?? '')) {
+    return 'Oslo kommune'
+  }
+  return entity.name ?? entity.code ?? ''
+}
+
+/** En kommunesum tilhører geografien fylket, ikke organisasjonen fylkeskommunen. */
+export function countyGroupName(entity) {
+  const name = displayEntityName(entity)
+  if (name === 'Oslo kommune') return name
+  const bokmalName = name.split(/\s+-\s+/)[0].replace(/\s+fylkeskommune$/i, '').trim()
+  return bokmalName ? `${bokmalName} fylke` : ''
+}
+
+/** Søk alltid i aktive kommuner og fylker, uavhengig av hvilket kartnivå som vises. */
+export function findKostraEntities(entities, query, limit = 8) {
+  const needle = query.trim().toLocaleLowerCase('nb-NO')
+  if (needle.length < 2) return []
+  return entities
+    .filter((entity) => (entity.active == null || Boolean(entity.active)) && ['county', 'municipality'].includes(entity.kind))
+    .filter((entity) => `${entity.name ?? ''} ${displayEntityName(entity)} ${entity.code ?? ''}`.toLocaleLowerCase('nb-NO').includes(needle))
+    .sort((a, b) => (a.kind === b.kind ? displayEntityName(a).localeCompare(displayEntityName(b), 'nb-NO') : a.kind === 'county' ? -1 : 1))
+    .slice(0, limit)
+}
+
 export function parseKostraRoute(hash = '') {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean)
   if (parts[0] !== 'kostra') return { page: 'map', countyCode: null }
@@ -105,6 +171,46 @@ export function summarizeMunicipalities(index, metricId, year, countyIds) {
     .filter((entity) => entity.kind === 'municipality' && counties.has(entity.parent_id))
     .map((entity) => entity.id)
   return { ...summarizeKostraEntities(index, metricId, year, entityIds), entityIds }
+}
+
+function resultAfterInvestments(result, investments, population) {
+  const complete = result.complete && investments.complete
+  const amount = complete ? result.amount - investments.amount : null
+  const usablePopulation = Number.isFinite(population) && population > 0 ? population : null
+  return {
+    amount,
+    perCapita: amount != null && usablePopulation ? amount * 1000 / usablePopulation : null,
+    population: usablePopulation,
+    entities: result.entities,
+    availableEntities: Math.min(result.availableEntities, investments.availableEntities),
+    complete,
+  }
+}
+
+/** Bygg den faste toppoversikten uten å blande fylkes- og kommuneregnskap. */
+export function overviewComparisonRows(index, year, countyIds) {
+  const directMetrics = KOSTRA_OVERVIEW_METRICS.filter((metric) => metric.id !== 'result_after_investments')
+  const summaries = new Map(directMetrics.map((metric) => [metric.id, {
+    county: summarizeKostraEntities(index, metric.id, year, countyIds),
+    municipalities: summarizeMunicipalities(index, metric.id, year, countyIds),
+  }]))
+  const revenue = summaries.get('revenues')
+  const derived = {
+    county: resultAfterInvestments(
+      summaries.get('net_result').county,
+      summaries.get('investments').county,
+      revenue.county.population,
+    ),
+    municipalities: resultAfterInvestments(
+      summaries.get('net_result').municipalities,
+      summaries.get('investments').municipalities,
+      revenue.municipalities.population,
+    ),
+  }
+  return KOSTRA_OVERVIEW_METRICS.map((metric) => ({
+    ...metric,
+    ...(metric.id === 'result_after_investments' ? derived : summaries.get(metric.id)),
+  }))
 }
 
 export function choroplethColor(value, values) {

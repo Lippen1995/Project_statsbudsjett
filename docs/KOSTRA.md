@@ -11,7 +11,19 @@ kroner per innbygger, og velge mellom finansielle nøkkeltall og store
 tjenesteområder. Kartets oppsummering viser valgt område ved hover og ellers
 summen av alle synlige fylker eller kommuner, inkludert anslått folketall.
 På fylkeskartet holdes fylkeskommuneregnskapet og summen av kommuneregnskapene
-adskilt og vises som to egne tall; de legges aldri sammen.
+adskilt; de legges aldri sammen. På nasjonalt kartnivå vises de i en
+tokolonners regnskapsoversikt med driftsinntekter, driftskostnader, netto
+driftsresultat, investeringsutgifter, driftsresultat etter investeringer,
+netto lånegjeld og netto driftsutgifter. Hver post har en kort forklaring som
+kan åpnes med mus eller tastatur. «Driftsresultat etter investeringer» er
+tydelig merket som et utledet mål og beregnes som netto driftsresultat minus
+brutto investeringsutgifter; det er ikke en egen offisiell KOSTRA-regnskapslinje.
+Oversikten forklarer også at Oslo er den eneste enheten som både er kommune og
+fylkeskommune, samtidig som de to regnskapene fortsatt holdes fra hverandre.
+
+Søket dekker alltid både aktive kommuner og fylker, uavhengig av kartnivå.
+Oslo vises med bokmålsnavnet «Oslo kommune». På nasjonalt nivå kan kartet
+veksle mellom alle fylker og alle 357 kommuner uten å bytte side.
 Under kartet rangerer «Utforsk kommuner og fylker» de samme enhetene og viser
 historisk utvikling. Kolonneoverskriftene sorterer tabellen etter kroner per
 innbygger eller andel. Et klikk på en kommune eller et fylke åpner regnskapet
@@ -27,6 +39,8 @@ På nasjonalt fylkesnivå kan tabellen bytte mellom fylkeskommunenes egne
 regnskaper og kommuneregnskap summert per fylke. Fra kommunesummen driller et
 fylke først til kommunelisten. Valget gjelder finansielle nøkkeltall;
 fylkeskommunale tjenesteområder har ikke en tilsvarende kommunesum.
+Kommunesummer navngis etter geografien, for eksempel «Vestland fylke», mens
+Oslo beholder «Oslo kommune».
 
 Brødsmuler lar brukeren gå tilbake ett eller flere nivåer. Detaljvisningen som
 også kan åpnes fra kartet viser:

@@ -11,14 +11,19 @@
 .ko-smuler a, .ko-drillsmuler button { color: var(--tekst); border: 0; }
 .ko-kartseksjon, .ko-detaljseksjon { max-width: var(--spalte); margin: 0 auto; padding-top: 24px; }
 
-.ko-verktoy { display: grid; grid-template-columns: minmax(220px, 1.5fr) 100px auto minmax(190px, .9fr); gap: 18px; align-items: end; padding: 18px 0; border-block: 1px solid var(--strek); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.ko-verktoy { display: grid; grid-template-columns: minmax(190px, 1.35fr) 90px auto minmax(180px, .9fr) auto; gap: 16px; align-items: end; padding: 18px 0; border-block: 1px solid var(--strek); }
 .ko-verktoy label, .ko-sokfelt { position: relative; display: flex; flex-direction: column; gap: 7px; }
+.ko-sokfelt > label { position: static; display: block; }
 .ko-select, .ko-sokfelt input { width: 100%; min-height: 40px; border: 1px solid #D7D2C8; border-radius: 6px; background: var(--ark); color: var(--tekst); padding: 8px 11px; font: inherit; font-size: 13.5px; }
 .ko-soktreff { position: absolute; z-index: 30; inset: calc(100% + 3px) 0 auto; display: flex; flex-direction: column; background: var(--ark); border: 1px solid var(--strek); box-shadow: 0 10px 28px rgba(20,22,26,.12); }
-.ko-soktreff a { padding: 9px 11px; border: 0; font-size: 13px; }
+.ko-soktreff a { display: flex; justify-content: space-between; gap: 12px; padding: 9px 11px; border: 0; font-size: 13px; }
+.ko-soktreff small { color: var(--blek); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
 .ko-soktreff a:hover { background: var(--flate); }
+.ko-kartnivaa { min-height: 40px; border: 1px solid var(--ink); border-radius: 999px; padding: 8px 14px; background: transparent; color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.ko-kartnivaa:hover { background: var(--ink); color: var(--ark); }
 
-.ko-kartgrid { display: grid; grid-template-columns: minmax(0, 1fr) 310px; gap: 32px; align-items: start; margin-top: 28px; }
+.ko-kartgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 410px); gap: 32px; align-items: start; margin-top: 28px; }
 .ko-kartflate { min-height: 600px; padding: 0; display: flex; flex-direction: column; }
 .ko-kartflate svg { width: 100%; height: min(68vh, 720px); min-height: 520px; }
 .ko-kartflate path { stroke: #FFFCF7; stroke-width: 1.1; vector-effect: non-scaling-stroke; cursor: pointer; transition: fill .14s ease, stroke .14s ease; outline: none; }
@@ -29,6 +34,20 @@
 .ko-legende small { grid-column: 1 / -1; text-align: center; margin-top: 5px; }
 .ko-kartinfo { position: sticky; top: 82px; border-top: 2px solid var(--ink); padding-top: 14px; }
 .ko-kartinfo .ft-kort-tekst { border-top: 1px solid var(--strek); margin-top: 16px; padding-top: 14px; }
+.ko-sammenstilling { width: 100%; margin-top: 14px; border-collapse: collapse; table-layout: fixed; font-size: 11px; }
+.ko-sammenstilling th, .ko-sammenstilling td { padding: 9px 4px; border-bottom: 1px solid var(--strek); vertical-align: middle; }
+.ko-sammenstilling thead th { color: var(--blek); font-size: 9px; font-weight: 700; letter-spacing: .06em; line-height: 1.25; text-align: right; text-transform: uppercase; }
+.ko-sammenstilling thead th:first-child { width: 44%; text-align: left; }
+.ko-sammenstilling tbody th { padding-left: 0; color: var(--tekst); font-weight: 500; line-height: 1.25; text-align: left; }
+.ko-sammenstilling-etikett { display: flex; align-items: center; gap: 5px; }
+.ko-sammenstilling td { color: var(--tekst); font-size: 11px; font-weight: 700; text-align: right; white-space: nowrap; }
+.ko-info { position: relative; display: inline-flex; flex: 0 0 auto; }
+.ko-info > button { display: inline-grid; width: 24px; height: 24px; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--blek); font: 600 10px/1 var(--sans); cursor: help; }
+.ko-info > button::before { content: ''; position: absolute; width: 13px; height: 13px; border: 1px solid currentColor; border-radius: 50%; }
+.ko-info > button:hover, .ko-info > button:focus-visible { color: var(--ink); }
+.ko-info > button:focus-visible { outline: 2px solid var(--rust); outline-offset: 1px; }
+.ko-tooltip { position: absolute; z-index: 40; top: calc(100% + 5px); right: -4px; width: min(245px, 72vw); padding: 9px 10px; border: 1px solid var(--ink); background: var(--ink); color: var(--ark); font-size: 11px; font-weight: 400; line-height: 1.45; box-shadow: 0 7px 20px rgba(20,22,26,.16); opacity: 0; pointer-events: none; transform: translateY(-2px); transition: opacity .12s ease, transform .12s ease; }
+.ko-tooltip.apen { opacity: 1; pointer-events: auto; transform: translateY(0); }
 .ko-kommunesum { display: flex; flex-direction: column; gap: 5px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--strek); }
 .ko-kommunesum span { color: var(--blek); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .ko-kommunesum strong { color: var(--rust); font-family: var(--serif); font-size: 23px; }
@@ -128,4 +147,7 @@
   .ko-nokkeltall { grid-template-columns: 1fr; }.ko-moduslinje { align-items: flex-start; flex-direction: column; }
   .ko-paneltopp { flex-direction: column; }.ko-paneltopp .ko-select { width: 100%; }
   .ko-drillhode, .ko-drillrader button { grid-template-columns: minmax(0, 1fr) 105px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ko-kartflate path, .ko-tooltip { transition: none; }
 }

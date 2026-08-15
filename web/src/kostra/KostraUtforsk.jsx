@@ -3,16 +3,16 @@ import LinjeGraf from '../fellestall/grafer/LinjeGraf'
 import { RUST } from '../fellestall/design'
 import { loadKostraDetail } from '../lib/kostra'
 import { sortExplorerRows } from './explorer'
-import { formatKostraValue, summarizeKostraEntities, summarizeMunicipalities } from './model'
+import {
+  countyGroupName,
+  displayEntityName,
+  formatKostraValue,
+  summarizeKostraEntities,
+  summarizeMunicipalities,
+} from './model'
 import KostraInlineUtforsk from './KostraInlineUtforsk'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
-
-function countyAreaName(entity) {
-  return entity?.name
-    .replace(/ fylkeskommune$/, '')
-    .replace(/^Oslo kommune.*$/, 'Oslo')
-}
 
 export default function KostraUtforsk({
   index, shapes, entities, metric, metricId, year, mode, hoverId, level, scopeName, onHover,
@@ -33,7 +33,7 @@ export default function KostraUtforsk({
   const scopeSummary = summarizeKostraEntities(index, metricId, year, allIds)
   const summary = summarizeKostraEntities(index, metricId, year, selectedIds)
   const selectedEntity = hoverId ? entities.get(hoverId) : null
-  const title = selectedEntity?.name ?? scopeName
+  const title = displayEntityName(selectedEntity) || scopeName
   const municipalityScopeAvailable = level === 'county' && metric.category === 'finance'
   const effectiveAccountScope = municipalityScopeAvailable ? accountScope : 'county'
   const effectiveMunicipalityCountyId = municipalityScopeAvailable ? municipalityCountyId : null
@@ -81,7 +81,7 @@ export default function KostraUtforsk({
     ? summarizeMunicipalities(index, metricId, year, explorerCountyIds)
     : summary
   const explorerTitle = municipalityView
-    ? activeCounty ? `Kommunene i ${countyAreaName(activeCounty)}` : 'Sum av alle kommuner'
+    ? activeCounty ? `Kommunene i ${countyGroupName(activeCounty)}` : 'Sum av alle kommuner'
     : title
   const history = [{
     navn: explorerTitle,
@@ -181,7 +181,7 @@ export default function KostraUtforsk({
   }
   const sortArrow = (key) => sortKey === key ? (sortDirection === 'desc' ? ' ↓' : ' ↑') : ''
   const selectedCounty = effectiveMunicipalityCountyId ? entities.get(effectiveMunicipalityCountyId) : null
-  const selectedCountyAreaName = countyAreaName(selectedCounty)
+  const selectedCountyAreaName = countyGroupName(selectedCounty)
   const inlineScopeName = selectedCounty ? `${selectedCountyAreaName} · kommuner` : scopeName
   const rowBadge = effectiveMunicipalityCountyId || level === 'municipality'
     ? 'Kommune'
@@ -295,8 +295,8 @@ export default function KostraUtforsk({
                   <span className="ft-utforsktittel">
                     <span className="ft-utforsknavn">
                       {effectiveAccountScope === 'municipalities' && level === 'county' && !effectiveMunicipalityCountyId
-                        ? countyAreaName(row.entity)
-                        : row.entity?.name ?? row.shape.name}
+                        ? countyGroupName(row.entity)
+                        : displayEntityName(row.entity) || row.shape.name}
                     </span>
                     <span className="ft-merke">{rowBadge}</span>
                   </span>
