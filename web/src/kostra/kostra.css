@@ -1,0 +1,79 @@
+.ko { min-height: 100vh; background: var(--papir); color: var(--tekst); }
+.ko-toppbar { display: none; }
+.ko-toppbar .aktiv { color: var(--ink); font-weight: 700; }
+.ko-hero { max-width: var(--spalte); margin: 0 auto; padding: 68px 32px 36px; }
+.ko-hero h1 { font-size: clamp(38px, 5.2vw, 62px); line-height: 1.03; letter-spacing: -.025em; max-width: 14ch; }
+.ko-hero .ft-ingress { max-width: 760px; margin-top: 24px; }
+.ko-smuler, .ko-drillsmuler { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-top: 24px; font-size: 13px; color: var(--blek); }
+.ko-smuler a, .ko-drillsmuler button { color: var(--tekst); border: 0; }
+.ko-kartseksjon, .ko-detaljseksjon { max-width: var(--spalte); margin: 0 auto; padding-top: 24px; }
+
+.ko-verktoy { display: grid; grid-template-columns: minmax(220px, 1.5fr) 100px auto minmax(190px, .9fr); gap: 18px; align-items: end; padding: 18px 0; border-block: 1px solid var(--strek); }
+.ko-verktoy label, .ko-sokfelt { position: relative; display: flex; flex-direction: column; gap: 7px; }
+.ko-select, .ko-sokfelt input { width: 100%; min-height: 40px; border: 1px solid #D7D2C8; border-radius: 6px; background: var(--ark); color: var(--tekst); padding: 8px 11px; font: inherit; font-size: 13.5px; }
+.ko-soktreff { position: absolute; z-index: 30; inset: calc(100% + 3px) 0 auto; display: flex; flex-direction: column; background: var(--ark); border: 1px solid var(--strek); box-shadow: 0 10px 28px rgba(20,22,26,.12); }
+.ko-soktreff a { padding: 9px 11px; border: 0; font-size: 13px; }
+.ko-soktreff a:hover { background: var(--flate); }
+
+.ko-kartgrid { display: grid; grid-template-columns: minmax(0, 1fr) 310px; gap: 32px; align-items: start; margin-top: 28px; }
+.ko-kartflate { min-height: 600px; border: 1px solid var(--strek); background: #FBF9F5; padding: 20px; display: flex; flex-direction: column; }
+.ko-kartflate svg { width: 100%; height: min(68vh, 720px); min-height: 520px; }
+.ko-kartflate path { stroke: #FFFCF7; stroke-width: 1.1; vector-effect: non-scaling-stroke; cursor: pointer; transition: fill .14s ease, stroke .14s ease; outline: none; }
+.ko-kartflate path:hover, .ko-kartflate path.aktiv, .ko-kartflate path:focus { stroke: var(--ink); stroke-width: 2; }
+.ko-legende { display: grid; grid-template-columns: auto repeat(5, 32px) auto; gap: 3px; align-items: center; justify-content: center; color: var(--blek); font-size: 11px; }
+.ko-legende i { display: block; height: 8px; }
+.ko-legende i:nth-of-type(1) { background: #F3E6D8; }.ko-legende i:nth-of-type(2) { background: #E9C7AF; }.ko-legende i:nth-of-type(3) { background: #D99D7D; }.ko-legende i:nth-of-type(4) { background: #C97052; }.ko-legende i:nth-of-type(5) { background: #9F3F2C; }
+.ko-legende small { grid-column: 1 / -1; text-align: center; margin-top: 5px; }
+.ko-kartinfo { position: sticky; top: 28px; }
+.ko-handling { display: inline-block; margin-top: 18px; font-size: 13px; font-weight: 700; }
+
+.ko-detailhero { padding-bottom: 24px; }
+.ko-detailhero h1 { max-width: 18ch; }
+.ko-moduslinje { display: flex; justify-content: space-between; gap: 20px; align-items: center; padding-block: 14px; border-block: 1px solid var(--strek); font-size: 12px; color: var(--blek); }
+.ko-nokkeltall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--strek); margin-top: 28px; border: 1px solid var(--strek); }
+.ko-nokkeltall > div { background: var(--ark); padding: 19px; display: flex; flex-direction: column; gap: 11px; }
+.ko-nokkeltall strong { font-family: var(--serif); font-size: clamp(22px, 2.5vw, 31px); color: var(--ink); }
+.ko-detaljgrid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(240px, .7fr); gap: 28px; margin-top: 38px; }
+.ko-panel { border-top: 2px solid var(--ink); padding-top: 14px; min-width: 0; }
+.ko-panel h2, .ko-breakdown h3, .ko-drill h2 { font-family: var(--serif); font-size: 26px; margin: 4px 0 18px; }
+.ko-paneltopp { display: flex; align-items: start; justify-content: space-between; gap: 20px; }
+.ko-paneltopp .ko-select { width: 220px; }
+.ko-graflegend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: var(--blek); }
+.ko-graflegend span { display: flex; align-items: center; gap: 6px; }.ko-graflegend i { width: 14px; height: 2px; }
+.ko-sammenlignrad { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--strek); font-size: 13px; }
+.ko-sammenlignrad strong { white-space: nowrap; }
+
+.ko-breakdowngrid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 52px; }
+.ko-breakdown { border-top: 2px solid var(--ink); padding-top: 14px; }
+.ko-breakdownrad { padding: 9px 0; border-bottom: 1px solid var(--strek); }
+.ko-breakdownrad > div { display: flex; justify-content: space-between; gap: 18px; font-size: 13px; }
+.ko-breakdownrad strong { white-space: nowrap; }
+.ko-breakdownrad i { display: block; height: 3px; background: var(--rust); margin-top: 7px; min-width: 1px; }
+.ko-breakdown:nth-child(2) i { background: var(--ink); }
+
+.ko-drill { margin-top: 56px; border-top: 2px solid var(--ink); padding-top: 14px; }
+.ko-drillsmuler { margin: 0 0 16px; }.ko-drillsmuler button { background: transparent; padding: 0; font: inherit; cursor: pointer; }
+.ko-drillhode, .ko-drillrader button { display: grid; grid-template-columns: minmax(0, 1fr) 140px 14px; gap: 12px; align-items: center; }
+.ko-drillhode { padding: 7px 10px; border-bottom: 1px solid var(--strek); color: var(--blek); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
+.ko-drillhode span:nth-child(2) { text-align: right; }
+.ko-drillrader button { width: 100%; padding: 12px 10px; border: 0; border-bottom: 1px solid var(--strek); background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.ko-drillrader button:not(:disabled):hover { background: var(--ark); }.ko-drillrader button:disabled { cursor: default; }
+.ko-drillrader button > span { min-width: 0; }.ko-drillrader small { display: inline-block; width: 58px; color: var(--blek); font-size: 10px; }
+.ko-drillrader strong { text-align: right; white-space: nowrap; }.ko-drillrader b { color: var(--blek); }
+.ko-status { max-width: 720px; min-height: 60vh; margin: 0 auto; padding: 100px 32px; }.ko-status h1 { font-size: 44px; }
+.ko-fot { margin-top: 72px; }
+
+@media (max-width: 1100px) { .ko-toppbar { display: block; } }
+@media (max-width: 880px) {
+  .ko-verktoy, .ko-kartgrid, .ko-detaljgrid, .ko-breakdowngrid { grid-template-columns: 1fr; }
+  .ko-kartinfo { position: static; }
+  .ko-kartflate { min-height: 500px; }.ko-kartflate svg { min-height: 430px; }
+  .ko-nokkeltall { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .ko-hero { padding: 42px 20px 26px; }.ko-kartseksjon, .ko-detaljseksjon { padding-inline: 20px; }
+  .ko-nokkeltall { grid-template-columns: 1fr; }.ko-moduslinje { align-items: flex-start; flex-direction: column; }
+  .ko-paneltopp { flex-direction: column; }.ko-paneltopp .ko-select { width: 100%; }
+  .ko-drillhode, .ko-drillrader button { grid-template-columns: minmax(0, 1fr) 105px 10px; }
+}
+

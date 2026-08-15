@@ -1,4 +1,4 @@
-.PHONY: etl dev build test install clean
+.PHONY: etl kostra dev build test install clean
 
 install:
 	pip install -r etl/requirements.txt
@@ -6,6 +6,9 @@ install:
 
 etl:
 	python etl/etl.py
+
+kostra:
+	python etl/kostra.py
 
 etl-force:
 	python etl/etl.py --force

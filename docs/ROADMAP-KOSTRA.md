@@ -1,5 +1,9 @@
 # Neste datadimensjon: KOSTRA (kommune- og fylkesregnskap)
 
+> **Status 2026-08-15:** Implementert. Se `docs/KOSTRA.md` for den faktiske
+> arkitekturen, verifiserte tabeller og driftsinstruksjoner. Dette dokumentet
+> beholdes som beslutningshistorikk.
+
 > **Til en ny Claude-chat:** Dette notatet beskriver hva vi skal bygge videre.
 > Les også `docs/data-schema.md` (kildeskjemaer) og `README.md` (oppsett).
 > Følg ALLTID metodikken under før du skriver parsere.

@@ -300,3 +300,58 @@ ikke det enkelte år (jf. 2020: ~4 % under pandemien).
 | Fil | Innhold |
 |-----|---------|
 | `fondsverdi.json` | Oljefondets markedsverdi ved årsslutt (`år -> mill. kr`) |
+
+---
+
+## 7. KOSTRA kommune- og fylkesregnskap
+
+**Status: VERIFISERT** mot SSB PxWebApi 2 og Kartverket 2026-08-15.
+
+Kildetabellene er 12137/12362/12367 for kommuner og 12366/12163/12368 for
+fylkeskommuner. De dekker henholdsvis finansielle nøkkeltall,
+tjenesteområder/funksjoner og funksjon/regnskapsart. Beløpsenheten fra SSB er
+`1000 kr`; per-innbyggerverdier er `kr`.
+
+Normalisert SQLite-skjema ligger i `etl/kostra_schema.sql`. Den publiserte
+frontendmodellen ligger under `web/public/data/kostra/`:
+
+```typescript
+interface KostraIndex {
+  schemaVersion: 1;
+  updated: string;
+  latestYear: number;
+  years: number[];
+  metrics: Array<{
+    id: string;
+    label: string;
+    code: string;
+    category: "finance" | "service";
+    functionCode?: string;
+  }>;
+  entities: KostraEntity[];
+  values: {
+    [metricId: string]: {
+      [year: string]: {
+        [entityId: string]: { amount: number | null; perCapita: number | null };
+      };
+    };
+  };
+}
+
+interface KostraEntity {
+  id: string;              // municipality:0301 / county:03
+  code: string;            // offisiell SSB-kode
+  name: string;
+  kind: "municipality" | "county" | "country" | "peer_group";
+  parent_id: string | null;
+  peer_group_id: string | null;
+  active: 0 | 1;
+  valid_from: number | null;
+  valid_to: number | null;
+}
+```
+
+Detaljfiler inneholder `overview`, `revenueBreakdown`, `expenseBreakdown`,
+`services`, `functions`, `accountingArts` og referanser til Norge/KOSTRA-gruppe.
+Manglende SSB-verdier publiseres som `null`/utelates; de konverteres aldri til
+null kroner.

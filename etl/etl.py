@@ -24,6 +24,7 @@ from parse_bevilgning import parse_bevilgning
 from parse_befolkning import parse_befolkning, parse_ssb_aarsserie
 from build_hierarchy import build_hierarchies, _save_json
 import stortinget
+import kostra
 
 OUTPUT_DIR = Path(__file__).parent.parent / "web" / "public" / "data"
 RAW_DIR = Path(__file__).parent / "raw"
@@ -276,6 +277,15 @@ def run(years=None, force=False):
     politikk = _valgfri(
         lambda: _bygg_politikk(force=force), "Politikk (Stortinget)", kilde="Stortinget")
 
+    # 6c. KOSTRA bygges som en egen, dyp modul: normalisert SQLite lokalt og
+    # ferdig aggregerte JSON-endepunkter for den statiske frontend-flaten.
+    # SSB/Kartverket er tilleggskilder; et utfall skal ikke felle statsdelen.
+    logger.info("\nSTEG 6c: KOSTRA kommune- og fylkesregnskap")
+    kostra_data = _valgfri(
+        lambda: kostra.ingest(kostra.SsbClient(force=force), kostra.DEFAULT_DB, OUTPUT_DIR),
+        "KOSTRA", kilde="SSB/Kartverket",
+    )
+
     # 7. Skriv befolkning og meta
     logger.info("\nSTEG 7: Skriver støttefiler")
     _save_json(befolkning, OUTPUT_DIR / "befolkning.json")
@@ -336,7 +346,7 @@ def run(years=None, force=False):
     skriv_status(
         vellykket=True,
         serier={"kpi": bool(kpi), "bnp": bool(bnp), "bnp_prognose": bool(bnp_prognose),
-                "politikk": bool(politikk)},
+                "politikk": bool(politikk), "kostra": bool(kostra_data)},
         aar=actual_years,
     )
 

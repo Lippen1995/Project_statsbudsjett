@@ -14,6 +14,7 @@ import DinAndel from './seksjoner/DinAndel'
 import Utforsk from './seksjoner/Utforsk'
 import OmTallene from './seksjoner/OmTallene'
 import SeoFallback from './SeoFallback'
+import Kostra from '../kostra/Kostra'
 import './fellestall.css'
 
 const SEKSJON_IDER = SEKSJONER.map((s) => s.id)
@@ -33,6 +34,7 @@ export default function Fellestall() {
   const [skjulFin, setSkjulFin] = useState(true)
   const [utforsk, setUtforsk] = useState(START_UTFORSK)
   const [detaljer, setDetaljer] = useState({})
+  const [hash, setHash] = useState(() => window.location.hash)
   const lasterRef = useRef({})
 
   const aktivSeksjon = useAktivSeksjon(SEKSJON_IDER)
@@ -43,6 +45,12 @@ export default function Fellestall() {
   useEffect(() => {
     document.body.classList.add('ft-body')
     return () => document.body.classList.remove('ft-body')
+  }, [])
+
+  useEffect(() => {
+    const oppdater = () => setHash(window.location.hash)
+    window.addEventListener('hashchange', oppdater)
+    return () => window.removeEventListener('hashchange', oppdater)
   }, [])
 
   useEffect(() => {
@@ -140,6 +148,8 @@ export default function Fellestall() {
     }
   }, [data, aar, skjulFin])
 
+  if (hash.startsWith('#kostra')) return <Kostra hash={hash} />
+
   if (feil) {
     return (
       <div className="ft-melding">
@@ -196,6 +206,7 @@ export default function Fellestall() {
             ))}
           </nav>
           <div className="ft-sidefot">
+            <a href="#kostra">Kommuner og fylker</a>
             <a href="#om-tallene">Om tallene</a>
           </div>
         </aside>
@@ -214,6 +225,7 @@ export default function Fellestall() {
                     {n.navn}
                   </a>
                 ))}
+                <a href="#kostra">Kommuner og fylker</a>
                 <a href="#om-tallene">Om tallene</a>
               </nav>
             </div>
@@ -324,6 +336,7 @@ export default function Fellestall() {
           <div>
             <div className="ft-stikkord">Innhold</div>
             <div className="ft-fot-lenker">
+              <a href="#kostra">Kommuner og fylker</a>
               {SEKSJONER.map((s) => <a key={s.id} href={`#${s.id}`}>{s.navn}</a>)}
             </div>
           </div>

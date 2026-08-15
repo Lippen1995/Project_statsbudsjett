@@ -32,6 +32,10 @@ posten. Alle seksjonene leser samme datagrunnlag:
    - Stablet areal for sammensetningen over tid
    - Søk på tvers av alle poster, per-innbygger-skalering og CSV-eksport
    - Filter for finanstransaksjoner og SPU-overføringer
+9. **Kommuner og fylker (`#kostra`)** – KOSTRA-modul med koropletkart og
+   drill-down Norge → fylke → kommune. Inneholder inntekter, utgifter,
+   driftsresultat, gjeld, investeringer og tjenesteområder, med historikk,
+   KOSTRA-gruppe og økonomisk drill-down til funksjon og regnskapsart.
 
 Det opprinnelige analyseverktøyet – med Stortingets voteringer
 (`politikk.json`) og virksomhetsnivået, som ennå ikke har fått plass i den nye
@@ -65,6 +69,7 @@ make dev
 |----------|-------------|
 | `make install` | Installer Python- og Node-avhengigheter |
 | `make etl` | Last ned og prosesser data (cacher råfiler) |
+| `make kostra` | Bygg bare KOSTRA-modulen fra SSB og Kartverket |
 | `make etl-force` | Re-last ned alle filer |
 | `make etl-inspect` | Last ned og skriv ut topplinjer av kildefilene |
 | `make test` | Kjør Python-enhetstester |
@@ -83,6 +88,8 @@ Project_statsbudsjett/
 │   ├── parse_bevilgning.py  Parser for bevilgningshistorikk-CSV
 │   ├── parse_befolkning.py  Parser for SSB JSON-stat2
 │   ├── build_hierarchy.py   Bygger JSON-hierarkier
+│   ├── kostra.py            KOSTRA-import, SQLite-modell og JSON-eksport
+│   ├── kostra_schema.sql    Normalisert lokalt dataskjema
 │   ├── requirements.txt
 │   ├── raw/                 Nedlastede råfiler (gitignored)
 │   ├── mappings/            Departementsaliaser mv.
@@ -98,6 +105,7 @@ Project_statsbudsjett/
 │   │   │   ├── bruk.js          Hooks: inntoning og scroll-markering
 │   │   │   ├── seksjoner/       Én komponent per seksjon
 │   │   │   └── grafer/          SVG-grafer (linje, treemap, sankey, vannfall)
+│   │   ├── kostra/          Kart, detaljsider og KOSTRA-visningsmodell
 │   │   ├── App.jsx          Rot-komponent for den klassiske visningen
 │   │   ├── components/      UI-komponenter for den klassiske visningen
 │   │   └── lib/             Datalasting, aggregering og formatering
@@ -106,10 +114,12 @@ Project_statsbudsjett/
     └── data-schema.md       Faktisk filskjema, dokumentert
 ```
 
-## Videre arbeid
+## KOSTRA
 
-Neste datadimensjon er **KOSTRA (kommune-/fylkesregnskap)**. Se
-[`docs/ROADMAP-KOSTRA.md`](docs/ROADMAP-KOSTRA.md) for plan og metodikk.
+KOSTRA er implementert som en separat modul. Importen lagrer en normalisert
+SQLite-modell lokalt og forhåndsberegner statiske JSON-endepunkter; frontenden
+kontakter aldri SSB direkte. Se [`docs/KOSTRA.md`](docs/KOSTRA.md) for
+arkitektur, tabeller, grenseendringer og outputskjema.
 
 ## Datakilder
 
@@ -117,6 +127,8 @@ Neste datadimensjon er **KOSTRA (kommune-/fylkesregnskap)**. Se
 |-------|--------|
 | [DFØ Statsregnskapet](https://statsregnskapet.dfo.no) | NLOD |
 | [SSB Folkemengde](https://www.ssb.no/befolkning) | CC BY 4.0 |
+| [SSB KOSTRA](https://www.ssb.no/offentlig-sektor/kostra) | CC BY 4.0 |
+| [Kartverket – grensedata](https://www.kartverket.no/api-og-data/grensedata) | CC BY 4.0 |
 | [NBIM – Oljefondets markedsverdi](https://www.nbim.no) | Årsrapporter (referansetabell) |
 
 ## Datafallgruver

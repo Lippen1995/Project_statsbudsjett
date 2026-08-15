@@ -1,0 +1,165 @@
+import React, { useEffect, useMemo, useState } from 'react'
+import { choroplethColor, formatKostraValue, mapValue } from './model'
+
+function focusedViewBox(shapes, fallback) {
+  if (!shapes.length) return fallback
+  const numbers = shapes.flatMap((shape) => (shape.path.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number))
+  const xs = numbers.filter((_, i) => i % 2 === 0)
+  const ys = numbers.filter((_, i) => i % 2 === 1)
+  if (!xs.length) return fallback
+  const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys)
+  const pad = Math.max(8, Math.max(maxX - minX, maxY - minY) * 0.08)
+  return `${minX - pad} ${minY - pad} ${maxX - minX + pad * 2} ${maxY - minY + pad * 2}`
+}
+
+export default function KostraKart({ index, boundaries, countyCode }) {
+  const [metricId, setMetricId] = useState('expenses')
+  const [year, setYear] = useState(index.latestYear)
+  const [mode, setMode] = useState('perCapita')
+  const [hoverId, setHoverId] = useState(null)
+  const [search, setSearch] = useState('')
+  const level = countyCode ? 'municipality' : 'county'
+  const countyId = countyCode ? `county:${countyCode}` : null
+  const entities = useMemo(() => new Map(index.entities.map((entity) => [entity.id, entity])), [index])
+  const shapes = useMemo(() => Object.values(boundaries[level] ?? {}).filter(
+    (shape) => !countyId || shape.parentId === countyId
+  ), [boundaries, level, countyId])
+  const metrics = index.metrics.filter((metric) => {
+    if (metric.category !== 'service') return true
+    return level === 'municipality' ? metric.functionCode?.startsWith('FGK') : metric.functionCode?.startsWith('FGF')
+  })
+
+  useEffect(() => {
+    if (!metrics.some((metric) => metric.id === metricId)) setMetricId('expenses')
+  }, [level]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const values = shapes.map((shape) => mapValue(index, metricId, year, shape.id, mode)).filter(Number.isFinite)
+  const hovered = hoverId ? entities.get(hoverId) : null
+  const hoveredValue = hoverId ? mapValue(index, metricId, year, hoverId, mode) : null
+  const county = countyId ? entities.get(countyId) : null
+  const metric = metrics.find((item) => item.id === metricId) ?? metrics[0]
+  const viewBox = level === 'municipality' ? focusedViewBox(shapes, boundaries.viewBox) : boundaries.viewBox
+  const hits = search.trim().length >= 2
+    ? [...entities.values()].filter((entity) => entity.kind === level && entity.name.toLowerCase().includes(search.toLowerCase())).slice(0, 8)
+    : []
+  const sorted = [...values].sort((a, b) => a - b)
+  const legend = sorted.length ? [sorted[0], sorted[Math.floor(sorted.length / 2)], sorted.at(-1)] : []
+
+  const open = (shape) => {
+    window.location.hash = shape.id.startsWith('county:')
+      ? `kostra/fylke/${shape.id.split(':')[1]}`
+      : `kostra/kommune/${shape.code}`
+  }
+
+  return (
+    <>
+      <header className="ko-hero">
+        <div className="ft-kicker">KOSTRA · Kommune- og fylkesregnskap · {index.years[0]}–{index.latestYear}</div>
+        <h1>{county ? `${county.name}, kommune for kommune` : 'Slik bruker kommunene pengene'}</h1>
+        <p className="ft-ingress">
+          Velg et nøkkeltall og klikk deg fra Norge til fylke og kommune. Alle tall er hentet fra SSB,
+          normalisert lokalt og sammenlignbare med landet og KOSTRA-gruppen.
+        </p>
+        <div className="ko-smuler" aria-label="Brødsmuler">
+          <a href="#kostra">Norge</a>
+          {county && <><span>›</span><span aria-current="page">{county.name}</span></>}
+        </div>
+      </header>
+
+      <section className="ft-seksjon ko-kartseksjon">
+        <div className="ko-verktoy">
+          <label>
+            <span className="ft-stikkord">Nøkkeltall</span>
+            <select className="ko-select" value={metricId} onChange={(event) => setMetricId(event.target.value)}>
+              <optgroup label="Økonomi">
+                {metrics.filter((item) => item.category === 'finance').map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
+              </optgroup>
+              <optgroup label="Tjenesteområder">
+                {metrics.filter((item) => item.category === 'service').map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
+              </optgroup>
+            </select>
+          </label>
+          <label>
+            <span className="ft-stikkord">År</span>
+            <select className="ko-select" value={year} onChange={(event) => setYear(+event.target.value)}>
+              {index.years.map((item) => <option key={item}>{item}</option>)}
+            </select>
+          </label>
+          <div>
+            <span className="ft-stikkord">Vis som</span>
+            <div className="ft-bytter">
+              <button className={`ft-bytte ${mode === 'perCapita' ? 'aktiv' : ''}`} onClick={() => setMode('perCapita')}>Per innbygger</button>
+              <button className={`ft-bytte ${mode === 'amount' ? 'aktiv' : ''}`} onClick={() => setMode('amount')}>Totalt</button>
+            </div>
+          </div>
+          <label className="ko-sokfelt">
+            <span className="ft-stikkord">Finn {level === 'county' ? 'fylke' : 'kommune'}</span>
+            <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Søk etter navn" />
+            {hits.length > 0 && (
+              <div className="ko-soktreff">
+                {hits.map((entity) => (
+                  <a key={entity.id} href={entity.kind === 'county' ? `#kostra/fylke/${entity.id.split(':')[1]}` : `#kostra/kommune/${entity.code}`}>
+                    {entity.name}
+                  </a>
+                ))}
+              </div>
+            )}
+          </label>
+        </div>
+
+        <div className="ko-kartgrid">
+          <div className="ko-kartflate">
+            <svg viewBox={viewBox} role="img" aria-label={`${metric.label} i ${year}, ${county?.name ?? 'Norge'}`}>
+              <g fillRule="evenodd">
+                {shapes.map((shape) => {
+                  const value = mapValue(index, metricId, year, shape.id, mode)
+                  return (
+                    <path
+                      key={shape.id}
+                      d={shape.path}
+                      fill={choroplethColor(value, values)}
+                      className={hoverId === shape.id ? 'aktiv' : ''}
+                      tabIndex="0"
+                      role="button"
+                      aria-label={`${shape.name}: ${formatKostraValue(value, mode)}`}
+                      onMouseEnter={() => setHoverId(shape.id)}
+                      onMouseLeave={() => setHoverId(null)}
+                      onFocus={() => setHoverId(shape.id)}
+                      onBlur={() => setHoverId(null)}
+                      onClick={() => open(shape)}
+                      onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') open(shape) }}
+                    />
+                  )
+                })}
+              </g>
+            </svg>
+            <div className="ko-legende" aria-label="Kartforklaring">
+              <span>Lavere</span>
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <span>Høyere</span>
+              {legend.length > 0 && <small>{legend.map((value) => formatKostraValue(value, mode)).join(' · ')}</small>}
+            </div>
+          </div>
+          <aside className="ft-kort ko-kartinfo">
+            <div className="ft-stikkord">{hovered ? (level === 'county' ? 'Fylke' : 'Kommune') : metric.label}</div>
+            <div className="ft-kort-tittel">{hovered?.name ?? (county?.name ?? 'Norge')}</div>
+            <div className="ft-kort-belop num">{formatKostraValue(hoveredValue, mode)}</div>
+            <div className="ft-kort-under">{metric.label.toLowerCase()} · {year}</div>
+            <hr className="ft-skille" />
+            <p className="ft-kort-tekst">
+              {hovered
+                ? `Klikk for å ${level === 'county' ? 'se kommunene i fylket' : 'åpne regnskapet og sammenligningene'}.`
+                : 'Hold musepekeren over et område eller bruk tastaturet for å lese verdien.'}
+            </p>
+            {county && <a className="ko-handling" href={`#kostra/fylke/${countyCode}/detaljer`}>Se fylkeskommunens regnskap →</a>}
+          </aside>
+        </div>
+      </section>
+    </>
+  )
+}
+
