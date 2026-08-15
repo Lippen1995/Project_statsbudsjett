@@ -20,6 +20,55 @@ export function mapValue(index, metricId, year, entityId, mode) {
   return point?.[mode] ?? null
 }
 
+function entityPopulation(index, year, entityId) {
+  for (const metricId of ['revenues', 'expenses', 'debt', 'investments']) {
+    const point = index?.values?.[metricId]?.[year]?.[entityId]
+    if (Number.isFinite(point?.amount) && Number.isFinite(point?.perCapita) && point.perCapita !== 0) {
+      return Math.round(Math.abs(point.amount * 1000 / point.perCapita))
+    }
+  }
+  return null
+}
+
+/** Summer kartets enheter uten å summere per-innbyggerverdier direkte. */
+export function summarizeKostraEntities(index, metricId, year, entityIds) {
+  let amount = 0
+  let population = 0
+  let availableEntities = 0
+  let completePopulation = true
+
+  for (const entityId of entityIds) {
+    const point = index?.values?.[metricId]?.[year]?.[entityId]
+    const entityPopulationValue = entityPopulation(index, year, entityId)
+    if (Number.isFinite(entityPopulationValue)) population += entityPopulationValue
+    else completePopulation = false
+    if (!Number.isFinite(point?.amount)) continue
+    amount += point.amount
+    availableEntities += 1
+  }
+
+  const entities = entityIds.length
+  const complete = entities > 0 && availableEntities === entities
+  const onePoint = entityIds.length === 1
+    ? index?.values?.[metricId]?.[year]?.[entityIds[0]]
+    : null
+  const completeAmount = complete ? amount : null
+  const completePopulationValue = completePopulation && entities > 0 ? population : null
+  const perCapita = complete && onePoint && Number.isFinite(onePoint.perCapita)
+    ? onePoint.perCapita
+    : complete && completePopulation && population > 0
+      ? amount * 1000 / population
+      : null
+  return {
+    amount: completeAmount,
+    perCapita,
+    population: completePopulationValue,
+    entities,
+    availableEntities,
+    complete,
+  }
+}
+
 export function choroplethColor(value, values) {
   if (value == null || !Number.isFinite(value)) return '#E3DED4'
   const sorted = values.filter(Number.isFinite).sort((a, b) => a - b)
@@ -44,4 +93,3 @@ export function formatKostraValue(value, mode) {
 export function metricSeries(index, metricId, entityId, mode) {
   return index.years.map((year) => ({ v: mapValue(index, metricId, year, entityId, mode) }))
 }
-

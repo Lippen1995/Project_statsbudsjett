@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { choroplethColor, formatKostraValue, mapValue } from './model'
+import { choroplethColor, formatKostraValue, mapValue, summarizeKostraEntities } from './model'
+import KostraUtforsk from './KostraUtforsk'
+
+const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 
 function focusedViewBox(shapes, fallback) {
   if (!shapes.length) return fallback
@@ -33,11 +36,18 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
     if (!metrics.some((metric) => metric.id === metricId)) setMetricId('expenses')
   }, [level]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    setHoverId(null)
+    setSearch('')
+  }, [countyId])
+
   const values = shapes.map((shape) => mapValue(index, metricId, year, shape.id, mode)).filter(Number.isFinite)
   const hovered = hoverId ? entities.get(hoverId) : null
-  const hoveredValue = hoverId ? mapValue(index, metricId, year, hoverId, mode) : null
   const county = countyId ? entities.get(countyId) : null
   const metric = metrics.find((item) => item.id === metricId) ?? metrics[0]
+  const summaryIds = hoverId ? [hoverId] : shapes.map((shape) => shape.id)
+  const summary = summarizeKostraEntities(index, metricId, year, summaryIds)
+  const summaryName = hovered?.name ?? (county?.name ?? 'Alle fylkeskommuner')
   const viewBox = level === 'municipality' ? focusedViewBox(shapes, boundaries.viewBox) : boundaries.viewBox
   const hits = search.trim().length >= 2
     ? [...entities.values()].filter((entity) => entity.kind === level && entity.name.toLowerCase().includes(search.toLowerCase())).slice(0, 8)
@@ -145,21 +155,41 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
               {legend.length > 0 && <small>{legend.map((value) => formatKostraValue(value, mode)).join(' · ')}</small>}
             </div>
           </div>
-          <aside className="ft-kort ko-kartinfo">
-            <div className="ft-stikkord">{hovered ? (level === 'county' ? 'Fylke' : 'Kommune') : metric.label}</div>
-            <div className="ft-kort-tittel">{hovered?.name ?? (county?.name ?? 'Norge')}</div>
-            <div className="ft-kort-belop num">{formatKostraValue(hoveredValue, mode)}</div>
+          <aside className="ko-kartinfo" aria-live="polite" aria-atomic="true">
+            <div className="ft-stikkord">{hovered ? (level === 'county' ? 'Fylke' : 'Kommune') : 'Sum av kartet'}</div>
+            <div className="ft-kort-tittel">{summaryName}</div>
+            <div className="ft-kort-belop num">{formatKostraValue(summary[mode], mode)}</div>
             <div className="ft-kort-under">{metric.label.toLowerCase()} · {year}</div>
-            <hr className="ft-skille" />
+            <div className="ko-innbyggere">
+              <span>Innbyggere</span>
+              <strong className="num">{summary.population == null ? '–' : `ca. ${populationFormat.format(summary.population)}`}</strong>
+            </div>
             <p className="ft-kort-tekst">
-              {hovered
+              {!summary.complete
+                ? `${summary.availableEntities} av ${summary.entities} ${level === 'county' ? 'fylkeskommuner' : 'kommuner'} har data. Full sum kan ikke beregnes.`
+                : hovered
                 ? `Klikk for å ${level === 'county' ? 'se kommunene i fylket' : 'åpne regnskapet og sammenligningene'}.`
-                : 'Hold musepekeren over et område eller bruk tastaturet for å lese verdien.'}
+                : `${summary.entities} ${level === 'county' ? 'fylkeskommuner' : 'kommuner'} er summert. Per innbygger er befolkningsvektet.`}
             </p>
             {county && <a className="ko-handling" href={`#kostra/fylke/${countyCode}/detaljer`}>Se fylkeskommunens regnskap →</a>}
           </aside>
         </div>
       </section>
+
+      <KostraUtforsk
+        index={index}
+        shapes={shapes}
+        entities={entities}
+        metric={metric}
+        metricId={metricId}
+        year={year}
+        mode={mode}
+        hoverId={hoverId}
+        level={level}
+        scopeName={county?.name ?? 'Alle fylkeskommuner'}
+        onHover={setHoverId}
+        onOpen={open}
+      />
     </>
   )
 }

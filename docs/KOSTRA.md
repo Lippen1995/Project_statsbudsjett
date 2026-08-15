@@ -8,7 +8,10 @@ under `#kostra` bytter kart- og detaljinnhold i seksjonen uten å forlate siden.
 
 Brukeren kan gå fra Norge til fylke og kommune, velge år, totalbeløp eller
 kroner per innbygger, og velge mellom finansielle nøkkeltall og store
-tjenesteområder. En detaljside viser:
+tjenesteområder. Kartets oppsummering viser valgt område ved hover og ellers
+summen av alle synlige fylker eller kommuner, inkludert anslått folketall.
+Under kartet rangerer «Utforsk kommuner og fylker» de samme enhetene og viser
+historisk utvikling. En detaljside viser:
 
 - driftsinntekter, driftsutgifter, netto driftsresultat og gjeld
 - inntekts- og utgiftsfordeling
@@ -102,6 +105,13 @@ kodebytter bakover i tid.
 
 Manglende kildeverdier beholdes som manglende data, ikke som null. Ingen
 placeholder- eller eksempelverdier publiseres.
+
+Folketallet i kartoppsummeringen er merket `ca.` fordi det utledes av SSBs
+publiserte KOSTRA-par `beløp (1000 kr)` og `beløp per innbygger (kr)`, som er
+avrundet i kilden. Summerte per-innbyggerverdier befolkningsvektes.
+En sum publiseres bare når valgt nøkkeltall finnes for alle områdene som vises.
+Ved manglende observasjoner vises datadekningen eksplisitt, mens folketallet
+fortsatt beregnes uavhengig av det valgte nøkkeltallet når grunnlaget finnes.
 
 ## Drift
 

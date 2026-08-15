@@ -36,7 +36,8 @@ posten. Alle seksjonene leser samme datagrunnlag:
    på samme side, med koropletkart og drill-down Norge → fylke → kommune.
    Inneholder inntekter, utgifter,
    driftsresultat, gjeld, investeringer og tjenesteområder, med historikk,
-   KOSTRA-gruppe og økonomisk drill-down til funksjon og regnskapsart.
+   KOSTRA-gruppe, summering av synlige områder og en egen utforsker med
+   økonomisk drill-down til funksjon og regnskapsart.
 
 Det opprinnelige analyseverktøyet – med Stortingets voteringer
 (`politikk.json`) og virksomhetsnivået, som ennå ikke har fått plass i den nye

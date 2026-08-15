@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import { choroplethColor, mapValue, parseKostraRoute } from '../src/kostra/model.js'
+import { choroplethColor, mapValue, parseKostraRoute, summarizeKostraEntities } from '../src/kostra/model.js'
 import { SEKSJONER } from '../src/fellestall/design.js'
 
 test('KOSTRA-kartet ligger på hovedsiden rett under Utforsk staten', () => {
@@ -22,6 +22,60 @@ test('kartverdi velger beløp eller per innbygger uten å tolke null som null kr
   assert.equal(mapValue(index, 'expenses', 2025, 'municipality:0301', 'amount'), 12.5)
   assert.equal(mapValue(index, 'expenses', 2025, 'municipality:0301', 'perCapita'), 44)
   assert.equal(mapValue(index, 'expenses', 2024, 'municipality:0301', 'amount'), null)
+})
+
+test('kartsammendrag summerer beløp og vekter per innbygger med folketallet', () => {
+  const index = { values: {
+    revenues: { 2025: {
+      a: { amount: 100_000, perCapita: 1_000 },
+      b: { amount: 300_000, perCapita: 1_500 },
+    } },
+    expenses: { 2025: {
+      a: { amount: 120_000, perCapita: 1_200 },
+      b: { amount: 360_000, perCapita: 1_800 },
+    } },
+  } }
+
+  assert.deepEqual(summarizeKostraEntities(index, 'expenses', 2025, ['a', 'b']), {
+    amount: 480_000,
+    perCapita: 1_600,
+    population: 300_000,
+    entities: 2,
+    availableEntities: 2,
+    complete: true,
+  })
+  assert.deepEqual(summarizeKostraEntities(index, 'expenses', 2025, ['a']), {
+    amount: 120_000,
+    perCapita: 1_200,
+    population: 100_000,
+    entities: 1,
+    availableEntities: 1,
+    complete: true,
+  })
+  assert.deepEqual(summarizeKostraEntities(index, 'expenses', 2025, ['a', 'missing']), {
+    amount: null,
+    perCapita: null,
+    population: null,
+    entities: 2,
+    availableEntities: 1,
+    complete: false,
+  })
+})
+
+test('kartsammendrag beholder innbyggertall selv om valgt nøkkeltall mangler', () => {
+  const index = { values: {
+    revenues: { 2025: { a: { amount: 100_000, perCapita: 1_000 } } },
+    service_health: { 2025: {} },
+  } }
+
+  assert.deepEqual(summarizeKostraEntities(index, 'service_health', 2025, ['a']), {
+    amount: null,
+    perCapita: null,
+    population: 100_000,
+    entities: 1,
+    availableEntities: 0,
+    complete: false,
+  })
 })
 
 test('koropletfarge har egen mangler-data-farge og fem lesbare trinn', () => {
