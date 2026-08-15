@@ -20,7 +20,36 @@ export function mapValue(index, metricId, year, entityId, mode) {
   return point?.[mode] ?? null
 }
 
-function entityPopulation(index, year, entityId) {
+/** Totalsummer kan ikke sammenlignes på tvers av regioner med ulik størrelse. */
+export function comparisonEntityIds(entityId, comparisons, mode) {
+  if (mode !== 'perCapita') return [entityId]
+  return [entityId, comparisons?.peerGroupEntityId, comparisons?.norwayEntityId].filter(Boolean)
+}
+
+/** Velg den tidsserien som svarer til brukerens posisjon i økonomidrillen. */
+export function drillHistory(detail, years, serviceCode, functionCode) {
+  const selected = functionCode
+    ? detail?.functions?.find((item) => item.code === functionCode)
+    : serviceCode
+      ? detail?.services?.find((item) => item.code === serviceCode)
+      : null
+  const values = selected?.metrics?.net_expenses ?? detail?.overview?.net_expenses
+  const points = years.map((year) => ({ v: values?.[year]?.amount ?? null }))
+  const available = points.map((item) => item.v).filter(Number.isFinite)
+  return {
+    name: selected?.name ?? 'Netto driftsutgifter totalt',
+    points,
+    latestValue: available.at(-1) ?? null,
+    fromZero: !available.some((value) => value < 0),
+  }
+}
+
+/** Rene kodebytter påvirker ikke sammenlignbarheten og trenger ikke varsles i UI-et. */
+export function materialBoundaryHistory(changes = []) {
+  return changes.filter((change) => change.relationType === 'boundary_change')
+}
+
+export function populationForEntity(index, year, entityId) {
   for (const metricId of ['revenues', 'expenses', 'debt', 'investments']) {
     const point = index?.values?.[metricId]?.[year]?.[entityId]
     if (Number.isFinite(point?.amount) && Number.isFinite(point?.perCapita) && point.perCapita !== 0) {
@@ -39,7 +68,7 @@ export function summarizeKostraEntities(index, metricId, year, entityIds) {
 
   for (const entityId of entityIds) {
     const point = index?.values?.[metricId]?.[year]?.[entityId]
-    const entityPopulationValue = entityPopulation(index, year, entityId)
+    const entityPopulationValue = populationForEntity(index, year, entityId)
     if (Number.isFinite(entityPopulationValue)) population += entityPopulationValue
     else completePopulation = false
     if (!Number.isFinite(point?.amount)) continue

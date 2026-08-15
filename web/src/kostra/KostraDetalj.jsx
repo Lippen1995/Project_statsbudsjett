@@ -2,9 +2,18 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { loadKostraDetail } from '../lib/kostra'
 import LinjeGraf from '../fellestall/grafer/LinjeGraf'
 import { INK, RUST } from '../fellestall/design'
-import { formatKostraValue, mapValue, metricSeries } from './model'
+import {
+  comparisonEntityIds,
+  drillHistory,
+  formatKostraValue,
+  mapValue,
+  materialBoundaryHistory,
+  metricSeries,
+  populationForEntity,
+} from './model'
 
 const GREEN = '#47735D'
+const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 
 function point(item, metric, year) {
   return item?.metrics?.[metric]?.[year] ?? null
@@ -47,11 +56,18 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
   const selectedFunction = functions.find((item) => item.code === functionCode)
   const arts = detail?.accountingArts?.[functionCode] ?? []
   const Heading = embedded ? 'h2' : 'h1'
-  const comparisonIds = useMemo(() => detail ? [
-    { id: entityId, name: entity?.name ?? detail.entity.name, color: RUST },
-    detail.comparisons.peerGroupEntityId && { id: detail.comparisons.peerGroupEntityId, name: index.entities.find((e) => e.id === detail.comparisons.peerGroupEntityId)?.name, color: GREEN },
-    { id: detail.comparisons.norwayEntityId, name: 'Norge', color: INK },
-  ].filter(Boolean) : [], [detail, entityId, entity, index])
+  const comparisons = useMemo(() => {
+    if (!detail) return []
+    return comparisonEntityIds(entityId, detail.comparisons, mode).map((id) => ({
+      id,
+      name: id === entityId
+        ? entity?.name ?? detail.entity.name
+        : id === detail.comparisons.norwayEntityId
+          ? 'Norge'
+          : index.entities.find((item) => item.id === id)?.name ?? id,
+      color: id === entityId ? RUST : id === detail.comparisons.norwayEntityId ? INK : GREEN,
+    }))
+  }, [detail, entityId, entity, index, mode])
 
   if (error) return <section className="ko-status"><Heading>{entity?.name ?? 'KOSTRA'}</Heading><p>{error}</p><a href="#kostra">Tilbake til kartet</a></section>
   if (!detail) return <section className="ko-status"><div className="spinner" /><p>Laster kommuneregnskap…</p></section>
@@ -63,7 +79,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
     return { id, name: definition?.label ?? id, value }
   })
   const historyDefinition = metricDefs.find((item) => item.id === historyMetric)
-  const historySeries = comparisonIds.map((comparison) => ({
+  const historySeries = comparisons.map((comparison) => ({
     navn: comparison.name,
     farge: comparison.color,
     bredde: comparison.id === entityId ? 2.5 : 1.5,
@@ -74,12 +90,19 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
     tittel: String(index.years[i]),
     linjer: historySeries.map((serie) => ({ farge: serie.farge, tekst: `${serie.navn}: ${formatKostraValue(serie.punkter[i]?.v, mode)}` })),
   })
+  const boundaryWarnings = materialBoundaryHistory(detail.boundaryHistory)
 
   const drillRows = selectedFunction
     ? [...arts].sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount))
     : selectedService
       ? [...functions].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.amount ?? 0) - Math.abs(point(a, 'net_expenses', year)?.amount ?? 0))
       : [...detail.services].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.amount ?? 0) - Math.abs(point(a, 'net_expenses', year)?.amount ?? 0))
+  const drillHistoryData = drillHistory(detail, index.years, serviceCode, functionCode)
+  const drillSeries = [{ navn: drillHistoryData.name, farge: RUST, bredde: 2.5, punkter: drillHistoryData.points }]
+  const drillTips = (i) => ({
+    tittel: String(index.years[i]),
+    linjer: [{ farge: RUST, tekst: `${drillHistoryData.name}: ${formatKostraValue(drillHistoryData.points[i]?.v, 'amount')}` }],
+  })
 
   return (
     <>
@@ -99,7 +122,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
             <button className={`ft-bytte ${mode === 'perCapita' ? 'aktiv' : ''}`} onClick={() => setMode('perCapita')}>Per innbygger</button>
             <button className={`ft-bytte ${mode === 'amount' ? 'aktiv' : ''}`} onClick={() => setMode('amount')}>Totalt</button>
           </div>
-          {detail.entity.peer_group_id && <span>Sammenlignes med {index.entities.find((item) => item.id === detail.entity.peer_group_id)?.name}</span>}
+          {mode === 'perCapita' && detail.entity.peer_group_id && <span>Sammenlignes med {index.entities.find((item) => item.id === detail.entity.peer_group_id)?.name} og Norge</span>}
         </div>
         <div className="ko-nokkeltall">
           {summary.map((item) => (
@@ -107,12 +130,11 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
           ))}
         </div>
 
-        {detail.boundaryHistory?.length > 0 && (
+        {boundaryWarnings.length > 0 && (
           <div className="ko-panel ko-grensehistorikk">
-            <span className="ft-stikkord">Historiske grenser og koder</span>
-            <h2>Sammenlignbarhet over tid</h2>
-            {detail.boundaryHistory.map((change) => {
-              const changedBoundary = change.relationType === 'boundary_change'
+            <span className="ft-stikkord">Historiske grenser</span>
+            <h2>Brudd i tidsserien</h2>
+            {boundaryWarnings.map((change) => {
               const previousHref = kind === 'county'
                 ? `#kostra/fylke/${change.sourceCode.slice(0, 2)}/detaljer`
                 : `#kostra/kommune/${change.sourceCode}`
@@ -121,16 +143,14 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
                   <strong>{change.changeYear}:</strong>{' '}
                   <a href={previousHref}>{change.sourceName} ({change.sourceCode})</a>
                   {' → '}{change.targetName} ({change.targetCode}).{' '}
-                  {changedBoundary
-                    ? 'Geografien ble endret; seriene holdes derfor adskilt.'
-                    : 'Ren kodeendring dokumentert av SSB Klass; tidsserien videreføres.'}
+                  Geografien ble endret, så tallene før og etter endringen er ikke direkte sammenlignbare.
                 </p>
               )
             })}
           </div>
         )}
 
-        <div className="ko-detaljgrid">
+        <div className={`ko-detaljgrid ${mode === 'amount' ? 'ko-detaljgrid--uten-sammenligning' : ''}`}>
           <div className="ko-panel">
             <div className="ko-paneltopp">
               <div><span className="ft-stikkord">Historisk utvikling</span><h2>{historyDefinition?.label}</h2></div>
@@ -138,19 +158,25 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
                 {metricDefs.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
               </select>
             </div>
-            <LinjeGraf serier={historySeries} aar={index.years} W={680} H={250} fraNull={historyMetric !== 'net_result'} aksefmt={(value) => formatKostraValue(value, mode)} tips={historyTips} beskrivelse={`${historyDefinition?.label} for ${detail.entity.name}, sammenlignet med Norge og KOSTRA-gruppen`} />
+            <LinjeGraf serier={historySeries} aar={index.years} W={680} H={250} fraNull={historyMetric !== 'net_result'} aksefmt={(value) => formatKostraValue(value, mode)} tips={historyTips} beskrivelse={mode === 'perCapita' ? `${historyDefinition?.label} per innbygger for ${detail.entity.name}, sammenlignet med Norge og KOSTRA-gruppen` : `${historyDefinition?.label} totalt for ${detail.entity.name}`} />
             <div className="ko-graflegend">
               {historySeries.map((serie) => <span key={serie.navn}><i style={{ background: serie.farge }} />{serie.navn}</span>)}
             </div>
           </div>
-          <div className="ko-panel ko-sammenligning">
+          {mode === 'perCapita' && <div className="ko-panel ko-sammenligning">
             <span className="ft-stikkord">Sammenligning {year}</span>
             <h2>{historyDefinition?.label}</h2>
-            {comparisonIds.map((comparison) => {
+            {comparisons.map((comparison) => {
               const value = mapValue(index, historyMetric, year, comparison.id, mode)
-              return <div className="ko-sammenlignrad" key={comparison.id}><span>{comparison.name}</span><strong>{formatKostraValue(value, mode)}</strong></div>
+              const population = populationForEntity(index, year, comparison.id)
+              return (
+                <div className="ko-sammenlignrad" key={comparison.id}>
+                  <span>{comparison.name}<small>{population == null ? 'Innbyggertall mangler' : `ca. ${populationFormat.format(population)} innbyggere`}</small></span>
+                  <strong>{formatKostraValue(value, mode)}</strong>
+                </div>
+              )
             })}
-          </div>
+          </div>}
         </div>
 
         <div className="ko-breakdowngrid">
@@ -163,31 +189,51 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
             <div><span className="ft-stikkord">Økonomisk drill-down</span><h2>Fra total til regnskapsart</h2></div>
             <span className="num">{year}</span>
           </div>
-          <div className="ko-drillsmuler">
-            <button onClick={() => { setServiceCode(null); setFunctionCode(null) }}>Totalt</button>
-            {selectedService && <><span>›</span><button onClick={() => setFunctionCode(null)}>{selectedService.name}</button></>}
-            {selectedFunction && <><span>›</span><span>{selectedFunction.name}</span></>}
-          </div>
-          <div className="ko-drillhode">
-            <span>{selectedFunction ? 'Regnskapsart' : selectedService ? 'KOSTRA-funksjon' : 'Tjenesteområde'}</span>
-            <span>Beløp</span>
-          </div>
-          <div className="ko-drillrader">
-            {drillRows.map((row) => {
-              const value = selectedFunction ? row.amount : point(row, 'net_expenses', year)?.amount
-              const clickable = !selectedFunction
-              return (
-                <button
-                  key={row.code}
-                  disabled={!clickable}
-                  onClick={() => selectedService ? setFunctionCode(row.code) : setServiceCode(row.code)}
-                >
-                  <span><small>{row.code}</small>{row.name}</span>
-                  <strong className="num">{formatKostraValue(value, 'amount')}</strong>
-                  {clickable && <b>›</b>}
-                </button>
-              )
-            })}
+          <div className="ko-drillgrid">
+            <div>
+              <div className="ko-drillsmuler">
+                <button onClick={() => { setServiceCode(null); setFunctionCode(null) }}>Totalt</button>
+                {selectedService && <><span>›</span><button onClick={() => setFunctionCode(null)}>{selectedService.name}</button></>}
+                {selectedFunction && <><span>›</span><span>{selectedFunction.name}</span></>}
+              </div>
+              <div className="ko-drillhode">
+                <span>{selectedFunction ? 'Regnskapsart' : selectedService ? 'KOSTRA-funksjon' : 'Tjenesteområde'}</span>
+                <span>Beløp</span>
+              </div>
+              <div className="ko-drillrader">
+                {drillRows.map((row) => {
+                  const value = selectedFunction ? row.amount : point(row, 'net_expenses', year)?.amount
+                  const clickable = !selectedFunction
+                  return (
+                    <button
+                      key={row.code}
+                      disabled={!clickable}
+                      onClick={() => selectedService ? setFunctionCode(row.code) : setServiceCode(row.code)}
+                    >
+                      <span><small>{row.code}</small>{row.name}</span>
+                      <strong className="num">{formatKostraValue(value, 'amount')}</strong>
+                      {clickable && <b>›</b>}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+            <aside className="ko-drillgraf" aria-live="polite" aria-atomic="true">
+              <span className="ft-stikkord">Utvikling over tid</span>
+              <h3>{drillHistoryData.name}</h3>
+              <strong className="ko-drillgrafverdi num">{formatKostraValue(drillHistoryData.latestValue, 'amount')}</strong>
+              {selectedFunction && <p className="ko-drillgrafnote">Regnskapsartene viser {year}; grafen viser funksjonen over tid.</p>}
+              <LinjeGraf
+                serier={drillSeries}
+                aar={index.years}
+                W={390}
+                H={230}
+                fraNull={drillHistoryData.fromZero}
+                aksefmt={(value) => formatKostraValue(value, 'amount')}
+                tips={drillTips}
+                beskrivelse={`Utvikling i ${drillHistoryData.name.toLowerCase()} for ${detail.entity.name}`}
+              />
+            </aside>
           </div>
         </div>
       </section>

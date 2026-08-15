@@ -1,7 +1,16 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import { choroplethColor, mapValue, parseKostraRoute, summarizeKostraEntities } from '../src/kostra/model.js'
+import {
+  choroplethColor,
+  comparisonEntityIds,
+  drillHistory,
+  mapValue,
+  materialBoundaryHistory,
+  parseKostraRoute,
+  populationForEntity,
+  summarizeKostraEntities,
+} from '../src/kostra/model.js'
 import { SEKSJONER } from '../src/fellestall/design.js'
 
 test('KOSTRA-kartet ligger på hovedsiden rett under Utforsk staten', () => {
@@ -15,6 +24,56 @@ test('KOSTRA-ruter skiller fylkesdrill fra detaljsider', () => {
   assert.deepEqual(parseKostraRoute('#kostra/fylke/03'), { page: 'map', countyCode: '03' })
   assert.deepEqual(parseKostraRoute('#kostra/fylke/03/detaljer'), { page: 'detail', kind: 'county', code: '0300' })
   assert.deepEqual(parseKostraRoute('#kostra/kommune/0301'), { page: 'detail', kind: 'municipality', code: '0301' })
+})
+
+test('sammenligningsgrunnlag brukes bare for per-innbyggerverdier', () => {
+  const comparisons = { peerGroupEntityId: 'peer:12', norwayEntityId: 'country:no' }
+  assert.deepEqual(comparisonEntityIds('municipality:4601', comparisons, 'perCapita'), [
+    'municipality:4601', 'peer:12', 'country:no',
+  ])
+  assert.deepEqual(comparisonEntityIds('municipality:4601', comparisons, 'amount'), ['municipality:4601'])
+})
+
+test('sammenligningsgrunnlag kan vise utledet innbyggertall', () => {
+  const index = { values: { revenues: { 2025: {
+    'municipality:4601': { amount: 31_632_251, perCapita: 107_279 },
+  } } } }
+  assert.equal(populationForEntity(index, 2025, 'municipality:4601'), 294_860)
+})
+
+test('drilldown-historikk følger total, tjenesteområde og KOSTRA-funksjon', () => {
+  const detail = {
+    overview: { net_expenses: { 2024: { amount: 100 }, 2025: { amount: 120 } } },
+    services: [{
+      code: 'FGK8b', name: 'Grunnskole',
+      metrics: { net_expenses: { 2024: { amount: 40 }, 2025: { amount: 50 } } },
+    }],
+    functions: [{
+      code: '202', name: 'Grunnskole',
+      metrics: { net_expenses: { 2024: { amount: -30 }, 2025: { amount: 35 } } },
+    }],
+  }
+
+  assert.deepEqual(drillHistory(detail, [2024, 2025, 2026], null, null), {
+    name: 'Netto driftsutgifter totalt',
+    points: [{ v: 100 }, { v: 120 }, { v: null }],
+    latestValue: 120,
+    fromZero: true,
+  })
+  assert.deepEqual(drillHistory(detail, [2024, 2025], 'FGK8b', null), {
+    name: 'Grunnskole', points: [{ v: 40 }, { v: 50 }], latestValue: 50, fromZero: true,
+  })
+  assert.deepEqual(drillHistory(detail, [2024, 2025], 'FGK8b', '202'), {
+    name: 'Grunnskole', points: [{ v: -30 }, { v: 35 }], latestValue: 35, fromZero: false,
+  })
+})
+
+test('bare faktiske grenseendringer varsles som brudd i tidsserien', () => {
+  const changes = [
+    { relationType: 'exact_successor', sourceCode: '1201', targetCode: '4601' },
+    { relationType: 'boundary_change', sourceCode: '0104', targetCode: '3002' },
+  ]
+  assert.deepEqual(materialBoundaryHistory(changes), [changes[1]])
 })
 
 test('kartverdi velger beløp eller per innbygger uten å tolke null som null kroner', () => {

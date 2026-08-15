@@ -49,6 +49,7 @@
 .ko-grensehistorikk p { margin: 7px 0; color: var(--dempet); }
 .ko-grensehistorikk a { color: var(--rust); }
 .ko-detaljgrid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(240px, .7fr); gap: 28px; margin-top: 38px; }
+.ko-detaljgrid--uten-sammenligning { grid-template-columns: 1fr; }
 .ko-panel { border-top: 2px solid var(--ink); padding-top: 14px; min-width: 0; }
 .ko-panel h2, .ko-breakdown h3, .ko-drill h2 { font-family: var(--serif); font-size: 26px; margin: 4px 0 18px; }
 .ko-paneltopp { display: flex; align-items: start; justify-content: space-between; gap: 20px; }
@@ -56,6 +57,8 @@
 .ko-graflegend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: var(--blek); }
 .ko-graflegend span { display: flex; align-items: center; gap: 6px; }.ko-graflegend i { width: 14px; height: 2px; }
 .ko-sammenlignrad { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--strek); font-size: 13px; }
+.ko-sammenlignrad > span { display: flex; flex-direction: column; gap: 4px; }
+.ko-sammenlignrad small { color: var(--blek); font-size: 10px; }
 .ko-sammenlignrad strong { white-space: nowrap; }
 
 .ko-breakdowngrid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 52px; }
@@ -67,6 +70,7 @@
 .ko-breakdown:nth-child(2) i { background: var(--ink); }
 
 .ko-drill { margin-top: 56px; border-top: 2px solid var(--ink); padding-top: 14px; }
+.ko-drillgrid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, .75fr); gap: 42px; align-items: start; }
 .ko-drillsmuler { margin: 0 0 16px; }.ko-drillsmuler button { background: transparent; padding: 0; font: inherit; cursor: pointer; }
 .ko-drillhode, .ko-drillrader button { display: grid; grid-template-columns: minmax(0, 1fr) 140px 14px; gap: 12px; align-items: center; }
 .ko-drillhode { padding: 7px 10px; border-bottom: 1px solid var(--strek); color: var(--blek); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
@@ -75,13 +79,18 @@
 .ko-drillrader button:not(:disabled):hover { background: var(--ark); }.ko-drillrader button:disabled { cursor: default; }
 .ko-drillrader button > span { min-width: 0; }.ko-drillrader small { display: inline-block; width: 58px; color: var(--blek); font-size: 10px; }
 .ko-drillrader strong { text-align: right; white-space: nowrap; }.ko-drillrader b { color: var(--blek); }
+.ko-drillgraf { position: sticky; top: 82px; min-width: 0; border-top: 1px solid var(--strek); padding-top: 14px; }
+.ko-drillgraf h3 { margin: 5px 0 8px; font-family: var(--serif); font-size: 22px; }
+.ko-drillgrafverdi { display: block; margin-bottom: 10px; color: var(--rust); font-family: var(--serif); font-size: 24px; }
+.ko-drillgrafnote { margin: 0 0 10px; color: var(--blek); font-size: 11px; line-height: 1.45; }
 .ko-status { max-width: 720px; min-height: 60vh; margin: 0 auto; padding: 100px 32px; }.ko-status :is(h1, h2) { font-size: 44px; }
 .ko-fot { margin-top: 72px; }
 .ko-kildelinje { max-width: var(--spalte); margin: 42px auto 0; padding: 18px 32px 32px; border-top: 1px solid var(--strek); color: var(--blek); font-size: 11px; }
 
 @media (max-width: 1100px) { .ko-toppbar { display: block; } }
 @media (max-width: 880px) {
-  .ko-verktoy, .ko-kartgrid, .ko-detaljgrid, .ko-breakdowngrid { grid-template-columns: 1fr; }
+  .ko-verktoy, .ko-kartgrid, .ko-detaljgrid, .ko-breakdowngrid, .ko-drillgrid { grid-template-columns: 1fr; }
+  .ko-drillgraf { position: static; }
   .ko-kartinfo { position: static; }
   .ko-kartflate { min-height: 500px; }.ko-kartflate svg { min-height: 430px; }
   .ko-nokkeltall { grid-template-columns: 1fr 1fr; }

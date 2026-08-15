@@ -15,8 +15,15 @@ historisk utvikling. En detaljside viser:
 
 - driftsinntekter, driftsutgifter, netto driftsresultat og gjeld
 - inntekts- og utgiftsfordeling
-- historikk mot Norge og relevant KOSTRA-gruppe
-- total → tjenesteområde → KOSTRA-funksjon → regnskapsart
+- historikk per innbygger mot Norge og relevant KOSTRA-gruppe, med folketall
+- total → tjenesteområde → KOSTRA-funksjon → regnskapsart, med en tidsserie
+  som følger total, valgt tjenesteområde og valgt funksjon. Regnskapsartene er
+  siste års avsluttende detaljnivå
+
+Sammenligning med Norge og KOSTRA-gruppe vises bare per innbygger. Totale
+beløp påvirkes av regionenes størrelse og er derfor ikke et meningsfullt
+sammenligningsgrunnlag. Rene kodebytter viderefører tidsserien uten eget varsel
+i detaljvisningen; bare reelle grenseendringer vises som brudd i tidsserien.
 
 ## Arkitektur
 
