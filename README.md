@@ -25,15 +25,16 @@ posten. Alle seksjonene leser samme datagrunnlag:
 7. **Hva staten får av lønnen din** – skattemodell med Stortingets satser for
    2025, fordelt på stat, kommune og fylkeskommune, og statens del fordelt
    etter den faktiske utgiftsfordelingen.
-8. **Utforsk hver krone** – analyseverktøyet uten forenklinger:
+8. **Utforsk staten** – analyseverktøyet uten forenklinger:
    - Klikkbart hierarki: departement → kapittel → post → artskonto
    - Regnskap, saldert og revidert budsjett, per år (2014→siste budsjettår)
    - Historikkgraf med årlig vekstrate og fest-til-sammenligning
    - Stablet areal for sammensetningen over tid
    - Søk på tvers av alle poster, per-innbygger-skalering og CSV-eksport
    - Filter for finanstransaksjoner og SPU-overføringer
-9. **Kommuner og fylker (`#kostra`)** – KOSTRA-modul med koropletkart og
-   drill-down Norge → fylke → kommune. Inneholder inntekter, utgifter,
+9. **Kommuner og fylker** – KOSTRA-seksjonen ligger rett under Utforsk staten
+   på samme side, med koropletkart og drill-down Norge → fylke → kommune.
+   Inneholder inntekter, utgifter,
    driftsresultat, gjeld, investeringer og tjenesteområder, med historikk,
    KOSTRA-gruppe og økonomisk drill-down til funksjon og regnskapsart.
 

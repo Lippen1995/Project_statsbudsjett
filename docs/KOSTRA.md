@@ -2,8 +2,9 @@
 
 ## Omfang
 
-Modulen publiserer kommune- og fylkeskommuneregnskap som en egen visning på
-`#kostra`. Den eksisterende statsvisningen og dens datamodell er ikke endret.
+Modulen publiserer kommune- og fylkeskommuneregnskap som seksjonen
+«Kommuner og fylker» rett under «Utforsk staten» på hovedsiden. Hash-rutene
+under `#kostra` bytter kart- og detaljinnhold i seksjonen uten å forlate siden.
 
 Brukeren kan gå fra Norge til fylke og kommune, velge år, totalbeløp eller
 kroner per innbygger, og velge mellom finansielle nøkkeltall og store

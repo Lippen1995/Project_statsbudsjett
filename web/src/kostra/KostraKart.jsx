@@ -12,7 +12,7 @@ function focusedViewBox(shapes, fallback) {
   return `${minX - pad} ${minY - pad} ${maxX - minX + pad * 2} ${maxY - minY + pad * 2}`
 }
 
-export default function KostraKart({ index, boundaries, countyCode }) {
+export default function KostraKart({ index, boundaries, countyCode, embedded = false }) {
   const [metricId, setMetricId] = useState('expenses')
   const [year, setYear] = useState(index.latestYear)
   const [mode, setMode] = useState('perCapita')
@@ -44,6 +44,7 @@ export default function KostraKart({ index, boundaries, countyCode }) {
     : []
   const sorted = [...values].sort((a, b) => a - b)
   const legend = sorted.length ? [sorted[0], sorted[Math.floor(sorted.length / 2)], sorted.at(-1)] : []
+  const Heading = embedded ? 'h2' : 'h1'
 
   const open = (shape) => {
     window.location.hash = shape.id.startsWith('county:')
@@ -53,9 +54,9 @@ export default function KostraKart({ index, boundaries, countyCode }) {
 
   return (
     <>
-      <header className="ko-hero">
+      <header className={`ko-hero ${embedded ? 'ko-hero--integrert' : ''}`}>
         <div className="ft-kicker">KOSTRA · Kommune- og fylkesregnskap · {index.years[0]}–{index.latestYear}</div>
-        <h1>{county ? `${county.name}, kommune for kommune` : 'Slik bruker kommunene pengene'}</h1>
+        <Heading>{county ? `${county.name}, kommune for kommune` : 'Slik bruker kommunene pengene'}</Heading>
         <p className="ft-ingress">
           Velg et nøkkeltall og klikk deg fra Norge til fylke og kommune. Alle tall er hentet fra SSB,
           normalisert lokalt og sammenlignbare med landet og KOSTRA-gruppen.
@@ -162,4 +163,3 @@ export default function KostraKart({ index, boundaries, countyCode }) {
     </>
   )
 }
-

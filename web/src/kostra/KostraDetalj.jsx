@@ -25,7 +25,7 @@ function Breakdown({ title, rows }) {
   )
 }
 
-export default function KostraDetalj({ index, kind, code }) {
+export default function KostraDetalj({ index, kind, code, embedded = false }) {
   const [detail, setDetail] = useState(null)
   const [error, setError] = useState(null)
   const [mode, setMode] = useState('perCapita')
@@ -46,13 +46,14 @@ export default function KostraDetalj({ index, kind, code }) {
   const functions = detail?.functions.filter((item) => !serviceCode || item.serviceCodes?.includes(serviceCode)) ?? []
   const selectedFunction = functions.find((item) => item.code === functionCode)
   const arts = detail?.accountingArts?.[functionCode] ?? []
+  const Heading = embedded ? 'h2' : 'h1'
   const comparisonIds = useMemo(() => detail ? [
     { id: entityId, name: entity?.name ?? detail.entity.name, color: RUST },
     detail.comparisons.peerGroupEntityId && { id: detail.comparisons.peerGroupEntityId, name: index.entities.find((e) => e.id === detail.comparisons.peerGroupEntityId)?.name, color: GREEN },
     { id: detail.comparisons.norwayEntityId, name: 'Norge', color: INK },
   ].filter(Boolean) : [], [detail, entityId, entity, index])
 
-  if (error) return <section className="ko-status"><h1>{entity?.name ?? 'KOSTRA'}</h1><p>{error}</p><a href="#kostra">Tilbake til kartet</a></section>
+  if (error) return <section className="ko-status"><Heading>{entity?.name ?? 'KOSTRA'}</Heading><p>{error}</p><a href="#kostra">Tilbake til kartet</a></section>
   if (!detail) return <section className="ko-status"><div className="spinner" /><p>Laster kommuneregnskap…</p></section>
 
   const year = detail.latestYear
@@ -82,9 +83,9 @@ export default function KostraDetalj({ index, kind, code }) {
 
   return (
     <>
-      <header className="ko-hero ko-detailhero">
+      <header className={`ko-hero ko-detailhero ${embedded ? 'ko-hero--integrert' : ''}`}>
         <div className="ft-kicker">{kind === 'county' ? 'Fylkeskommuneregnskap' : 'Kommuneregnskap'} · KOSTRA {year}</div>
-        <h1>{detail.entity.name}</h1>
+        <Heading>{detail.entity.name}</Heading>
         <div className="ko-smuler">
           <a href="#kostra">Norge</a><span>›</span>
           {kind === 'municipality' && <><a href={`#kostra/fylke/${code.slice(0, 2)}`}>{index.entities.find((item) => item.id === `county:${code.slice(0, 2)}`)?.name}</a><span>›</span></>}

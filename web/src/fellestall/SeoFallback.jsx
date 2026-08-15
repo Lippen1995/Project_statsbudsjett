@@ -46,9 +46,15 @@ const SEKSJONER = [
   },
   {
     id: 'utforsk',
-    kortnavn: 'Utforsk',
-    tittel: 'Utforsk hver krone',
+    kortnavn: 'Utforsk staten',
+    tittel: 'Utforsk staten',
     tekst: 'Søk i statsregnskapet og statsbudsjettet fra departement til kapittel, post og artskonto, med historikk og sammenligning over tid.',
+  },
+  {
+    id: 'kommuner',
+    kortnavn: 'Kommuner og fylker',
+    tittel: 'Kommune- og fylkesregnskap',
+    tekst: 'Utforsk KOSTRA-tall på kartet, fra hele Norge til fylke og kommune, med historikk og sammenligninger.',
   },
 ]
 

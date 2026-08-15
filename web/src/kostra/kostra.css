@@ -1,8 +1,11 @@
 .ko { min-height: 100vh; background: var(--papir); color: var(--tekst); }
+.ko-integrert { min-height: 0; scroll-margin-top: 70px; }
 .ko-toppbar { display: none; }
 .ko-toppbar .aktiv { color: var(--ink); font-weight: 700; }
 .ko-hero { max-width: var(--spalte); margin: 0 auto; padding: 68px 32px 36px; }
-.ko-hero h1 { font-size: clamp(38px, 5.2vw, 62px); line-height: 1.03; letter-spacing: -.025em; max-width: 14ch; }
+.ko-hero :is(h1, h2) { font-size: clamp(38px, 5.2vw, 62px); line-height: 1.03; letter-spacing: -.025em; max-width: 14ch; }
+.ko-hero--integrert { border-top: 2px solid var(--ink); padding-top: 16px; margin-top: 48px; }
+.ko-hero--integrert h2 { font-size: clamp(30px, 3vw, 40px); }
 .ko-hero .ft-ingress { max-width: 760px; margin-top: 24px; }
 .ko-smuler, .ko-drillsmuler { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-top: 24px; font-size: 13px; color: var(--blek); }
 .ko-smuler a, .ko-drillsmuler button { color: var(--tekst); border: 0; }
@@ -64,8 +67,9 @@
 .ko-drillrader button:not(:disabled):hover { background: var(--ark); }.ko-drillrader button:disabled { cursor: default; }
 .ko-drillrader button > span { min-width: 0; }.ko-drillrader small { display: inline-block; width: 58px; color: var(--blek); font-size: 10px; }
 .ko-drillrader strong { text-align: right; white-space: nowrap; }.ko-drillrader b { color: var(--blek); }
-.ko-status { max-width: 720px; min-height: 60vh; margin: 0 auto; padding: 100px 32px; }.ko-status h1 { font-size: 44px; }
+.ko-status { max-width: 720px; min-height: 60vh; margin: 0 auto; padding: 100px 32px; }.ko-status :is(h1, h2) { font-size: 44px; }
 .ko-fot { margin-top: 72px; }
+.ko-kildelinje { max-width: var(--spalte); margin: 42px auto 0; padding: 18px 32px 32px; border-top: 1px solid var(--strek); color: var(--blek); font-size: 11px; }
 
 @media (max-width: 1100px) { .ko-toppbar { display: block; } }
 @media (max-width: 880px) {

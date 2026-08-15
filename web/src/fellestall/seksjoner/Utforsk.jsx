@@ -220,7 +220,7 @@ export default function Utforsk({
     <section id="utforsk" className="ft-seksjon" data-avslor>
       <div className="ft-seksjonstekst ft-seksjonstopp">
         <div>
-          <h2>Utforsk hver krone</h2>
+          <h2>Utforsk staten</h2>
           <p>
             Samme datagrunnlag, uten forenklinger: departement → kapittel → post → artskonto. Velg om du
             vil se regnskapet eller budsjettet, søk på tvers, sammenlign to områder, og se utviklingen
