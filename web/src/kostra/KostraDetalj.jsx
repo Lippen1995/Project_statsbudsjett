@@ -10,6 +10,7 @@ import {
   materialBoundaryHistory,
   metricSeries,
   populationForEntity,
+  stateFlowSummary,
 } from './model'
 
 const GREEN = '#47735D'
@@ -31,6 +32,76 @@ function Breakdown({ title, rows }) {
         </div>
       ))}
     </div>
+  )
+}
+
+function StateFlowColumn({ title, kicker, description, stateFlows, direction, year, mode }) {
+  const summary = stateFlowSummary(stateFlows, direction, year, mode)
+  const items = stateFlows?.[direction] ?? []
+  const valuesByCode = new Map(items.map((item) => [item.code, item]))
+  const sourcePeriods = [...new Set(items
+    .map((item) => item.values?.[year]?.sourcePeriod)
+    .filter(Boolean))]
+  return (
+    <article className={`ko-stromkolonne ko-stromkolonne--${direction}`}>
+      <span className="ft-stikkord">{kicker}</span>
+      <h3>{title}</h3>
+      <strong className="ko-stromtotal num">{formatKostraValue(summary.total, mode)}</strong>
+      <p className="ko-stromforklaring">{description}</p>
+      <table className="ko-stromtabell">
+        <caption className="sr-only">{title} i {year}</caption>
+        <thead><tr><th scope="col">Post</th><th scope="col">Beløp</th></tr></thead>
+        <tbody>
+          {summary.rows.map((row) => {
+            const definition = valuesByCode.get(row.code)
+            return (
+              <tr key={row.code}>
+                <th scope="row"><span>{row.label}</span><small>{definition?.description}</small></th>
+                <td className="num">{formatKostraValue(row.value, mode)}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+      {!summary.complete && <p className="ko-stromdekning">Totalsummen skjules fordi én eller flere poster mangler.</p>}
+      <small className="ko-stromkilde">
+        Faktiske tall · {direction === 'incoming' ? 'SSB KOSTRA 12137' : 'SSB 07022, akkumulert desember'}
+        {sourcePeriods.length > 0 && ` · ${sourcePeriods.join(', ')}`}
+      </small>
+    </article>
+  )
+}
+
+function StateFlows({ entityName, stateFlows, year, mode }) {
+  return (
+    <section className="ko-strommer" aria-labelledby="ko-strommer-tittel">
+      <div className="ko-stromhode">
+        <span className="ft-stikkord">Staten og kommunen</span>
+        <h2 id="ko-strommer-tittel">Pengestrømmer mellom staten og {entityName}</h2>
+        <p>Vi skiller kommuneorganisasjonens inntekt fra skatter og avgifter registrert i kommunen som geografisk område.</p>
+      </div>
+      <div className="ko-stromgrid">
+        <StateFlowColumn
+          kicker="Til kommuneorganisasjonen"
+          title="Fra staten"
+          description="Rammetilskuddet er frie midler kommunen mottar fra staten. Andre statlige tilskudd og ytelser er ikke med i denne summen."
+          stateFlows={stateFlows}
+          direction="incoming"
+          year={year}
+          mode={mode}
+        />
+        <StateFlowColumn
+          kicker="Fra kommunen som geografisk område"
+          title="Til staten og folketrygden"
+          description="Dette er innbetalte og fordelte skatter og avgifter i kommunens skatteregnskap, fordelt på personer, arbeidsgivere og fellesskatt."
+          stateFlows={stateFlows}
+          direction="outgoing"
+          year={year}
+          mode={mode}
+        />
+      </div>
+      <p className="ko-stromforbehold"><strong>Ikke et nettoregnskap:</strong> Beløpene gjelder ulike aktører og dekker ikke alle statlige inntekter eller utgifter i området. De skal derfor ikke trekkes fra hverandre som kommunens gevinst eller tap mot staten.</p>
+    </section>
   )
 }
 
@@ -148,6 +219,10 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
               )
             })}
           </div>
+        )}
+
+        {kind === 'municipality' && detail.stateFlows?.years?.includes(year) && (
+          <StateFlows entityName={detail.entity.name} stateFlows={detail.stateFlows} year={year} mode={mode} />
         )}
 
         <div className={`ko-detaljgrid ${mode === 'amount' ? 'ko-detaljgrid--uten-sammenligning' : ''}`}>

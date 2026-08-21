@@ -84,6 +84,27 @@
 .ko-grensehistorikk h2 { margin: 4px 0 10px; }
 .ko-grensehistorikk p { margin: 7px 0; color: var(--dempet); }
 .ko-grensehistorikk a { color: var(--rust); }
+.ko-strommer { margin-top: 44px; border-top: 2px solid var(--ink); padding-top: 14px; }
+.ko-stromhode { max-width: 760px; }
+.ko-stromhode h2 { margin: 5px 0 10px; font-family: var(--serif); font-size: clamp(27px, 3vw, 36px); line-height: 1.1; }
+.ko-stromhode p { margin: 0; color: var(--dempet); line-height: 1.55; }
+.ko-stromgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 30px; }
+.ko-stromkolonne { min-width: 0; border-top: 1px solid var(--strek); padding-top: 14px; }
+.ko-stromkolonne h3 { margin: 4px 0 5px; font-family: var(--serif); font-size: 25px; }
+.ko-stromtotal { display: block; margin: 8px 0 10px; color: var(--rust); font-family: var(--serif); font-size: clamp(26px, 3vw, 34px); }
+.ko-stromkolonne--outgoing .ko-stromtotal { color: var(--ink); }
+.ko-stromforklaring { min-height: 58px; margin: 0 0 12px; color: var(--dempet); font-size: 12px; line-height: 1.5; }
+.ko-stromtabell { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; }
+.ko-stromtabell thead th { padding: 8px 0; border-bottom: 1px solid var(--strek); color: var(--blek); font-size: 9px; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
+.ko-stromtabell thead th:last-child { width: 35%; text-align: right; }
+.ko-stromtabell tbody :is(th, td) { padding: 10px 0; border-bottom: 1px solid var(--strek); vertical-align: top; }
+.ko-stromtabell tbody th { padding-right: 18px; font-weight: 500; text-align: left; }
+.ko-stromtabell tbody th span, .ko-stromtabell tbody th small { display: block; }
+.ko-stromtabell tbody th small { margin-top: 3px; color: var(--blek); font-size: 10px; font-weight: 400; line-height: 1.35; }
+.ko-stromtabell tbody td { font-weight: 700; text-align: right; white-space: nowrap; }
+.ko-stromkilde { display: block; margin-top: 10px; color: var(--blek); font-size: 10px; }
+.ko-stromdekning { margin: 9px 0 0; color: var(--rust); font-size: 11px; }
+.ko-stromforbehold { margin: 24px 0 0; padding: 13px 0; border-block: 1px solid var(--strek); color: var(--dempet); font-size: 11px; line-height: 1.5; }
 .ko-detaljgrid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(240px, .7fr); gap: 28px; margin-top: 38px; }
 .ko-detaljgrid--uten-sammenligning { grid-template-columns: 1fr; }
 .ko-panel { border-top: 2px solid var(--ink); padding-top: 14px; min-width: 0; }
@@ -125,7 +146,8 @@
 
 @media (max-width: 1100px) { .ko-toppbar { display: block; } }
 @media (max-width: 880px) {
-  .ko-verktoy, .ko-kartgrid, .ko-detaljgrid, .ko-breakdowngrid, .ko-drillgrid { grid-template-columns: 1fr; }
+  .ko-verktoy, .ko-kartgrid, .ko-detaljgrid, .ko-breakdowngrid, .ko-drillgrid, .ko-stromgrid { grid-template-columns: 1fr; }
+  .ko-stromforklaring { min-height: 0; }
   .ko-drillgraf { position: static; }
   .ko-kartinfo { position: static; }
   .ko-kartflate { min-height: 500px; }.ko-kartflate svg { min-height: 430px; }

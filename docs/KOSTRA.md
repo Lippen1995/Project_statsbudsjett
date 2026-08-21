@@ -51,6 +51,13 @@ også kan åpnes fra kartet viser:
 - total → tjenesteområde → KOSTRA-funksjon → regnskapsart, med en tidsserie
   som følger total, valgt tjenesteområde og valgt funksjon. Regnskapsartene er
   siste års avsluttende detaljnivå
+- «Pengestrømmer mellom staten og kommunen», der rammetilskudd til
+  kommuneorganisasjonen holdes adskilt fra statlige skatter og avgifter
+  registrert i kommunen som geografisk område
+
+Pengestrømmene kan vises totalt eller per innbygger. Det lages ikke et
+«nettotall»: strømmene gjelder ulike aktører og dekker ikke alle statlige
+inntekter og utgifter i området.
 
 Sammenligning med Norge og KOSTRA-gruppe vises bare per innbygger. Totale
 beløp påvirkes av regionenes størrelse og er derfor ikke et meningsfullt
@@ -84,6 +91,8 @@ CI på samme måte som de eksisterende statsdataene.
 | Fylke | Finansielle nøkkeltall | 12366 |
 | Fylke | Tjenesteområder og funksjoner | 12163 |
 | Fylke | Funksjon og regnskapsart | 12368 |
+| Kommune | Rammetilskudd, faktisk regnskap | 12137, begrep A800 |
+| Kommunegeografi | Statlige skatter og avgifter | 07022 |
 
 KOSTRA-grupper hentes fra SSB Klass, klassifikasjon 112 og nyeste publiserte
 korrespondanse mot kommuneinndelingen. Kartflater hentes som landsdekkende
@@ -97,6 +106,13 @@ Den gjenbruker retry/`Retry-After`-håndteringen i `etl/download.py`.
 årsserie, mens KOSTRA krever kontrollerte uttrekk over region, funksjon, art
 og statistikkvariabel.
 
+Tabell 07022 er et akkumulert skatteregnskap i millioner kroner. Importen
+velger derfor bare desemberobservasjonen for hvert år og konverterer til
+modellens enhet på 1 000 kroner; månedene summeres aldri. Følgende adskilte
+poster inngår: medlemsavgift til folketrygden, arbeidsgiveravgift til
+folketrygden, fellesskatt og ordinær formues- og inntektsskatt til staten.
+Kommunal og fylkeskommunal skatt er ikke med i «til staten»-summen.
+
 ## Normalisert modell
 
 - `entity`: kommune, fylke, Norge eller KOSTRA-gruppe, med forelder,
@@ -104,10 +120,13 @@ og statistikkvariabel.
 - `entity_code`: regionkoder og perioden koden er gyldig.
 - `entity_relation`: SSB Klass-overganger, klassifisert som rent kodebytte
   eller reell grenseendring.
-- `dataset`: skiller regnskap, framtidige budsjetter og overføringer.
+- `dataset`: skiller regnskap, framtidige budsjetter, overføringer og skatter.
 - `classification`: funksjoner, tjenesteområder og regnskapsarter.
 - `fact`: én observasjon per datasett, enhet, år, mål, funksjon, art og kildetabell;
   inneholder både beløp i 1 000 kroner og verdi per innbygger.
+- `public_flow_category`: retning, aktør, tekst og sortering for en pengestrøm.
+- `public_flow_fact`: beløp, per-innbyggerverdi, grunnlag og kildeperiode per
+  kommune, år og pengestrømkategori.
 - `source_run`: tabell, kildetittel, hentetid og siste publiserte periode.
 
 Modellen er generell nok til at kommunebudsjetter og statlige overføringer kan
@@ -135,7 +154,8 @@ hånd, så det oppstår verken dobbelttelling eller konstruerte tidsserier.
   forhåndsberegnede kartverdier.
 - `boundaries.json`: forenklede og ferdigprojiserte SVG-baner for rask kartstart.
 - `entities/municipality-{kode}.json`: kommuneoversikt, historikk,
-  fordelinger og økonomisk drill-down.
+  fordelinger, økonomisk drill-down og `stateFlows` med adskilte inn- og
+  utgående statlige pengestrømmer.
 - `entities/county-{kode}.json`: tilsvarende for fylkeskommunen.
 
 Detaljfiler publiseres også for historiske enheter. `boundaryHistory` beskriver
@@ -151,6 +171,9 @@ avrundet i kilden. Summerte per-innbyggerverdier befolkningsvektes.
 En sum publiseres bare når valgt nøkkeltall finnes for alle områdene som vises.
 Ved manglende observasjoner vises datadekningen eksplisitt, mens folketallet
 fortsatt beregnes uavhengig av det valgte nøkkeltallet når grunnlaget finnes.
+Per-innbyggerverdier for skatteregnskapet bruker samme utledede KOSTRA-
+folketall. Hvis folketallet mangler, publiseres totalbeløpet mens verdien per
+innbygger forblir manglende.
 
 ## Drift
 

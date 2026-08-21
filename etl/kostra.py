@@ -65,6 +65,15 @@ METRICS = [
     {"id": "net_expenses", "label": "Netto driftsutgifter", "code": "AGD1", "polarity": "neutral"},
 ]
 
+STATE_BLOCK_GRANT_CODE = "A800"
+TAX_TABLE = "07022"
+TAX_FLOW_CATEGORIES = {
+    "08": "national_insurance_member",
+    "09": "employer_national_insurance",
+    "10": "common_tax",
+    "11": "state_income_wealth_tax",
+}
+
 SERVICE_METRICS = {
     "AGD10": "gross_expenses",
     "AGD2": "net_expenses",
@@ -263,6 +272,98 @@ def _series(rows: Iterable[sqlite3.Row]) -> dict[str, dict]:
     return result
 
 
+def _population_for_year(db: sqlite3.Connection, entity_id: str, year: int) -> int | None:
+    """Utled folketallet fra en KOSTRA-post med beløp og per innbygger."""
+    placeholders = ",".join("?" for _ in METRICS)
+    codes = [metric["code"] for metric in METRICS]
+    row = db.execute(
+        f"""SELECT amount, per_capita FROM fact
+             WHERE dataset_id='kostra_actuals' AND entity_id=? AND year=?
+               AND function_code='' AND accounting_art_code=''
+               AND metric_code IN ({placeholders})
+               AND amount IS NOT NULL AND per_capita IS NOT NULL AND per_capita<>0
+             ORDER BY CASE metric_code WHEN 'AGD13' THEN 0 WHEN 'AGD9' THEN 1 ELSE 2 END
+             LIMIT 1""",
+        (entity_id, year, *codes),
+    ).fetchone()
+    if not row:
+        return None
+    return round(abs(row["amount"] * 1000 / row["per_capita"]))
+
+
+def _upsert_public_flow(
+    db: sqlite3.Connection,
+    dataset_id: str,
+    entity_id: str,
+    year: int,
+    category_code: str,
+    amount: float | None,
+    per_capita: float | None,
+    source_table: str,
+    source_period: str,
+) -> None:
+    db.execute(
+        """INSERT INTO public_flow_fact
+             (dataset_id,entity_id,year,category_code,amount,per_capita,basis,source_table,source_period)
+           VALUES (?,?,?,?,?,?,'actual',?,?)
+           ON CONFLICT(dataset_id,entity_id,year,category_code,source_table)
+           DO UPDATE SET amount=excluded.amount,per_capita=excluded.per_capita,
+                         basis=excluded.basis,source_period=excluded.source_period""",
+        (dataset_id, entity_id, year, category_code, amount, per_capita, source_table, source_period),
+    )
+
+
+def _sync_block_grant_flows(db: sqlite3.Connection) -> None:
+    """Kopier faktisk rammetilskudd fra KOSTRA til den eksplisitte flytmodellen."""
+    for row in db.execute(
+        """SELECT entity_id,year,amount,per_capita,source_table FROM fact
+             WHERE dataset_id='kostra_actuals' AND metric_code=?
+               AND function_code='' AND accounting_art_code=''
+               AND entity_id LIKE 'municipality:%'""",
+        (STATE_BLOCK_GRANT_CODE,),
+    ).fetchall():
+        _upsert_public_flow(
+            db, "kostra_state_transfers", row["entity_id"], row["year"],
+            "state_block_grant", row["amount"], row["per_capita"],
+            row["source_table"], str(row["year"]),
+        )
+
+
+def _import_tax_flows(db: sqlite3.Connection, metadata: dict, cube: dict) -> None:
+    """Importer bare desemberstanden fra SSBs akkumulerte skatteregnskap.
+
+    Tabell 07022 publiserer millioner kroner per måned som akkumulerte tall.
+    Lokalmodellen bruker 1000 kroner, og månedene skal derfor aldri summeres.
+    """
+    unit = (
+        metadata.get("dimension", {}).get("ContentsCode", {}).get("category", {})
+        .get("unit", {}).get("Skatt", {}).get("base")
+    )
+    if unit and "mill" not in unit.lower():
+        raise ValueError(f"Uventet enhet i SSB {TAX_TABLE}: {unit}")
+
+    existing_entities = {
+        row[0] for row in db.execute("SELECT id FROM entity WHERE kind='municipality'")
+    }
+    for row in iter_jsonstat(cube):
+        period = row.get("Tid", "")
+        region = row.get("Region", "")
+        category_code = TAX_FLOW_CATEGORIES.get(row.get("Skatteart"))
+        if row.get("value") is None or not period.endswith("M12") or not re.fullmatch(r"\d{4}", region):
+            continue
+        entity_id = f"municipality:{region}"
+        if category_code is None or entity_id not in existing_entities:
+            continue
+        year = int(period[:4])
+        amount = float(row["value"]) * 1000
+        population = _population_for_year(db, entity_id, year)
+        per_capita = amount * 1000 / population if population else None
+        _upsert_public_flow(
+            db, "ssb_tax_accounts", entity_id, year, category_code,
+            amount, per_capita, TAX_TABLE, period,
+        )
+
+
 def _continuity_entity_ids(db: sqlite3.Connection, entity_id: str) -> list[str]:
     """Følg bare dokumenterte én-til-én kodebytter bakover i tid."""
     result, pending = [entity_id], [entity_id]
@@ -376,8 +477,52 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         (*series_entity_ids, *series_entity_ids),
     )]
 
+    state_flows = None
+    if entity["kind"] == "municipality":
+        flow_rows = db.execute(
+            """SELECT f.year,f.category_code,f.amount,f.per_capita,f.basis,
+                      f.source_table,f.source_period,c.label,c.direction,c.actor_scope,
+                      c.description,c.sort_order
+                 FROM public_flow_fact f
+                 JOIN public_flow_category c ON c.code=f.category_code
+                WHERE f.entity_id IN (""" + entity_slots + """)
+                ORDER BY c.sort_order,f.year""",
+            series_entity_ids,
+        ).fetchall()
+        facts_by_category = defaultdict(list)
+        for row in flow_rows:
+            facts_by_category[row["category_code"]].append(row)
+        categories = db.execute(
+            "SELECT * FROM public_flow_category ORDER BY sort_order"
+        ).fetchall()
+        incoming, outgoing, flow_years = [], [], set()
+        for category in categories:
+            values = {}
+            for row in facts_by_category.get(category["code"], []):
+                values[str(row["year"])] = {
+                    "amount": row["amount"],
+                    "perCapita": row["per_capita"],
+                    "basis": row["basis"],
+                    "sourceTable": row["source_table"],
+                    "sourcePeriod": row["source_period"],
+                }
+                flow_years.add(row["year"])
+            item = {
+                "code": category["code"],
+                "label": category["label"],
+                "actorScope": category["actor_scope"],
+                "description": category["description"],
+                "values": values,
+            }
+            (incoming if category["direction"] == "from_state" else outgoing).append(item)
+        state_flows = {
+            "years": sorted(flow_years),
+            "incoming": incoming,
+            "outgoing": outgoing,
+        }
+
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "entity": entity,
         "latestYear": latest_year,
         "overview": overview,
@@ -387,6 +532,7 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         "functions": list(functions.values()),
         "accountingArts": arts_by_function,
         "boundaryHistory": boundary_history,
+        "stateFlows": state_flows,
         "comparisons": {
             "norwayEntityId": "country:EAK" if entity["kind"] == "municipality" else "country:EAFK",
             "peerGroupEntityId": entity.get("peer_group_id"),
@@ -556,7 +702,10 @@ def _entity_id(kind: str, code: str) -> str:
 
 
 def _record_source(db: sqlite3.Connection, table: str, metadata: dict) -> None:
-    periods = [int(code) for code in _ordered_codes(metadata["dimension"]["Tid"]) if code.isdigit()]
+    periods = [
+        int(code[:4]) for code in _ordered_codes(metadata["dimension"]["Tid"])
+        if re.fullmatch(r"\d{4}(?:M\d{2})?", code)
+    ]
     db.execute(
         "INSERT OR REPLACE INTO source_run VALUES (?,?,?,?)",
         (table, datetime.now(timezone.utc).isoformat(), metadata.get("label", table), max(periods)),
@@ -841,6 +990,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             _upsert_entity(db, entity)
 
         metadata_by_kind = {}
+        tax_meta = client.metadata(TAX_TABLE)
         for kind in ("county", "municipality"):
             config = TABLES[kind]
             overview_meta = client.metadata(config["overview"])
@@ -861,6 +1011,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 (config["overview"], overview_meta), (config["service"], service_meta), (config["detail"], detail_meta)
             ]:
                 _record_source(db, table, meta)
+        _record_source(db, TAX_TABLE, tax_meta)
 
         _attach_peer_groups(db, client)
         _attach_boundary_changes(db, client, latest_year)
@@ -878,9 +1029,12 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             service_regions = region_codes_for_import(service_meta, region, current, comparison)
 
             concept_dim = _dimension_by_label(overview_meta, "regnskapsbegrep")
+            overview_concepts = [metric["code"] for metric in METRICS]
+            if kind == "municipality":
+                overview_concepts.append(STATE_BLOCK_GRANT_CODE)
             overview_cube = client.data(config["overview"], {
                 region: overview_regions,
-                concept_dim: [metric["code"] for metric in METRICS],
+                concept_dim: overview_concepts,
                 "ContentsCode": ["*"],
                 "Tid": ["*"],
             })
@@ -920,10 +1074,40 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 _import_details(db, kind, config["detail"], detail_meta, cube)
                 db.commit()
 
+        _sync_block_grant_flows(db)
+        available_tax_regions = _labels(tax_meta, "Region")
+        tax_regions = [
+            row[0] for row in db.execute(
+                "SELECT code FROM entity WHERE kind='municipality' ORDER BY code"
+            ) if row[0] in available_tax_regions
+        ]
+        kostra_years = {
+            row[0] for row in db.execute(
+                "SELECT DISTINCT year FROM fact WHERE dataset_id='kostra_actuals'"
+            )
+        }
+        available_tax_periods = set(_ordered_codes(tax_meta["dimension"]["Tid"]))
+        tax_periods = [
+            f"{year}M12" for year in sorted(kostra_years)
+            if f"{year}M12" in available_tax_periods
+        ]
+        for region_chunk in _chunks(tax_regions):
+            tax_cube = client.data(TAX_TABLE, {
+                "Region": region_chunk,
+                "Skatteart": list(TAX_FLOW_CATEGORIES),
+                "ContentsCode": ["Skatt"],
+                "Tid": tax_periods,
+            })
+            _import_tax_flows(db, tax_meta, tax_cube)
+            db.commit()
+
         write_frontend_data(db, output, boundaries)
-        return {"entities": db.execute("SELECT COUNT(*) FROM entity").fetchone()[0], "latestYear": max(
-            row[0] for row in db.execute("SELECT latest_period FROM source_run")
-        )}
+        return {
+            "entities": db.execute("SELECT COUNT(*) FROM entity").fetchone()[0],
+            "latestYear": db.execute(
+                "SELECT MAX(year) FROM fact WHERE dataset_id='kostra_actuals'"
+            ).fetchone()[0],
+        }
     finally:
         db.close()
 

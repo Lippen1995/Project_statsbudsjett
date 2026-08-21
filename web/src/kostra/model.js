@@ -125,6 +125,22 @@ export function populationForEntity(index, year, entityId) {
   return null
 }
 
+/** Summer én pengestrøm uten å lage et misvisende nettotall mellom ulike aktører. */
+export function stateFlowSummary(stateFlows, direction, year, mode) {
+  const valueKey = mode === 'perCapita' ? 'perCapita' : 'amount'
+  const rows = (stateFlows?.[direction] ?? []).map((item) => ({
+    code: item.code,
+    label: item.label,
+    value: item.values?.[year]?.[valueKey] ?? null,
+  }))
+  const complete = rows.length > 0 && rows.every((row) => Number.isFinite(row.value))
+  return {
+    rows,
+    total: complete ? rows.reduce((sum, row) => sum + row.value, 0) : null,
+    complete,
+  }
+}
+
 /** Summer kartets enheter uten å summere per-innbyggerverdier direkte. */
 export function summarizeKostraEntities(index, metricId, year, entityIds) {
   let amount = 0

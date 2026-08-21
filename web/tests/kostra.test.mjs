@@ -15,6 +15,7 @@ import {
   populationForEntity,
   summarizeMunicipalities,
   summarizeKostraEntities,
+  stateFlowSummary,
 } from '../src/kostra/model.js'
 import { SEKSJONER } from '../src/fellestall/design.js'
 import { explorerDrillRows, explorerHistory, sortExplorerRows } from '../src/kostra/explorer.js'
@@ -272,4 +273,35 @@ test('koropletfarge har egen mangler-data-farge og fem lesbare trinn', () => {
   const values = [10, 20, 30, 40, 50]
   assert.equal(choroplethColor(null, values), '#E3DED4')
   assert.notEqual(choroplethColor(10, values), choroplethColor(50, values))
+})
+
+test('stat-kommune-oppsummering summerer bare komplette, adskilte pengestrommer', () => {
+  const flows = {
+    incoming: [{ code: 'state_block_grant', label: 'Rammetilskudd', values: {
+      2025: { amount: 200, perCapita: 2_000 },
+    } }],
+    outgoing: [
+      { code: 'member', label: 'Medlemsavgift', values: { 2025: { amount: 1_000, perCapita: 10_000 } } },
+      { code: 'employer', label: 'Arbeidsgiveravgift', values: { 2025: { amount: 2_000, perCapita: 20_000 } } },
+    ],
+  }
+
+  assert.deepEqual(stateFlowSummary(flows, 'incoming', 2025, 'amount'), {
+    rows: [{ code: 'state_block_grant', label: 'Rammetilskudd', value: 200 }],
+    total: 200,
+    complete: true,
+  })
+  assert.equal(stateFlowSummary(flows, 'outgoing', 2025, 'perCapita').total, 30_000)
+  assert.deepEqual(stateFlowSummary({ outgoing: [
+    ...flows.outgoing,
+    { code: 'missing', label: 'Mangler', values: {} },
+  ] }, 'outgoing', 2025, 'amount'), {
+    rows: [
+      { code: 'member', label: 'Medlemsavgift', value: 1_000 },
+      { code: 'employer', label: 'Arbeidsgiveravgift', value: 2_000 },
+      { code: 'missing', label: 'Mangler', value: null },
+    ],
+    total: null,
+    complete: false,
+  })
 })

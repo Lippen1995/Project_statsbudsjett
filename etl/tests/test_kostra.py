@@ -9,6 +9,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from kostra import (  # noqa: E402
     METRICS,
     _import_overview,
+    _import_tax_flows,
+    _sync_block_grant_flows,
     classify_code_changes,
     create_database,
     entity_from_region,
@@ -179,6 +181,100 @@ def test_ssb_12137_avstemmes_mot_publiserte_driftsinntekter_for_oslo_2024(tmp_pa
         ("municipality:0301", 2024, "AGD13"),
     ).fetchone()
     assert dict(actual) == OSLO_2024_REVENUES
+
+
+def test_stat_kommune_strommer_skiller_kommuneorganisasjonen_fra_geografien(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:4601", "4601", "Bergen", "municipality", None, None, 1, None, None, "Bergen"),
+    )
+    # KOSTRA lagrer beløp i 1000 kroner. Forholdet mellom beløp og per
+    # innbygger gir 100 innbyggere i dette deterministiske uttrekket.
+    db.executemany("INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)", [
+        ("kostra_actuals", "municipality:4601", 2025, "AGD13", "", "", 1_000, 10_000, "12137"),
+        ("kostra_actuals", "municipality:4601", 2025, "A800", "", "", 200, 2_000, "12137"),
+    ])
+    _sync_block_grant_flows(db)
+
+    metadata = {
+        "id": ["Region", "Skatteart", "ContentsCode", "Tid"],
+        "dimension": {
+            "Region": {"category": {"label": {"4601": "Bergen"}}},
+            "Skatteart": {"category": {"label": {
+                "08": "Medlemsavgift til folketrygda",
+                "09": "Arbeidsgjevaravgift til folketrygda",
+                "10": "Fellesskatt",
+                "11": "Ordinær skatt på formue og inntekt, stat",
+            }}},
+            "ContentsCode": {"category": {"label": {"Skatt": "Skatt"}}},
+            "Tid": {"category": {"label": {"2025M12": "2025M12"}}},
+        },
+    }
+    cube = {
+        "id": metadata["id"],
+        "size": [1, 4, 1, 1],
+        "dimension": {
+            "Region": {"category": {"index": {"4601": 0}}},
+            "Skatteart": {"category": {"index": {"08": 0, "09": 1, "10": 2, "11": 3}}},
+            "ContentsCode": {"category": {"index": {"Skatt": 0}}},
+            "Tid": {"category": {"index": {"2025M12": 0}}},
+        },
+        # SSB 07022 publiserer millioner kroner; lokalmodellen bruker 1000 kr.
+        "value": [1.0, 2.0, 3.0, 4.0],
+    }
+    _import_tax_flows(db, metadata, cube)
+
+    rows = db.execute(
+        """SELECT c.direction, c.actor_scope, f.category_code, f.amount, f.per_capita,
+                  f.basis, f.source_period
+             FROM public_flow_fact f
+             JOIN public_flow_category c ON c.code=f.category_code
+            WHERE f.entity_id='municipality:4601'
+            ORDER BY f.category_code"""
+    ).fetchall()
+
+    assert [dict(row) for row in rows] == [
+        {"direction": "to_state", "actor_scope": "mixed", "category_code": "common_tax", "amount": 3000.0, "per_capita": 30000.0, "basis": "actual", "source_period": "2025M12"},
+        {"direction": "to_state", "actor_scope": "employers", "category_code": "employer_national_insurance", "amount": 2000.0, "per_capita": 20000.0, "basis": "actual", "source_period": "2025M12"},
+        {"direction": "to_state", "actor_scope": "residents", "category_code": "national_insurance_member", "amount": 1000.0, "per_capita": 10000.0, "basis": "actual", "source_period": "2025M12"},
+        {"direction": "from_state", "actor_scope": "municipal_government", "category_code": "state_block_grant", "amount": 200.0, "per_capita": 2000.0, "basis": "actual", "source_period": "2025"},
+        {"direction": "to_state", "actor_scope": "residents", "category_code": "state_income_wealth_tax", "amount": 4000.0, "per_capita": 40000.0, "basis": "actual", "source_period": "2025M12"},
+    ]
+
+    write_frontend_data(db, tmp_path / "data", {"county": {}, "municipality": {}})
+    detail = json.loads(
+        (tmp_path / "data" / "kostra" / "entities" / "municipality-4601.json")
+        .read_text(encoding="utf-8")
+    )
+    assert detail["stateFlows"]["incoming"][0]["values"]["2025"]["amount"] == 200
+    assert [item["code"] for item in detail["stateFlows"]["outgoing"]] == [
+        "national_insurance_member", "employer_national_insurance",
+        "common_tax", "state_income_wealth_tax",
+    ]
+
+
+def test_skatteimport_bruker_bare_desember_fordi_tabellen_er_akkumulert(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:4601", "4601", "Bergen", "municipality", None, None, 1, None, None, "Bergen"),
+    )
+    metadata = {"id": ["Region", "Skatteart", "ContentsCode", "Tid"], "dimension": {}}
+    cube = {
+        "id": metadata["id"], "size": [1, 1, 1, 2],
+        "dimension": {
+            "Region": {"category": {"index": {"4601": 0}}},
+            "Skatteart": {"category": {"index": {"08": 0}}},
+            "ContentsCode": {"category": {"index": {"Skatt": 0}}},
+            "Tid": {"category": {"index": {"2025M11": 0, "2025M12": 1}}},
+        },
+        "value": [9.0, 10.0],
+    }
+
+    _import_tax_flows(db, metadata, cube)
+
+    assert db.execute("SELECT amount FROM public_flow_fact").fetchone()[0] == 10_000
 
 
 def test_eksport_kobler_rene_kodebytter_men_ikke_endrer_historiske_ider(tmp_path):

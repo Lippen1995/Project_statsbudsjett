@@ -130,6 +130,7 @@ arkitektur, tabeller, grenseendringer og outputskjema.
 | [DFØ Statsregnskapet](https://statsregnskapet.dfo.no) | NLOD |
 | [SSB Folkemengde](https://www.ssb.no/befolkning) | CC BY 4.0 |
 | [SSB KOSTRA](https://www.ssb.no/offentlig-sektor/kostra) | CC BY 4.0 |
+| [SSB skatteregnskap](https://www.ssb.no/skatteregn) | CC BY 4.0 |
 | [Kartverket – grensedata](https://www.kartverket.no/api-og-data/grensedata) | CC BY 4.0 |
 | [NBIM – Oljefondets markedsverdi](https://www.nbim.no) | Årsrapporter (referansetabell) |
 
