@@ -97,6 +97,19 @@ export function accountingArtBreakdown(detail, year, functionCode) {
   }
 }
 
+/** Legg bare til generelle andeler når raden ikke allerede eier en andelsverdi. */
+export function explorerRowsWithShares(rows) {
+  const shareTotal = rows.reduce((sum, item) => sum + Math.abs(item.amount ?? 0), 0)
+  return rows.map((item) => ({
+    ...item,
+    share: item.share !== undefined
+      ? item.share
+      : Number.isFinite(item.amount) && shareTotal
+        ? Math.abs(item.amount) / shareTotal * 100
+        : null,
+  }))
+}
+
 /** Sorter en kopi slik at manglende verdier alltid havner nederst. */
 export function sortExplorerRows(rows, sortKey, direction = 'desc') {
   return [...rows].sort((a, b) => {

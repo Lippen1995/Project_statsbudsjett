@@ -1123,6 +1123,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 if re.fullmatch(r"\d{3}", code)
             ]
             latest_detail_year = max(_ordered_codes(detail_meta["dimension"]["Tid"]), key=int)
+            detail_cache_revision = detail_meta.get("updated") or latest_detail_year
             expense_detail_arts = sorted(EXPENSE_ARTS | {"AGD10"})
             # Bare gjensidig utelukkende hovedarter og kontrolltotalen hentes
             # for alle år. Å hente alle summer og underarter ville mangedoblet
@@ -1138,7 +1139,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 if config["scope"] in detail_meta["id"]:
                     selection[config["scope"]] = ["A"]
                 cube = client.data(
-                    config["detail"], selection, cache_revision=latest_detail_year
+                    config["detail"], selection, cache_revision=detail_cache_revision
                 )
                 _import_details(db, kind, config["detail"], detail_meta, cube)
                 db.commit()
@@ -1157,7 +1158,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 if config["scope"] in detail_meta["id"]:
                     selection[config["scope"]] = ["A"]
                 cube = client.data(
-                    config["detail"], selection, cache_revision=latest_detail_year
+                    config["detail"], selection, cache_revision=detail_cache_revision
                 )
                 _import_details(db, kind, config["detail"], detail_meta, cube)
                 db.commit()

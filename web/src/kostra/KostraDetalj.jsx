@@ -168,11 +168,11 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
   const boundaryWarnings = materialBoundaryHistory(detail.boundaryHistory)
 
   const drillRows = selectedFunction
-    ? [...arts].sort((a, b) => (b.perCapita ?? -Infinity) - (a.perCapita ?? -Infinity))
+    ? [...arts].sort((a, b) => (b[mode] ?? -Infinity) - (a[mode] ?? -Infinity))
     : selectedService
       ? [...functions].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.amount ?? 0) - Math.abs(point(a, 'net_expenses', year)?.amount ?? 0))
       : [...detail.services].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.amount ?? 0) - Math.abs(point(a, 'net_expenses', year)?.amount ?? 0))
-  const maxArtPerCapita = Math.max(1, ...arts.map((item) => Math.abs(item.perCapita ?? 0)))
+  const maxArtValue = Math.max(1, ...arts.map((item) => Math.abs(item[mode] ?? 0)))
   const drillHistoryData = drillHistory(detail, index.years, serviceCode, functionCode)
   const drillSeries = [{ navn: drillHistoryData.name, farge: RUST, bredde: 2.5, punkter: drillHistoryData.points }]
   const drillTips = (i) => ({
@@ -279,7 +279,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
               <div className={`ko-drillhode ${selectedFunction ? 'ko-drillhode--arts' : ''}`}>
                 <span>{selectedFunction ? 'Regnskapsart' : selectedService ? 'KOSTRA-funksjon' : 'Tjenesteområde'}</span>
                 {selectedFunction
-                  ? <><span>Per innb.</span><span>Andel</span></>
+                  ? <><span>{mode === 'perCapita' ? 'Per innb.' : 'Totalt'}</span><span>Andel</span></>
                   : <><span>Beløp</span><span /></>}
               </div>
               <div className="ko-drillrader">
@@ -295,9 +295,9 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
                     >
                       <span>
                         <span><small>{row.code}</small>{row.name}</span>
-                        {selectedFunction && <i style={{ width: `${Math.abs(row.perCapita ?? 0) / maxArtPerCapita * 100}%` }} />}
+                        {selectedFunction && <i style={{ width: `${Math.abs(row[mode] ?? 0) / maxArtValue * 100}%` }} />}
                       </span>
-                      <strong className="num">{formatKostraValue(selectedFunction ? row.perCapita : value, selectedFunction ? 'perCapita' : 'amount')}</strong>
+                      <strong className="num">{formatKostraValue(selectedFunction ? row[mode] : value, selectedFunction ? mode : 'amount')}</strong>
                       {selectedFunction && <em className="num">{Number.isFinite(row.share) ? `${populationFormat.format(row.share)} %` : '–'}</em>}
                       {clickable && <b>›</b>}
                     </button>
@@ -310,6 +310,9 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
               )}
               {artBreakdown?.reconciliation.status === 'incomplete-components' && (
                 <p className="ko-artavstemming">SSB mangler én eller flere hovedarter for valgt år. Rapporterte arter vises, men andeler og avstemming utelates.</p>
+              )}
+              {artBreakdown?.reconciliation.status === 'missing-total' && (
+                <p className="ko-artavstemming">SSB har publisert hovedartene, men mangler kontrolltotalen. Artsfordelingen kan derfor ikke avstemmes mot brutto driftsutgifter.</p>
               )}
               {arts.some((item) => (item.amount ?? 0) < 0) && (
                 <p className="ko-artavstemming">Negative beløp er motposter og vises med fortegn; de er ikke fremstilt som ordinære kostnader.</p>

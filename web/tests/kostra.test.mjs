@@ -23,6 +23,7 @@ import {
   accountingArtBreakdown,
   explorerDrillRows,
   explorerHistory,
+  explorerRowsWithShares,
   sortExplorerRows,
 } from '../src/kostra/explorer.js'
 
@@ -57,6 +58,15 @@ test('utforsk-tabellen kan sorteres etter per innbygger og andel', () => {
   assert.deepEqual(sortExplorerRows(rows, 'perCapita').map((row) => row.code), ['b', 'a'])
   assert.deepEqual(sortExplorerRows(rows, 'perCapita', 'asc').map((row) => row.code), ['a', 'b'])
   assert.deepEqual(sortExplorerRows(rows, 'share').map((row) => row.code), ['a', 'b'])
+})
+
+test('eksplisitt manglende artsandel blir ikke beregnet fra et ufullstendig grunnlag', () => {
+  const rows = explorerRowsWithShares([
+    { code: 'art', amount: 10, share: null },
+    { code: 'service', amount: 30 },
+  ])
+  assert.equal(rows[0].share, null)
+  assert.equal(rows[1].share, 75)
 })
 
 test('innebygd kommuneutforsker driller til dypeste tilgjengelige KOSTRA-nivå', () => {

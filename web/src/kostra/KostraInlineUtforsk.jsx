@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import LinjeGraf from '../fellestall/grafer/LinjeGraf'
 import { RUST } from '../fellestall/design'
-import { accountingArtBreakdown, explorerDrillRows, explorerHistory, sortExplorerRows } from './explorer'
+import { accountingArtBreakdown, explorerDrillRows, explorerHistory, explorerRowsWithShares, sortExplorerRows } from './explorer'
 import { formatKostraValue, populationForEntity } from './model'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -16,16 +16,8 @@ export default function KostraInlineUtforsk({ index, detail, entity, year, scope
   const artBreakdown = path.metricId === 'expenses' && path.functionCode
     ? accountingArtBreakdown(detail, year, path.functionCode)
     : null
-  const shareTotal = rawRows.reduce((sum, item) => sum + Math.abs(item.amount ?? 0), 0)
   const signedValues = rawRows.some((item) => (item.amount ?? 0) < 0)
-  const rows = sortExplorerRows(rawRows.map((item) => ({
-    ...item,
-    share: Number.isFinite(item.share)
-      ? item.share
-      : Number.isFinite(item.amount) && shareTotal
-        ? Math.abs(item.amount) / shareTotal * 100
-        : null,
-  })), sortKey, sortDirection)
+  const rows = sortExplorerRows(explorerRowsWithShares(rawRows), sortKey, sortDirection)
   const history = explorerHistory(detail, index.years, path)
   const population = populationForEntity(index, year, entity.id)
   const selectedMetric = metricRows.find((item) => item.code === path.metricId)
@@ -149,6 +141,11 @@ export default function KostraInlineUtforsk({ index, detail, entity, year, scope
         {artBreakdown?.reconciliation.status === 'incomplete-components' && rows.length > 0 && (
           <p className="ko-artavstemming">
             SSB mangler én eller flere hovedarter for denne funksjonen og året. Rapporterte arter vises, men andeler og avstemming utelates fordi manglende verdier ikke kan tolkes som null.
+          </p>
+        )}
+        {artBreakdown?.reconciliation.status === 'missing-total' && (
+          <p className="ko-artavstemming">
+            SSB har publisert hovedartene, men mangler kontrolltotalen for funksjonen og året. Artsfordelingen vises, men kan ikke avstemmes mot brutto driftsutgifter.
           </p>
         )}
         {artBreakdown && signedValues && (
