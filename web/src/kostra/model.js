@@ -258,6 +258,21 @@ export function formatKostraValue(value, mode) {
   return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(abs)} mill.`
 }
 
+/** Signert endring med høyere presisjon enn de store regnskapstotalene. */
+export function formatKostraGrowthAmount(value) {
+  if (!Number.isFinite(value)) return '–'
+  const sign = value > 0 ? '+' : value < 0 ? '−' : ''
+  const absolute = Math.abs(value)
+  if (absolute < 1000) {
+    return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(absolute * 1000)} kr`
+  }
+  const millions = absolute / 1000
+  if (millions < 1000) {
+    return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 }).format(millions)} mill.`
+  }
+  return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 }).format(millions / 1000)} mrd.`
+}
+
 /** Endring fra det umiddelbart foregående kalenderåret. */
 export function yearlyGrowth(points, years, year) {
   const index = years.indexOf(year)
@@ -270,7 +285,7 @@ export function yearlyGrowth(points, years, year) {
   const amount = current - previous
   return {
     amount,
-    yoy: previous === 0 ? null : amount / Math.abs(previous) * 100,
+    yoy: previous <= 0 ? null : amount / previous * 100,
   }
 }
 

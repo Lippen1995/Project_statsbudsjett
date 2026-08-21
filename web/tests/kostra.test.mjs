@@ -7,6 +7,7 @@ import {
   countyGroupName,
   displayEntityName,
   drillHistory,
+  formatKostraGrowthAmount,
   findKostraEntities,
   mapValue,
   materialBoundaryHistory,
@@ -70,6 +71,12 @@ test('årlig vekst viser beløpsendring og Y/Y mot foregående kalenderår', () 
   assert.deepEqual(yearlyGrowth([{ v: 0 }, { v: 10 }], [2024, 2025], 2025), {
     amount: 10, yoy: null,
   })
+  assert.deepEqual(yearlyGrowth([{ v: -100 }, { v: -50 }], [2024, 2025], 2025), {
+    amount: 50, yoy: null,
+  })
+  assert.equal(formatKostraGrowthAmount(0.4), '+400 kr')
+  assert.equal(formatKostraGrowthAmount(400), '+400 000 kr')
+  assert.equal(formatKostraGrowthAmount(-1500), '−1,5 mill.')
 })
 
 test('eksplisitt manglende artsandel blir ikke beregnet fra et ufullstendig grunnlag', () => {
