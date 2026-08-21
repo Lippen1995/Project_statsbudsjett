@@ -358,7 +358,34 @@ interface KostraEntity {
 }
 ```
 
-Detaljfiler inneholder `overview`, `revenueBreakdown`, `expenseBreakdown`,
-`services`, `functions`, `accountingArts` og referanser til Norge/KOSTRA-gruppe.
+Detaljfiler har `schemaVersion: 2` og inneholder `overview`,
+`revenueBreakdown`, `expenseBreakdown`, `services`, `functions`,
+`accountingArts` og referanser til Norge/KOSTRA-gruppe. Kommunefiler har i
+tillegg `stateFlows`:
+
+```typescript
+interface KostraStateFlows {
+  years: number[];
+  incoming: KostraPublicFlow[]; // fra staten til kommuneorganisasjonen
+  outgoing: KostraPublicFlow[]; // fra kommunegeografien til staten/folketrygden
+}
+
+interface KostraPublicFlow {
+  code: string;
+  label: string;
+  actorScope: "municipal_government" | "residents" | "employers" | "mixed";
+  description: string;
+  values: {
+    [year: string]: {
+      amount: number | null;     // 1 000 kroner
+      perCapita: number | null;  // kroner
+      basis: "actual" | "budget" | "estimate";
+      sourceTable: string;
+      sourcePeriod: string;
+    };
+  };
+}
+```
+
 Manglende SSB-verdier publiseres som `null`/utelates; de konverteres aldri til
 null kroner.

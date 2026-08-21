@@ -339,7 +339,7 @@ def _import_tax_flows(db: sqlite3.Connection, metadata: dict, cube: dict) -> Non
         metadata.get("dimension", {}).get("ContentsCode", {}).get("category", {})
         .get("unit", {}).get("Skatt", {}).get("base")
     )
-    if unit and "mill" not in unit.lower():
+    if not unit or "mill" not in unit.lower():
         raise ValueError(f"Uventet enhet i SSB {TAX_TABLE}: {unit}")
 
     existing_entities = {

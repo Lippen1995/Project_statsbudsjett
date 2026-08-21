@@ -4,10 +4,13 @@ import sqlite3
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from kostra import (  # noqa: E402
     METRICS,
+    TAX_FLOW_CATEGORIES,
     _import_overview,
     _import_tax_flows,
     _sync_block_grant_flows,
@@ -24,6 +27,12 @@ from kostra import (  # noqa: E402
 # per innbygger). Dette lille uttrekket gjør testen deterministisk samtidig som
 # parser og normalisering av beløp/per-innbygger avstemmes mot Statbank.
 OSLO_2024_REVENUES = {"amount": 86_642_212, "per_capita": 119_624}
+BERGEN_2024_STATE_TAX_MILL = {
+    "08": 10_106.2,
+    "09": 15_036.9,
+    "10": 16_656.2,
+    "11": 8_396.4,
+}
 
 
 def _cube():
@@ -207,7 +216,10 @@ def test_stat_kommune_strommer_skiller_kommuneorganisasjonen_fra_geografien(tmp_
                 "10": "Fellesskatt",
                 "11": "Ordinær skatt på formue og inntekt, stat",
             }}},
-            "ContentsCode": {"category": {"label": {"Skatt": "Skatt"}}},
+            "ContentsCode": {"category": {
+                "label": {"Skatt": "Skatt"},
+                "unit": {"Skatt": {"base": "mill. kr", "decimals": 1}},
+            }},
             "Tid": {"category": {"label": {"2025M12": "2025M12"}}},
         },
     }
@@ -260,7 +272,12 @@ def test_skatteimport_bruker_bare_desember_fordi_tabellen_er_akkumulert(tmp_path
         "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
         ("municipality:4601", "4601", "Bergen", "municipality", None, None, 1, None, None, "Bergen"),
     )
-    metadata = {"id": ["Region", "Skatteart", "ContentsCode", "Tid"], "dimension": {}}
+    metadata = {
+        "id": ["Region", "Skatteart", "ContentsCode", "Tid"],
+        "dimension": {"ContentsCode": {"category": {
+            "unit": {"Skatt": {"base": "mill. kr", "decimals": 1}},
+        }}},
+    }
     cube = {
         "id": metadata["id"], "size": [1, 1, 1, 2],
         "dimension": {
@@ -275,6 +292,49 @@ def test_skatteimport_bruker_bare_desember_fordi_tabellen_er_akkumulert(tmp_path
     _import_tax_flows(db, metadata, cube)
 
     assert db.execute("SELECT amount FROM public_flow_fact").fetchone()[0] == 10_000
+
+
+def test_ssb_07022_avstemmes_mot_publiserte_bergenverdier_for_2024(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:4601", "4601", "Bergen", "municipality", None, None, 1, None, None, "Bergen"),
+    )
+    metadata = {
+        "id": ["Region", "Skatteart", "ContentsCode", "Tid"],
+        "dimension": {"ContentsCode": {"category": {
+            "unit": {"Skatt": {"base": "mill. kr", "decimals": 1}},
+        }}},
+    }
+    cube = {
+        "id": metadata["id"], "size": [1, 4, 1, 1],
+        "dimension": {
+            "Region": {"category": {"index": {"4601": 0}}},
+            "Skatteart": {"category": {"index": {
+                code: i for i, code in enumerate(BERGEN_2024_STATE_TAX_MILL)
+            }}},
+            "ContentsCode": {"category": {"index": {"Skatt": 0}}},
+            "Tid": {"category": {"index": {"2024M12": 0}}},
+        },
+        "value": list(BERGEN_2024_STATE_TAX_MILL.values()),
+    }
+
+    _import_tax_flows(db, metadata, cube)
+
+    actual = {
+        row["category_code"]: row["amount"]
+        for row in db.execute("SELECT category_code,amount FROM public_flow_fact")
+    }
+    assert actual == {
+        TAX_FLOW_CATEGORIES[code]: value * 1000
+        for code, value in BERGEN_2024_STATE_TAX_MILL.items()
+    }
+
+
+def test_skatteimport_avviser_manglende_enhet_for_aa_unngaa_tusen_gangers_feil(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    with pytest.raises(ValueError, match="Uventet enhet"):
+        _import_tax_flows(db, {"dimension": {}}, {"id": [], "dimension": {}, "value": []})
 
 
 def test_eksport_kobler_rene_kodebytter_men_ikke_endrer_historiske_ider(tmp_path):
