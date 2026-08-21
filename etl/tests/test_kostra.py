@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from kostra import (  # noqa: E402
     METRICS,
+    SsbClient,
     TAX_FLOW_CATEGORIES,
     _import_details,
     _import_overview,
@@ -107,7 +108,7 @@ def test_detaljimport_foelger_rene_kodebytter_men_ikke_grenseendringer(tmp_path)
 
     assert detail_region_codes_for_import(
         db, metadata, "Region", "municipality", ["3103"]
-    ) == ["3103", "3002"]
+    ) == ["3103", "3002", "0104"]
 
 
 def test_detaljimport_bruker_full_offisiell_fylkeskode(tmp_path):
@@ -123,6 +124,27 @@ def test_detaljimport_bruker_full_offisiell_fylkeskode(tmp_path):
     assert detail_region_codes_for_import(
         db, metadata, "Region", "county", ["4600"]
     ) == ["4600"]
+
+
+def test_ssb_cache_skiller_rullerende_uttrekk_paa_siste_publiserte_aar(tmp_path, monkeypatch):
+    client = SsbClient(cache_dir=tmp_path)
+    calls = []
+
+    class Response:
+        def json(self):
+            return {"call": len(calls)}
+
+    def fake_request(method, url, **kwargs):
+        calls.append((method, url, kwargs))
+        return Response()
+
+    monkeypatch.setattr(client, "_request", fake_request)
+    selection = {"Region": ["4601"], "Tid": ["*"]}
+
+    assert client.data("12367", selection, cache_revision=2025) == {"call": 1}
+    assert client.data("12367", selection, cache_revision=2025) == {"call": 1}
+    assert client.data("12367", selection, cache_revision=2026) == {"call": 2}
+    assert len(calls) == 2
 
 
 def test_regnskapsart_mapping_beholder_aar_fortegn_og_manglende_verdi(tmp_path):

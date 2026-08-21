@@ -13,6 +13,7 @@ import json
 import math
 import re
 import sqlite3
+import time
 import zipfile
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -33,6 +34,7 @@ DEFAULT_OUTPUT = ROOT / "web" / "public" / "data"
 RAW_KOSTRA = Path(__file__).parent / "raw" / "kostra"
 SSB_API = "https://data.ssb.no/api/pxwebapi/v2"
 KLASS_API = "https://data.ssb.no/api/klass/v1"
+METADATA_CACHE_MAX_AGE_SECONDS = 24 * 60 * 60
 
 TABLES = {
     "municipality": {
@@ -229,12 +231,33 @@ class SsbClient:
         return data
 
     def metadata(self, table: str) -> dict:
-        return self.json(f"{SSB_API}/tables/{table}/metadata?lang=no", f"{table}-metadata.json")
+        path = self.cache_dir / f"{table}-metadata.json"
+        if (
+            path.exists() and not self.force
+            and time.time() - path.stat().st_mtime < METADATA_CACHE_MAX_AGE_SECONDS
+        ):
+            return json.loads(path.read_text(encoding="utf-8"))
+        try:
+            data = self._request(
+                "GET", f"{SSB_API}/tables/{table}/metadata?lang=no"
+            ).json()
+        except requests.RequestException:
+            if path.exists() and not self.force:
+                return json.loads(path.read_text(encoding="utf-8"))
+            raise
+        _write_json(path, data)
+        return data
 
-    def data(self, table: str, selection: dict[str, list[str]]) -> dict:
+    def data(
+        self, table: str, selection: dict[str, list[str]], cache_revision: str | int | None = None
+    ) -> dict:
         normalized = {key: list(values) for key, values in selection.items()}
+        cache_payload = normalized if cache_revision is None else {
+            "selection": normalized,
+            "revision": cache_revision,
+        }
         digest = hashlib.sha1(
-            json.dumps(normalized, sort_keys=True, ensure_ascii=False).encode("utf-8")
+            json.dumps(cache_payload, sort_keys=True, ensure_ascii=False).encode("utf-8")
         ).hexdigest()[:12]
         path = self.cache_dir / f"{table}-{digest}.json"
         if path.exists() and not self.force:
@@ -785,21 +808,23 @@ def region_codes_for_import(metadata: dict, dimension: str, current: list[str], 
 def detail_region_codes_for_import(
     db: sqlite3.Connection, metadata: dict, dimension: str, kind: str, current: list[str]
 ) -> list[str]:
-    """Ta med aktive koder og dokumenterte rene kodebytter, men ikke sammenslåinger.
+    """Ta med alle publiserte enheter, men hold ulike geografier adskilt.
 
-    Artsdata eksporteres bare i lazy-lastede enhetsfiler. En ren kodeendring kan
-    derfor følge samme tidsserie, mens en faktisk grenseendring skal forbli en
-    separat historisk geografi.
+    Eksporten kan følge rene kodebytter i samme tidsserie. Reelle
+    grenseendringer importeres også, men beholdes i egne historiske filer.
     """
     available = _labels(metadata, dimension)
     result = []
-    for code in current:
-        entity_id = _entity_id(kind, code)
-        for continuity_id in _continuity_entity_ids(db, entity_id):
-            row = db.execute("SELECT code FROM entity WHERE id=?", (continuity_id,)).fetchone()
-            continuity_code = row[0] if row else continuity_id.split(":", 1)[1]
-            if continuity_code in available and continuity_code not in result:
-                result.append(continuity_code)
+    candidates = list(current) + [
+        row[0] for row in db.execute(
+            """SELECT code FROM entity WHERE kind=?
+               ORDER BY active DESC, COALESCE(valid_to,9999) DESC, code""",
+            (kind,),
+        )
+    ]
+    for code in candidates:
+        if code in available and code not in result:
+            result.append(code)
     return result
 
 
@@ -1097,6 +1122,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 code for code in _labels(detail_meta, detail_function)
                 if re.fullmatch(r"\d{3}", code)
             ]
+            latest_detail_year = max(_ordered_codes(detail_meta["dimension"]["Tid"]), key=int)
             expense_detail_arts = sorted(EXPENSE_ARTS | {"AGD10"})
             # Bare gjensidig utelukkende hovedarter og kontrolltotalen hentes
             # for alle år. Å hente alle summer og underarter ville mangedoblet
@@ -1111,14 +1137,15 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 }
                 if config["scope"] in detail_meta["id"]:
                     selection[config["scope"]] = ["A"]
-                cube = client.data(config["detail"], selection)
+                cube = client.data(
+                    config["detail"], selection, cache_revision=latest_detail_year
+                )
                 _import_details(db, kind, config["detail"], detail_meta, cube)
                 db.commit()
 
             # Inntektsfordelingen brukes bare som siste års avsluttende nivå.
             # Den hentes separat slik at fem inntektsgrupper ikke replikeres
             # over hele tidsserien uten en konsument i grensesnittet.
-            latest_detail_year = max(_ordered_codes(detail_meta["dimension"]["Tid"]), key=int)
             for region_chunk in _chunks(detail_regions):
                 selection = {
                     region: region_chunk,
@@ -1129,7 +1156,9 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 }
                 if config["scope"] in detail_meta["id"]:
                     selection[config["scope"]] = ["A"]
-                cube = client.data(config["detail"], selection)
+                cube = client.data(
+                    config["detail"], selection, cache_revision=latest_detail_year
+                )
                 _import_details(db, kind, config["detail"], detail_meta, cube)
                 db.commit()
 

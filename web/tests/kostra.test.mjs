@@ -80,6 +80,8 @@ test('innebygd kommuneutforsker driller til dypeste tilgjengelige KOSTRA-nivå',
       { code: 'AG16', name: 'Lønn', values: { 2024: { amount: 8 }, 2025: { amount: 10 } } },
       { code: 'AGD50', name: 'Varer og tjenester', values: { 2025: { amount: 20 } } },
       { code: 'AGD51', name: 'Tjenester som erstatter egen produksjon', values: { 2025: { amount: -2 } } },
+      { code: 'AG34', name: 'Overføringsutgifter', values: { 2024: { amount: 0 }, 2025: { amount: 0 } } },
+      { code: 'A590', name: 'Avskrivninger', values: { 2024: { amount: 0 }, 2025: { amount: 0 } } },
       { code: 'AGD10', name: 'Brutto driftsutgifter', values: { 2024: { amount: 8 }, 2025: { amount: 28 } } },
       { code: 'A260', name: 'Renhold', values: { 2025: { amount: 5 } } },
     ] },
@@ -94,13 +96,13 @@ test('innebygd kommuneutforsker driller til dypeste tilgjengelige KOSTRA-nivå',
   const artRows = explorerDrillRows(detail, 2025, {
     metricId: 'expenses', serviceCode: 'FG1', functionCode: '100',
   })
-  assert.deepEqual(artRows.map((row) => row.code), ['AG16', 'AGD50', 'AGD51'])
+  assert.deepEqual(artRows.map((row) => row.code), ['AG16', 'AGD50', 'AGD51', 'AG34', 'A590'])
   assert.equal(artRows[0].perCapita, 100)
   assert.equal(artRows[0].clickable, false)
   assert.equal(artRows[2].share, -2 / 28 * 100)
   assert.deepEqual(explorerDrillRows(detail, 2024, {
     metricId: 'expenses', serviceCode: 'FG1', functionCode: '100',
-  }).map((row) => row.code), ['AG16'])
+  }).map((row) => row.code), ['AG16', 'AG34', 'A590'])
   assert.equal(explorerDrillRows(detail, 2025, { metricId: 'revenues' })[0].code, 'R1')
   assert.deepEqual(explorerDrillRows(detail, 2025, {
     metricId: 'investments', serviceCode: 'FG1', functionCode: '100',
@@ -126,7 +128,7 @@ test('innebygd kommuneutforsker driller til dypeste tilgjengelige KOSTRA-nivå',
     componentTotal: null,
     functionTotal: 30,
     difference: null,
-    status: 'missing-components',
+    status: 'incomplete-components',
   })
 })
 

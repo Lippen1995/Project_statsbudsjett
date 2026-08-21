@@ -132,10 +132,15 @@
 .ko-drillhode, .ko-drillrader button { display: grid; grid-template-columns: minmax(0, 1fr) 140px 14px; gap: 12px; align-items: center; }
 .ko-drillhode { padding: 7px 10px; border-bottom: 1px solid var(--strek); color: var(--blek); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
 .ko-drillhode span:nth-child(2) { text-align: right; }
+.ko-drillhode--arts, .ko-drillrader button.ko-drillart { grid-template-columns: minmax(0, 1fr) 105px 70px; }
+.ko-drillhode--arts span:nth-child(n+2) { text-align: right; }
 .ko-drillrader button { width: 100%; padding: 12px 10px; border: 0; border-bottom: 1px solid var(--strek); background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
 .ko-drillrader button:not(:disabled):hover { background: var(--ark); }.ko-drillrader button:disabled { cursor: default; }
 .ko-drillrader button > span { min-width: 0; }.ko-drillrader small { display: inline-block; width: 58px; color: var(--blek); font-size: 10px; }
 .ko-drillrader strong { text-align: right; white-space: nowrap; }.ko-drillrader b { color: var(--blek); }
+.ko-drillrader button.ko-drillart > span > span { display: block; }
+.ko-drillrader button.ko-drillart i { display: block; height: 2px; margin: 6px 0 0 58px; background: var(--rust); }
+.ko-drillrader button.ko-drillart em { color: var(--blek); font-style: normal; text-align: right; white-space: nowrap; }
 .ko-drillgraf { position: sticky; top: 82px; min-width: 0; border-top: 1px solid var(--strek); padding-top: 14px; }
 .ko-drillgraf h3 { margin: 5px 0 8px; font-family: var(--serif); font-size: 22px; }
 .ko-drillgrafverdi { display: block; margin-bottom: 10px; color: var(--rust); font-family: var(--serif); font-size: 24px; }
@@ -170,6 +175,7 @@
   .ko-nokkeltall { grid-template-columns: 1fr; }.ko-moduslinje { align-items: flex-start; flex-direction: column; }
   .ko-paneltopp { flex-direction: column; }.ko-paneltopp .ko-select { width: 100%; }
   .ko-drillhode, .ko-drillrader button { grid-template-columns: minmax(0, 1fr) 105px 10px; }
+  .ko-drillhode--arts, .ko-drillrader button.ko-drillart { grid-template-columns: minmax(0, 1fr) 88px 55px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ko-kartflate path, .ko-tooltip { transition: none; }

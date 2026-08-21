@@ -56,7 +56,8 @@ export function accountingArtBreakdown(detail, year, functionCode) {
     .filter((item) => GROSS_EXPENSE_COMPONENTS.has(item.code))
     .map((item) => ({ item, value: accountingArtValue(item, year, detail?.latestYear) }))
     .filter(({ value }) => Number.isFinite(value?.amount))
-  const componentTotal = componentRows.length
+  const hasCompleteComponents = componentRows.length === GROSS_EXPENSE_COMPONENTS.size
+  const componentTotal = hasCompleteComponents
     ? componentRows.reduce((sum, { value }) => sum + value.amount, 0)
     : null
   const totalArt = arts.find((item) => item.code === 'AGD10')
@@ -69,13 +70,13 @@ export function accountingArtBreakdown(detail, year, functionCode) {
     ? componentTotal - functionTotal
     : null
   const tolerance = Number.isFinite(functionTotal) ? Math.max(1, Math.abs(functionTotal) * 1e-6) : null
-  const status = !componentRows.length
-    ? 'missing-components'
+  const status = !hasCompleteComponents
+    ? 'incomplete-components'
     : !Number.isFinite(functionTotal)
-    ? 'missing-total'
-    : Math.abs(difference) <= tolerance
-      ? 'reconciled'
-      : 'difference'
+      ? 'missing-total'
+      : Math.abs(difference) <= tolerance
+        ? 'reconciled'
+        : 'difference'
 
   return {
     rows: componentRows.map(({ item, value }) => ({

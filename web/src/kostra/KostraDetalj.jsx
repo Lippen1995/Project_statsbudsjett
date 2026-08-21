@@ -126,7 +126,10 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
   const selectedService = detail?.services.find((item) => item.code === serviceCode)
   const functions = detail?.functions.filter((item) => !serviceCode || item.serviceCodes?.includes(serviceCode)) ?? []
   const selectedFunction = functions.find((item) => item.code === functionCode)
-  const arts = functionCode ? accountingArtBreakdown(detail, detail?.latestYear, functionCode).rows : []
+  const artBreakdown = functionCode
+    ? accountingArtBreakdown(detail, detail?.latestYear, functionCode)
+    : null
+  const arts = artBreakdown?.rows ?? []
   const Heading = embedded ? 'h2' : 'h1'
   const comparisons = useMemo(() => {
     if (!detail) return []
@@ -169,6 +172,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
     : selectedService
       ? [...functions].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.amount ?? 0) - Math.abs(point(a, 'net_expenses', year)?.amount ?? 0))
       : [...detail.services].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.amount ?? 0) - Math.abs(point(a, 'net_expenses', year)?.amount ?? 0))
+  const maxArtPerCapita = Math.max(1, ...arts.map((item) => Math.abs(item.perCapita ?? 0)))
   const drillHistoryData = drillHistory(detail, index.years, serviceCode, functionCode)
   const drillSeries = [{ navn: drillHistoryData.name, farge: RUST, bredde: 2.5, punkter: drillHistoryData.points }]
   const drillTips = (i) => ({
@@ -272,9 +276,11 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
                 {selectedService && <><span>›</span><button onClick={() => setFunctionCode(null)}>{selectedService.name}</button></>}
                 {selectedFunction && <><span>›</span><span>{selectedFunction.name}</span></>}
               </div>
-              <div className="ko-drillhode">
+              <div className={`ko-drillhode ${selectedFunction ? 'ko-drillhode--arts' : ''}`}>
                 <span>{selectedFunction ? 'Regnskapsart' : selectedService ? 'KOSTRA-funksjon' : 'Tjenesteområde'}</span>
-                <span>Beløp</span>
+                {selectedFunction
+                  ? <><span>Per innb.</span><span>Andel</span></>
+                  : <><span>Beløp</span><span /></>}
               </div>
               <div className="ko-drillrader">
                 {drillRows.map((row) => {
@@ -283,16 +289,31 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
                   return (
                     <button
                       key={row.code}
+                      className={selectedFunction ? 'ko-drillart' : ''}
                       disabled={!clickable}
                       onClick={() => selectedService ? setFunctionCode(row.code) : setServiceCode(row.code)}
                     >
-                      <span><small>{row.code}</small>{row.name}</span>
-                      <strong className="num">{formatKostraValue(value, 'amount')}</strong>
+                      <span>
+                        <span><small>{row.code}</small>{row.name}</span>
+                        {selectedFunction && <i style={{ width: `${Math.abs(row.perCapita ?? 0) / maxArtPerCapita * 100}%` }} />}
+                      </span>
+                      <strong className="num">{formatKostraValue(selectedFunction ? row.perCapita : value, selectedFunction ? 'perCapita' : 'amount')}</strong>
+                      {selectedFunction && <em className="num">{Number.isFinite(row.share) ? `${populationFormat.format(row.share)} %` : '–'}</em>}
                       {clickable && <b>›</b>}
                     </button>
                   )
                 })}
               </div>
+              {artBreakdown?.reconciliation.status === 'reconciled' && <p className="ko-artavstemming">Artsgruppene avstemmer mot funksjonens brutto driftsutgifter.</p>}
+              {artBreakdown?.reconciliation.status === 'difference' && (
+                <p className="ko-artavstemming">Artsgruppene summerer til {formatKostraValue(artBreakdown.reconciliation.componentTotal, 'amount')}, mens SSB oppgir {formatKostraValue(artBreakdown.reconciliation.functionTotal, 'amount')}. Avviket på {formatKostraValue(artBreakdown.reconciliation.difference, 'amount')} er ikke justert.</p>
+              )}
+              {artBreakdown?.reconciliation.status === 'incomplete-components' && (
+                <p className="ko-artavstemming">SSB mangler én eller flere hovedarter for valgt år. Rapporterte arter vises, men andeler og avstemming utelates.</p>
+              )}
+              {arts.some((item) => (item.amount ?? 0) < 0) && (
+                <p className="ko-artavstemming">Negative beløp er motposter og vises med fortegn; de er ikke fremstilt som ordinære kostnader.</p>
+              )}
             </div>
             <aside className="ko-drillgraf" aria-live="polite" aria-atomic="true">
               <span className="ft-stikkord">Utvikling over tid</span>

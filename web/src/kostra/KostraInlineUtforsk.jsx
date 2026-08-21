@@ -33,7 +33,11 @@ export default function KostraInlineUtforsk({ index, detail, entity, year, scope
   const selectedFunction = detail.functions?.find((item) => item.code === path.functionCode)
   const isMetricMenu = !path.metricId
   const thirdSortKey = isMetricMenu ? 'amount' : 'share'
-  const thirdHeading = isMetricMenu ? 'Totalt' : 'Andel'
+  const thirdHeading = isMetricMenu
+    ? 'Totalt'
+    : signedValues && !artBreakdown
+      ? 'Andel av utslag'
+      : 'Andel'
   const maxPerCapita = Math.max(1, ...rows.map((item) => Math.abs(item.perCapita ?? 0)))
   const currentValue = history?.points?.[index.years.indexOf(year)]?.v ?? null
   const levelLabel = isMetricMenu
@@ -140,6 +144,11 @@ export default function KostraInlineUtforsk({ index, detail, entity, year, scope
         {artBreakdown?.reconciliation.status === 'difference' && (
           <p className="ko-artavstemming">
             Artsgruppene summerer til {formatKostraValue(artBreakdown.reconciliation.componentTotal, 'amount')}, mens SSB oppgir {formatKostraValue(artBreakdown.reconciliation.functionTotal, 'amount')} for funksjonen. Avviket på {formatKostraValue(artBreakdown.reconciliation.difference, 'amount')} beholdes synlig fordi publiserte artsgrupper ikke alltid dekker alle posteringer.
+          </p>
+        )}
+        {artBreakdown?.reconciliation.status === 'incomplete-components' && rows.length > 0 && (
+          <p className="ko-artavstemming">
+            SSB mangler én eller flere hovedarter for denne funksjonen og året. Rapporterte arter vises, men andeler og avstemming utelates fordi manglende verdier ikke kan tolkes som null.
           </p>
         )}
         {artBreakdown && signedValues && (
