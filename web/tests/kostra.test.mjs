@@ -19,7 +19,12 @@ import {
   stateFlowSummary,
 } from '../src/kostra/model.js'
 import { SEKSJONER } from '../src/fellestall/design.js'
-import { explorerDrillRows, explorerHistory, sortExplorerRows } from '../src/kostra/explorer.js'
+import {
+  accountingArtBreakdown,
+  explorerDrillRows,
+  explorerHistory,
+  sortExplorerRows,
+} from '../src/kostra/explorer.js'
 
 test('KOSTRA-kartet ligger på hovedsiden rett under Utforsk staten', () => {
   const utforsk = SEKSJONER.findIndex((section) => section.id === 'utforsk')
@@ -71,7 +76,13 @@ test('innebygd kommuneutforsker driller til dypeste tilgjengelige KOSTRA-nivå',
       gross_expenses: { 2025: { amount: 30, perCapita: 300 } },
       investments: { 2025: { amount: 4, perCapita: 40 } },
     } }],
-    accountingArts: { 100: [{ code: 'A1', name: 'Art', amount: 10 }] },
+    accountingArts: { 100: [
+      { code: 'AG16', name: 'Lønn', values: { 2024: { amount: 8 }, 2025: { amount: 10 } } },
+      { code: 'AGD50', name: 'Varer og tjenester', values: { 2025: { amount: 20 } } },
+      { code: 'AGD51', name: 'Tjenester som erstatter egen produksjon', values: { 2025: { amount: -2 } } },
+      { code: 'AGD10', name: 'Brutto driftsutgifter', values: { 2024: { amount: 8 }, 2025: { amount: 28 } } },
+      { code: 'A260', name: 'Renhold', values: { 2025: { amount: 5 } } },
+    ] },
     revenueBreakdown: [{ code: 'R1', name: 'Inntektsart', amount: 25 }],
   }
 
@@ -80,7 +91,16 @@ test('innebygd kommuneutforsker driller til dypeste tilgjengelige KOSTRA-nivå',
   ])
   assert.equal(explorerDrillRows(detail, 2025, { metricId: 'expenses' })[0].code, 'FG1')
   assert.equal(explorerDrillRows(detail, 2025, { metricId: 'expenses', serviceCode: 'FG1' })[0].code, '100')
-  assert.equal(explorerDrillRows(detail, 2025, { metricId: 'expenses', serviceCode: 'FG1', functionCode: '100' })[0].code, 'A1')
+  const artRows = explorerDrillRows(detail, 2025, {
+    metricId: 'expenses', serviceCode: 'FG1', functionCode: '100',
+  })
+  assert.deepEqual(artRows.map((row) => row.code), ['AG16', 'AGD50', 'AGD51'])
+  assert.equal(artRows[0].perCapita, 100)
+  assert.equal(artRows[0].clickable, false)
+  assert.equal(artRows[2].share, -2 / 28 * 100)
+  assert.deepEqual(explorerDrillRows(detail, 2024, {
+    metricId: 'expenses', serviceCode: 'FG1', functionCode: '100',
+  }).map((row) => row.code), ['AG16'])
   assert.equal(explorerDrillRows(detail, 2025, { metricId: 'revenues' })[0].code, 'R1')
   assert.deepEqual(explorerDrillRows(detail, 2025, {
     metricId: 'investments', serviceCode: 'FG1', functionCode: '100',
@@ -91,6 +111,22 @@ test('innebygd kommuneutforsker driller til dypeste tilgjengelige KOSTRA-nivå',
     metricId: 'expenses', serviceCode: 'FG1',
   }), {
     name: 'Tjeneste', points: [{ v: null }, { v: 40 }], fromZero: true,
+  })
+
+  assert.deepEqual(accountingArtBreakdown(detail, 2025, '100').reconciliation, {
+    componentTotal: 28,
+    functionTotal: 28,
+    difference: 0,
+    status: 'reconciled',
+  })
+  assert.deepEqual(accountingArtBreakdown({
+    latestYear: 2025,
+    accountingArts: { 100: [{ code: 'AGD10', name: 'Total', values: { 2025: { amount: 30 } } }] },
+  }, 2025, '100').reconciliation, {
+    componentTotal: null,
+    functionTotal: 30,
+    difference: null,
+    status: 'missing-components',
   })
 })
 

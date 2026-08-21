@@ -49,8 +49,8 @@ også kan åpnes fra kartet viser:
 - inntekts- og utgiftsfordeling
 - historikk per innbygger mot Norge og relevant KOSTRA-gruppe, med folketall
 - total → tjenesteområde → KOSTRA-funksjon → regnskapsart, med en tidsserie
-  som følger total, valgt tjenesteområde og valgt funksjon. Regnskapsartene er
-  siste års avsluttende detaljnivå
+  som følger total, valgt tjenesteområde og valgt funksjon. Regnskapsart er
+  avsluttende detaljnivå og er tilgjengelig per publisert år
 - «Pengestrømmer mellom staten og kommunen», der rammetilskudd til
   kommuneorganisasjonen holdes adskilt fra statlige skatter og avgifter
   registrert i kommunen som geografisk område
@@ -74,7 +74,8 @@ minste arkitekturen som beholder denne driftsmodellen er derfor:
    `etl/raw/kostra.sqlite`.
 3. Importen normaliserer enheter, klassifikasjoner og fakta i SQLite.
 4. Vanlige kartaggregater eksporteres til `kostra/index.json`.
-5. Store detaljer splittes per kommune/fylke og lazy-lastes først ved behov.
+5. Store detaljer, inkludert flerårige artsserier, splittes per kommune/fylke
+   og lazy-lastes først ved behov.
 6. `web/src/lib/kostra.js` er frontendens eneste dataseam. Nettleseren gjør
    ingen kall til SSB eller Kartverket.
 
@@ -105,6 +106,14 @@ Den gjenbruker retry/`Retry-After`-håndteringen i `etl/download.py`.
 `_download_ssb_tabell` brukes ikke her fordi den bare henter én aggregert
 årsserie, mens KOSTRA krever kontrollerte uttrekk over region, funksjon, art
 og statistikkvariabel.
+
+Tabell 12367 og 12368 publiserer både summer, hovedgrupper og underarter i
+samme artsdimensjon. Artsdrillen for brutto driftsutgifter viser derfor de
+gjensidig utelukkende hovedgruppene `AG16`, `AGD50`, `AGD51`, `AG34` og
+`A590`; underarter og totalen `AGD10` vises ikke som ekstra kostnader.
+Komponentene avstemmes mot SSBs `AGD10` for valgt funksjon og år. Eventuelle
+publiserte avvik vises i grensesnittet med originalt fortegn og blir aldri
+justert eller skjult. Manglende observasjoner lagres ikke som null kroner.
 
 Tabell 07022 er et akkumulert skatteregnskap i millioner kroner. Importen
 velger derfor bare desemberobservasjonen for hvert år og konverterer til

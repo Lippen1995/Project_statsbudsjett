@@ -11,11 +11,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from kostra import (  # noqa: E402
     METRICS,
     TAX_FLOW_CATEGORIES,
+    _import_details,
     _import_overview,
     _import_tax_flows,
     _sync_block_grant_flows,
     classify_code_changes,
     create_database,
+    detail_region_codes_for_import,
     entity_from_region,
     iter_jsonstat,
     region_codes_for_import,
@@ -88,6 +90,76 @@ def test_importlisten_beholder_historiske_regioner_uten_aa_blande_koder():
     ]
 
 
+def test_detaljimport_foelger_rene_kodebytter_men_ikke_grenseendringer(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.executemany("INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)", [
+        ("municipality:0104", "0104", "Moss", "municipality", None, None, 0, None, 2019, "Moss"),
+        ("municipality:3002", "3002", "Moss", "municipality", None, None, 0, 2020, 2023, "Moss"),
+        ("municipality:3103", "3103", "Moss", "municipality", None, None, 1, 2024, None, "Moss"),
+    ])
+    db.executemany("INSERT INTO entity_relation VALUES (?,?,?,?,?)", [
+        ("municipality:3002", "municipality:3103", 2024, "exact_successor", "SSB Klass"),
+        ("municipality:0104", "municipality:3002", 2020, "boundary_change", "SSB Klass"),
+    ])
+    metadata = {"dimension": {"Region": {"category": {"label": {
+        "0104": "Moss (-2019)", "3002": "Moss (2020-2023)", "3103": "Moss",
+    }}}}}
+
+    assert detail_region_codes_for_import(
+        db, metadata, "Region", "municipality", ["3103"]
+    ) == ["3103", "3002"]
+
+
+def test_detaljimport_bruker_full_offisiell_fylkeskode(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("county:46", "4600", "Vestland", "county", None, None, 1, None, None, "Vestland"),
+    )
+    metadata = {"dimension": {"Region": {"category": {"label": {
+        "4600": "Vestland fylkeskommune",
+    }}}}}
+
+    assert detail_region_codes_for_import(
+        db, metadata, "Region", "county", ["4600"]
+    ) == ["4600"]
+
+
+def test_regnskapsart_mapping_beholder_aar_fortegn_og_manglende_verdi(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:4601", "4601", "Bergen", "municipality", None, None, 1, None, None, "Bergen"),
+    )
+    metadata = {
+        "id": ["KOKkommuneregion0000", "Funksjon", "Art", "ContentsCode", "Tid"],
+        "dimension": {
+            "KOKkommuneregion0000": {"label": "Region"},
+            "Funksjon": {"label": "Funksjon"},
+            "Art": {"label": "Art"},
+            "ContentsCode": {"label": "Statistikkvariabel"},
+            "Tid": {"label": "År"},
+        },
+    }
+    cube = {
+        "id": metadata["id"], "size": [1, 1, 1, 1, 3],
+        "dimension": {
+            "KOKkommuneregion0000": {"category": {"index": {"4601": 0}}},
+            "Funksjon": {"category": {"index": {"222": 0}}},
+            "Art": {"category": {"index": {"AGD51": 0}}},
+            "ContentsCode": {"category": {"index": {"Belop": 0}}},
+            "Tid": {"category": {"index": {"2023": 0, "2024": 1, "2025": 2}}},
+        },
+        "value": [12, None, -3],
+    }
+
+    _import_details(db, "municipality", "12367", metadata, cube)
+
+    assert [tuple(row) for row in db.execute(
+        "SELECT year,amount FROM fact ORDER BY year"
+    )] == [(2023, 12.0), (2025, -3.0)]
+
+
 def test_klass_skiller_kodebytte_fra_sammenslaaing():
     changes = [
         {"oldCode": "0104", "newCode": "3002", "changeOccurred": "2020-01-01"},
@@ -145,6 +217,45 @@ def test_frontenddata_har_kartverdier_og_lazy_detaljfil(tmp_path):
     assert index["values"]["revenues"]["2025"]["municipality:0301"]["perCapita"] == 10000
     assert detail["services"][0]["code"] == "FGK8b"
     assert any(m["id"] == "debt" for m in METRICS)
+
+
+def test_frontenddata_beholder_regnskapsarter_per_funksjon_og_aar(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:4601", "4601", "Bergen", "municipality", None, None, 1, None, None, "Bergen"),
+    )
+    db.executemany("INSERT INTO classification VALUES (?,?,?,?)", [
+        ("function", "222", "Skolelokaler", "function"),
+        ("accounting_art", "AG16", "Lønnsutgifter fratrukket sykelønnsrefusjon", "accounting_art"),
+        ("accounting_art", "AGD10", "Brutto driftsutgifter på funksjon/tjenesteområde", "accounting_art"),
+    ])
+    db.executemany("INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)", [
+        ("kostra_actuals", "municipality:4601", 2024, "accounting_art", "222", "AG16", 100, None, "12367"),
+        ("kostra_actuals", "municipality:4601", 2025, "accounting_art", "222", "AG16", 110, None, "12367"),
+        ("kostra_actuals", "municipality:4601", 2024, "accounting_art", "222", "AGD10", 100, None, "12367"),
+        ("kostra_actuals", "municipality:4601", 2025, "accounting_art", "222", "AGD10", 110, None, "12367"),
+    ])
+    db.commit()
+
+    write_frontend_data(db, tmp_path / "data", {"county": {}, "municipality": {}})
+    detail = json.loads(
+        (tmp_path / "data" / "kostra" / "entities" / "municipality-4601.json")
+        .read_text(encoding="utf-8")
+    )
+
+    assert detail["accountingArts"]["222"] == [
+        {
+            "code": "AG16",
+            "name": "Lønnsutgifter fratrukket sykelønnsrefusjon",
+            "values": {"2024": {"amount": 100.0}, "2025": {"amount": 110.0}},
+        },
+        {
+            "code": "AGD10",
+            "name": "Brutto driftsutgifter på funksjon/tjenesteområde",
+            "values": {"2024": {"amount": 100.0}, "2025": {"amount": 110.0}},
+        },
+    ]
 
 
 def test_ssb_12137_avstemmes_mot_publiserte_driftsinntekter_for_oslo_2024(tmp_path):

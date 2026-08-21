@@ -80,7 +80,12 @@ SERVICE_METRICS = {
     "AGI5": "investments",
 }
 
-EXPENSE_ARTS = {"AG16", "AGD50", "AGD51", "AG34", "AGD43"}
+# Gjensidig utelukkende hovedgrupper som SSB bruker til å bygge AGD10
+# (brutto driftsutgifter på funksjon/tjenesteområde). Delarter som A090,
+# A260 og A370 ligger allerede i disse gruppene og må ikke summeres på nytt.
+# Noen rapporteringer lar seg likevel ikke avstemme helt; avviket beholdes og
+# forklares i klienten i stedet for at tallene justeres.
+EXPENSE_ARTS = {"AG16", "AGD50", "AGD51", "AG34", "A590"}
 # Gjensidig utelukkende hovedgrupper. AGD54/AGD56 er undergrupper av AGD49
 # og tas derfor ikke med i samme fordeling (ellers dobbelttelles inntektene).
 REVENUE_ARTS = {"A600", "AGD34", "AG48", "AGD49", "AGD28"}
@@ -436,27 +441,32 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         }
 
     art_rows = db.execute(
-        """SELECT function_code, accounting_art_code, amount FROM fact
-           WHERE dataset_id='kostra_actuals' AND entity_id=? AND year=?
+        """SELECT function_code, accounting_art_code, year, amount FROM fact
+           WHERE dataset_id='kostra_actuals' AND entity_id IN (""" + entity_slots + """)
              AND accounting_art_code<>'' AND amount IS NOT NULL
-           ORDER BY function_code, accounting_art_code""",
-        (entity["id"], latest_year),
+           ORDER BY function_code, accounting_art_code, year""",
+        series_entity_ids,
     ).fetchall()
-    arts_by_function = defaultdict(list)
+    arts_by_function = defaultdict(dict)
     expense_breakdown = defaultdict(float)
     revenue_breakdown = defaultdict(float)
     for row in art_rows:
-        art = {
+        art = arts_by_function[row["function_code"]].setdefault(row["accounting_art_code"], {
             "code": row["accounting_art_code"],
             "name": art_labels.get(row["accounting_art_code"], row["accounting_art_code"]),
-            "amount": row["amount"],
-        }
-        arts_by_function[row["function_code"]].append(art)
-        if row["function_code"].isdigit():
+            "values": {},
+        })
+        art["values"][str(row["year"])] = {"amount": row["amount"]}
+        if row["year"] == latest_year and row["function_code"].isdigit():
             if row["accounting_art_code"] in EXPENSE_ARTS:
                 expense_breakdown[row["accounting_art_code"]] += row["amount"]
             if row["accounting_art_code"] in REVENUE_ARTS:
                 revenue_breakdown[row["accounting_art_code"]] += row["amount"]
+
+    accounting_arts = {
+        function_code: list(arts.values())
+        for function_code, arts in arts_by_function.items()
+    }
 
     def breakdown(values):
         return [
@@ -522,7 +532,7 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         }
 
     return {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "entity": entity,
         "latestYear": latest_year,
         "overview": overview,
@@ -530,7 +540,7 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         "expenseBreakdown": breakdown(expense_breakdown),
         "services": list(services.values()),
         "functions": list(functions.values()),
-        "accountingArts": arts_by_function,
+        "accountingArts": accounting_arts,
         "boundaryHistory": boundary_history,
         "stateFlows": state_flows,
         "comparisons": {
@@ -770,6 +780,27 @@ def region_codes_for_import(metadata: dict, dimension: str, current: list[str], 
     active = [code for code in current if code in available]
     historical = [code for code in available if code.isdigit() and code not in active]
     return active + historical + [code for code in comparisons if code in available]
+
+
+def detail_region_codes_for_import(
+    db: sqlite3.Connection, metadata: dict, dimension: str, kind: str, current: list[str]
+) -> list[str]:
+    """Ta med aktive koder og dokumenterte rene kodebytter, men ikke sammenslåinger.
+
+    Artsdata eksporteres bare i lazy-lastede enhetsfiler. En ren kodeendring kan
+    derfor følge samme tidsserie, mens en faktisk grenseendring skal forbli en
+    separat historisk geografi.
+    """
+    available = _labels(metadata, dimension)
+    result = []
+    for code in current:
+        entity_id = _entity_id(kind, code)
+        for continuity_id in _continuity_entity_ids(db, entity_id):
+            row = db.execute("SELECT code FROM entity WHERE id=?", (continuity_id,)).fetchone()
+            continuity_code = row[0] if row else continuity_id.split(":", 1)[1]
+            if continuity_code in available and continuity_code not in result:
+                result.append(continuity_code)
+    return result
 
 
 def _download_geojson(client: SsbClient, kind: str) -> dict:
@@ -1059,12 +1090,40 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
 
             detail_function = _dimension_by_label(detail_meta, "funksjon")
             detail_art = _dimension_by_label(detail_meta, "art")
-            latest_detail_year = max(_ordered_codes(detail_meta["dimension"]["Tid"]), key=int)
-            for region_chunk in _chunks(current):
+            detail_regions = detail_region_codes_for_import(
+                db, detail_meta, region, kind, current
+            )
+            detail_functions = [
+                code for code in _labels(detail_meta, detail_function)
+                if re.fullmatch(r"\d{3}", code)
+            ]
+            expense_detail_arts = sorted(EXPENSE_ARTS | {"AGD10"})
+            # Bare gjensidig utelukkende hovedarter og kontrolltotalen hentes
+            # for alle år. Å hente alle summer og underarter ville mangedoblet
+            # datamengden og gitt dobbelttelling i klienten.
+            for region_chunk in _chunks(detail_regions):
                 selection = {
                     region: region_chunk,
-                    detail_function: ["*"],
-                    detail_art: ["*"],
+                    detail_function: detail_functions,
+                    detail_art: expense_detail_arts,
+                    "ContentsCode": ["*"],
+                    "Tid": ["*"],
+                }
+                if config["scope"] in detail_meta["id"]:
+                    selection[config["scope"]] = ["A"]
+                cube = client.data(config["detail"], selection)
+                _import_details(db, kind, config["detail"], detail_meta, cube)
+                db.commit()
+
+            # Inntektsfordelingen brukes bare som siste års avsluttende nivå.
+            # Den hentes separat slik at fem inntektsgrupper ikke replikeres
+            # over hele tidsserien uten en konsument i grensesnittet.
+            latest_detail_year = max(_ordered_codes(detail_meta["dimension"]["Tid"]), key=int)
+            for region_chunk in _chunks(detail_regions):
+                selection = {
+                    region: region_chunk,
+                    detail_function: detail_functions,
+                    detail_art: sorted(REVENUE_ARTS),
                     "ContentsCode": ["*"],
                     "Tid": [latest_detail_year],
                 }

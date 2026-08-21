@@ -358,10 +358,25 @@ interface KostraEntity {
 }
 ```
 
-Detaljfiler har `schemaVersion: 2` og inneholder `overview`,
+Detaljfiler har `schemaVersion: 3` og inneholder `overview`,
 `revenueBreakdown`, `expenseBreakdown`, `services`, `functions`,
 `accountingArts` og referanser til Norge/KOSTRA-gruppe. Kommunefiler har i
 tillegg `stateFlows`:
+
+```typescript
+interface KostraAccountingArt {
+  code: string;             // offisiell SSB/KOSTRA-artkode
+  name: string;
+  values: {
+    [year: string]: { amount: number }; // 1000 kroner, fortegn beholdes
+  };
+}
+```
+
+`accountingArts` er indeksert per KOSTRA-funksjon. Nettleseren laster bare
+detaljfilen for valgt kommune eller fylkeskommune; den mottar aldri hele den
+nasjonale artstabellen. Manglende observasjoner utelates og tolkes ikke som
+null kroner.
 
 ```typescript
 interface KostraStateFlows {

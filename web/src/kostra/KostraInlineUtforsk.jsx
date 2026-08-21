@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import LinjeGraf from '../fellestall/grafer/LinjeGraf'
 import { RUST } from '../fellestall/design'
-import { explorerDrillRows, explorerHistory, sortExplorerRows } from './explorer'
+import { accountingArtBreakdown, explorerDrillRows, explorerHistory, sortExplorerRows } from './explorer'
 import { formatKostraValue, populationForEntity } from './model'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -13,11 +13,18 @@ export default function KostraInlineUtforsk({ index, detail, entity, year, scope
   const headingRef = useRef(null)
   const metricRows = useMemo(() => explorerDrillRows(detail, year, {}), [detail, year])
   const rawRows = explorerDrillRows(detail, year, path)
+  const artBreakdown = path.metricId === 'expenses' && path.functionCode
+    ? accountingArtBreakdown(detail, year, path.functionCode)
+    : null
   const shareTotal = rawRows.reduce((sum, item) => sum + Math.abs(item.amount ?? 0), 0)
   const signedValues = rawRows.some((item) => (item.amount ?? 0) < 0)
   const rows = sortExplorerRows(rawRows.map((item) => ({
     ...item,
-    share: Number.isFinite(item.amount) && shareTotal ? Math.abs(item.amount) / shareTotal * 100 : null,
+    share: Number.isFinite(item.share)
+      ? item.share
+      : Number.isFinite(item.amount) && shareTotal
+        ? Math.abs(item.amount) / shareTotal * 100
+        : null,
   })), sortKey, sortDirection)
   const history = explorerHistory(detail, index.years, path)
   const population = populationForEntity(index, year, entity.id)
@@ -26,7 +33,7 @@ export default function KostraInlineUtforsk({ index, detail, entity, year, scope
   const selectedFunction = detail.functions?.find((item) => item.code === path.functionCode)
   const isMetricMenu = !path.metricId
   const thirdSortKey = isMetricMenu ? 'amount' : 'share'
-  const thirdHeading = isMetricMenu ? 'Totalt' : signedValues ? 'Andel av utslag' : 'Andel'
+  const thirdHeading = isMetricMenu ? 'Totalt' : 'Andel'
   const maxPerCapita = Math.max(1, ...rows.map((item) => Math.abs(item.perCapita ?? 0)))
   const currentValue = history?.points?.[index.years.indexOf(year)]?.v ?? null
   const levelLabel = isMetricMenu
@@ -73,8 +80,8 @@ export default function KostraInlineUtforsk({ index, detail, entity, year, scope
         </nav>
 
         <div className="ft-nivaatopp">
-          <span className="ft-nivaasum" tabIndex={-1} ref={headingRef}>{isMetricMenu ? entity.name : levelLabel}</span>
-          <span className="ft-nivaamerke">{year} · klikk for å drille videre</span>
+          <span className="ft-nivaasum" tabIndex={-1} ref={headingRef}>{isMetricMenu ? entity.name : selectedFunction?.name ?? levelLabel}</span>
+          <span className="ft-nivaamerke">{year} · {path.functionCode ? 'laveste nivå' : 'klikk for å drille videre'}</span>
         </div>
 
         <div className="ft-tabellhode ko-tabellhode ko-drilltabellhode">
@@ -127,15 +134,25 @@ export default function KostraInlineUtforsk({ index, detail, entity, year, scope
           )
         })}
 
+        {artBreakdown?.reconciliation.status === 'reconciled' && (
+          <p className="ko-artavstemming">Artsgruppene avstemmer mot funksjonens brutto driftsutgifter.</p>
+        )}
+        {artBreakdown?.reconciliation.status === 'difference' && (
+          <p className="ko-artavstemming">
+            Artsgruppene summerer til {formatKostraValue(artBreakdown.reconciliation.componentTotal, 'amount')}, mens SSB oppgir {formatKostraValue(artBreakdown.reconciliation.functionTotal, 'amount')} for funksjonen. Avviket på {formatKostraValue(artBreakdown.reconciliation.difference, 'amount')} beholdes synlig fordi publiserte artsgrupper ikke alltid dekker alle posteringer.
+          </p>
+        )}
+        {artBreakdown && signedValues && (
+          <p className="ko-artavstemming">Negative beløp er motposter og vises med fortegn; de er ikke fremstilt som ordinære kostnader.</p>
+        )}
+
         {!rows.length && (
           <p className="ft-tommelding">
             {path.metricId === 'debt'
               ? 'SSBs KOSTRA-grunnlag har ikke en videre fordeling av gjelden.'
               : path.metricId === 'investments' && path.functionCode
                 ? 'Regnskapsarter kan ikke knyttes entydig til investeringer i KOSTRA-grunnlaget.'
-              : year !== detail.latestYear
-                ? `Dette detaljnivået er tilgjengelig for ${detail.latestYear}.`
-                : 'Ingen flere detaljer er tilgjengelige på dette nivået.'}
+              : 'Ingen rapporterte regnskapsarter er tilgjengelige på dette nivået for valgt år.'}
           </p>
         )}
       </div>

@@ -12,6 +12,7 @@ import {
   populationForEntity,
   stateFlowSummary,
 } from './model'
+import { accountingArtBreakdown } from './explorer'
 
 const GREEN = '#47735D'
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -125,7 +126,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
   const selectedService = detail?.services.find((item) => item.code === serviceCode)
   const functions = detail?.functions.filter((item) => !serviceCode || item.serviceCodes?.includes(serviceCode)) ?? []
   const selectedFunction = functions.find((item) => item.code === functionCode)
-  const arts = detail?.accountingArts?.[functionCode] ?? []
+  const arts = functionCode ? accountingArtBreakdown(detail, detail?.latestYear, functionCode).rows : []
   const Heading = embedded ? 'h2' : 'h1'
   const comparisons = useMemo(() => {
     if (!detail) return []
@@ -164,7 +165,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
   const boundaryWarnings = materialBoundaryHistory(detail.boundaryHistory)
 
   const drillRows = selectedFunction
-    ? [...arts].sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount))
+    ? [...arts].sort((a, b) => (b.perCapita ?? -Infinity) - (a.perCapita ?? -Infinity))
     : selectedService
       ? [...functions].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.amount ?? 0) - Math.abs(point(a, 'net_expenses', year)?.amount ?? 0))
       : [...detail.services].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.amount ?? 0) - Math.abs(point(a, 'net_expenses', year)?.amount ?? 0))

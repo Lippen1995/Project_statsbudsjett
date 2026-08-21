@@ -140,6 +140,7 @@
 .ko-drillgraf h3 { margin: 5px 0 8px; font-family: var(--serif); font-size: 22px; }
 .ko-drillgrafverdi { display: block; margin-bottom: 10px; color: var(--rust); font-family: var(--serif); font-size: 24px; }
 .ko-drillgrafnote { margin: 0 0 10px; color: var(--blek); font-size: 11px; line-height: 1.45; }
+.ko-artavstemming { margin: 12px 0 0; color: var(--blek); font-size: 11px; line-height: 1.45; }
 .ko-status { max-width: 720px; min-height: 60vh; margin: 0 auto; padding: 100px 32px; }.ko-status :is(h1, h2) { font-size: 44px; }
 .ko-fot { margin-top: 72px; }
 .ko-kildelinje { max-width: var(--spalte); margin: 42px auto 0; padding: 18px 32px 32px; border-top: 1px solid var(--strek); color: var(--blek); font-size: 11px; }
