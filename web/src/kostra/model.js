@@ -81,6 +81,14 @@ export function parseKostraRoute(hash = '') {
   return { page: 'map', countyCode: null }
 }
 
+/** Scroll bare ved en reell inngang til en dyp KOSTRA-lenke, aldri ved intern drill. */
+export function shouldScrollToKostra(previousHash, nextHash, sectionVisible = false) {
+  if (!nextHash.startsWith('#kostra')) return false
+  if (previousHash == null) return true
+  const alreadyInKostra = previousHash === '#kommuner' || previousHash.startsWith('#kostra')
+  return !alreadyInKostra && !sectionVisible
+}
+
 export function mapValue(index, metricId, year, entityId, mode) {
   const point = index?.values?.[metricId]?.[year]?.[entityId]
   return point?.[mode] ?? null

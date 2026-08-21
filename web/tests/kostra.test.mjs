@@ -15,6 +15,7 @@ import {
   populationForEntity,
   summarizeMunicipalities,
   summarizeKostraEntities,
+  shouldScrollToKostra,
   stateFlowSummary,
 } from '../src/kostra/model.js'
 import { SEKSJONER } from '../src/fellestall/design.js'
@@ -31,6 +32,16 @@ test('KOSTRA-ruter skiller fylkesdrill fra detaljsider', () => {
   assert.deepEqual(parseKostraRoute('#kostra/fylke/03'), { page: 'map', countyCode: '03' })
   assert.deepEqual(parseKostraRoute('#kostra/fylke/03/detaljer'), { page: 'detail', kind: 'county', code: '0300' })
   assert.deepEqual(parseKostraRoute('#kostra/kommune/0301'), { page: 'detail', kind: 'municipality', code: '0301' })
+})
+
+test('intern navigasjon i KOSTRA beholder skjermposisjonen', () => {
+  assert.equal(shouldScrollToKostra(null, '#kostra/fylke/46'), true)
+  assert.equal(shouldScrollToKostra('#utforsk', '#kostra/fylke/46'), true)
+  assert.equal(shouldScrollToKostra('#kommuner', '#kostra/fylke/46'), false)
+  assert.equal(shouldScrollToKostra('#kostra/fylke/46', '#kostra/kommune/4601'), false)
+  assert.equal(shouldScrollToKostra('#kostra/kommune/4601', '#kostra'), false)
+  assert.equal(shouldScrollToKostra('', '#kostra/fylke/46', true), false)
+  assert.equal(shouldScrollToKostra('', '#kostra/fylke/46', false), true)
 })
 
 test('utforsk-tabellen kan sorteres etter per innbygger og andel', () => {

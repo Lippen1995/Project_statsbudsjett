@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { loadKostraBoundaries, loadKostraIndex } from '../lib/kostra'
 import KostraKart from './KostraKart'
 import KostraDetalj from './KostraDetalj'
-import { parseKostraRoute } from './model'
+import { parseKostraRoute, shouldScrollToKostra } from './model'
 import './kostra.css'
 
 export default function Kostra({ hash }) {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
+  const previousHashRef = useRef(null)
   const route = parseKostraRoute(hash)
 
   useEffect(() => {
@@ -20,9 +21,16 @@ export default function Kostra({ hash }) {
   }, [])
 
   useEffect(() => {
-    if (!hash.startsWith('#kostra')) return
+    const previousHash = previousHashRef.current
+    previousHashRef.current = hash
+    const section = document.getElementById('kommuner')
+    const rect = section?.getBoundingClientRect()
+    const sectionVisible = Boolean(rect && rect.bottom > 0 && rect.top < window.innerHeight)
+    if (!shouldScrollToKostra(previousHash, hash, sectionVisible)) return
     requestAnimationFrame(() => {
-      document.getElementById('kommuner')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      if (window.location.hash === hash) {
+        section?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
     })
   }, [hash])
 

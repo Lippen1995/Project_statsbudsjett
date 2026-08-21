@@ -1,4 +1,4 @@
-.ko { min-height: 100vh; background: var(--papir); color: var(--tekst); }
+.ko { min-height: 100vh; overflow-anchor: none; background: var(--papir); color: var(--tekst); }
 .ko-integrert { min-height: 0; scroll-margin-top: 70px; }
 .ko-toppbar { display: none; }
 .ko-toppbar .aktiv { color: var(--ink); font-weight: 700; }
