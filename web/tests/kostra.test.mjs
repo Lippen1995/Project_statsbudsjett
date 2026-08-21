@@ -17,6 +17,7 @@ import {
   summarizeKostraEntities,
   shouldScrollToKostra,
   stateFlowSummary,
+  yearlyGrowth,
 } from '../src/kostra/model.js'
 import { SEKSJONER } from '../src/fellestall/design.js'
 import {
@@ -58,6 +59,17 @@ test('utforsk-tabellen kan sorteres etter per innbygger og andel', () => {
   assert.deepEqual(sortExplorerRows(rows, 'perCapita').map((row) => row.code), ['b', 'a'])
   assert.deepEqual(sortExplorerRows(rows, 'perCapita', 'asc').map((row) => row.code), ['a', 'b'])
   assert.deepEqual(sortExplorerRows(rows, 'share').map((row) => row.code), ['a', 'b'])
+})
+
+test('årlig vekst viser beløpsendring og Y/Y mot foregående kalenderår', () => {
+  const years = [2022, 2023, 2024, 2025]
+  const points = [{ v: 80 }, { v: null }, { v: 100 }, { v: 112 }]
+
+  assert.deepEqual(yearlyGrowth(points, years, 2025), { amount: 12, yoy: 12 })
+  assert.deepEqual(yearlyGrowth(points, years, 2024), { amount: null, yoy: null })
+  assert.deepEqual(yearlyGrowth([{ v: 0 }, { v: 10 }], [2024, 2025], 2025), {
+    amount: 10, yoy: null,
+  })
 })
 
 test('eksplisitt manglende artsandel blir ikke beregnet fra et ufullstendig grunnlag', () => {

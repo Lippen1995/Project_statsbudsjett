@@ -258,6 +258,22 @@ export function formatKostraValue(value, mode) {
   return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(abs)} mill.`
 }
 
+/** Endring fra det umiddelbart foregående kalenderåret. */
+export function yearlyGrowth(points, years, year) {
+  const index = years.indexOf(year)
+  if (index <= 0) return { amount: null, yoy: null }
+  const current = points?.[index]?.v
+  const previous = points?.[index - 1]?.v
+  if (!Number.isFinite(current) || !Number.isFinite(previous)) {
+    return { amount: null, yoy: null }
+  }
+  const amount = current - previous
+  return {
+    amount,
+    yoy: previous === 0 ? null : amount / Math.abs(previous) * 100,
+  }
+}
+
 export function metricSeries(index, metricId, entityId, mode) {
   return index.years.map((year) => ({ v: mapValue(index, metricId, year, entityId, mode) }))
 }

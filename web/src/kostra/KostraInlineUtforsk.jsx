@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import LinjeGraf from '../fellestall/grafer/LinjeGraf'
 import { RUST } from '../fellestall/design'
 import { accountingArtBreakdown, explorerDrillRows, explorerHistory, explorerRowsWithShares, sortExplorerRows } from './explorer'
-import { formatKostraValue, populationForEntity } from './model'
+import { formatKostraValue, populationForEntity, yearlyGrowth } from './model'
+import KostraGrowthSummary from './KostraGrowthSummary'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 
@@ -32,6 +33,7 @@ export default function KostraInlineUtforsk({ index, detail, entity, year, scope
       : 'Andel'
   const maxPerCapita = Math.max(1, ...rows.map((item) => Math.abs(item.perCapita ?? 0)))
   const currentValue = history?.points?.[index.years.indexOf(year)]?.v ?? null
+  const growth = history ? yearlyGrowth(history.points, index.years, year) : null
   const levelLabel = isMetricMenu
     ? 'Nøkkeltall'
     : path.functionCode
@@ -177,6 +179,7 @@ export default function KostraInlineUtforsk({ index, detail, entity, year, scope
         {history && (
           <div className="ft-arealblokk">
             <div className="ft-stikkord">Utvikling over tid</div>
+            <KostraGrowthSummary growth={growth} />
             <div className="ft-kort-graf">
               <LinjeGraf
                 serier={[{ navn: history.name, farge: RUST, bredde: 2.5, punkter: history.points }]}

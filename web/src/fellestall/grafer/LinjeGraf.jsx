@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import SvgTekst from './SvgTekst'
 import { BLEK, BLEK_MORK, GRID, GRID_MORK, PAPIR, INK } from '../design'
 import { belopMill } from '../tall'
+import { yearTickIndices } from './akse'
 
 /**
  * Linjegraf med valgfri hover-tooltip og dra-for-å-velge-periode.
@@ -88,6 +89,7 @@ export default function LinjeGraf({
   const boksH = 22 + linjer.length * 16
   const hx = hover != null ? x(hover, aar.length) : 0
   const bx = hx + boksB + 14 > W ? hx - boksB - 12 : hx + 12
+  const yearTicks = new Set(yearTickIndices(aar.length))
 
   return (
     <svg {...svgProps}>
@@ -171,7 +173,7 @@ export default function LinjeGraf({
 
       {/* Årsakse – bare hvert n-te år, så labelene ikke kolliderer */}
       {aar.map((a, i) =>
-        i % Math.ceil(aar.length / 5) === 0 || i === aar.length - 1 ? (
+        yearTicks.has(i) ? (
           <SvgTekst
             key={`x${a}`}
             x={x(i, aar.length)}

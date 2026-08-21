@@ -11,8 +11,10 @@ import {
   metricSeries,
   populationForEntity,
   stateFlowSummary,
+  yearlyGrowth,
 } from './model'
 import { accountingArtBreakdown } from './explorer'
+import KostraGrowthSummary from './KostraGrowthSummary'
 
 const GREEN = '#47735D'
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -175,6 +177,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
   const maxArtValue = Math.max(1, ...arts.map((item) => Math.abs(item[mode] ?? 0)))
   const drillHistoryData = drillHistory(detail, index.years, serviceCode, functionCode)
   const drillSeries = [{ navn: drillHistoryData.name, farge: RUST, bredde: 2.5, punkter: drillHistoryData.points }]
+  const drillGrowth = yearlyGrowth(drillHistoryData.points, index.years, year)
   const drillTips = (i) => ({
     tittel: String(index.years[i]),
     linjer: [{ farge: RUST, tekst: `${drillHistoryData.name}: ${formatKostraValue(drillHistoryData.points[i]?.v, 'amount')}` }],
@@ -322,6 +325,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
               <span className="ft-stikkord">Utvikling over tid</span>
               <h3>{drillHistoryData.name}</h3>
               <strong className="ko-drillgrafverdi num">{formatKostraValue(drillHistoryData.latestValue, 'amount')}</strong>
+              <KostraGrowthSummary growth={drillGrowth} />
               {selectedFunction && <p className="ko-drillgrafnote">Regnskapsartene viser {year}; grafen viser funksjonen over tid.</p>}
               <LinjeGraf
                 serier={drillSeries}
