@@ -70,6 +70,9 @@ export function parseKostraRoute(hash = '') {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean)
   if (parts[0] !== 'kostra') return { page: 'map', countyCode: null }
   if (parts[1] === 'kommune' && /^\d{4}$/.test(parts[2] ?? '')) {
+    if (parts[3] === 'detaljer') {
+      return { page: 'detail', kind: 'municipality', code: parts[2] }
+    }
     return { page: 'map', countyCode: parts[2].slice(0, 2), municipalityCode: parts[2] }
   }
   if (parts[1] === 'fylke' && /^\d{2}$/.test(parts[2] ?? '')) {
@@ -79,6 +82,14 @@ export function parseKostraRoute(hash = '') {
     return { page: 'map', countyCode: parts[2] }
   }
   return { page: 'map', countyCode: null }
+}
+
+/** Historiske kommuner har detaljdata, men finnes ikke i dagens kartgeometri. */
+export function isHistoricalMunicipalityCode(index, code) {
+  if (!code) return false
+  const entityId = `municipality:${code}`
+  const isActive = (index?.entities ?? []).some((entity) => entity.id === entityId)
+  return !isActive && (index?.historicalEntities ?? []).some((entity) => entity.id === entityId)
 }
 
 /** Scroll bare ved en reell inngang til en dyp KOSTRA-lenke, aldri ved intern drill. */

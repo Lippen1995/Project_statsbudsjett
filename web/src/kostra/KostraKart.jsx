@@ -11,6 +11,7 @@ import {
   summarizeKostraEntities,
   summarizeMunicipalities,
 } from './model'
+import KostraDetalj from './KostraDetalj'
 import KostraUtforsk from './KostraUtforsk'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -92,6 +93,10 @@ export default function KostraKart({
   const selectedMunicipality = selectedMunicipalityId ? entities.get(selectedMunicipalityId) : null
   const focusedEntity = hovered ?? selectedMunicipality
   const county = countyId ? entities.get(countyId) : null
+  const selectedShape = selectedMunicipalityId
+    ? shapes.find((shape) => shape.id === selectedMunicipalityId)
+    : null
+  const mainShapes = selectedShape ? [selectedShape] : shapes
   const metric = metrics.find((item) => item.id === metricId) ?? metrics[0]
   const summaryIds = focusedEntity ? [focusedEntity.id] : shapes.map((shape) => shape.id)
   const summary = summarizeKostraEntities(index, metricId, year, summaryIds)
@@ -99,7 +104,8 @@ export default function KostraKart({
     ? summarizeMunicipalities(index, metricId, year, summaryIds)
     : null
   const summaryName = displayEntityName(focusedEntity) || displayEntityName(county) || (level === 'county' ? 'Alle fylkeskommuner' : 'Alle kommuner')
-  const viewBox = level === 'municipality' ? focusedViewBox(shapes, boundaries.viewBox) : boundaries.viewBox
+  const countyViewBox = level === 'municipality' ? focusedViewBox(shapes, boundaries.viewBox) : boundaries.viewBox
+  const viewBox = selectedShape ? focusedViewBox([selectedShape], countyViewBox) : countyViewBox
   const hits = findKostraEntities(index.entities, search)
   const municipalityCount = Object.keys(boundaries.municipality ?? {}).length
   const countyCount = Object.keys(boundaries.county ?? {}).length
@@ -120,7 +126,7 @@ export default function KostraKart({
   const sorted = [...values].sort((a, b) => a - b)
   const legend = sorted.length ? [sorted[0], sorted[Math.floor(sorted.length / 2)], sorted.at(-1)] : []
   const Heading = embedded ? 'h2' : 'h1'
-  const activeKeyboardId = shapes.some((shape) => shape.id === keyboardId) ? keyboardId : shapes[0]?.id
+  const activeKeyboardId = mainShapes.some((shape) => shape.id === keyboardId) ? keyboardId : mainShapes[0]?.id
   const municipalityTitle = selectedMunicipality ? municipalityEntityTitle(selectedMunicipality) : null
 
   const open = (shape) => {
@@ -207,12 +213,20 @@ export default function KostraKart({
         >
           <div className="ko-kartflate">
             {selectedMunicipality && (
-              <a className="ko-fylkeinnfelt" href="#kostra" aria-label="Tilbake til fylkeoversikten">
-                <span>Til fylker</span>
-                <svg viewBox={boundaries.viewBox} role="img" aria-label={`${displayEntityName(county)} markert i Norge`}>
+              <a
+                className="ko-fylkeinnfelt"
+                href={`#kostra/fylke/${countyCode}`}
+                aria-label={`Tilbake til kommuneoversikten i ${displayEntityName(county)}`}
+              >
+                <svg viewBox={countyViewBox} role="img" aria-label={`${municipalityTitle} markert i ${displayEntityName(county)}`}>
                   <g fillRule="evenodd">
-                    {Object.values(boundaries.county ?? {}).map((shape) => (
-                      <path key={shape.id} d={shape.path} className={shape.id === countyId ? 'valgt' : ''} />
+                    {shapes.map((shape) => (
+                      <path
+                        key={shape.id}
+                        d={shape.path}
+                        fill={choroplethColor(mapValue(index, metricId, year, shape.id, mode), values)}
+                        className={shape.id === selectedMunicipalityId ? 'valgt' : ''}
+                      />
                     ))}
                   </g>
                 </svg>
@@ -220,7 +234,7 @@ export default function KostraKart({
             )}
             <svg className="ko-hovedkart" viewBox={viewBox} role="img" aria-label={`${metric.label} i ${year}, ${county?.name ?? 'Norge'}`}>
               <g fillRule="evenodd">
-                {shapes.map((shape, shapeIndex) => {
+                {mainShapes.map((shape, shapeIndex) => {
                   const value = mapValue(index, metricId, year, shape.id, mode)
                   return (
                     <path
@@ -255,9 +269,9 @@ export default function KostraKart({
                           const nextIndex = event.key === 'Home'
                             ? 0
                             : event.key === 'End'
-                              ? shapes.length - 1
-                              : (shapeIndex + direction + shapes.length) % shapes.length
-                          const nextShape = shapes[nextIndex]
+                              ? mainShapes.length - 1
+                              : (shapeIndex + direction + mainShapes.length) % mainShapes.length
+                          const nextShape = mainShapes[nextIndex]
                           setKeyboardId(nextShape.id)
                           setHoverId(nextShape.id)
                           event.currentTarget.ownerSVGElement
@@ -402,21 +416,23 @@ export default function KostraKart({
         </div>
       </section>
 
-      <KostraUtforsk
-        index={index}
-        shapes={shapes}
-        entities={entities}
-        metric={metric}
-        metricId={metricId}
-        year={year}
-        mode={mode}
-        hoverId={hoverId}
-        selectedId={selectedMunicipalityId}
-        level={level}
-        scopeName={displayEntityName(county) || (level === 'county' ? 'Alle fylkeskommuner' : 'Alle kommuner')}
-        onHover={setHoverId}
-        onClearSelection={() => { window.location.hash = `kostra/fylke/${countyCode}` }}
-      />
+      {selectedMunicipality ? (
+        <KostraDetalj index={index} kind="municipality" code={selectedMunicipality.code} embedded />
+      ) : (
+        <KostraUtforsk
+          index={index}
+          shapes={shapes}
+          entities={entities}
+          metric={metric}
+          metricId={metricId}
+          year={year}
+          mode={mode}
+          hoverId={hoverId}
+          level={level}
+          scopeName={displayEntityName(county) || (level === 'county' ? 'Alle fylkeskommuner' : 'Alle kommuner')}
+          onHover={setHoverId}
+        />
+      )}
     </>
   )
 }

@@ -29,13 +29,12 @@
 .ko-hovedkart path { stroke: #FFFCF7; stroke-width: 1.1; vector-effect: non-scaling-stroke; cursor: pointer; transition: fill .14s ease, stroke .14s ease; outline: none; }
 .ko-hovedkart path:hover, .ko-hovedkart path.aktiv, .ko-hovedkart path:focus, .ko-hovedkart path.valgt { stroke: var(--ink); stroke-width: 2; }
 .ko-hovedkart path.valgt { stroke-width: 2.4; }
-.ko-fylkeinnfelt { position: absolute; z-index: 4; top: 12px; left: 12px; display: flex; width: 118px; height: 132px; flex-direction: column; padding: 8px; border: 1px solid var(--strek); background: color-mix(in srgb, var(--papir) 94%, transparent); color: var(--tekst); box-shadow: 0 5px 18px rgba(20,22,26,.08); }
+.ko-fylkeinnfelt { position: absolute; z-index: 4; top: 12px; left: 12px; display: flex; width: 144px; height: 144px; padding: 7px; border: 1px solid var(--strek); background: var(--papir); color: var(--tekst); }
 .ko-fylkeinnfelt:hover, .ko-fylkeinnfelt:focus-visible { border-color: var(--ink); }
 .ko-fylkeinnfelt:focus-visible { outline: 2px solid var(--rust); outline-offset: 2px; }
-.ko-fylkeinnfelt > span { font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-.ko-fylkeinnfelt svg { width: 100%; min-height: 0; flex: 1; }
-.ko-fylkeinnfelt path { fill: #DED8CE; stroke: var(--ark); stroke-width: 1.2; vector-effect: non-scaling-stroke; pointer-events: none; }
-.ko-fylkeinnfelt path.valgt { fill: var(--rust); stroke: var(--ink); stroke-width: 1.8; }
+.ko-fylkeinnfelt svg { width: 100%; height: 100%; min-height: 0; }
+.ko-fylkeinnfelt path { stroke: var(--ark); stroke-width: 1.2; vector-effect: non-scaling-stroke; pointer-events: none; }
+.ko-fylkeinnfelt path.valgt { stroke: var(--ink); stroke-width: 2.2; }
 .ko-legende { display: grid; grid-template-columns: auto repeat(5, 32px) auto; gap: 3px; align-items: center; justify-content: center; color: var(--blek); font-size: 11px; }
 .ko-legende i { display: block; height: 8px; }
 .ko-legende i:nth-of-type(1) { background: #F3E6D8; }.ko-legende i:nth-of-type(2) { background: #E9C7AF; }.ko-legende i:nth-of-type(3) { background: #D99D7D; }.ko-legende i:nth-of-type(4) { background: #C97052; }.ko-legende i:nth-of-type(5) { background: #9F3F2C; }

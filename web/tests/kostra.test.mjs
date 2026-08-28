@@ -8,6 +8,7 @@ import {
   displayEntityName,
   drillHistory,
   findKostraEntities,
+  isHistoricalMunicipalityCode,
   mapValue,
   materialBoundaryHistory,
   municipalityOverviewRows,
@@ -42,6 +43,19 @@ test('KOSTRA-ruter skiller fylkesdrill fra detaljsider', () => {
   assert.deepEqual(parseKostraRoute('#kostra/kommune/0301'), {
     page: 'map', countyCode: '03', municipalityCode: '0301',
   })
+  assert.deepEqual(parseKostraRoute('#kostra/kommune/0104/detaljer'), {
+    page: 'detail', kind: 'municipality', code: '0104',
+  })
+})
+
+test('historiske kommunekoder beholder detaljsiden mens aktive kommuner bruker kartet', () => {
+  const index = {
+    entities: [{ id: 'municipality:1103' }],
+    historicalEntities: [{ id: 'municipality:0104' }],
+  }
+  assert.equal(isHistoricalMunicipalityCode(index, '0104'), true)
+  assert.equal(isHistoricalMunicipalityCode(index, '1103'), false)
+  assert.equal(isHistoricalMunicipalityCode(index, '9999'), false)
 })
 
 test('intern navigasjon i KOSTRA beholder skjermposisjonen', () => {

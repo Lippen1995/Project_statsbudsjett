@@ -7,14 +7,11 @@ import KostraGrowthSummary from './KostraGrowthSummary'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 
-export default function KostraInlineUtforsk({
-  index, detail, entity, year, scopeName, onExit, focusOnMount = true,
-}) {
+export default function KostraInlineUtforsk({ index, detail, entity, year, scopeName, onExit }) {
   const [path, setPath] = useState({})
   const [sortKey, setSortKey] = useState('perCapita')
   const [sortDirection, setSortDirection] = useState('desc')
   const headingRef = useRef(null)
-  const firstFocusRef = useRef(true)
   const metricRows = useMemo(() => explorerDrillRows(detail, year, {}), [detail, year])
   const rawRows = explorerDrillRows(detail, year, path)
   const artBreakdown = path.metricId === 'expenses' && path.functionCode
@@ -55,10 +52,8 @@ export default function KostraInlineUtforsk({
   }, [isMetricMenu, sortKey])
 
   useEffect(() => {
-    const isFirstFocus = firstFocusRef.current
-    firstFocusRef.current = false
-    if (!isFirstFocus || focusOnMount) headingRef.current?.focus()
-  }, [path, focusOnMount])
+    headingRef.current?.focus()
+  }, [path])
 
   const openRow = (item) => {
     if (item.kind === 'metric') setPath({ metricId: item.code })

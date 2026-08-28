@@ -216,7 +216,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
             {boundaryWarnings.map((change) => {
               const previousHref = kind === 'county'
                 ? `#kostra/fylke/${change.sourceCode.slice(0, 2)}/detaljer`
-                : `#kostra/kommune/${change.sourceCode}`
+                : `#kostra/kommune/${change.sourceCode}/detaljer`
               return (
                 <p key={`${change.sourceId}-${change.targetId}-${change.changeYear}`}>
                   <strong>{change.changeYear}:</strong>{' '}

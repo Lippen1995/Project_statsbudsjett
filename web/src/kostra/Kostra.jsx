@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { loadKostraBoundaries, loadKostraIndex } from '../lib/kostra'
 import KostraKart from './KostraKart'
 import KostraDetalj from './KostraDetalj'
-import { parseKostraRoute, shouldScrollToKostra } from './model'
+import { isHistoricalMunicipalityCode, parseKostraRoute, shouldScrollToKostra } from './model'
 import './kostra.css'
 
 export default function Kostra({ hash }) {
@@ -10,6 +10,9 @@ export default function Kostra({ hash }) {
   const [error, setError] = useState(null)
   const previousHashRef = useRef(null)
   const route = parseKostraRoute(hash)
+  const historicalMunicipalityRoute = data && route.municipalityCode
+    ? isHistoricalMunicipalityCode(data.index, route.municipalityCode)
+    : false
 
   useEffect(() => {
     Promise.all([loadKostraIndex(), loadKostraBoundaries()])
@@ -44,8 +47,13 @@ export default function Kostra({ hash }) {
         </section>
       ) : !data ? (
         <section className="ko-status"><div className="spinner" /><p>Laster KOSTRA-data…</p></section>
-      ) : route.page === 'detail' ? (
-        <KostraDetalj index={data.index} kind={route.kind} code={route.code} embedded />
+      ) : route.page === 'detail' || historicalMunicipalityRoute ? (
+        <KostraDetalj
+          index={data.index}
+          kind={historicalMunicipalityRoute ? 'municipality' : route.kind}
+          code={historicalMunicipalityRoute ? route.municipalityCode : route.code}
+          embedded
+        />
       ) : (
         <KostraKart
           index={data.index}
