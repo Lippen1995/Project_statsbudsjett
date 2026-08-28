@@ -148,7 +148,7 @@ export default function KostraUtforsk({
 
   useEffect(() => {
     if (drillEntityId && !detailState.detail) {
-      statusRef.current?.focus()
+      if (!selectedId) statusRef.current?.focus()
       return
     }
     if (!drillEntityId && returnFocusId.current) {
@@ -237,6 +237,7 @@ export default function KostraUtforsk({
             year={year}
             scopeName={inlineScopeName}
             onExit={exitDrill}
+            focusOnMount={!selectedId}
           />
         ) : (
           <div className="ko-inline-status" role="status" tabIndex={-1} ref={statusRef}>
