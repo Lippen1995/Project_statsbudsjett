@@ -15,7 +15,8 @@ import KostraInlineUtforsk from './KostraInlineUtforsk'
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 
 export default function KostraUtforsk({
-  index, shapes, entities, metric, metricId, year, mode, hoverId, level, scopeName, onHover,
+  index, shapes, entities, metric, metricId, year, mode, hoverId, selectedId, level, scopeName, onHover,
+  onClearSelection,
 }) {
   const [sortKey, setSortKey] = useState('perCapita')
   const [sortDirection, setSortDirection] = useState('desc')
@@ -28,6 +29,7 @@ export default function KostraUtforsk({
   const groupHeadingRef = useRef(null)
   const returnFocusId = useRef(null)
   const enteringGroup = useRef(false)
+  const externalSelectionRef = useRef(null)
   const allIds = useMemo(() => shapes.map((shape) => shape.id), [shapes])
   const selectedIds = hoverId ? [hoverId] : allIds
   const scopeSummary = summarizeKostraEntities(index, metricId, year, allIds)
@@ -104,6 +106,19 @@ export default function KostraUtforsk({
     setDrillEntityId(null)
     setDetailState({ loading: false, detail: null, error: null })
   }, [scopeKey])
+
+  useEffect(() => {
+    const previousSelection = externalSelectionRef.current
+    externalSelectionRef.current = selectedId ?? null
+    if (selectedId) {
+      returnFocusId.current = selectedId
+      setDetailState({ loading: true, detail: null, error: null })
+      setDrillEntityId(selectedId)
+    } else if (previousSelection && drillEntityId === previousSelection) {
+      setDrillEntityId(null)
+      setDetailState({ loading: false, detail: null, error: null })
+    }
+  }, [selectedId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!municipalityScopeAvailable && accountScope === 'municipalities') {
@@ -193,6 +208,12 @@ export default function KostraUtforsk({
     : effectiveAccountScope === 'municipalities' && level === 'county'
       ? `${tableSummary.entities} kommuner gruppert i ${rows.length} fylker`
       : `${rows.length} ${level === 'county' ? 'fylkeskommuner' : 'kommuner'}`
+  const exitDrill = () => {
+    const wasExternalSelection = selectedId && drillEntityId === selectedId
+    setDrillEntityId(null)
+    setDetailState({ loading: false, detail: null, error: null })
+    if (wasExternalSelection) onClearSelection?.()
+  }
 
   return (
     <section className="ft-seksjon ko-utforsk" ref={sectionRef}>
@@ -215,12 +236,12 @@ export default function KostraUtforsk({
             entity={drillEntity}
             year={year}
             scopeName={inlineScopeName}
-            onExit={() => setDrillEntityId(null)}
+            onExit={exitDrill}
           />
         ) : (
           <div className="ko-inline-status" role="status" tabIndex={-1} ref={statusRef}>
             {detailState.loading ? 'Laster regnskapet…' : detailState.error}
-            {!detailState.loading && <button type="button" onClick={() => setDrillEntityId(null)}>Tilbake til listen</button>}
+            {!detailState.loading && <button type="button" onClick={exitDrill}>Tilbake til listen</button>}
           </div>
         )
       ) : <>

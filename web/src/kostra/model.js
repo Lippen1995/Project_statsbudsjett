@@ -70,7 +70,7 @@ export function parseKostraRoute(hash = '') {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean)
   if (parts[0] !== 'kostra') return { page: 'map', countyCode: null }
   if (parts[1] === 'kommune' && /^\d{4}$/.test(parts[2] ?? '')) {
-    return { page: 'detail', kind: 'municipality', code: parts[2] }
+    return { page: 'map', countyCode: parts[2].slice(0, 2), municipalityCode: parts[2] }
   }
   if (parts[1] === 'fylke' && /^\d{2}$/.test(parts[2] ?? '')) {
     if (parts[3] === 'detaljer') {
@@ -234,6 +234,25 @@ export function overviewComparisonRows(index, year, countyIds) {
   return KOSTRA_OVERVIEW_METRICS.map((metric) => ({
     ...metric,
     ...(metric.id === 'result_after_investments' ? derived : summaries.get(metric.id)),
+  }))
+}
+
+/** Bygg samme hovedpostoversikt for ett kommuneregnskap, uten fylkeskommunale tall. */
+export function municipalityOverviewRows(index, year, municipalityId) {
+  if (!municipalityId) return []
+  const directMetrics = KOSTRA_OVERVIEW_METRICS.filter((metric) => metric.id !== 'result_after_investments')
+  const summaries = new Map(directMetrics.map((metric) => [
+    metric.id,
+    summarizeKostraEntities(index, metric.id, year, [municipalityId]),
+  ]))
+  const derived = resultAfterInvestments(
+    summaries.get('net_result'),
+    summaries.get('investments'),
+    summaries.get('revenues').population,
+  )
+  return KOSTRA_OVERVIEW_METRICS.map((metric) => ({
+    ...metric,
+    summary: metric.id === 'result_after_investments' ? derived : summaries.get(metric.id),
   }))
 }
 

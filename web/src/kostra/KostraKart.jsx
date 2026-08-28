@@ -6,6 +6,7 @@ import {
   findKostraEntities,
   formatKostraValue,
   mapValue,
+  municipalityOverviewRows,
   overviewComparisonRows,
   summarizeKostraEntities,
   summarizeMunicipalities,
@@ -13,6 +14,11 @@ import {
 import KostraUtforsk from './KostraUtforsk'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
+
+function municipalityEntityTitle(entity) {
+  const name = displayEntityName(entity).replace(/\s+kommune$/i, '')
+  return name ? `${name} kommune` : ''
+}
 
 function focusedViewBox(shapes, fallback) {
   if (!shapes.length) return fallback
@@ -48,7 +54,9 @@ function InfoTooltip({ label, children }) {
   )
 }
 
-export default function KostraKart({ index, boundaries, countyCode, embedded = false }) {
+export default function KostraKart({
+  index, boundaries, countyCode, selectedMunicipalityCode, embedded = false,
+}) {
   const [metricId, setMetricId] = useState('expenses')
   const [year, setYear] = useState(index.latestYear)
   const [mode, setMode] = useState('perCapita')
@@ -59,6 +67,7 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
   const searchInputId = useId()
   const level = countyCode ? 'municipality' : nationalLevel
   const countyId = countyCode ? `county:${countyCode}` : null
+  const selectedMunicipalityId = selectedMunicipalityCode ? `municipality:${selectedMunicipalityCode}` : null
   const entities = useMemo(() => new Map(index.entities.map((entity) => [entity.id, entity])), [index])
   const shapes = useMemo(() => Object.values(boundaries[level] ?? {}).filter(
     (shape) => !countyId || shape.parentId === countyId
@@ -80,14 +89,16 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
 
   const values = shapes.map((shape) => mapValue(index, metricId, year, shape.id, mode)).filter(Number.isFinite)
   const hovered = hoverId ? entities.get(hoverId) : null
+  const selectedMunicipality = selectedMunicipalityId ? entities.get(selectedMunicipalityId) : null
+  const focusedEntity = hovered ?? selectedMunicipality
   const county = countyId ? entities.get(countyId) : null
   const metric = metrics.find((item) => item.id === metricId) ?? metrics[0]
-  const summaryIds = hoverId ? [hoverId] : shapes.map((shape) => shape.id)
+  const summaryIds = focusedEntity ? [focusedEntity.id] : shapes.map((shape) => shape.id)
   const summary = summarizeKostraEntities(index, metricId, year, summaryIds)
   const municipalitySummary = level === 'county' && metric.category === 'finance'
     ? summarizeMunicipalities(index, metricId, year, summaryIds)
     : null
-  const summaryName = displayEntityName(hovered) || displayEntityName(county) || (level === 'county' ? 'Alle fylkeskommuner' : 'Alle kommuner')
+  const summaryName = displayEntityName(focusedEntity) || displayEntityName(county) || (level === 'county' ? 'Alle fylkeskommuner' : 'Alle kommuner')
   const viewBox = level === 'municipality' ? focusedViewBox(shapes, boundaries.viewBox) : boundaries.viewBox
   const hits = findKostraEntities(index.entities, search)
   const municipalityCount = Object.keys(boundaries.municipality ?? {}).length
@@ -98,13 +109,19 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
   const overviewRows = level === 'county' && !countyCode
     ? overviewComparisonRows(index, year, topCountyIds)
     : []
+  const municipalityRows = level === 'municipality' && focusedEntity?.kind === 'municipality'
+    ? municipalityOverviewRows(index, year, focusedEntity.id)
+    : []
   const overviewName = hovered ? countyGroupName(hovered) : 'Hele Norge'
   const overviewPopulation = overviewRows[0]?.county.population ?? null
   const overviewHasMissingValues = overviewRows.some((row) => row.county[mode] == null || row.municipalities[mode] == null)
+  const municipalityOverviewPopulation = municipalityRows[0]?.summary.population ?? null
+  const municipalityOverviewHasMissingValues = municipalityRows.some((row) => row.summary[mode] == null)
   const sorted = [...values].sort((a, b) => a - b)
   const legend = sorted.length ? [sorted[0], sorted[Math.floor(sorted.length / 2)], sorted.at(-1)] : []
   const Heading = embedded ? 'h2' : 'h1'
   const activeKeyboardId = shapes.some((shape) => shape.id === keyboardId) ? keyboardId : shapes[0]?.id
+  const municipalityTitle = selectedMunicipality ? municipalityEntityTitle(selectedMunicipality) : null
 
   const open = (shape) => {
     window.location.hash = shape.id.startsWith('county:')
@@ -116,14 +133,17 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
     <>
       <header className={`ko-hero ${embedded ? 'ko-hero--integrert' : ''}`}>
         <div className="ft-kicker">KOSTRA · Kommune- og fylkesregnskap · {index.years[0]}–{index.latestYear}</div>
-        <Heading>{county ? `${displayEntityName(county)}, kommune for kommune` : 'Slik bruker kommunene pengene'}</Heading>
+        <Heading>{municipalityTitle || (county ? `${displayEntityName(county)}, kommune for kommune` : 'Slik bruker kommunene pengene')}</Heading>
         <p className="ft-ingress">
           Velg et nøkkeltall og klikk deg fra Norge til fylke og kommune. Alle tall er hentet fra SSB,
           normalisert lokalt og sammenlignbare med landet og KOSTRA-gruppen.
         </p>
         <div className="ko-smuler" aria-label="Brødsmuler">
           <a href="#kostra">Norge</a>
-          {county && <><span>›</span><span aria-current="page">{displayEntityName(county)}</span></>}
+          {county && <><span>›</span>{selectedMunicipality
+            ? <a href={`#kostra/fylke/${countyCode}`}>{displayEntityName(county)}</a>
+            : <span aria-current="page">{displayEntityName(county)}</span>}</>}
+          {selectedMunicipality && <><span>›</span><span aria-current="page">{municipalityTitle}</span></>}
         </div>
       </header>
 
@@ -186,7 +206,19 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
           }}
         >
           <div className="ko-kartflate">
-            <svg viewBox={viewBox} role="img" aria-label={`${metric.label} i ${year}, ${county?.name ?? 'Norge'}`}>
+            {selectedMunicipality && (
+              <a className="ko-fylkeinnfelt" href="#kostra" aria-label="Tilbake til fylkeoversikten">
+                <span>Til fylker</span>
+                <svg viewBox={boundaries.viewBox} role="img" aria-label={`${displayEntityName(county)} markert i Norge`}>
+                  <g fillRule="evenodd">
+                    {Object.values(boundaries.county ?? {}).map((shape) => (
+                      <path key={shape.id} d={shape.path} className={shape.id === countyId ? 'valgt' : ''} />
+                    ))}
+                  </g>
+                </svg>
+              </a>
+            )}
+            <svg className="ko-hovedkart" viewBox={viewBox} role="img" aria-label={`${metric.label} i ${year}, ${county?.name ?? 'Norge'}`}>
               <g fillRule="evenodd">
                 {shapes.map((shape, shapeIndex) => {
                   const value = mapValue(index, metricId, year, shape.id, mode)
@@ -195,7 +227,7 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
                       key={shape.id}
                       d={shape.path}
                       fill={choroplethColor(value, values)}
-                      className={hoverId === shape.id ? 'aktiv' : ''}
+                      className={[hoverId === shape.id ? 'aktiv' : '', selectedMunicipalityId === shape.id ? 'valgt' : ''].filter(Boolean).join(' ')}
                       data-shape-index={shapeIndex}
                       tabIndex={activeKeyboardId === shape.id ? 0 : -1}
                       role="button"
@@ -250,9 +282,9 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
             </div>
           </div>
           <aside
-            className={`ko-kartinfo ${overviewRows.length ? 'ko-kartinfo--tabell' : ''}`}
-            aria-live={overviewRows.length ? undefined : 'polite'}
-            aria-atomic={overviewRows.length ? undefined : 'true'}
+            className={`ko-kartinfo ${overviewRows.length || municipalityRows.length ? 'ko-kartinfo--tabell' : ''}`}
+            aria-live={overviewRows.length || municipalityRows.length ? undefined : 'polite'}
+            aria-atomic={overviewRows.length || municipalityRows.length ? undefined : 'true'}
           >
             {overviewRows.length ? <>
               <div className="ft-stikkord">Regnskapsoversikt · {year}</div>
@@ -289,6 +321,41 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
               <p className="ft-kort-tekst">
                 Kolonnene er separate regnskaper og legges ikke sammen. <strong>Oslo er den eneste enheten som både er kommune og fylkeskommune.</strong>
                 {hovered ? ' Klikk på fylket for å se kommunene.' : ''}
+              </p>
+            </> : municipalityRows.length ? <>
+              <div className="ft-stikkord">Kommunens regnskap · {year}</div>
+              <div className="ft-kort-tittel">{displayEntityName(focusedEntity)}</div>
+              <table className="ko-sammenstilling ko-sammenstilling--kommune">
+                <caption className="sr-only">Regnskapsoversikt for {municipalityEntityTitle(focusedEntity)} i {year}.</caption>
+                <thead>
+                  <tr>
+                    <th scope="col"><span className="sr-only">Regnskapspost</span></th>
+                    <th scope="col">Kommunen</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {municipalityRows.map((row) => (
+                    <tr key={row.id}>
+                      <th scope="row">
+                        <span className="ko-sammenstilling-etikett">
+                          <span>{row.label}</span>
+                          <InfoTooltip label={row.label}>{row.description}</InfoTooltip>
+                        </span>
+                      </th>
+                      <td className="num">{formatKostraValue(row.summary[mode], mode)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="ko-innbyggere">
+                <span>Innbyggere</span>
+                <strong className="num">{municipalityOverviewPopulation == null ? '–' : `ca. ${populationFormat.format(municipalityOverviewPopulation)}`}</strong>
+              </div>
+              {municipalityOverviewHasMissingValues && <p className="ko-datadekning">En tankestrek betyr at kommunen mangler data for denne regnskapsposten.</p>}
+              <p className="ft-kort-tekst">
+                Dette er kun kommunens eget regnskap. {selectedMunicipalityId === focusedEntity.id
+                  ? 'Regnskapet er åpnet under kartet.'
+                  : 'Klikk på kommunen for å utforske regnskapet videre under kartet.'}
               </p>
             </> : <>
             <div className="ft-stikkord">
@@ -344,9 +411,11 @@ export default function KostraKart({ index, boundaries, countyCode, embedded = f
         year={year}
         mode={mode}
         hoverId={hoverId}
+        selectedId={selectedMunicipalityId}
         level={level}
         scopeName={displayEntityName(county) || (level === 'county' ? 'Alle fylkeskommuner' : 'Alle kommuner')}
         onHover={setHoverId}
+        onClearSelection={() => { window.location.hash = `kostra/fylke/${countyCode}` }}
       />
     </>
   )

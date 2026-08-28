@@ -47,7 +47,13 @@ export default function Kostra({ hash }) {
       ) : route.page === 'detail' ? (
         <KostraDetalj index={data.index} kind={route.kind} code={route.code} embedded />
       ) : (
-        <KostraKart index={data.index} boundaries={data.boundaries} countyCode={route.countyCode} embedded />
+        <KostraKart
+          index={data.index}
+          boundaries={data.boundaries}
+          countyCode={route.countyCode}
+          selectedMunicipalityCode={route.municipalityCode}
+          embedded
+        />
       )}
       <div className="ko-kildelinje">
         KOSTRA-data fra SSB · Geografi fra Kartverket · CC BY 4.0 · Ingen direkte kall til SSB fra nettleseren

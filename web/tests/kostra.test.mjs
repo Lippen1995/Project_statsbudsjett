@@ -10,6 +10,7 @@ import {
   findKostraEntities,
   mapValue,
   materialBoundaryHistory,
+  municipalityOverviewRows,
   overviewComparisonRows,
   parseKostraRoute,
   populationForEntity,
@@ -38,7 +39,9 @@ test('KOSTRA-ruter skiller fylkesdrill fra detaljsider', () => {
   assert.deepEqual(parseKostraRoute('#kostra'), { page: 'map', countyCode: null })
   assert.deepEqual(parseKostraRoute('#kostra/fylke/03'), { page: 'map', countyCode: '03' })
   assert.deepEqual(parseKostraRoute('#kostra/fylke/03/detaljer'), { page: 'detail', kind: 'county', code: '0300' })
-  assert.deepEqual(parseKostraRoute('#kostra/kommune/0301'), { page: 'detail', kind: 'municipality', code: '0301' })
+  assert.deepEqual(parseKostraRoute('#kostra/kommune/0301'), {
+    page: 'map', countyCode: '03', municipalityCode: '0301',
+  })
 })
 
 test('intern navigasjon i KOSTRA beholder skjermposisjonen', () => {
@@ -329,6 +332,30 @@ test('toppoversikten sammenligner fylkeskommunen med kommunesummen for alle hove
   assert.equal(derived.municipalities.amount, 20)
   assert.equal(derived.county.perCapita, 60)
   assert.equal(derived.municipalities.perCapita, 20)
+})
+
+test('kommuneoversikten viser bare den valgte kommunens hovedposter', () => {
+  const index = {
+    values: Object.fromEntries([
+      ['revenues', 1_000, 9_999],
+      ['expenses', 900, 9_999],
+      ['net_result', 100, 9_999],
+      ['investments', 40, 9_999],
+      ['debt', 500, 9_999],
+      ['net_expenses', 700, 9_999],
+    ].map(([metric, stavangerAmount, otherAmount]) => [metric, { 2025: {
+      'municipality:1103': { amount: stavangerAmount, perCapita: stavangerAmount * 10 },
+      'municipality:1101': { amount: otherAmount, perCapita: otherAmount },
+    } }])),
+  }
+
+  const rows = municipalityOverviewRows(index, 2025, 'municipality:1103')
+  assert.deepEqual(rows.map((row) => row.id), [
+    'revenues', 'expenses', 'net_result', 'investments', 'result_after_investments', 'debt', 'net_expenses',
+  ])
+  assert.equal(rows.find((row) => row.id === 'expenses').summary.amount, 900)
+  assert.equal(rows.find((row) => row.id === 'result_after_investments').summary.amount, 60)
+  assert.equal(rows.find((row) => row.id === 'result_after_investments').summary.perCapita, 600)
 })
 
 test('kartsammendrag beholder innbyggertall selv om valgt nøkkeltall mangler', () => {
