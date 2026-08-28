@@ -7,7 +7,6 @@ import {
   countyGroupName,
   displayEntityName,
   drillHistory,
-  formatKostraGrowthAmount,
   findKostraEntities,
   mapValue,
   materialBoundaryHistory,
@@ -62,21 +61,22 @@ test('utforsk-tabellen kan sorteres etter per innbygger og andel', () => {
   assert.deepEqual(sortExplorerRows(rows, 'share').map((row) => row.code), ['a', 'b'])
 })
 
-test('årlig vekst viser beløpsendring og Y/Y mot foregående kalenderår', () => {
+test('årlig vekst er annualisert sammensatt vekst, mens Y/Y bruker foregående år', () => {
   const years = [2022, 2023, 2024, 2025]
   const points = [{ v: 80 }, { v: null }, { v: 100 }, { v: 112 }]
 
-  assert.deepEqual(yearlyGrowth(points, years, 2025), { amount: 12, yoy: 12 })
-  assert.deepEqual(yearlyGrowth(points, years, 2024), { amount: null, yoy: null })
+  const latest = yearlyGrowth(points, years, 2025)
+  assert.equal(Math.round(latest.annual * 1000) / 1000, 11.869)
+  assert.equal(latest.yoy, 12)
+  const before = yearlyGrowth(points, years, 2024)
+  assert.equal(Math.round(before.annual * 1000) / 1000, 11.803)
+  assert.equal(before.yoy, null)
   assert.deepEqual(yearlyGrowth([{ v: 0 }, { v: 10 }], [2024, 2025], 2025), {
-    amount: 10, yoy: null,
+    annual: null, yoy: null,
   })
   assert.deepEqual(yearlyGrowth([{ v: -100 }, { v: -50 }], [2024, 2025], 2025), {
-    amount: 50, yoy: null,
+    annual: null, yoy: null,
   })
-  assert.equal(formatKostraGrowthAmount(0.4), '+400 kr')
-  assert.equal(formatKostraGrowthAmount(400), '+400 000 kr')
-  assert.equal(formatKostraGrowthAmount(-1500), '−1,5 mill.')
 })
 
 test('eksplisitt manglende artsandel blir ikke beregnet fra et ufullstendig grunnlag', () => {

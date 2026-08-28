@@ -1,5 +1,4 @@
 import React from 'react'
-import { formatKostraGrowthAmount } from './model'
 
 const percentFormat = new Intl.NumberFormat('nb-NO', {
   maximumFractionDigits: 1,
@@ -12,7 +11,7 @@ export default function KostraGrowthSummary({ growth }) {
     <div className="ko-grafvekst">
       <div>
         <span>Årlig vekst</span>
-        <strong className="num">{formatKostraGrowthAmount(growth?.amount)}</strong>
+        <strong className="num">{Number.isFinite(growth?.annual) ? `${percentFormat.format(growth.annual)} %` : '–'}</strong>
       </div>
       <div>
         <span>Y/Y vekst</span>

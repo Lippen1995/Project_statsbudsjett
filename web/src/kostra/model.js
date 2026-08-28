@@ -258,34 +258,26 @@ export function formatKostraValue(value, mode) {
   return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(abs)} mill.`
 }
 
-/** Signert endring med høyere presisjon enn de store regnskapstotalene. */
-export function formatKostraGrowthAmount(value) {
-  if (!Number.isFinite(value)) return '–'
-  const sign = value > 0 ? '+' : value < 0 ? '−' : ''
-  const absolute = Math.abs(value)
-  if (absolute < 1000) {
-    return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(absolute * 1000)} kr`
-  }
-  const millions = absolute / 1000
-  if (millions < 1000) {
-    return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 }).format(millions)} mill.`
-  }
-  return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 }).format(millions / 1000)} mrd.`
-}
-
-/** Endring fra det umiddelbart foregående kalenderåret. */
+/** Annualisert vekst fra første gyldige år, samt endring fra året før. */
 export function yearlyGrowth(points, years, year) {
   const index = years.indexOf(year)
-  if (index <= 0) return { amount: null, yoy: null }
+  if (index < 0) return { annual: null, yoy: null }
   const current = points?.[index]?.v
+  if (!Number.isFinite(current)) return { annual: null, yoy: null }
+
+  const firstIndex = points.findIndex((point, pointIndex) => (
+    pointIndex < index && Number.isFinite(point?.v) && point.v > 0
+  ))
+  const elapsedYears = firstIndex >= 0 ? Number(years[index]) - Number(years[firstIndex]) : 0
+  const annual = current > 0 && elapsedYears > 0
+    ? (Math.pow(current / points[firstIndex].v, 1 / elapsedYears) - 1) * 100
+    : null
   const previous = points?.[index - 1]?.v
-  if (!Number.isFinite(current) || !Number.isFinite(previous)) {
-    return { amount: null, yoy: null }
-  }
-  const amount = current - previous
   return {
-    amount,
-    yoy: previous <= 0 ? null : amount / previous * 100,
+    annual,
+    yoy: Number.isFinite(previous) && previous > 0
+      ? (current - previous) / previous * 100
+      : null,
   }
 }
 
