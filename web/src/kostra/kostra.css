@@ -28,7 +28,7 @@
 .ko-kartflate > .ko-hovedkart { width: 100%; height: min(68vh, 720px); min-height: 520px; }
 .ko-hovedkart path { stroke: #FFFCF7; stroke-width: 1.1; vector-effect: non-scaling-stroke; cursor: pointer; transition: fill .14s ease, stroke .14s ease; outline: none; }
 .ko-hovedkart path:hover, .ko-hovedkart path.aktiv, .ko-hovedkart path:focus, .ko-hovedkart path.valgt { stroke: var(--ink); stroke-width: 2; }
-.ko-hovedkart path.valgt { stroke-width: 2.4; }
+.ko-hovedkart path.valgt { stroke-width: 2.4; cursor: default; }
 .ko-fylkeinnfelt { position: absolute; z-index: 4; top: 12px; left: 12px; display: flex; width: 144px; height: 144px; padding: 7px; border: 1px solid var(--strek); background: var(--papir); color: var(--tekst); }
 .ko-fylkeinnfelt:hover, .ko-fylkeinnfelt:focus-visible { border-color: var(--ink); }
 .ko-fylkeinnfelt:focus-visible { outline: 2px solid var(--rust); outline-offset: 2px; }

@@ -117,13 +117,26 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
   const [functionCode, setFunctionCode] = useState(null)
 
   useEffect(() => {
+    let active = true
     setDetail(null); setError(null); setServiceCode(null); setFunctionCode(null)
-    loadKostraDetail(kind, code).then((data) => data ? setDetail(data) : setError('Detaljdata er ikke tilgjengelig ennå.')).catch((e) => setError(e.message))
+    loadKostraDetail(kind, code)
+      .then((data) => {
+        if (!active) return
+        if (data) setDetail(data)
+        else setError('Detaljdata er ikke tilgjengelig ennå.')
+      })
+      .catch((e) => { if (active) setError(e.message) })
+    return () => { active = false }
   }, [kind, code])
 
   const entityId = kind === 'county' ? `county:${code.slice(0, 2)}` : `municipality:${code}`
   const allEntities = [...index.entities, ...(index.historicalEntities ?? [])]
   const entity = allEntities.find((item) => item.id === entityId)
+  const parentCountyCode = kind === 'municipality' ? code.slice(0, 2) : null
+  const parentCounty = parentCountyCode
+    ? allEntities.find((item) => item.id === `county:${parentCountyCode}`)
+    : null
+  const historicalEntity = entity?.active === 0 || entity?.active === false
   const metricDefs = index.metrics.filter((item) => item.category === 'finance')
   const selectedService = detail?.services.find((item) => item.code === serviceCode)
   const functions = detail?.functions.filter((item) => !serviceCode || item.serviceCodes?.includes(serviceCode)) ?? []
@@ -190,7 +203,12 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
         <Heading>{detail.entity.name}</Heading>
         <div className="ko-smuler">
           <a href="#kostra">Norge</a><span>›</span>
-          {kind === 'municipality' && <><a href={`#kostra/fylke/${code.slice(0, 2)}`}>{index.entities.find((item) => item.id === `county:${code.slice(0, 2)}`)?.name}</a><span>›</span></>}
+          {kind === 'municipality' && parentCounty && <>
+            <a href={historicalEntity
+              ? `#kostra/fylke/${parentCountyCode}/detaljer`
+              : `#kostra/fylke/${parentCountyCode}`}
+            >{parentCounty.name}</a><span>›</span>
+          </>}
           <span aria-current="page">{detail.entity.name}</span>
         </div>
       </header>

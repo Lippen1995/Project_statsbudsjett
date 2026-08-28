@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useMemo, useState } from 'react'
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
 import {
   choroplethColor,
   countyGroupName,
@@ -65,6 +65,8 @@ export default function KostraKart({
   const [search, setSearch] = useState('')
   const [nationalLevel, setNationalLevel] = useState('county')
   const [keyboardId, setKeyboardId] = useState(null)
+  const headingRef = useRef(null)
+  const searchNavigationRef = useRef(false)
   const searchInputId = useId()
   const level = countyCode ? 'municipality' : nationalLevel
   const countyId = countyCode ? `county:${countyCode}` : null
@@ -87,6 +89,12 @@ export default function KostraKart({
     setSearch('')
     setNationalLevel('county')
   }, [countyId])
+
+  useEffect(() => {
+    if (!searchNavigationRef.current) return
+    searchNavigationRef.current = false
+    requestAnimationFrame(() => headingRef.current?.focus({ preventScroll: true }))
+  }, [countyId, selectedMunicipalityCode])
 
   const values = shapes.map((shape) => mapValue(index, metricId, year, shape.id, mode)).filter(Number.isFinite)
   const hovered = hoverId ? entities.get(hoverId) : null
@@ -128,6 +136,7 @@ export default function KostraKart({
   const Heading = embedded ? 'h2' : 'h1'
   const activeKeyboardId = mainShapes.some((shape) => shape.id === keyboardId) ? keyboardId : mainShapes[0]?.id
   const municipalityTitle = selectedMunicipality ? municipalityEntityTitle(selectedMunicipality) : null
+  const mapIsInteractive = !selectedShape
 
   const open = (shape) => {
     window.location.hash = shape.id.startsWith('county:')
@@ -139,7 +148,7 @@ export default function KostraKart({
     <>
       <header className={`ko-hero ${embedded ? 'ko-hero--integrert' : ''}`}>
         <div className="ft-kicker">KOSTRA · Kommune- og fylkesregnskap · {index.years[0]}–{index.latestYear}</div>
-        <Heading>{municipalityTitle || (county ? `${displayEntityName(county)}, kommune for kommune` : 'Slik bruker kommunene pengene')}</Heading>
+        <Heading ref={headingRef} tabIndex={-1}>{municipalityTitle || (county ? `${displayEntityName(county)}, kommune for kommune` : 'Slik bruker kommunene pengene')}</Heading>
         <p className="ft-ingress">
           Velg et nøkkeltall og klikk deg fra Norge til fylke og kommune. Alle tall er hentet fra SSB,
           normalisert lokalt og sammenlignbare med landet og KOSTRA-gruppen.
@@ -185,7 +194,11 @@ export default function KostraKart({
             {hits.length > 0 && (
               <div className="ko-soktreff">
                 {hits.map((entity) => (
-                  <a key={entity.id} href={entity.kind === 'county' ? `#kostra/fylke/${entity.id.split(':')[1]}` : `#kostra/kommune/${entity.code}`}>
+                  <a
+                    key={entity.id}
+                    href={entity.kind === 'county' ? `#kostra/fylke/${entity.id.split(':')[1]}` : `#kostra/kommune/${entity.code}`}
+                    onClick={() => { searchNavigationRef.current = true }}
+                  >
                     <span>{displayEntityName(entity)}</span>
                     <small>{entity.kind === 'county' ? 'Fylke' : 'Kommune'}</small>
                   </a>
@@ -242,18 +255,18 @@ export default function KostraKart({
                       d={shape.path}
                       fill={choroplethColor(value, values)}
                       className={[hoverId === shape.id ? 'aktiv' : '', selectedMunicipalityId === shape.id ? 'valgt' : ''].filter(Boolean).join(' ')}
-                      data-shape-index={shapeIndex}
-                      tabIndex={activeKeyboardId === shape.id ? 0 : -1}
-                      role="button"
+                      data-shape-index={mapIsInteractive ? shapeIndex : undefined}
+                      tabIndex={mapIsInteractive ? (activeKeyboardId === shape.id ? 0 : -1) : undefined}
+                      role={mapIsInteractive ? 'button' : undefined}
                       aria-label={`${displayEntityName(entities.get(shape.id)) || shape.name}: ${formatKostraValue(value, mode)}`}
-                      onMouseEnter={() => setHoverId(shape.id)}
-                      onMouseLeave={() => setHoverId(null)}
-                      onFocus={() => {
+                      onMouseEnter={mapIsInteractive ? () => setHoverId(shape.id) : undefined}
+                      onMouseLeave={mapIsInteractive ? () => setHoverId(null) : undefined}
+                      onFocus={mapIsInteractive ? () => {
                         setKeyboardId(shape.id)
                         setHoverId(shape.id)
-                      }}
-                      onClick={() => open(shape)}
-                      onKeyDown={(event) => {
+                      } : undefined}
+                      onClick={mapIsInteractive ? () => open(shape) : undefined}
+                      onKeyDown={mapIsInteractive ? (event) => {
                         if (event.key === 'Enter' || event.key === ' ') {
                           event.preventDefault()
                           open(shape)
@@ -278,7 +291,7 @@ export default function KostraKart({
                             ?.querySelector(`[data-shape-index="${nextIndex}"]`)
                             ?.focus()
                         }
-                      }}
+                      } : undefined}
                     />
                   )
                 })}

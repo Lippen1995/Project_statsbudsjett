@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { loadKostraBoundaries, loadKostraIndex } from '../lib/kostra'
 import KostraKart from './KostraKart'
 import KostraDetalj from './KostraDetalj'
-import { isHistoricalMunicipalityCode, parseKostraRoute, shouldScrollToKostra } from './model'
+import { municipalityCodeStatus, parseKostraRoute, shouldScrollToKostra } from './model'
 import './kostra.css'
 
 export default function Kostra({ hash }) {
@@ -10,9 +10,11 @@ export default function Kostra({ hash }) {
   const [error, setError] = useState(null)
   const previousHashRef = useRef(null)
   const route = parseKostraRoute(hash)
-  const historicalMunicipalityRoute = data && route.municipalityCode
-    ? isHistoricalMunicipalityCode(data.index, route.municipalityCode)
-    : false
+  const municipalityStatus = data && route.municipalityCode
+    ? municipalityCodeStatus(data.index, route.municipalityCode)
+    : null
+  const historicalMunicipalityRoute = municipalityStatus === 'historical'
+  const unknownMunicipalityRoute = municipalityStatus === 'unknown'
 
   useEffect(() => {
     Promise.all([loadKostraIndex(), loadKostraBoundaries()])
@@ -47,6 +49,12 @@ export default function Kostra({ hash }) {
         </section>
       ) : !data ? (
         <section className="ko-status"><div className="spinner" /><p>Laster KOSTRA-data…</p></section>
+      ) : unknownMunicipalityRoute ? (
+        <section className="ko-status">
+          <h2>Kommunen finnes ikke</h2>
+          <p>Kommunekode {route.municipalityCode} finnes verken i dagens eller det historiske KOSTRA-grunnlaget.</p>
+          <a href="#kostra">Tilbake til kartet</a>
+        </section>
       ) : route.page === 'detail' || historicalMunicipalityRoute ? (
         <KostraDetalj
           index={data.index}

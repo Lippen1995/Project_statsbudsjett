@@ -8,7 +8,7 @@ import {
   displayEntityName,
   drillHistory,
   findKostraEntities,
-  isHistoricalMunicipalityCode,
+  municipalityCodeStatus,
   mapValue,
   materialBoundaryHistory,
   municipalityOverviewRows,
@@ -53,9 +53,9 @@ test('historiske kommunekoder beholder detaljsiden mens aktive kommuner bruker k
     entities: [{ id: 'municipality:1103' }],
     historicalEntities: [{ id: 'municipality:0104' }],
   }
-  assert.equal(isHistoricalMunicipalityCode(index, '0104'), true)
-  assert.equal(isHistoricalMunicipalityCode(index, '1103'), false)
-  assert.equal(isHistoricalMunicipalityCode(index, '9999'), false)
+  assert.equal(municipalityCodeStatus(index, '0104'), 'historical')
+  assert.equal(municipalityCodeStatus(index, '1103'), 'active')
+  assert.equal(municipalityCodeStatus(index, '9999'), 'unknown')
 })
 
 test('intern navigasjon i KOSTRA beholder skjermposisjonen', () => {

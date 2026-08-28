@@ -84,12 +84,14 @@ export function parseKostraRoute(hash = '') {
   return { page: 'map', countyCode: null }
 }
 
-/** Historiske kommuner har detaljdata, men finnes ikke i dagens kartgeometri. */
-export function isHistoricalMunicipalityCode(index, code) {
-  if (!code) return false
+/** Skille dagens kartkommuner fra historiske eller ukjente koder. */
+export function municipalityCodeStatus(index, code) {
+  if (!code) return null
   const entityId = `municipality:${code}`
   const isActive = (index?.entities ?? []).some((entity) => entity.id === entityId)
-  return !isActive && (index?.historicalEntities ?? []).some((entity) => entity.id === entityId)
+  if (isActive) return 'active'
+  const isHistorical = (index?.historicalEntities ?? []).some((entity) => entity.id === entityId)
+  return isHistorical ? 'historical' : 'unknown'
 }
 
 /** Scroll bare ved en reell inngang til en dyp KOSTRA-lenke, aldri ved intern drill. */
