@@ -23,6 +23,7 @@ import {
 } from '../src/kostra/model.js'
 import { SEKSJONER } from '../src/fellestall/design.js'
 import {
+  accountingArtFunctionBreakdown,
   accountingArtBreakdown,
   explorerDrillRows,
   explorerHistory,
@@ -103,6 +104,49 @@ test('eksplisitt manglende artsandel blir ikke beregnet fra et ufullstendig grun
   ])
   assert.equal(rows[0].share, null)
   assert.equal(rows[1].share, 75)
+})
+
+test('inntekts- og utgiftsarter kan drilles til avstembare KOSTRA-funksjoner', () => {
+  const detail = {
+    latestYear: 2025,
+    overview: { expenses: { 2025: { amount: 100, perCapita: 1_000 } } },
+    expenseBreakdown: [{ code: 'AG16', name: 'Lønn', amount: 28 }],
+    functions: [
+      { code: '202', name: 'Grunnskole', serviceCodes: ['FGK8b'] },
+      { code: '120', name: 'Administrasjon', serviceCodes: ['FGK1b'] },
+      { code: '999', name: 'Ikke rapportert', serviceCodes: [] },
+    ],
+    accountingArts: {
+      202: [{ code: 'AG16', name: 'Lønn', values: { 2025: { amount: 30 } } }],
+      120: [{ code: 'AG16', name: 'Lønn', values: { 2025: { amount: -2 } } }],
+      999: [{ code: 'AG16', name: 'Lønn', values: { 2024: { amount: 8 } } }],
+    },
+  }
+
+  const result = accountingArtFunctionBreakdown(detail, 2025, 'AG16')
+  assert.deepEqual(result.rows.map((row) => row.code), ['202', '120'])
+  assert.equal(result.rows[0].perCapita, 300)
+  assert.equal(result.rows[0].share, 30 / 28 * 100)
+  assert.equal(result.rows[1].share, -2 / 28 * 100)
+  assert.deepEqual(result.reconciliation, {
+    componentTotal: 28,
+    publishedTotal: 28,
+    difference: 0,
+    status: 'reconciled',
+  })
+
+  const incomplete = accountingArtFunctionBreakdown({
+    ...detail,
+    expenseBreakdown: [{ code: 'AG16', name: 'Lønn', amount: 30 }],
+  }, 2025, 'AG16')
+  assert.equal(incomplete.reconciliation.status, 'difference')
+  assert.equal(incomplete.reconciliation.difference, -2)
+  assert.deepEqual(accountingArtFunctionBreakdown(detail, 2024, 'AG16').reconciliation, {
+    componentTotal: 8,
+    publishedTotal: null,
+    difference: null,
+    status: 'missing-total',
+  })
 })
 
 test('innebygd kommuneutforsker driller til dypeste tilgjengelige KOSTRA-nivå', () => {

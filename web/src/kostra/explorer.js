@@ -97,6 +97,57 @@ export function accountingArtBreakdown(detail, year, functionCode) {
   }
 }
 
+/**
+ * Fordel en inntekts- eller utgiftsart på KOSTRA-funksjonene den er ført på.
+ * Dette er den motsatte inngangen til funksjon → art-drillen, og bruker de
+ * samme offisielle funksjon/art-faktaene uten å konstruere nye kategorier.
+ * Null er en rapportert verdi, mens manglende observasjoner utelates.
+ */
+export function accountingArtFunctionBreakdown(detail, year, artCode) {
+  const population = detailPopulation(detail, year)
+  const rows = (detail?.functions ?? [])
+    .map((item) => {
+      const art = (detail?.accountingArts?.[item.code] ?? [])
+        .find((candidate) => candidate.code === artCode)
+      const value = accountingArtValue(art, year, detail?.latestYear)
+      if (!Number.isFinite(value?.amount) || value.amount === 0) return null
+      return {
+        ...row(item.code, item.name, {
+          amount: value.amount,
+          perCapita: population ? value.amount * 1000 / population : null,
+        }, 'function', false),
+        serviceCodes: item.serviceCodes ?? [],
+      }
+    })
+    .filter(Boolean)
+
+  const componentTotal = rows.reduce((sum, item) => sum + item.amount, 0)
+  const published = year === detail?.latestYear
+    ? [...(detail?.revenueBreakdown ?? []), ...(detail?.expenseBreakdown ?? [])]
+      .find((item) => item.code === artCode)
+    : null
+  const publishedTotal = Number.isFinite(published?.amount) ? published.amount : null
+  const difference = Number.isFinite(publishedTotal) ? componentTotal - publishedTotal : null
+  const tolerance = Number.isFinite(publishedTotal)
+    ? Math.max(1, Math.abs(publishedTotal) * 1e-6)
+    : null
+  const status = !Number.isFinite(publishedTotal)
+    ? 'missing-total'
+    : Math.abs(difference) <= tolerance
+      ? 'reconciled'
+      : 'difference'
+
+  return {
+    rows: rows
+      .map((item) => ({
+        ...item,
+        share: componentTotal !== 0 ? item.amount / componentTotal * 100 : null,
+      }))
+      .sort((a, b) => Math.abs(b.perCapita ?? b.amount) - Math.abs(a.perCapita ?? a.amount)),
+    reconciliation: { componentTotal, publishedTotal, difference, status },
+  }
+}
+
 /** Legg bare til generelle andeler når raden ikke allerede eier en andelsverdi. */
 export function explorerRowsWithShares(rows) {
   const shareTotal = rows.reduce((sum, item) => sum + Math.abs(item.amount ?? 0), 0)

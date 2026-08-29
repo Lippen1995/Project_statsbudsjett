@@ -133,6 +133,23 @@
 .ko-breakdownrad strong { white-space: nowrap; }
 .ko-breakdownrad i { display: block; height: 3px; background: var(--rust); margin-top: 7px; min-width: 1px; }
 .ko-breakdown:nth-child(2) i { background: var(--ink); }
+.ko-breakdownvalg { width: 100%; border: 0; border-bottom: 1px solid var(--strek); background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.ko-breakdownvalg:hover { background: var(--ark); }
+.ko-breakdownvalg:focus-visible, .ko-breakdownsmuler button:focus-visible, .ko-breakdownvisalle:focus-visible { outline: 2px solid var(--rust); outline-offset: 2px; }
+.ko-breakdownvalg strong { display: flex; align-items: center; gap: 10px; }
+.ko-breakdownvalg b { color: var(--blek); font-size: 16px; font-weight: 400; }
+.ko-breakdownsmuler { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: -6px 0 12px; color: var(--blek); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.ko-breakdownsmuler button, .ko-breakdownvisalle { border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.ko-breakdownsmuler button { padding: 6px 0; }
+.ko-breakdownsmuler button:hover, .ko-breakdownvisalle:hover { color: var(--rust); }
+.ko-breakdownvalgt { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.ko-breakdownvalgt > strong { font-family: var(--serif); font-size: 19px; line-height: 1.2; }
+.ko-breakdownvalgt > span { color: var(--blek); font-size: 11px; }
+.ko-breakdownhode { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; border-bottom: 1px solid var(--strek); color: var(--blek); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.ko-breakdownfunksjon > div:first-child > span { display: flex; min-width: 0; gap: 8px; }
+.ko-breakdownfunksjon small { flex: 0 0 26px; color: var(--blek); font-size: 9px; }
+.ko-breakdownfunksjon .ko-breakdownmeta { margin-top: 4px; color: var(--blek); font-size: 10px; }
+.ko-breakdownvisalle { width: 100%; padding: 12px 0; border-bottom: 1px solid var(--strek); color: var(--blek); font-size: 11px; text-align: left; }
 
 .ko-drill { margin-top: 56px; border-top: 2px solid var(--ink); padding-top: 14px; }
 .ko-drillgrid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, .75fr); gap: 42px; align-items: start; }

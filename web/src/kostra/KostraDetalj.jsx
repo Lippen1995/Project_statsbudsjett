@@ -13,7 +13,7 @@ import {
   stateFlowSummary,
   yearlyGrowth,
 } from './model'
-import { accountingArtBreakdown } from './explorer'
+import { accountingArtBreakdown, accountingArtFunctionBreakdown } from './explorer'
 import KostraGrowthSummary from './KostraGrowthSummary'
 
 const GREEN = '#47735D'
@@ -23,17 +23,84 @@ function point(item, metric, year) {
   return item?.metrics?.[metric]?.[year] ?? null
 }
 
-function Breakdown({ title, rows }) {
-  const max = Math.max(1, ...rows.map((row) => Math.abs(row.amount)))
+function Breakdown({ title, rows, detail, year }) {
+  const [selectedCode, setSelectedCode] = useState(null)
+  const [showAll, setShowAll] = useState(false)
+  const selected = rows.find((row) => row.code === selectedCode)
+  const breakdown = selected
+    ? accountingArtFunctionBreakdown(detail, year, selected.code)
+    : null
+  const functionRows = breakdown?.rows ?? []
+  const visibleRows = showAll ? functionRows : functionRows.slice(0, 10)
+  const max = Math.max(1, ...(selected ? functionRows : rows).map((row) => Math.abs(row.amount)))
+
+  useEffect(() => {
+    setSelectedCode(null)
+    setShowAll(false)
+  }, [detail, year])
+
+  function closeDrill() {
+    setSelectedCode(null)
+    setShowAll(false)
+  }
+
   return (
     <div className="ko-breakdown">
       <h3>{title}</h3>
-      {rows.map((row) => (
-        <div className="ko-breakdownrad" key={row.code}>
-          <div><span>{row.name}</span><strong>{formatKostraValue(row.amount, 'amount')}</strong></div>
+      {!selected && rows.map((row) => (
+        <button
+          type="button"
+          className="ko-breakdownrad ko-breakdownvalg"
+          key={row.code}
+          onClick={() => setSelectedCode(row.code)}
+          aria-label={`Vis hvilke KOSTRA-funksjoner som forklarer ${row.name.toLowerCase()}`}
+        >
+          <div>
+            <span>{row.name}</span>
+            <strong>{formatKostraValue(row.amount, 'amount')}<b aria-hidden="true">›</b></strong>
+          </div>
           <i style={{ width: `${Math.abs(row.amount) / max * 100}%` }} />
-        </div>
+        </button>
       ))}
+      {selected && <>
+        <div className="ko-breakdownsmuler">
+          <button type="button" onClick={closeDrill}>← Tilbake</button>
+          <span>{selected.code}</span>
+        </div>
+        <div className="ko-breakdownvalgt">
+          <strong>{selected.name}</strong>
+          <span>{formatKostraValue(selected.amount, 'amount')} · fordelt på {functionRows.length} KOSTRA-funksjoner</span>
+        </div>
+        <div className="ko-breakdownhode"><span>KOSTRA-funksjon</span><span>Beløp</span></div>
+        {visibleRows.map((row) => (
+          <div className="ko-breakdownrad ko-breakdownfunksjon" key={row.code}>
+            <div>
+              <span><small>{row.code}</small>{row.name}</span>
+              <strong>{formatKostraValue(row.amount, 'amount')}</strong>
+            </div>
+            <div className="ko-breakdownmeta">
+              <span>{formatKostraValue(row.perCapita, 'perCapita')} per innbygger</span>
+              <span>{Number.isFinite(row.share) ? `${populationFormat.format(row.share)} %` : '–'}</span>
+            </div>
+            <i style={{ width: `${Math.abs(row.amount) / max * 100}%` }} />
+          </div>
+        ))}
+        {!showAll && functionRows.length > visibleRows.length && (
+          <button type="button" className="ko-breakdownvisalle" onClick={() => setShowAll(true)}>
+            Vis alle {functionRows.length} funksjoner
+          </button>
+        )}
+        {functionRows.length === 0 && <p className="ko-artavstemming">SSB har ikke publisert funksjonsfordeling for denne regnskapsarten.</p>}
+        {breakdown?.reconciliation.status === 'reconciled' && (
+          <p className="ko-artavstemming">Funksjonene avstemmer mot regnskapsartens total.</p>
+        )}
+        {breakdown?.reconciliation.status === 'difference' && (
+          <p className="ko-artavstemming">Funksjonene summerer til {formatKostraValue(breakdown.reconciliation.componentTotal, 'amount')}, mens den publiserte totalen er {formatKostraValue(breakdown.reconciliation.publishedTotal, 'amount')}. Avviket er ikke justert.</p>
+        )}
+        {functionRows.some((row) => row.amount < 0) && (
+          <p className="ko-artavstemming">Negative beløp er motposter og beholdes med fortegn.</p>
+        )}
+      </>}
     </div>
   )
 }
@@ -281,8 +348,8 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
         </div>
 
         <div className="ko-breakdowngrid">
-          <Breakdown title="Hva inntektene består av" rows={detail.revenueBreakdown} />
-          <Breakdown title="Hva utgiftene består av" rows={detail.expenseBreakdown} />
+          <Breakdown title="Hva inntektene består av" rows={detail.revenueBreakdown} detail={detail} year={year} />
+          <Breakdown title="Hva utgiftene består av" rows={detail.expenseBreakdown} detail={detail} year={year} />
         </div>
 
         <div className="ko-drill">
