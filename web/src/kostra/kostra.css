@@ -145,10 +145,16 @@
 .ko-breakdownvalgt { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
 .ko-breakdownvalgt > strong { font-family: var(--serif); font-size: 19px; line-height: 1.2; }
 .ko-breakdownvalgt > span { color: var(--blek); font-size: 11px; }
-.ko-breakdownhode { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; border-bottom: 1px solid var(--strek); color: var(--blek); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.ko-breakdownfunksjon > div:first-child > span { display: flex; min-width: 0; gap: 8px; }
-.ko-breakdownfunksjon small { flex: 0 0 26px; color: var(--blek); font-size: 9px; }
-.ko-breakdownfunksjon .ko-breakdownmeta { margin-top: 4px; color: var(--blek); font-size: 10px; }
+.ko-breakdowntabell { width: 100%; border-collapse: collapse; font-size: 11px; }
+.ko-breakdowntabell :is(th, td) { padding: 9px 5px; border-bottom: 1px solid var(--strek); text-align: right; vertical-align: top; }
+.ko-breakdowntabell :is(th, td):first-child { padding-left: 0; text-align: left; }
+.ko-breakdowntabell :is(th, td):last-child { padding-right: 0; }
+.ko-breakdowntabell thead th { padding-top: 7px; color: var(--blek); font-size: 8px; letter-spacing: .08em; text-transform: uppercase; }
+.ko-breakdowntabell tbody th { width: 52%; font-weight: 400; }
+.ko-breakdowntabell tbody th > span { display: flex; gap: 7px; }
+.ko-breakdowntabell small { flex: 0 0 24px; color: var(--blek); font-size: 9px; }
+.ko-breakdowntabell td { white-space: nowrap; }
+.ko-breakdowntabell i { display: block; min-width: 0; height: 3px; margin-top: 7px; background: var(--rust); }
 .ko-breakdownvisalle { width: 100%; padding: 12px 0; border-bottom: 1px solid var(--strek); color: var(--blek); font-size: 11px; text-align: left; }
 
 .ko-drill { margin-top: 56px; border-top: 2px solid var(--ink); padding-top: 14px; }

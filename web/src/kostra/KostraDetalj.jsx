@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { loadKostraDetail } from '../lib/kostra'
 import LinjeGraf from '../fellestall/grafer/LinjeGraf'
 import { INK, RUST } from '../fellestall/design'
@@ -26,6 +26,8 @@ function point(item, metric, year) {
 function Breakdown({ title, rows, detail, year }) {
   const [selectedCode, setSelectedCode] = useState(null)
   const [showAll, setShowAll] = useState(false)
+  const backButtonRef = useRef(null)
+  const rowButtonsRef = useRef(new Map())
   const selected = rows.find((row) => row.code === selectedCode)
   const breakdown = selected
     ? accountingArtFunctionBreakdown(detail, year, selected.code)
@@ -39,9 +41,15 @@ function Breakdown({ title, rows, detail, year }) {
     setShowAll(false)
   }, [detail, year])
 
+  useEffect(() => {
+    if (selectedCode) backButtonRef.current?.focus()
+  }, [selectedCode])
+
   function closeDrill() {
+    const previousCode = selectedCode
     setSelectedCode(null)
     setShowAll(false)
+    requestAnimationFrame(() => rowButtonsRef.current.get(previousCode)?.focus())
   }
 
   return (
@@ -53,6 +61,10 @@ function Breakdown({ title, rows, detail, year }) {
           className="ko-breakdownrad ko-breakdownvalg"
           key={row.code}
           onClick={() => setSelectedCode(row.code)}
+          ref={(node) => {
+            if (node) rowButtonsRef.current.set(row.code, node)
+            else rowButtonsRef.current.delete(row.code)
+          }}
           aria-label={`Vis hvilke KOSTRA-funksjoner som forklarer ${row.name.toLowerCase()}`}
         >
           <div>
@@ -64,38 +76,48 @@ function Breakdown({ title, rows, detail, year }) {
       ))}
       {selected && <>
         <div className="ko-breakdownsmuler">
-          <button type="button" onClick={closeDrill}>← Tilbake</button>
+          <button type="button" ref={backButtonRef} onClick={closeDrill}>← Tilbake</button>
           <span>{selected.code}</span>
         </div>
         <div className="ko-breakdownvalgt">
           <strong>{selected.name}</strong>
           <span>{formatKostraValue(selected.amount, 'amount')} · fordelt på {functionRows.length} KOSTRA-funksjoner</span>
         </div>
-        <div className="ko-breakdownhode"><span>KOSTRA-funksjon</span><span>Beløp</span></div>
-        {visibleRows.map((row) => (
-          <div className="ko-breakdownrad ko-breakdownfunksjon" key={row.code}>
-            <div>
-              <span><small>{row.code}</small>{row.name}</span>
-              <strong>{formatKostraValue(row.amount, 'amount')}</strong>
-            </div>
-            <div className="ko-breakdownmeta">
-              <span>{formatKostraValue(row.perCapita, 'perCapita')} per innbygger</span>
-              <span>{Number.isFinite(row.share) ? `${populationFormat.format(row.share)} %` : '–'}</span>
-            </div>
-            <i style={{ width: `${Math.abs(row.amount) / max * 100}%` }} />
-          </div>
-        ))}
-        {!showAll && functionRows.length > visibleRows.length && (
-          <button type="button" className="ko-breakdownvisalle" onClick={() => setShowAll(true)}>
-            Vis alle {functionRows.length} funksjoner
+        {functionRows.length > 0 && (
+          <table className="ko-breakdowntabell">
+            <caption className="sr-only">{selected.name} fordelt på KOSTRA-funksjon</caption>
+            <thead><tr>
+              <th scope="col">KOSTRA-funksjon</th>
+              <th scope="col">Beløp</th>
+              <th scope="col">Per innb.</th>
+              <th scope="col">Andel</th>
+            </tr></thead>
+            <tbody>
+              {visibleRows.map((row) => (
+                <tr key={row.code}>
+                  <th scope="row">
+                    <span><small>{row.code}</small>{row.name}</span>
+                    <i style={{ width: `${Math.abs(row.amount) / max * 100}%` }} />
+                  </th>
+                  <td>{formatKostraValue(row.amount, 'amount')}</td>
+                  <td>{formatKostraValue(row.perCapita, 'perCapita')}</td>
+                  <td>{Number.isFinite(row.share) ? `${populationFormat.format(row.share)} %` : '–'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {functionRows.length > 10 && (
+          <button type="button" className="ko-breakdownvisalle" onClick={() => setShowAll((current) => !current)}>
+            {showAll ? 'Vis de første 10 funksjonene' : `Vis alle ${functionRows.length} funksjoner`}
           </button>
         )}
         {functionRows.length === 0 && <p className="ko-artavstemming">SSB har ikke publisert funksjonsfordeling for denne regnskapsarten.</p>}
-        {breakdown?.reconciliation.status === 'reconciled' && (
-          <p className="ko-artavstemming">Funksjonene avstemmer mot regnskapsartens total.</p>
+        {breakdown?.summation.status === 'matches' && (
+          <p className="ko-artavstemming">Totalen over er summen av de viste KOSTRA-funksjonene.</p>
         )}
-        {breakdown?.reconciliation.status === 'difference' && (
-          <p className="ko-artavstemming">Funksjonene summerer til {formatKostraValue(breakdown.reconciliation.componentTotal, 'amount')}, mens den publiserte totalen er {formatKostraValue(breakdown.reconciliation.publishedTotal, 'amount')}. Avviket er ikke justert.</p>
+        {breakdown?.summation.status === 'difference' && (
+          <p className="ko-artavstemming">Funksjonene summerer til {formatKostraValue(breakdown.summation.functionTotal, 'amount')}, mens sammendraget over viser {formatKostraValue(breakdown.summation.breakdownTotal, 'amount')}. Avviket er ikke justert.</p>
         )}
         {functionRows.some((row) => row.amount < 0) && (
           <p className="ko-artavstemming">Negative beløp er motposter og beholdes med fortegn.</p>

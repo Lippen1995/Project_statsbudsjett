@@ -115,37 +115,39 @@ test('inntekts- og utgiftsarter kan drilles til avstembare KOSTRA-funksjoner', (
       { code: '202', name: 'Grunnskole', serviceCodes: ['FGK8b'] },
       { code: '120', name: 'Administrasjon', serviceCodes: ['FGK1b'] },
       { code: '999', name: 'Ikke rapportert', serviceCodes: [] },
+      { code: '000', name: 'Rapportert null', serviceCodes: [] },
     ],
     accountingArts: {
       202: [{ code: 'AG16', name: 'Lønn', values: { 2025: { amount: 30 } } }],
       120: [{ code: 'AG16', name: 'Lønn', values: { 2025: { amount: -2 } } }],
       999: [{ code: 'AG16', name: 'Lønn', values: { 2024: { amount: 8 } } }],
+      '000': [{ code: 'AG16', name: 'Lønn', values: { 2025: { amount: 0 } } }],
     },
   }
 
   const result = accountingArtFunctionBreakdown(detail, 2025, 'AG16')
-  assert.deepEqual(result.rows.map((row) => row.code), ['202', '120'])
+  assert.deepEqual(result.rows.map((row) => row.code), ['202', '120', '000'])
   assert.equal(result.rows[0].perCapita, 300)
   assert.equal(result.rows[0].share, 30 / 28 * 100)
   assert.equal(result.rows[1].share, -2 / 28 * 100)
-  assert.deepEqual(result.reconciliation, {
-    componentTotal: 28,
-    publishedTotal: 28,
+  assert.deepEqual(result.summation, {
+    functionTotal: 28,
+    breakdownTotal: 28,
     difference: 0,
-    status: 'reconciled',
+    status: 'matches',
   })
 
   const incomplete = accountingArtFunctionBreakdown({
     ...detail,
     expenseBreakdown: [{ code: 'AG16', name: 'Lønn', amount: 30 }],
   }, 2025, 'AG16')
-  assert.equal(incomplete.reconciliation.status, 'difference')
-  assert.equal(incomplete.reconciliation.difference, -2)
-  assert.deepEqual(accountingArtFunctionBreakdown(detail, 2024, 'AG16').reconciliation, {
-    componentTotal: 8,
-    publishedTotal: null,
+  assert.equal(incomplete.summation.status, 'difference')
+  assert.equal(incomplete.summation.difference, -2)
+  assert.deepEqual(accountingArtFunctionBreakdown(detail, 2024, 'AG16').summation, {
+    functionTotal: 8,
+    breakdownTotal: null,
     difference: null,
-    status: 'missing-total',
+    status: 'no-summary',
   })
 })
 

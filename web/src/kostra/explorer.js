@@ -110,7 +110,7 @@ export function accountingArtFunctionBreakdown(detail, year, artCode) {
       const art = (detail?.accountingArts?.[item.code] ?? [])
         .find((candidate) => candidate.code === artCode)
       const value = accountingArtValue(art, year, detail?.latestYear)
-      if (!Number.isFinite(value?.amount) || value.amount === 0) return null
+      if (!Number.isFinite(value?.amount)) return null
       return {
         ...row(item.code, item.name, {
           amount: value.amount,
@@ -122,6 +122,9 @@ export function accountingArtFunctionBreakdown(detail, year, artCode) {
     .filter(Boolean)
 
   const componentTotal = rows.reduce((sum, item) => sum + item.amount, 0)
+  // Sammendraget er eksportert fra de samme funksjon/art-faktaene. Det er
+  // derfor en kontroll av at UI-utvalget summerer likt, ikke en uavhengig
+  // avstemming mot en annen SSB-total.
   const published = year === detail?.latestYear
     ? [...(detail?.revenueBreakdown ?? []), ...(detail?.expenseBreakdown ?? [])]
       .find((item) => item.code === artCode)
@@ -132,9 +135,9 @@ export function accountingArtFunctionBreakdown(detail, year, artCode) {
     ? Math.max(1, Math.abs(publishedTotal) * 1e-6)
     : null
   const status = !Number.isFinite(publishedTotal)
-    ? 'missing-total'
+    ? 'no-summary'
     : Math.abs(difference) <= tolerance
-      ? 'reconciled'
+      ? 'matches'
       : 'difference'
 
   return {
@@ -144,7 +147,7 @@ export function accountingArtFunctionBreakdown(detail, year, artCode) {
         share: componentTotal !== 0 ? item.amount / componentTotal * 100 : null,
       }))
       .sort((a, b) => Math.abs(b.perCapita ?? b.amount) - Math.abs(a.perCapita ?? a.amount)),
-    reconciliation: { componentTotal, publishedTotal, difference, status },
+    summation: { functionTotal: componentTotal, breakdownTotal: publishedTotal, difference, status },
   }
 }
 
