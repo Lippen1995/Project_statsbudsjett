@@ -324,7 +324,7 @@ med ulike geografiske grenser blir bevisst ikke slått sammen.
 
 ```typescript
 interface KostraIndex {
-  schemaVersion: 1;
+  schemaVersion: 2;
   updated: string;
   latestYear: number;
   years: number[];
@@ -334,6 +334,7 @@ interface KostraIndex {
     code: string;
     category: "finance" | "service";
     functionCode?: string;
+    municipalityOnly?: boolean;
   }>;
   entities: KostraEntity[];
   historicalEntities: KostraEntity[];
@@ -344,6 +345,21 @@ interface KostraIndex {
       };
     };
   };
+  incomeEqualization: {
+    [year: string]: {
+      [entityId: string]: KostraIncomeEqualizationMapPoint;
+    };
+  };
+}
+
+interface KostraIncomeEqualizationMapPoint {
+  population: number | null;
+  taxBefore: KostraIncomePoint;
+  equalization: Omit<KostraIncomePoint, "nationalRatio">;
+  taxAfter: KostraIncomePoint;
+  basis: "actual";
+  sourceUrl: string;
+  sourcePeriod: string;
 }
 
 interface KostraEntity {

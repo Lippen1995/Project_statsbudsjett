@@ -553,6 +553,10 @@ test('nasjonal inntektsutjevning skiller mottak, trekk og avvik uten å nettosum
     population: 350,
     complete: false,
   })
+  assert.equal(
+    incomeEqualizationMapSummary(index, 2024, ['municipality:1']).population,
+    null,
+  )
 })
 
 test('inntektsutjevningskartet bruker to sider av null og egen farge for manglende data', () => {

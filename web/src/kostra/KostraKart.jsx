@@ -21,6 +21,10 @@ import KostraUtforsk from './KostraUtforsk'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 
+function formatNationalRatio(value) {
+  return Number.isFinite(value) ? `${Math.round(value * 100)} %` : '–'
+}
+
 function municipalityEntityTitle(entity) {
   const name = displayEntityName(entity).replace(/\s+kommune$/i, '')
   return name ? `${name} kommune` : ''
@@ -345,8 +349,12 @@ export default function KostraKart({
                   <tr><th scope="row">Skatt etter utjevning</th><td>{formatKostraValue(equalizationPoint.taxAfter?.[mode], mode)}</td></tr>
                 </tbody>
               </table>
-              <div className="ko-innbyggere"><span>Skatt før / etter, mot landet</span><strong>{Math.round((equalizationPoint.taxBefore?.nationalRatio ?? 0) * 100)} / {Math.round((equalizationPoint.taxAfter?.nationalRatio ?? 0) * 100)} %</strong></div>
+              <div className="ko-innbyggere"><span>Skatt før / etter, mot landet</span><strong>{formatNationalRatio(equalizationPoint.taxBefore?.nationalRatio)} / {formatNationalRatio(equalizationPoint.taxAfter?.nationalRatio)}</strong></div>
               <p className="ft-kort-tekst">Utjevningen gjelder bestemte skatteinntekter, ikke alle kommunens inntekter. Klikk for å åpne kommunen og se forklaringen i sammenheng med regnskapet.</p>
+            </> : focusedEntity ? <>
+              <div className="ft-stikkord">Inntektsutjevning · {year}</div>
+              <div className="ft-kort-tittel">{displayEntityName(focusedEntity)}</div>
+              <p className="ko-datadekning">Kommunen mangler publiserte utjevningstall for valgt år. Manglende data er ikke satt til null.</p>
             </> : <>
               <div className="ft-stikkord">Netto inntektsutjevning · {year}</div>
               <div className="ft-kort-tittel">{county ? `Kommunene i ${countyGroupName(county)}` : 'Alle kommuner'}</div>

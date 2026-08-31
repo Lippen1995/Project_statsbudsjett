@@ -15,7 +15,8 @@ function ratio(value) {
 function statusText(status) {
   if (status === 'recipient') return 'Mottar tillegg'
   if (status === 'contributor') return 'Får trekk'
-  return 'Ingen netto utjevning'
+  if (status === 'neutral') return 'Ingen netto utjevning'
+  return 'Mangler publiserte data'
 }
 
 function pointValue(point, field, mode) {
@@ -31,24 +32,23 @@ export default function KostraIncomeEqualization({
     shape,
     entity: entities.get(shape.id),
     point: incomeEqualizationPoint(index, year, shape.id),
-  })).filter((row) => row.point), [entities, index, shapes, year])
+  })), [entities, index, shapes, year])
   const sortedRows = useMemo(() => [...rows].sort((a, b) => {
     if (sortKey === 'name') {
       const order = displayEntityName(a.entity).localeCompare(displayEntityName(b.entity), 'nb-NO')
       return sortDirection === 'desc' ? -order : order
     }
-    const aValue = sortKey === 'equalization'
-      ? pointValue(a.point, 'equalization', mode)
-      : a.point?.[sortKey]?.nationalRatio
-    const bValue = sortKey === 'equalization'
-      ? pointValue(b.point, 'equalization', mode)
-      : b.point?.[sortKey]?.nationalRatio
-    const order = (Number.isFinite(aValue) ? aValue : -Infinity) - (Number.isFinite(bValue) ? bValue : -Infinity)
+    const aValue = pointValue(a.point, sortKey, mode)
+    const bValue = pointValue(b.point, sortKey, mode)
+    if (!Number.isFinite(aValue) && !Number.isFinite(bValue)) return 0
+    if (!Number.isFinite(aValue)) return 1
+    if (!Number.isFinite(bValue)) return -1
+    const order = aValue - bValue
     return sortDirection === 'desc' ? -order : order
   }), [mode, rows, sortDirection, sortKey])
   const summary = incomeEqualizationMapSummary(index, year, shapes.map((shape) => shape.id))
   const hovered = hoverId ? rows.find((row) => row.shape.id === hoverId) : null
-  const sourceUrl = hovered?.point?.sourceUrl ?? rows[0]?.point?.sourceUrl
+  const sourceUrl = hovered?.point?.sourceUrl ?? rows.find((row) => row.point?.sourceUrl)?.point.sourceUrl
 
   const changeSort = (key, direction) => {
     if (direction) {
@@ -80,6 +80,9 @@ export default function KostraIncomeEqualization({
           <p>
             Skattegrunnlaget varierer kraftig mellom kommunene. Inntektsutjevningen går gjennom
             rammetilskuddet og skal gi mer like økonomiske forutsetninger for et likeverdig tjenestetilbud.
+            En symmetrisk del kompenserer eller trekker samme andel av avstanden til landsgjennomsnittet.
+            Kommuner langt under gjennomsnittet kan få tilleggskompensasjon. Satser og terskler kan endres;
+            tabellen bruker KDDs sluttavregning for valgt år.
           </p>
         </div>
         <div>
@@ -95,7 +98,8 @@ export default function KostraIncomeEqualization({
             «Generelle inntekter» brukes ofte løst; det presise begrepet her er frie inntekter:
             skatteinntektene over pluss rammetilskudd. Samlede kommuneinntekter er videre.
             Utbytte fra selskaper kommunen eier er finansinntekt og kan styrke økonomien, men det
-            gjør ikke kommunen til bidragsyter i inntektsutjevningen.
+            gjør ikke kommunen til bidragsyter i inntektsutjevningen. Kartet kan derfor ikke alene
+            brukes som mål på kommunens samlede økonomiske handlingsrom.
           </p>
         </div>
       </div>
@@ -103,7 +107,7 @@ export default function KostraIncomeEqualization({
       <div className="ko-utjevningsnokkeltall" aria-label={`Oppsummering av inntektsutjevningen i ${year}`}>
         <div><span>Mottar tillegg</span><strong>{summary.recipients} kommuner</strong><small>{formatKostraValue(summary.receivedAmount, 'amount')}</small></div>
         <div><span>Får trekk</span><strong>{summary.contributors} kommuner</strong><small>{formatKostraValue(summary.contributedAmount, 'amount')}</small></div>
-        <div><span>Datadekning</span><strong>{summary.availableEntities} av {summary.entities}</strong><small>{integerFormat.format(summary.population)} innbyggere</small></div>
+        <div><span>Datadekning</span><strong>{summary.availableEntities} av {summary.entities}</strong><small>{summary.population == null ? '–' : `${integerFormat.format(summary.population)} innbyggere`}</small></div>
       </div>
 
       <div className="ko-utjevningssortering">
@@ -132,12 +136,12 @@ export default function KostraIncomeEqualization({
               >
                 <th scope="row">
                   <button type="button" onFocus={() => onHover(row.shape.id)} onBlur={() => onHover(null)} onClick={() => onOpen(row.shape)}>
-                    <span>{displayEntityName(row.entity)}</span><small>{statusText(row.point.status)} · åpne kommunen</small>
+                    <span>{displayEntityName(row.entity)}</span><small>{statusText(row.point?.status)} · åpne kommunen</small>
                   </button>
                 </th>
-                <td><strong>{formatKostraValue(pointValue(row.point, 'taxBefore', mode), mode)}</strong><small>{ratio(row.point.taxBefore?.nationalRatio)} av landet</small></td>
-                <td className={`ko-utjevningverdi ko-utjevningverdi--${row.point.status}`}><strong>{formatKostraValue(pointValue(row.point, 'equalization', mode), mode)}</strong><small>{statusText(row.point.status)}</small></td>
-                <td><strong>{formatKostraValue(pointValue(row.point, 'taxAfter', mode), mode)}</strong><small>{ratio(row.point.taxAfter?.nationalRatio)} av landet</small></td>
+                <td><strong>{formatKostraValue(pointValue(row.point, 'taxBefore', mode), mode)}</strong><small>{ratio(row.point?.taxBefore?.nationalRatio)} av landet</small></td>
+                <td className={`ko-utjevningverdi ko-utjevningverdi--${row.point?.status ?? 'missing'}`}><strong>{formatKostraValue(pointValue(row.point, 'equalization', mode), mode)}</strong><small>{statusText(row.point?.status)}</small></td>
+                <td><strong>{formatKostraValue(pointValue(row.point, 'taxAfter', mode), mode)}</strong><small>{ratio(row.point?.taxAfter?.nationalRatio)} av landet</small></td>
               </tr>
             ))}
           </tbody>

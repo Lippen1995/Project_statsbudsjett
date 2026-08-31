@@ -222,13 +222,17 @@ export function incomeEqualizationMapSummary(index, year, entityIds) {
   let neutral = 0
   let availableEntities = 0
   let population = 0
+  let availablePopulation = 0
 
   for (const entityId of entityIds) {
     const point = incomeEqualizationPoint(index, year, entityId)
     if (!point) continue
     const amount = point.equalization.amount
     availableEntities += 1
-    if (Number.isFinite(point.population)) population += point.population
+    if (Number.isFinite(point.population)) {
+      population += point.population
+      availablePopulation += 1
+    }
     if (amount > 0) {
       receivedAmount += amount
       recipients += 1
@@ -248,7 +252,7 @@ export function incomeEqualizationMapSummary(index, year, entityIds) {
     neutral,
     availableEntities,
     entities: entityIds.length,
-    population,
+    population: availableEntities > 0 && availablePopulation === availableEntities ? population : null,
     complete: entityIds.length > 0 && availableEntities === entityIds.length,
   }
 }
