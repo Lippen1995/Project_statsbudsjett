@@ -123,6 +123,8 @@
 .ko-graflegend span { display: flex; align-items: center; gap: 6px; }.ko-graflegend i { width: 14px; height: 2px; }
 .ko-sammenlignrad { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--strek); font-size: 13px; }
 .ko-sammenlignrad > span { display: flex; flex-direction: column; gap: 4px; }
+.ko-sammenlignnavn { display: flex; align-items: center; gap: 3px; }
+.ko-sammenlignnavn .ko-info { margin: -5px 0; }
 .ko-sammenlignrad small { color: var(--blek); font-size: 10px; }
 .ko-sammenlignrad strong { white-space: nowrap; }
 

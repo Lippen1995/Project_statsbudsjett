@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import {
   choroplethColor,
   countyGroupName,
@@ -12,6 +12,7 @@ import {
   summarizeMunicipalities,
 } from './model'
 import KostraDetalj from './KostraDetalj'
+import KostraInfoTooltip from './KostraInfoTooltip'
 import KostraUtforsk from './KostraUtforsk'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -32,29 +33,6 @@ function focusedViewBox(shapes, fallback) {
   return `${minX - pad} ${minY - pad} ${maxX - minX + pad * 2} ${maxY - minY + pad * 2}`
 }
 
-function InfoTooltip({ label, children }) {
-  const id = useId()
-  const [open, setOpen] = useState(false)
-  return (
-    <span className="ko-info" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-      <button
-        type="button"
-        aria-label={`Forklaring av ${label}`}
-        aria-describedby={id}
-        onFocus={() => setOpen(true)}
-        onBlur={() => setOpen(false)}
-        onKeyDown={(event) => {
-          if (event.key === 'Escape') {
-            event.preventDefault()
-            setOpen(false)
-          }
-        }}
-      >i</button>
-      <span id={id} role="tooltip" className={`ko-tooltip ${open ? 'apen' : ''}`}>{children}</span>
-    </span>
-  )
-}
-
 export default function KostraKart({
   index, boundaries, countyCode, selectedMunicipalityCode, embedded = false,
 }) {
@@ -65,8 +43,10 @@ export default function KostraKart({
   const [search, setSearch] = useState('')
   const [nationalLevel, setNationalLevel] = useState('county')
   const [keyboardId, setKeyboardId] = useState(null)
+  const [preservedContentHeight, setPreservedContentHeight] = useState(null)
   const headingRef = useRef(null)
-  const searchNavigationRef = useRef(false)
+  const contentRegionRef = useRef(null)
+  const routeNavigationRef = useRef(null)
   const searchInputId = useId()
   const level = countyCode ? 'municipality' : nationalLevel
   const countyId = countyCode ? `county:${countyCode}` : null
@@ -90,10 +70,17 @@ export default function KostraKart({
     setNationalLevel('county')
   }, [countyId])
 
-  useEffect(() => {
-    if (!searchNavigationRef.current) return
-    searchNavigationRef.current = false
-    requestAnimationFrame(() => headingRef.current?.focus({ preventScroll: true }))
+  useLayoutEffect(() => {
+    const navigation = routeNavigationRef.current
+    if (!navigation) return undefined
+    window.scrollTo(0, navigation.scrollY)
+    headingRef.current?.focus({ preventScroll: true })
+    const frame = requestAnimationFrame(() => {
+      window.scrollTo(0, navigation.scrollY)
+      if (!selectedMunicipalityCode) setPreservedContentHeight(null)
+      routeNavigationRef.current = null
+    })
+    return () => cancelAnimationFrame(frame)
   }, [countyId, selectedMunicipalityCode])
 
   const values = shapes.map((shape) => mapValue(index, metricId, year, shape.id, mode)).filter(Number.isFinite)
@@ -137,8 +124,17 @@ export default function KostraKart({
   const activeKeyboardId = mainShapes.some((shape) => shape.id === keyboardId) ? keyboardId : mainShapes[0]?.id
   const municipalityTitle = selectedMunicipality ? municipalityEntityTitle(selectedMunicipality) : null
   const mapIsInteractive = !selectedShape
+  const releasePreservedContentHeight = useCallback(() => setPreservedContentHeight(null), [])
+
+  const prepareRouteNavigation = () => {
+    routeNavigationRef.current = { scrollY: window.scrollY }
+    const contentHeight = contentRegionRef.current?.getBoundingClientRect().height
+    if (contentHeight) setPreservedContentHeight(contentHeight)
+  }
 
   const open = (shape) => {
+    prepareRouteNavigation()
+    document.activeElement?.blur()
     window.location.hash = shape.id.startsWith('county:')
       ? `kostra/fylke/${shape.id.split(':')[1]}`
       : `kostra/kommune/${shape.code}`
@@ -154,9 +150,9 @@ export default function KostraKart({
           normalisert lokalt og sammenlignbare med landet og KOSTRA-gruppen.
         </p>
         <div className="ko-smuler" aria-label="Brødsmuler">
-          <a href="#kostra">Norge</a>
+          <a href="#kostra" onClick={prepareRouteNavigation}>Norge</a>
           {county && <><span>›</span>{selectedMunicipality
-            ? <a href={`#kostra/fylke/${countyCode}`}>{displayEntityName(county)}</a>
+            ? <a href={`#kostra/fylke/${countyCode}`} onClick={prepareRouteNavigation}>{displayEntityName(county)}</a>
             : <span aria-current="page">{displayEntityName(county)}</span>}</>}
           {selectedMunicipality && <><span>›</span><span aria-current="page">{municipalityTitle}</span></>}
         </div>
@@ -197,7 +193,7 @@ export default function KostraKart({
                   <a
                     key={entity.id}
                     href={entity.kind === 'county' ? `#kostra/fylke/${entity.id.split(':')[1]}` : `#kostra/kommune/${entity.code}`}
-                    onClick={() => { searchNavigationRef.current = true }}
+                    onClick={prepareRouteNavigation}
                   >
                     <span>{displayEntityName(entity)}</span>
                     <small>{entity.kind === 'county' ? 'Fylke' : 'Kommune'}</small>
@@ -230,6 +226,7 @@ export default function KostraKart({
                 className="ko-fylkeinnfelt"
                 href={`#kostra/fylke/${countyCode}`}
                 aria-label={`Tilbake til kommuneoversikten i ${displayEntityName(county)}`}
+                onClick={prepareRouteNavigation}
               >
                 <svg viewBox={countyViewBox} role="img" aria-label={`${municipalityTitle} markert i ${displayEntityName(county)}`}>
                   <g fillRule="evenodd">
@@ -331,7 +328,7 @@ export default function KostraKart({
                       <th scope="row">
                         <span className="ko-sammenstilling-etikett">
                           <span>{row.label}</span>
-                          <InfoTooltip label={row.label}>{row.description}</InfoTooltip>
+                          <KostraInfoTooltip label={row.label}>{row.description}</KostraInfoTooltip>
                         </span>
                       </th>
                       <td className="num">{formatKostraValue(row.county[mode], mode)}</td>
@@ -366,7 +363,7 @@ export default function KostraKart({
                       <th scope="row">
                         <span className="ko-sammenstilling-etikett">
                           <span>{row.label}</span>
-                          <InfoTooltip label={row.label}>{row.description}</InfoTooltip>
+                          <KostraInfoTooltip label={row.label}>{row.description}</KostraInfoTooltip>
                         </span>
                       </th>
                       <td className="num">{formatKostraValue(row.summary[mode], mode)}</td>
@@ -423,29 +420,41 @@ export default function KostraKart({
                 ? `Klikk for å ${level === 'county' ? 'se kommunene i fylket' : 'åpne regnskapet og sammenligningene'}.`
                 : `${summary.entities} ${level === 'county' ? 'fylkeskommuner' : 'kommuner'} er summert. Per innbygger er befolkningsvektet.`}
             </p>
-            {county && <a className="ko-handling" href={`#kostra/fylke/${countyCode}/detaljer`}>Se fylkeskommunens regnskap →</a>}
+            {county && <a className="ko-handling" href={`#kostra/fylke/${countyCode}/detaljer`} onClick={prepareRouteNavigation}>Se fylkeskommunens regnskap →</a>}
             </>}
           </aside>
         </div>
       </section>
 
-      {selectedMunicipality ? (
-        <KostraDetalj index={index} kind="municipality" code={selectedMunicipality.code} embedded />
-      ) : (
-        <KostraUtforsk
-          index={index}
-          shapes={shapes}
-          entities={entities}
-          metric={metric}
-          metricId={metricId}
-          year={year}
-          mode={mode}
-          hoverId={hoverId}
-          level={level}
-          scopeName={displayEntityName(county) || (level === 'county' ? 'Alle fylkeskommuner' : 'Alle kommuner')}
-          onHover={setHoverId}
-        />
-      )}
+      <div
+        ref={contentRegionRef}
+        className="ko-innholdsregion"
+        style={preservedContentHeight ? { minHeight: `${preservedContentHeight}px` } : undefined}
+      >
+        {selectedMunicipality ? (
+          <KostraDetalj
+            index={index}
+            kind="municipality"
+            code={selectedMunicipality.code}
+            embedded
+            onReady={releasePreservedContentHeight}
+          />
+        ) : (
+          <KostraUtforsk
+            index={index}
+            shapes={shapes}
+            entities={entities}
+            metric={metric}
+            metricId={metricId}
+            year={year}
+            mode={mode}
+            hoverId={hoverId}
+            level={level}
+            scopeName={displayEntityName(county) || (level === 'county' ? 'Alle fylkeskommuner' : 'Alle kommuner')}
+            onHover={setHoverId}
+          />
+        )}
+      </div>
     </>
   )
 }

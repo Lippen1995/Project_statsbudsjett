@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { loadKostraDetail } from '../lib/kostra'
 import LinjeGraf from '../fellestall/grafer/LinjeGraf'
 import { INK, RUST } from '../fellestall/design'
@@ -15,6 +15,7 @@ import {
 } from './model'
 import { accountingArtBreakdown, accountingArtFunctionBreakdown } from './explorer'
 import KostraGrowthSummary from './KostraGrowthSummary'
+import KostraInfoTooltip from './KostraInfoTooltip'
 
 const GREEN = '#47735D'
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -200,7 +201,7 @@ function StateFlows({ entityName, stateFlows, year, mode }) {
   )
 }
 
-export default function KostraDetalj({ index, kind, code, embedded = false }) {
+export default function KostraDetalj({ index, kind, code, embedded = false, onReady }) {
   const [detail, setDetail] = useState(null)
   const [error, setError] = useState(null)
   const [mode, setMode] = useState('perCapita')
@@ -220,6 +221,10 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
       .catch((e) => { if (active) setError(e.message) })
     return () => { active = false }
   }, [kind, code])
+
+  useLayoutEffect(() => {
+    if (detail) onReady?.()
+  }, [detail, onReady])
 
   const entityId = kind === 'county' ? `county:${code.slice(0, 2)}` : `municipality:${code}`
   const allEntities = [...index.entities, ...(index.historicalEntities ?? [])]
@@ -362,9 +367,20 @@ export default function KostraDetalj({ index, kind, code, embedded = false }) {
             {comparisons.map((comparison) => {
               const value = mapValue(index, historyMetric, year, comparison.id, mode)
               const population = populationForEntity(index, year, comparison.id)
+              const isPeerGroup = comparison.id === detail.comparisons.peerGroupEntityId
               return (
                 <div className="ko-sammenlignrad" key={comparison.id}>
-                  <span>{comparison.name}<small>{population == null ? 'Innbyggertall mangler' : `ca. ${populationFormat.format(population)} innbyggere`}</small></span>
+                  <span>
+                    <span className="ko-sammenlignnavn">
+                      {comparison.name}
+                      {isPeerGroup && (
+                        <KostraInfoTooltip label={comparison.name}>
+                          SSB grupperer kommuner etter folkemengde og økonomiske rammebetingelser, blant annet bundne kostnader og frie disponible inntekter. Gruppen brukes for å sammenligne {detail.entity.name} med kommuner som har lignende forutsetninger.
+                        </KostraInfoTooltip>
+                      )}
+                    </span>
+                    <small>{population == null ? 'Innbyggertall mangler' : `ca. ${populationFormat.format(population)} innbyggere`}</small>
+                  </span>
                   <strong>{formatKostraValue(value, mode)}</strong>
                 </div>
               )
