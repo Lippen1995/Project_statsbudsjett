@@ -170,6 +170,7 @@
 .ko-panel h2, .ko-breakdown h3, .ko-drill h2 { font-family: var(--serif); font-size: 26px; margin: 4px 0 18px; }
 .ko-paneltopp { display: flex; align-items: start; justify-content: space-between; gap: 20px; }
 .ko-paneltopp .ko-select { width: 220px; }
+.ko-drillverktoy { display: flex; align-items: center; justify-content: flex-end; gap: 14px; flex-wrap: wrap; }
 .ko-graflegend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: var(--blek); }
 .ko-graflegend span { display: flex; align-items: center; gap: 6px; }.ko-graflegend i { width: 14px; height: 2px; }
 .ko-sammenlignrad { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--strek); font-size: 13px; }

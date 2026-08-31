@@ -281,6 +281,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
   const [historyMetric, setHistoryMetric] = useState('expenses')
   const [serviceCode, setServiceCode] = useState(null)
   const [functionCode, setFunctionCode] = useState(null)
+  const [drillMode, setDrillMode] = useState('amount')
 
   useEffect(() => {
     let active = true
@@ -353,17 +354,21 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
   const boundaryWarnings = materialBoundaryHistory(detail.boundaryHistory)
 
   const drillRows = selectedFunction
-    ? [...arts].sort((a, b) => (b[mode] ?? -Infinity) - (a[mode] ?? -Infinity))
+    ? [...arts].sort((a, b) => (b[drillMode] ?? -Infinity) - (a[drillMode] ?? -Infinity))
     : selectedService
-      ? [...functions].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.amount ?? 0) - Math.abs(point(a, 'net_expenses', year)?.amount ?? 0))
-      : [...detail.services].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.amount ?? 0) - Math.abs(point(a, 'net_expenses', year)?.amount ?? 0))
-  const maxArtValue = Math.max(1, ...arts.map((item) => Math.abs(item[mode] ?? 0)))
-  const drillHistoryData = drillHistory(detail, index.years, serviceCode, functionCode)
+      ? [...functions].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.[drillMode] ?? 0) - Math.abs(point(a, 'net_expenses', year)?.[drillMode] ?? 0))
+      : [...detail.services].sort((a, b) => Math.abs(point(b, 'net_expenses', year)?.[drillMode] ?? 0) - Math.abs(point(a, 'net_expenses', year)?.[drillMode] ?? 0))
+  const maxArtValue = Math.max(1, ...arts.map((item) => Math.abs(item[drillMode] ?? 0)))
+  const drillHistoryData = drillHistory(detail, index.years, serviceCode, functionCode, drillMode)
   const drillSeries = [{ navn: drillHistoryData.name, farge: RUST, bredde: 2.5, punkter: drillHistoryData.points }]
   const drillGrowth = yearlyGrowth(drillHistoryData.points, index.years, year)
+  const drillPopulation = populationForEntity(index, year, entityId)
+  const drillReconciliationValue = (amount) => drillMode === 'perCapita'
+    ? Number.isFinite(amount) && drillPopulation ? amount * 1000 / drillPopulation : null
+    : amount
   const drillTips = (i) => ({
     tittel: String(index.years[i]),
-    linjer: [{ farge: RUST, tekst: `${drillHistoryData.name}: ${formatKostraValue(drillHistoryData.points[i]?.v, 'amount')}` }],
+    linjer: [{ farge: RUST, tekst: `${drillHistoryData.name}: ${formatKostraValue(drillHistoryData.points[i]?.v, drillMode)}` }],
   })
 
   return (
@@ -475,7 +480,23 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
         <div className="ko-drill">
           <div className="ko-paneltopp">
             <div><span className="ft-stikkord">Økonomisk drill-down</span><h2>Fra total til regnskapsart</h2></div>
-            <span className="num">{year}</span>
+            <div className="ko-drillverktoy">
+              <div className="ft-bytter" aria-label="Vis beløp i økonomisk drill-down">
+                <button
+                  type="button"
+                  className={`ft-bytte ${drillMode === 'amount' ? 'aktiv' : ''}`}
+                  aria-pressed={drillMode === 'amount'}
+                  onClick={() => setDrillMode('amount')}
+                >Nominelt beløp</button>
+                <button
+                  type="button"
+                  className={`ft-bytte ${drillMode === 'perCapita' ? 'aktiv' : ''}`}
+                  aria-pressed={drillMode === 'perCapita'}
+                  onClick={() => setDrillMode('perCapita')}
+                >Per innbygger</button>
+              </div>
+              <span className="num">{year}</span>
+            </div>
           </div>
           <div className="ko-drillgrid">
             <div>
@@ -487,12 +508,12 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
               <div className={`ko-drillhode ${selectedFunction ? 'ko-drillhode--arts' : ''}`}>
                 <span>{selectedFunction ? 'Regnskapsart' : selectedService ? 'KOSTRA-funksjon' : 'Tjenesteområde'}</span>
                 {selectedFunction
-                  ? <><span>{mode === 'perCapita' ? 'Per innb.' : 'Totalt'}</span><span>Andel</span></>
-                  : <><span>Beløp</span><span /></>}
+                  ? <><span>{drillMode === 'perCapita' ? 'Per innb.' : 'Beløp'}</span><span>Andel</span></>
+                  : <><span>{drillMode === 'perCapita' ? 'Per innb.' : 'Beløp'}</span><span /></>}
               </div>
               <div className="ko-drillrader">
                 {drillRows.map((row) => {
-                  const value = selectedFunction ? row.amount : point(row, 'net_expenses', year)?.amount
+                  const value = selectedFunction ? row[drillMode] : point(row, 'net_expenses', year)?.[drillMode]
                   const clickable = !selectedFunction
                   return (
                     <button
@@ -503,9 +524,9 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
                     >
                       <span>
                         <span><small>{row.code}</small>{row.name}</span>
-                        {selectedFunction && <i style={{ width: `${Math.abs(row[mode] ?? 0) / maxArtValue * 100}%` }} />}
+                        {selectedFunction && <i style={{ width: `${Math.abs(row[drillMode] ?? 0) / maxArtValue * 100}%` }} />}
                       </span>
-                      <strong className="num">{formatKostraValue(selectedFunction ? row[mode] : value, selectedFunction ? mode : 'amount')}</strong>
+                      <strong className="num">{formatKostraValue(value, drillMode)}</strong>
                       {selectedFunction && <em className="num">{Number.isFinite(row.share) ? `${populationFormat.format(row.share)} %` : '–'}</em>}
                       {clickable && <b>›</b>}
                     </button>
@@ -514,7 +535,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
               </div>
               {artBreakdown?.reconciliation.status === 'reconciled' && <p className="ko-artavstemming">Artsgruppene avstemmer mot funksjonens brutto driftsutgifter.</p>}
               {artBreakdown?.reconciliation.status === 'difference' && (
-                <p className="ko-artavstemming">Artsgruppene summerer til {formatKostraValue(artBreakdown.reconciliation.componentTotal, 'amount')}, mens SSB oppgir {formatKostraValue(artBreakdown.reconciliation.functionTotal, 'amount')}. Avviket på {formatKostraValue(artBreakdown.reconciliation.difference, 'amount')} er ikke justert.</p>
+                <p className="ko-artavstemming">Artsgruppene summerer til {formatKostraValue(drillReconciliationValue(artBreakdown.reconciliation.componentTotal), drillMode)}, mens SSB oppgir {formatKostraValue(drillReconciliationValue(artBreakdown.reconciliation.functionTotal), drillMode)}. Avviket på {formatKostraValue(drillReconciliationValue(artBreakdown.reconciliation.difference), drillMode)} er ikke justert.</p>
               )}
               {artBreakdown?.reconciliation.status === 'incomplete-components' && (
                 <p className="ko-artavstemming">SSB mangler én eller flere hovedarter for valgt år. Rapporterte arter vises, men andeler og avstemming utelates.</p>
@@ -529,7 +550,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
             <aside className="ko-drillgraf" aria-live="polite" aria-atomic="true">
               <span className="ft-stikkord">Utvikling over tid</span>
               <h3>{drillHistoryData.name}</h3>
-              <strong className="ko-drillgrafverdi num">{formatKostraValue(drillHistoryData.latestValue, 'amount')}</strong>
+              <strong className="ko-drillgrafverdi num">{formatKostraValue(drillHistoryData.latestValue, drillMode)}</strong>
               <KostraGrowthSummary growth={drillGrowth} />
               {selectedFunction && <p className="ko-drillgrafnote">Regnskapsartene viser {year}; grafen viser funksjonen over tid.</p>}
               <LinjeGraf
@@ -538,9 +559,9 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
                 W={390}
                 H={230}
                 fraNull={drillHistoryData.fromZero}
-                aksefmt={(value) => formatKostraValue(value, 'amount')}
+                aksefmt={(value) => formatKostraValue(value, drillMode)}
                 tips={drillTips}
-                beskrivelse={`Utvikling i ${drillHistoryData.name.toLowerCase()} for ${detail.entity.name}`}
+                beskrivelse={`Utvikling i ${drillHistoryData.name.toLowerCase()} ${drillMode === 'perCapita' ? 'per innbygger' : 'nominelt'} for ${detail.entity.name}`}
               />
             </aside>
           </div>

@@ -117,14 +117,15 @@ export function comparisonEntityIds(entityId, comparisons, mode) {
 }
 
 /** Velg den tidsserien som svarer til brukerens posisjon i økonomidrillen. */
-export function drillHistory(detail, years, serviceCode, functionCode) {
+export function drillHistory(detail, years, serviceCode, functionCode, mode = 'amount') {
   const selected = functionCode
     ? detail?.functions?.find((item) => item.code === functionCode)
     : serviceCode
       ? detail?.services?.find((item) => item.code === serviceCode)
       : null
   const values = selected?.metrics?.net_expenses ?? detail?.overview?.net_expenses
-  const points = years.map((year) => ({ v: values?.[year]?.amount ?? null }))
+  const valueKey = mode === 'perCapita' ? 'perCapita' : 'amount'
+  const points = years.map((year) => ({ v: values?.[year]?.[valueKey] ?? null }))
   const available = points.map((item) => item.v).filter(Number.isFinite)
   return {
     name: selected?.name ?? 'Netto driftsutgifter totalt',

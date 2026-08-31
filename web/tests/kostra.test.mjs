@@ -245,14 +245,14 @@ test('sammenligningsgrunnlag kan vise utledet innbyggertall', () => {
 
 test('drilldown-historikk følger total, tjenesteområde og KOSTRA-funksjon', () => {
   const detail = {
-    overview: { net_expenses: { 2024: { amount: 100 }, 2025: { amount: 120 } } },
+    overview: { net_expenses: { 2024: { amount: 100, perCapita: 1_000 }, 2025: { amount: 120, perCapita: 1_100 } } },
     services: [{
       code: 'FGK8b', name: 'Grunnskole',
-      metrics: { net_expenses: { 2024: { amount: 40 }, 2025: { amount: 50 } } },
+      metrics: { net_expenses: { 2024: { amount: 40, perCapita: 400 }, 2025: { amount: 50, perCapita: 450 } } },
     }],
     functions: [{
       code: '202', name: 'Grunnskole',
-      metrics: { net_expenses: { 2024: { amount: -30 }, 2025: { amount: 35 } } },
+      metrics: { net_expenses: { 2024: { amount: -30, perCapita: -300 }, 2025: { amount: 35, perCapita: 320 } } },
     }],
   }
 
@@ -267,6 +267,9 @@ test('drilldown-historikk følger total, tjenesteområde og KOSTRA-funksjon', ()
   })
   assert.deepEqual(drillHistory(detail, [2024, 2025], 'FGK8b', '202'), {
     name: 'Grunnskole', points: [{ v: -30 }, { v: 35 }], latestValue: 35, fromZero: false,
+  })
+  assert.deepEqual(drillHistory(detail, [2024, 2025], 'FGK8b', '202', 'perCapita'), {
+    name: 'Grunnskole', points: [{ v: -300 }, { v: 320 }], latestValue: 320, fromZero: false,
   })
 })
 
