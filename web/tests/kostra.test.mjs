@@ -8,6 +8,7 @@ import {
   displayEntityName,
   drillHistory,
   findKostraEntities,
+  incomeEqualizationSummary,
   municipalityCodeStatus,
   mapValue,
   materialBoundaryHistory,
@@ -469,4 +470,39 @@ test('stat-kommune-oppsummering summerer bare komplette, adskilte pengestrommer'
     total: null,
     complete: false,
   })
+})
+
+test('inntektsutjevning skiller bidragsyter fra mottaker og sammenligner frie inntekter', () => {
+  const incomeEqualization = { values: { 2025: {
+    population: 150_123,
+    taxBefore: { amount: 8_077_728, perCapita: 53_807, nationalRatio: 1.273 },
+    equalization: { amount: -1_130_664, perCapita: -7_532 },
+    taxAfter: { amount: 6_947_063, perCapita: 46_276, nationalRatio: 1.095 },
+    sourceUrl: 'https://www.regjeringen.no/', sourcePeriod: '2025',
+  } } }
+  const stateFlows = { incoming: [{ code: 'state_block_grant', values: {
+    2025: { amount: 3_522_177, perCapita: 23_223 },
+  } }] }
+
+  assert.deepEqual(incomeEqualizationSummary(incomeEqualization, stateFlows, 2025, 'perCapita'), {
+    year: 2025,
+    population: 150_123,
+    taxBefore: 53_807,
+    equalization: -7_532,
+    taxAfter: 46_276,
+    blockGrant: 23_223,
+    taxBeforeNationalRatio: 1.273,
+    taxAfterNationalRatio: 1.095,
+    equalizationStatus: 'contributor',
+    freeIncomeSource: 'own_tax',
+    sourceUrl: 'https://www.regjeringen.no/',
+    sourcePeriod: '2025',
+  })
+  assert.equal(
+    incomeEqualizationSummary({ values: { 2025: {
+      taxBefore: { amount: 100 }, equalization: { amount: 20 }, taxAfter: { amount: 120 },
+    } } }, stateFlows, 2025, 'amount').equalizationStatus,
+    'recipient',
+  )
+  assert.equal(incomeEqualizationSummary(incomeEqualization, stateFlows, 2024, 'amount'), null)
 })

@@ -96,10 +96,15 @@
 .ko-stromhode { max-width: 760px; }
 .ko-stromhode h2 { margin: 5px 0 10px; font-family: var(--serif); font-size: clamp(27px, 3vw, 36px); line-height: 1.1; }
 .ko-stromhode p { margin: 0; color: var(--dempet); line-height: 1.55; }
+.ko-utjevningstatus { max-width: 760px; margin-top: 26px; padding: 16px 0; border-block: 1px solid var(--strek); }
+.ko-utjevningstatus h3 { margin: 5px 0 7px; font-family: var(--serif); font-size: clamp(23px, 2.5vw, 30px); line-height: 1.15; }
+.ko-utjevningstatus p { max-width: 700px; margin: 0; color: var(--dempet); font-size: 13px; line-height: 1.55; }
+.ko-utjevningstatus--contributor h3, .ko-utjevningstatus--recipient h3 { color: var(--rust); }
 .ko-stromgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 30px; }
 .ko-stromkolonne { min-width: 0; border-top: 1px solid var(--strek); padding-top: 14px; }
 .ko-stromkolonne h3 { margin: 4px 0 5px; font-family: var(--serif); font-size: 25px; }
 .ko-stromtotal { display: block; margin: 8px 0 10px; color: var(--rust); font-family: var(--serif); font-size: clamp(26px, 3vw, 34px); }
+.ko-stromtotal--trekk { color: var(--ink); }
 .ko-stromkolonne--outgoing .ko-stromtotal { color: var(--ink); }
 .ko-stromforklaring { min-height: 58px; margin: 0 0 12px; color: var(--dempet); font-size: 12px; line-height: 1.5; }
 .ko-stromtabell { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; }
@@ -110,7 +115,9 @@
 .ko-stromtabell tbody th span, .ko-stromtabell tbody th small { display: block; }
 .ko-stromtabell tbody th small { margin-top: 3px; color: var(--blek); font-size: 10px; font-weight: 400; line-height: 1.35; }
 .ko-stromtabell tbody td { font-weight: 700; text-align: right; white-space: nowrap; }
+.ko-stromtabell--utjevning :is(th, td) { color: var(--rust); }
 .ko-stromkilde { display: block; margin-top: 10px; color: var(--blek); font-size: 10px; }
+.ko-stromkilde a { color: inherit; }
 .ko-stromdekning { margin: 9px 0 0; color: var(--rust); font-size: 11px; }
 .ko-stromforbehold { margin: 24px 0 0; padding: 13px 0; border-block: 1px solid var(--strek); color: var(--dempet); font-size: 11px; line-height: 1.5; }
 .ko-detaljgrid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(240px, .7fr); gap: 28px; margin-top: 38px; }

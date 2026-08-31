@@ -2,7 +2,10 @@
 import json
 import sqlite3
 import sys
+import zipfile
+from io import BytesIO
 from pathlib import Path
+from xml.sax.saxutils import escape
 
 import pytest
 
@@ -12,10 +15,12 @@ from kostra import (  # noqa: E402
     METRICS,
     SsbClient,
     TAX_FLOW_CATEGORIES,
+    _import_income_equalization,
     _import_details,
     _import_overview,
     _import_tax_flows,
     _sync_block_grant_flows,
+    _income_equalization_sources,
     classify_code_changes,
     create_database,
     detail_region_codes_for_import,
@@ -36,6 +41,36 @@ BERGEN_2024_STATE_TAX_MILL = {
     "10": 16_656.2,
     "11": 8_396.4,
 }
+
+
+def _minimal_income_equalization_xlsx():
+    rows = [
+        {"A": "Beregninger av skatt og netto inntektsutjevning"},
+        {"A": "Knr.", "B": "Kommune"},
+        {}, {}, {}, {"E": "3", "K": "9"}, {},
+        {"A": 1103, "B": "Stavanger", "D": 150123, "E": 53807.396241748436,
+         "F": 1.2729580020083351, "K": -7531.5861946430095},
+    ]
+    xml_rows = []
+    for index, row in enumerate(rows, 1):
+        cells = []
+        for column, value in row.items():
+            if isinstance(value, str):
+                cells.append(
+                    f'<c r="{column}{index}" t="inlineStr"><is><t>{escape(value)}</t></is></c>'
+                )
+            else:
+                cells.append(f'<c r="{column}{index}"><v>{value}</v></c>')
+        xml_rows.append(f'<row r="{index}">{"".join(cells)}</row>')
+    sheet = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+        f'<sheetData>{"".join(xml_rows)}</sheetData></worksheet>'
+    )
+    output = BytesIO()
+    with zipfile.ZipFile(output, "w") as archive:
+        archive.writestr("xl/worksheets/sheet1.xml", sheet)
+    return output.getvalue()
 
 
 def _cube():
@@ -397,6 +432,52 @@ def test_stat_kommune_strommer_skiller_kommuneorganisasjonen_fra_geografien(tmp_
         "national_insurance_member", "employer_national_insurance",
         "common_tax", "state_income_wealth_tax",
     ]
+
+
+def test_kdd_kilder_finner_kommuneversjonen_og_utelater_fylkeskommunen():
+    html = """
+      <a href="/2025/internettinntektsutj_2024kom-jan25.xlsx">Kommuner</a>
+      <a href="/2025/internettinntutj_2024_fykom.xlsx">Fylkeskommuner</a>
+      <a href="/eldre/inntektsutj_2014kom.xls">Gammelt format</a>
+    """
+    assert _income_equalization_sources(html) == {
+        2024: "https://www.regjeringen.no/2025/internettinntektsutj_2024kom-jan25.xlsx",
+    }
+
+
+def test_inntektsutjevning_normaliserer_fortegn_enhet_og_eksport(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:1103", "1103", "Stavanger", "municipality", None, None, 1, None, None, "Stavanger"),
+    )
+    db.executemany("INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)", [
+        ("kostra_actuals", "municipality:1103", 2025, "AGD13", "", "", 10_000, 100_000, "12137"),
+        ("kostra_actuals", "municipality:1103", 2025, "A800", "", "", 3_522_177, 23_223, "12137"),
+    ])
+    _sync_block_grant_flows(db)
+
+    source = "https://www.regjeringen.no/inntektsutjevning-2025.xlsx"
+    assert _import_income_equalization(
+        db, 2025, source, _minimal_income_equalization_xlsx()
+    ) == 1
+    row = db.execute(
+        "SELECT * FROM income_equalization_fact WHERE entity_id='municipality:1103'"
+    ).fetchone()
+    assert row["equalization_per_capita"] == pytest.approx(-7531.5861946430095)
+    assert row["equalization_amount"] == pytest.approx(-1_130_664.3142983925)
+    assert row["tax_before_amount"] == pytest.approx(8_077_727.746)
+    assert row["tax_after_per_capita"] == pytest.approx(46_275.81004710543)
+    assert row["tax_after_national_ratio"] == pytest.approx(1.0947781683064473)
+
+    write_frontend_data(db, tmp_path / "data", {"county": {}, "municipality": {}})
+    detail = json.loads(
+        (tmp_path / "data" / "kostra" / "entities" / "municipality-1103.json")
+        .read_text(encoding="utf-8")
+    )
+    value = detail["incomeEqualization"]["values"]["2025"]
+    assert value["equalization"]["amount"] == pytest.approx(-1_130_664.3142983925)
+    assert value["sourceUrl"] == source
 
 
 def test_skatteimport_bruker_bare_desember_fordi_tabellen_er_akkumulert(tmp_path):

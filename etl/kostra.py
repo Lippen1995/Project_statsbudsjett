@@ -17,9 +17,11 @@ import time
 import zipfile
 from collections import defaultdict
 from datetime import datetime, timezone
+from html.parser import HTMLParser
 from io import BytesIO
 from pathlib import Path
 from typing import Iterable
+from urllib.parse import urljoin
 from xml.etree import ElementTree
 
 import requests
@@ -69,6 +71,11 @@ METRICS = [
 
 STATE_BLOCK_GRANT_CODE = "A800"
 TAX_TABLE = "07022"
+KDD_INCOME_EQUALIZATION_PAGE = (
+    "https://www.regjeringen.no/no/tema/kommuner-og-regioner/kommuneokonomi/"
+    "inntektssystemet-for-kommuner-og-fylkeskommuner/lopende-inntektsutjevning/id548672/"
+)
+KDD_INCOME_EQUALIZATION_SOURCE = "KDD_INCOME_EQUALIZATION"
 TAX_FLOW_CATEGORIES = {
     "08": "national_insurance_member",
     "09": "employer_national_insurance",
@@ -229,6 +236,17 @@ class SsbClient:
         data = self._request("GET", url).json()
         _write_json(path, data)
         return data
+
+    def content(self, url: str, cache_name: str, *, max_age: int | None = None) -> bytes:
+        path = self.cache_dir / cache_name
+        fresh = path.exists() and (
+            max_age is None or time.time() - path.stat().st_mtime < max_age
+        )
+        if path.exists() and not self.force and fresh:
+            return path.read_bytes()
+        response = self._request("GET", url)
+        path.write_bytes(response.content)
+        return response.content
 
     def metadata(self, table: str) -> dict:
         path = self.cache_dir / f"{table}-metadata.json"
@@ -392,6 +410,189 @@ def _import_tax_flows(db: sqlite3.Connection, metadata: dict, cube: dict) -> Non
         )
 
 
+class _SpreadsheetLinkParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.links: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag.lower() != "a":
+            return
+        href = dict(attrs).get("href")
+        if href:
+            self.links.append(href)
+
+
+def _income_equalization_sources(page_html: str) -> dict[int, str]:
+    """Finn KDDs kommunevise sluttavregninger uten å låse ETL-en til filstier."""
+    parser = _SpreadsheetLinkParser()
+    parser.feed(page_html)
+    result = {}
+    for href in parser.links:
+        filename = href.rsplit("/", 1)[-1].lower()
+        if not filename.endswith(".xlsx") or "_fykom" in filename:
+            continue
+        match = re.search(r"_(20\d{2})kom(?:\b|[-_.])", filename)
+        if match:
+            result[int(match.group(1))] = urljoin(KDD_INCOME_EQUALIZATION_PAGE, href)
+    return result
+
+
+def _xlsx_rows(content: bytes) -> list[dict[str, str | None]]:
+    """Les første ark i en XLSX med standardbiblioteket.
+
+    KDD-filene har både delte og innebygde tekstceller. Formlene har lagrede
+    verdier i ``<v>`` og kan derfor leses uten å evaluere regnearket lokalt.
+    """
+    namespace = {"x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+    try:
+        archive = zipfile.ZipFile(BytesIO(content))
+        shared = []
+        if "xl/sharedStrings.xml" in archive.namelist():
+            root = ElementTree.fromstring(archive.read("xl/sharedStrings.xml"))
+            shared = [
+                "".join(node.text or "" for node in item.findall(".//x:t", namespace))
+                for item in root.findall("x:si", namespace)
+            ]
+        sheet = ElementTree.fromstring(archive.read("xl/worksheets/sheet1.xml"))
+    except (KeyError, zipfile.BadZipFile, ElementTree.ParseError) as error:
+        raise ValueError("KDD-filen er ikke en lesbar XLSX med forventet første ark") from error
+
+    rows = []
+    for row in sheet.findall(".//x:sheetData/x:row", namespace):
+        values = {}
+        for cell in row.findall("x:c", namespace):
+            reference = cell.get("r", "")
+            column_match = re.match(r"([A-Z]+)", reference)
+            if not column_match:
+                continue
+            value_node = cell.find("x:v", namespace)
+            if cell.get("t") == "s" and value_node is not None:
+                value = shared[int(value_node.text)]
+            elif cell.get("t") == "inlineStr":
+                value = "".join(node.text or "" for node in cell.findall(".//x:t", namespace))
+            else:
+                value = value_node.text if value_node is not None else None
+            values[column_match.group(1)] = value
+        rows.append(values)
+    return rows
+
+
+def _number(value: str | int | float | None) -> float | None:
+    if value in (None, ""):
+        return None
+    try:
+        return float(str(value).replace(" ", "").replace(",", "."))
+    except ValueError:
+        return None
+
+
+def _import_income_equalization(
+    db: sqlite3.Connection, year: int, source_url: str, content: bytes
+) -> int:
+    """Normaliser KDDs sluttavregning for kommunevis inntektsutjevning.
+
+    Beløp utledes fra per-innbyggerkolonnene og folketallet. Det unngår en
+    historisk enhetsendring i kolonne C, som er 1000 kroner i eldre filer og
+    kroner i nyere filer. Den signerte nettoutjevningen beholdes: negativt er
+    trekk/bidrag, positivt er tillegg/mottak.
+    """
+    rows = _xlsx_rows(content)
+    expected_columns = len(rows) > 5 and rows[5].get("E") == "3" and rows[5].get("K") == "9"
+    if len(rows) < 8 or "Knr" not in (rows[1].get("A") or "") or not expected_columns:
+        raise ValueError(f"Uventet oppsett i KDDs inntektsutjevning for {year}")
+
+    existing_entities = {
+        row[0] for row in db.execute("SELECT id FROM entity WHERE kind='municipality'")
+    }
+    imported = 0
+    for row in rows[7:]:
+        raw_code = _number(row.get("A"))
+        population = _number(row.get("D"))
+        tax_before_per_capita = _number(row.get("E"))
+        tax_before_national_ratio = _number(row.get("F"))
+        equalization_per_capita = _number(row.get("K"))
+        if raw_code is None or population is None or population <= 0:
+            continue
+        code = str(int(raw_code)).zfill(4)
+        entity_id = f"municipality:{code}"
+        if entity_id not in existing_entities:
+            continue
+        tax_after_per_capita = (
+            tax_before_per_capita + equalization_per_capita
+            if tax_before_per_capita is not None and equalization_per_capita is not None
+            else None
+        )
+        tax_after_national_ratio = (
+            tax_before_national_ratio * tax_after_per_capita / tax_before_per_capita
+            if tax_before_national_ratio is not None and tax_after_per_capita is not None
+               and tax_before_per_capita not in (None, 0)
+            else None
+        )
+        population_int = round(population)
+        def to_thousand(per_capita):
+            return per_capita * population_int / 1000 if per_capita is not None else None
+        db.execute(
+            """INSERT INTO income_equalization_fact
+                 (dataset_id,entity_id,year,population,tax_before_amount,tax_before_per_capita,
+                  tax_before_national_ratio,equalization_amount,equalization_per_capita,
+                  tax_after_amount,tax_after_per_capita,tax_after_national_ratio,basis,
+                  source_url,source_period)
+               VALUES ('kdd_income_equalization',?,?,?,?,?,?,?,?,?,?,?,'actual',?,?)
+               ON CONFLICT(dataset_id,entity_id,year) DO UPDATE SET
+                 population=excluded.population,tax_before_amount=excluded.tax_before_amount,
+                 tax_before_per_capita=excluded.tax_before_per_capita,
+                 tax_before_national_ratio=excluded.tax_before_national_ratio,
+                 equalization_amount=excluded.equalization_amount,
+                 equalization_per_capita=excluded.equalization_per_capita,
+                 tax_after_amount=excluded.tax_after_amount,
+                 tax_after_per_capita=excluded.tax_after_per_capita,
+                 tax_after_national_ratio=excluded.tax_after_national_ratio,
+                 basis=excluded.basis,source_url=excluded.source_url,
+                 source_period=excluded.source_period""",
+            (
+                entity_id, year, population_int,
+                to_thousand(tax_before_per_capita), tax_before_per_capita,
+                tax_before_national_ratio,
+                to_thousand(equalization_per_capita), equalization_per_capita,
+                to_thousand(tax_after_per_capita), tax_after_per_capita,
+                tax_after_national_ratio, source_url, str(year),
+            ),
+        )
+        imported += 1
+    if imported == 0:
+        raise ValueError(f"Fant ingen kjente kommuner i KDDs inntektsutjevning for {year}")
+    return imported
+
+
+def _import_income_equalization_sources(
+    db: sqlite3.Connection, client: SsbClient, years: set[int]
+) -> None:
+    page = client.content(
+        KDD_INCOME_EQUALIZATION_PAGE,
+        "kdd-income-equalization.html",
+        max_age=METADATA_CACHE_MAX_AGE_SECONDS,
+    ).decode("utf-8")
+    sources = _income_equalization_sources(page)
+    completed_years = sorted(year for year in years if year < datetime.now().year)
+    missing = [year for year in completed_years if year not in sources]
+    if missing:
+        raise ValueError(f"KDD mangler kommunevis inntektsutjevning for {missing}")
+    for year in completed_years:
+        content = client.content(sources[year], f"kdd-income-equalization-{year}.xlsx")
+        _import_income_equalization(db, year, sources[year], content)
+    if completed_years:
+        db.execute(
+            "INSERT OR REPLACE INTO source_run VALUES (?,?,?,?)",
+            (
+                KDD_INCOME_EQUALIZATION_SOURCE,
+                datetime.now(timezone.utc).isoformat(),
+                "Kommunal- og distriktsdepartementet: løpende inntektsutjevning",
+                max(completed_years),
+            ),
+        )
+
+
 def _continuity_entity_ids(db: sqlite3.Connection, entity_id: str) -> list[str]:
     """Følg bare dokumenterte én-til-én kodebytter bakover i tid."""
     result, pending = [entity_id], [entity_id]
@@ -511,6 +712,7 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
     )]
 
     state_flows = None
+    income_equalization = None
     if entity["kind"] == "municipality":
         flow_rows = db.execute(
             """SELECT f.year,f.category_code,f.amount,f.per_capita,f.basis,
@@ -553,9 +755,45 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
             "incoming": incoming,
             "outgoing": outgoing,
         }
+        equalization_rows = db.execute(
+            """SELECT year,population,tax_before_amount,tax_before_per_capita,
+                      tax_before_national_ratio,equalization_amount,equalization_per_capita,
+                      tax_after_amount,tax_after_per_capita,tax_after_national_ratio,
+                      basis,source_url,source_period
+                 FROM income_equalization_fact
+                WHERE entity_id IN (""" + entity_slots + ") ORDER BY year",
+            series_entity_ids,
+        ).fetchall()
+        if equalization_rows:
+            income_equalization = {
+                "years": [row["year"] for row in equalization_rows],
+                "values": {
+                    str(row["year"]): {
+                        "population": row["population"],
+                        "taxBefore": {
+                            "amount": row["tax_before_amount"],
+                            "perCapita": row["tax_before_per_capita"],
+                            "nationalRatio": row["tax_before_national_ratio"],
+                        },
+                        "equalization": {
+                            "amount": row["equalization_amount"],
+                            "perCapita": row["equalization_per_capita"],
+                        },
+                        "taxAfter": {
+                            "amount": row["tax_after_amount"],
+                            "perCapita": row["tax_after_per_capita"],
+                            "nationalRatio": row["tax_after_national_ratio"],
+                        },
+                        "basis": row["basis"],
+                        "sourceUrl": row["source_url"],
+                        "sourcePeriod": row["source_period"],
+                    }
+                    for row in equalization_rows
+                },
+            }
 
     return {
-        "schemaVersion": 3,
+        "schemaVersion": 4,
         "entity": entity,
         "latestYear": latest_year,
         "overview": overview,
@@ -566,6 +804,7 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         "accountingArts": accounting_arts,
         "boundaryHistory": boundary_history,
         "stateFlows": state_flows,
+        "incomeEqualization": income_equalization,
         "comparisons": {
             "norwayEntityId": "country:EAK" if entity["kind"] == "municipality" else "country:EAFK",
             "peerGroupEntityId": entity.get("peer_group_id"),
@@ -1189,6 +1428,9 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             })
             _import_tax_flows(db, tax_meta, tax_cube)
             db.commit()
+
+        _import_income_equalization_sources(db, client, kostra_years)
+        db.commit()
 
         write_frontend_data(db, output, boundaries)
         return {

@@ -162,6 +162,40 @@ export function stateFlowSummary(stateFlows, direction, year, mode) {
   }
 }
 
+/** Forklar om kommunen mottar eller bidrar i den løpende inntektsutjevningen. */
+export function incomeEqualizationSummary(incomeEqualization, stateFlows, year, mode) {
+  const point = incomeEqualization?.values?.[year]
+  if (!point) return null
+  const valueKey = mode === 'perCapita' ? 'perCapita' : 'amount'
+  const equalization = point.equalization?.[valueKey]
+  const taxBefore = point.taxBefore?.[valueKey]
+  const taxAfter = point.taxAfter?.[valueKey]
+  const blockGrantItem = stateFlows?.incoming?.find((item) => item.code === 'state_block_grant')
+  const blockGrant = blockGrantItem?.values?.[year]?.[valueKey] ?? null
+  const equalizationStatus = !Number.isFinite(taxBefore) || !Number.isFinite(equalization) || !Number.isFinite(taxAfter)
+    ? 'missing'
+    : equalization === 0 ? 'neutral'
+    : equalization < 0 ? 'contributor' : 'recipient'
+  const freeIncomeSource = !Number.isFinite(taxBefore) || !Number.isFinite(blockGrant)
+    ? null
+    : taxBefore === blockGrant ? 'equal' : taxBefore > blockGrant ? 'own_tax' : 'block_grant'
+
+  return {
+    year,
+    population: point.population ?? null,
+    taxBefore,
+    equalization,
+    taxAfter,
+    blockGrant,
+    taxBeforeNationalRatio: point.taxBefore?.nationalRatio ?? null,
+    taxAfterNationalRatio: point.taxAfter?.nationalRatio ?? null,
+    equalizationStatus,
+    freeIncomeSource,
+    sourceUrl: point.sourceUrl ?? null,
+    sourcePeriod: point.sourcePeriod ?? String(year),
+  }
+}
+
 /** Summer kartets enheter uten å summere per-innbyggerverdier direkte. */
 export function summarizeKostraEntities(index, metricId, year, entityIds) {
   let amount = 0

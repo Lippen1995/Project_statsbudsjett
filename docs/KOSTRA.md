@@ -51,13 +51,16 @@ også kan åpnes fra kartet viser:
 - total → tjenesteområde → KOSTRA-funksjon → regnskapsart, med en tidsserie
   som følger total, valgt tjenesteområde og valgt funksjon. Regnskapsart er
   avsluttende detaljnivå og er tilgjengelig per publisert år
-- «Pengestrømmer mellom staten og kommunen», der rammetilskudd til
-  kommuneorganisasjonen holdes adskilt fra statlige skatter og avgifter
-  registrert i kommunen som geografisk område
+- inntektsutjevning, med en tydelig konklusjon om kommunen mottar et tillegg
+  eller får et trekk, skatt før og etter utjevning og nivået mot
+  landsgjennomsnittet. Kommunens egne skatteinntekter sammenlignes også med
+  rammetilskuddet fra staten
 
-Pengestrømmene kan vises totalt eller per innbygger. Det lages ikke et
-«nettotall»: strømmene gjelder ulike aktører og dekker ikke alle statlige
-inntekter og utgifter i området.
+Inntektsutjevningen kan vises totalt eller per innbygger. Den signerte
+sluttavregningen beholdes: negativt beløp er trekk/bidrag, mens positivt beløp
+er tillegg/mottak. Rammetilskuddet inneholder også utgiftsutjevning og andre
+tilskudd og presenteres derfor ikke som om hele beløpet var
+inntektsutjevning.
 
 Sammenligning med Norge og KOSTRA-gruppe vises bare per innbygger. Totale
 beløp påvirkes av regionenes størrelse og er derfor ikke et meningsfullt
@@ -79,12 +82,17 @@ minste arkitekturen som beholder denne driftsmodellen er derfor:
 6. `web/src/lib/kostra.js` er frontendens eneste dataseam. Nettleseren gjør
    ingen kall til SSB eller Kartverket.
 
+Kommunevis inntektsutjevning hentes fra Kommunal- og distriktsdepartementets
+årlige sluttavregninger. ETL-en finner de offisielle XLSX-lenkene på siden for
+løpende inntektsutjevning og normaliserer dem lokalt; regnearkene lastes aldri
+av nettleseren.
+
 SQLite-filen er et byggartefakt og committes ikke. JSON-filene bygges av ETL i
 CI på samme måte som de eksisterende statsdataene.
 
 ## Offisielle kilder
 
-| Nivå | Formål | SSB-tabell |
+| Nivå | Formål | Kilde |
 |------|--------|------------|
 | Kommune | Finansielle nøkkeltall | 12137 |
 | Kommune | Tjenesteområder og funksjoner | 12362 |
@@ -93,6 +101,7 @@ CI på samme måte som de eksisterende statsdataene.
 | Fylke | Tjenesteområder og funksjoner | 12163 |
 | Fylke | Funksjon og regnskapsart | 12368 |
 | Kommune | Rammetilskudd, faktisk regnskap | 12137, begrep A800 |
+| Kommune | Skatt før/etter og netto inntektsutjevning | KDD, løpende inntektsutjevning |
 | Kommunegeografi | Statlige skatter og avgifter | 07022 |
 
 KOSTRA-grupper hentes fra SSB Klass, klassifikasjon 112 og nyeste publiserte

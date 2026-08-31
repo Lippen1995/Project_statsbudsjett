@@ -358,10 +358,10 @@ interface KostraEntity {
 }
 ```
 
-Detaljfiler har `schemaVersion: 3` og inneholder `overview`,
+Detaljfiler har `schemaVersion: 4` og inneholder `overview`,
 `revenueBreakdown`, `expenseBreakdown`, `services`, `functions`,
 `accountingArts` og referanser til Norge/KOSTRA-gruppe. Kommunefiler har i
-tillegg `stateFlows`:
+tillegg `stateFlows` og `incomeEqualization`:
 
 ```typescript
 interface KostraAccountingArt {
@@ -377,6 +377,12 @@ interface KostraAccountingArt {
 detaljfilen for valgt kommune eller fylkeskommune; den mottar aldri hele den
 nasjonale artstabellen. Manglende observasjoner utelates og tolkes ikke som
 null kroner.
+
+Kommunedetaljer har også `incomeEqualization`, basert på KDDs årlige
+sluttavregning. Beløp lagres i 1000 kroner, mens per-innbyggerverdier er i
+kroner. `equalization` beholder fortegnet: negativt betyr trekk fra kommunen,
+positivt betyr tillegg til kommunen. `nationalRatio` er kommunens nivå delt på
+landsgjennomsnittet, der `1` er likt landsgjennomsnittet.
 
 ```typescript
 interface KostraStateFlows {
