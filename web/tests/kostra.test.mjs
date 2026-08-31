@@ -505,4 +505,11 @@ test('inntektsutjevning skiller bidragsyter fra mottaker og sammenligner frie in
     'recipient',
   )
   assert.equal(incomeEqualizationSummary(incomeEqualization, stateFlows, 2024, 'amount'), null)
+  assert.equal(incomeEqualizationSummary({ values: { 2025: {
+    taxBefore: { amount: 90, perCapita: 900 },
+    equalization: { amount: 10, perCapita: 100 },
+    taxAfter: { amount: 100, perCapita: 1_000 },
+  } } }, { incoming: [{ code: 'state_block_grant', values: {
+    2025: { amount: 110, perCapita: 800 },
+  } }] }, 2025, 'perCapita').freeIncomeSource, 'block_grant')
 })

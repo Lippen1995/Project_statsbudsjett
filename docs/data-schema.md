@@ -305,7 +305,8 @@ ikke det enkelte år (jf. 2020: ~4 % under pandemien).
 
 ## 7. KOSTRA kommune- og fylkesregnskap
 
-**Status: VERIFISERT** mot SSB PxWebApi 2 og Kartverket 2026-08-15.
+**Status: VERIFISERT** mot SSB PxWebApi 2, Kartverket og KDDs kommunevise
+sluttavregning for inntektsutjevning 2026-08-31.
 
 Kildetabellene er 12137/12362/12367 for kommuner og 12366/12163/12368 for
 fylkeskommuner. De dekker henholdsvis finansielle nøkkeltall,
@@ -383,6 +384,29 @@ sluttavregning. Beløp lagres i 1000 kroner, mens per-innbyggerverdier er i
 kroner. `equalization` beholder fortegnet: negativt betyr trekk fra kommunen,
 positivt betyr tillegg til kommunen. `nationalRatio` er kommunens nivå delt på
 landsgjennomsnittet, der `1` er likt landsgjennomsnittet.
+
+```typescript
+interface KostraIncomeEqualization {
+  years: number[];
+  values: {
+    [year: string]: {
+      population: number;
+      taxBefore: KostraIncomePoint;
+      equalization: Omit<KostraIncomePoint, "nationalRatio">;
+      taxAfter: KostraIncomePoint;
+      basis: "actual";
+      sourceUrl: string;
+      sourcePeriod: string;
+    };
+  };
+}
+
+interface KostraIncomePoint {
+  amount: number | null;        // 1 000 kroner
+  perCapita: number | null;     // kroner
+  nationalRatio: number | null; // 1 = landsgjennomsnittet
+}
+```
 
 ```typescript
 interface KostraStateFlows {

@@ -1,6 +1,6 @@
 # Fellestall.no – statsfinansene, normalisert og forklart
 
-Webapplikasjon som visualiserer det norske statsbudsjettet og -regnskapet med ekte data fra DFØ Statsregnskapet og SSB.
+Webapplikasjon som visualiserer det norske statsbudsjettet og -regnskapet med ekte data fra DFØ Statsregnskapet, SSB og andre navngitte offentlige kilder.
 
 **Livedemonstrasjon krever at ETL har vært kjørt** – se oppsett nedenfor.
 
@@ -47,7 +47,8 @@ visningen – ligger på `#klassisk` (f.eks. `http://localhost:5173/#klassisk`).
 
 - Python 3.11+
 - Node.js 18+
-- Nettverkstilgang til `statsregnskapet.dfo.no` og `data.ssb.no`
+- Nettverkstilgang til `statsregnskapet.dfo.no`, `data.ssb.no`,
+  `nedlasting.geonorge.no` og `www.regjeringen.no`
 
 ## Oppsett
 
@@ -71,7 +72,7 @@ make dev
 |----------|-------------|
 | `make install` | Installer Python- og Node-avhengigheter |
 | `make etl` | Last ned og prosesser data (cacher råfiler) |
-| `make kostra` | Bygg bare KOSTRA-modulen fra SSB og Kartverket |
+| `make kostra` | Bygg KOSTRA-modulen fra SSB, Kartverket og KDD |
 | `make etl-force` | Re-last ned alle filer |
 | `make etl-inspect` | Last ned og skriv ut topplinjer av kildefilene |
 | `make test` | Kjør Python-enhetstester |
@@ -132,6 +133,7 @@ arkitektur, tabeller, grenseendringer og outputskjema.
 | [SSB KOSTRA](https://www.ssb.no/offentlig-sektor/kostra) | CC BY 4.0 |
 | [SSB skatteregnskap](https://www.ssb.no/skatteregn) | CC BY 4.0 |
 | [Kartverket – grensedata](https://www.kartverket.no/api-og-data/grensedata) | CC BY 4.0 |
+| [KDD – løpende inntektsutjevning](https://www.regjeringen.no/no/tema/kommuner-og-regioner/kommuneokonomi/inntektssystemet-for-kommuner-og-fylkeskommuner/lopende-inntektsutjevning/id548672/) | Ikke spesifisert i regnearkene; kilde navngis og lenkes |
 | [NBIM – Oljefondets markedsverdi](https://www.nbim.no) | Årsrapporter (referansetabell) |
 
 ## Datafallgruver

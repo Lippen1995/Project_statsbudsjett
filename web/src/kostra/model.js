@@ -171,14 +171,17 @@ export function incomeEqualizationSummary(incomeEqualization, stateFlows, year, 
   const taxBefore = point.taxBefore?.[valueKey]
   const taxAfter = point.taxAfter?.[valueKey]
   const blockGrantItem = stateFlows?.incoming?.find((item) => item.code === 'state_block_grant')
-  const blockGrant = blockGrantItem?.values?.[year]?.[valueKey] ?? null
+  const blockGrantPoint = blockGrantItem?.values?.[year]
+  const blockGrant = blockGrantPoint?.[valueKey] ?? null
   const equalizationStatus = !Number.isFinite(taxBefore) || !Number.isFinite(equalization) || !Number.isFinite(taxAfter)
     ? 'missing'
     : equalization === 0 ? 'neutral'
     : equalization < 0 ? 'contributor' : 'recipient'
-  const freeIncomeSource = !Number.isFinite(taxBefore) || !Number.isFinite(blockGrant)
+  const taxBeforeAmount = point.taxBefore?.amount
+  const blockGrantAmount = blockGrantPoint?.amount
+  const freeIncomeSource = !Number.isFinite(taxBeforeAmount) || !Number.isFinite(blockGrantAmount)
     ? null
-    : taxBefore === blockGrant ? 'equal' : taxBefore > blockGrant ? 'own_tax' : 'block_grant'
+    : taxBeforeAmount === blockGrantAmount ? 'equal' : taxBeforeAmount > blockGrantAmount ? 'own_tax' : 'block_grant'
 
   return {
     year,

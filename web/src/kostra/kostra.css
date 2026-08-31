@@ -118,6 +118,11 @@
 .ko-stromtabell--utjevning :is(th, td) { color: var(--rust); }
 .ko-stromkilde { display: block; margin-top: 10px; color: var(--blek); font-size: 10px; }
 .ko-stromkilde a { color: inherit; }
+.ko-stromdetaljer { max-width: 760px; margin-top: 24px; border-top: 1px solid var(--strek); }
+.ko-stromdetaljer summary { padding: 13px 0; color: var(--dempet); font-size: 12px; cursor: pointer; }
+.ko-stromdetaljer summary:hover { color: var(--rust); }
+.ko-stromdetaljer summary:focus-visible { outline: 2px solid var(--rust); outline-offset: 2px; }
+.ko-stromdetaljer .ko-stromkolonne { margin-top: 4px; padding-bottom: 8px; }
 .ko-stromdekning { margin: 9px 0 0; color: var(--rust); font-size: 11px; }
 .ko-stromforbehold { margin: 24px 0 0; padding: 13px 0; border-block: 1px solid var(--strek); color: var(--dempet); font-size: 11px; line-height: 1.5; }
 .ko-detaljgrid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(240px, .7fr); gap: 28px; margin-top: 38px; }

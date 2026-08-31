@@ -11,6 +11,7 @@ import {
   materialBoundaryHistory,
   metricSeries,
   populationForEntity,
+  stateFlowSummary,
   yearlyGrowth,
 } from './model'
 import { accountingArtBreakdown, accountingArtFunctionBreakdown } from './explorer'
@@ -139,6 +140,40 @@ function ratioDescription(ratio) {
   return `${percentFormat.format(deviation)} % ${ratio > 1 ? 'over' : 'under'} landsgjennomsnittet`
 }
 
+function StateTaxDetails({ entityName, stateFlows, year, mode }) {
+  const summary = stateFlowSummary(stateFlows, 'outgoing', year, mode)
+  const items = stateFlows?.outgoing ?? []
+  const valuesByCode = new Map(items.map((item) => [item.code, item]))
+  const sourcePeriods = [...new Set(items
+    .map((item) => item.values?.[year]?.sourcePeriod)
+    .filter(Boolean))]
+  if (summary.rows.length === 0) return null
+
+  return (
+    <details className="ko-stromdetaljer">
+      <summary>Se skatter og avgifter registrert i {entityName}</summary>
+      <article className="ko-stromkolonne">
+        <span className="ft-stikkord">Kommunen som geografisk område</span>
+        <h3>Til staten og folketrygden</h3>
+        <strong className="ko-stromtotal ko-stromtotal--trekk num">{formatKostraValue(summary.total, mode)}</strong>
+        <p className="ko-stromforklaring">Dette er innbetalte og fordelte skatter og avgifter registrert i området. De er ikke kommuneorganisasjonens betaling og inngår ikke i konklusjonen over.</p>
+        <table className="ko-stromtabell">
+          <caption className="sr-only">Skatter og avgifter registrert i {entityName} i {year}</caption>
+          <thead><tr><th scope="col">Post</th><th scope="col">Beløp</th></tr></thead>
+          <tbody>{summary.rows.map((row) => (
+            <tr key={row.code}>
+              <th scope="row"><span>{row.label}</span><small>{valuesByCode.get(row.code)?.description}</small></th>
+              <td className="num">{formatKostraValue(row.value, mode)}</td>
+            </tr>
+          ))}</tbody>
+        </table>
+        {!summary.complete && <p className="ko-stromdekning">Totalsummen skjules fordi én eller flere poster mangler.</p>}
+        <small className="ko-stromkilde">Faktiske tall · SSB 07022, akkumulert desember{sourcePeriods.length > 0 && ` · ${sourcePeriods.join(', ')}`}</small>
+      </article>
+    </details>
+  )
+}
+
 function IncomeEqualization({ entityName, incomeEqualization, stateFlows, year, mode }) {
   const summary = incomeEqualizationSummary(incomeEqualization, stateFlows, year, mode)
   if (!summary || summary.equalizationStatus === 'missing') {
@@ -163,13 +198,23 @@ function IncomeEqualization({ entityName, incomeEqualization, stateFlows, year, 
     ? 'og bidrar dermed til å finansiere inntektsutjevningen for andre kommuner.'
     : isRecipient ? 'for å løfte skatteinntektene nærmere nivået i resten av landet.' : 'i netto inntektsutjevning.'
   const freeIncomeTitle = summary.freeIncomeSource === 'own_tax'
-    ? 'Mest fra egne skatter'
-    : summary.freeIncomeSource === 'block_grant' ? 'Mest fra staten' : 'To like store kilder'
+    ? 'Egne skatter er størst'
+    : summary.freeIncomeSource === 'block_grant'
+      ? 'Rammetilskuddet er størst'
+      : summary.freeIncomeSource === 'equal' ? 'Like store frie inntektskilder' : 'Kan ikke sammenlignes'
   const freeIncomeDescription = summary.freeIncomeSource === 'own_tax'
     ? 'Kommunens skatteinntekter før utjevning er større enn rammetilskuddet fra staten.'
     : summary.freeIncomeSource === 'block_grant'
       ? 'Rammetilskuddet fra staten er større enn kommunens skatteinntekter før utjevning.'
-      : 'Skatteinntektene og rammetilskuddet er like store, eller sammenligningen mangler data.'
+      : summary.freeIncomeSource === 'equal'
+        ? 'Skatteinntektene og rammetilskuddet er like store.'
+        : 'Skatteinntekter eller rammetilskudd mangler for dette året.'
+  const equalizationRowTitle = isContributor
+    ? 'Trekk i inntektsutjevningen'
+    : isRecipient ? 'Tillegg fra inntektsutjevningen' : 'Ingen netto inntektsutjevning'
+  const equalizationRowDescription = isContributor
+    ? 'Kommunen bidrar til andre kommuner.'
+    : isRecipient ? 'Kommunen mottar fra utjevningen.' : 'Kommunen verken trekkes eller mottar.'
 
   return (
     <section className="ko-strommer" aria-labelledby="ko-strommer-tittel">
@@ -200,14 +245,14 @@ function IncomeEqualization({ entityName, incomeEqualization, stateFlows, year, 
             <thead><tr><th scope="col">Post</th><th scope="col">Beløp</th></tr></thead>
             <tbody>
               <tr><th scope="row"><span>Skatt før utjevning</span><small>{ratioDescription(summary.taxBeforeNationalRatio)}</small></th><td className="num">{formatKostraValue(summary.taxBefore, mode)}</td></tr>
-              <tr className="ko-stromtabell--utjevning"><th scope="row"><span>{isContributor ? 'Trekk i inntektsutjevningen' : 'Tillegg fra inntektsutjevningen'}</span><small>{isContributor ? 'Kommunen bidrar til andre kommuner.' : 'Kommunen mottar fra utjevningen.'}</small></th><td className="num">{formatKostraValue(summary.equalization, mode)}</td></tr>
+              <tr className="ko-stromtabell--utjevning"><th scope="row"><span>{equalizationRowTitle}</span><small>{equalizationRowDescription}</small></th><td className="num">{formatKostraValue(summary.equalization, mode)}</td></tr>
               <tr><th scope="row"><span>Skatt etter utjevning</span><small>{ratioDescription(summary.taxAfterNationalRatio)}</small></th><td className="num">{formatKostraValue(summary.taxAfter, mode)}</td></tr>
             </tbody>
           </table>
         </article>
         <article className="ko-stromkolonne">
           <span className="ft-stikkord">Kommunens frie inntekter</span>
-          <h3>Egne skatter eller staten?</h3>
+          <h3>Egne skatter eller rammetilskudd?</h3>
           <strong className="ko-stromtotal num">{freeIncomeTitle}</strong>
           <p className="ko-stromforklaring">{freeIncomeDescription}</p>
           <table className="ko-stromtabell">
@@ -224,6 +269,7 @@ function IncomeEqualization({ entityName, incomeEqualization, stateFlows, year, 
       <small className="ko-stromkilde">Faktiske tall · {summary.sourceUrl
         ? <a href={summary.sourceUrl} target="_blank" rel="noreferrer">Kommunal- og distriktsdepartementet</a>
         : 'Kommunal- og distriktsdepartementet'}, løpende inntektsutjevning · SSB KOSTRA 12137</small>
+      <StateTaxDetails entityName={entityName} stateFlows={stateFlows} year={year} mode={mode} />
     </section>
   )
 }

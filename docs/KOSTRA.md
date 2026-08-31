@@ -110,7 +110,9 @@ GeoJSON i ETRS89 (EPSG:4258) fra Kartverkets Atom-feeder for «Administrative
 enheter kommuner» og «Administrative enheter fylker».
 
 Importen bruker PxWebApi 2, har lokal rådatacache og deler uttrekk slik at de
-holder seg under SSBs grense på 800 000 celler. Alle kilder er CC BY 4.0.
+holder seg under SSBs grense på 800 000 celler. SSB- og Kartverket-kildene er
+CC BY 4.0. KDD-regnearkene navngis og lenkes eksplisitt; lisens er ikke
+spesifisert i selve regnearkene.
 Den gjenbruker retry/`Retry-After`-håndteringen i `etl/download.py`.
 `_download_ssb_tabell` brukes ikke her fordi den bare henter én aggregert
 årsserie, mens KOSTRA krever kontrollerte uttrekk over region, funksjon, art
@@ -145,6 +147,8 @@ Kommunal og fylkeskommunal skatt er ikke med i «til staten»-summen.
 - `public_flow_category`: retning, aktør, tekst og sortering for en pengestrøm.
 - `public_flow_fact`: beløp, per-innbyggerverdi, grunnlag og kildeperiode per
   kommune, år og pengestrømkategori.
+- `income_equalization_fact`: skatt før og etter utjevning, signert
+  nettoutjevning, folketall og nivå mot landsgjennomsnittet per kommune og år.
 - `source_run`: tabell, kildetittel, hentetid og siste publiserte periode.
 
 Modellen er generell nok til at kommunebudsjetter og statlige overføringer kan
