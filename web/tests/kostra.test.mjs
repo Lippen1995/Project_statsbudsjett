@@ -542,9 +542,9 @@ test('nasjonal inntektsutjevning skiller mottak, trekk og avvik uten å nettosum
 
   assert.equal(incomeEqualizationPoint(index, 2025, 'municipality:1').status, 'contributor')
   assert.deepEqual(incomeEqualizationMapSummary(index, 2025, ids), {
-    receivedAmount: 190,
-    contributedAmount: 200,
-    differenceAmount: -10,
+    receivedAmount: null,
+    contributedAmount: null,
+    differenceAmount: null,
     recipients: 1,
     contributors: 1,
     neutral: 1,
@@ -556,6 +556,21 @@ test('nasjonal inntektsutjevning skiller mottak, trekk og avvik uten å nettosum
   assert.equal(
     incomeEqualizationMapSummary(index, 2024, ['municipality:1']).population,
     null,
+  )
+  assert.deepEqual(
+    incomeEqualizationMapSummary(index, 2025, ids.slice(0, 3)),
+    {
+      receivedAmount: 190,
+      contributedAmount: 200,
+      differenceAmount: -10,
+      recipients: 1,
+      contributors: 1,
+      neutral: 1,
+      availableEntities: 3,
+      entities: 3,
+      population: 350,
+      complete: true,
+    },
   )
 })
 

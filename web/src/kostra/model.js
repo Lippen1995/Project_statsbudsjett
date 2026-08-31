@@ -243,17 +243,18 @@ export function incomeEqualizationMapSummary(index, year, entityIds) {
       neutral += 1
     }
   }
+  const complete = entityIds.length > 0 && availableEntities === entityIds.length
   return {
-    receivedAmount,
-    contributedAmount,
-    differenceAmount: receivedAmount - contributedAmount,
+    receivedAmount: complete ? receivedAmount : null,
+    contributedAmount: complete ? contributedAmount : null,
+    differenceAmount: complete ? receivedAmount - contributedAmount : null,
     recipients,
     contributors,
     neutral,
     availableEntities,
     entities: entityIds.length,
     population: availableEntities > 0 && availablePopulation === availableEntities ? population : null,
-    complete: entityIds.length > 0 && availableEntities === entityIds.length,
+    complete,
   }
 }
 
