@@ -163,7 +163,8 @@
 .ko-stromdetaljer summary:focus-visible { outline: 2px solid var(--rust); outline-offset: 2px; }
 .ko-stromdetaljer .ko-stromkolonne { margin-top: 4px; padding-bottom: 8px; }
 .ko-stromdekning { margin: 9px 0 0; color: var(--rust); font-size: 11px; }
-.ko-stromforbehold { margin: 24px 0 0; padding: 13px 0; border-block: 1px solid var(--strek); color: var(--dempet); font-size: 11px; line-height: 1.5; }
+.ko-stromforbehold { margin: 24px 0 0; padding: 13px 0; border-block: 1px solid var(--strek); color: var(--dempet); font-size: 12px; line-height: 1.55; }
+.ko-stromforbehold p { margin: 0; }.ko-stromforbehold p + p { margin-top: 8px; }
 .ko-detaljgrid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(240px, .7fr); gap: 28px; margin-top: 38px; }
 .ko-detaljgrid--uten-sammenligning { grid-template-columns: 1fr; }
 .ko-panel { border-top: 2px solid var(--ink); padding-top: 14px; min-width: 0; }

@@ -191,81 +191,93 @@ function IncomeEqualization({ entityName, incomeEqualization, stateFlows, year, 
   const isContributor = summary.equalizationStatus === 'contributor'
   const isRecipient = summary.equalizationStatus === 'recipient'
   const statusTitle = isContributor
-    ? `${entityName} bidrar til inntektsutjevningen`
-    : isRecipient ? `${entityName} mottar inntektsutjevning` : `${entityName} har ingen netto inntektsutjevning`
-  const equalizationAction = isContributor ? 'trekkes' : isRecipient ? 'mottar' : 'har'
-  const equalizationPurpose = isContributor
-    ? 'og bidrar dermed til å finansiere inntektsutjevningen for andre kommuner.'
-    : isRecipient ? 'for å løfte skatteinntektene nærmere nivået i resten av landet.' : 'i netto inntektsutjevning.'
+    ? `${entityName} får et trekk og bidrar til utjevningen`
+    : isRecipient ? `${entityName} får et tillegg gjennom utjevningen` : `${entityName} får verken tillegg eller trekk`
+  const valueContext = mode === 'perCapita' ? 'per innbygger' : 'til sammen'
+  const transferTitle = isContributor
+    ? `Trekk: ${formatKostraValue(Math.abs(summary.equalization), mode)} ${valueContext}`
+    : isRecipient
+      ? `Tillegg: ${formatKostraValue(Math.abs(summary.equalization), mode)} ${valueContext}`
+      : 'Ingen omfordeling'
   const freeIncomeTitle = summary.freeIncomeSource === 'own_tax'
-    ? 'Egne skatter er størst'
+    ? 'Mest kommer fra egne skatter'
     : summary.freeIncomeSource === 'block_grant'
-      ? 'Rammetilskuddet er størst'
-      : summary.freeIncomeSource === 'equal' ? 'Like store frie inntektskilder' : 'Kan ikke sammenlignes'
+      ? 'Mest kommer fra rammetilskuddet'
+      : summary.freeIncomeSource === 'equal' ? 'De to inntektskildene er like store' : 'Tallgrunnlaget er ufullstendig'
   const freeIncomeDescription = summary.freeIncomeSource === 'own_tax'
-    ? 'Kommunens skatteinntekter før utjevning er større enn rammetilskuddet fra staten.'
+    ? 'Av disse to inntektskildene er kommunens egne skatteinntekter størst.'
     : summary.freeIncomeSource === 'block_grant'
-      ? 'Rammetilskuddet fra staten er større enn kommunens skatteinntekter før utjevning.'
+      ? 'Av disse to inntektskildene er rammetilskuddet fra staten størst.'
       : summary.freeIncomeSource === 'equal'
-        ? 'Skatteinntektene og rammetilskuddet er like store.'
+        ? 'Skatteinntektene og rammetilskuddet er omtrent like store.'
         : 'Skatteinntekter eller rammetilskudd mangler for dette året.'
   const equalizationRowTitle = isContributor
-    ? 'Trekk i inntektsutjevningen'
-    : isRecipient ? 'Tillegg fra inntektsutjevningen' : 'Ingen netto inntektsutjevning'
+    ? 'Trekk gjennom rammetilskuddet'
+    : isRecipient ? 'Tillegg gjennom inntektsutjevningen' : 'Ingen endring'
   const equalizationRowDescription = isContributor
-    ? 'Kommunen bidrar til andre kommuner.'
-    : isRecipient ? 'Kommunen mottar fra utjevningen.' : 'Kommunen verken trekkes eller mottar.'
+    ? 'Trekket bidrar til utjevningen for kommuner med lavere skatteinntekter.'
+    : isRecipient ? 'Dette beløpet legges til gjennom rammetilskuddet.' : 'Kommunens skatteinntekter endres ikke.'
 
   return (
     <section className="ko-strommer" aria-labelledby="ko-strommer-tittel">
       <div className="ko-stromhode">
-        <span className="ft-stikkord">Inntektsutjevning</span>
-        <h2 id="ko-strommer-tittel">Bidrar {entityName} – eller mottar kommunen?</h2>
-        <p>Her følger vi kommunens egne skatteinntekter gjennom inntektsutjevningen og sammenligner dem med rammetilskuddet fra staten.</p>
+        <span className="ft-stikkord">Skatt og inntektsutjevning</span>
+        <h2 id="ko-strommer-tittel">Hva betyr inntektsutjevningen for {entityName}?</h2>
+        <p>Kommuner får svært ulike skatteinntekter. Derfor blir noe av forskjellen jevnet ut gjennom pengene kommunen får fra staten, kalt rammetilskudd. Kommuner med mye skatt per innbygger får et trekk, mens kommuner med mindre skatt får et tillegg. Målet er at alle kommuner skal ha bedre mulighet til å tilby gode tjenester.</p>
       </div>
       <div className={`ko-utjevningstatus ko-utjevningstatus--${summary.equalizationStatus}`}>
-        <span className="ft-stikkord">Konklusjon {year}</span>
+        <span className="ft-stikkord">Kort fortalt · {year}</span>
         <h3>{statusTitle}</h3>
         <p>
-          Skatteinntektene er {ratioDescription(summary.taxBeforeNationalRatio)} før utjevning. Kommunen {equalizationAction}{' '}
-          <strong>{formatKostraValue(Math.abs(summary.equalization), mode)}</strong> {mode === 'perCapita' ? 'per innbygger ' : 'totalt '}
-          {equalizationPurpose}
+          Før utjevningen har kommunen <strong>{formatKostraValue(summary.taxBefore, mode)}</strong> {valueContext} i skatteinntekter. Det er {ratioDescription(summary.taxBeforeNationalRatio).toLowerCase()}.
+          {' '}{isContributor
+            ? <>Derfor får kommunen et trekk på <strong>{formatKostraValue(Math.abs(summary.equalization), mode)}</strong> {valueContext} gjennom rammetilskuddet.</>
+            : isRecipient
+              ? <>Derfor får kommunen <strong>{formatKostraValue(Math.abs(summary.equalization), mode)}</strong> {valueContext} i tillegg gjennom rammetilskuddet.</>
+              : 'Utjevningen endrer derfor ikke skatteinntektene.'}
+          {' '}Etter utjevningen tilsvarer skattenivået <strong>{formatKostraValue(summary.taxAfter, mode)}</strong> {valueContext}. Dette er et sammenligningstall, ikke en egen inntekt.
         </p>
       </div>
       <div className="ko-stromgrid">
         <article className="ko-stromkolonne">
-          <span className="ft-stikkord">Før og etter utjevning</span>
-          <h3>Hva skjer med skatten?</h3>
+          <span className="ft-stikkord">Slik regnes det</span>
+          <h3>Skattenivå før og etter utjevning</h3>
           <strong className={`ko-stromtotal num ${isContributor ? 'ko-stromtotal--trekk' : ''}`}>
-            {formatKostraValue(summary.equalization, mode)}
+            {transferTitle}
           </strong>
-          <p className="ko-stromforklaring">Negativt beløp er trekk fra kommunen. Positivt beløp er tillegg til kommunen.</p>
+          <p className="ko-stromforklaring">Tabellen viser kommunens faktiske skatteinntekter, justeringen gjennom rammetilskuddet og et beregnet nivå etter utjevning.</p>
           <table className="ko-stromtabell">
             <caption className="sr-only">Skatt og inntektsutjevning for {entityName} i {year}</caption>
-            <thead><tr><th scope="col">Post</th><th scope="col">Beløp</th></tr></thead>
+            <thead><tr><th scope="col">Post</th><th scope="col">{mode === 'perCapita' ? 'Per innbygger' : 'Beløp'}</th></tr></thead>
             <tbody>
-              <tr><th scope="row"><span>Skatt før utjevning</span><small>{ratioDescription(summary.taxBeforeNationalRatio)}</small></th><td className="num">{formatKostraValue(summary.taxBefore, mode)}</td></tr>
+              <tr><th scope="row"><span>Skatteinntekter før utjevning</span><small>Det kommunen får inn før noe blir omfordelt.</small></th><td className="num">{formatKostraValue(summary.taxBefore, mode)}</td></tr>
               <tr className="ko-stromtabell--utjevning"><th scope="row"><span>{equalizationRowTitle}</span><small>{equalizationRowDescription}</small></th><td className="num">{formatKostraValue(summary.equalization, mode)}</td></tr>
-              <tr><th scope="row"><span>Skatt etter utjevning</span><small>{ratioDescription(summary.taxAfterNationalRatio)}</small></th><td className="num">{formatKostraValue(summary.taxAfter, mode)}</td></tr>
+              <tr><th scope="row"><span>Skattenivå etter utjevning</span><small>Et sammenligningstall – ikke en egen inntekt som skal legges til rammetilskuddet.</small></th><td className="num">{formatKostraValue(summary.taxAfter, mode)}</td></tr>
             </tbody>
           </table>
         </article>
         <article className="ko-stromkolonne">
-          <span className="ft-stikkord">Kommunens frie inntekter</span>
-          <h3>Egne skatter eller rammetilskudd?</h3>
+          <span className="ft-stikkord">Penger kommunen kan prioritere selv</span>
+          <h3>Skatteinntekter og penger fra staten</h3>
           <strong className="ko-stromtotal num">{freeIncomeTitle}</strong>
-          <p className="ko-stromforklaring">{freeIncomeDescription}</p>
+          <p className="ko-stromforklaring">Frie inntekter er penger kommunen i hovedsak kan prioritere selv. Forenklet er det skatteinntektene før utjevning pluss rammetilskuddet, der tillegg eller trekk fra utjevningen allerede er tatt med. {freeIncomeDescription}</p>
           <table className="ko-stromtabell">
             <caption className="sr-only">Frie inntektskilder for {entityName} i {year}</caption>
-            <thead><tr><th scope="col">Kilde</th><th scope="col">Beløp</th></tr></thead>
+            <thead><tr><th scope="col">Kilde</th><th scope="col">{mode === 'perCapita' ? 'Per innbygger' : 'Beløp'}</th></tr></thead>
             <tbody>
-              <tr><th scope="row"><span>Egne skatteinntekter</span><small>Kommunens andel av skatt på inntekt og formue før utjevning.</small></th><td className="num">{formatKostraValue(summary.taxBefore, mode)}</td></tr>
-              <tr><th scope="row"><span>Rammetilskudd fra staten</span><small>Samlet rammetilskudd, inkludert inntektsutjevning og andre deler av inntektssystemet.</small></th><td className="num">{formatKostraValue(summary.blockGrant, mode)}</td></tr>
+              <tr><th scope="row"><span>Kommunens skatteinntekter</span><small>Inntekts- og formuesskatt fra personer, samt naturressursskatt der det er aktuelt.</small></th><td className="num">{formatKostraValue(summary.taxBefore, mode)}</td></tr>
+              <tr><th scope="row"><span>Penger fra staten (rammetilskudd)</span><small>Inntektsutjevningen er én av flere deler av denne samlede overføringen.</small></th><td className="num">{formatKostraValue(summary.blockGrant, mode)}</td></tr>
             </tbody>
           </table>
         </article>
       </div>
-      <p className="ko-stromforbehold"><strong>Slik skal tallene leses:</strong> Inntektsutjevningen omfordeler kommunal skatt på inntekt og formue. Rammetilskuddet inneholder også utgiftsutjevning og andre tilskudd, og er derfor ikke bare inntektsutjevning.</p>
+      <div className="ko-stromforbehold">
+        <p><strong>Slik kan tallene legges sammen:</strong> Bruk skatteinntekter før utjevning og rammetilskuddet. Ikke legg til skattenivået etter utjevning – da blir utjevningen telt to ganger.</p>
+        <p><strong>Hvorfor gjør vi dette?</strong> Kommuner med høye skatteinntekter har et bedre utgangspunkt enn kommuner med lave skatteinntekter. Utjevningen reduserer forskjellen, men fjerner den ikke helt.</p>
+        <p><strong>Hva er med i beregningen?</strong> Inntekts- og formuesskatt fra personer og naturressursskatt fra kraftforetak. Det er skatt per innbygger som sammenlignes.</p>
+        <p><strong>Hva er ikke med?</strong> Blant annet eiendomsskatt, gebyrer, salgsinntekter og utbytte fra selskaper kommunen eier. En kommune kan derfor ha andre store inntekter som ikke vises her.</p>
+        <p><strong>Rammetilskudd er mer enn inntektsutjevning.</strong> Det inneholder også utgiftsutjevning og andre tilskudd. Inntektsutjevningen er bare én del av den samlede overføringen fra staten.</p>
+      </div>
       <small className="ko-stromkilde">Faktiske tall · {summary.sourceUrl
         ? <a href={summary.sourceUrl} target="_blank" rel="noreferrer">Kommunal- og distriktsdepartementet</a>
         : 'Kommunal- og distriktsdepartementet'}, løpende inntektsutjevning · SSB KOSTRA 12137</small>
