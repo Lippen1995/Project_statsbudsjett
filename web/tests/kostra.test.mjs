@@ -9,6 +9,9 @@ import {
   drillHistory,
   findKostraEntities,
   incomeEqualizationSummary,
+  incomeEqualizationMapSummary,
+  incomeEqualizationPoint,
+  incomeEqualizationColor,
   municipalityCodeStatus,
   mapValue,
   materialBoundaryHistory,
@@ -512,4 +515,49 @@ test('inntektsutjevning skiller bidragsyter fra mottaker og sammenligner frie in
   } } }, { incoming: [{ code: 'state_block_grant', values: {
     2025: { amount: 110, perCapita: 800 },
   } }] }, 2025, 'perCapita').freeIncomeSource, 'block_grant')
+})
+
+test('nasjonal inntektsutjevning skiller mottak, trekk og avvik uten å nettosummere bort omfordelingen', () => {
+  const index = { incomeEqualization: { 2025: {
+    'municipality:1': {
+      population: 100,
+      taxBefore: { amount: 1_000, perCapita: 10_000, nationalRatio: 1.2 },
+      equalization: { amount: -200, perCapita: -2_000 },
+      taxAfter: { amount: 800, perCapita: 8_000, nationalRatio: .96 },
+    },
+    'municipality:2': {
+      population: 200,
+      taxBefore: { amount: 1_000, perCapita: 5_000, nationalRatio: .6 },
+      equalization: { amount: 190, perCapita: 950 },
+      taxAfter: { amount: 1_190, perCapita: 5_950, nationalRatio: .714 },
+    },
+    'municipality:3': {
+      population: 50,
+      taxBefore: { amount: 400, perCapita: 8_000, nationalRatio: .96 },
+      equalization: { amount: 0, perCapita: 0 },
+      taxAfter: { amount: 400, perCapita: 8_000, nationalRatio: .96 },
+    },
+  } } }
+  const ids = ['municipality:1', 'municipality:2', 'municipality:3', 'municipality:4']
+
+  assert.equal(incomeEqualizationPoint(index, 2025, 'municipality:1').status, 'contributor')
+  assert.deepEqual(incomeEqualizationMapSummary(index, 2025, ids), {
+    receivedAmount: 190,
+    contributedAmount: 200,
+    differenceAmount: -10,
+    recipients: 1,
+    contributors: 1,
+    neutral: 1,
+    availableEntities: 3,
+    entities: 4,
+    population: 350,
+    complete: false,
+  })
+})
+
+test('inntektsutjevningskartet bruker to sider av null og egen farge for manglende data', () => {
+  const values = [-100, -20, 0, 30, 200]
+  assert.equal(incomeEqualizationColor(null, values), '#E3DED4')
+  assert.notEqual(incomeEqualizationColor(-100, values), incomeEqualizationColor(100, values))
+  assert.notEqual(incomeEqualizationColor(0, values), incomeEqualizationColor(30, values))
 })

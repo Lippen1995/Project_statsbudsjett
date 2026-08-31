@@ -1,4 +1,7 @@
 const PALETTE = ['#F3E6D8', '#E9C7AF', '#D99D7D', '#C97052', '#9F3F2C']
+const EQUALIZATION_CONTRIBUTOR = ['#DCE8E3', '#AFCFC4', '#61998A', '#14594F']
+const EQUALIZATION_RECIPIENT = ['#F3E6D8', '#E5B99F', '#CF795A', '#9F3F2C']
+const EQUALIZATION_NEUTRAL = '#D8D2C8'
 
 export const KOSTRA_OVERVIEW_METRICS = [
   {
@@ -199,6 +202,57 @@ export function incomeEqualizationSummary(incomeEqualization, stateFlows, year, 
   }
 }
 
+/** Ett forhåndsberegnet kartpunkt med eksplisitt retning på omfordelingen. */
+export function incomeEqualizationPoint(index, year, entityId) {
+  const point = index?.incomeEqualization?.[year]?.[entityId]
+  const amount = point?.equalization?.amount
+  if (!point || !Number.isFinite(amount)) return null
+  return {
+    ...point,
+    status: amount < 0 ? 'contributor' : amount > 0 ? 'recipient' : 'neutral',
+  }
+}
+
+/** Vis omfordelingens to sider; et nettotall alene ville skjult volumet. */
+export function incomeEqualizationMapSummary(index, year, entityIds) {
+  let receivedAmount = 0
+  let contributedAmount = 0
+  let recipients = 0
+  let contributors = 0
+  let neutral = 0
+  let availableEntities = 0
+  let population = 0
+
+  for (const entityId of entityIds) {
+    const point = incomeEqualizationPoint(index, year, entityId)
+    if (!point) continue
+    const amount = point.equalization.amount
+    availableEntities += 1
+    if (Number.isFinite(point.population)) population += point.population
+    if (amount > 0) {
+      receivedAmount += amount
+      recipients += 1
+    } else if (amount < 0) {
+      contributedAmount += Math.abs(amount)
+      contributors += 1
+    } else {
+      neutral += 1
+    }
+  }
+  return {
+    receivedAmount,
+    contributedAmount,
+    differenceAmount: receivedAmount - contributedAmount,
+    recipients,
+    contributors,
+    neutral,
+    availableEntities,
+    entities: entityIds.length,
+    population,
+    complete: entityIds.length > 0 && availableEntities === entityIds.length,
+  }
+}
+
 /** Summer kartets enheter uten å summere per-innbyggerverdier direkte. */
 export function summarizeKostraEntities(index, metricId, year, entityIds) {
   let amount = 0
@@ -313,6 +367,17 @@ export function choroplethColor(value, values) {
   const rank = sorted.findIndex((candidate) => candidate >= value)
   const percentile = (rank < 0 ? sorted.length - 1 : rank) / Math.max(1, sorted.length - 1)
   return PALETTE[Math.min(PALETTE.length - 1, Math.floor(percentile * PALETTE.length))]
+}
+
+/** Divergerende skala: grønt er trekk/bidrag, rust er tillegg/mottak. */
+export function incomeEqualizationColor(value, values) {
+  if (value == null || !Number.isFinite(value)) return '#E3DED4'
+  if (value === 0) return EQUALIZATION_NEUTRAL
+  const sameSide = values.filter((candidate) => Number.isFinite(candidate) && Math.sign(candidate) === Math.sign(value))
+  const maximum = Math.max(1, ...sameSide.map((candidate) => Math.abs(candidate)))
+  const palette = value < 0 ? EQUALIZATION_CONTRIBUTOR : EQUALIZATION_RECIPIENT
+  const bucket = Math.min(palette.length - 1, Math.floor(Math.abs(value) / maximum * palette.length))
+  return palette[bucket]
 }
 
 export function formatKostraValue(value, mode) {

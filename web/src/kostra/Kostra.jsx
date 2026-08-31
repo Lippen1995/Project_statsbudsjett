@@ -72,7 +72,7 @@ export default function Kostra({ hash }) {
         />
       )}
       <div className="ko-kildelinje">
-        KOSTRA-data fra SSB · Geografi fra Kartverket · CC BY 4.0 · Ingen direkte kall til SSB fra nettleseren
+        KOSTRA-data fra SSB · Inntektsutjevning fra KDD · Geografi fra Kartverket · Ingen direkte datakall fra nettleseren
       </div>
     </div>
   )

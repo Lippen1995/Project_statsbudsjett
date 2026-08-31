@@ -69,6 +69,18 @@ METRICS = [
     {"id": "net_expenses", "label": "Netto driftsutgifter", "code": "AGD1", "polarity": "neutral"},
 ]
 
+# KDD publiserer den løpende inntektsutjevningen som en egen kommunevis
+# sluttavregning. Den hører derfor hjemme i samme forhåndsberegnede kartindeks,
+# men er ikke et KOSTRA-regnskapsbegrep og finnes aldri for fylkeskommuner her.
+INCOME_EQUALIZATION_METRIC = {
+    "id": "income_equalization",
+    "label": "Netto inntektsutjevning",
+    "code": "KDD_NET_EQUALIZATION",
+    "polarity": "diverging",
+    "category": "finance",
+    "municipalityOnly": True,
+}
+
 STATE_BLOCK_GRANT_CODE = "A800"
 TAX_TABLE = "07022"
 KDD_INCOME_EQUALIZATION_PAGE = (
@@ -843,7 +855,11 @@ def write_frontend_data(db: sqlite3.Connection, output_dir: Path | str, boundari
             "SELECT code, label FROM classification WHERE dimension='function' AND kind='service_area' ORDER BY label"
         )
     ]
-    all_metrics = [{**metric, "category": "finance"} for metric in METRICS] + service_metrics
+    all_metrics = (
+        [{**metric, "category": "finance"} for metric in METRICS]
+        + [INCOME_EQUALIZATION_METRIC]
+        + service_metrics
+    )
     values = {metric["id"]: {} for metric in all_metrics}
     exact_successors = {
         row["source_entity_id"]: row["target_entity_id"]
@@ -862,6 +878,8 @@ def write_frontend_data(db: sqlite3.Connection, output_dir: Path | str, boundari
         return entity_id if entity_id in active_ids else original_id
 
     for metric in all_metrics:
+        if metric["id"] == INCOME_EQUALIZATION_METRIC["id"]:
+            continue
         function_code = metric.get("functionCode", "")
         rows = db.execute(
             """SELECT entity_id, year, amount, per_capita FROM fact
@@ -880,9 +898,52 @@ def write_frontend_data(db: sqlite3.Connection, output_dir: Path | str, boundari
             year_values[row["entity_id"]] = point
             year_values[export_entity_id] = point
 
+    income_equalization = {}
+    equalization_rows = db.execute(
+        """SELECT entity_id,year,population,tax_before_amount,tax_before_per_capita,
+                  tax_before_national_ratio,equalization_amount,equalization_per_capita,
+                  tax_after_amount,tax_after_per_capita,tax_after_national_ratio,
+                  basis,source_url,source_period
+             FROM income_equalization_fact
+            ORDER BY year,entity_id"""
+    )
+    for row in equalization_rows:
+        export_entity_id = current_entity_id(row["entity_id"])
+        point = {
+            "population": row["population"],
+            "taxBefore": {
+                "amount": row["tax_before_amount"],
+                "perCapita": row["tax_before_per_capita"],
+                "nationalRatio": row["tax_before_national_ratio"],
+            },
+            "equalization": {
+                "amount": row["equalization_amount"],
+                "perCapita": row["equalization_per_capita"],
+            },
+            "taxAfter": {
+                "amount": row["tax_after_amount"],
+                "perCapita": row["tax_after_per_capita"],
+                "nationalRatio": row["tax_after_national_ratio"],
+            },
+            "basis": row["basis"],
+            "sourceUrl": row["source_url"],
+            "sourcePeriod": row["source_period"],
+        }
+        year_key = str(row["year"])
+        year_values = income_equalization.setdefault(year_key, {})
+        year_values[row["entity_id"]] = point
+        year_values[export_entity_id] = point
+        map_point = {
+            "amount": row["equalization_amount"],
+            "perCapita": row["equalization_per_capita"],
+        }
+        metric_values = values[INCOME_EQUALIZATION_METRIC["id"]].setdefault(year_key, {})
+        metric_values[row["entity_id"]] = map_point
+        metric_values[export_entity_id] = map_point
+
     source_rows = [dict(row) for row in db.execute("SELECT * FROM source_run ORDER BY source_table")]
     index = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "updated": datetime.now(timezone.utc).isoformat(),
         "latestYear": latest_year,
         "years": years,
@@ -890,6 +951,7 @@ def write_frontend_data(db: sqlite3.Connection, output_dir: Path | str, boundari
         "entities": entities,
         "historicalEntities": historical_entities,
         "values": values,
+        "incomeEqualization": income_equalization,
         "sources": source_rows,
     }
     _write_json(output / "index.json", index)

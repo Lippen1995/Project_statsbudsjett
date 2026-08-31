@@ -479,6 +479,21 @@ def test_inntektsutjevning_normaliserer_fortegn_enhet_og_eksport(tmp_path):
     assert value["equalization"]["amount"] == pytest.approx(-1_130_664.3142983925)
     assert value["sourceUrl"] == source
 
+    index = json.loads(
+        (tmp_path / "data" / "kostra" / "index.json").read_text(encoding="utf-8")
+    )
+    metric = next(item for item in index["metrics"] if item["id"] == "income_equalization")
+    assert metric["municipalityOnly"] is True
+    assert metric["polarity"] == "diverging"
+    assert index["values"]["income_equalization"]["2025"]["municipality:1103"] == {
+        "amount": pytest.approx(-1_130_664.3142983925),
+        "perCapita": pytest.approx(-7531.5861946430095),
+    }
+    map_point = index["incomeEqualization"]["2025"]["municipality:1103"]
+    assert map_point["taxBefore"]["nationalRatio"] == pytest.approx(1.2729580020083351)
+    assert map_point["taxAfter"]["perCapita"] == pytest.approx(46_275.81004710543)
+    assert map_point["sourceUrl"] == source
+
 
 def test_skatteimport_bruker_bare_desember_fordi_tabellen_er_akkumulert(tmp_path):
     db = create_database(tmp_path / "kostra.sqlite")

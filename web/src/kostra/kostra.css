@@ -22,6 +22,8 @@
 .ko-soktreff a:hover { background: var(--flate); }
 .ko-kartnivaa { min-height: 40px; border: 1px solid var(--ink); border-radius: 999px; padding: 8px 14px; background: transparent; color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .ko-kartnivaa:hover { background: var(--ink); color: var(--ark); }
+.ko-kartnivaa:disabled { border-color: var(--strek); color: var(--blek); cursor: default; }
+.ko-kartnivaa:disabled:hover { background: transparent; color: var(--blek); }
 
 .ko-kartgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 410px); gap: 32px; align-items: start; margin-top: 28px; }
 .ko-kartflate { position: relative; min-height: 600px; padding: 0; display: flex; flex-direction: column; }
@@ -38,6 +40,7 @@
 .ko-legende { display: grid; grid-template-columns: auto repeat(5, 32px) auto; gap: 3px; align-items: center; justify-content: center; color: var(--blek); font-size: 11px; }
 .ko-legende i { display: block; height: 8px; }
 .ko-legende i:nth-of-type(1) { background: #F3E6D8; }.ko-legende i:nth-of-type(2) { background: #E9C7AF; }.ko-legende i:nth-of-type(3) { background: #D99D7D; }.ko-legende i:nth-of-type(4) { background: #C97052; }.ko-legende i:nth-of-type(5) { background: #9F3F2C; }
+.ko-legende--utjevning i:nth-of-type(1) { background: #14594F; }.ko-legende--utjevning i:nth-of-type(2) { background: #AFCFC4; }.ko-legende--utjevning i:nth-of-type(3) { background: #D8D2C8; }.ko-legende--utjevning i:nth-of-type(4) { background: #E5B99F; }.ko-legende--utjevning i:nth-of-type(5) { background: #9F3F2C; }
 .ko-legende small { grid-column: 1 / -1; text-align: center; margin-top: 5px; }
 .ko-kartinfo { position: sticky; top: 82px; border-top: 2px solid var(--ink); padding-top: 14px; }
 .ko-kartinfo .ft-kort-tekst { border-top: 1px solid var(--strek); margin-top: 16px; padding-top: 14px; }
@@ -67,6 +70,42 @@
 .ko-oppsummering { border-top: 2px solid var(--ink); padding-top: 14px; }
 .ko-oppsummeringstall { margin-top: 13px; font-family: var(--serif); font-size: 30px; font-weight: 700; color: var(--rust); }
 .ko-datadekning { margin: 12px 0 0; font-size: 12px; line-height: 1.45; color: var(--blek); }
+.ko-utjevningstatusmerke { margin-top: 10px; color: var(--blek); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.ko-utjevningstatusmerke--recipient, .ko-utjevninghovedtall { color: var(--rust); }
+.ko-utjevningstatusmerke--contributor { color: var(--gronn, #14594F); }
+.ko-utjevningskort { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 16px; border-block: 1px solid var(--strek); background: var(--strek); }
+.ko-utjevningskort > div { display: flex; flex-direction: column; gap: 5px; padding: 13px 10px; background: var(--papir); }
+.ko-utjevningskort span { color: var(--blek); font-size: 9px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.ko-utjevningskort strong { font-family: var(--serif); font-size: 17px; }
+.ko-utjevningskort small { color: var(--blek); font-size: 10px; }
+.ko-utjevningsforklaring { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; margin-top: 24px; padding-block: 20px; border-block: 1px solid var(--strek); }
+.ko-utjevningsforklaring p { margin: 8px 0 0; color: var(--dempet); font-size: 13px; line-height: 1.55; }
+.ko-utjevningsnokkeltall { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 28px; border: 1px solid var(--strek); background: var(--strek); }
+.ko-utjevningsnokkeltall > div { display: flex; flex-direction: column; gap: 7px; padding: 17px 18px; background: var(--ark); }
+.ko-utjevningsnokkeltall span { color: var(--blek); font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.ko-utjevningsnokkeltall strong { font-family: var(--serif); font-size: 21px; }
+.ko-utjevningsnokkeltall small { color: var(--blek); font-size: 11px; }
+.ko-utjevningssortering { display: flex; align-items: center; gap: 9px; margin-top: 24px; }
+.ko-utjevningssortering button { border: 1px solid var(--strek); border-radius: 999px; padding: 7px 11px; background: transparent; color: var(--dempet); font: inherit; font-size: 11px; cursor: pointer; }
+.ko-utjevningssortering button:hover, .ko-utjevningssortering button.aktiv { border-color: var(--ink); background: var(--ink); color: var(--ark); }
+.ko-utjevningstabellramme { max-height: min(72vh, 820px); margin-top: 12px; overflow: auto; border-bottom: 1px solid var(--strek); }
+.ko-utjevningstabellramme:focus-visible { outline: 2px solid var(--rust); outline-offset: 2px; }
+.ko-utjevningstabell { width: 100%; min-width: 720px; border-collapse: collapse; table-layout: fixed; }
+.ko-utjevningstabell th, .ko-utjevningstabell td { padding: 12px 10px; border-bottom: 1px solid var(--strek); vertical-align: middle; }
+.ko-utjevningstabell thead th { color: var(--blek); font-size: 9px; letter-spacing: .08em; text-align: right; text-transform: uppercase; }
+.ko-utjevningstabell thead th { position: sticky; z-index: 2; top: 0; background: var(--papir); }
+.ko-utjevningstabell thead th:first-child { width: 32%; padding-left: 0; text-align: left; }
+.ko-utjevningstabell thead button { border: 0; padding: 0; background: transparent; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+.ko-utjevningstabell tbody tr:hover, .ko-utjevningstabell tbody tr.fokus { background: rgba(197,69,46,.04); }
+.ko-utjevningstabell tbody th { padding-left: 0; font-weight: 500; text-align: left; }
+.ko-utjevningstabell tbody th button { display: flex; width: 100%; flex-direction: column; gap: 4px; border: 0; padding: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.ko-utjevningstabell td { text-align: right; }
+.ko-utjevningstabell :is(th, td) strong, .ko-utjevningstabell :is(th, td) small { display: block; }
+.ko-utjevningstabell :is(th, td) small { margin-top: 4px; color: var(--blek); font-size: 10px; font-weight: 400; }
+.ko-utjevningverdi--recipient strong { color: var(--rust); }
+.ko-utjevningverdi--contributor strong { color: #14594F; }
+.ko-utjevningsnote { margin: 16px 0 0; color: var(--blek); font-size: 11px; line-height: 1.55; }
+.ko-utjevningsnote a { color: inherit; }
 .ko-utforsk-side .ft-kort-graf { margin-top: 10px; }
 .ko-regnskapsvelger { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 18px; padding: 12px 0; border-block: 1px solid var(--strek); }
 .ko-regnskapsvelger > small { color: var(--blek); font-size: 10px; }
@@ -209,6 +248,7 @@
   .ko-kartinfo { position: static; }
   .ko-kartflate { min-height: 500px; }.ko-kartflate > .ko-hovedkart { min-height: 430px; }
   .ko-nokkeltall { grid-template-columns: 1fr 1fr; }
+  .ko-utjevningsforklaring { grid-template-columns: 1fr; gap: 18px; }
 }
 @media (max-width: 640px) {
   .ko-utforsk .ft-tabellhode,
@@ -227,6 +267,7 @@
   .ko-paneltopp { flex-direction: column; }.ko-paneltopp .ko-select { width: 100%; }
   .ko-drillhode, .ko-drillrader button { grid-template-columns: minmax(0, 1fr) 105px 10px; }
   .ko-drillhode--arts, .ko-drillrader button.ko-drillart { grid-template-columns: minmax(0, 1fr) 88px 55px; }
+  .ko-utjevningsnokkeltall { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ko-hovedkart path, .ko-tooltip { transition: none; }

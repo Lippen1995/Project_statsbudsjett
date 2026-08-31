@@ -62,6 +62,23 @@ er tillegg/mottak. Rammetilskuddet inneholder også utgiftsutjevning og andre
 tilskudd og presenteres derfor ikke som om hele beløpet var
 inntektsutjevning.
 
+«Netto inntektsutjevning» finnes også som kommunevis nøkkeltall på kartet.
+Valget bytter automatisk til kommunekart, bruker en divergerende fargeskala
+(grønt trekk, rust tillegg) og viser alle publiserte kommuner i en sorterbar
+tabell med skatt før utjevning, signert nettoutjevning og skatt etter
+utjevning. Kartindeksen viser samlet tillegg og samlet trekk hver for seg;
+beløpene nettosummeres ikke bort.
+
+Inntektsutjevningen omfatter inntekts- og formuesskatt fra personlige
+skattytere og naturressursskatt fra kraftforetak. Dette må ikke forveksles med
+kommunens samlede inntekter. Frie inntekter er disse skatteinntektene sammen
+med rammetilskudd, mens samlede inntekter i tillegg kan inneholde blant annet
+gebyrer, øremerkede tilskudd og finansinntekter. Utbytte fra selskaper
+kommunen eier er en finansinntekt og inngår ikke i beregningen av
+inntektsutjevningen. Det samme gjelder blant annet eiendomsskatt. Denne
+avgrensningen forklares synlig i grensesnittet slik at en utbytterik kommune
+ikke feilaktig omtales som bidragsyter av den grunn.
+
 Sammenligning med Norge og KOSTRA-gruppe vises bare per innbygger. Totale
 beløp påvirkes av regionenes størrelse og er derfor ikke et meningsfullt
 sammenligningsgrunnlag. Rene kodebytter viderefører tidsserien uten eget varsel
@@ -76,7 +93,8 @@ minste arkitekturen som beholder denne driftsmodellen er derfor:
 2. `etl/kostra_schema.sql` oppretter en lokal SQLite-database i
    `etl/raw/kostra.sqlite`.
 3. Importen normaliserer enheter, klassifikasjoner og fakta i SQLite.
-4. Vanlige kartaggregater eksporteres til `kostra/index.json`.
+4. Vanlige kartaggregater, inkludert kommunevis inntektsutjevning, eksporteres
+   til `kostra/index.json`.
 5. Store detaljer, inkludert flerårige artsserier, splittes per kommune/fylke
    og lazy-lastes først ved behov.
 6. `web/src/lib/kostra.js` er frontendens eneste dataseam. Nettleseren gjør
@@ -172,8 +190,9 @@ hånd, så det oppstår verken dobbelttelling eller konstruerte tidsserier.
 
 `web/public/data/kostra/` inneholder:
 
-- `index.json`: skjema-versjon, år, mål, aktive/historiske enheter, kilder og
-  forhåndsberegnede kartverdier.
+- `index.json`: skjema-versjon, år, mål, aktive/historiske enheter, kilder,
+  forhåndsberegnede kartverdier og et kompakt `incomeEqualization`-oppslag med
+  skatt før/etter og signert nettoutjevning for kart og nasjonal tabell.
 - `boundaries.json`: forenklede og ferdigprojiserte SVG-baner for rask kartstart.
 - `entities/municipality-{kode}.json`: kommuneoversikt, historikk,
   fordelinger, økonomisk drill-down og `stateFlows` med adskilte inn- og

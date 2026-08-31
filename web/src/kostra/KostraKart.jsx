@@ -5,6 +5,9 @@ import {
   displayEntityName,
   findKostraEntities,
   formatKostraValue,
+  incomeEqualizationColor,
+  incomeEqualizationMapSummary,
+  incomeEqualizationPoint,
   mapValue,
   municipalityOverviewRows,
   overviewComparisonRows,
@@ -13,6 +16,7 @@ import {
 } from './model'
 import KostraDetalj from './KostraDetalj'
 import KostraInfoTooltip from './KostraInfoTooltip'
+import KostraIncomeEqualization from './KostraIncomeEqualization'
 import KostraUtforsk from './KostraUtforsk'
 
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -48,7 +52,8 @@ export default function KostraKart({
   const contentRegionRef = useRef(null)
   const routeNavigationRef = useRef(null)
   const searchInputId = useId()
-  const level = countyCode ? 'municipality' : nationalLevel
+  const incomeEqualizationSelected = metricId === 'income_equalization'
+  const level = countyCode || incomeEqualizationSelected ? 'municipality' : nationalLevel
   const countyId = countyCode ? `county:${countyCode}` : null
   const selectedMunicipalityId = selectedMunicipalityCode ? `municipality:${selectedMunicipalityCode}` : null
   const entities = useMemo(() => new Map(index.entities.map((entity) => [entity.id, entity])), [index])
@@ -93,6 +98,7 @@ export default function KostraKart({
     : null
   const mainShapes = selectedShape ? [selectedShape] : shapes
   const metric = metrics.find((item) => item.id === metricId) ?? metrics[0]
+  const isIncomeEqualization = incomeEqualizationSelected
   const summaryIds = focusedEntity ? [focusedEntity.id] : shapes.map((shape) => shape.id)
   const summary = summarizeKostraEntities(index, metricId, year, summaryIds)
   const municipalitySummary = level === 'county' && metric.category === 'finance'
@@ -107,10 +113,10 @@ export default function KostraKart({
   const topCountyIds = hoverId && level === 'county'
     ? [hoverId]
     : Object.keys(boundaries.county ?? {})
-  const overviewRows = level === 'county' && !countyCode
+  const overviewRows = level === 'county' && !countyCode && !isIncomeEqualization
     ? overviewComparisonRows(index, year, topCountyIds)
     : []
-  const municipalityRows = level === 'municipality' && focusedEntity?.kind === 'municipality'
+  const municipalityRows = level === 'municipality' && focusedEntity?.kind === 'municipality' && !isIncomeEqualization
     ? municipalityOverviewRows(index, year, focusedEntity.id)
     : []
   const overviewName = hovered ? countyGroupName(hovered) : 'Hele Norge'
@@ -120,6 +126,12 @@ export default function KostraKart({
   const municipalityOverviewHasMissingValues = municipalityRows.some((row) => row.summary[mode] == null)
   const sorted = [...values].sort((a, b) => a - b)
   const legend = sorted.length ? [sorted[0], sorted[Math.floor(sorted.length / 2)], sorted.at(-1)] : []
+  const equalizationPoint = focusedEntity?.kind === 'municipality'
+    ? incomeEqualizationPoint(index, year, focusedEntity.id)
+    : null
+  const equalizationSummary = isIncomeEqualization
+    ? incomeEqualizationMapSummary(index, year, shapes.map((shape) => shape.id))
+    : null
   const Heading = embedded ? 'h2' : 'h1'
   const activeKeyboardId = mainShapes.some((shape) => shape.id === keyboardId) ? keyboardId : mainShapes[0]?.id
   const municipalityTitle = selectedMunicipality ? municipalityEntityTitle(selectedMunicipality) : null
@@ -140,14 +152,22 @@ export default function KostraKart({
       : `kostra/kommune/${shape.code}`
   }
 
+  const selectMetric = (nextMetricId) => {
+    setMetricId(nextMetricId)
+    if (nextMetricId === 'income_equalization' && !countyCode) setNationalLevel('municipality')
+  }
+  const mapColor = (value) => isIncomeEqualization
+    ? incomeEqualizationColor(value, values)
+    : choroplethColor(value, values)
+
   return (
     <>
       <header className={`ko-hero ${embedded ? 'ko-hero--integrert' : ''}`}>
         <div className="ft-kicker">KOSTRA · Kommune- og fylkesregnskap · {index.years[0]}–{index.latestYear}</div>
         <Heading ref={headingRef} tabIndex={-1}>{municipalityTitle || (county ? `${displayEntityName(county)}, kommune for kommune` : 'Slik bruker kommunene pengene')}</Heading>
         <p className="ft-ingress">
-          Velg et nøkkeltall og klikk deg fra Norge til fylke og kommune. Alle tall er hentet fra SSB,
-          normalisert lokalt og sammenlignbare med landet og KOSTRA-gruppen.
+          Velg et nøkkeltall og klikk deg fra Norge til fylke og kommune. Regnskapstall er hentet fra SSB,
+          mens inntektsutjevningen kommer fra Kommunal- og distriktsdepartementet. Alt normaliseres lokalt.
         </p>
         <div className="ko-smuler" aria-label="Brødsmuler">
           <a href="#kostra" onClick={prepareRouteNavigation}>Norge</a>
@@ -162,7 +182,7 @@ export default function KostraKart({
         <div className="ko-verktoy">
           <label>
             <span className="ft-stikkord">Sorter etter</span>
-            <select className="ko-select" value={metricId} onChange={(event) => setMetricId(event.target.value)}>
+            <select className="ko-select" value={metricId} onChange={(event) => selectMetric(event.target.value)}>
               <optgroup label="Økonomi">
                 {metrics.filter((item) => item.category === 'finance').map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
               </optgroup>
@@ -206,11 +226,13 @@ export default function KostraKart({
             <button
               type="button"
               className="ko-kartnivaa"
+              disabled={isIncomeEqualization}
+              title={isIncomeEqualization ? 'Inntektsutjevning publiseres og vises kommunevis' : undefined}
               onClick={() => {
                 setHoverId(null)
                 setNationalLevel((current) => current === 'county' ? 'municipality' : 'county')
               }}
-            >{level === 'county' ? `Vis alle ${municipalityCount} kommuner` : `Vis ${countyCount} fylker`}</button>
+            >{isIncomeEqualization ? 'Vises kommunevis' : level === 'county' ? `Vis alle ${municipalityCount} kommuner` : `Vis ${countyCount} fylker`}</button>
           )}
         </div>
 
@@ -234,7 +256,7 @@ export default function KostraKart({
                       <path
                         key={shape.id}
                         d={shape.path}
-                        fill={choroplethColor(mapValue(index, metricId, year, shape.id, mode), values)}
+                        fill={mapColor(mapValue(index, metricId, year, shape.id, mode))}
                         className={shape.id === selectedMunicipalityId ? 'valgt' : ''}
                       />
                     ))}
@@ -250,7 +272,7 @@ export default function KostraKart({
                     <path
                       key={shape.id}
                       d={shape.path}
-                      fill={choroplethColor(value, values)}
+                      fill={mapColor(value)}
                       className={[hoverId === shape.id ? 'aktiv' : '', selectedMunicipalityId === shape.id ? 'valgt' : ''].filter(Boolean).join(' ')}
                       data-shape-index={mapIsInteractive ? shapeIndex : undefined}
                       tabIndex={mapIsInteractive ? (activeKeyboardId === shape.id ? 0 : -1) : undefined}
@@ -294,14 +316,14 @@ export default function KostraKart({
                 })}
               </g>
             </svg>
-            <div className="ko-legende" aria-label="Kartforklaring">
-              <span>Lavere</span>
+            <div className={`ko-legende ${isIncomeEqualization ? 'ko-legende--utjevning' : ''}`} aria-label="Kartforklaring">
+              <span>{isIncomeEqualization ? 'Trekk' : 'Lavere'}</span>
               <i />
               <i />
               <i />
               <i />
               <i />
-              <span>Høyere</span>
+              <span>{isIncomeEqualization ? 'Tillegg' : 'Høyere'}</span>
               {legend.length > 0 && <small>{legend.map((value) => formatKostraValue(value, mode)).join(' · ')}</small>}
             </div>
           </div>
@@ -310,7 +332,31 @@ export default function KostraKart({
             aria-live={overviewRows.length || municipalityRows.length ? undefined : 'polite'}
             aria-atomic={overviewRows.length || municipalityRows.length ? undefined : 'true'}
           >
-            {overviewRows.length ? <>
+            {isIncomeEqualization ? equalizationPoint ? <>
+              <div className="ft-stikkord">Inntektsutjevning · {year}</div>
+              <div className="ft-kort-tittel">{displayEntityName(focusedEntity)}</div>
+              <div className={`ko-utjevningstatusmerke ko-utjevningstatusmerke--${equalizationPoint.status}`}>
+                {equalizationPoint.status === 'recipient' ? 'Mottar tillegg' : equalizationPoint.status === 'contributor' ? 'Får trekk' : 'Ingen netto utjevning'}
+              </div>
+              <table className="ko-sammenstilling ko-sammenstilling--kommune">
+                <tbody>
+                  <tr><th scope="row">Skatt før utjevning</th><td>{formatKostraValue(equalizationPoint.taxBefore?.[mode], mode)}</td></tr>
+                  <tr><th scope="row">Netto utjevning</th><td className="ko-utjevninghovedtall">{formatKostraValue(equalizationPoint.equalization?.[mode], mode)}</td></tr>
+                  <tr><th scope="row">Skatt etter utjevning</th><td>{formatKostraValue(equalizationPoint.taxAfter?.[mode], mode)}</td></tr>
+                </tbody>
+              </table>
+              <div className="ko-innbyggere"><span>Skatt før / etter, mot landet</span><strong>{Math.round((equalizationPoint.taxBefore?.nationalRatio ?? 0) * 100)} / {Math.round((equalizationPoint.taxAfter?.nationalRatio ?? 0) * 100)} %</strong></div>
+              <p className="ft-kort-tekst">Utjevningen gjelder bestemte skatteinntekter, ikke alle kommunens inntekter. Klikk for å åpne kommunen og se forklaringen i sammenheng med regnskapet.</p>
+            </> : <>
+              <div className="ft-stikkord">Netto inntektsutjevning · {year}</div>
+              <div className="ft-kort-tittel">{county ? `Kommunene i ${countyGroupName(county)}` : 'Alle kommuner'}</div>
+              <div className="ko-utjevningskort">
+                <div><span>Mottar tillegg</span><strong>{equalizationSummary.recipients} kommuner</strong><small>{formatKostraValue(equalizationSummary.receivedAmount, 'amount')}</small></div>
+                <div><span>Får trekk</span><strong>{equalizationSummary.contributors} kommuner</strong><small>{formatKostraValue(equalizationSummary.contributedAmount, 'amount')}</small></div>
+              </div>
+              <p className="ft-kort-tekst">Rust viser kommuner som mottar tillegg. Grønt viser kommuner som får trekk. Kartet viser ikke utbytte, eiendomsskatt, gebyrer eller andre kommuneinntekter.</p>
+              {!equalizationSummary.complete && <p className="ko-datadekning">{equalizationSummary.availableEntities} av {equalizationSummary.entities} kommuner har data.</p>}
+            </> : overviewRows.length ? <>
               <div className="ft-stikkord">Regnskapsoversikt · {year}</div>
               <div className="ft-kort-tittel">{overviewName}</div>
               <table className="ko-sammenstilling">
@@ -438,6 +484,17 @@ export default function KostraKart({
             code={selectedMunicipality.code}
             embedded
             onReady={releasePreservedContentHeight}
+          />
+        ) : isIncomeEqualization ? (
+          <KostraIncomeEqualization
+            index={index}
+            shapes={shapes}
+            entities={entities}
+            year={year}
+            mode={mode}
+            hoverId={hoverId}
+            onHover={setHoverId}
+            onOpen={open}
           />
         ) : (
           <KostraUtforsk
