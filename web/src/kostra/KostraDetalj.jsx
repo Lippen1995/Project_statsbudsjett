@@ -8,6 +8,7 @@ import {
   drillHistory,
   formatKostraValue,
   incomeEqualizationSummary,
+  incomeSystemTableColumns,
   mapValue,
   materialBoundaryHistory,
   metricSeries,
@@ -217,7 +218,7 @@ function IncomeEqualization({
   const valueContext = mode === 'perCapita' ? 'per innbygger' : 'til sammen'
   const calculation = blockGrantCalculationSummary(blockGrantCalculation, summary, year, mode)
   const comparisonRows = incomeSystemComparisons?.values?.[year] ?? []
-  const norwayComparison = comparisonRows.find((row) => row.id === 'country:EAK')
+  const incomeColumns = incomeSystemTableColumns(summary, comparisonRows, entityName, mode)
   const equalizationLabel = isContributor
     ? 'Trekk i inntektsutjevningen'
     : isRecipient ? 'Tillegg i inntektsutjevningen' : 'Inntektsutjevning'
@@ -243,43 +244,36 @@ function IncomeEqualization({
         </p>
       </div>
       <article className="ko-inntektsregnestykke">
-        <span className="ft-stikkord">Pengene kommunen faktisk har fått inn</span>
-        <h3>Fra skatt til skatt og rammetilskudd</h3>
-        <p>Resultatet er ikke «totale skatteinntekter», fordi rammetilskuddet er penger fra staten – ikke skatt kommunen har krevd inn.{mode === 'perCapita' && ' Alle linjene bruker samme innbyggertall som KDDs sluttavregning, slik at de kan summeres.'}</p>
-        <table className="ko-stromtabell ko-regnestykke">
-          <caption className="sr-only">Skatt og rammetilskudd for {entityName} i {year}</caption>
-          <thead><tr><th scope="col">Regnestykke</th><th scope="col">{mode === 'perCapita' ? 'Per innbygger' : 'Beløp'}</th></tr></thead>
-          <tbody>
-            <tr><th scope="row"><b className="ko-operator">&nbsp;</b><span>Kommunens skatteinntekter</span><small>Personlig inntekts- og formuesskatt, pluss naturressursskatt.</small></th><td className="num">{formatKostraValue(summary.taxBefore, mode)}</td></tr>
-            <tr><th scope="row"><b className="ko-operator">+</b><span>Rammetilskudd før inntektsutjevning</span><small>Bokført rammetilskudd med utjevningens tillegg eller trekk tatt ut.</small></th><td className="num">{formatKostraValue(summary.blockGrantBeforeEqualization, mode)}</td></tr>
-            <tr className="ko-stromtabell--utjevning"><th scope="row"><b className="ko-operator">{summary.equalization < 0 ? '−' : '+'}</b><span>{equalizationLabel}</span><small>Justeres av staten ut fra skatt per innbygger sammenlignet med landet.</small></th><td className="num">{formatKostraValue(summary.equalization, mode)}</td></tr>
-            <tr className="ko-regnestykke--sum"><th scope="row"><b className="ko-operator">=</b><span>Skatt og bokført rammetilskudd til sammen</span><small>Dette er to sentrale, frie inntektskilder – ikke kommunens samlede inntekter.</small></th><td className="num">{formatKostraValue(summary.taxAndBlockGrant, mode)}</td></tr>
-          </tbody>
-        </table>
+        <span className="ft-stikkord">Pengene kommunen faktisk har fått inn{mode === 'perCapita' && comparisonRows.length > 0 ? ' · sammenligning per innbygger' : ''}</span>
+        <h3>Skatt, rammetilskudd og utjevning i ett regnestykke</h3>
+        <p>
+          Først vises hvordan inntektsutjevningen endrer rammetilskuddet. Deretter legges kommunens skatt til.
+          {' '}Sluttsummen er ikke «totale skatteinntekter», fordi rammetilskuddet er penger fra staten – ikke skatt kommunen har krevd inn.
+          {mode === 'perCapita' && comparisonRows.length > 0
+            ? ' Beløp per innbygger gjør kommunen, KOSTRA-gruppen og Norge sammenlignbare.'
+            : mode === 'perCapita' ? ' Alle linjene bruker samme innbyggertall som KDDs sluttavregning, slik at de kan summeres.' : ''}
+        </p>
+        <div className="ko-rammetabellramme" tabIndex={incomeColumns.length > 1 ? '0' : undefined} aria-label={incomeColumns.length > 1 ? 'Rull sidelengs for å se hele sammenligningen på smale skjermer' : undefined}>
+          <table className={`ko-stromtabell ko-regnestykke ko-inntektssystemtabell${incomeColumns.length > 1 ? ' ko-inntektssystemtabell--sammenligning' : ''}`}>
+            <caption className="sr-only">Skatt, rammetilskudd og inntektsutjevning for {entityName} i {year}</caption>
+            <thead><tr><th scope="col">Regnestykke</th>{incomeColumns.map((column) => (
+              <th scope="col" key={column.id}>
+                <span className="ko-sammenlignnavn">{column.label}{column.id.startsWith('peer_group:') && (
+                  <KostraInfoTooltip label={column.label}>SSB grupperer kommuner med lignende folketall, økonomiske rammer og kostnadsforhold. Gruppen er et sammenligningsgrunnlag, ikke en egen kommune.</KostraInfoTooltip>
+                )}</span>
+                <small>{mode === 'perCapita' ? 'Per innbygger' : 'Beløp'}</small>
+              </th>
+            ))}</tr></thead>
+            <tbody>
+              <tr><th scope="row"><b className="ko-operator">&nbsp;</b><span>Rammetilskudd før inntektsutjevning</span><small>Bokført rammetilskudd med utjevningens tillegg eller trekk tatt ut.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.before, mode)}</td>)}</tr>
+              <tr className="ko-stromtabell--utjevning"><th scope="row"><b className="ko-operator">±</b><span>Inntektsutjevning</span><small>Tillegg eller trekk ut fra skatt per innbygger sammenlignet med landet.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.equalization, mode)}</td>)}</tr>
+              <tr className="ko-regnestykke--delsum"><th scope="row"><b className="ko-operator">=</b><span>Bokført rammetilskudd</span><small>Det kommunen faktisk har inntektsført som rammetilskudd.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.booked, mode)}</td>)}</tr>
+              <tr><th scope="row"><b className="ko-operator">+</b><span>Kommunens skatteinntekter</span><small>Personlig inntekts- og formuesskatt, pluss naturressursskatt.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.tax, mode)}</td>)}</tr>
+              <tr className="ko-regnestykke--sum"><th scope="row"><b className="ko-operator">=</b><span>Skatt og bokført rammetilskudd til sammen</span><small>To sentrale, frie inntektskilder – ikke kommunens samlede inntekter.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.total, mode)}</td>)}</tr>
+            </tbody>
+          </table>
+        </div>
       </article>
-
-      {comparisonRows.length > 0 && (
-        <article className="ko-rammesammenligning">
-          <span className="ft-stikkord">Sammenligning per innbygger</span>
-          <h3>Får kommunen mer eller mindre i rammetilskudd?</h3>
-          <p>Beløp per innbygger gjør kommuner av ulik størrelse sammenlignbare. «Før» viser rammetilskuddet uten inntektsutjevningen; «bokført» inkluderer den.</p>
-          <div className="ko-rammetabellramme" tabIndex="0" aria-label="Rull sidelengs for å se hele sammenligningen på smale skjermer">
-            <table className="ko-stromtabell ko-rammetabell">
-              <thead><tr><th scope="col">Område</th><th scope="col">Før utjevning</th><th scope="col">Utjevning</th><th scope="col">Bokført</th></tr></thead>
-              <tbody>{comparisonRows.map((row) => (
-                <tr key={row.id}>
-                  <th scope="row"><span className="ko-sammenlignnavn">{row.id === 'country:EAK' ? 'Norge' : row.label}{row.id.startsWith('peer_group:') && (
-                    <KostraInfoTooltip label={row.label}>SSB grupperer kommuner med lignende folketall, økonomiske rammer og kostnadsforhold. Gruppen er et sammenligningsgrunnlag, ikke en egen kommune.</KostraInfoTooltip>
-                  )}</span><small>{row.id === 'country:EAK' ? 'Landsgjennomsnitt' : row.id.startsWith('peer_group:') ? 'Sammenlignbare kommuner' : (Number.isFinite(row.blockGrantPerCapita) && Number.isFinite(norwayComparison?.blockGrantPerCapita) ? ratioDescription(row.blockGrantPerCapita / norwayComparison.blockGrantPerCapita) : '')}</small></th>
-                  <td className="num">{formatKostraValue(row.blockGrantBeforeEqualizationPerCapita, 'perCapita')}</td>
-                  <td className="num">{formatKostraValue(row.equalizationPerCapita, 'perCapita')}</td>
-                  <td className="num">{formatKostraValue(row.blockGrantPerCapita, 'perCapita')}</td>
-                </tr>
-              ))}</tbody>
-            </table>
-          </div>
-        </article>
-      )}
 
       <div className="ko-stromgrid ko-forklaringsgrid">
         <article className="ko-stromkolonne">

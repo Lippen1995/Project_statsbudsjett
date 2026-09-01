@@ -10,6 +10,7 @@ import {
   drillHistory,
   findKostraEntities,
   incomeEqualizationSummary,
+  incomeSystemTableColumns,
   incomeEqualizationMapSummary,
   incomeEqualizationPoint,
   incomeEqualizationColor,
@@ -522,6 +523,42 @@ test('inntektsutjevning skiller bidragsyter fra mottaker og sammenligner frie in
   } } }, { incoming: [{ code: 'state_block_grant', values: {
     2025: { amount: 110, perCapita: 800 },
   } }] }, 2025, 'perCapita').freeIncomeSource, 'block_grant')
+})
+
+test('skatt og rammetilskudd samles i én sammenlignbar oppstilling', () => {
+  const summary = {
+    taxBefore: 53_807,
+    blockGrantBeforeEqualization: 30_994,
+    equalization: -7_532,
+    blockGrant: 23_462,
+    taxAndBlockGrant: 77_269,
+  }
+  const comparisons = [
+    {
+      id: 'municipality:1103', label: 'Stavanger', taxBeforePerCapita: 53_807,
+      blockGrantBeforeEqualizationPerCapita: 30_994, equalizationPerCapita: -7_532,
+      blockGrantPerCapita: 23_462,
+    },
+    {
+      id: 'peer_group:12', label: 'KOSTRA-gruppe 12', taxBeforePerCapita: 42_000,
+      blockGrantBeforeEqualizationPerCapita: 31_527, equalizationPerCapita: -2_072,
+      blockGrantPerCapita: 29_455,
+    },
+    {
+      id: 'country:EAK', label: 'Landet', taxBeforePerCapita: 42_250,
+      blockGrantBeforeEqualizationPerCapita: 35_970, equalizationPerCapita: 0,
+      blockGrantPerCapita: 35_970,
+    },
+  ]
+
+  assert.deepEqual(incomeSystemTableColumns(summary, comparisons, 'Stavanger', 'perCapita'), [
+    { id: 'municipality:1103', label: 'Stavanger', tax: 53_807, before: 30_994, equalization: -7_532, booked: 23_462, total: 77_269 },
+    { id: 'peer_group:12', label: 'KOSTRA-gruppe 12', tax: 42_000, before: 31_527, equalization: -2_072, booked: 29_455, total: 71_455 },
+    { id: 'country:EAK', label: 'Norge', tax: 42_250, before: 35_970, equalization: 0, booked: 35_970, total: 78_220 },
+  ])
+  assert.deepEqual(incomeSystemTableColumns(summary, comparisons, 'Stavanger', 'amount'), [
+    { id: 'selected', label: 'Stavanger', tax: 53_807, before: 30_994, equalization: -7_532, booked: 23_462, total: 77_269 },
+  ])
 })
 
 test('rammetilskuddet avstemmes fra Grønt hefte til faktisk bokført beløp uten dobbel utjevning', () => {

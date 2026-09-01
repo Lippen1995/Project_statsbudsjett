@@ -219,6 +219,33 @@ export function incomeEqualizationSummary(incomeEqualization, stateFlows, year, 
   }
 }
 
+/** Samle skatt og rammetilskudd i én tabell uten å sammenligne nominelle totalsummer. */
+export function incomeSystemTableColumns(summary, comparisonRows, entityName, mode) {
+  if (!summary) return []
+  if (mode !== 'perCapita' || !comparisonRows?.length) {
+    return [{
+      id: 'selected',
+      label: entityName,
+      tax: summary.taxBefore,
+      before: summary.blockGrantBeforeEqualization,
+      equalization: summary.equalization,
+      booked: summary.blockGrant,
+      total: summary.taxAndBlockGrant,
+    }]
+  }
+  return comparisonRows.map((row) => ({
+    id: row.id,
+    label: row.id === 'country:EAK' ? 'Norge' : row.label,
+    tax: row.taxBeforePerCapita,
+    before: row.blockGrantBeforeEqualizationPerCapita,
+    equalization: row.equalizationPerCapita,
+    booked: row.blockGrantPerCapita,
+    total: Number.isFinite(row.taxBeforePerCapita) && Number.isFinite(row.blockGrantPerCapita)
+      ? row.taxBeforePerCapita + row.blockGrantPerCapita
+      : null,
+  }))
+}
+
 /** Avstem statsbudsjettets beregning mot faktisk bokført rammetilskudd. */
 export function blockGrantCalculationSummary(calculation, incomeSummary, year, mode) {
   const point = calculation?.values?.[year]
