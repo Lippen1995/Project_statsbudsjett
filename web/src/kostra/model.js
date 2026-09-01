@@ -116,19 +116,24 @@ export function comparisonEntityIds(entityId, comparisons, mode) {
   return [entityId, comparisons?.peerGroupEntityId, comparisons?.norwayEntityId].filter(Boolean)
 }
 
-/** Velg den tidsserien som svarer til brukerens posisjon i økonomidrillen. */
-export function drillHistory(detail, years, serviceCode, functionCode, mode = 'amount') {
-  const selected = functionCode
+/** Velg den tidsserien som svarer til kategori og posisjon i økonomidrillen. */
+export function drillHistory(detail, years, serviceCode, functionCode, mode = 'amount', metricId = 'expenses') {
+  const metric = metricId === 'revenues'
+    ? { overview: 'revenues', detail: null, totalName: 'Driftsinntekter totalt' }
+    : metricId === 'investments'
+      ? { overview: 'investments', detail: 'investments', totalName: 'Investeringsutgifter totalt' }
+      : { overview: 'net_expenses', detail: 'net_expenses', totalName: 'Netto driftsutgifter totalt' }
+  const selected = metric.detail && functionCode
     ? detail?.functions?.find((item) => item.code === functionCode)
-    : serviceCode
+    : metric.detail && serviceCode
       ? detail?.services?.find((item) => item.code === serviceCode)
       : null
-  const values = selected?.metrics?.net_expenses ?? detail?.overview?.net_expenses
+  const values = selected?.metrics?.[metric.detail] ?? detail?.overview?.[metric.overview]
   const valueKey = mode === 'perCapita' ? 'perCapita' : 'amount'
   const points = years.map((year) => ({ v: values?.[year]?.[valueKey] ?? null }))
   const available = points.map((item) => item.v).filter(Number.isFinite)
   return {
-    name: selected?.name ?? 'Netto driftsutgifter totalt',
+    name: selected?.name ?? metric.totalName,
     points,
     latestValue: available.at(-1) ?? null,
     fromZero: !available.some((value) => value < 0),

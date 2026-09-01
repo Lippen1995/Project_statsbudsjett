@@ -203,6 +203,8 @@
 .ko-paneltopp { display: flex; align-items: start; justify-content: space-between; gap: 20px; }
 .ko-paneltopp .ko-select { width: 220px; }
 .ko-drillverktoy { display: flex; align-items: center; justify-content: flex-end; gap: 14px; flex-wrap: wrap; }
+.ko-drillkategori { display: flex; flex-direction: column; gap: 4px; min-width: 150px; }
+.ko-paneltopp .ko-drillkategori .ko-select { width: 170px; min-height: 34px; padding-block: 5px; }
 .ko-graflegend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: var(--blek); }
 .ko-graflegend span { display: flex; align-items: center; gap: 6px; }.ko-graflegend i { width: 14px; height: 2px; }
 .ko-sammenlignrad { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--strek); font-size: 13px; }
@@ -255,6 +257,7 @@
 .ko-drillhode--arts span:nth-child(n+2) { text-align: right; }
 .ko-drillrader button { width: 100%; padding: 12px 10px; border: 0; border-bottom: 1px solid var(--strek); background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
 .ko-drillrader button:not(:disabled):hover { background: var(--ark); }.ko-drillrader button:disabled { cursor: default; }
+.ko-drillrader button[aria-pressed="true"] { background: var(--ark); }
 .ko-drillrader button > span { min-width: 0; }.ko-drillrader small { display: inline-block; width: 58px; color: var(--blek); font-size: 10px; }
 .ko-drillrader strong { text-align: right; white-space: nowrap; }.ko-drillrader b { color: var(--blek); }
 .ko-drillrader button.ko-drillart > span > span { display: block; }
@@ -298,6 +301,8 @@
   .ko-hero { padding: 42px 20px 26px; }.ko-kartseksjon, .ko-detaljseksjon { padding-inline: 20px; }
   .ko-nokkeltall { grid-template-columns: 1fr; }.ko-moduslinje { align-items: flex-start; flex-direction: column; }
   .ko-paneltopp { flex-direction: column; }.ko-paneltopp .ko-select { width: 100%; }
+  .ko-drillverktoy { width: 100%; justify-content: flex-start; }
+  .ko-drillkategori { width: 100%; }.ko-paneltopp .ko-drillkategori .ko-select { width: 100%; }
   .ko-drillhode, .ko-drillrader button { grid-template-columns: minmax(0, 1fr) 105px 10px; }
   .ko-drillhode--arts, .ko-drillrader button.ko-drillart { grid-template-columns: minmax(0, 1fr) 88px 55px; }
   .ko-utjevningsnokkeltall { grid-template-columns: 1fr; }

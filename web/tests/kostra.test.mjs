@@ -247,14 +247,24 @@ test('sammenligningsgrunnlag kan vise utledet innbyggertall', () => {
 
 test('drilldown-historikk følger total, tjenesteområde og KOSTRA-funksjon', () => {
   const detail = {
-    overview: { net_expenses: { 2024: { amount: 100, perCapita: 1_000 }, 2025: { amount: 120, perCapita: 1_100 } } },
+    overview: {
+      net_expenses: { 2024: { amount: 100, perCapita: 1_000 }, 2025: { amount: 120, perCapita: 1_100 } },
+      revenues: { 2024: { amount: 180, perCapita: 1_800 }, 2025: { amount: 210, perCapita: 1_950 } },
+      investments: { 2024: { amount: 30, perCapita: 300 }, 2025: { amount: 45, perCapita: 410 } },
+    },
     services: [{
       code: 'FGK8b', name: 'Grunnskole',
-      metrics: { net_expenses: { 2024: { amount: 40, perCapita: 400 }, 2025: { amount: 50, perCapita: 450 } } },
+      metrics: {
+        net_expenses: { 2024: { amount: 40, perCapita: 400 }, 2025: { amount: 50, perCapita: 450 } },
+        investments: { 2024: { amount: 8, perCapita: 80 }, 2025: { amount: 12, perCapita: 110 } },
+      },
     }],
     functions: [{
       code: '202', name: 'Grunnskole',
-      metrics: { net_expenses: { 2024: { amount: -30, perCapita: -300 }, 2025: { amount: 35, perCapita: 320 } } },
+      metrics: {
+        net_expenses: { 2024: { amount: -30, perCapita: -300 }, 2025: { amount: 35, perCapita: 320 } },
+        investments: { 2024: { amount: 5, perCapita: 50 }, 2025: { amount: 9, perCapita: 82 } },
+      },
     }],
   }
 
@@ -272,6 +282,12 @@ test('drilldown-historikk følger total, tjenesteområde og KOSTRA-funksjon', ()
   })
   assert.deepEqual(drillHistory(detail, [2024, 2025], 'FGK8b', '202', 'perCapita'), {
     name: 'Grunnskole', points: [{ v: -300 }, { v: 320 }], latestValue: 320, fromZero: false,
+  })
+  assert.deepEqual(drillHistory(detail, [2024, 2025], null, null, 'perCapita', 'revenues'), {
+    name: 'Driftsinntekter totalt', points: [{ v: 1_800 }, { v: 1_950 }], latestValue: 1_950, fromZero: true,
+  })
+  assert.deepEqual(drillHistory(detail, [2024, 2025], 'FGK8b', '202', 'amount', 'investments'), {
+    name: 'Grunnskole', points: [{ v: 5 }, { v: 9 }], latestValue: 9, fromZero: true,
   })
 })
 
