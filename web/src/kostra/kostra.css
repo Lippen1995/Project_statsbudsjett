@@ -156,6 +156,10 @@
 .ko-inntektssystemtabell--sammenligning thead th:not(:first-child), .ko-inntektssystemtabell--sammenligning tbody td { width: 18.5%; }
 .ko-stromtabell.ko-inntektssystemtabell--sammenligning thead th:last-child { width: 18.5%; }
 .ko-inntektssystemtabell--sammenligning tbody th { width: 44.5%; }
+.ko-dobbeltbelop { min-width: 650px; table-layout: auto; }
+.ko-dobbeltbelop thead th:not(:first-child), .ko-dobbeltbelop tbody td { width: 19%; text-align: right; }
+.ko-stromtabell.ko-dobbeltbelop thead th:last-child { width: 19%; }
+.ko-dobbeltbelop tbody th { width: 62%; }
 .ko-forklaringsgrid { margin-top: 34px; }
 .ko-forklaringsliste { margin: 14px 0 0; padding-left: 18px; color: var(--dempet); font-size: 12px; line-height: 1.55; }
 .ko-forklaringsliste li + li { margin-top: 8px; }
@@ -168,6 +172,10 @@
 .ko-stromtotal { display: block; margin: 8px 0 10px; color: var(--rust); font-family: var(--serif); font-size: clamp(26px, 3vw, 34px); }
 .ko-stromtotal--trekk { color: var(--ink); }
 .ko-stromkolonne--outgoing .ko-stromtotal { color: var(--ink); }
+.ko-stromtotaller { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; max-width: 760px; margin: 18px 0 12px; }
+.ko-stromtotaller > div { border-top: 1px solid var(--strek); padding-top: 9px; }
+.ko-stromtotaller small { color: var(--blek); font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.ko-stromtotaller .ko-stromtotal { margin-bottom: 0; }
 .ko-stromforklaring { min-height: 58px; margin: 0 0 12px; color: var(--dempet); font-size: 12px; line-height: 1.5; }
 .ko-stromtabell { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; }
 .ko-stromtabell thead th { padding: 8px 0; border-bottom: 1px solid var(--strek); color: var(--blek); font-size: 9px; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
@@ -293,6 +301,7 @@
   .ko-drillhode, .ko-drillrader button { grid-template-columns: minmax(0, 1fr) 105px 10px; }
   .ko-drillhode--arts, .ko-drillrader button.ko-drillart { grid-template-columns: minmax(0, 1fr) 88px 55px; }
   .ko-utjevningsnokkeltall { grid-template-columns: 1fr; }
+  .ko-stromtotaller { grid-template-columns: 1fr; gap: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ko-hovedkart path, .ko-tooltip { transition: none; }

@@ -154,14 +154,16 @@ function ratioDescription(ratio) {
   return `${percentFormat.format(deviation)} % ${ratio > 1 ? 'over' : 'under'} landsgjennomsnittet`
 }
 
-function StateTaxDetails({ entityName, stateFlows, year, mode }) {
-  const summary = stateFlowSummary(stateFlows, 'outgoing', year, mode)
+function StateTaxDetails({ entityName, stateFlows, year }) {
+  const amountSummary = stateFlowSummary(stateFlows, 'outgoing', year, 'amount')
+  const perCapitaSummary = stateFlowSummary(stateFlows, 'outgoing', year, 'perCapita')
   const items = stateFlows?.outgoing ?? []
   const valuesByCode = new Map(items.map((item) => [item.code, item]))
+  const perCapitaByCode = new Map(perCapitaSummary.rows.map((row) => [row.code, row.value]))
   const sourcePeriods = [...new Set(items
     .map((item) => item.values?.[year]?.sourcePeriod)
     .filter(Boolean))]
-  if (summary.rows.length === 0) return null
+  if (amountSummary.rows.length === 0) return null
 
   return (
     <details className="ko-stromdetaljer">
@@ -169,19 +171,25 @@ function StateTaxDetails({ entityName, stateFlows, year, mode }) {
       <article className="ko-stromkolonne">
         <span className="ft-stikkord">Kommunen som geografisk område</span>
         <h3>Til staten og folketrygden</h3>
-        <strong className="ko-stromtotal ko-stromtotal--trekk num">{formatKostraValue(summary.total, mode)}</strong>
+        <div className="ko-stromtotaller">
+          <div><small>Nominelt beløp</small><strong className="ko-stromtotal ko-stromtotal--trekk num">{formatKostraValue(amountSummary.total, 'amount')}</strong></div>
+          <div><small>Per innbygger</small><strong className="ko-stromtotal ko-stromtotal--trekk num">{formatKostraValue(perCapitaSummary.total, 'perCapita')}</strong></div>
+        </div>
         <p className="ko-stromforklaring">Dette er innbetalte og fordelte skatter og avgifter registrert i området. De er ikke kommuneorganisasjonens betaling og inngår ikke i konklusjonen over.</p>
-        <table className="ko-stromtabell">
-          <caption className="sr-only">Skatter og avgifter registrert i {entityName} i {year}</caption>
-          <thead><tr><th scope="col">Post</th><th scope="col">Beløp</th></tr></thead>
-          <tbody>{summary.rows.map((row) => (
-            <tr key={row.code}>
-              <th scope="row"><span>{row.label}</span><small>{valuesByCode.get(row.code)?.description}</small></th>
-              <td className="num">{formatKostraValue(row.value, mode)}</td>
-            </tr>
-          ))}</tbody>
-        </table>
-        {!summary.complete && <p className="ko-stromdekning">Totalsummen skjules fordi én eller flere poster mangler.</p>}
+        <div className="ko-rammetabellramme" tabIndex="0" aria-label="Rull sidelengs for å se nominelt beløp og beløp per innbygger på smale skjermer">
+          <table className="ko-stromtabell ko-dobbeltbelop">
+            <caption className="sr-only">Skatter og avgifter registrert i {entityName} i {year}, nominelt og per innbygger</caption>
+            <thead><tr><th scope="col">Post</th><th scope="col">Nominelt beløp</th><th scope="col">Per innbygger</th></tr></thead>
+            <tbody>{amountSummary.rows.map((row) => (
+              <tr key={row.code}>
+                <th scope="row"><span>{row.label}</span><small>{valuesByCode.get(row.code)?.description}</small></th>
+                <td className="num">{formatKostraValue(row.value, 'amount')}</td>
+                <td className="num">{formatKostraValue(perCapitaByCode.get(row.code), 'perCapita')}</td>
+              </tr>
+            ))}</tbody>
+          </table>
+        </div>
+        {(!amountSummary.complete || !perCapitaSummary.complete) && <p className="ko-stromdekning">Totalsummen skjules fordi én eller flere poster mangler.</p>}
         <small className="ko-stromkilde">Faktiske tall · SSB 07022, akkumulert desember{sourcePeriods.length > 0 && ` · ${sourcePeriods.join(', ')}`}</small>
       </article>
     </details>
@@ -216,7 +224,11 @@ function IncomeEqualization({
     ? `${entityName} får et trekk i rammetilskuddet`
     : isRecipient ? `${entityName} får et tillegg i rammetilskuddet` : `${entityName} får verken tillegg eller trekk`
   const valueContext = mode === 'perCapita' ? 'per innbygger' : 'til sammen'
-  const calculation = blockGrantCalculationSummary(blockGrantCalculation, summary, year, mode)
+  const amountSummary = incomeEqualizationSummary(incomeEqualization, stateFlows, year, 'amount')
+  const perCapitaSummary = incomeEqualizationSummary(incomeEqualization, stateFlows, year, 'perCapita')
+  const amountCalculation = blockGrantCalculationSummary(blockGrantCalculation, amountSummary, year, 'amount')
+  const perCapitaCalculation = blockGrantCalculationSummary(blockGrantCalculation, perCapitaSummary, year, 'perCapita')
+  const perCapitaComponents = new Map((perCapitaCalculation?.components ?? []).map((component) => [component.code, component.value]))
   const comparisonRows = incomeSystemComparisons?.values?.[year] ?? []
   const incomeColumns = incomeSystemTableColumns(summary, comparisonRows, entityName, mode)
   const equalizationLabel = isContributor
@@ -304,30 +316,32 @@ function IncomeEqualization({
         <div className="ko-rammedetaljinnhold">
           <h3>Fra lik grunnsum til bokført rammetilskudd</h3>
           <p>Grønt hefte viser beregningen i statsbudsjettet. Inntektsutjevningen fastsettes løpende når skattetallene blir kjent. Det bokførte KOSTRA-tallet kan derfor avvike fra statsbudsjettets opprinnelige beregning.</p>
-          {calculation ? (
-            <table className="ko-stromtabell ko-regnestykke">
-              <caption className="sr-only">Beregning av rammetilskuddet for {entityName} i {year}</caption>
-              <thead><tr><th scope="col">Del av beregningen</th><th scope="col">{mode === 'perCapita' ? 'Per innbygger' : 'Beløp'}</th></tr></thead>
-              <tbody>
-                {calculation.components.map((component) => {
-                  const definition = BLOCK_GRANT_COMPONENTS[component.code] ?? [component.code, '']
-                  return <tr key={component.code}><th scope="row"><span>{definition[0]}</span><small>{definition[1]}</small></th><td className="num">{formatKostraValue(component.value, mode)}</td></tr>
-                })}
-                <tr className="ko-regnestykke--delsum"><th scope="row"><span>Rammetilskudd i statsbudsjettet før inntektsutjevning</span><small>Summen av postene over.</small></th><td className="num">{formatKostraValue(calculation.budgetedBeforeEqualization, mode)}</td></tr>
-                <tr className="ko-stromtabell--utjevning"><th scope="row"><span>{equalizationLabel}</span><small>Endelig, faktisk inntektsutjevning legges til budsjettgrunnlaget her.</small></th><td className="num">{formatKostraValue(calculation.equalization, mode)}</td></tr>
-                <tr><th scope="row"><span>Budsjettgrunnlag etter inntektsutjevning</span><small>Beregnet kontrollsum, ikke en egen bokført post.</small></th><td className="num">{formatKostraValue(calculation.budgetedAfterEqualization, mode)}</td></tr>
-                <tr><th scope="row"><span>Endringer og avstemmingsforskjell gjennom året</span><small>Blant annet budsjettvedtak, ekstra skjønn og periodisering kan gi avvik.</small></th><td className="num">{formatKostraValue(calculation.reconciliation, mode)}</td></tr>
-                <tr className="ko-regnestykke--sum"><th scope="row"><span>Faktisk bokført rammetilskudd</span><small>KOSTRA-regnskapet er kontrolltotalen.</small></th><td className="num">{formatKostraValue(calculation.reportedBlockGrant, mode)}</td></tr>
-              </tbody>
-            </table>
+          {amountCalculation ? (
+            <div className="ko-rammetabellramme" tabIndex="0" aria-label="Rull sidelengs for å se nominelt beløp og beløp per innbygger på smale skjermer">
+              <table className="ko-stromtabell ko-regnestykke ko-dobbeltbelop">
+                <caption className="sr-only">Beregning av rammetilskuddet for {entityName} i {year}, nominelt og per innbygger</caption>
+                <thead><tr><th scope="col">Del av beregningen</th><th scope="col">Nominelt beløp</th><th scope="col">Per innbygger</th></tr></thead>
+                <tbody>
+                  {amountCalculation.components.map((component) => {
+                    const definition = BLOCK_GRANT_COMPONENTS[component.code] ?? [component.code, '']
+                    return <tr key={component.code}><th scope="row"><span>{definition[0]}</span><small>{definition[1]}</small></th><td className="num">{formatKostraValue(component.value, 'amount')}</td><td className="num">{formatKostraValue(perCapitaComponents.get(component.code), 'perCapita')}</td></tr>
+                  })}
+                  <tr className="ko-regnestykke--delsum"><th scope="row"><span>Rammetilskudd i statsbudsjettet før inntektsutjevning</span><small>Summen av postene over.</small></th><td className="num">{formatKostraValue(amountCalculation.budgetedBeforeEqualization, 'amount')}</td><td className="num">{formatKostraValue(perCapitaCalculation?.budgetedBeforeEqualization, 'perCapita')}</td></tr>
+                  <tr className="ko-stromtabell--utjevning"><th scope="row"><span>{equalizationLabel}</span><small>Endelig, faktisk inntektsutjevning legges til budsjettgrunnlaget her.</small></th><td className="num">{formatKostraValue(amountCalculation.equalization, 'amount')}</td><td className="num">{formatKostraValue(perCapitaCalculation?.equalization, 'perCapita')}</td></tr>
+                  <tr><th scope="row"><span>Budsjettgrunnlag etter inntektsutjevning</span><small>Beregnet kontrollsum, ikke en egen bokført post.</small></th><td className="num">{formatKostraValue(amountCalculation.budgetedAfterEqualization, 'amount')}</td><td className="num">{formatKostraValue(perCapitaCalculation?.budgetedAfterEqualization, 'perCapita')}</td></tr>
+                  <tr><th scope="row"><span>Endringer og avstemmingsforskjell gjennom året</span><small>Blant annet budsjettvedtak, ekstra skjønn og periodisering kan gi avvik.</small></th><td className="num">{formatKostraValue(amountCalculation.reconciliation, 'amount')}</td><td className="num">{formatKostraValue(perCapitaCalculation?.reconciliation, 'perCapita')}</td></tr>
+                  <tr className="ko-regnestykke--sum"><th scope="row"><span>Faktisk bokført rammetilskudd</span><small>KOSTRA-regnskapet er kontrolltotalen.</small></th><td className="num">{formatKostraValue(amountCalculation.reportedBlockGrant, 'amount')}</td><td className="num">{formatKostraValue(perCapitaCalculation?.reportedBlockGrant, 'perCapita')}</td></tr>
+                </tbody>
+              </table>
+            </div>
           ) : <p>Den kommunevise tabellen fra Grønt hefte er ikke tilgjengelig for dette året. Det bokførte rammetilskuddet og den faktiske inntektsutjevningen vises likevel over.</p>}
-          {calculation?.sourceUrl && <small className="ko-stromkilde">Budsjettberegning · <a href={calculation.sourceUrl} target="_blank" rel="noreferrer">Grønt hefte, tabell 1-k og 2-k</a></small>}
+          {amountCalculation?.sourceUrl && <small className="ko-stromkilde">Budsjettberegning · <a href={amountCalculation.sourceUrl} target="_blank" rel="noreferrer">Grønt hefte, tabell 1-k og 2-k</a> · periode {amountCalculation.sourcePeriod}</small>}
         </div>
       </details>
       <small className="ko-stromkilde">Faktiske tall · {summary.sourceUrl
         ? <a href={summary.sourceUrl} target="_blank" rel="noreferrer">Kommunal- og distriktsdepartementet</a>
         : 'Kommunal- og distriktsdepartementet'}, løpende inntektsutjevning · SSB KOSTRA 12137</small>
-      <StateTaxDetails entityName={entityName} stateFlows={stateFlows} year={year} mode={mode} />
+      <StateTaxDetails entityName={entityName} stateFlows={stateFlows} year={year} />
     </section>
   )
 }

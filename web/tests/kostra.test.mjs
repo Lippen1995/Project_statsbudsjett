@@ -563,7 +563,7 @@ test('skatt og rammetilskudd samles i én sammenlignbar oppstilling', () => {
 
 test('rammetilskuddet avstemmes fra Grønt hefte til faktisk bokført beløp uten dobbel utjevning', () => {
   const calculation = { values: { 2025: {
-    basis: 'budget', sourceUrl: 'https://www.regjeringen.no/gront-hefte/', components: [
+    basis: 'budget', sourceUrl: 'https://www.regjeringen.no/gront-hefte/', sourcePeriod: '2025', components: [
       { code: 'base_per_resident', amount: 4_703_088, perCapita: 31_328 },
       { code: 'expense_equalization', amount: -551_306, perCapita: -3_672 },
       { code: 'budgeted_block_grant_before_income_equalization', amount: 4_335_570, perCapita: 28_881 },
@@ -582,6 +582,23 @@ test('rammetilskuddet avstemmes fra Grønt hefte til faktisk bokført beløp ute
     reportedBlockGrant: 3_522_177,
     reconciliation: 317_271,
     sourceUrl: 'https://www.regjeringen.no/gront-hefte/',
+    sourcePeriod: '2025',
+    basis: 'budget',
+  })
+  assert.deepEqual(blockGrantCalculationSummary(calculation, {
+    equalization: -7_532, blockGrant: 23_462,
+  }, 2025, 'perCapita'), {
+    components: [
+      { code: 'base_per_resident', amount: 4_703_088, value: 31_328 },
+      { code: 'expense_equalization', amount: -551_306, value: -3_672 },
+    ],
+    budgetedBeforeEqualization: 28_881,
+    equalization: -7_532,
+    budgetedAfterEqualization: 21_349,
+    reportedBlockGrant: 23_462,
+    reconciliation: 2_113,
+    sourceUrl: 'https://www.regjeringen.no/gront-hefte/',
+    sourcePeriod: '2025',
     basis: 'budget',
   })
 })

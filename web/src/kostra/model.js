@@ -275,6 +275,7 @@ export function blockGrantCalculationSummary(calculation, incomeSummary, year, m
     reportedBlockGrant: Number.isFinite(reportedBlockGrant) ? reportedBlockGrant : null,
     reconciliation,
     sourceUrl: point.sourceUrl ?? null,
+    sourcePeriod: point.sourcePeriod ?? String(year),
     basis: point.basis ?? null,
   }
 }
