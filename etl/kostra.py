@@ -41,11 +41,11 @@ METADATA_CACHE_MAX_AGE_SECONDS = 24 * 60 * 60
 
 TABLES = {
     "municipality": {
-        "overview": "12137", "service": "12362", "detail": "12367",
+        "overview": "12137", "financial_detail": "13551", "service": "12362", "detail": "12367",
         "region": "KOKkommuneregion0000", "scope": "KOKregnskapsomfa0000",
     },
     "county": {
-        "overview": "12366", "service": "12163", "detail": "12368",
+        "overview": "12366", "financial_detail": "13547", "service": "12163", "detail": "12368",
         "region": "KOKfylkesregion0000", "scope": "KOKregnskapsomfa0000",
     },
 }
@@ -61,7 +61,7 @@ GEODATA = {
     },
 }
 
-METRICS = [
+OVERVIEW_METRICS = [
     {"id": "revenues", "label": "Driftsinntekter", "code": "AGD13", "polarity": "high"},
     {"id": "expenses", "label": "Driftsutgifter", "code": "AGD9", "polarity": "neutral"},
     {"id": "net_result", "label": "Netto driftsresultat", "code": "AGD23", "polarity": "high"},
@@ -69,6 +69,11 @@ METRICS = [
     {"id": "investments", "label": "Investeringsutgifter", "code": "AGI1", "polarity": "neutral"},
     {"id": "net_expenses", "label": "Netto driftsutgifter", "code": "AGD1", "polarity": "neutral"},
 ]
+INTEREST_METRICS = [
+    {"id": "interest_income", "label": "Renteinntekter", "code": "AGD79", "polarity": "high"},
+    {"id": "interest_expenses", "label": "Rentekostnader", "code": "AGD82", "polarity": "low"},
+]
+METRICS = OVERVIEW_METRICS[:2] + INTEREST_METRICS + OVERVIEW_METRICS[2:]
 
 # KDD publiserer den løpende inntektsutjevningen som en egen kommunevis
 # sluttavregning. Den hører derfor hjemme i samme forhåndsberegnede kartindeks,
@@ -1388,6 +1393,32 @@ def _import_overview(db: sqlite3.Connection, kind: str, table: str, metadata: di
         )
 
 
+def _import_financial_details(
+    db: sqlite3.Connection, kind: str, table: str, metadata: dict, cube: dict
+) -> None:
+    """Importer rene renteposter og utled per-innbyggerverdien lokalt.
+
+    SSB-tabellene 13551 og 13547 publiserer beløp i 1000 kroner, men ikke
+    kroner per innbygger. Folketallet utledes fra de allerede importerte
+    KOSTRA-parene for samme enhet og år; mangler grunnlaget, beholdes
+    per-innbyggerverdien som manglende i stedet for å settes til null.
+    """
+    region_dim = TABLES[kind]["region"]
+    art_dim = _dimension_by_label(metadata, "art")
+    for row in iter_jsonstat(cube):
+        if row["value"] is None:
+            continue
+        entity_id = _entity_id(kind, row[region_dim])
+        year = int(row["Tid"])
+        amount = float(row["value"])
+        population = _population_for_year(db, entity_id, year)
+        _upsert_fact(
+            db, entity_id, year, row[art_dim], table,
+            amount=amount,
+            per_capita=amount * 1000 / population if population else None,
+        )
+
+
 def _import_services(db: sqlite3.Connection, kind: str, table: str, metadata: dict, cube: dict) -> None:
     region_dim = TABLES[kind]["region"]
     function_dim = _dimension_by_label(metadata, "funksjon")
@@ -1678,9 +1709,10 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
         for kind in ("county", "municipality"):
             config = TABLES[kind]
             overview_meta = client.metadata(config["overview"])
+            financial_meta = client.metadata(config["financial_detail"])
             service_meta = client.metadata(config["service"])
             detail_meta = client.metadata(config["detail"])
-            metadata_by_kind[kind] = (overview_meta, service_meta, detail_meta)
+            metadata_by_kind[kind] = (overview_meta, financial_meta, service_meta, detail_meta)
             latest_year = max(int(code) for code in _ordered_codes(overview_meta["dimension"]["Tid"]))
             current_codes = {entity["code"] for entity in geo_entities[kind]}
             _register_regions(db, kind, overview_meta, current_codes, latest_year)
@@ -1692,7 +1724,10 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             )
             _register_classification(db, detail_meta, art_dim, "accounting_art")
             for table, meta in [
-                (config["overview"], overview_meta), (config["service"], service_meta), (config["detail"], detail_meta)
+                (config["overview"], overview_meta),
+                (config["financial_detail"], financial_meta),
+                (config["service"], service_meta),
+                (config["detail"], detail_meta),
             ]:
                 _record_source(db, table, meta)
         _record_source(db, TAX_TABLE, tax_meta)
@@ -1703,7 +1738,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
 
         for kind in ("county", "municipality"):
             config = TABLES[kind]
-            overview_meta, service_meta, detail_meta = metadata_by_kind[kind]
+            overview_meta, financial_meta, service_meta, detail_meta = metadata_by_kind[kind]
             region = config["region"]
             current = [entity["code"] for entity in geo_entities[kind]]
             comparison = ["EAFK"] if kind == "county" else ["EAK"] + [f"EKG{i:02d}" for i in range(1, 18)]
@@ -1713,7 +1748,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             service_regions = region_codes_for_import(service_meta, region, current, comparison)
 
             concept_dim = _dimension_by_label(overview_meta, "regnskapsbegrep")
-            overview_concepts = [metric["code"] for metric in METRICS]
+            overview_concepts = [metric["code"] for metric in OVERVIEW_METRICS]
             if kind == "municipality":
                 overview_concepts.append(STATE_BLOCK_GRANT_CODE)
             overview_cube = client.data(config["overview"], {
@@ -1723,6 +1758,20 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 "Tid": ["*"],
             })
             _import_overview(db, kind, config["overview"], overview_meta, overview_cube)
+
+            financial_regions = region_codes_for_import(
+                financial_meta, region, current, comparison
+            )
+            financial_art = _dimension_by_label(financial_meta, "art")
+            financial_cube = client.data(config["financial_detail"], {
+                region: financial_regions,
+                financial_art: [metric["code"] for metric in INTEREST_METRICS],
+                "ContentsCode": ["*"],
+                "Tid": ["*"],
+            })
+            _import_financial_details(
+                db, kind, config["financial_detail"], financial_meta, financial_cube
+            )
 
             service_function = _dimension_by_label(service_meta, "funksjon")
             service_art = _dimension_by_label(service_meta, "art")

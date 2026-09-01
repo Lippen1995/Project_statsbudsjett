@@ -13,8 +13,10 @@ summen av alle synlige fylker eller kommuner, inkludert anslått folketall.
 På fylkeskartet holdes fylkeskommuneregnskapet og summen av kommuneregnskapene
 adskilt; de legges aldri sammen. På nasjonalt kartnivå vises de i en
 tokolonners regnskapsoversikt med driftsinntekter, driftskostnader, netto
-driftsresultat, investeringsutgifter, driftsresultat etter investeringer,
-netto lånegjeld og netto driftsutgifter. Hver post har en kort forklaring som
+driftsresultat, renteinntekter, rentekostnader, investeringsutgifter,
+driftsresultat etter investeringer, netto lånegjeld og netto driftsutgifter.
+Kommuneoversikten kan bytte direkte mellom nominelt beløp og kroner per
+innbygger uten å forlate kartet. Hver post har en kort forklaring som
 kan åpnes med mus eller tastatur. «Driftsresultat etter investeringer» er
 tydelig merket som et utledet mål og beregnes som netto driftsresultat minus
 brutto investeringsutgifter; det er ikke en egen offisiell KOSTRA-regnskapslinje.
@@ -127,9 +129,11 @@ CI på samme måte som de eksisterende statsdataene.
 | Nivå | Formål | Kilde |
 |------|--------|------------|
 | Kommune | Finansielle nøkkeltall | 12137 |
+| Kommune | Renteinntekter og rentekostnader | 13551 |
 | Kommune | Tjenesteområder og funksjoner | 12362 |
 | Kommune | Funksjon og regnskapsart | 12367 |
 | Fylke | Finansielle nøkkeltall | 12366 |
+| Fylke | Renteinntekter og rentekostnader | 13547 |
 | Fylke | Tjenesteområder og funksjoner | 12163 |
 | Fylke | Funksjon og regnskapsart | 12368 |
 | Kommune | Rammetilskudd, faktisk regnskap | 12137, begrep A800 |

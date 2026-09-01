@@ -44,6 +44,8 @@
 .ko-legende small { grid-column: 1 / -1; text-align: center; margin-top: 5px; }
 .ko-kartinfo { position: sticky; top: 82px; border-top: 2px solid var(--ink); padding-top: 14px; }
 .ko-kartinfo .ft-kort-tekst { border-top: 1px solid var(--strek); margin-top: 16px; padding-top: 14px; }
+.ko-kartinfo-modus { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 13px; }
+.ko-kartinfo-modus .ft-bytte { padding: 5px 10px; font-size: 10px; }
 .ko-sammenstilling { width: 100%; margin-top: 14px; border-collapse: collapse; table-layout: fixed; font-size: 11px; }
 .ko-sammenstilling th, .ko-sammenstilling td { padding: 9px 4px; border-bottom: 1px solid var(--strek); vertical-align: middle; }
 .ko-sammenstilling thead th { color: var(--blek); font-size: 9px; font-weight: 700; letter-spacing: .06em; line-height: 1.25; text-align: right; text-transform: uppercase; }

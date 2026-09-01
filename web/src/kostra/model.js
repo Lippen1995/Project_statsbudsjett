@@ -15,6 +15,16 @@ export const KOSTRA_OVERVIEW_METRICS = [
     description: 'Brutto driftsutgifter: alle løpende utgifter til drift og tjenester, inkludert avskrivninger.',
   },
   {
+    id: 'interest_income',
+    label: 'Renteinntekter',
+    description: 'Renter kommunen og kommunekonsernet har mottatt, blant annet på bankinnskudd og utlån. Utbytte er ikke med i denne posten.',
+  },
+  {
+    id: 'interest_expenses',
+    label: 'Rentekostnader',
+    description: 'Renter kommunen og kommunekonsernet har betalt på lån og annen rentebærende gjeld.',
+  },
+  {
     id: 'net_result',
     label: 'Netto driftsresultat',
     description: 'Viser hva som er igjen etter driften og netto finansutgifter. Beløpet kan brukes til investeringer eller settes av til senere.',

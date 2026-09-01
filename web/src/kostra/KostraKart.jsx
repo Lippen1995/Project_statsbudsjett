@@ -403,12 +403,19 @@ export default function KostraKart({
             </> : municipalityRows.length ? <>
               <div className="ft-stikkord">Kommunens regnskap · {year}</div>
               <div className="ft-kort-tittel">{displayEntityName(focusedEntity)}</div>
+              <div className="ko-kartinfo-modus">
+                <span className="ft-stikkord">Vis som</span>
+                <div className="ft-bytter" aria-label="Vis kommunens regnskap som nominelt beløp eller per innbygger">
+                  <button type="button" className={`ft-bytte ${mode === 'perCapita' ? 'aktiv' : ''}`} aria-pressed={mode === 'perCapita'} onClick={() => setMode('perCapita')}>Per innbygger</button>
+                  <button type="button" className={`ft-bytte ${mode === 'amount' ? 'aktiv' : ''}`} aria-pressed={mode === 'amount'} onClick={() => setMode('amount')}>Nominelt beløp</button>
+                </div>
+              </div>
               <table className="ko-sammenstilling ko-sammenstilling--kommune">
                 <caption className="sr-only">Regnskapsoversikt for {municipalityEntityTitle(focusedEntity)} i {year}.</caption>
                 <thead>
                   <tr>
                     <th scope="col"><span className="sr-only">Regnskapspost</span></th>
-                    <th scope="col">Kommunen</th>
+                    <th scope="col">{mode === 'perCapita' ? 'Per innbygger' : 'Nominelt'}</th>
                   </tr>
                 </thead>
                 <tbody>

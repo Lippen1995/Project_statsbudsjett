@@ -308,10 +308,14 @@ ikke det enkelte år (jf. 2020: ~4 % under pandemien).
 **Status: VERIFISERT** mot SSB PxWebApi 2, Kartverket, KDDs kommunevise
 sluttavregning for inntektsutjevning og Grønt hefte 2026-09-01.
 
-Kildetabellene er 12137/12362/12367 for kommuner og 12366/12163/12368 for
-fylkeskommuner. De dekker henholdsvis finansielle nøkkeltall,
+Kildetabellene er 12137/13551/12362/12367 for kommuner og
+12366/13547/12163/12368 for fylkeskommuner. De dekker henholdsvis finansielle
+nøkkeltall, økonomisk driftsoversikt med rene renteposter,
 tjenesteområder/funksjoner og funksjon/regnskapsart. Beløpsenheten fra SSB er
-`1000 kr`; per-innbyggerverdier er `kr`.
+`1000 kr`; per-innbyggerverdier er `kr`. Tabell 13551 og 13547 publiserer bare
+beløp for renteinntekter (`AGD79`) og renteutgifter (`AGD82`). Importen utleder
+derfor kroner per innbygger fra et tilgjengelig KOSTRA-par for samme enhet og
+år. Mangler dette grunnlaget, forblir per-innbyggerverdien manglende.
 
 Normalisert SQLite-skjema ligger i `etl/kostra_schema.sql`. Den publiserte
 frontendmodellen ligger under `web/public/data/kostra/`:

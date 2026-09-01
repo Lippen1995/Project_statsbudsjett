@@ -18,6 +18,7 @@ from kostra import (  # noqa: E402
     _import_income_equalization,
     _import_green_book_grants,
     _import_details,
+    _import_financial_details,
     _import_overview,
     _import_tax_flows,
     _green_book_sources,
@@ -387,6 +388,60 @@ def test_ssb_12137_avstemmes_mot_publiserte_driftsinntekter_for_oslo_2024(tmp_pa
         ("municipality:0301", 2024, "AGD13"),
     ).fetchone()
     assert dict(actual) == OSLO_2024_REVENUES
+
+
+def test_renteposter_fra_ssb_utledes_til_belop_og_per_innbygger(tmp_path):
+    metadata = {
+        "id": ["KOKkommuneregion0000", "KOKart0000", "ContentsCode", "Tid"],
+        "dimension": {
+            "KOKkommuneregion0000": {
+                "label": "region", "category": {"label": {"1103": "Stavanger"}},
+            },
+            "KOKart0000": {
+                "label": "art", "category": {"label": {
+                    "AGD79": "Renteinntekter", "AGD82": "Renteutgifter",
+                }},
+            },
+            "ContentsCode": {
+                "label": "statistikkvariabel",
+                "category": {"label": {"KOSbelop0000": "Beløp (1000 kr)"}},
+            },
+            "Tid": {"label": "år", "category": {"label": {"2025": "2025"}}},
+        },
+    }
+    cube = {
+        "id": metadata["id"], "size": [1, 2, 1, 1],
+        "dimension": {
+            "KOKkommuneregion0000": {"category": {"index": {"1103": 0}}},
+            "KOKart0000": {"category": {"index": {"AGD79": 0, "AGD82": 1}}},
+            "ContentsCode": {"category": {"index": {"KOSbelop0000": 0}}},
+            "Tid": {"category": {"index": {"2025": 0}}},
+        },
+        "value": [20, 30],
+    }
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:1103", "1103", "Stavanger", "municipality", None, None, 1, None, None, "Stavanger"),
+    )
+    # 1000 (1000 kr) / 10 000 kr per innbygger gir 100 innbyggere.
+    db.execute(
+        "INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)",
+        ("kostra_actuals", "municipality:1103", 2025, "AGD13", "", "", 1000, 10000, "12137"),
+    )
+
+    _import_financial_details(db, "municipality", "13551", metadata, cube)
+    write_frontend_data(db, tmp_path / "data", {"county": {}, "municipality": {}})
+
+    index = json.loads(
+        (tmp_path / "data" / "kostra" / "index.json").read_text(encoding="utf-8")
+    )
+    assert index["values"]["interest_income"]["2025"]["municipality:1103"] == {
+        "amount": 20.0, "perCapita": 200.0,
+    }
+    assert index["values"]["interest_expenses"]["2025"]["municipality:1103"] == {
+        "amount": 30.0, "perCapita": 300.0,
+    }
 
 
 def test_stat_kommune_strommer_skiller_kommuneorganisasjonen_fra_geografien(tmp_path):

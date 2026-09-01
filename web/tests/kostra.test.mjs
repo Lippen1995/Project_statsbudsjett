@@ -397,6 +397,8 @@ test('toppoversikten sammenligner fylkeskommunen med kommunesummen for alle hove
     values: Object.fromEntries([
       ['revenues', 1_000, 600],
       ['expenses', 900, 550],
+      ['interest_income', 45, 25],
+      ['interest_expenses', 60, 35],
       ['net_result', 100, 50],
       ['investments', 40, 30],
       ['debt', 500, 300],
@@ -410,7 +412,8 @@ test('toppoversikten sammenligner fylkeskommunen med kommunesummen for alle hove
 
   const rows = overviewComparisonRows(index, 2025, ['county:46'])
   assert.deepEqual(rows.map((row) => row.id), [
-    'revenues', 'expenses', 'net_result', 'investments', 'result_after_investments', 'debt', 'net_expenses',
+    'revenues', 'expenses', 'interest_income', 'interest_expenses', 'net_result',
+    'investments', 'result_after_investments', 'debt', 'net_expenses',
   ])
   const derived = rows.find((row) => row.id === 'result_after_investments')
   assert.equal(derived.county.amount, 60)
@@ -424,6 +427,8 @@ test('kommuneoversikten viser bare den valgte kommunens hovedposter', () => {
     values: Object.fromEntries([
       ['revenues', 1_000, 9_999],
       ['expenses', 900, 9_999],
+      ['interest_income', 50, 9_999],
+      ['interest_expenses', 70, 9_999],
       ['net_result', 100, 9_999],
       ['investments', 40, 9_999],
       ['debt', 500, 9_999],
@@ -436,9 +441,12 @@ test('kommuneoversikten viser bare den valgte kommunens hovedposter', () => {
 
   const rows = municipalityOverviewRows(index, 2025, 'municipality:1103')
   assert.deepEqual(rows.map((row) => row.id), [
-    'revenues', 'expenses', 'net_result', 'investments', 'result_after_investments', 'debt', 'net_expenses',
+    'revenues', 'expenses', 'interest_income', 'interest_expenses', 'net_result',
+    'investments', 'result_after_investments', 'debt', 'net_expenses',
   ])
   assert.equal(rows.find((row) => row.id === 'expenses').summary.amount, 900)
+  assert.equal(rows.find((row) => row.id === 'interest_income').summary.perCapita, 500)
+  assert.equal(rows.find((row) => row.id === 'interest_expenses').summary.amount, 70)
   assert.equal(rows.find((row) => row.id === 'result_after_investments').summary.amount, 60)
   assert.equal(rows.find((row) => row.id === 'result_after_investments').summary.perCapita, 600)
 })
