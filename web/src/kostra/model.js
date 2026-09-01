@@ -176,7 +176,21 @@ export function incomeEqualizationSummary(incomeEqualization, stateFlows, year, 
   const taxAfter = point.taxAfter?.[valueKey]
   const blockGrantItem = stateFlows?.incoming?.find((item) => item.code === 'state_block_grant')
   const blockGrantPoint = blockGrantItem?.values?.[year]
-  const blockGrant = blockGrantPoint?.[valueKey] ?? null
+  const blockGrant = mode === 'perCapita'
+    && Number.isFinite(blockGrantPoint?.amount)
+    && Number.isFinite(point.population)
+    && point.population > 0
+    ? blockGrantPoint.amount * 1000 / point.population
+    : blockGrantPoint?.[valueKey] ?? null
+  // KOSTRA viser bokført rammetilskudd etter at den løpende
+  // inntektsutjevningen er gjort. Trekk ut den signerte utjevningen før den
+  // vises som egen linje, ellers blir samme tillegg/trekk telt to ganger.
+  const blockGrantBeforeEqualization = Number.isFinite(blockGrant) && Number.isFinite(equalization)
+    ? blockGrant - equalization
+    : null
+  const taxAndBlockGrant = Number.isFinite(taxBefore) && Number.isFinite(blockGrant)
+    ? taxBefore + blockGrant
+    : null
   const equalizationStatus = !Number.isFinite(taxBefore) || !Number.isFinite(equalization) || !Number.isFinite(taxAfter)
     ? 'missing'
     : equalization === 0 ? 'neutral'
@@ -194,12 +208,47 @@ export function incomeEqualizationSummary(incomeEqualization, stateFlows, year, 
     equalization,
     taxAfter,
     blockGrant,
+    blockGrantBeforeEqualization,
+    taxAndBlockGrant,
     taxBeforeNationalRatio: point.taxBefore?.nationalRatio ?? null,
     taxAfterNationalRatio: point.taxAfter?.nationalRatio ?? null,
     equalizationStatus,
     freeIncomeSource,
     sourceUrl: point.sourceUrl ?? null,
     sourcePeriod: point.sourcePeriod ?? String(year),
+  }
+}
+
+/** Avstem statsbudsjettets beregning mot faktisk bokført rammetilskudd. */
+export function blockGrantCalculationSummary(calculation, incomeSummary, year, mode) {
+  const point = calculation?.values?.[year]
+  if (!point || !incomeSummary) return null
+  const valueKey = mode === 'perCapita' ? 'perCapita' : 'amount'
+  const totalCode = 'budgeted_block_grant_before_income_equalization'
+  const total = point.components?.find((component) => component.code === totalCode)?.[valueKey]
+  const equalization = incomeSummary.equalization
+  const reportedBlockGrant = incomeSummary.blockGrant
+  const budgetedAfterEqualization = Number.isFinite(total) && Number.isFinite(equalization)
+    ? total + equalization
+    : null
+  const reconciliation = Number.isFinite(reportedBlockGrant) && Number.isFinite(budgetedAfterEqualization)
+    ? reportedBlockGrant - budgetedAfterEqualization
+    : null
+  return {
+    components: (point.components ?? [])
+      .filter((component) => component.code !== totalCode)
+      .map((component) => ({
+        code: component.code,
+        amount: component.amount,
+        value: component[valueKey] ?? null,
+      })),
+    budgetedBeforeEqualization: total ?? null,
+    equalization: Number.isFinite(equalization) ? equalization : null,
+    budgetedAfterEqualization,
+    reportedBlockGrant: Number.isFinite(reportedBlockGrant) ? reportedBlockGrant : null,
+    reconciliation,
+    sourceUrl: point.sourceUrl ?? null,
+    basis: point.basis ?? null,
   }
 }
 

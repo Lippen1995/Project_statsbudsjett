@@ -14,6 +14,7 @@ import math
 import re
 import sqlite3
 import time
+import unicodedata
 import zipfile
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -88,6 +89,10 @@ KDD_INCOME_EQUALIZATION_PAGE = (
     "inntektssystemet-for-kommuner-og-fylkeskommuner/lopende-inntektsutjevning/id548672/"
 )
 KDD_INCOME_EQUALIZATION_SOURCE = "KDD_INCOME_EQUALIZATION"
+KDD_GREEN_BOOK_PAGE = (
+    "https://www.regjeringen.no/no/tema/kommuner-og-regioner/kommuneokonomi/gront-hefte/id547024/"
+)
+KDD_GREEN_BOOK_SOURCE = "KDD_GREEN_BOOK"
 TAX_FLOW_CATEGORIES = {
     "08": "national_insurance_member",
     "09": "employer_national_insurance",
@@ -450,6 +455,26 @@ def _income_equalization_sources(page_html: str) -> dict[int, str]:
     return result
 
 
+def _green_book_sources(page_html: str) -> dict[int, dict[str, str]]:
+    """Finn 1-k og 2-k for kommunene fra den offisielle årssiden."""
+    parser = _SpreadsheetLinkParser()
+    parser.feed(page_html)
+    result: dict[int, dict[str, str]] = {}
+    for href in parser.links:
+        lowered = href.lower()
+        if not lowered.endswith(".ods") or re.search(r"(?:^|[-_/])\d?-?fk(?:[-_.]|$)", lowered):
+            continue
+        table = None
+        if re.search(r"tabell-?1-?k(?:[-_.]|$)", lowered):
+            table = "table1"
+        elif re.search(r"tabell-?2-?k(?:[-_.]|$)", lowered):
+            table = "table2"
+        year_match = re.search(r"(?:/|-)(20\d{2})(?:/|-|\.)", lowered)
+        if table and year_match:
+            result.setdefault(int(year_match.group(1)), {})[table] = urljoin(KDD_GREEN_BOOK_PAGE, href)
+    return {year: sources for year, sources in result.items() if set(sources) == {"table1", "table2"}}
+
+
 def _xlsx_rows(content: bytes) -> list[dict[str, str | None]]:
     """Les første ark i en XLSX med standardbiblioteket.
 
@@ -497,6 +522,159 @@ def _number(value: str | int | float | None) -> float | None:
         return float(str(value).replace(" ", "").replace(",", "."))
     except ValueError:
         return None
+
+
+def _normalized_label(value: str | None) -> str:
+    norwegian_ascii = (value or "").translate(str.maketrans({
+        "ø": "o", "Ø": "O", "æ": "ae", "Æ": "Ae",
+    }))
+    decomposed = unicodedata.normalize("NFKD", norwegian_ascii)
+    ascii_label = "".join(char for char in decomposed if not unicodedata.combining(char))
+    return " ".join(re.sub(r"[^a-z0-9]+", " ", ascii_label.lower()).split())
+
+
+def _ods_rows(content: bytes) -> list[list[str | float | None]]:
+    """Les første tabell i en ODS uten å introdusere en ny ETL-avhengighet."""
+    namespaces = {
+        "office": "urn:oasis:names:tc:opendocument:xmlns:office:1.0",
+        "table": "urn:oasis:names:tc:opendocument:xmlns:table:1.0",
+        "text": "urn:oasis:names:tc:opendocument:xmlns:text:1.0",
+    }
+    try:
+        with zipfile.ZipFile(BytesIO(content)) as archive:
+            root = ElementTree.fromstring(archive.read("content.xml"))
+    except (KeyError, zipfile.BadZipFile, ElementTree.ParseError) as error:
+        raise ValueError("Grønt hefte-filen er ikke en lesbar ODS") from error
+    table = root.find(".//table:table", namespaces)
+    if table is None:
+        raise ValueError("Grønt hefte-filen mangler tabell")
+    rows = []
+    repeat_attribute = f"{{{namespaces['table']}}}number-columns-repeated"
+    value_attribute = f"{{{namespaces['office']}}}value"
+    for row in table.findall("table:table-row", namespaces):
+        values = []
+        for cell in row.findall("table:table-cell", namespaces):
+            text_value = " ".join("".join(cell.itertext()).split())
+            raw_value = cell.get(value_attribute)
+            value = raw_value if raw_value not in (None, "") else text_value or None
+            # Tomme sluttceller kan være komprimert med svært store repetisjoner.
+            repeats = min(int(cell.get(repeat_attribute, "1")), 100)
+            values.extend([value] * repeats)
+        rows.append(values)
+    return rows
+
+
+def _green_book_table(content: bytes, required_header: str) -> tuple[list[str], list[list]]:
+    rows = _ods_rows(content)
+    for position, row in enumerate(rows):
+        labels = [_normalized_label(str(value)) for value in row]
+        if labels and labels[0] == "kommune" and any(required_header in label for label in labels):
+            return labels, rows[position + 1:]
+    raise ValueError(f"Grønt hefte mangler forventet kolonne {required_header!r}")
+
+
+def _green_book_column(headers: list[str], *needles: str, exclude: tuple[str, ...] = ()) -> int:
+    for index, header in enumerate(headers):
+        if all(needle in header for needle in needles) and not any(word in header for word in exclude):
+            return index
+    raise ValueError(f"Grønt hefte mangler kolonne med {needles!r}")
+
+
+def _green_book_optional_column(headers: list[str], *needles: str) -> int | None:
+    try:
+        return _green_book_column(headers, *needles)
+    except ValueError:
+        return None
+
+
+def _green_book_municipality_rows(headers: list[str], rows: list[list]) -> dict[str, list]:
+    municipalities = {}
+    for row in rows:
+        if not row:
+            continue
+        match = re.match(r"\s*(\d{4})\b", str(row[0] or ""))
+        if match:
+            municipalities[match.group(1)] = row + [None] * max(0, len(headers) - len(row))
+    return municipalities
+
+
+def _import_green_book_grants(
+    db: sqlite3.Connection,
+    year: int,
+    source_url: str,
+    table_1_content: bytes,
+    table_2_content: bytes,
+) -> int:
+    """Importer statsbudsjettets kommunevise beregning av rammetilskuddet.
+
+    Tabell 1-k viser tilskuddsdelene, mens 2-k åpner innbyggertilskuddet.
+    Beløpene er budsjettall i 1 000 kroner. Den faktiske inntektsutjevningen
+    kommer senere og lagres separat; den må aldri bygges inn i disse tallene.
+    """
+    headers_1, rows_1 = _green_book_table(table_1_content, "rammetilsk")
+    headers_2, rows_2 = _green_book_table(table_2_content, "utgifts")
+    by_code_1 = _green_book_municipality_rows(headers_1, rows_1)
+    by_code_2 = _green_book_municipality_rows(headers_2, rows_2)
+
+    column_1 = {
+        "population_grant": _green_book_column(headers_1, "innbygg", "tilsk"),
+        "district_south": _green_book_column(headers_1, "distrikt", "tilsk", "sor"),
+        "district_north": _green_book_column(headers_1, "distrikt", "tilsk", "nord"),
+        "regional_center_grant": _green_book_optional_column(headers_1, "regionsenter", "tilsk"),
+        "growth_grant": _green_book_column(headers_1, "veksttilsk"),
+        "metropolitan_grant": _green_book_column(headers_1, "storbytilsk"),
+        "discretionary_grant": _green_book_column(headers_1, "skjon"),
+        "budgeted_block_grant_before_income_equalization": _green_book_column(headers_1, "rammetilsk", str(year)),
+    }
+    column_2 = {
+        "base_per_resident": _green_book_column(headers_2, "innbygg", "tilsk", "for omfordeling"),
+        "expense_equalization": _green_book_column(headers_2, "utgifts"),
+        "special_distribution": _green_book_column(headers_2, "saker", "saerskil", "fordeling"),
+        "income_guarantee": _green_book_column(headers_2, "garanti", "ordning", exclude=("innbygg",)),
+        "population_grant": _green_book_column(headers_2, "innbygg", "tilsk", "inkl", "garanti"),
+    }
+    component_order = [
+        "base_per_resident", "expense_equalization", "special_distribution", "income_guarantee",
+        "district_south", "district_north", "regional_center_grant", "growth_grant", "metropolitan_grant",
+        "discretionary_grant", "budgeted_block_grant_before_income_equalization",
+    ]
+    existing_entities = {
+        row[0] for row in db.execute("SELECT id FROM entity WHERE kind='municipality'")
+    }
+    imported = 0
+    for code in sorted(set(by_code_1) & set(by_code_2)):
+        entity_id = f"municipality:{code}"
+        if entity_id not in existing_entities:
+            continue
+        row_1, row_2 = by_code_1[code], by_code_2[code]
+        values = {
+            component: _number(row_2[column]) for component, column in column_2.items()
+        }
+        values.update({
+            component: _number(row_1[column])
+            for component, column in column_1.items() if column is not None
+        })
+        population = _population_for_year(db, entity_id, year)
+        for sort_order, component in enumerate(component_order, 10):
+            if component not in values:
+                continue
+            amount = values.get(component)
+            per_capita = amount * 1000 / population if amount is not None and population else None
+            db.execute(
+                """INSERT INTO block_grant_component_fact
+                     (dataset_id,entity_id,year,component_code,amount,per_capita,sort_order,
+                      basis,source_url,source_period)
+                   VALUES ('kdd_green_book',?,?,?,?,?,?,'budget',?,?)
+                   ON CONFLICT(dataset_id,entity_id,year,component_code) DO UPDATE SET
+                     amount=excluded.amount,per_capita=excluded.per_capita,
+                     sort_order=excluded.sort_order,basis=excluded.basis,
+                     source_url=excluded.source_url,source_period=excluded.source_period""",
+                (entity_id, year, component, amount, per_capita, sort_order, source_url, str(year)),
+            )
+        imported += 1
+    if imported == 0:
+        raise ValueError(f"Fant ingen kjente kommuner i Grønt hefte for {year}")
+    return imported
 
 
 def _import_income_equalization(
@@ -605,6 +783,34 @@ def _import_income_equalization_sources(
         )
 
 
+def _import_green_book_sources(
+    db: sqlite3.Connection, client: SsbClient, years: set[int]
+) -> None:
+    page = client.content(
+        KDD_GREEN_BOOK_PAGE,
+        "kdd-green-book.html",
+        max_age=METADATA_CACHE_MAX_AGE_SECONDS,
+    ).decode("utf-8")
+    sources = _green_book_sources(page)
+    import_years = sorted(year for year in years if year in sources)
+    if years and max(years) not in sources:
+        raise ValueError(f"Grønt hefte mangler 1-k eller 2-k for {max(years)}")
+    for year in import_years:
+        table_1 = client.content(sources[year]["table1"], f"kdd-green-book-{year}-1-k.ods")
+        table_2 = client.content(sources[year]["table2"], f"kdd-green-book-{year}-2-k.ods")
+        _import_green_book_grants(db, year, sources[year]["table1"], table_1, table_2)
+    if import_years:
+        db.execute(
+            "INSERT OR REPLACE INTO source_run VALUES (?,?,?,?)",
+            (
+                KDD_GREEN_BOOK_SOURCE,
+                datetime.now(timezone.utc).isoformat(),
+                "Kommunal- og distriktsdepartementet: Grønt hefte",
+                max(import_years),
+            ),
+        )
+
+
 def _continuity_entity_ids(db: sqlite3.Connection, entity_id: str) -> list[str]:
     """Følg bare dokumenterte én-til-én kodebytter bakover i tid."""
     result, pending = [entity_id], [entity_id]
@@ -618,6 +824,95 @@ def _continuity_entity_ids(db: sqlite3.Connection, entity_id: str) -> list[str]:
                 result.append(row[0])
                 pending.append(row[0])
     return result
+
+
+def _income_system_comparisons(
+    db: sqlite3.Connection, entity: dict, series_entity_ids: list[str], years: list[int]
+) -> dict | None:
+    """Forhåndsberegn sammenlignbare per-innbyggerverdier for detaljsiden."""
+    peer_group_id = entity.get("peer_group_id")
+    comparison_ids = [entity["id"], peer_group_id, "country:EAK"]
+    comparison_ids = [entity_id for entity_id in comparison_ids if entity_id]
+    labels = {
+        row["id"]: row["name"] for row in db.execute(
+            "SELECT id,name FROM entity WHERE id IN ({})".format(
+                ",".join("?" for _ in comparison_ids)
+            ),
+            comparison_ids,
+        )
+    }
+
+    def aggregate_equalization(comparison_id: str, year: int):
+        if comparison_id == entity["id"]:
+            slots = ",".join("?" for _ in series_entity_ids)
+            row = db.execute(
+                """SELECT tax_before_per_capita,equalization_per_capita
+                     FROM income_equalization_fact
+                    WHERE entity_id IN (""" + slots + ") AND year=? LIMIT 1",
+                (*series_entity_ids, year),
+            ).fetchone()
+            population_row = db.execute(
+                "SELECT population FROM income_equalization_fact WHERE entity_id IN ({}) AND year=? LIMIT 1".format(slots),
+                (*series_entity_ids, year),
+            ).fetchone()
+            return (
+                row["tax_before_per_capita"], row["equalization_per_capita"],
+                population_row["population"] if population_row else None,
+            ) if row else (None, None, None)
+        peer_clause = "AND e.peer_group_id=?" if comparison_id.startswith("peer_group:") else ""
+        parameters = (year, comparison_id) if peer_clause else (year,)
+        row = db.execute(
+            """SELECT SUM(i.tax_before_amount)*1000.0/SUM(i.population) AS tax_before,
+                      SUM(i.equalization_amount)*1000.0/SUM(i.population) AS equalization,
+                      SUM(i.population) AS population
+                 FROM income_equalization_fact i
+                 JOIN entity e ON e.id=i.entity_id
+                WHERE i.year=? """ + peer_clause,
+            parameters,
+        ).fetchone()
+        return (row["tax_before"], row["equalization"], row["population"]) if row else (None, None, None)
+
+    values = {}
+    for year in years:
+        rows = []
+        for comparison_id in comparison_ids:
+            if comparison_id == entity["id"]:
+                slots = ",".join("?" for _ in series_entity_ids)
+                grant = db.execute(
+                    """SELECT amount,per_capita FROM fact
+                         WHERE dataset_id='kostra_actuals' AND entity_id IN (""" + slots + """)
+                           AND year=? AND metric_code=? AND function_code=''
+                           AND accounting_art_code='' LIMIT 1""",
+                    (*series_entity_ids, year, STATE_BLOCK_GRANT_CODE),
+                ).fetchone()
+            else:
+                grant = db.execute(
+                    """SELECT amount,per_capita FROM fact
+                         WHERE dataset_id='kostra_actuals' AND entity_id=? AND year=?
+                           AND metric_code=? AND function_code='' AND accounting_art_code=''
+                         LIMIT 1""",
+                    (comparison_id, year, STATE_BLOCK_GRANT_CODE),
+                ).fetchone()
+            tax_before, equalization, population = aggregate_equalization(comparison_id, year)
+            block_grant = (
+                grant["amount"] * 1000 / population
+                if grant and grant["amount"] is not None and population else
+                grant["per_capita"] if grant else None
+            )
+            before_equalization = (
+                block_grant - equalization
+                if block_grant is not None and equalization is not None else None
+            )
+            rows.append({
+                "id": comparison_id,
+                "label": labels.get(comparison_id, comparison_id),
+                "taxBeforePerCapita": tax_before,
+                "equalizationPerCapita": equalization,
+                "blockGrantBeforeEqualizationPerCapita": before_equalization,
+                "blockGrantPerCapita": block_grant,
+            })
+        values[str(year)] = rows
+    return {"years": years, "values": values} if values else None
 
 
 def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> dict:
@@ -725,6 +1020,8 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
 
     state_flows = None
     income_equalization = None
+    block_grant_calculation = None
+    income_system_comparisons = None
     if entity["kind"] == "municipality":
         flow_rows = db.execute(
             """SELECT f.year,f.category_code,f.amount,f.per_capita,f.basis,
@@ -803,6 +1100,34 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
                     for row in equalization_rows
                 },
             }
+            income_system_comparisons = _income_system_comparisons(
+                db, entity, series_entity_ids, [row["year"] for row in equalization_rows]
+            )
+        component_rows = db.execute(
+            """SELECT year,component_code,amount,per_capita,sort_order,basis,
+                      source_url,source_period
+                 FROM block_grant_component_fact
+                WHERE entity_id IN (""" + entity_slots + ") ORDER BY year,sort_order",
+            series_entity_ids,
+        ).fetchall()
+        if component_rows:
+            calculation_values = {}
+            for row in component_rows:
+                value = calculation_values.setdefault(str(row["year"]), {
+                    "basis": row["basis"],
+                    "sourceUrl": row["source_url"],
+                    "sourcePeriod": row["source_period"],
+                    "components": [],
+                })
+                value["components"].append({
+                    "code": row["component_code"],
+                    "amount": row["amount"],
+                    "perCapita": row["per_capita"],
+                })
+            block_grant_calculation = {
+                "years": sorted(int(year) for year in calculation_values),
+                "values": calculation_values,
+            }
 
     return {
         "schemaVersion": 4,
@@ -817,6 +1142,8 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         "boundaryHistory": boundary_history,
         "stateFlows": state_flows,
         "incomeEqualization": income_equalization,
+        "blockGrantCalculation": block_grant_calculation,
+        "incomeSystemComparisons": income_system_comparisons,
         "comparisons": {
             "norwayEntityId": "country:EAK" if entity["kind"] == "municipality" else "country:EAFK",
             "peerGroupEntityId": entity.get("peer_group_id"),
@@ -1492,6 +1819,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             db.commit()
 
         _import_income_equalization_sources(db, client, kostra_years)
+        _import_green_book_sources(db, client, kostra_years)
         db.commit()
 
         write_frontend_data(db, output, boundaries)

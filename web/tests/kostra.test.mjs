@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 
 import {
   choroplethColor,
+  blockGrantCalculationSummary,
   comparisonEntityIds,
   countyGroupName,
   displayEntityName,
@@ -489,6 +490,7 @@ test('inntektsutjevning skiller bidragsyter fra mottaker og sammenligner frie in
   const stateFlows = { incoming: [{ code: 'state_block_grant', values: {
     2025: { amount: 3_522_177, perCapita: 23_223 },
   } }] }
+  const normalizedBlockGrant = 3_522_177 * 1000 / 150_123
 
   assert.deepEqual(incomeEqualizationSummary(incomeEqualization, stateFlows, 2025, 'perCapita'), {
     year: 2025,
@@ -496,7 +498,9 @@ test('inntektsutjevning skiller bidragsyter fra mottaker og sammenligner frie in
     taxBefore: 53_807,
     equalization: -7_532,
     taxAfter: 46_276,
-    blockGrant: 23_223,
+    blockGrant: normalizedBlockGrant,
+    blockGrantBeforeEqualization: normalizedBlockGrant + 7_532,
+    taxAndBlockGrant: 53_807 + normalizedBlockGrant,
     taxBeforeNationalRatio: 1.273,
     taxAfterNationalRatio: 1.095,
     equalizationStatus: 'contributor',
@@ -518,6 +522,31 @@ test('inntektsutjevning skiller bidragsyter fra mottaker og sammenligner frie in
   } } }, { incoming: [{ code: 'state_block_grant', values: {
     2025: { amount: 110, perCapita: 800 },
   } }] }, 2025, 'perCapita').freeIncomeSource, 'block_grant')
+})
+
+test('rammetilskuddet avstemmes fra Grønt hefte til faktisk bokført beløp uten dobbel utjevning', () => {
+  const calculation = { values: { 2025: {
+    basis: 'budget', sourceUrl: 'https://www.regjeringen.no/gront-hefte/', components: [
+      { code: 'base_per_resident', amount: 4_703_088, perCapita: 31_328 },
+      { code: 'expense_equalization', amount: -551_306, perCapita: -3_672 },
+      { code: 'budgeted_block_grant_before_income_equalization', amount: 4_335_570, perCapita: 28_881 },
+    ],
+  } } }
+  const incomeSummary = { equalization: -1_130_664, blockGrant: 3_522_177 }
+
+  assert.deepEqual(blockGrantCalculationSummary(calculation, incomeSummary, 2025, 'amount'), {
+    components: [
+      { code: 'base_per_resident', amount: 4_703_088, value: 4_703_088 },
+      { code: 'expense_equalization', amount: -551_306, value: -551_306 },
+    ],
+    budgetedBeforeEqualization: 4_335_570,
+    equalization: -1_130_664,
+    budgetedAfterEqualization: 3_204_906,
+    reportedBlockGrant: 3_522_177,
+    reconciliation: 317_271,
+    sourceUrl: 'https://www.regjeringen.no/gront-hefte/',
+    basis: 'budget',
+  })
 })
 
 test('nasjonal inntektsutjevning skiller mottak, trekk og avvik uten å nettosummere bort omfordelingen', () => {

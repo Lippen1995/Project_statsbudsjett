@@ -53,14 +53,22 @@ også kan åpnes fra kartet viser:
   avsluttende detaljnivå og er tilgjengelig per publisert år
 - inntektsutjevning, med en tydelig konklusjon om kommunen mottar et tillegg
   eller får et trekk, skatt før og etter utjevning og nivået mot
-  landsgjennomsnittet. Kommunens egne skatteinntekter sammenlignes også med
-  rammetilskuddet fra staten
+  landsgjennomsnittet. Oppstillingen viser skatt + rammetilskudd før
+  inntektsutjevning + signert utjevning = skatt og bokført rammetilskudd, og
+  sammenligner rammetilskuddet per innbygger med Norge og KOSTRA-gruppen
+- kommunevis budsjettberegning av rammetilskuddet fra Grønt hefte: grunnsum,
+  utgiftsutjevning, særskilt fordeling, inntektsgaranti og regionale, vekst-,
+  storby- og skjønnstilskudd. Budsjettgrunnlaget avstemmes synlig mot faktisk
+  bokført KOSTRA-beløp
 
 Inntektsutjevningen kan vises totalt eller per innbygger. Den signerte
 sluttavregningen beholdes: negativt beløp er trekk/bidrag, mens positivt beløp
-er tillegg/mottak. Rammetilskuddet inneholder også utgiftsutjevning og andre
-tilskudd og presenteres derfor ikke som om hele beløpet var
-inntektsutjevning.
+er tillegg/mottak. KOSTRA viser bokført rammetilskudd etter
+inntektsutjevningen. Når utjevningen vises som egen linje, beregnes derfor
+«rammetilskudd før inntektsutjevning» som bokført rammetilskudd minus signert
+utjevning. Å legge utjevningen oppå det bokførte rammetilskuddet ville telt
+samme beløp to ganger. Alle linjer i regnestykket bruker innbyggertallet i
+KDDs sluttavregning, slik at ulike folketidspunkter ikke blandes i samme sum.
 
 «Netto inntektsutjevning» finnes også som kommunevis nøkkeltall på kartet.
 Valget bytter automatisk til kommunekart, bruker en divergerende fargeskala
@@ -105,6 +113,12 @@ Kommunevis inntektsutjevning hentes fra Kommunal- og distriktsdepartementets
 løpende inntektsutjevning og normaliserer dem lokalt; regnearkene lastes aldri
 av nettleseren.
 
+Budsjettberegningen av rammetilskuddet hentes fra kommune-ODS-tabellene 1-k og
+2-k i Grønt hefte. Importen finner årslenkene automatisk, normaliserer både
+bokmåls- og nynorskoverskrifter og beholder tallene som budsjettgrunnlag. Det
+bokførte KOSTRA-tallet er kontrolltotal; forskjellen mot budsjettgrunnlaget
+forklares som endringer og avstemming gjennom året.
+
 SQLite-filen er et byggartefakt og committes ikke. JSON-filene bygges av ETL i
 CI på samme måte som de eksisterende statsdataene.
 
@@ -120,6 +134,7 @@ CI på samme måte som de eksisterende statsdataene.
 | Fylke | Funksjon og regnskapsart | 12368 |
 | Kommune | Rammetilskudd, faktisk regnskap | 12137, begrep A800 |
 | Kommune | Skatt før/etter og netto inntektsutjevning | KDD, løpende inntektsutjevning |
+| Kommune | Beregning av rammetilskudd | KDD, Grønt hefte tabell 1-k og 2-k |
 | Kommunegeografi | Statlige skatter og avgifter | 07022 |
 
 KOSTRA-grupper hentes fra SSB Klass, klassifikasjon 112 og nyeste publiserte

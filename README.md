@@ -134,6 +134,7 @@ arkitektur, tabeller, grenseendringer og outputskjema.
 | [SSB skatteregnskap](https://www.ssb.no/skatteregn) | CC BY 4.0 |
 | [Kartverket – grensedata](https://www.kartverket.no/api-og-data/grensedata) | CC BY 4.0 |
 | [KDD – løpende inntektsutjevning](https://www.regjeringen.no/no/tema/kommuner-og-regioner/kommuneokonomi/inntektssystemet-for-kommuner-og-fylkeskommuner/lopende-inntektsutjevning/id548672/) | Ikke spesifisert i regnearkene; kilde navngis og lenkes |
+| [KDD – Grønt hefte](https://www.regjeringen.no/no/tema/kommuner-og-regioner/kommuneokonomi/gront-hefte/id547024/) | Ikke spesifisert i regnearkene; kilde navngis og lenkes |
 | [NBIM – Oljefondets markedsverdi](https://www.nbim.no) | Årsrapporter (referansetabell) |
 
 ## Datafallgruver

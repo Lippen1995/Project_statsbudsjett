@@ -305,8 +305,8 @@ ikke det enkelte år (jf. 2020: ~4 % under pandemien).
 
 ## 7. KOSTRA kommune- og fylkesregnskap
 
-**Status: VERIFISERT** mot SSB PxWebApi 2, Kartverket og KDDs kommunevise
-sluttavregning for inntektsutjevning 2026-08-31.
+**Status: VERIFISERT** mot SSB PxWebApi 2, Kartverket, KDDs kommunevise
+sluttavregning for inntektsutjevning og Grønt hefte 2026-09-01.
 
 Kildetabellene er 12137/12362/12367 for kommuner og 12366/12163/12368 for
 fylkeskommuner. De dekker henholdsvis finansielle nøkkeltall,
@@ -378,7 +378,8 @@ interface KostraEntity {
 Detaljfiler har `schemaVersion: 4` og inneholder `overview`,
 `revenueBreakdown`, `expenseBreakdown`, `services`, `functions`,
 `accountingArts` og referanser til Norge/KOSTRA-gruppe. Kommunefiler har i
-tillegg `stateFlows` og `incomeEqualization`:
+tillegg `stateFlows`, `incomeEqualization`, `incomeSystemComparisons` og
+`blockGrantCalculation`:
 
 ```typescript
 interface KostraAccountingArt {
@@ -386,6 +387,22 @@ interface KostraAccountingArt {
   name: string;
   values: {
     [year: string]: { amount: number }; // 1000 kroner, fortegn beholdes
+  };
+}
+
+interface KostraBlockGrantCalculation {
+  years: number[];
+  values: {
+    [year: string]: {
+      basis: "budget";
+      sourceUrl: string;
+      sourcePeriod: string;
+      components: Array<{
+        code: string;
+        amount: number | null;     // 1000 kroner
+        perCapita: number | null;  // kroner
+      }>;
+    };
   };
 }
 ```

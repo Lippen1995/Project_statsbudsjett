@@ -16,9 +16,11 @@ from kostra import (  # noqa: E402
     SsbClient,
     TAX_FLOW_CATEGORIES,
     _import_income_equalization,
+    _import_green_book_grants,
     _import_details,
     _import_overview,
     _import_tax_flows,
+    _green_book_sources,
     _sync_block_grant_flows,
     _income_equalization_sources,
     classify_code_changes,
@@ -70,6 +72,33 @@ def _minimal_income_equalization_xlsx():
     output = BytesIO()
     with zipfile.ZipFile(output, "w") as archive:
         archive.writestr("xl/worksheets/sheet1.xml", sheet)
+    return output.getvalue()
+
+
+def _minimal_green_book_ods(headers, rows):
+    namespace = (
+        'xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" '
+        'xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" '
+        'xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"'
+    )
+
+    def ods_row(values):
+        cells = ''.join(
+            f'<table:table-cell office:value-type="string"><text:p>{escape(str(value))}</text:p></table:table-cell>'
+            for value in values
+        )
+        return f'<table:table-row>{cells}</table:table-row>'
+
+    content = (
+        f'<?xml version="1.0" encoding="UTF-8"?><office:document-content {namespace}>'
+        '<office:body><office:spreadsheet><table:table table:name="Ark_1">'
+        f'{ods_row(headers)}{ods_row(["(1 000 kr)"] * len(headers))}'
+        f'{"".join(ods_row(row) for row in rows)}'
+        '</table:table></office:spreadsheet></office:body></office:document-content>'
+    )
+    output = BytesIO()
+    with zipfile.ZipFile(output, 'w') as archive:
+        archive.writestr('content.xml', content)
     return output.getvalue()
 
 
@@ -445,15 +474,32 @@ def test_kdd_kilder_finner_kommuneversjonen_og_utelater_fylkeskommunen():
     }
 
 
+def test_gront_hefte_kilder_finner_begge_kommunetabellene_per_ar():
+    html = """
+      <a href="/content/2025/kommuner/tabell-1-k-2025.ods">1-k</a>
+      <a href="/content/2025/kommuner/tabell-2-k-2025.ods">2-k</a>
+      <a href="/content/2025/fylker/tabell-1-fk-2025.ods">1-fk</a>
+    """
+    assert _green_book_sources(html) == {
+        2025: {
+            "table1": "https://www.regjeringen.no/content/2025/kommuner/tabell-1-k-2025.ods",
+            "table2": "https://www.regjeringen.no/content/2025/kommuner/tabell-2-k-2025.ods",
+        }
+    }
+
+
 def test_inntektsutjevning_normaliserer_fortegn_enhet_og_eksport(tmp_path):
     db = create_database(tmp_path / "kostra.sqlite")
-    db.execute(
-        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
-        ("municipality:1103", "1103", "Stavanger", "municipality", None, None, 1, None, None, "Stavanger"),
-    )
+    db.executemany("INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)", [
+        ("country:EAK", "EAK", "Norge", "country", None, None, 1, None, None, "Norge"),
+        ("peer_group:EKG12", "EKG12", "KOSTRA-gruppe 12", "peer_group", None, None, 1, None, None, "KOSTRA-gruppe 12"),
+        ("municipality:1103", "1103", "Stavanger", "municipality", None, "peer_group:EKG12", 1, None, None, "Stavanger"),
+    ])
     db.executemany("INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)", [
         ("kostra_actuals", "municipality:1103", 2025, "AGD13", "", "", 10_000, 100_000, "12137"),
         ("kostra_actuals", "municipality:1103", 2025, "A800", "", "", 3_522_177, 23_223, "12137"),
+        ("kostra_actuals", "peer_group:EKG12", 2025, "A800", "", "", 4_503_690, 30_000, "12137"),
+        ("kostra_actuals", "country:EAK", 2025, "A800", "", "", 4_203_444, 28_000, "12137"),
     ])
     _sync_block_grant_flows(db)
 
@@ -478,6 +524,15 @@ def test_inntektsutjevning_normaliserer_fortegn_enhet_og_eksport(tmp_path):
     value = detail["incomeEqualization"]["values"]["2025"]
     assert value["equalization"]["amount"] == pytest.approx(-1_130_664.3142983925)
     assert value["sourceUrl"] == source
+    comparisons = detail["incomeSystemComparisons"]["values"]["2025"]
+    assert [row["id"] for row in comparisons] == [
+        "municipality:1103", "peer_group:EKG12", "country:EAK",
+    ]
+    assert comparisons[0]["blockGrantBeforeEqualizationPerCapita"] == pytest.approx(
+        3_522_177 * 1000 / 150_123 + 7_531.58619464301
+    )
+    assert comparisons[1]["blockGrantPerCapita"] == 30_000
+    assert comparisons[2]["blockGrantPerCapita"] == 28_000
 
     index = json.loads(
         (tmp_path / "data" / "kostra" / "index.json").read_text(encoding="utf-8")
@@ -493,6 +548,63 @@ def test_inntektsutjevning_normaliserer_fortegn_enhet_og_eksport(tmp_path):
     assert map_point["taxBefore"]["nationalRatio"] == pytest.approx(1.2729580020083351)
     assert map_point["taxAfter"]["perCapita"] == pytest.approx(46_275.81004710543)
     assert map_point["sourceUrl"] == source
+
+
+def test_gront_hefte_avstemmer_hele_budsjetterte_rammetilskuddet(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:1103", "1103", "Stavanger", "municipality", None, None, 1, None, None, "Stavanger"),
+    )
+    db.executemany("INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)", [
+        ("kostra_actuals", "municipality:1103", 2025, "AGD13", "", "", 10_000_000, 100_000, "12137"),
+        ("kostra_actuals", "municipality:1103", 2025, "A800", "", "", 3_522_177, 23_223, "12137"),
+    ])
+    table_1 = _minimal_green_book_ods(
+        ["Kommune", "Innbyggertilskudd", "Distriktstilskudd Sør-Norge",
+         "Distriktstilskudd Nord-Norge", "Veksttilskudd", "Storbytilskudd",
+         "Skjønnstilskudd", "Rammetilskudd 2025"],
+        [["1103 Stavanger", "4 270 864", "0", "0", "0", "61 706", "3 000", "4 335 570"]],
+    )
+    table_2 = _minimal_green_book_ods(
+        ["Kommune", "Innbyggertilskudd før omfordeling", "Utgiftsutjevning m.m.",
+         "Saker med særskilt fordeling", "Innbyggertilskudd ekskl. inntektsgarantiordning",
+         "Inntektsgarantiordning (inkl.fin.)", "Innbyggertilskudd inkl. inntektsgarantiordning"],
+        [["1103 Stavanger", "4 703 088", "-551 306", "107 809", "4 259 591", "11 272", "4 270 864"]],
+    )
+
+    imported = _import_green_book_grants(
+        db, 2025, "https://www.regjeringen.no/gront-hefte/2025/", table_1, table_2,
+    )
+
+    assert imported == 1
+    rows = db.execute(
+        "SELECT component_code,amount FROM block_grant_component_fact ORDER BY sort_order"
+    ).fetchall()
+    assert [(row["component_code"], row["amount"]) for row in rows] == [
+        ("base_per_resident", 4_703_088),
+        ("expense_equalization", -551_306),
+        ("special_distribution", 107_809),
+        ("income_guarantee", 11_272),
+        ("district_south", 0),
+        ("district_north", 0),
+        ("growth_grant", 0),
+        ("metropolitan_grant", 61_706),
+        ("discretionary_grant", 3_000),
+        ("budgeted_block_grant_before_income_equalization", 4_335_570),
+    ]
+    write_frontend_data(db, tmp_path / "data", {"county": {}, "municipality": {}})
+    detail = json.loads(
+        (tmp_path / "data" / "kostra" / "entities" / "municipality-1103.json")
+        .read_text(encoding="utf-8")
+    )
+    calculation = detail["blockGrantCalculation"]["values"]["2025"]
+    assert calculation["basis"] == "budget"
+    assert calculation["sourceUrl"] == "https://www.regjeringen.no/gront-hefte/2025/"
+    assert calculation["components"][0] == {
+        "code": "base_per_resident", "amount": 4_703_088,
+        "perCapita": pytest.approx(47_030.88),
+    }
 
 
 def test_skatteimport_bruker_bare_desember_fordi_tabellen_er_akkumulert(tmp_path):

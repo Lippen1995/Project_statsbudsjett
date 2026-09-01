@@ -55,6 +55,7 @@ INSERT OR IGNORE INTO dataset VALUES ('kostra_actuals', 'KOSTRA regnskap', 'actu
 INSERT OR IGNORE INTO dataset VALUES ('kostra_state_transfers', 'Rammetilskudd til kommunene', 'transfer', 'SSB KOSTRA');
 INSERT OR IGNORE INTO dataset VALUES ('ssb_tax_accounts', 'Statlige skatter og avgifter', 'tax', 'SSB Statbank');
 INSERT OR IGNORE INTO dataset VALUES ('kdd_income_equalization', 'Løpende inntektsutjevning', 'transfer', 'Kommunal- og distriktsdepartementet');
+INSERT OR IGNORE INTO dataset VALUES ('kdd_green_book', 'Beregnet rammetilskudd i Grønt hefte', 'budget', 'Kommunal- og distriktsdepartementet');
 
 CREATE TABLE IF NOT EXISTS fact (
   dataset_id TEXT NOT NULL DEFAULT 'kostra_actuals' REFERENCES dataset(id),
@@ -124,6 +125,23 @@ CREATE TABLE IF NOT EXISTS income_equalization_fact (
 
 CREATE INDEX IF NOT EXISTS income_equalization_entity_year
   ON income_equalization_fact(entity_id, year);
+
+CREATE TABLE IF NOT EXISTS block_grant_component_fact (
+  dataset_id TEXT NOT NULL DEFAULT 'kdd_green_book' REFERENCES dataset(id),
+  entity_id TEXT NOT NULL REFERENCES entity(id),
+  year INTEGER NOT NULL CHECK (year BETWEEN 1900 AND 2200),
+  component_code TEXT NOT NULL,
+  amount REAL,
+  per_capita REAL,
+  sort_order INTEGER NOT NULL,
+  basis TEXT NOT NULL CHECK (basis IN ('actual', 'budget', 'estimate')),
+  source_url TEXT NOT NULL,
+  source_period TEXT NOT NULL,
+  PRIMARY KEY (dataset_id, entity_id, year, component_code)
+);
+
+CREATE INDEX IF NOT EXISTS block_grant_component_entity_year
+  ON block_grant_component_fact(entity_id, year, sort_order);
 
 CREATE TABLE IF NOT EXISTS source_run (
   source_table TEXT PRIMARY KEY,
