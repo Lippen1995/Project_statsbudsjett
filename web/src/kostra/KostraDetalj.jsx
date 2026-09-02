@@ -19,6 +19,7 @@ import {
 import { accountingArtBreakdown, accountingArtFunctionBreakdown, explorerDrillRows } from './explorer'
 import KostraGrowthSummary from './KostraGrowthSummary'
 import KostraInfoTooltip from './KostraInfoTooltip'
+import KostraStatements from './KostraStatements'
 
 const GREEN = '#47735D'
 const DRILL_CATEGORIES = [
@@ -514,7 +515,8 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
           </div>
         )}
 
-        <div className="ko-drill">
+        <KostraStatements detail={detail} index={index} />
+        {false && <div className="ko-drill">
           <div className="ko-paneltopp">
             <div><span className="ft-stikkord">Økonomisk drill-down</span><h2>{drillHeading}</h2></div>
             <div className="ko-drillverktoy">
@@ -620,7 +622,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
               />
             </aside>
           </div>
-        </div>
+        </div>}
 
         {kind === 'municipality' && (
           <IncomeEqualization

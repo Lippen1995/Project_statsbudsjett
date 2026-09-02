@@ -273,6 +273,32 @@
 .ko-grafvekst span { color: var(--blek); font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .ko-grafvekst strong { font-size: 12px; white-space: nowrap; }
 .ko-drillgrafnote { margin: 0 0 10px; color: var(--blek); font-size: 11px; line-height: 1.45; }
+.ko-oppstillingstopp { align-items: end; }
+.ko-aarvalg select { min-height: 38px; border: 1px solid var(--strek); border-radius: 6px; padding: 7px 10px; background: transparent; color: inherit; font: inherit; }
+.ko-oppstillingfaner { display: flex; gap: 4px; margin: 0 0 28px; border-bottom: 1px solid var(--strek); }
+.ko-oppstillingfaner button { border: 0; border-bottom: 2px solid transparent; padding: 10px 18px; background: transparent; color: var(--blek); font: inherit; font-weight: 650; cursor: pointer; }
+.ko-oppstillingfaner button[aria-selected="true"] { border-bottom-color: var(--rust); color: var(--tekst); }
+.ko-oppstillingfaner button:focus-visible, .ko-presetter button:focus-visible, .ko-dimensjoner button:focus-visible { outline: 2px solid var(--tekst); outline-offset: 2px; }
+.ko-oppstilling section + section { margin-top: 26px; }
+.ko-oppstilling h3 { margin: 0; padding: 0 10px 8px; border-bottom: 1px solid var(--strek); font-family: var(--serif); font-size: 19px; }
+.ko-oppstillingrad { display: grid; grid-template-columns: minmax(0, 1fr) auto 14px; align-items: center; gap: 12px; width: 100%; border: 0; border-bottom: 1px solid var(--strek); padding: 11px 10px; background: transparent; color: inherit; font: inherit; text-align: left; }
+.ko-oppstillingrad:not(:disabled) { cursor: pointer; }
+.ko-oppstillingrad:not(:disabled):hover { background: var(--ark); }
+.ko-oppstillingrad:disabled { opacity: 1; }
+.ko-oppstillingrad > span small { display: block; margin-top: 2px; color: var(--blek); font-size: 10px; }
+.ko-oppstillingrad strong { white-space: nowrap; }
+.ko-oppstillingrad--subtotal, .ko-oppstillingrad--total { font-weight: 650; }
+.ko-oppstillingrad--total, .ko-oppstillingrad--result { border-top: 1px solid var(--tekst); }
+.ko-oppstillingrad--result strong { color: var(--rust); }
+.ko-presetter { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.ko-presetter button { border: 1px solid var(--strek); border-radius: 999px; padding: 5px 10px; background: transparent; color: inherit; font: inherit; font-size: 12px; cursor: pointer; }
+.ko-dimensjoner { margin-bottom: 18px; padding: 12px; background: var(--ark); }
+.ko-dimensjoner ol { display: flex; flex-wrap: wrap; gap: 7px; margin: 8px 0; padding: 0; list-style: none; }
+.ko-dimensjoner li { display: flex; align-items: center; gap: 7px; border: 1px solid var(--strek); padding: 5px 7px; background: var(--papir); font-size: 12px; }
+.ko-dimensjoner li button { border: 0; min-width: 24px; min-height: 24px; background: transparent; color: inherit; cursor: pointer; }
+.ko-dimensjoner li button:disabled { opacity: .3; cursor: default; }
+.ko-dimensjoner label { display: flex; align-items: center; gap: 9px; color: var(--blek); font-size: 12px; }
+.ko-dimensjoner select { border: 1px solid var(--strek); padding: 5px; background: var(--papir); color: inherit; }
 .ko-artavstemming { margin: 12px 0 0; color: var(--blek); font-size: 11px; line-height: 1.45; }
 .ko-status { max-width: 720px; min-height: 60vh; margin: 0 auto; padding: 100px 32px; }.ko-status :is(h1, h2) { font-size: 44px; }
 .ko-fot { margin-top: 72px; }
@@ -307,6 +333,10 @@
   .ko-drillkategori { width: 100%; }.ko-paneltopp .ko-drillkategori .ko-select { width: 100%; }
   .ko-drillhode, .ko-drillrader button { grid-template-columns: minmax(0, 1fr) 105px 10px; }
   .ko-drillhode--arts, .ko-drillrader button.ko-drillart { grid-template-columns: minmax(0, 1fr) 88px 55px; }
+  .ko-oppstillingfaner { overflow-x: auto; }
+  .ko-oppstillingfaner button { flex: 1 0 auto; padding-inline: 12px; }
+  .ko-oppstillingrad { grid-template-columns: minmax(0, 1fr) auto 10px; }
+  .ko-dimensjoner label { align-items: flex-start; flex-direction: column; }
   .ko-utjevningsnokkeltall { grid-template-columns: 1fr; }
   .ko-stromtotaller { grid-template-columns: 1fr; gap: 12px; }
 }

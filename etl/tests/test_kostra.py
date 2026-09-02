@@ -19,6 +19,7 @@ from kostra import (  # noqa: E402
     _import_green_book_grants,
     _import_details,
     _import_financial_details,
+    _import_statement_details,
     _import_overview,
     _import_tax_flows,
     _green_book_sources,
@@ -442,6 +443,65 @@ def test_renteposter_fra_ssb_utledes_til_belop_og_per_innbygger(tmp_path):
     assert index["values"]["interest_expenses"]["2025"]["municipality:1103"] == {
         "amount": 30.0, "perCapita": 300.0,
     }
+
+
+def test_regnskapsoppstillinger_eksporterer_sporbare_resultat_investering_og_balansedata(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:1103", "1103", "Stavanger", "municipality", None, None, 1, None, None, "Stavanger"),
+    )
+    db.execute(
+        "INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)",
+        ("kostra_actuals", "municipality:1103", 2025, "AGD13", "", "", 1000, 10000, "12137"),
+    )
+
+    def metadata(dimension, label, values):
+        return {
+            "id": ["KOKkommuneregion0000", dimension, "ContentsCode", "Tid"],
+            "dimension": {
+                "KOKkommuneregion0000": {"label": "region", "category": {"label": {"1103": "Stavanger"}}},
+                dimension: {"label": label, "category": {"label": values}},
+                "ContentsCode": {"label": "statistikkvariabel", "category": {"label": {"KOSbelop0000": "Beløp (1000 kr)"}}},
+                "Tid": {"label": "år", "category": {"label": {"2025": "2025"}}},
+            },
+        }
+
+    def cube(dimension, values):
+        return {
+            "id": ["KOKkommuneregion0000", dimension, "ContentsCode", "Tid"],
+            "size": [1, len(values), 1, 1],
+            "dimension": {
+                "KOKkommuneregion0000": {"category": {"index": {"1103": 0}}},
+                dimension: {"category": {"index": {code: index for index, code in enumerate(values)}}},
+                "ContentsCode": {"category": {"index": {"KOSbelop0000": 0}}},
+                "Tid": {"category": {"index": {"2025": 0}}},
+            },
+            "value": list(values.values()),
+        }
+
+    sources = [
+        ("result", "13551", "KOKart0000", "art", {"AGD45": 900, "AGD79": 20}),
+        ("investment", "13552", "KOKart0000", "art", {"AGI39": 100}),
+        ("balance", "13202", "KOKkapittel0000", "balansedata", {"KG52": 250}),
+    ]
+    for statement, table, dimension, label, values in sources:
+        labels = {code: code for code in values}
+        _import_statement_details(
+            db, "municipality", table, metadata(dimension, label, labels),
+            cube(dimension, values), label, statement,
+        )
+
+    write_frontend_data(db, tmp_path / "data", {"county": {}, "municipality": {}})
+    detail = json.loads(
+        (tmp_path / "data" / "kostra" / "entities" / "municipality-1103.json")
+        .read_text(encoding="utf-8")
+    )
+    assert detail["statementData"]["result"]["AGD45"]["values"]["2025"] == {
+        "amount": 900.0, "perCapita": 9000.0,
+    }
+    assert detail["statementData"]["investment"]["AGI39"]["values"]["2025"]["amount"] == 100.0
+    assert detail["statementData"]["balance"]["KG52"]["values"]["2025"]["perCapita"] == 2500.0
 
 
 def test_stat_kommune_strommer_skiller_kommuneorganisasjonen_fra_geografien(tmp_path):

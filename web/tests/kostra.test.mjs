@@ -36,6 +36,140 @@ import {
   explorerRowsWithShares,
   sortExplorerRows,
 } from '../src/kostra/explorer.js'
+import {
+  statementDrill,
+  statementView,
+} from '../src/kostra/statements.js'
+
+test('resultatoppstillingen bruker gjensidig utelukkende KOSTRA-linjer og avstemmer subtotalene', () => {
+  const values = Object.fromEntries([
+    ['AGD75', 100], ['A800', 80], ['AG10', 20], ['AGD76', 5],
+    ['AGD77', 15], ['AGD78', 10], ['A600', 30], ['AGD96', 40], ['AGD45', 300],
+    ['AG15', 90], ['AG35', 20], ['AG17', 50], ['AGD51', 30], ['AGD80', 10],
+    ['A590', 10], ['AGD46', 210], ['AGD65', 90], ['AGD79', 5], ['AGD81', 2],
+    ['AGD83', -1], ['AGD82', 8], ['AG5', 4], ['AGD85', 6], ['AGD87', 10],
+    ['AGD84', 0], ['AGD89', 94],
+  ].map(([code, amount]) => [code, {
+    code, name: code, sourceTable: '13551', values: { 2025: { amount, perCapita: amount * 10 } },
+  }]))
+  const detail = { statementData: { result: values, investment: {}, balance: {} } }
+
+  const view = statementView(detail, 'result', 2025, 'amount')
+
+  assert.equal(view.id, 'result')
+  assert.equal(view.sections[0].rows.at(-1).id, 'total_operating_revenue')
+  assert.equal(view.sections[0].rows.at(-1).value, 300)
+  assert.deepEqual(view.reconciliations.operating_revenue, {
+    componentTotal: 300, reportedTotal: 300, difference: 0, status: 'reconciled',
+  })
+  assert.deepEqual(view.reconciliations.operating_expense, {
+    componentTotal: 210, reportedTotal: 210, difference: 0, status: 'reconciled',
+  })
+  assert.equal(view.sections[2].rows.at(-1).id, 'net_operating_result')
+  assert.equal(view.sections[2].rows.at(-1).value, 94)
+})
+
+test('balansen bruker balansekapitler og tilbyr ikke en sektor som SSB-tabellen mangler', () => {
+  const values = Object.fromEntries([
+    ['KG43', 400], ['KG44', 100], ['KG46', 50], ['KG48', 20], ['KG50', 30],
+    ['KG52', 80], ['KG53', 10], ['KG58', 60], ['KG62', 750],
+    ['KG65', 40], ['KG66', 20], ['KG69', 10], ['KG73', 180], ['KG82', 200],
+    ['KG78', 180], ['KG79', 40], ['KG81', 20], ['KG85', 30], ['KG88', 30], ['KG90', 750],
+  ].map(([code, amount]) => [code, {
+    code, name: code, sourceTable: '13202', values: { 2025: { amount, perCapita: amount * 10 } },
+  }]))
+  const detail = { statementData: { result: {}, investment: {}, balance: values } }
+
+  const view = statementView(detail, 'balance', 2025, 'amount')
+  const longTermDebt = view.sections.flatMap((section) => section.rows)
+    .find((row) => row.id === 'long_term_debt')
+
+  assert.equal(view.sections[0].rows.at(-1).id, 'total_assets')
+  assert.deepEqual(longTermDebt.availableDimensions, ['balance_chapter'])
+  assert.equal(longTermDebt.availableDimensions.includes('sector'), false)
+  assert.deepEqual(view.reconciliations.balance, {
+    componentTotal: 750, reportedTotal: 750, difference: 0, status: 'reconciled',
+  })
+})
+
+test('kontantstrømmen er beregnet og avstemmes uten å skjule forskjellen mot bankbevegelsen', () => {
+  const series = (sourceTable, points) => Object.fromEntries(
+    Object.entries(points).map(([code, years]) => [code, { code, name: code, sourceTable, values: years }]),
+  )
+  const detail = {
+    overview: { revenues: { 2025: { amount: 300, perCapita: 3000 } } },
+    statementData: {
+      result: series('13551', {
+        AGD75: { 2025: { amount: 100 } }, A800: { 2025: { amount: 80 } },
+        AG10: { 2025: { amount: 20 } }, AGD76: { 2025: { amount: 5 } },
+        A600: { 2025: { amount: 30 } }, AGD96: { 2025: { amount: 40 } },
+        AGD77: { 2025: { amount: 15 } }, AGD78: { 2025: { amount: 10 } },
+        AG15: { 2025: { amount: 90 } }, AG35: { 2025: { amount: 20 } },
+        AG17: { 2025: { amount: 50 } }, AGD51: { 2025: { amount: 30 } },
+        AGD80: { 2025: { amount: 10 } }, AGD79: { 2025: { amount: 5 } },
+        AGD82: { 2025: { amount: 8 } },
+      }),
+      investment: series('13552', {
+        AGI39: { 2025: { amount: 50 } }, AGI44: { 2025: { amount: 10 } },
+        AGI40: { 2025: { amount: 0 } }, AGI41: { 2025: { amount: 0 } },
+        AGI42: { 2025: { amount: 0 } }, 929: { 2025: { amount: 0 } },
+        AGI45: { 2025: { amount: 0 } }, AGI46: { 2025: { amount: 0 } },
+        AGI17: { 2025: { amount: 20 } }, AG5: { 2025: { amount: 10 } },
+      }),
+      balance: series('13202', {
+        KG52: { 2024: { amount: 100 }, 2025: { amount: 140 } },
+      }),
+    },
+  }
+
+  const view = statementView(detail, 'cashflow', 2025, 'amount')
+
+  assert.equal(view.calculated, true)
+  assert.equal(view.sections[0].rows.at(-1).id, 'operating_cashflow')
+  assert.equal(view.sections[0].rows.at(-1).value, 97)
+  assert.equal(view.sections[3].rows.find((row) => row.id === 'net_cashflow').value, 67)
+  assert.deepEqual(view.reconciliations.cash, {
+    componentTotal: 67, reportedTotal: 40, difference: 27, status: 'difference',
+  })
+  assert.match(view.note, /beregnet fra rapportert KOSTRA-regnskap/i)
+
+  delete detail.statementData.investment.AGI40
+  const incomplete = statementView(detail, 'cashflow', 2025, 'amount')
+  assert.equal(incomplete.sections[1].rows.at(-1).value, null)
+  assert.equal(incomplete.sections[3].rows.find((row) => row.id === 'net_cashflow').value, null)
+})
+
+test('samme resultatlinje kan brytes ned i valgfri dimensjonsrekkefølge uten dobbelttelling', () => {
+  const detail = {
+    latestYear: 2025,
+    overview: { expenses: { 2025: { amount: 30, perCapita: 300 } } },
+    services: [{ code: 'FG1', name: 'Oppvekst' }, { code: 'FG2', name: 'Helse' }],
+    functions: [
+      { code: '202', name: 'Grunnskole', serviceCodes: ['FG1'] },
+      { code: '253', name: 'Helse', serviceCodes: ['FG2'] },
+    ],
+    accountingArts: {
+      202: [{ code: 'AGD50', name: 'Varer og tjenester', values: { 2025: { amount: 20 } } }],
+      253: [{ code: 'AGD50', name: 'Varer og tjenester', values: { 2025: { amount: 10 } } }],
+    },
+    statementData: { result: {
+      AG17: { code: 'AG17', name: 'Varer og tjenester', sourceTable: '13551', values: { 2025: { amount: 30, perCapita: 300 } } },
+    } },
+  }
+
+  const byService = statementDrill(detail, {
+    statementId: 'result', lineId: 'goods_services', dimensions: ['service', 'function', 'art'], year: 2025, mode: 'amount', selections: {},
+  })
+  const byArt = statementDrill(detail, {
+    statementId: 'result', lineId: 'goods_services', dimensions: ['art', 'function', 'service'], year: 2025, mode: 'amount', selections: {},
+  })
+
+  assert.deepEqual(byService.rows.map((row) => [row.code, row.value]), [['FG1', 20], ['FG2', 10]])
+  assert.deepEqual(byArt.rows.map((row) => [row.code, row.value]), [['AGD50', 30]])
+  assert.equal(byService.activeTotal, 30)
+  assert.equal(byArt.activeTotal, 30)
+  assert.equal(byService.reconciliation.status, 'reconciled')
+})
 
 test('KOSTRA-kartet ligger på hovedsiden rett under Utforsk staten', () => {
   const utforsk = SEKSJONER.findIndex((section) => section.id === 'utforsk')
@@ -52,6 +186,9 @@ test('KOSTRA-ruter skiller fylkesdrill fra detaljsider', () => {
   })
   assert.deepEqual(parseKostraRoute('#kostra/kommune/0104/detaljer'), {
     page: 'detail', kind: 'municipality', code: '0104',
+  })
+  assert.deepEqual(parseKostraRoute('#kostra/kommune/1103/detaljer?oppstilling=balance&aar=2025'), {
+    page: 'detail', kind: 'municipality', code: '1103',
   })
 })
 

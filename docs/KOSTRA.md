@@ -37,6 +37,26 @@ inne i samme seksjon, uten navigasjon til en ny side:
 - inntekter → inntektsart
 - gjeld stopper på totalen fordi kildetabellen ikke har en videre fordeling
 
+Den økonomiske drillen starter i tre regnskapsoppstillinger: resultat, balanse
+og kontantstrøm. Resultatlinjer kan analyseres i valgfri rekkefølge på
+tjenesteområde, KOSTRA-funksjon og KOSTRA-art. Balansen kan drilles på
+balansekapittel. Rekkefølgen endrer bare presentasjonen; alle summer bygger på
+de samme atomobservasjonene. Valg av oppstilling, år, enhet,
+dimensjonsrekkefølge og drillsti lagres i hash-URL-en og kan bokmerkes.
+
+Kontantstrøm er ikke en egen publisert KOSTRA-oppstilling. Den er tydelig
+merket som beregnet og settes sammen av rapporterte resultat- og
+investeringsposter. Beregnet netto kontantstrøm avstemmes mot faktisk endring
+i KOSTRA-post `KG52` (bankinnskudd og kontanter). Avvik vises og manipuleres
+ikke. Manglende delposter beholdes som manglende data.
+SSB publiserer heller ikke denne beregnede kontantstrømmen koblet til funksjon
+og art. Kontantstrømlinjene får derfor historikk, men ikke en lokalt konstruert
+funksjons- eller artsfordeling.
+Tabellene publiserer heller ikke investeringsart koblet samtidig til funksjon.
+Presetene «Investeringsformål» og «Hva kjøpes» aktiveres derfor ikke før en
+offisiell kilde kan levere denne kombinasjonen; dimensjonene krysskobles ikke
+lokalt på antakelser.
+
 På nasjonalt fylkesnivå kan tabellen bytte mellom fylkeskommunenes egne
 regnskaper og kommuneregnskap summert per fylke. Fra kommunesummen driller et
 fylke først til kommunelisten. Valget gjelder finansielle nøkkeltall;
@@ -130,10 +150,16 @@ CI på samme måte som de eksisterende statsdataene.
 |------|--------|------------|
 | Kommune | Finansielle nøkkeltall | 12137 |
 | Kommune | Renteinntekter og rentekostnader | 13551 |
+| Kommune | Resultatregnskap etter art | 13551 |
+| Kommune | Investeringsregnskap etter art | 13552 |
+| Kommune | Balanse etter balansekapittel | 13202 |
 | Kommune | Tjenesteområder og funksjoner | 12362 |
 | Kommune | Funksjon og regnskapsart | 12367 |
 | Fylke | Finansielle nøkkeltall | 12366 |
 | Fylke | Renteinntekter og rentekostnader | 13547 |
+| Fylke | Resultatregnskap etter art | 13547 |
+| Fylke | Investeringsregnskap etter art | 13548 |
+| Fylke | Balanse etter balansekapittel | 13213 |
 | Fylke | Tjenesteområder og funksjoner | 12163 |
 | Fylke | Funksjon og regnskapsart | 12368 |
 | Kommune | Rammetilskudd, faktisk regnskap | 12137, begrep A800 |
@@ -162,6 +188,12 @@ gjensidig utelukkende hovedgruppene `AG16`, `AGD50`, `AGD51`, `AG34` og
 Komponentene avstemmes mot SSBs `AGD10` for valgt funksjon og år. Eventuelle
 publiserte avvik vises i grensesnittet med originalt fortegn og blir aldri
 justert eller skjult. Manglende observasjoner lagres ikke som null kroner.
+
+Tabell 13202 og 13213 publiserer balansekapitler, men ikke sektor eller
+motpart. Grensesnittet tilbyr derfor ikke en konstruert sektor-dimensjon.
+Begrensningen vises også til brukeren. Resultat og investering hentes for alle
+tilgjengelige år, slik at oppstillingslinjer og beregnet kontantstrøm kan vise
+historikk.
 
 Tabell 07022 er et akkumulert skatteregnskap i millioner kroner. Importen
 velger derfor bare desemberobservasjonen for hvert år og konverterer til
@@ -214,7 +246,8 @@ hånd, så det oppstår verken dobbelttelling eller konstruerte tidsserier.
   skatt før/etter og signert nettoutjevning for kart og nasjonal tabell.
 - `boundaries.json`: forenklede og ferdigprojiserte SVG-baner for rask kartstart.
 - `entities/municipality-{kode}.json`: kommuneoversikt, historikk,
-  fordelinger, økonomisk drill-down og `stateFlows` med adskilte inn- og
+  fordelinger, `statementData` for resultat, investering og balanse,
+  økonomisk drill-down og `stateFlows` med adskilte inn- og
   utgående statlige pengestrømmer.
 - `entities/county-{kode}.json`: tilsvarende for fylkeskommunen.
 

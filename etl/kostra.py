@@ -41,11 +41,13 @@ METADATA_CACHE_MAX_AGE_SECONDS = 24 * 60 * 60
 
 TABLES = {
     "municipality": {
-        "overview": "12137", "financial_detail": "13551", "service": "12362", "detail": "12367",
+        "overview": "12137", "financial_detail": "13551", "investment_detail": "13552",
+        "balance_detail": "13202", "service": "12362", "detail": "12367",
         "region": "KOKkommuneregion0000", "scope": "KOKregnskapsomfa0000",
     },
     "county": {
-        "overview": "12366", "financial_detail": "13547", "service": "12163", "detail": "12368",
+        "overview": "12366", "financial_detail": "13547", "investment_detail": "13548",
+        "balance_detail": "13213", "service": "12163", "detail": "12368",
         "region": "KOKfylkesregion0000", "scope": "KOKregnskapsomfa0000",
     },
 }
@@ -1004,6 +1006,35 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         for function_code, arts in arts_by_function.items()
     }
 
+    statement_data = {}
+    statement_sources = {
+        "result": TABLES[entity["kind"]]["financial_detail"],
+        "investment": TABLES[entity["kind"]]["investment_detail"],
+        "balance": TABLES[entity["kind"]]["balance_detail"],
+    }
+    for statement, source_table in statement_sources.items():
+        codes = {}
+        rows = db.execute(
+            """SELECT metric_code,year,amount,per_capita FROM fact
+                 WHERE dataset_id='kostra_actuals' AND entity_id IN (""" + entity_slots + """)
+                   AND source_table=? AND function_code='' AND accounting_art_code=''
+                 ORDER BY metric_code,year""",
+            (*series_entity_ids, source_table),
+        ).fetchall()
+        label_dimension = "balance_chapter" if statement == "balance" else f"statement_{statement}"
+        labels = _classification_labels(db, label_dimension)
+        for row in rows:
+            item = codes.setdefault(row["metric_code"], {
+                "code": row["metric_code"],
+                "name": labels.get(row["metric_code"], row["metric_code"]),
+                "sourceTable": source_table,
+                "values": {},
+            })
+            item["values"][str(row["year"])] = {
+                "amount": row["amount"], "perCapita": row["per_capita"],
+            }
+        statement_data[statement] = codes
+
     def breakdown(values):
         return [
             {"code": code, "name": art_labels.get(code, code), "amount": amount}
@@ -1135,7 +1166,7 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
             }
 
     return {
-        "schemaVersion": 4,
+        "schemaVersion": 5,
         "entity": entity,
         "latestYear": latest_year,
         "overview": overview,
@@ -1144,6 +1175,7 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         "services": list(services.values()),
         "functions": list(functions.values()),
         "accountingArts": accounting_arts,
+        "statementData": statement_data,
         "boundaryHistory": boundary_history,
         "stateFlows": state_flows,
         "incomeEqualization": income_equalization,
@@ -1312,12 +1344,21 @@ def _dimension_by_label(metadata: dict, label: str) -> str:
     raise KeyError(f"Fant ikke dimensjonen {label!r} i {metadata.get('id')}")
 
 
-def _register_classification(db: sqlite3.Connection, metadata: dict, dimension: str, kind) -> None:
+def _register_classification(
+    db: sqlite3.Connection,
+    metadata: dict,
+    dimension: str,
+    kind,
+    storage_dimension: str | None = None,
+) -> None:
     for code, label in _labels(metadata, dimension).items():
         resolved_kind = kind(code) if callable(kind) else kind
+        resolved_dimension = storage_dimension or (
+            "function" if "funksjon" in dimension.lower() else "accounting_art"
+        )
         db.execute(
             "INSERT OR REPLACE INTO classification(dimension, code, label, kind) VALUES (?,?,?,?)",
-            ("function" if "funksjon" in dimension.lower() else "accounting_art", code, label, resolved_kind),
+            (resolved_dimension, code, label, resolved_kind),
         )
 
 
@@ -1396,15 +1437,30 @@ def _import_overview(db: sqlite3.Connection, kind: str, table: str, metadata: di
 def _import_financial_details(
     db: sqlite3.Connection, kind: str, table: str, metadata: dict, cube: dict
 ) -> None:
-    """Importer rene renteposter og utled per-innbyggerverdien lokalt.
+    """Bakoverkompatibel adapter for resultatoppstillingen."""
+    _import_statement_details(db, kind, table, metadata, cube, "art", "result")
 
-    SSB-tabellene 13551 og 13547 publiserer beløp i 1000 kroner, men ikke
+
+def _import_statement_details(
+    db: sqlite3.Connection,
+    kind: str,
+    table: str,
+    metadata: dict,
+    cube: dict,
+    dimension_label: str,
+    statement: str,
+) -> None:
+    """Importer én offisiell regnskapsoppstilling uten å endre fortegn.
+
+    Oppstillingstabellene publiserer beløp i 1000 kroner, men ikke
     kroner per innbygger. Folketallet utledes fra de allerede importerte
     KOSTRA-parene for samme enhet og år; mangler grunnlaget, beholdes
     per-innbyggerverdien som manglende i stedet for å settes til null.
     """
+    if statement not in {"result", "investment", "balance"}:
+        raise ValueError(f"Ukjent regnskapsoppstilling: {statement}")
     region_dim = TABLES[kind]["region"]
-    art_dim = _dimension_by_label(metadata, "art")
+    value_dim = _dimension_by_label(metadata, dimension_label)
     for row in iter_jsonstat(cube):
         if row["value"] is None:
             continue
@@ -1413,7 +1469,7 @@ def _import_financial_details(
         amount = float(row["value"])
         population = _population_for_year(db, entity_id, year)
         _upsert_fact(
-            db, entity_id, year, row[art_dim], table,
+            db, entity_id, year, row[value_dim], table,
             amount=amount,
             per_capita=amount * 1000 / population if population else None,
         )
@@ -1710,9 +1766,14 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             config = TABLES[kind]
             overview_meta = client.metadata(config["overview"])
             financial_meta = client.metadata(config["financial_detail"])
+            investment_meta = client.metadata(config["investment_detail"])
+            balance_meta = client.metadata(config["balance_detail"])
             service_meta = client.metadata(config["service"])
             detail_meta = client.metadata(config["detail"])
-            metadata_by_kind[kind] = (overview_meta, financial_meta, service_meta, detail_meta)
+            metadata_by_kind[kind] = (
+                overview_meta, financial_meta, investment_meta, balance_meta,
+                service_meta, detail_meta,
+            )
             latest_year = max(int(code) for code in _ordered_codes(overview_meta["dimension"]["Tid"]))
             current_codes = {entity["code"] for entity in geo_entities[kind]}
             _register_regions(db, kind, overview_meta, current_codes, latest_year)
@@ -1723,9 +1784,23 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 lambda code: "service_area" if code.startswith("FG") else "function",
             )
             _register_classification(db, detail_meta, art_dim, "accounting_art")
+            financial_art_dim = _dimension_by_label(financial_meta, "art")
+            investment_art_dim = _dimension_by_label(investment_meta, "art")
+            balance_chapter_dim = _dimension_by_label(balance_meta, "balansedata")
+            _register_classification(
+                db, financial_meta, financial_art_dim, "statement_line", "statement_result"
+            )
+            _register_classification(
+                db, investment_meta, investment_art_dim, "statement_line", "statement_investment"
+            )
+            _register_classification(
+                db, balance_meta, balance_chapter_dim, "balance_chapter", "balance_chapter"
+            )
             for table, meta in [
                 (config["overview"], overview_meta),
                 (config["financial_detail"], financial_meta),
+                (config["investment_detail"], investment_meta),
+                (config["balance_detail"], balance_meta),
                 (config["service"], service_meta),
                 (config["detail"], detail_meta),
             ]:
@@ -1738,7 +1813,10 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
 
         for kind in ("county", "municipality"):
             config = TABLES[kind]
-            overview_meta, financial_meta, service_meta, detail_meta = metadata_by_kind[kind]
+            (
+                overview_meta, financial_meta, investment_meta, balance_meta,
+                service_meta, detail_meta,
+            ) = metadata_by_kind[kind]
             region = config["region"]
             current = [entity["code"] for entity in geo_entities[kind]]
             comparison = ["EAFK"] if kind == "county" else ["EAK"] + [f"EKG{i:02d}" for i in range(1, 18)]
@@ -1765,13 +1843,31 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             financial_art = _dimension_by_label(financial_meta, "art")
             financial_cube = client.data(config["financial_detail"], {
                 region: financial_regions,
-                financial_art: [metric["code"] for metric in INTEREST_METRICS],
+                financial_art: ["*"],
                 "ContentsCode": ["*"],
                 "Tid": ["*"],
             })
-            _import_financial_details(
-                db, kind, config["financial_detail"], financial_meta, financial_cube
+            _import_statement_details(
+                db, kind, config["financial_detail"], financial_meta,
+                financial_cube, "art", "result",
             )
+
+            for statement, meta, table_key, dimension_label in [
+                ("investment", investment_meta, "investment_detail", "art"),
+                ("balance", balance_meta, "balance_detail", "balansedata"),
+            ]:
+                statement_regions = region_codes_for_import(meta, region, current, [])
+                statement_dimension = _dimension_by_label(meta, dimension_label)
+                statement_cube = client.data(config[table_key], {
+                    region: statement_regions,
+                    statement_dimension: ["*"],
+                    "ContentsCode": ["*"],
+                    "Tid": ["*"],
+                })
+                _import_statement_details(
+                    db, kind, config[table_key], meta, statement_cube,
+                    dimension_label, statement,
+                )
 
             service_function = _dimension_by_label(service_meta, "funksjon")
             service_art = _dimension_by_label(service_meta, "art")
@@ -1801,7 +1897,9 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             ]
             latest_detail_year = max(_ordered_codes(detail_meta["dimension"]["Tid"]), key=int)
             detail_cache_revision = detail_meta.get("updated") or latest_detail_year
-            expense_detail_arts = sorted(EXPENSE_ARTS | {"AGD10"})
+            # A090/A099 forklarer sosialkostnadene på laveste tilgjengelige
+            # artsnivå. De summeres aldri sammen med foreldregruppen AG16.
+            expense_detail_arts = sorted(EXPENSE_ARTS | {"AGD10", "A090", "A099"})
             # Bare gjensidig utelukkende hovedarter og kontrolltotalen hentes
             # for alle år. Å hente alle summer og underarter ville mangedoblet
             # datamengden og gitt dobbelttelling i klienten.
@@ -1821,16 +1919,15 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 _import_details(db, kind, config["detail"], detail_meta, cube)
                 db.commit()
 
-            # Inntektsfordelingen brukes bare som siste års avsluttende nivå.
-            # Den hentes separat slik at fem inntektsgrupper ikke replikeres
-            # over hele tidsserien uten en konsument i grensesnittet.
+            # Inntektsarter må følge årvelgeren på samme måte som utgiftsarter.
+            # Fem gjensidig utelukkende grupper er små nok til hele tidsserien.
             for region_chunk in _chunks(detail_regions):
                 selection = {
                     region: region_chunk,
                     detail_function: detail_functions,
                     detail_art: sorted(REVENUE_ARTS),
                     "ContentsCode": ["*"],
-                    "Tid": [latest_detail_year],
+                    "Tid": ["*"],
                 }
                 if config["scope"] in detail_meta["id"]:
                     selection[config["scope"]] = ["A"]

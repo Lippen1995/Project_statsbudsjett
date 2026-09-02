@@ -80,7 +80,7 @@ export function findKostraEntities(entities, query, limit = 8) {
 }
 
 export function parseKostraRoute(hash = '') {
-  const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean)
+  const parts = hash.split('?')[0].replace(/^#\/?/, '').split('/').filter(Boolean)
   if (parts[0] !== 'kostra') return { page: 'map', countyCode: null }
   if (parts[1] === 'kommune' && /^\d{4}$/.test(parts[2] ?? '')) {
     if (parts[3] === 'detaljer') {
