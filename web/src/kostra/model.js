@@ -107,6 +107,16 @@ export function municipalityCodeStatus(index, code) {
   return isHistorical ? 'historical' : 'unknown'
 }
 
+/**
+ * Aktive kommuner skal alltid beholde kartkonteksten, også når en gammel eller
+ * delt lenke inneholder `/detaljer`. Historiske kommuner finnes ikke i dagens
+ * geometri og må derfor fortsatt bruke den frittstående detaljsiden.
+ */
+export function shouldUseStandaloneKostraDetail(route, municipalityStatus) {
+  if (municipalityStatus) return municipalityStatus !== 'active'
+  return route?.page === 'detail'
+}
+
 /** Scroll bare ved en reell inngang til en dyp KOSTRA-lenke, aldri ved intern drill. */
 export function shouldScrollToKostra(previousHash, nextHash, sectionVisible = false) {
   if (!nextHash.startsWith('#kostra')) return false

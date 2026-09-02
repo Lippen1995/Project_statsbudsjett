@@ -24,6 +24,7 @@ import {
   summarizeMunicipalities,
   summarizeKostraEntities,
   shouldScrollToKostra,
+  shouldUseStandaloneKostraDetail,
   stateFlowSummary,
   yearlyGrowth,
 } from '../src/kostra/model.js'
@@ -423,6 +424,13 @@ test('historiske kommunekoder beholder detaljsiden mens aktive kommuner bruker k
   assert.equal(municipalityCodeStatus(index, '0104'), 'historical')
   assert.equal(municipalityCodeStatus(index, '1103'), 'active')
   assert.equal(municipalityCodeStatus(index, '9999'), 'unknown')
+
+  const activeRoute = parseKostraRoute('#kostra/kommune/1103/detaljer?oppstilling=result')
+  const historicalRoute = parseKostraRoute('#kostra/kommune/0104/detaljer')
+  const countyRoute = parseKostraRoute('#kostra/fylke/11/detaljer')
+  assert.equal(shouldUseStandaloneKostraDetail(activeRoute, 'active'), false)
+  assert.equal(shouldUseStandaloneKostraDetail(historicalRoute, 'historical'), true)
+  assert.equal(shouldUseStandaloneKostraDetail(countyRoute, null), true)
 })
 
 test('intern navigasjon i KOSTRA beholder skjermposisjonen', () => {

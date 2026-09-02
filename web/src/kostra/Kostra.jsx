@@ -2,7 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { loadKostraBoundaries, loadKostraIndex } from '../lib/kostra'
 import KostraKart from './KostraKart'
 import KostraDetalj from './KostraDetalj'
-import { municipalityCodeStatus, parseKostraRoute, shouldScrollToKostra } from './model'
+import {
+  municipalityCodeStatus,
+  parseKostraRoute,
+  shouldScrollToKostra,
+  shouldUseStandaloneKostraDetail,
+} from './model'
 import './kostra.css'
 
 export default function Kostra({ hash }) {
@@ -10,11 +15,14 @@ export default function Kostra({ hash }) {
   const [error, setError] = useState(null)
   const previousHashRef = useRef(null)
   const route = parseKostraRoute(hash)
-  const municipalityStatus = data && route.municipalityCode
-    ? municipalityCodeStatus(data.index, route.municipalityCode)
+  const routeMunicipalityCode = route.municipalityCode
+    ?? (route.kind === 'municipality' ? route.code : null)
+  const municipalityStatus = data && routeMunicipalityCode
+    ? municipalityCodeStatus(data.index, routeMunicipalityCode)
     : null
   const historicalMunicipalityRoute = municipalityStatus === 'historical'
   const unknownMunicipalityRoute = municipalityStatus === 'unknown'
+  const standaloneDetail = shouldUseStandaloneKostraDetail(route, municipalityStatus)
 
   useEffect(() => {
     Promise.all([loadKostraIndex(), loadKostraBoundaries()])
@@ -52,10 +60,10 @@ export default function Kostra({ hash }) {
       ) : unknownMunicipalityRoute ? (
         <section className="ko-status">
           <h2>Kommunen finnes ikke</h2>
-          <p>Kommunekode {route.municipalityCode} finnes verken i dagens eller det historiske KOSTRA-grunnlaget.</p>
+          <p>Kommunekode {routeMunicipalityCode} finnes verken i dagens eller det historiske KOSTRA-grunnlaget.</p>
           <a href="#kostra">Tilbake til kartet</a>
         </section>
-      ) : route.page === 'detail' || historicalMunicipalityRoute ? (
+      ) : standaloneDetail ? (
         <KostraDetalj
           index={data.index}
           kind={historicalMunicipalityRoute ? 'municipality' : route.kind}
@@ -66,8 +74,8 @@ export default function Kostra({ hash }) {
         <KostraKart
           index={data.index}
           boundaries={data.boundaries}
-          countyCode={route.countyCode}
-          selectedMunicipalityCode={route.municipalityCode}
+          countyCode={route.countyCode ?? routeMunicipalityCode?.slice(0, 2)}
+          selectedMunicipalityCode={municipalityStatus === 'active' ? routeMunicipalityCode : route.municipalityCode}
           embedded
         />
       )}

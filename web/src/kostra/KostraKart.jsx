@@ -268,7 +268,14 @@ export default function KostraKart({
                 </svg>
               </a>
             )}
-            <svg className="ko-hovedkart" viewBox={viewBox} role="img" aria-label={`${metric.label} i ${year}, ${county?.name ?? 'Norge'}`}>
+            <svg
+              className="ko-hovedkart"
+              viewBox={viewBox}
+              role="img"
+              aria-label={selectedMunicipality
+                ? `Kart over ${municipalityTitle}: ${metric.label} i ${year}`
+                : `Kart over ${county?.name ?? 'Norge'}: ${metric.label} i ${year}`}
+            >
               <g fillRule="evenodd">
                 {mainShapes.map((shape, shapeIndex) => {
                   const value = mapValue(index, metricId, year, shape.id, mode)
