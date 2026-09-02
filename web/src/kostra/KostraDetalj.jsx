@@ -514,63 +514,6 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
           </div>
         )}
 
-        {kind === 'municipality' && (
-          <IncomeEqualization
-            entityName={detail.entity.name}
-            incomeEqualization={detail.incomeEqualization}
-            stateFlows={detail.stateFlows}
-            blockGrantCalculation={detail.blockGrantCalculation}
-            incomeSystemComparisons={detail.incomeSystemComparisons}
-            year={year}
-            mode={mode}
-          />
-        )}
-
-        <div className={`ko-detaljgrid ${mode === 'amount' ? 'ko-detaljgrid--uten-sammenligning' : ''}`}>
-          <div className="ko-panel">
-            <div className="ko-paneltopp">
-              <div><span className="ft-stikkord">Historisk utvikling</span><h2>{historyDefinition?.label}</h2></div>
-              <select className="ko-select" value={historyMetric} onChange={(event) => setHistoryMetric(event.target.value)}>
-                {metricDefs.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
-              </select>
-            </div>
-            <LinjeGraf serier={historySeries} aar={index.years} W={680} H={250} fraNull={historyMetric !== 'net_result'} aksefmt={(value) => formatKostraValue(value, mode)} tips={historyTips} beskrivelse={mode === 'perCapita' ? `${historyDefinition?.label} per innbygger for ${detail.entity.name}, sammenlignet med Norge og KOSTRA-gruppen` : `${historyDefinition?.label} totalt for ${detail.entity.name}`} />
-            <div className="ko-graflegend">
-              {historySeries.map((serie) => <span key={serie.navn}><i style={{ background: serie.farge }} />{serie.navn}</span>)}
-            </div>
-          </div>
-          {mode === 'perCapita' && <div className="ko-panel ko-sammenligning">
-            <span className="ft-stikkord">Sammenligning {year}</span>
-            <h2>{historyDefinition?.label}</h2>
-            {comparisons.map((comparison) => {
-              const value = mapValue(index, historyMetric, year, comparison.id, mode)
-              const population = populationForEntity(index, year, comparison.id)
-              const isPeerGroup = comparison.id === detail.comparisons.peerGroupEntityId
-              return (
-                <div className="ko-sammenlignrad" key={comparison.id}>
-                  <span>
-                    <span className="ko-sammenlignnavn">
-                      {comparison.name}
-                      {isPeerGroup && (
-                        <KostraInfoTooltip label={comparison.name}>
-                          SSB grupperer kommuner etter folkemengde og økonomiske rammebetingelser, blant annet bundne kostnader og frie disponible inntekter. Gruppen brukes for å sammenligne {detail.entity.name} med kommuner som har lignende forutsetninger.
-                        </KostraInfoTooltip>
-                      )}
-                    </span>
-                    <small>{population == null ? 'Innbyggertall mangler' : `ca. ${populationFormat.format(population)} innbyggere`}</small>
-                  </span>
-                  <strong>{formatKostraValue(value, mode)}</strong>
-                </div>
-              )
-            })}
-          </div>}
-        </div>
-
-        <div className="ko-breakdowngrid">
-          <Breakdown title="Hva inntektene består av" rows={detail.revenueBreakdown} detail={detail} year={year} />
-          <Breakdown title="Hva utgiftene består av" rows={detail.expenseBreakdown} detail={detail} year={year} />
-        </div>
-
         <div className="ko-drill">
           <div className="ko-paneltopp">
             <div><span className="ft-stikkord">Økonomisk drill-down</span><h2>{drillHeading}</h2></div>
@@ -677,6 +620,63 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
               />
             </aside>
           </div>
+        </div>
+
+        {kind === 'municipality' && (
+          <IncomeEqualization
+            entityName={detail.entity.name}
+            incomeEqualization={detail.incomeEqualization}
+            stateFlows={detail.stateFlows}
+            blockGrantCalculation={detail.blockGrantCalculation}
+            incomeSystemComparisons={detail.incomeSystemComparisons}
+            year={year}
+            mode={mode}
+          />
+        )}
+
+        <div className={`ko-detaljgrid ${mode === 'amount' ? 'ko-detaljgrid--uten-sammenligning' : ''}`}>
+          <div className="ko-panel">
+            <div className="ko-paneltopp">
+              <div><span className="ft-stikkord">Historisk utvikling</span><h2>{historyDefinition?.label}</h2></div>
+              <select className="ko-select" value={historyMetric} onChange={(event) => setHistoryMetric(event.target.value)}>
+                {metricDefs.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
+              </select>
+            </div>
+            <LinjeGraf serier={historySeries} aar={index.years} W={680} H={250} fraNull={historyMetric !== 'net_result'} aksefmt={(value) => formatKostraValue(value, mode)} tips={historyTips} beskrivelse={mode === 'perCapita' ? `${historyDefinition?.label} per innbygger for ${detail.entity.name}, sammenlignet med Norge og KOSTRA-gruppen` : `${historyDefinition?.label} totalt for ${detail.entity.name}`} />
+            <div className="ko-graflegend">
+              {historySeries.map((serie) => <span key={serie.navn}><i style={{ background: serie.farge }} />{serie.navn}</span>)}
+            </div>
+          </div>
+          {mode === 'perCapita' && <div className="ko-panel ko-sammenligning">
+            <span className="ft-stikkord">Sammenligning {year}</span>
+            <h2>{historyDefinition?.label}</h2>
+            {comparisons.map((comparison) => {
+              const value = mapValue(index, historyMetric, year, comparison.id, mode)
+              const population = populationForEntity(index, year, comparison.id)
+              const isPeerGroup = comparison.id === detail.comparisons.peerGroupEntityId
+              return (
+                <div className="ko-sammenlignrad" key={comparison.id}>
+                  <span>
+                    <span className="ko-sammenlignnavn">
+                      {comparison.name}
+                      {isPeerGroup && (
+                        <KostraInfoTooltip label={comparison.name}>
+                          SSB grupperer kommuner etter folkemengde og økonomiske rammebetingelser, blant annet bundne kostnader og frie disponible inntekter. Gruppen brukes for å sammenligne {detail.entity.name} med kommuner som har lignende forutsetninger.
+                        </KostraInfoTooltip>
+                      )}
+                    </span>
+                    <small>{population == null ? 'Innbyggertall mangler' : `ca. ${populationFormat.format(population)} innbyggere`}</small>
+                  </span>
+                  <strong>{formatKostraValue(value, mode)}</strong>
+                </div>
+              )
+            })}
+          </div>}
+        </div>
+
+        <div className="ko-breakdowngrid">
+          <Breakdown title="Hva inntektene består av" rows={detail.revenueBreakdown} detail={detail} year={year} />
+          <Breakdown title="Hva utgiftene består av" rows={detail.expenseBreakdown} detail={detail} year={year} />
         </div>
       </section>
     </>
