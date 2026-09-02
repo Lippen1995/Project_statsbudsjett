@@ -171,6 +171,38 @@ test('samme resultatlinje kan brytes ned i valgfri dimensjonsrekkefølge uten do
   assert.equal(byService.reconciliation.status, 'reconciled')
 })
 
+test('lønn åpner funksjon/art-drill og tomt detaljgrunnlag blir ikke null kroner', () => {
+  const art = (code, name, amount) => ({ code, name, values: { 2025: { amount } } })
+  const detail = {
+    latestYear: 2025,
+    overview: { expenses: { 2025: { amount: 100, perCapita: 1_000 } } },
+    services: [{ code: 'FG1', name: 'Oppvekst' }],
+    functions: [{ code: '202', name: 'Grunnskole', serviceCodes: ['FG1'] }],
+    accountingArts: { 202: [
+      art('AG16', 'Lønnsutgifter fratrukket sykelønnsrefusjon', 80),
+      art('A710', 'Sykelønnsrefusjon', 10),
+    ] },
+    statementData: { result: {
+      AG15: { code: 'AG15', name: 'Lønnsutgifter', sourceTable: '13551', values: { 2025: { amount: 70, perCapita: 700 } } },
+      AG35: { code: 'AG35', name: 'Sosiale kostnader', sourceTable: '13551', values: { 2025: { amount: 20, perCapita: 200 } } },
+    } },
+  }
+
+  const populated = statementDrill(detail, {
+    statementId: 'result', lineId: 'wages', dimensions: ['service', 'function', 'art'], selections: {}, year: 2025, mode: 'amount',
+  })
+  assert.equal(populated.nextDimension, 'service')
+  assert.deepEqual(populated.rows.map((row) => [row.code, row.value]), [['FG1', 90]])
+  assert.equal(populated.reconciliation.status, 'reconciled')
+
+  detail.accountingArts = {}
+  const missing = statementDrill(detail, {
+    statementId: 'result', lineId: 'wages', dimensions: ['service', 'function', 'art'], selections: {}, year: 2025, mode: 'amount',
+  })
+  assert.equal(missing.activeTotal, null)
+  assert.equal(missing.reconciliation.status, 'incomplete')
+})
+
 test('KOSTRA-kartet ligger på hovedsiden rett under Utforsk staten', () => {
   const utforsk = SEKSJONER.findIndex((section) => section.id === 'utforsk')
   assert.equal(SEKSJONER[utforsk].navn, 'Utforsk staten')

@@ -1898,8 +1898,9 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             latest_detail_year = max(_ordered_codes(detail_meta["dimension"]["Tid"]), key=int)
             detail_cache_revision = detail_meta.get("updated") or latest_detail_year
             # A090/A099 forklarer sosialkostnadene på laveste tilgjengelige
-            # artsnivå. De summeres aldri sammen med foreldregruppen AG16.
-            expense_detail_arts = sorted(EXPENSE_ARTS | {"AGD10", "A090", "A099"})
+            # artsnivå. A710 gjør det mulig å avstemme AG16 (etter refusjon)
+            # mot brutto lønn og sosiale kostnader i resultatoppstillingen.
+            expense_detail_arts = sorted(EXPENSE_ARTS | {"AGD10", "A090", "A099", "A710"})
             # Bare gjensidig utelukkende hovedarter og kontrolltotalen hentes
             # for alle år. Å hente alle summer og underarter ville mangedoblet
             # datamengden og gitt dobbelttelling i klienten.

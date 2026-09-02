@@ -213,6 +213,7 @@ export default function KostraStatements({ detail, index }) {
             {!drill?.nextDimension && effectiveDimensions.length > 0 && <p className="ko-artavstemming">Dette er laveste tilgjengelige KOSTRA-nivå for valget.</p>}
             {drill?.nextDimension && (drill?.rows.length ?? 0) === 0 && <p className="ko-artavstemming">Det finnes ikke rapporterte observasjoner på neste nivå for dette valget og året.</p>}
             {effectiveDimensions.length === 0 && <p className="ko-artavstemming">SSBs oppstilling har ikke en videre funksjons-, arts- eller balansedimensjon for denne linjen. Historikken vises til høyre.</p>}
+            {selectedLine.drillNote && <p className="ko-artavstemming">{selectedLine.drillNote}</p>}
             {drill?.reconciliation.status === 'difference' && <p className="ko-artavstemming">Underpostene summerer til {formatKostraValue(drill.reconciliation.componentTotal, mode)}, mens oppstillingen viser {formatKostraValue(drill.reconciliation.reportedTotal, mode)}. Avviket på {formatKostraValue(drill.reconciliation.difference, mode)} er beholdt og ikke justert.</p>}
             {drill?.note && <p className="ko-artavstemming">{drill.note}</p>}
           </> : <div className="ko-oppstilling">

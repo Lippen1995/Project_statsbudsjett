@@ -35,8 +35,12 @@ const RESULT_SECTIONS = [
   {
     id: 'operating_expense', label: 'Driftskostnader', totalId: 'total_operating_expense',
     rows: [
-      { id: 'wages', label: 'Lønn', sources: [resultSource('AG15')] },
-      { id: 'social_costs', label: 'Pensjon og arbeidsgiveravgift', sources: [resultSource('AG35')], drillArtCodes: ['A090', 'A099'] },
+      {
+        id: 'wages', label: 'Lønn og sosiale kostnader',
+        sources: [resultSource('AG15'), resultSource('AG35')],
+        drillArtCodes: ['AG16', 'A710'],
+        drillNote: 'Oppstillingen summerer AG15 lønnsutgifter og AG35 sosiale kostnader. Funksjonsfordelingen viser AG16 etter sykelønnsrefusjon og A710 sykelønnsrefusjon, slik at bruttobeløpet kan avstemmes.',
+      },
       { id: 'goods_services', label: 'Varer og tjenester', sources: [resultSource('AG17')], drillArtCodes: ['AGD50'] },
       { id: 'purchased_services', label: 'Kjøp av tjenester fra andre', sources: [resultSource('AGD51')], drillArtCodes: ['AGD51'] },
       { id: 'transfers', label: 'Overføringer og tilskudd', sources: [resultSource('AGD80')], drillArtCodes: ['AG34'] },
@@ -241,7 +245,7 @@ export function statementDrill(detail, options) {
   const nextDimension = dimensions.find((dimension) => !selections?.[dimension]) ?? null
   const rows = nextDimension ? groupRecords(filtered, nextDimension, detail, year, mode) : []
   const amountTotal = filtered.reduce((sum, record) => sum + record.amount, 0)
-  const activeTotal = observationValue(amountTotal, detail, year, mode)
+  const activeTotal = filtered.length ? observationValue(amountTotal, detail, year, mode) : null
   const expected = Object.keys(selections ?? {}).length === 0 ? line?.value : activeTotal
   const difference = Number.isFinite(expected) && Number.isFinite(activeTotal) ? activeTotal - expected : null
   const tolerance = Number.isFinite(expected) ? Math.max(1e-9, Math.abs(expected) * 1e-6) : null
@@ -249,8 +253,9 @@ export function statementDrill(detail, options) {
     const historyRecords = statementId === 'balance'
       ? balanceRecords(detail, statementLine(detail, statementId, lineId, historyYear, mode), historyYear)
       : resultRecords(detail, line, historyYear)
-    const amount = filterRecords(historyRecords, selections).reduce((sum, record) => sum + record.amount, 0)
-    return { v: historyRecords.length ? observationValue(amount, detail, historyYear, mode) : null }
+    const selectedHistory = filterRecords(historyRecords, selections)
+    const amount = selectedHistory.reduce((sum, record) => sum + record.amount, 0)
+    return { v: selectedHistory.length ? observationValue(amount, detail, historyYear, mode) : null }
   })
   return {
     line, rows, nextDimension, activeTotal, history,
