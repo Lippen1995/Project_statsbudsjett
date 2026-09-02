@@ -69,6 +69,28 @@ test('resultatoppstillingen bruker gjensidig utelukkende KOSTRA-linjer og avstem
   assert.equal(view.sections[2].rows.at(-1).value, 94)
 })
 
+test('resultatoppstillingen starter overordnet og holder avdrag utenfor resultatet', () => {
+  const values = Object.fromEntries([
+    ['AGD45', 300], ['AGD46', 210], ['AGD65', 90], ['AGD79', 5], ['AGD81', 2],
+    ['AGD83', -1], ['AGD82', 8], ['AGD85', 6], ['AGD89', 94], ['AG5', 4],
+  ].map(([code, amount]) => [code, {
+    code, name: code, sourceTable: '13551', values: { 2025: { amount, perCapita: amount * 10 } },
+  }]))
+  const detail = { statementData: { result: values, investment: {}, balance: {} } }
+
+  const view = statementView(detail, 'result', 2025, 'amount')
+
+  assert.deepEqual(view.overviewRows.map((row) => [row.id, row.label, row.value]), [
+    ['operating_revenue', 'Inntekter', 300],
+    ['operating_expense', 'Driftskostnader', 210],
+    ['gross_operating_result', 'Bruttoresultat', 90],
+    ['net_finance_expense', 'Netto finans', -2],
+    ['net_operating_result', 'Nettoresultat', 88],
+  ])
+  assert.deepEqual(view.overviewRows[1].availableDimensions, ['line', 'service', 'function', 'art'])
+  assert.equal(view.sections.flatMap((section) => section.rows).some((row) => row.id === 'loan_repayments'), false)
+})
+
 test('balansen bruker balansekapitler og tilbyr ikke en sektor som SSB-tabellen mangler', () => {
   const values = Object.fromEntries([
     ['KG43', 400], ['KG44', 100], ['KG46', 50], ['KG48', 20], ['KG50', 30],
@@ -90,6 +112,41 @@ test('balansen bruker balansekapitler og tilbyr ikke en sektor som SSB-tabellen 
   assert.deepEqual(view.reconciliations.balance, {
     componentTotal: 750, reportedTotal: 750, difference: 0, status: 'reconciled',
   })
+})
+
+test('balansen kan drilles fra hovedlinje via regnskapslinje eller balansekapittel', () => {
+  const item = (code, amount) => ({ code, name: code, sourceTable: '13202', values: { 2025: { amount } } })
+  const detail = { statementData: { result: {}, investment: {}, balance: {
+    KG43: item('KG43', 70), KG44: item('KG44', 30), KG62: item('KG62', 105),
+    KG41: item('KG41', 105), KG51: item('KG51', 0), KG47: item('KG47', 0),
+    KG49: item('KG49', 5),
+  } } }
+  const view = statementView(detail, 'balance', 2025, 'amount')
+
+  assert.deepEqual(view.overviewRows.map((row) => row.label), ['Eiendeler', 'Egenkapital og gjeld'])
+  assert.deepEqual(view.overviewRows[0].availableDimensions, ['line', 'balance_chapter'])
+
+  const linesFirst = statementDrill(detail, {
+    statementId: 'balance', lineId: 'assets', dimensions: ['line', 'balance_chapter'], selections: {}, year: 2025, mode: 'amount',
+  })
+  assert.deepEqual(linesFirst.rows.map((row) => [row.code, row.value]), [
+    ['fixed_property', 70], ['equipment', 30], ['other_noncurrent_assets', 5],
+  ])
+
+  const chaptersFirst = statementDrill(detail, {
+    statementId: 'balance', lineId: 'assets', dimensions: ['balance_chapter', 'line'], selections: {}, year: 2025, mode: 'amount',
+  })
+  assert.deepEqual(chaptersFirst.rows.map((row) => [row.code, row.value]), [
+    ['KG43', 70], ['KG44', 30], ['KG49', 5], ['KG47', 0],
+  ])
+  assert.equal(linesFirst.activeTotal, chaptersFirst.activeTotal)
+
+  const incompleteComposite = statementDrill(detail, {
+    statementId: 'balance', lineId: 'assets', dimensions: ['line', 'balance_chapter'],
+    selections: { line: 'other_noncurrent_assets' }, year: 2025, mode: 'amount',
+  })
+  assert.equal(incompleteComposite.reconciliation.status, 'incomplete')
+  assert.match(incompleteComposite.coverageNote, /mangler/i)
 })
 
 test('kontantstrømmen er beregnet og avstemmes uten å skjule forskjellen mot bankbevegelsen', () => {
@@ -139,6 +196,57 @@ test('kontantstrømmen er beregnet og avstemmes uten å skjule forskjellen mot b
   assert.equal(incomplete.sections[3].rows.find((row) => row.id === 'net_cashflow').value, null)
 })
 
+test('kontantstrømmen kan drilles via regnskapslinje og tilgjengelige KOSTRA-dimensjoner', () => {
+  const series = (sourceTable, points) => Object.fromEntries(
+    Object.entries(points).map(([code, amount]) => [code, { code, name: code, sourceTable, values: { 2025: { amount } } }]),
+  )
+  const detail = {
+    overview: { expenses: { 2025: { amount: 100, perCapita: 1_000 } } },
+    services: [{ code: 'FG1', name: 'Oppvekst' }],
+    functions: [{ code: '202', name: 'Grunnskole', serviceCodes: ['FG1'], metrics: { investments: { 2025: { amount: 50 } } } }],
+    accountingArts: { 202: [
+      { code: 'A600', name: 'Brukerbetalinger', values: { 2025: { amount: 10 } } },
+      { code: 'AGD34', name: 'Salgsinntekter', values: { 2025: { amount: 5 } } },
+      { code: 'AG16', name: 'Lønn', values: { 2025: { amount: 20 } } },
+      { code: 'A710', name: 'Sykelønnsrefusjon', values: { 2025: { amount: 2 } } },
+    ] },
+    statementData: {
+      result: series('13551', {
+        AGD75: 100, A800: 80, AG10: 20, AGD76: 5, A600: 10, AGD96: 5,
+        AGD77: 15, AGD78: 10, AG15: 22, AG35: 0, AG17: 0, AGD51: 0,
+        AGD80: 0, AGD79: 5, AGD82: 8,
+      }),
+      investment: series('13552', {
+        AGI39: 50, AGI40: 0, AGI41: 0, AGI42: 0, AGI44: 0, 929: 0,
+        AGI45: 0, AGI46: 0, AGI17: 20, AG5: 10,
+      }),
+      balance: { KG52: { code: 'KG52', name: 'Bank', sourceTable: '13202', values: { 2024: { amount: 100 }, 2025: { amount: 140 } } } },
+    },
+  }
+
+  const view = statementView(detail, 'cashflow', 2025, 'amount')
+  assert.deepEqual(view.overviewRows.map((row) => row.label), [
+    'Kontantstrøm fra drift', 'Kontantstrøm fra investeringer', 'Kontantstrøm fra finansiering', 'Netto kontantstrøm',
+  ])
+  assert.equal(view.sections.flatMap((section) => section.rows).some((row) => row.id === 'loan_repayments'), true)
+
+  const operatingLines = statementDrill(detail, {
+    statementId: 'cashflow', lineId: 'operating', dimensions: ['line', 'service', 'function', 'art'], selections: {}, year: 2025, mode: 'amount',
+  })
+  assert.equal(operatingLines.nextDimension, 'line')
+  assert.equal(operatingLines.rows.some((row) => row.code === 'wages_and_social_costs' && row.value === -22), true)
+
+  const wagesByService = statementDrill(detail, {
+    statementId: 'cashflow', lineId: 'operating', dimensions: ['line', 'service', 'function', 'art'], selections: { line: 'wages_and_social_costs' }, year: 2025, mode: 'amount',
+  })
+  assert.deepEqual(wagesByService.rows.map((row) => [row.code, row.value]), [['FG1', -22]])
+
+  const investmentsByService = statementDrill(detail, {
+    statementId: 'cashflow', lineId: 'investing', dimensions: ['service', 'line', 'function'], selections: {}, year: 2025, mode: 'amount',
+  })
+  assert.deepEqual(investmentsByService.rows.map((row) => [row.code, row.value]), [['FG1', -50]])
+})
+
 test('samme resultatlinje kan brytes ned i valgfri dimensjonsrekkefølge uten dobbelttelling', () => {
   const detail = {
     latestYear: 2025,
@@ -169,6 +277,89 @@ test('samme resultatlinje kan brytes ned i valgfri dimensjonsrekkefølge uten do
   assert.equal(byService.activeTotal, 30)
   assert.equal(byArt.activeTotal, 30)
   assert.equal(byService.reconciliation.status, 'reconciled')
+})
+
+test('regnskapslinje kan flyttes foran eller etter tjenesteområde i resultatdrillen', () => {
+  const statementItem = (code, amount) => ({
+    code, name: code, sourceTable: '13551', values: { 2025: { amount, perCapita: amount * 10 } },
+  })
+  const detail = {
+    overview: { expenses: { 2025: { amount: 30, perCapita: 300 } } },
+    services: [{ code: 'FG1', name: 'Oppvekst' }, { code: 'FG2', name: 'Helse' }],
+    functions: [
+      { code: '202', name: 'Grunnskole', serviceCodes: ['FG1'] },
+      { code: '253', name: 'Helse', serviceCodes: ['FG2'] },
+    ],
+    accountingArts: {
+      202: [
+        { code: 'AG16', name: 'Lønn', values: { 2025: { amount: 10 } } },
+        { code: 'AGD50', name: 'Varer og tjenester', values: { 2025: { amount: 5 } } },
+      ],
+      253: [
+        { code: 'AG16', name: 'Lønn', values: { 2025: { amount: 8 } } },
+        { code: 'AGD50', name: 'Varer og tjenester', values: { 2025: { amount: 7 } } },
+      ],
+    },
+    statementData: { result: {
+      AGD46: statementItem('AGD46', 30), AG15: statementItem('AG15', 18),
+      AG35: statementItem('AG35', 0), AG17: statementItem('AG17', 12),
+    } },
+  }
+
+  const linesFirst = statementDrill(detail, {
+    statementId: 'result', lineId: 'operating_expense', dimensions: ['line', 'service', 'function', 'art'], selections: {}, year: 2025, mode: 'amount',
+  })
+  assert.equal(linesFirst.nextDimension, 'line')
+  assert.deepEqual(linesFirst.rows.map((row) => [row.code, row.value]), [
+    ['wages', 18], ['goods_services', 12],
+  ])
+
+  const servicesFirst = statementDrill(detail, {
+    statementId: 'result', lineId: 'operating_expense', dimensions: ['service', 'line', 'function', 'art'], selections: {}, year: 2025, mode: 'amount',
+  })
+  assert.equal(servicesFirst.nextDimension, 'service')
+  assert.deepEqual(servicesFirst.rows.map((row) => [row.code, row.value]), [['FG1', 15], ['FG2', 15]])
+
+  const lineWithinService = statementDrill(detail, {
+    statementId: 'result', lineId: 'operating_expense', dimensions: ['service', 'line', 'function', 'art'], selections: { service: 'FG1' }, year: 2025, mode: 'amount',
+  })
+  assert.equal(lineWithinService.nextDimension, 'line')
+  assert.deepEqual(lineWithinService.rows.map((row) => [row.code, row.value]), [
+    ['wages', 10], ['goods_services', 5],
+  ])
+})
+
+test('inntekter åpner regnskapslinjene og videre KOSTRA-drill der kilden har fordeling', () => {
+  const item = (code, amount) => ({ code, name: code, sourceTable: '13551', values: { 2025: { amount } } })
+  const detail = {
+    overview: { revenues: { 2025: { amount: 100, perCapita: 1_000 } } },
+    services: [{ code: 'FG1', name: 'Oppvekst' }],
+    functions: [{ code: '202', name: 'Grunnskole', serviceCodes: ['FG1'] }],
+    accountingArts: { 202: [{ code: 'A600', name: 'Brukerbetalinger', values: { 2025: { amount: 12 } } }] },
+    statementData: { result: {
+      AGD45: item('AGD45', 100), AGD75: item('AGD75', 30), A800: item('A800', 20),
+      AG10: item('AG10', 5), AGD76: item('AGD76', 3), A600: item('A600', 12),
+      AGD96: item('AGD96', 10), AGD77: item('AGD77', 15), AGD78: item('AGD78', 5),
+    } },
+  }
+
+  const lines = statementDrill(detail, {
+    statementId: 'result', lineId: 'operating_revenue', dimensions: ['line', 'service', 'function', 'art'], selections: {}, year: 2025, mode: 'amount',
+  })
+  assert.equal(lines.rows.length, 8)
+  assert.equal(lines.rows.find((row) => row.code === 'user_payments').value, 12)
+  assert.deepEqual(statementView(detail, 'result', 2025, 'amount').overviewRows[0].partialDimensions, ['service', 'function', 'art'])
+
+  const userPayments = statementDrill(detail, {
+    statementId: 'result', lineId: 'operating_revenue', dimensions: ['line', 'service', 'function', 'art'], selections: { line: 'user_payments' }, year: 2025, mode: 'amount',
+  })
+  assert.deepEqual(userPayments.rows.map((row) => [row.code, row.value]), [['FG1', 12]])
+
+  const missingTaxDetail = statementDrill(detail, {
+    statementId: 'result', lineId: 'operating_revenue', dimensions: ['line', 'service'], selections: { line: 'tax_income' }, year: 2025, mode: 'amount',
+  })
+  assert.equal(missingTaxDetail.activeTotal, null)
+  assert.equal(missingTaxDetail.reconciliation.status, 'incomplete')
 })
 
 test('lønn åpner funksjon/art-drill og tomt detaljgrunnlag blir ikke null kroner', () => {

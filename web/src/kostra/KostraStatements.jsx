@@ -6,10 +6,15 @@ import KostraGrowthSummary from './KostraGrowthSummary'
 import { DIMENSIONS, STATEMENT_TYPES, statementDrill, statementView } from './statements'
 
 const PRESETS = {
-  service: { label: 'Etter tjeneste', dimensions: ['service', 'function', 'art'] },
-  cost: { label: 'Etter kostnadstype', dimensions: ['art', 'service', 'function'] },
-  function: { label: 'Etter funksjon', dimensions: ['function', 'art', 'service'] },
-  balance: { label: 'Etter balansekapittel', dimensions: ['balance_chapter'] },
+  line: { label: 'Regnskapslinjer først', statements: ['result', 'balance', 'cashflow'], dimensions: ['line', 'service', 'function', 'art', 'balance_chapter'] },
+  service: { label: 'Tjeneste først', statements: ['result', 'cashflow'], requires: 'service', dimensions: ['service', 'line', 'function', 'art'] },
+  cost: { label: 'Kostnadstype først', statements: ['result', 'cashflow'], requires: 'art', dimensions: ['art', 'line', 'service', 'function'] },
+  function: { label: 'Funksjon først', statements: ['result', 'cashflow'], requires: 'function', dimensions: ['function', 'line', 'art', 'service'] },
+  balance: { label: 'Balansekapittel først', statements: ['balance'], requires: 'balance_chapter', dimensions: ['balance_chapter', 'line'] },
+}
+
+function viewRows(view) {
+  return [...(view.overviewRows ?? []), ...view.sections.flatMap((section) => section.rows)]
 }
 
 function availableYears(detail, statementId, fallback) {
@@ -55,13 +60,14 @@ function statementUrl(state) {
 
 function lineSeries(detail, statementId, lineId, years, mode) {
   return years.map((year) => {
-    const row = statementView(detail, statementId, year, mode).sections
-      .flatMap((section) => section.rows).find((item) => item.id === lineId)
+    const row = viewRows(statementView(detail, statementId, year, mode))
+      .find((item) => item.id === lineId)
     return { v: row?.value ?? null }
   })
 }
 
-function selectionName(detail, dimension, code) {
+function selectionName(detail, view, dimension, code) {
+  if (dimension === 'line') return viewRows(view).find((item) => item.id === code)?.label ?? code
   if (dimension === 'service') return detail.services?.find((item) => item.code === code)?.name ?? code
   if (dimension === 'function') return detail.functions?.find((item) => item.code === code)?.name ?? code
   if (dimension === 'art') return Object.values(detail.accountingArts ?? {}).flat().find((item) => item.code === code)?.name ?? code
@@ -114,7 +120,7 @@ export default function KostraStatements({ detail, index }) {
   const urlReadyRef = useRef(false)
   const years = availableYears(detail, statementId, index.years)
   const view = statementView(detail, statementId, year, mode)
-  const selectedLine = view.sections.flatMap((section) => section.rows).find((row) => row.id === lineId)
+  const selectedLine = viewRows(view).find((row) => row.id === lineId)
   const allowedDimensions = selectedLine?.availableDimensions ?? []
   const effectiveDimensions = dimensions.filter((id) => allowedDimensions.includes(id))
   const drill = selectedLine ? statementDrill(detail, {
@@ -152,10 +158,13 @@ export default function KostraStatements({ detail, index }) {
   function chooseLine(row) {
     if (!row.clickable && !Number.isFinite(row.value)) return
     setLineId(row.id); setSelections({})
-    const initial = row.availableDimensions.includes('balance_chapter')
-      ? PRESETS.balance.dimensions
-      : PRESETS.service.dimensions.filter((id) => row.availableDimensions.includes(id))
-    setDimensions(initial)
+    const initial = row.availableDimensions.includes('line')
+      ? PRESETS.line.dimensions
+      : row.availableDimensions.includes('balance_chapter')
+        ? PRESETS.balance.dimensions
+        : PRESETS.service.dimensions
+    const validInitial = initial.filter((id) => row.availableDimensions.includes(id))
+    setDimensions(validInitial)
   }
 
   function tabKeyDown(event, index) {
@@ -167,12 +176,12 @@ export default function KostraStatements({ detail, index }) {
   }
 
   const graphLineId = lineId ?? (statementId === 'result' ? 'net_operating_result' : statementId === 'balance' ? 'total_assets' : 'net_cashflow')
-  const graphLine = view.sections.flatMap((section) => section.rows).find((row) => row.id === graphLineId)
+  const graphLine = viewRows(view).find((row) => row.id === graphLineId)
   const graphPoints = drill && Object.keys(selections).length ? drill.history : lineSeries(detail, statementId, graphLineId, years, mode)
   const graphGrowth = yearlyGrowth(graphPoints, years, year)
   const graphValue = graphPoints[years.indexOf(year)]?.v ?? graphLine?.value ?? null
   const graphName = Object.keys(selections).length
-    ? Object.entries(selections).map(([dimension, code]) => selectionName(detail, dimension, code)).at(-1) ?? selectedLine?.label
+    ? Object.entries(selections).map(([dimension, code]) => selectionName(detail, view, dimension, code)).at(-1) ?? selectedLine?.label
     : graphLine?.label ?? view.label
   const maxRow = Math.max(1, ...(drill?.rows ?? []).map((row) => Math.abs(row.value ?? 0)))
 
@@ -197,16 +206,16 @@ export default function KostraStatements({ detail, index }) {
             <nav className="ko-drillsmuler" aria-label="Valgt regnskapsnivå">
               <button type="button" onClick={() => { setLineId(null); setSelections({}) }}>{view.label}</button><span>›</span>
               <button type="button" onClick={() => setSelections({})}>{selectedLine.label}</button>
-              {effectiveDimensions.filter((id) => selections[id]).map((id, index, chosen) => <React.Fragment key={id}><span>›</span><button type="button" onClick={() => setSelections(Object.fromEntries(Object.entries(selections).filter(([key]) => chosen.indexOf(key) < index)))}>{selectionName(detail, id, selections[id])}</button></React.Fragment>)}
+              {effectiveDimensions.filter((id) => selections[id]).map((id, index, chosen) => <React.Fragment key={id}><span>›</span><button type="button" onClick={() => setSelections(Object.fromEntries(Object.entries(selections).filter(([key]) => chosen.indexOf(key) < index)))}>{selectionName(detail, view, id, selections[id])}</button></React.Fragment>)}
             </nav>
             <div className="ko-presetter" aria-label="Ferdige drillrekkefølger">
-              {Object.entries(PRESETS).filter(([, preset]) => preset.dimensions.some((id) => allowedDimensions.includes(id))).map(([id, preset]) => <button key={id} type="button" onClick={() => { setDimensions(preset.dimensions.filter((dimension) => allowedDimensions.includes(dimension))); setSelections({}) }}>{preset.label}</button>)}
+              {Object.entries(PRESETS).filter(([, preset]) => preset.statements.includes(statementId) && (!preset.requires || allowedDimensions.includes(preset.requires))).map(([id, preset]) => <button key={id} type="button" onClick={() => { setDimensions(preset.dimensions.filter((dimension) => allowedDimensions.includes(dimension))); setSelections({}) }}>{preset.label}{selectedLine.partialDimensions?.includes(preset.requires) ? ' (delvis)' : ''}</button>)}
             </div>
             <DimensionOrder dimensions={effectiveDimensions} setDimensions={(next) => { setDimensions(next); setSelections({}) }} allowed={allowedDimensions} />
             {drill?.nextDimension && <><div className="ko-drillhode ko-drillhode--arts"><span>{DIMENSIONS[drill.nextDimension]?.label}</span><span>{mode === 'perCapita' ? 'Per innb.' : 'Beløp'}</span><span>Andel</span></div>
             <div className="ko-drillrader">
               {(drill?.rows ?? []).map((row) => <button key={row.code} type="button" className="ko-drillart" onClick={() => setSelections({ ...selections, [drill.nextDimension]: row.code })}>
-                <span><span><small>{row.code}</small>{row.name}</span><i style={{ width: `${Math.abs(row.value ?? 0) / maxRow * 100}%` }} /></span>
+                <span><span>{drill.nextDimension !== 'line' && <small>{row.code}</small>}{row.name}</span><i style={{ width: `${Math.abs(row.value ?? 0) / maxRow * 100}%` }} /></span>
                 <strong className="num">{formatKostraValue(row.value, mode)}</strong><em className="num">{Number.isFinite(row.share) ? `${row.share.toLocaleString('nb-NO', { maximumFractionDigits: 1 })} %` : '–'}</em>{drill.remainingDimensions.length > 1 && <b>›</b>}
               </button>)}
             </div></>}
@@ -214,15 +223,16 @@ export default function KostraStatements({ detail, index }) {
             {drill?.nextDimension && (drill?.rows.length ?? 0) === 0 && <p className="ko-artavstemming">Det finnes ikke rapporterte observasjoner på neste nivå for dette valget og året.</p>}
             {effectiveDimensions.length === 0 && <p className="ko-artavstemming">SSBs oppstilling har ikke en videre funksjons-, arts- eller balansedimensjon for denne linjen. Historikken vises til høyre.</p>}
             {selectedLine.drillNote && <p className="ko-artavstemming">{selectedLine.drillNote}</p>}
+            {drill?.coverageNote && <p className="ko-artavstemming">{drill.coverageNote}</p>}
             {drill?.reconciliation.status === 'difference' && <p className="ko-artavstemming">Underpostene summerer til {formatKostraValue(drill.reconciliation.componentTotal, mode)}, mens oppstillingen viser {formatKostraValue(drill.reconciliation.reportedTotal, mode)}. Avviket på {formatKostraValue(drill.reconciliation.difference, mode)} er beholdt og ikke justert.</p>}
             {drill?.note && <p className="ko-artavstemming">{drill.note}</p>}
           </> : <div className="ko-oppstilling">
-            {view.sections.map((section) => <section key={section.id} aria-labelledby={`ko-${statementId}-${section.id}`}>
-              <h3 id={`ko-${statementId}-${section.id}`}>{section.label}</h3>
-              {section.rows.map((row) => <button key={row.id} type="button" className={`ko-oppstillingrad ko-oppstillingrad--${row.kind ?? 'line'}`} disabled={!row.clickable} onClick={() => chooseLine(row)}>
+            <section aria-labelledby={`ko-${statementId}-oversikt`}>
+              <h3 id={`ko-${statementId}-oversikt`} className="sr-only">{view.label} – hovedlinjer</h3>
+              {(view.overviewRows ?? []).map((row) => <button key={row.id} type="button" className={`ko-oppstillingrad ko-oppstillingrad--${row.kind ?? 'line'}`} disabled={!row.clickable} onClick={() => chooseLine(row)}>
                 <span>{row.label}{row.clickable && <small>{row.availableDimensions.length ? 'Se detaljer' : 'Vis historikk'}</small>}</span><strong className="num">{formatKostraValue(row.value, mode)}</strong>{row.clickable && <b aria-hidden="true">›</b>}
               </button>)}
-            </section>)}
+            </section>
             {view.note && <p className="ko-artavstemming">{view.note}</p>}
             {view.limitations?.map((note) => <p className="ko-artavstemming" key={note}>{note}</p>)}
             {Object.entries(view.reconciliations ?? {}).map(([id, check]) => check.status === 'difference' && <p className="ko-artavstemming" key={id}>
