@@ -888,6 +888,34 @@ body.ft-body { background: #F7F5F0; }
 .ft-fot-lenker { display: flex; flex-direction: column; gap: 8px; font-size: 13px; margin-top: 12px; }
 .ft-fot-lenker a { color: #D8D4CC; border: 0; }
 .ft-fot-lenker a:hover { color: #fff; }
+.ft-fot-kontakt {
+  min-width: 0;
+  margin-top: 6px;
+  border-left: 1px solid var(--strek-mork);
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.ft-fot-kontaktetikett { color: var(--blek); font-size: 12px; line-height: 1.4; }
+.ft-fot-lenker .ft-fot-kontaktlenke {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  max-width: 100%;
+  color: #D8D4CC;
+  text-decoration: underline;
+  text-decoration-color: rgba(216, 212, 204, .38);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.ft-fot-lenker .ft-fot-kontaktlenke:hover {
+  color: #fff;
+  text-decoration-color: currentColor;
+}
+.ft-fot-kontaktadresse { min-width: 0; overflow-wrap: anywhere; }
+.ft-fot-kontaktikon { flex: 0 0 auto; font-size: 10px; line-height: 1; }
 .ft-fot-linje {
   border-top: 1px solid var(--strek-mork);
   display: flex;

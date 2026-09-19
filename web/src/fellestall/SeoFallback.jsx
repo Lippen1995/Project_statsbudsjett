@@ -170,7 +170,13 @@ export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026,
               <a href="personvern.html">Personvern</a>
               <a href="vilkar.html">Vilkår og kilder</a>
               <a href="tilgjengelighet.html">Tilgjengelighet</a>
-              <a href="mailto:info@fjordinsight.com">Kontakt oss</a>
+              <div className="ft-fot-kontakt">
+                <span className="ft-fot-kontaktetikett">Kontakt</span>
+                <a className="ft-fot-kontaktlenke" href="mailto:info@fjordinsight.com">
+                  <span className="ft-fot-kontaktadresse">info@fjordinsight.com</span>
+                  <span className="ft-fot-kontaktikon" aria-hidden="true">↗</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
