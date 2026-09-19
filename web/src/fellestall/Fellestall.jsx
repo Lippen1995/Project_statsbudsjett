@@ -357,6 +357,7 @@ export default function Fellestall() {
               <a href="personvern.html">Personvern</a>
               <a href="vilkar.html">Vilkår og kilder</a>
               <a href="tilgjengelighet.html">Tilgjengelighet</a>
+              <a href="mailto:info@fjordinsight.com">Kontakt oss</a>
             </div>
           </div>
         </div>
