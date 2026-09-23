@@ -300,3 +300,174 @@ ikke det enkelte år (jf. 2020: ~4 % under pandemien).
 | Fil | Innhold |
 |-----|---------|
 | `fondsverdi.json` | Oljefondets markedsverdi ved årsslutt (`år -> mill. kr`) |
+
+---
+
+## 7. KOSTRA kommune- og fylkesregnskap
+
+**Status: VERIFISERT** mot SSB PxWebApi 2, Kartverket, KDDs kommunevise
+sluttavregning for inntektsutjevning og Grønt hefte 2026-09-01.
+
+Kildetabellene er 12137/13551/12362/12367 for kommuner og
+12366/13547/12163/12368 for fylkeskommuner. De dekker henholdsvis finansielle
+nøkkeltall, økonomisk driftsoversikt med rene renteposter,
+tjenesteområder/funksjoner og funksjon/regnskapsart. Beløpsenheten fra SSB er
+`1000 kr`; per-innbyggerverdier er `kr`. Tabell 13551 og 13547 publiserer bare
+beløp for renteinntekter (`AGD79`) og renteutgifter (`AGD82`). Importen utleder
+derfor kroner per innbygger fra et tilgjengelig KOSTRA-par for samme enhet og
+år. Mangler dette grunnlaget, forblir per-innbyggerverdien manglende.
+
+Normalisert SQLite-skjema ligger i `etl/kostra_schema.sql`. Den publiserte
+frontendmodellen ligger under `web/public/data/kostra/`:
+
+`fact.dataset_id` skiller dagens `kostra_actuals` fra framtidige kommunale
+budsjett- og overføringsdatasett. Eksporten velger datasett eksplisitt, så nye
+kilder kan ikke overskrive KOSTRA-regnskap for samme enhet, måltall og år.
+Utgåtte kommune- og fylkeskoder importeres med egne gyldighetsperioder; serier
+med ulike geografiske grenser blir bevisst ikke slått sammen.
+
+```typescript
+interface KostraIndex {
+  schemaVersion: 2;
+  updated: string;
+  latestYear: number;
+  years: number[];
+  metrics: Array<{
+    id: string;
+    label: string;
+    code: string;
+    category: "finance" | "service";
+    functionCode?: string;
+    municipalityOnly?: boolean;
+  }>;
+  entities: KostraEntity[];
+  historicalEntities: KostraEntity[];
+  values: {
+    [metricId: string]: {
+      [year: string]: {
+        [entityId: string]: { amount: number | null; perCapita: number | null };
+      };
+    };
+  };
+  incomeEqualization: {
+    [year: string]: {
+      [entityId: string]: KostraIncomeEqualizationMapPoint;
+    };
+  };
+}
+
+interface KostraIncomeEqualizationMapPoint {
+  population: number | null;
+  taxBefore: KostraIncomePoint;
+  equalization: Omit<KostraIncomePoint, "nationalRatio">;
+  taxAfter: KostraIncomePoint;
+  basis: "actual";
+  sourceUrl: string;
+  sourcePeriod: string;
+}
+
+interface KostraEntity {
+  id: string;              // municipality:0301 / county:03
+  code: string;            // offisiell SSB-kode
+  name: string;
+  kind: "municipality" | "county" | "country" | "peer_group";
+  parent_id: string | null;
+  peer_group_id: string | null;
+  active: 0 | 1;
+  valid_from: number | null;
+  valid_to: number | null;
+}
+```
+
+Detaljfiler har `schemaVersion: 4` og inneholder `overview`,
+`revenueBreakdown`, `expenseBreakdown`, `services`, `functions`,
+`accountingArts` og referanser til Norge/KOSTRA-gruppe. Kommunefiler har i
+tillegg `stateFlows`, `incomeEqualization`, `incomeSystemComparisons` og
+`blockGrantCalculation`:
+
+```typescript
+interface KostraAccountingArt {
+  code: string;             // offisiell SSB/KOSTRA-artkode
+  name: string;
+  values: {
+    [year: string]: { amount: number }; // 1000 kroner, fortegn beholdes
+  };
+}
+
+interface KostraBlockGrantCalculation {
+  years: number[];
+  values: {
+    [year: string]: {
+      basis: "budget";
+      sourceUrl: string;
+      sourcePeriod: string;
+      components: Array<{
+        code: string;
+        amount: number | null;     // 1000 kroner
+        perCapita: number | null;  // kroner
+      }>;
+    };
+  };
+}
+```
+
+`accountingArts` er indeksert per KOSTRA-funksjon. Nettleseren laster bare
+detaljfilen for valgt kommune eller fylkeskommune; den mottar aldri hele den
+nasjonale artstabellen. Manglende observasjoner utelates og tolkes ikke som
+null kroner.
+
+Kommunedetaljer har også `incomeEqualization`, basert på KDDs årlige
+sluttavregning. Beløp lagres i 1000 kroner, mens per-innbyggerverdier er i
+kroner. `equalization` beholder fortegnet: negativt betyr trekk fra kommunen,
+positivt betyr tillegg til kommunen. `nationalRatio` er kommunens nivå delt på
+landsgjennomsnittet, der `1` er likt landsgjennomsnittet.
+
+```typescript
+interface KostraIncomeEqualization {
+  years: number[];
+  values: {
+    [year: string]: {
+      population: number;
+      taxBefore: KostraIncomePoint;
+      equalization: Omit<KostraIncomePoint, "nationalRatio">;
+      taxAfter: KostraIncomePoint;
+      basis: "actual";
+      sourceUrl: string;
+      sourcePeriod: string;
+    };
+  };
+}
+
+interface KostraIncomePoint {
+  amount: number | null;        // 1 000 kroner
+  perCapita: number | null;     // kroner
+  nationalRatio: number | null; // 1 = landsgjennomsnittet
+}
+```
+
+```typescript
+interface KostraStateFlows {
+  years: number[];
+  incoming: KostraPublicFlow[]; // fra staten til kommuneorganisasjonen
+  outgoing: KostraPublicFlow[]; // fra kommunegeografien til staten/folketrygden
+}
+
+interface KostraPublicFlow {
+  code: string;
+  label: string;
+  actorScope: "municipal_government" | "residents" | "employers" | "mixed";
+  description: string;
+  values: {
+    [year: string]: {
+      amount: number | null;     // 1 000 kroner
+      perCapita: number | null;  // kroner
+      basis: "actual" | "budget" | "estimate";
+      sourceTable: string;
+      sourcePeriod: string;
+    };
+  };
+}
+```
+
+Manglende SSB-verdier publiseres som `null`/utelates; de konverteres aldri til
+null kroner.

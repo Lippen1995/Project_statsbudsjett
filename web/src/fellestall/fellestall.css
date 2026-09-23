@@ -169,6 +169,15 @@ body.ft-body { background: #F7F5F0; }
 .ft-navlenke:hover { color: var(--ink); border-bottom: 0; }
 .ft-navlenke.aktiv { color: var(--ink); font-weight: 700; border-left-color: var(--rust); }
 .ft-navnr { font-size: 10px; color: var(--blek); flex-shrink: 0; }
+.ft-navtekst .ft-kommuneny-merke { margin-left: 5px; }
+.ft-kommuneny-merke {
+  color: var(--rust);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  line-height: 1;
+  white-space: nowrap;
+}
 
 .ft-sidefot {
   display: flex;
@@ -210,6 +219,7 @@ body.ft-body { background: #F7F5F0; }
 }
 .ft-toppnav { display: flex; gap: 16px; font-size: 12.5px; font-weight: 500; flex-wrap: wrap; }
 .ft-toppnav a { border: 0; color: var(--dempet); }
+.ft-toppnav a .ft-kommuneny-merke { margin-left: 5px; }
 .ft-toppnavlenke.aktiv { color: var(--ink); font-weight: 700; }
 
 /* Under 1100 px byttes den faste sidemenyen ut med en klebrig topplinje */
@@ -237,6 +247,39 @@ body.ft-body { background: #F7F5F0; }
   max-width: 15ch;
   text-wrap: balance;
   animation: ftReisOpp .8s .12s var(--mykt) both;
+}
+.ft-hero-topp {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 56px;
+  align-items: end;
+}
+.ft-kommunenyhet {
+  display: grid;
+  gap: 5px;
+  padding: 14px 0 12px 18px;
+  border: 0;
+  border-left: 2px solid var(--rust);
+  color: var(--tekst);
+  animation: ftReisOpp .8s .18s var(--mykt) both;
+}
+.ft-kommunenyhet:hover { border-bottom: 0; }
+.ft-kommunenyhet strong {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 21px;
+  line-height: 1.15;
+}
+.ft-kommunenyhet-tekst {
+  max-width: 43ch;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.ft-kommunenyhet-lenke {
+  margin-top: 3px;
+  color: var(--rust);
+  font-size: 12px;
+  font-weight: 700;
 }
 .ft-hero-grid {
   display: grid;
@@ -888,6 +931,34 @@ body.ft-body { background: #F7F5F0; }
 .ft-fot-lenker { display: flex; flex-direction: column; gap: 8px; font-size: 13px; margin-top: 12px; }
 .ft-fot-lenker a { color: #D8D4CC; border: 0; }
 .ft-fot-lenker a:hover { color: #fff; }
+.ft-fot-kontakt {
+  min-width: 0;
+  margin-top: 6px;
+  border-left: 1px solid var(--strek-mork);
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.ft-fot-kontaktetikett { color: var(--blek); font-size: 12px; line-height: 1.4; }
+.ft-fot-lenker .ft-fot-kontaktlenke {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  max-width: 100%;
+  color: #D8D4CC;
+  text-decoration: underline;
+  text-decoration-color: rgba(216, 212, 204, .38);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.ft-fot-lenker .ft-fot-kontaktlenke:hover {
+  color: #fff;
+  text-decoration-color: currentColor;
+}
+.ft-fot-kontaktadresse { min-width: 0; overflow-wrap: anywhere; }
+.ft-fot-kontaktikon { flex: 0 0 auto; font-size: 10px; line-height: 1; }
 .ft-fot-linje {
   border-top: 1px solid var(--strek-mork);
   display: flex;
@@ -902,6 +973,7 @@ body.ft-body { background: #F7F5F0; }
 /* --- Smalere skjermer --------------------------------------------------- */
 
 @media (max-width: 980px) {
+  .ft-hero-topp,
   .ft-hero-grid,
   .ft-kart-grid,
   .ft-utforsk-grid,

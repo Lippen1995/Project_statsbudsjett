@@ -24,6 +24,7 @@ from parse_bevilgning import parse_bevilgning
 from parse_befolkning import parse_befolkning, parse_ssb_aarsserie
 from build_hierarchy import build_hierarchies, _save_json
 import stortinget
+import kostra
 
 OUTPUT_DIR = Path(__file__).parent.parent / "web" / "public" / "data"
 RAW_DIR = Path(__file__).parent / "raw"
@@ -276,6 +277,15 @@ def run(years=None, force=False):
     politikk = _valgfri(
         lambda: _bygg_politikk(force=force), "Politikk (Stortinget)", kilde="Stortinget")
 
+    # 6c. KOSTRA bygges som en egen, dyp modul: normalisert SQLite lokalt og
+    # ferdig aggregerte JSON-endepunkter for den statiske frontend-flaten.
+    # SSB/Kartverket er tilleggskilder; et utfall skal ikke felle statsdelen.
+    logger.info("\nSTEG 6c: KOSTRA kommune- og fylkesregnskap")
+    kostra_data = _valgfri(
+        lambda: kostra.ingest(kostra.SsbClient(force=force), kostra.DEFAULT_DB, OUTPUT_DIR),
+        "KOSTRA", kilde="SSB/Kartverket",
+    )
+
     # 7. Skriv befolkning og meta
     logger.info("\nSTEG 7: Skriver støttefiler")
     _save_json(befolkning, OUTPUT_DIR / "befolkning.json")
@@ -336,7 +346,7 @@ def run(years=None, force=False):
     skriv_status(
         vellykket=True,
         serier={"kpi": bool(kpi), "bnp": bool(bnp), "bnp_prognose": bool(bnp_prognose),
-                "politikk": bool(politikk)},
+                "politikk": bool(politikk), "kostra": bool(kostra_data)},
         aar=actual_years,
     )
 
@@ -484,8 +494,10 @@ def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict,
             if not (10 <= kpi[aar] <= 500):
                 raise ValueError(f"KPI {aar} urimelig: {kpi[aar]} (forventet indeks 10–500)")
     # Prognoseårene måles med samme ramme som regnskapsårene, og skal i tillegg
-    # ligge nær siste regnskapsår – et anslag som spretter er en parsefeil, ikke
-    # en spådom.
+    # ligge nær siste regnskapsår. Nominelt BNP kan likevel flytte seg mer enn
+    # 10 prosent på ett år når energi- og eksportprisene endres kraftig. En
+    # 20-prosentgrense fanger fortsatt klare variabel- og enhetsfeil uten å
+    # avvise SSBs publiserte anslag.
     if bnp_prognose and bnp:
         siste = max(bnp)
         for aar in sorted(bnp_prognose):
@@ -495,7 +507,7 @@ def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict,
                     f"BNP-prognose {aar} urimelig: {v:,.0f} mill. "
                     "(forventet 2 000 000–10 000 000)"
                 )
-            if abs(v - bnp[siste]) / bnp[siste] > 0.10 * (aar - siste):
+            if abs(v - bnp[siste]) / bnp[siste] > 0.20 * (aar - siste):
                 raise ValueError(
                     f"BNP-prognose {aar} spretter fra regnskapet: {v:,.0f} mot "
                     f"{bnp[siste]:,.0f} mill. i {siste} — sjekk at tabell 12880 "

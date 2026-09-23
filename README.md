@@ -1,6 +1,6 @@
 # Fellestall.no – statsfinansene, normalisert og forklart
 
-Webapplikasjon som visualiserer det norske statsbudsjettet og -regnskapet med ekte data fra DFØ Statsregnskapet og SSB.
+Webapplikasjon som visualiserer det norske statsbudsjettet og -regnskapet med ekte data fra DFØ Statsregnskapet, SSB og andre navngitte offentlige kilder.
 
 **Livedemonstrasjon krever at ETL har vært kjørt** – se oppsett nedenfor.
 
@@ -25,13 +25,19 @@ posten. Alle seksjonene leser samme datagrunnlag:
 7. **Hva staten får av lønnen din** – skattemodell med Stortingets satser for
    2025, fordelt på stat, kommune og fylkeskommune, og statens del fordelt
    etter den faktiske utgiftsfordelingen.
-8. **Utforsk hver krone** – analyseverktøyet uten forenklinger:
+8. **Utforsk staten** – analyseverktøyet uten forenklinger:
    - Klikkbart hierarki: departement → kapittel → post → artskonto
    - Regnskap, saldert og revidert budsjett, per år (2014→siste budsjettår)
    - Historikkgraf med årlig vekstrate og fest-til-sammenligning
    - Stablet areal for sammensetningen over tid
    - Søk på tvers av alle poster, per-innbygger-skalering og CSV-eksport
    - Filter for finanstransaksjoner og SPU-overføringer
+9. **Kommuner og fylker** – KOSTRA-seksjonen ligger rett under Utforsk staten
+   på samme side, med koropletkart og drill-down Norge → fylke → kommune.
+   Inneholder inntekter, utgifter,
+   driftsresultat, gjeld, investeringer og tjenesteområder, med historikk,
+   KOSTRA-gruppe, summering av synlige områder og en egen utforsker med
+   økonomisk drill-down til funksjon og regnskapsart.
 
 Det opprinnelige analyseverktøyet – med Stortingets voteringer
 (`politikk.json`) og virksomhetsnivået, som ennå ikke har fått plass i den nye
@@ -41,7 +47,8 @@ visningen – ligger på `#klassisk` (f.eks. `http://localhost:5173/#klassisk`).
 
 - Python 3.11+
 - Node.js 18+
-- Nettverkstilgang til `statsregnskapet.dfo.no` og `data.ssb.no`
+- Nettverkstilgang til `statsregnskapet.dfo.no`, `data.ssb.no`,
+  `nedlasting.geonorge.no` og `www.regjeringen.no`
 
 ## Oppsett
 
@@ -65,6 +72,7 @@ make dev
 |----------|-------------|
 | `make install` | Installer Python- og Node-avhengigheter |
 | `make etl` | Last ned og prosesser data (cacher råfiler) |
+| `make kostra` | Bygg KOSTRA-modulen fra SSB, Kartverket og KDD |
 | `make etl-force` | Re-last ned alle filer |
 | `make etl-inspect` | Last ned og skriv ut topplinjer av kildefilene |
 | `make test` | Kjør Python-enhetstester |
@@ -83,6 +91,8 @@ Project_statsbudsjett/
 │   ├── parse_bevilgning.py  Parser for bevilgningshistorikk-CSV
 │   ├── parse_befolkning.py  Parser for SSB JSON-stat2
 │   ├── build_hierarchy.py   Bygger JSON-hierarkier
+│   ├── kostra.py            KOSTRA-import, SQLite-modell og JSON-eksport
+│   ├── kostra_schema.sql    Normalisert lokalt dataskjema
 │   ├── requirements.txt
 │   ├── raw/                 Nedlastede råfiler (gitignored)
 │   ├── mappings/            Departementsaliaser mv.
@@ -98,6 +108,7 @@ Project_statsbudsjett/
 │   │   │   ├── bruk.js          Hooks: inntoning og scroll-markering
 │   │   │   ├── seksjoner/       Én komponent per seksjon
 │   │   │   └── grafer/          SVG-grafer (linje, treemap, sankey, vannfall)
+│   │   ├── kostra/          Kart, detaljsider og KOSTRA-visningsmodell
 │   │   ├── App.jsx          Rot-komponent for den klassiske visningen
 │   │   ├── components/      UI-komponenter for den klassiske visningen
 │   │   └── lib/             Datalasting, aggregering og formatering
@@ -106,10 +117,12 @@ Project_statsbudsjett/
     └── data-schema.md       Faktisk filskjema, dokumentert
 ```
 
-## Videre arbeid
+## KOSTRA
 
-Neste datadimensjon er **KOSTRA (kommune-/fylkesregnskap)**. Se
-[`docs/ROADMAP-KOSTRA.md`](docs/ROADMAP-KOSTRA.md) for plan og metodikk.
+KOSTRA er implementert som en separat modul. Importen lagrer en normalisert
+SQLite-modell lokalt og forhåndsberegner statiske JSON-endepunkter; frontenden
+kontakter aldri SSB direkte. Se [`docs/KOSTRA.md`](docs/KOSTRA.md) for
+arkitektur, tabeller, grenseendringer og outputskjema.
 
 ## Datakilder
 
@@ -117,6 +130,11 @@ Neste datadimensjon er **KOSTRA (kommune-/fylkesregnskap)**. Se
 |-------|--------|
 | [DFØ Statsregnskapet](https://statsregnskapet.dfo.no) | NLOD |
 | [SSB Folkemengde](https://www.ssb.no/befolkning) | CC BY 4.0 |
+| [SSB KOSTRA](https://www.ssb.no/offentlig-sektor/kostra) | CC BY 4.0 |
+| [SSB skatteregnskap](https://www.ssb.no/skatteregn) | CC BY 4.0 |
+| [Kartverket – grensedata](https://www.kartverket.no/api-og-data/grensedata) | CC BY 4.0 |
+| [KDD – løpende inntektsutjevning](https://www.regjeringen.no/no/tema/kommuner-og-regioner/kommuneokonomi/inntektssystemet-for-kommuner-og-fylkeskommuner/lopende-inntektsutjevning/id548672/) | Ikke spesifisert i regnearkene; kilde navngis og lenkes |
+| [KDD – Grønt hefte](https://www.regjeringen.no/no/tema/kommuner-og-regioner/kommuneokonomi/gront-hefte/id547024/) | Ikke spesifisert i regnearkene; kilde navngis og lenkes |
 | [NBIM – Oljefondets markedsverdi](https://www.nbim.no) | Årsrapporter (referansetabell) |
 
 ## Datafallgruver

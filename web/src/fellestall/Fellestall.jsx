@@ -14,6 +14,12 @@ import DinAndel from './seksjoner/DinAndel'
 import Utforsk from './seksjoner/Utforsk'
 import OmTallene from './seksjoner/OmTallene'
 import SeoFallback from './SeoFallback'
+import {
+  MunicipalLaunchAnnouncement,
+  MunicipalLaunchBadge,
+  useMunicipalLaunchNewsVisibility,
+} from './MunicipalLaunchNews.jsx'
+import Kostra from '../kostra/Kostra'
 import './fellestall.css'
 
 const SEKSJON_IDER = SEKSJONER.map((s) => s.id)
@@ -27,12 +33,14 @@ const START_UTFORSK = {
 }
 
 export default function Fellestall() {
+  const showMunicipalLaunchNews = useMunicipalLaunchNewsVisibility()
   const [data, setData] = useState(null)
   const [feil, setFeil] = useState(null)
   const [aar, setAar] = useState(null)
   const [skjulFin, setSkjulFin] = useState(true)
   const [utforsk, setUtforsk] = useState(START_UTFORSK)
   const [detaljer, setDetaljer] = useState({})
+  const [hash, setHash] = useState(() => window.location.hash)
   const lasterRef = useRef({})
 
   const aktivSeksjon = useAktivSeksjon(SEKSJON_IDER)
@@ -43,6 +51,12 @@ export default function Fellestall() {
   useEffect(() => {
     document.body.classList.add('ft-body')
     return () => document.body.classList.remove('ft-body')
+  }, [])
+
+  useEffect(() => {
+    const oppdater = () => setHash(window.location.hash)
+    window.addEventListener('hashchange', oppdater)
+    return () => window.removeEventListener('hashchange', oppdater)
   }, [])
 
   useEffect(() => {
@@ -191,7 +205,10 @@ export default function Fellestall() {
             {navLenker.map((n) => (
               <a key={n.id} href={`#${n.id}`} className={`ft-navlenke ${n.aktiv ? 'aktiv' : ''}`}>
                 <span className="ft-navnr num">{n.nr}</span>
-                <span>{n.navn}</span>
+                <span className="ft-navtekst">
+                  {n.navn}
+                  {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
+                </span>
               </a>
             ))}
           </nav>
@@ -212,6 +229,7 @@ export default function Fellestall() {
                 {navLenker.map((n) => (
                   <a key={n.id} href={`#${n.id}`} className={`ft-toppnavlenke ${n.aktiv ? 'aktiv' : ''}`}>
                     {n.navn}
+                    {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
                   </a>
                 ))}
                 <a href="#om-tallene">Om tallene</a>
@@ -221,9 +239,12 @@ export default function Fellestall() {
 
           <header className="ft-hero">
             <div className="ft-kicker">
-              Statsbudsjettet og statsregnskapet · {aarListe[0]}–{meta.siste_budsjett_aar}
+              {`Statsbudsjettet og statsregnskapet · ${aarListe[0]}–${meta.siste_budsjett_aar}`}
             </div>
-            <h1>Hvor blir det av skattepengene?</h1>
+            <div className="ft-hero-topp">
+              <h1>Hvor blir det av skattepengene?</h1>
+              {showMunicipalLaunchNews ? <MunicipalLaunchAnnouncement /> : null}
+            </div>
             <div className="ft-hero-grid">
               <p className="ft-ingress">
                 Hvert år fører staten regnskap over hver eneste krone, fordelt på 16 departementer, flere
@@ -306,6 +327,8 @@ export default function Fellestall() {
             hentDetaljer={hentDetaljer}
           />
 
+          <Kostra hash={hash} />
+
           <OmTallene meta={meta} antallPoster={avledet.antallPoster} />
         </main>
       </div>
@@ -317,8 +340,7 @@ export default function Fellestall() {
             <div className="ft-fot-slagord">En oversikt over norske statsfinanser</div>
             <p className="ft-fot-tekst">Statsbudsjettet og statsregnskapet, normalisert og forklart.</p>
             <div className="ft-fot-dato">
-              Sist oppdatert{' '}
-              {new Date(meta.oppdatert).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })}
+              {`Sist oppdatert ${new Date(meta.oppdatert).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })}`}
             </div>
           </div>
           <div>
@@ -347,6 +369,13 @@ export default function Fellestall() {
               <a href="personvern.html">Personvern</a>
               <a href="vilkar.html">Vilkår og kilder</a>
               <a href="tilgjengelighet.html">Tilgjengelighet</a>
+              <div className="ft-fot-kontakt">
+                <span className="ft-fot-kontaktetikett">Kontakt</span>
+                <a className="ft-fot-kontaktlenke" href="mailto:info@fjordinsight.com">
+                  <span className="ft-fot-kontaktadresse">info@fjordinsight.com</span>
+                  <span className="ft-fot-kontaktikon" aria-hidden="true">↗</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>

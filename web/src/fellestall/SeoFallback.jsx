@@ -1,4 +1,9 @@
 import React from 'react'
+import {
+  MunicipalLaunchAnnouncement,
+  MunicipalLaunchBadge,
+  useMunicipalLaunchNewsVisibility,
+} from './MunicipalLaunchNews.jsx'
 
 const SEKSJONER = [
   {
@@ -46,9 +51,15 @@ const SEKSJONER = [
   },
   {
     id: 'utforsk',
-    kortnavn: 'Utforsk',
-    tittel: 'Utforsk hver krone',
+    kortnavn: 'Utforsk staten',
+    tittel: 'Utforsk staten',
     tekst: 'Søk i statsregnskapet og statsbudsjettet fra departement til kapittel, post og artskonto, med historikk og sammenligning over tid.',
+  },
+  {
+    id: 'kommuner',
+    kortnavn: 'Kommuner og fylker',
+    tittel: 'Kommune- og fylkesregnskap',
+    tekst: 'Utforsk KOSTRA-tall på kartet, fra hele Norge til fylke og kommune, med historikk og sammenligninger.',
   },
 ]
 
@@ -61,6 +72,7 @@ function Merke() {
   )
 }
 export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026, oppdatert = '' }) {
+  const showMunicipalLaunchNews = useMunicipalLaunchNewsVisibility()
   const oppdatertDato = oppdatert
     ? new Date(oppdatert).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })
     : null
@@ -75,7 +87,10 @@ export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026,
             {SEKSJONER.map((s, i) => (
               <a key={s.id} href={`#${s.id}`} className="ft-navlenke">
                 <span className="ft-navnr num">{String(i + 1).padStart(2, '0')}</span>
-                <span>{s.kortnavn}</span>
+                <span className="ft-navtekst">
+                  {s.kortnavn}
+                  {showMunicipalLaunchNews && s.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
+                </span>
               </a>
             ))}
           </nav>
@@ -87,7 +102,12 @@ export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026,
             <div className="ft-toppbar-inner">
               <Merke />
               <nav className="ft-toppnav" aria-label="Hovedinnhold">
-                {SEKSJONER.map((s) => <a key={s.id} href={`#${s.id}`}>{s.kortnavn}</a>)}
+                {SEKSJONER.map((s) => (
+                  <a key={s.id} href={`#${s.id}`}>
+                    {s.kortnavn}
+                    {showMunicipalLaunchNews && s.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
+                  </a>
+                ))}
                 <a href="#om-tallene">Om tallene</a>
               </nav>
             </div>
@@ -95,9 +115,12 @@ export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026,
 
           <header className="ft-hero">
             <div className="ft-kicker">
-              Statsbudsjettet og statsregnskapet · {forsteAar}–{sisteBudsjettAar}
+              {`Statsbudsjettet og statsregnskapet · ${forsteAar}–${sisteBudsjettAar}`}
             </div>
-            <h1>Hvor blir det av skattepengene?</h1>
+            <div className="ft-hero-topp">
+              <h1>Hvor blir det av skattepengene?</h1>
+              {showMunicipalLaunchNews ? <MunicipalLaunchAnnouncement /> : null}
+            </div>
             <div className="ft-hero-grid">
               <p className="ft-ingress">
                 Hvert år fører staten regnskap over hver eneste krone, fordelt på departementer,
@@ -148,7 +171,7 @@ export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026,
             <div className="ft-logo ft-logo--lys">Fellestall<span>.no</span></div>
             <div className="ft-fot-slagord">En oversikt over norske statsfinanser</div>
             <p className="ft-fot-tekst">Statsbudsjettet og statsregnskapet, normalisert og forklart.</p>
-            {oppdatertDato && <div className="ft-fot-dato">Sist oppdatert {oppdatertDato}</div>}
+            {oppdatertDato && <div className="ft-fot-dato">{`Sist oppdatert ${oppdatertDato}`}</div>}
           </div>
           <div>
             <div className="ft-stikkord">Kilder</div>
@@ -164,6 +187,13 @@ export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026,
               <a href="personvern.html">Personvern</a>
               <a href="vilkar.html">Vilkår og kilder</a>
               <a href="tilgjengelighet.html">Tilgjengelighet</a>
+              <div className="ft-fot-kontakt">
+                <span className="ft-fot-kontaktetikett">Kontakt</span>
+                <a className="ft-fot-kontaktlenke" href="mailto:info@fjordinsight.com">
+                  <span className="ft-fot-kontaktadresse">info@fjordinsight.com</span>
+                  <span className="ft-fot-kontaktikon" aria-hidden="true">↗</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>

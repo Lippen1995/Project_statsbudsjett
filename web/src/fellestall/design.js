@@ -134,5 +134,6 @@ export const SEKSJONER = [
   { id: 'endringer', navn: 'Endringer' },
   { id: 'oljefondet', navn: 'Oljefondet' },
   { id: 'din-andel', navn: 'Lønnen din' },
-  { id: 'utforsk', navn: 'Utforsk' },
+  { id: 'utforsk', navn: 'Utforsk staten' },
+  { id: 'kommuner', navn: 'Kommuner og fylker' },
 ]

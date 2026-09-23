@@ -1,5 +1,9 @@
 # Neste datadimensjon: KOSTRA (kommune- og fylkesregnskap)
 
+> **Status 2026-08-15:** Implementert. Se `docs/KOSTRA.md` for den faktiske
+> arkitekturen, verifiserte tabeller og driftsinstruksjoner. Dette dokumentet
+> beholdes som beslutningshistorikk.
+
 > **Til en ny Claude-chat:** Dette notatet beskriver hva vi skal bygge videre.
 > Les også `docs/data-schema.md` (kildeskjemaer) og `README.md` (oppsett).
 > Følg ALLTID metodikken under før du skriver parsere.
@@ -44,8 +48,9 @@ aldri fabrikkere verdier. Alle tall skal kunne spores til en nedlastet fil.
    testspørringer. Les loggen med `mcp__github__*`-verktøyene.
 2. **Dokumentér det faktiske skjemaet** i `docs/data-schema.md` (ny §7) —
    tabell-ID-er, dimensjonskoder, verdikoder, enheter. Bekreft, ikke anta.
-3. **Skriv ETL** (`etl/kostra.py` el.l.), gjenbruk `_request_med_retry` og
-   `_download_ssb_tabell` (v0→v2-fallback) fra `etl/download.py`.
+3. **Skriv ETL** (`etl/kostra.py` el.l.), gjenbruk `_request_med_retry` fra
+   `etl/download.py`. `_download_ssb_tabell` er for enkeltserier og erstattes
+   her av en cachet PxWebApi 2-adapter for flerdimensjonale KOSTRA-uttrekk.
 4. **Enhetstester** på parsing/aggregering (`etl/tests/`), inkl. en
    reconciliation/sanity-sjekk mot en kjent publisert totalsum.
 5. **Wire inn i `etl/etl.py`** som et VALGFRITT steg (`_valgfri(...)`) —
