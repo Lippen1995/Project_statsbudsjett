@@ -287,6 +287,14 @@ def test_sanity_check_godtar_rimelig_prognose():
                  bnp={2024: 5_400_000.0}, bnp_prognose={2025: 5_600_000.0, 2026: 5_800_000.0})
 
 
+def test_sanity_check_godtar_ssbs_bnp_anslag_for_2026():
+    """SSBs nominelle BNP-anslag kan passere ti prosent ved store prisendringer."""
+    from etl import sanity_check
+    regnskap, bev = _minimalt_regnskap()
+    sanity_check(regnskap, bev, {2025: 5_627_400}, kpi=None,
+                 bnp={2025: 5_511_334.0}, bnp_prognose={2026: 6_088_000.0})
+
+
 # --- Enhetsnormalisering mellom SSB-tabeller ---
 
 def test_normaliser_enhet_oppdager_mrd_mot_mill():

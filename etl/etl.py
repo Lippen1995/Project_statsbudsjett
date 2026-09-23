@@ -494,8 +494,10 @@ def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict,
             if not (10 <= kpi[aar] <= 500):
                 raise ValueError(f"KPI {aar} urimelig: {kpi[aar]} (forventet indeks 10–500)")
     # Prognoseårene måles med samme ramme som regnskapsårene, og skal i tillegg
-    # ligge nær siste regnskapsår – et anslag som spretter er en parsefeil, ikke
-    # en spådom.
+    # ligge nær siste regnskapsår. Nominelt BNP kan likevel flytte seg mer enn
+    # 10 prosent på ett år når energi- og eksportprisene endres kraftig. En
+    # 20-prosentgrense fanger fortsatt klare variabel- og enhetsfeil uten å
+    # avvise SSBs publiserte anslag.
     if bnp_prognose and bnp:
         siste = max(bnp)
         for aar in sorted(bnp_prognose):
@@ -505,7 +507,7 @@ def sanity_check(regnskap_frames: dict, bevilgning_df, befolkning: dict,
                     f"BNP-prognose {aar} urimelig: {v:,.0f} mill. "
                     "(forventet 2 000 000–10 000 000)"
                 )
-            if abs(v - bnp[siste]) / bnp[siste] > 0.10 * (aar - siste):
+            if abs(v - bnp[siste]) / bnp[siste] > 0.20 * (aar - siste):
                 raise ValueError(
                     f"BNP-prognose {aar} spretter fra regnskapet: {v:,.0f} mot "
                     f"{bnp[siste]:,.0f} mill. i {siste} — sjekk at tabell 12880 "
