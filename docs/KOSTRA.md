@@ -258,6 +258,22 @@ kodebytter bakover i tid.
 Manglende kildeverdier beholdes som manglende data, ikke som null. Ingen
 placeholder- eller eksempelverdier publiseres.
 
+## Oppdatering av ROBEK-data
+
+Gjeldende ROBEK-register og kildedato vedlikeholdes i
+`web/src/kostra/robek.js`. Historiske inn- og utmeldinger ligger i
+`web/src/kostra/robek-history.json` og kan genereres fra departementets
+regneark med:
+
+```powershell
+.\scripts\generate_robek_history.ps1 -InputPath <sti-til-regneark.xlsx>
+```
+
+Skriptet krever Windows og Excel fordi kilderegnearket leses via Excel COM.
+ROBEK-data oppdateres derfor ikke av den månedlige Linux-baserte ETL-jobben.
+Ved oppdatering skal registeret, `ROBEK_UPDATED` og historikkfilen oppdateres i
+samme commit, etterfulgt av `npm test` og `npm run sjekk`.
+
 Folketallet i kartoppsummeringen er merket `ca.` fordi det utledes av SSBs
 publiserte KOSTRA-par `beløp (1000 kr)` og `beløp per innbygger (kr)`, som er
 avrundet i kilden. Summerte per-innbyggerverdier befolkningsvektes.

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { loadKostraDetail } from '../lib/kostra'
 import LinjeGraf from '../fellestall/grafer/LinjeGraf'
 import { INK, RUST } from '../fellestall/design'
@@ -12,14 +12,24 @@ import {
   mapValue,
   materialBoundaryHistory,
   metricSeries,
+  municipalityEqualizationRows,
+  municipalityFreeIncomeRankingRows,
+  municipalityIncomeRankingRows,
+  personalTaxAllocation,
   populationForEntity,
   stateFlowSummary,
   yearlyGrowth,
 } from './model'
-import { accountingArtBreakdown, accountingArtFunctionBreakdown, explorerDrillRows } from './explorer'
+import { accountingArtBreakdown, explorerDrillRows } from './explorer'
 import KostraGrowthSummary from './KostraGrowthSummary'
+import IncomeEqualizationChart from './IncomeEqualizationChart'
 import KostraInfoTooltip from './KostraInfoTooltip'
 import KostraStatements from './KostraStatements'
+import MunicipalityEqualizationDialog from './MunicipalityEqualizationDialog'
+import MunicipalityFreeIncomeRankingDialog from './MunicipalityFreeIncomeRankingDialog'
+import MunicipalityIncomeRankingDialog from './MunicipalityIncomeRankingDialog'
+import RobekStatusDialog from './RobekStatusDialog'
+import { expenseCompositionRows, incomeCompositionRows } from './statements'
 
 const GREEN = '#47735D'
 const DRILL_CATEGORIES = [
@@ -29,6 +39,7 @@ const DRILL_CATEGORIES = [
 ]
 const populationFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 const percentFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 })
+const taxRateFormat = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 3 })
 const BLOCK_GRANT_COMPONENTS = {
   base_per_resident: ['Lik grunnsum per innbygger', 'Alle kommuner starter med samme beløp per innbygger.'],
   expense_equalization: ['Utgiftsutjevning', 'Justerer for ufrivillige forskjeller i behov og kostnader, blant annet alder, bosetting og levekår.'],
@@ -46,118 +57,31 @@ function point(item, metric, year) {
   return item?.metrics?.[metric]?.[year] ?? null
 }
 
-function Breakdown({ title, rows, detail, year }) {
-  const [selectedCode, setSelectedCode] = useState(null)
-  const [showAll, setShowAll] = useState(false)
-  const backButtonRef = useRef(null)
-  const rowButtonsRef = useRef(new Map())
-  const selected = rows.find((row) => row.code === selectedCode)
-  const breakdown = selected
-    ? accountingArtFunctionBreakdown(detail, year, selected.code)
-    : null
-  const functionRows = breakdown?.rows ?? []
-  const contributingFunctionCount = functionRows.filter((row) => row.amount !== 0).length
-  const visibleRows = showAll ? functionRows : functionRows.slice(0, 10)
-  const max = Math.max(1, ...(selected ? functionRows : rows).map((row) => Math.abs(row.amount)))
-
-  useEffect(() => {
-    setSelectedCode(null)
-    setShowAll(false)
-  }, [detail, year])
-
-  useEffect(() => {
-    if (selectedCode) backButtonRef.current?.focus()
-  }, [selectedCode])
-
-  function closeDrill() {
-    const previousCode = selectedCode
-    setSelectedCode(null)
-    setShowAll(false)
-    requestAnimationFrame(() => rowButtonsRef.current.get(previousCode)?.focus())
-  }
-
+function Breakdown({ title, rows }) {
+  const max = Math.max(1, ...rows.map((row) => Math.abs(row.amount ?? 0)))
   return (
     <div className="ko-breakdown">
       <h3>{title}</h3>
-      {!selected && rows.map((row) => (
-        <button
-          type="button"
-          className="ko-breakdownrad ko-breakdownvalg"
-          key={row.code}
-          onClick={() => setSelectedCode(row.code)}
-          ref={(node) => {
-            if (node) rowButtonsRef.current.set(row.code, node)
-            else rowButtonsRef.current.delete(row.code)
-          }}
-        >
+      {rows.map((row) => (
+        <div className="ko-breakdownrad" key={row.code}>
           <div>
             <span>{row.name}</span>
-            <strong>{formatKostraValue(row.amount, 'amount')}<b aria-hidden="true">›</b></strong>
+            <strong>
+              <span>{formatKostraValue(row.amount, 'amount')}</span>
+              <small className="ko-breakdownandel">{Number.isFinite(row.share) ? `${percentFormat.format(row.share)} %` : '–'}</small>
+            </strong>
           </div>
-          <i style={{ width: `${Math.abs(row.amount) / max * 100}%` }} />
-          <span className="sr-only">. Vis fordeling på KOSTRA-funksjoner</span>
-        </button>
+          <i style={{ width: `${Math.abs(row.amount ?? 0) / max * 100}%` }} />
+        </div>
       ))}
-      {selected && <>
-        <div className="ko-breakdownsmuler">
-          <button type="button" ref={backButtonRef} onClick={closeDrill}>← Tilbake</button>
-          <span>{selected.code}</span>
-        </div>
-        <div className="ko-breakdownvalgt">
-          <strong>{selected.name}</strong>
-          <span>{formatKostraValue(selected.amount, 'amount')} · {contributingFunctionCount} funksjoner med beløp</span>
-        </div>
-        {functionRows.length > 0 && (
-          <div className="ko-breakdowntabellramme" tabIndex="0" aria-label="Rull sidelengs for å se hele funksjonstabellen på smale skjermer">
-            <table className="ko-breakdowntabell">
-              <caption className="sr-only">{selected.name} fordelt på KOSTRA-funksjon</caption>
-              <thead><tr>
-                <th scope="col">KOSTRA-funksjon</th>
-                <th scope="col">Beløp</th>
-                <th scope="col">Per innb.</th>
-                <th scope="col">Andel</th>
-              </tr></thead>
-              <tbody>
-                {visibleRows.map((row) => (
-                  <tr key={row.code}>
-                    <th scope="row">
-                      <span><small>{row.code}</small>{row.name}</span>
-                      <i style={{ width: `${Math.abs(row.amount) / max * 100}%` }} />
-                    </th>
-                    <td>{formatKostraValue(row.amount, 'amount')}</td>
-                    <td>{formatKostraValue(row.perCapita, 'perCapita')}</td>
-                    <td>{Number.isFinite(row.share) ? `${populationFormat.format(row.share)} %` : '–'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-        {functionRows.length > 10 && (
-          <button type="button" className="ko-breakdownvisalle" onClick={() => setShowAll((current) => !current)}>
-            {showAll ? 'Vis de første 10 funksjonene' : `Vis alle ${functionRows.length} funksjoner`}
-          </button>
-        )}
-        {functionRows.length === 0 && <p className="ko-artavstemming">SSB har ikke publisert funksjonsfordeling for denne regnskapsarten.</p>}
-        {breakdown?.summation.status === 'matches' && (
-          <p className="ko-artavstemming">Totalen over inkluderer alle rapporterte KOSTRA-funksjoner{functionRows.length > 10 ? ', også radene som vises når listen utvides' : ''}.</p>
-        )}
-        {breakdown?.summation.status === 'difference' && (
-          <p className="ko-artavstemming">Funksjonene summerer til {formatKostraValue(breakdown.summation.functionTotal, 'amount')}, mens sammendraget over viser {formatKostraValue(breakdown.summation.breakdownTotal, 'amount')}. Avviket er ikke justert.</p>
-        )}
-        {functionRows.some((row) => row.amount < 0) && (
-          <p className="ko-artavstemming">Negative beløp er motposter og beholdes med fortegn.</p>
-        )}
-      </>}
     </div>
   )
 }
 
-function ratioDescription(ratio) {
-  if (!Number.isFinite(ratio)) return 'Nivå mot landsgjennomsnittet mangler'
-  const deviation = Math.abs((ratio - 1) * 100)
-  if (deviation < 0.05) return 'På nivå med landsgjennomsnittet'
-  return `${percentFormat.format(deviation)} % ${ratio > 1 ? 'over' : 'under'} landsgjennomsnittet`
+function signedPercent(value) {
+  if (!Number.isFinite(value)) return '–'
+  if (Math.abs(value) < 0.05) return '0 %'
+  return `${value > 0 ? '+' : '−'}${percentFormat.format(Math.abs(value))} %`
 }
 
 function StateTaxDetails({ entityName, stateFlows, year }) {
@@ -203,6 +127,8 @@ function StateTaxDetails({ entityName, stateFlows, year }) {
 }
 
 function IncomeEqualization({
+  index,
+  entityCode,
   entityName,
   incomeEqualization,
   stateFlows,
@@ -226,54 +152,74 @@ function IncomeEqualization({
 
   const isContributor = summary.equalizationStatus === 'contributor'
   const isRecipient = summary.equalizationStatus === 'recipient'
-  const statusTitle = isContributor
-    ? `${entityName} får et trekk i rammetilskuddet`
-    : isRecipient ? `${entityName} får et tillegg i rammetilskuddet` : `${entityName} får verken tillegg eller trekk`
-  const valueContext = mode === 'perCapita' ? 'per innbygger' : 'til sammen'
   const amountSummary = incomeEqualizationSummary(incomeEqualization, stateFlows, year, 'amount')
   const perCapitaSummary = incomeEqualizationSummary(incomeEqualization, stateFlows, year, 'perCapita')
   const amountCalculation = blockGrantCalculationSummary(blockGrantCalculation, amountSummary, year, 'amount')
   const perCapitaCalculation = blockGrantCalculationSummary(blockGrantCalculation, perCapitaSummary, year, 'perCapita')
+  const selectedEntityId = `municipality:${entityCode}`
+  const municipalityRanking = municipalityIncomeRankingRows(index, year, selectedEntityId)
+  const municipalityEqualization = municipalityEqualizationRows(index, year, selectedEntityId)
+  const municipalityFreeIncomeRanking = municipalityFreeIncomeRankingRows(index, year, selectedEntityId)
+  const nationalDifference = Number.isFinite(perCapitaSummary?.taxBeforeNationalRatio)
+    ? (perCapitaSummary.taxBeforeNationalRatio - 1) * 100
+    : null
   const perCapitaComponents = new Map((perCapitaCalculation?.components ?? []).map((component) => [component.code, component.value]))
   const comparisonRows = incomeSystemComparisons?.values?.[year] ?? []
-  const incomeColumns = incomeSystemTableColumns(summary, comparisonRows, entityName, mode)
+  const selectedExpenseEqualization = (mode === 'perCapita' ? perCapitaCalculation : amountCalculation)
+    ?.components.find((component) => component.code === 'expense_equalization')?.value ?? null
+  const incomeColumns = incomeSystemTableColumns(summary, comparisonRows, entityName, mode, selectedExpenseEqualization)
+  const splitEqualization = incomeColumns.length > 0
+    && incomeColumns.every((column) => Number.isFinite(column.expenseEqualization))
   const equalizationLabel = isContributor
     ? 'Trekk i inntektsutjevningen'
     : isRecipient ? 'Tillegg i inntektsutjevningen' : 'Inntektsutjevning'
+  const taxAllocation = personalTaxAllocation(year, entityCode)
 
   return (
     <section className="ko-strommer" aria-labelledby="ko-strommer-tittel">
       <div className="ko-stromhode">
         <span className="ft-stikkord">Skatt, rammetilskudd og utjevning</span>
-        <h2 id="ko-strommer-tittel">Slik henger pengene sammen for {entityName}</h2>
-        <p>Kommunen får både lokale skatteinntekter og rammetilskudd fra staten. Inntektsutjevningen er ikke en tredje inntekt: den er et tillegg eller trekk inne i rammetilskuddet. Oppstillingen under tar den derfor først ut av det bokførte rammetilskuddet, og legger den inn igjen som en synlig egen linje.</p>
+        <h2 id="ko-strommer-tittel">Skatt og rammetilskudd i {entityName}</h2>
+        <p>Inntektsutjevningen er et tillegg eller trekk i rammetilskuddet, ikke en egen inntekt.</p>
       </div>
-      <div className={`ko-utjevningstatus ko-utjevningstatus--${summary.equalizationStatus}`}>
-        <span className="ft-stikkord">Kort fortalt · {year}</span>
-        <h3>{statusTitle}</h3>
-        <p>
-          Kommunens skatt per innbygger før utjevning er {ratioDescription(summary.taxBeforeNationalRatio).toLowerCase()}.
-          {' '}{isContributor
-            ? <>Derfor reduseres rammetilskuddet med <strong>{formatKostraValue(Math.abs(summary.equalization), mode)}</strong> {valueContext}.</>
-            : isRecipient
-              ? <>Derfor økes rammetilskuddet med <strong>{formatKostraValue(Math.abs(summary.equalization), mode)}</strong> {valueContext}.</>
-              : 'Rammetilskuddet endres ikke gjennom inntektsutjevningen.'}
-          {' '}Kommunen sender ikke en faktura til andre kommuner; staten gjør justeringen når rammetilskuddet utbetales.
-        </p>
-      </div>
+      <section className="ko-kommunestatistikk" aria-labelledby="ko-kommunestatistikk-tittel">
+        <span className="ft-stikkord" id="ko-kommunestatistikk-tittel">Oppsummering · {year}</span>
+        <div className="ko-kommunestatistikkgrid">
+          <MunicipalityIncomeRankingDialog
+            rows={municipalityRanking}
+            selectedEntityId={selectedEntityId}
+            selectedName={entityName}
+            year={year}
+          />
+          <div>
+            <span>Mot landsgjennomsnittet</span>
+            <strong className="num">{signedPercent(nationalDifference)}</strong>
+            <small>Skatt per innbygger før utjevning</small>
+          </div>
+          <MunicipalityFreeIncomeRankingDialog
+            rows={municipalityFreeIncomeRanking}
+            selectedEntityId={selectedEntityId}
+            selectedName={entityName}
+            year={year}
+          />
+          <MunicipalityEqualizationDialog
+            rows={municipalityEqualization}
+            selectedEntityId={selectedEntityId}
+            selectedName={entityName}
+            year={year}
+          />
+          <RobekStatusDialog municipalityCode={entityCode} municipalityName={entityName} />
+        </div>
+      </section>
       <article className="ko-inntektsregnestykke">
-        <span className="ft-stikkord">Pengene kommunen faktisk har fått inn{mode === 'perCapita' && comparisonRows.length > 0 ? ' · sammenligning per innbygger' : ''}</span>
-        <h3>Skatt, rammetilskudd og utjevning i ett regnestykke</h3>
+        <span className="ft-stikkord">Frie inntekter{mode === 'perCapita' && comparisonRows.length > 0 ? ' · sammenligning per innbygger' : ''}</span>
+        <h3>Skatt og rammetilskudd</h3>
         <p>
-          Først vises hvordan inntektsutjevningen endrer rammetilskuddet. Deretter legges kommunens skatt til.
-          {' '}Sluttsummen er ikke «totale skatteinntekter», fordi rammetilskuddet er penger fra staten – ikke skatt kommunen har krevd inn.
-          {mode === 'perCapita' && comparisonRows.length > 0
-            ? ' Beløp per innbygger gjør kommunen, KOSTRA-gruppen og Norge sammenlignbare.'
-            : mode === 'perCapita' ? ' Alle linjene bruker samme innbyggertall som KDDs sluttavregning, slik at de kan summeres.' : ''}
+          Rammetilskuddet vises før og etter utgifts- og inntektsutjevning. Kommunens skatteinntekter legges til nederst.
         </p>
         <div className="ko-rammetabellramme" tabIndex={incomeColumns.length > 1 ? '0' : undefined} aria-label={incomeColumns.length > 1 ? 'Rull sidelengs for å se hele sammenligningen på smale skjermer' : undefined}>
           <table className={`ko-stromtabell ko-regnestykke ko-inntektssystemtabell${incomeColumns.length > 1 ? ' ko-inntektssystemtabell--sammenligning' : ''}`}>
-            <caption className="sr-only">Skatt, rammetilskudd og inntektsutjevning for {entityName} i {year}</caption>
+            <caption className="sr-only">Skatt, rammetilskudd, utgiftsutjevning og inntektsutjevning for {entityName} i {year}</caption>
             <thead><tr><th scope="col">Regnestykke</th>{incomeColumns.map((column) => (
               <th scope="col" key={column.id}>
                 <span className="ko-sammenlignnavn">{column.label}{column.id.startsWith('peer_group:') && (
@@ -283,8 +229,9 @@ function IncomeEqualization({
               </th>
             ))}</tr></thead>
             <tbody>
-              <tr><th scope="row"><b className="ko-operator">&nbsp;</b><span>Rammetilskudd før inntektsutjevning</span><small>Bokført rammetilskudd med utjevningens tillegg eller trekk tatt ut.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.before, mode)}</td>)}</tr>
-              <tr className="ko-stromtabell--utjevning"><th scope="row"><b className="ko-operator">±</b><span>Inntektsutjevning</span><small>Tillegg eller trekk ut fra skatt per innbygger sammenlignet med landet.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.equalization, mode)}</td>)}</tr>
+              <tr><th scope="row"><b className="ko-operator">&nbsp;</b><span>{splitEqualization ? 'Rammetilskudd før utjevning' : 'Rammetilskudd før inntektsutjevning'}</span><small>{splitEqualization ? 'Bokført rammetilskudd med inntekts- og utgiftsutjevning tatt ut.' : 'Bokført rammetilskudd med inntektsutjevningens tillegg eller trekk tatt ut.'}</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.before, mode)}</td>)}</tr>
+              {splitEqualization && <tr><th scope="row"><b className="ko-operator">±</b><span>Utgiftsutjevning</span><small>Tillegg eller trekk ut fra beregnet utgiftsbehov per innbygger.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.expenseEqualization, mode)}</td>)}</tr>}
+              <tr className="ko-stromtabell--utjevning"><th scope="row"><b className="ko-operator">±</b><span>Inntektsutjevning</span><small>Tillegg eller trekk ut fra skatt per innbygger sammenlignet med landet.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.incomeEqualization, mode)}</td>)}</tr>
               <tr className="ko-regnestykke--delsum"><th scope="row"><b className="ko-operator">=</b><span>Bokført rammetilskudd</span><small>Det kommunen faktisk har inntektsført som rammetilskudd.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.booked, mode)}</td>)}</tr>
               <tr><th scope="row"><b className="ko-operator">+</b><span>Kommunens skatteinntekter</span><small>Personlig inntekts- og formuesskatt, pluss naturressursskatt.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.tax, mode)}</td>)}</tr>
               <tr className="ko-regnestykke--sum"><th scope="row"><b className="ko-operator">=</b><span>Skatt og bokført rammetilskudd til sammen</span><small>To sentrale, frie inntektskilder – ikke kommunens samlede inntekter.</small></th>{incomeColumns.map((column) => <td className="num" key={column.id}>{formatKostraValue(column.total, mode)}</td>)}</tr>
@@ -298,6 +245,26 @@ function IncomeEqualization({
           <span className="ft-stikkord">Hvor skatten kommer fra</span>
           <h3>Ikke all skatt blir igjen i kommunen</h3>
           <p className="ko-stromforklaring">Skatten som inngår i utjevningen, er kommunens andel av inntekts- og formuesskatt fra personer og naturressursskatt fra kraftforetak.</p>
+          {taxAllocation && <div className="ko-personskatt" aria-label={`Kommunens andel av personskatten i ${taxAllocation.year}`}>
+            <span className="ft-stikkord">Siste fullførte inntektsår · {taxAllocation.year}</span>
+            <h4>Dette går til kommunen</h4>
+            <div className="ko-personskattkort">
+              <div>
+                <span>Alminnelig inntekt</span>
+                <strong className="num">{taxRateFormat.format(taxAllocation.municipalIncomeRate)} %</strong>
+                <p>Av 100 kr i alminnelig inntekt etter fradrag går {taxRateFormat.format(taxAllocation.municipalIncomeRate)} kr i skatt til {entityName}. Dette er ikke brutto lønn.</p>
+              </div>
+              <div>
+                <span>Skattepliktig nettoformue</span>
+                <strong className="num">{taxRateFormat.format(taxAllocation.municipalWealthRate)} %</strong>
+                <p>Av 100 kr over bunnfradraget på {populationFormat.format(taxAllocation.wealthAllowance)} kr går {taxRateFormat.format(taxAllocation.municipalWealthRate)} kr til {entityName}.{taxAllocation.reducedWealthRate ? ' Kommunen har vedtatt en lavere sats enn maksimum.' : ''}</p>
+              </div>
+            </div>
+            <p className="ko-personskattnote">
+              Trinnskatt og trygdeavgift går ikke til kommunen. Staten tar {taxRateFormat.format(taxAllocation.stateWealthRate)} % formuesskatt i det ordinære trinnet og {taxRateFormat.format(taxAllocation.stateWealthTopRate)} % av nettoformue over {populationFormat.format(taxAllocation.wealthTopThreshold)} kr.
+              {' '}<a href={taxAllocation.sourceUrl} target="_blank" rel="noreferrer">Stortingets skattevedtak for {taxAllocation.year}</a>.
+            </p>
+          </div>}
           <ul className="ko-forklaringsliste">
             <li><strong>Personskatt:</strong> Staten bestemmer hvor stor del av skatt på inntekt og formue som tilfaller kommunen.</li>
             <li><strong>Selskapsskatt:</strong> Ordinær skatt på selskapers overskudd går til staten, ikke til kommunen.</li>
@@ -314,6 +281,12 @@ function IncomeEqualization({
             <li>Behov knyttet til blant annet alder, levekår, reiseavstander og bosettingsmønster påvirker utgiftsutjevningen.</li>
             <li>Forskjellene reduseres, men fjernes ikke helt. Kommunene beholder derfor fortsatt ulike økonomiske utgangspunkt.</li>
           </ul>
+          <IncomeEqualizationChart
+            index={index}
+            year={year}
+            selectedEntityId={`municipality:${entityCode}`}
+            selectedName={entityName}
+          />
         </article>
       </div>
 
@@ -361,10 +334,11 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
   const [functionCode, setFunctionCode] = useState(null)
   const [drillMetric, setDrillMetric] = useState('expenses')
   const [drillMode, setDrillMode] = useState('amount')
+  const [statementYear, setStatementYear] = useState(null)
 
   useEffect(() => {
     let active = true
-    setDetail(null); setError(null); setServiceCode(null); setFunctionCode(null); setDrillMetric('expenses')
+    setDetail(null); setError(null); setServiceCode(null); setFunctionCode(null); setDrillMetric('expenses'); setStatementYear(null)
     loadKostraDetail(kind, code)
       .then((data) => {
         if (!active) return
@@ -413,6 +387,9 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
   if (!detail) return <section className="ko-status"><div className="spinner" /><p>Laster kommuneregnskap…</p></section>
 
   const year = detail.latestYear
+  const compositionYear = statementYear ?? year
+  const incomeComposition = incomeCompositionRows(detail, compositionYear)
+  const expenseComposition = expenseCompositionRows(detail, compositionYear)
   const summary = ['revenues', 'expenses', 'net_result', 'debt'].map((id) => {
     const definition = metricDefs.find((item) => item.id === id)
     const value = detail.overview[id]?.[year]?.[mode]
@@ -515,7 +492,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
           </div>
         )}
 
-        <KostraStatements detail={detail} index={index} />
+        <KostraStatements detail={detail} index={index} onYearChange={setStatementYear} />
         {false && <div className="ko-drill">
           <div className="ko-paneltopp">
             <div><span className="ft-stikkord">Økonomisk drill-down</span><h2>{drillHeading}</h2></div>
@@ -626,6 +603,8 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
 
         {kind === 'municipality' && (
           <IncomeEqualization
+            index={index}
+            entityCode={code}
             entityName={detail.entity.name}
             incomeEqualization={detail.incomeEqualization}
             stateFlows={detail.stateFlows}
@@ -677,8 +656,8 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
         </div>
 
         <div className="ko-breakdowngrid">
-          <Breakdown title="Hva inntektene består av" rows={detail.revenueBreakdown} detail={detail} year={year} />
-          <Breakdown title="Hva utgiftene består av" rows={detail.expenseBreakdown} detail={detail} year={year} />
+          <Breakdown title="Hva inntektene består av" rows={incomeComposition} />
+          <Breakdown title="Hva utgiftene består av" rows={expenseComposition} />
         </div>
       </section>
     </>

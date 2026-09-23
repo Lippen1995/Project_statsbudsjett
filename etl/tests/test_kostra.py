@@ -504,6 +504,67 @@ def test_regnskapsoppstillinger_eksporterer_sporbare_resultat_investering_og_bal
     assert detail["statementData"]["balance"]["KG52"]["values"]["2025"]["perCapita"] == 2500.0
 
 
+def test_skattefinansiering_eksporteres_som_eget_drillgrunnlag(tmp_path):
+    db = create_database(tmp_path / "kostra.sqlite")
+    db.execute(
+        "INSERT INTO entity VALUES (?,?,?,?,?,?,?,?,?,?)",
+        ("municipality:1103", "1103", "Stavanger", "municipality", None, None, 1, None, None, "Stavanger"),
+    )
+    db.execute(
+        "INSERT INTO fact VALUES (?,?,?,?,?,?,?,?,?)",
+        ("kostra_actuals", "municipality:1103", 2025, "AGD13", "", "", 1000, 10000, "12137"),
+    )
+    metadata = {
+        "id": ["KOKkommuneregion0000", "KOKartkap0000", "ContentsCode", "Tid"],
+        "dimension": {
+            "KOKkommuneregion0000": {"label": "region", "category": {"label": {"1103": "Stavanger"}}},
+            "KOKartkap0000": {"label": "regnskapsbegrep", "category": {"label": {
+                "AG12": "Skatt på inntekt og formue inkludert naturressursskatt",
+                "AG44": "- herav Naturressursskatt",
+            }}},
+            "ContentsCode": {"label": "statistikkvariabel", "category": {"label": {"KOSbelop0000": "Beløp (1000 kr)"}}},
+            "Tid": {"label": "år", "category": {"label": {"2025": "2025"}}},
+        },
+    }
+    cube = {
+        "id": metadata["id"], "size": [1, 2, 1, 1],
+        "dimension": {
+            "KOKkommuneregion0000": {"category": {"index": {"1103": 0}}},
+            "KOKartkap0000": {"category": {"index": {"AG12": 0, "AG44": 1}}},
+            "ContentsCode": {"category": {"index": {"KOSbelop0000": 0}}},
+            "Tid": {"category": {"index": {"2025": 0}}},
+        },
+        "value": [800, 50],
+    }
+    db.execute(
+        "INSERT INTO classification VALUES (?,?,?,?)",
+        ("statement_tax", "AG12", metadata["dimension"]["KOKartkap0000"]["category"]["label"]["AG12"], "tax_component"),
+    )
+    db.execute(
+        "INSERT INTO classification VALUES (?,?,?,?)",
+        ("statement_tax", "AG44", metadata["dimension"]["KOKartkap0000"]["category"]["label"]["AG44"], "tax_component"),
+    )
+
+    _import_statement_details(
+        db, "municipality", "13553", metadata, cube, "regnskapsbegrep", "tax",
+    )
+    write_frontend_data(db, tmp_path / "data", {"county": {}, "municipality": {}})
+
+    detail = json.loads(
+        (tmp_path / "data" / "kostra" / "entities" / "municipality-1103.json")
+        .read_text(encoding="utf-8")
+    )
+    assert detail["statementData"]["tax"]["AG12"] == {
+        "code": "AG12",
+        "name": "Skatt på inntekt og formue inkludert naturressursskatt",
+        "sourceTable": "13553",
+        "values": {"2025": {"amount": 800.0, "perCapita": 8000.0}},
+    }
+    assert detail["statementData"]["tax"]["AG44"]["values"]["2025"] == {
+        "amount": 50.0, "perCapita": 500.0,
+    }
+
+
 def test_stat_kommune_strommer_skiller_kommuneorganisasjonen_fra_geografien(tmp_path):
     db = create_database(tmp_path / "kostra.sqlite")
     db.execute(
@@ -616,6 +677,13 @@ def test_inntektsutjevning_normaliserer_fortegn_enhet_og_eksport(tmp_path):
         ("kostra_actuals", "peer_group:EKG12", 2025, "A800", "", "", 4_503_690, 30_000, "12137"),
         ("kostra_actuals", "country:EAK", 2025, "A800", "", "", 4_203_444, 28_000, "12137"),
     ])
+    db.execute(
+        """INSERT INTO block_grant_component_fact
+             (dataset_id,entity_id,year,component_code,amount,per_capita,sort_order,
+              basis,source_url,source_period)
+           VALUES ('kdd_green_book','municipality:1103',2025,'expense_equalization',
+                   -551306,-3672,20,'budget','https://www.regjeringen.no/gront-hefte/2025/','2025')"""
+    )
     _sync_block_grant_flows(db)
 
     source = "https://www.regjeringen.no/inntektsutjevning-2025.xlsx"
@@ -646,6 +714,13 @@ def test_inntektsutjevning_normaliserer_fortegn_enhet_og_eksport(tmp_path):
     assert comparisons[0]["blockGrantBeforeEqualizationPerCapita"] == pytest.approx(
         3_522_177 * 1000 / 150_123 + 7_531.58619464301
     )
+    assert comparisons[0]["expenseEqualizationPerCapita"] == -3672
+    assert comparisons[1]["expenseEqualizationPerCapita"] == pytest.approx(
+        -551_306 * 1000 / 150_123
+    )
+    assert comparisons[2]["expenseEqualizationPerCapita"] == pytest.approx(
+        -551_306 * 1000 / 150_123
+    )
     assert comparisons[1]["blockGrantPerCapita"] == 30_000
     assert comparisons[2]["blockGrantPerCapita"] == 28_000
 
@@ -662,6 +737,14 @@ def test_inntektsutjevning_normaliserer_fortegn_enhet_og_eksport(tmp_path):
     map_point = index["incomeEqualization"]["2025"]["municipality:1103"]
     assert map_point["taxBefore"]["nationalRatio"] == pytest.approx(1.2729580020083351)
     assert map_point["taxAfter"]["perCapita"] == pytest.approx(46_275.81004710543)
+    assert map_point["expenseEqualization"] == {
+        "amount": -551_306,
+        "perCapita": -3_672,
+    }
+    assert map_point["blockGrant"] == {
+        "amount": 3_522_177,
+        "perCapita": 23_223,
+    }
     assert map_point["sourceUrl"] == source
 
 

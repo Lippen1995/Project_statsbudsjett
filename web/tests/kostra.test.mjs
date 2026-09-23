@@ -8,8 +8,16 @@ import {
   countyGroupName,
   displayEntityName,
   drillHistory,
+  expenseEqualizationChartRows,
   findKostraEntities,
+  formatKostraShare,
+  formatKostraValue,
   incomeEqualizationSummary,
+  incomeEqualizationChartRows,
+  municipalityEqualizationRows,
+  municipalityFreeIncomeRankingRows,
+  municipalityIncomeRankingRows,
+  sortMunicipalityEqualizationRows,
   incomeSystemTableColumns,
   incomeEqualizationMapSummary,
   incomeEqualizationPoint,
@@ -20,6 +28,7 @@ import {
   municipalityOverviewRows,
   overviewComparisonRows,
   parseKostraRoute,
+  personalTaxAllocation,
   populationForEntity,
   summarizeMunicipalities,
   summarizeKostraEntities,
@@ -28,17 +37,29 @@ import {
   stateFlowSummary,
   yearlyGrowth,
 } from '../src/kostra/model.js'
+import {
+  formatRobekDuration,
+  robekLegalBasisLetters,
+  robekCurrentMunicipalities,
+  robekStatusForMunicipality,
+} from '../src/kostra/robek.js'
 import { SEKSJONER } from '../src/fellestall/design.js'
 import {
   accountingArtFunctionBreakdown,
+  accountingArtsFunctionBreakdown,
   accountingArtBreakdown,
   explorerDrillRows,
   explorerHistory,
   explorerRowsWithShares,
+  isFunctionBreakdownDrillable,
   sortExplorerRows,
 } from '../src/kostra/explorer.js'
 import {
+  expenseCompositionRows,
+  incomeCompositionRows,
   statementDrill,
+  statementDrillScope,
+  statementRowInteraction,
   statementView,
 } from '../src/kostra/statements.js'
 
@@ -70,6 +91,67 @@ test('resultatoppstillingen bruker gjensidig utelukkende KOSTRA-linjer og avstem
   assert.equal(view.sections[2].rows.at(-1).value, 94)
 })
 
+test('inntektssammendraget inkluderer alle drifts- og finansinntekter', () => {
+  const values = Object.fromEntries([
+    ['AGD75', 100], ['A800', 80], ['AG10', 20], ['AGD76', 5],
+    ['A600', 30], ['AGD96', 40], ['AGD77', 15], ['AGD78', 10], ['AGD45', 300],
+    ['AGD79', 5], ['AGD81', 2], ['AGD83', -1],
+  ].map(([code, amount]) => [code, {
+    code, name: code, sourceTable: '13551', values: { 2025: { amount } },
+  }]))
+  const detail = { statementData: { result: values } }
+
+  const rows = incomeCompositionRows(detail, 2025)
+
+  assert.deepEqual(new Set(rows.map((row) => row.code)), new Set([
+    'tax_income', 'block_grant', 'property_tax', 'other_tax',
+    'user_payments', 'sales_rent', 'state_grants', 'other_operating_revenue',
+    'interest_income', 'dividends', 'financial_gains',
+  ]))
+  assert.equal(rows.find((row) => row.code === 'tax_income').amount, 100)
+  assert.equal(rows.reduce((sum, row) => sum + row.amount, 0), 306)
+  assert.equal(rows.find((row) => row.code === 'tax_income').share, 100 / 306 * 100)
+  assert.ok(Math.abs(rows.reduce((sum, row) => sum + row.share, 0) - 100) < 1e-9)
+
+  const incompleteRows = incomeCompositionRows({ statementData: { result: {
+    AGD75: values.AGD75,
+  } } }, 2025)
+  assert.equal(incompleteRows.find((row) => row.code === 'block_grant').amount, null)
+  assert.equal(incompleteRows.find((row) => row.code === 'block_grant').sourceStatus, 'incomplete')
+  assert.equal(incompleteRows.every((row) => row.share == null), true)
+})
+
+test('utgiftssammendraget bruker de samme regnskapslinjene som resultatoppstillingen', () => {
+  const values = Object.fromEntries([
+    ['AG15', 90], ['AG35', 20], ['AG17', 50], ['AGD51', 30],
+    ['AGD80', 10], ['A590', 10], ['AGD46', 210],
+  ].map(([code, amount]) => [code, {
+    code, name: code, sourceTable: '13551', values: { 2025: { amount } },
+  }]))
+  const detail = { statementData: { result: values } }
+
+  const rows = expenseCompositionRows(detail, 2025)
+
+  assert.deepEqual(rows.map((row) => [row.code, row.amount]), [
+    ['wages', 110],
+    ['goods_services', 50],
+    ['purchased_services', 30],
+    ['transfers', 10],
+    ['depreciation', 10],
+  ])
+  assert.equal(rows.reduce((sum, row) => sum + row.amount, 0), 210)
+  assert.equal(rows.find((row) => row.code === 'wages').share, 110 / 210 * 100)
+  assert.ok(Math.abs(rows.reduce((sum, row) => sum + row.share, 0) - 100) < 1e-9)
+
+  const incompleteRows = expenseCompositionRows({ statementData: { result: {
+    AG15: values.AG15,
+  } } }, 2025)
+  const incompleteWages = incompleteRows.find((row) => row.code === 'wages')
+  assert.equal(incompleteWages.amount, null)
+  assert.equal(incompleteWages.sourceStatus, 'incomplete')
+  assert.equal(incompleteRows.every((row) => row.share == null), true)
+})
+
 test('resultatoppstillingen starter overordnet og holder avdrag utenfor resultatet', () => {
   const values = Object.fromEntries([
     ['AGD45', 300], ['AGD46', 210], ['AGD65', 90], ['AGD79', 5], ['AGD81', 2],
@@ -90,6 +172,37 @@ test('resultatoppstillingen starter overordnet og holder avdrag utenfor resultat
   ])
   assert.deepEqual(view.overviewRows[1].availableDimensions, ['line', 'service', 'function', 'art'])
   assert.equal(view.sections.flatMap((section) => section.rows).some((row) => row.id === 'loan_repayments'), false)
+})
+
+test('oppstillingsrader skiller mellom drill og grafvisning', () => {
+  assert.deepEqual(statementRowInteraction({ availableDimensions: ['line'], value: 10 }), {
+    action: 'drill', hint: 'Se detaljer', tone: null,
+  })
+  assert.deepEqual(statementRowInteraction({ availableDimensions: [], value: 10 }), {
+    action: 'graph', hint: 'Vis i grafen', tone: null,
+  })
+  assert.equal(statementRowInteraction({ canDrill: true, value: 10 }).action, 'drill')
+  assert.equal(statementRowInteraction({ canDrill: false, value: 10 }).action, 'graph')
+})
+
+test('valgt inntektslinje skiller egne drillnivåer fra alternative innganger til hele inntektsområdet', () => {
+  const parent = { availableDimensions: ['line', 'service', 'function', 'art', 'tax'] }
+  const taxLine = { availableDimensions: ['tax'] }
+
+  assert.deepEqual(
+    statementDrillScope(parent, taxLine, ['line', 'service', 'function', 'art', 'tax']),
+    {
+      visibleDimensions: ['line', 'tax'],
+      alternativeDimensions: ['service', 'function', 'art'],
+    },
+  )
+})
+
+test('nettoresultat er grønt i pluss og rødt bare i minus', () => {
+  assert.equal(statementRowInteraction({ id: 'net_operating_result', value: 244 }).tone, 'positive')
+  assert.equal(statementRowInteraction({ id: 'net_operating_result', value: -1 }).tone, 'negative')
+  assert.equal(statementRowInteraction({ id: 'net_operating_result', value: 0 }).tone, null)
+  assert.equal(statementRowInteraction({ id: 'net_cashflow_summary', value: 244 }).tone, null)
 })
 
 test('balansen bruker balansekapitler og tilbyr ikke en sektor som SSB-tabellen mangler', () => {
@@ -115,36 +228,82 @@ test('balansen bruker balansekapitler og tilbyr ikke en sektor som SSB-tabellen 
   })
 })
 
-test('balansen kan drilles fra hovedlinje via regnskapslinje eller balansekapittel', () => {
+test('balanseavvik forklares av SSBs kontrollposter for konserninterne mellomværender', () => {
+  const item = (code, amount) => ({
+    code, name: code, sourceTable: '13202', values: { 2025: { amount, perCapita: amount * 10 } },
+  })
+  const detail = { statementData: { result: {}, investment: {}, balance: Object.fromEntries([
+    ['KG62', 57_380_472], ['KG90', 56_884_895],
+    ['KG33', -26_481], ['KG34', -861_269], ['KG35', 21_498], ['KG36', -413_667],
+  ].map(([code, amount]) => [code, item(code, amount)])) } }
+
+  const check = statementView(detail, 'balance', 2025, 'amount').reconciliations.balance
+
+  assert.equal(check.difference, 495_577)
+  assert.equal(check.internalDifference, 495_581)
+  assert.equal(check.unexplainedDifference, -4)
+  assert.equal(check.cause, 'unmatched-intercompany-balances')
+})
+
+test('balansen viser regnskapslinjer under eiendeler og egenkapital og gjeld som standard', () => {
+  const item = (code, amount) => ({ code, name: code, sourceTable: '13202', values: { 2025: { amount } } })
+  const detail = { statementData: { result: {}, investment: {}, balance: {
+    KG62: item('KG62', 105), KG41: item('KG41', 70), KG51: item('KG51', 35), KG43: item('KG43', 60),
+    KG90: item('KG90', 105), KG63: item('KG63', 10), KG76: item('KG76', 80), KG83: item('KG83', 15), KG85: item('KG85', 12),
+  } } }
+
+  const view = statementView(detail, 'balance', 2025, 'amount')
+
+  assert.deepEqual(view.defaultRows.map((row) => [row.id, row.kind ?? 'line', row.overviewLevel]), [
+    ['assets', 'subtotal', 0],
+    ['noncurrent_assets', 'line', 1],
+    ['current_assets', 'line', 1],
+    ['equity_debt', 'subtotal', 0],
+    ['equity', 'line', 1],
+    ['long_term_debt', 'line', 1],
+    ['short_term_debt', 'line', 1],
+  ])
+  assert.deepEqual(view.defaultRows.filter((row) => row.overviewLevel === 1).map((row) => row.overviewParentLabel), [
+    'Eiendeler', 'Eiendeler', 'Egenkapital og gjeld', 'Egenkapital og gjeld', 'Egenkapital og gjeld',
+  ])
+  assert.equal(view.defaultRows.some((row) => ['fixed_property', 'bank_debt', 'supplier_debt'].includes(row.id)), false)
+  assert.deepEqual(view.defaultRows.filter((row) => row.overviewLevel === 0).map((row) => [
+    row.availableDimensions,
+    statementRowInteraction(row).action,
+  ]), [
+    [[], 'graph'],
+    [[], 'graph'],
+  ])
+  assert.deepEqual(view.defaultRows.filter((row) => row.overviewLevel === 1).map((row) => statementRowInteraction(row).action), [
+    'drill', 'drill', 'drill', 'drill', 'drill',
+  ])
+
+  const incomplete = statementView({ statementData: { result: {}, investment: {}, balance: {
+    KG62: item('KG62', 105), KG41: item('KG41', 70), KG90: item('KG90', 105), KG76: item('KG76', 80), KG83: item('KG83', 15),
+  } } }, 'balance', 2025, 'amount')
+  const missingCurrentAssets = incomplete.defaultRows.find((row) => row.id === 'current_assets')
+  const missingEquity = incomplete.defaultRows.find((row) => row.id === 'equity')
+  assert.deepEqual([missingCurrentAssets.value, missingCurrentAssets.clickable], [null, false])
+  assert.deepEqual([missingEquity.value, missingEquity.clickable], [null, false])
+})
+
+test('balansens synlige regnskapslinjer kan drilles videre til balansekapittel', () => {
   const item = (code, amount) => ({ code, name: code, sourceTable: '13202', values: { 2025: { amount } } })
   const detail = { statementData: { result: {}, investment: {}, balance: {
     KG43: item('KG43', 70), KG44: item('KG44', 30), KG62: item('KG62', 105),
     KG41: item('KG41', 105), KG51: item('KG51', 0), KG47: item('KG47', 0),
     KG49: item('KG49', 5),
   } } }
-  const view = statementView(detail, 'balance', 2025, 'amount')
-
-  assert.deepEqual(view.overviewRows.map((row) => row.label), ['Eiendeler', 'Egenkapital og gjeld'])
-  assert.deepEqual(view.overviewRows[0].availableDimensions, ['line', 'balance_chapter'])
-
-  const linesFirst = statementDrill(detail, {
-    statementId: 'balance', lineId: 'assets', dimensions: ['line', 'balance_chapter'], selections: {}, year: 2025, mode: 'amount',
+  const noncurrentAssets = statementDrill(detail, {
+    statementId: 'balance', lineId: 'noncurrent_assets', dimensions: ['balance_chapter'], selections: {}, year: 2025, mode: 'amount',
   })
-  assert.deepEqual(linesFirst.rows.map((row) => [row.code, row.value]), [
-    ['fixed_property', 70], ['equipment', 30], ['other_noncurrent_assets', 5],
-  ])
-
-  const chaptersFirst = statementDrill(detail, {
-    statementId: 'balance', lineId: 'assets', dimensions: ['balance_chapter', 'line'], selections: {}, year: 2025, mode: 'amount',
-  })
-  assert.deepEqual(chaptersFirst.rows.map((row) => [row.code, row.value]), [
+  assert.deepEqual(noncurrentAssets.rows.map((row) => [row.code, row.value]), [
     ['KG43', 70], ['KG44', 30], ['KG49', 5], ['KG47', 0],
   ])
-  assert.equal(linesFirst.activeTotal, chaptersFirst.activeTotal)
 
   const incompleteComposite = statementDrill(detail, {
-    statementId: 'balance', lineId: 'assets', dimensions: ['line', 'balance_chapter'],
-    selections: { line: 'other_noncurrent_assets' }, year: 2025, mode: 'amount',
+    statementId: 'balance', lineId: 'other_noncurrent_assets', dimensions: ['balance_chapter'],
+    selections: {}, year: 2025, mode: 'amount',
   })
   assert.equal(incompleteComposite.reconciliation.status, 'incomplete')
   assert.match(incompleteComposite.coverageNote, /mangler/i)
@@ -349,7 +508,12 @@ test('inntekter åpner regnskapslinjene og videre KOSTRA-drill der kilden har fo
   })
   assert.equal(lines.rows.length, 8)
   assert.equal(lines.rows.find((row) => row.code === 'user_payments').value, 12)
-  assert.deepEqual(statementView(detail, 'result', 2025, 'amount').overviewRows[0].partialDimensions, ['service', 'function', 'art'])
+  const revenueView = statementView(detail, 'result', 2025, 'amount')
+  assert.deepEqual(revenueView.overviewRows[0].partialDimensions, ['service', 'function', 'art'])
+  assert.deepEqual(
+    revenueView.sections.flatMap((section) => section.rows).find((row) => row.id === 'tax_income').availableDimensions,
+    [],
+  )
 
   const userPayments = statementDrill(detail, {
     statementId: 'result', lineId: 'operating_revenue', dimensions: ['line', 'service', 'function', 'art'], selections: { line: 'user_payments' }, year: 2025, mode: 'amount',
@@ -361,6 +525,109 @@ test('inntekter åpner regnskapslinjene og videre KOSTRA-drill der kilden har fo
   })
   assert.equal(missingTaxDetail.activeTotal, null)
   assert.equal(missingTaxDetail.reconciliation.status, 'incomplete')
+})
+
+test('inntekter kan fordeles på tjeneste, funksjon og art uten at ufordelbare regnskapslinjer forsvinner', () => {
+  const item = (code, amount) => ({ code, name: code, sourceTable: '13551', values: { 2025: { amount } } })
+  const art = (code, name, amount) => ({ code, name, values: { 2025: { amount } } })
+  const detail = {
+    overview: { revenues: { 2025: { amount: 450, perCapita: 4_500 } } },
+    services: [{ code: 'FG1', name: 'Oppvekst' }],
+    functions: [{ code: '202', name: 'Grunnskole', serviceCodes: ['FG1'] }],
+    accountingArts: { 202: [
+      art('A600', 'Brukerbetalinger', 10),
+      art('AGD34', 'Andre salgs- og leieinntekter', 20),
+      art('AG48', 'Overføringsinntekter med krav til motytelse', 30),
+      art('AGD49', 'Overføringsinntekter uten krav til motytelse', 40),
+      art('AGD28', 'Finansinntekter og finanstransaksjoner', 50),
+    ] },
+    statementData: { result: {
+      AGD45: item('AGD45', 450), AGD75: item('AGD75', 200), A800: item('A800', 100),
+      A600: item('A600', 10), AGD96: item('AGD96', 20),
+      AGD77: item('AGD77', 30), AGD78: item('AGD78', 90),
+    } },
+  }
+
+  const revenueView = statementView(detail, 'result', 2025, 'amount')
+  const stateGrants = revenueView.sections.flatMap((section) => section.rows)
+    .find((row) => row.id === 'state_grants')
+  assert.deepEqual(stateGrants.availableDimensions, ['service', 'function', 'art'])
+
+  const byService = statementDrill(detail, {
+    statementId: 'result', lineId: 'operating_revenue',
+    dimensions: ['service', 'function', 'art', 'line', 'tax'], selections: {},
+    year: 2025, mode: 'amount', years: [2025],
+  })
+  assert.equal(byService.nextDimension, 'service')
+  assert.deepEqual(byService.rows.map((row) => [row.dimension, row.code, row.value]), [
+    ['line', 'tax_income', 200],
+    ['service', 'FG1', 100],
+    ['line', 'block_grant', 100],
+  ])
+  assert.match(byService.coverageNote, /vises uendret som regnskapslinjer/)
+})
+
+test('skatteinntekter bruker en egen skattedimensjon og avstemmer naturressursskatten', () => {
+  const item = (code, amount, sourceTable = '13551') => ({
+    code, name: code, sourceTable, values: { 2025: { amount, perCapita: amount * 10 } },
+  })
+  const detail = {
+    overview: { revenues: { 2025: { amount: 1_000, perCapita: 10_000 } } },
+    statementData: {
+      result: { AGD75: item('AGD75', 800) },
+      tax: { AG12: item('AG12', 800, '13553'), AG44: item('AG44', 50, '13553') },
+    },
+  }
+
+  const taxLine = statementView(detail, 'result', 2025, 'amount').sections
+    .flatMap((section) => section.rows).find((row) => row.id === 'tax_income')
+  assert.deepEqual(taxLine.availableDimensions, ['tax'])
+
+  const drill = statementDrill(detail, {
+    statementId: 'result', lineId: 'tax_income', dimensions: ['tax'], selections: {},
+    year: 2025, mode: 'amount', years: [2025],
+  })
+  assert.equal(drill.nextDimension, 'tax')
+  assert.deepEqual(drill.rows.map((row) => [row.code, row.name, row.value, row.share]), [
+    ['AG12–AG44', 'Inntekts- og formuesskatt uten naturressursskatt', 750, 93.75],
+    ['AG44', 'Naturressursskatt', 50, 6.25],
+  ])
+  assert.deepEqual(drill.rows.map((row) => row.canDrill), [false, false])
+  assert.equal(drill.reconciliation.status, 'reconciled')
+
+  const fromIncome = statementDrill(detail, {
+    statementId: 'result', lineId: 'operating_revenue',
+    dimensions: ['line', 'service', 'function', 'art', 'tax'],
+    selections: { line: 'tax_income' }, year: 2025, mode: 'amount', years: [2025],
+  })
+  assert.equal(fromIncome.nextDimension, 'tax')
+  assert.deepEqual(fromIncome.rows.map((row) => row.code), ['AG12–AG44', 'AG44'])
+  assert.equal(fromIncome.coverageNote, null)
+})
+
+test('eiendomsskatt fordeles på bolig og annen eiendom uten dobbelttelling', () => {
+  const item = (code, amount, sourceTable = '13551') => ({
+    code, name: code, sourceTable, values: { 2025: { amount, perCapita: amount * 10 } },
+  })
+  const detail = {
+    overview: { revenues: { 2025: { amount: 1_000, perCapita: 10_000 } } },
+    statementData: {
+      result: { AG10: item('AG10', 50) },
+      tax: { AG47: item('AG47', 30, '13553'), AG46: item('AG46', 20, '13553') },
+    },
+  }
+
+  const drill = statementDrill(detail, {
+    statementId: 'result', lineId: 'property_tax', dimensions: ['tax'], selections: {},
+    year: 2025, mode: 'perCapita', years: [2025],
+  })
+  assert.deepEqual(drill.rows.map((row) => [row.code, row.name, row.value, row.share]), [
+    ['AG47', 'Eiendomsskatt på boliger og fritidsboliger', 300, 60],
+    ['AG46', 'Eiendomsskatt på annen eiendom', 200, 40],
+  ])
+  assert.equal(drill.reconciliation.status, 'reconciled')
+  assert.equal(formatKostraValue(-8, 'amount'), '−8\u00a0000 kr')
+  assert.equal(formatKostraShare(-8 / 80_924 * 100), '−0,01 %')
 })
 
 test('lønn åpner funksjon/art-drill og tomt detaljgrunnlag blir ikke null kroner', () => {
@@ -385,7 +652,15 @@ test('lønn åpner funksjon/art-drill og tomt detaljgrunnlag blir ikke null kron
   })
   assert.equal(populated.nextDimension, 'service')
   assert.deepEqual(populated.rows.map((row) => [row.code, row.value]), [['FG1', 90]])
+  assert.equal(populated.rows[0].canDrill, true)
   assert.equal(populated.reconciliation.status, 'reconciled')
+
+  const arts = statementDrill(detail, {
+    statementId: 'result', lineId: 'wages', dimensions: ['service', 'function', 'art'],
+    selections: { service: 'FG1', function: '202' }, year: 2025, mode: 'amount',
+  })
+  assert.equal(arts.nextDimension, 'art')
+  assert.deepEqual(arts.rows.map((row) => row.canDrill), [false, false])
 
   detail.accountingArts = {}
   const missing = statementDrill(detail, {
@@ -523,6 +798,35 @@ test('inntekts- og utgiftsarter kan drilles til avstembare KOSTRA-funksjoner', (
     difference: null,
     status: 'no-summary',
   })
+})
+
+test('flere inntektsarter kan samles i én funksjonsfordeling', () => {
+  const detail = {
+    latestYear: 2025,
+    overview: { revenues: { 2025: { amount: 100, perCapita: 1_000 } } },
+    functions: [
+      { code: '202', name: 'Grunnskole', serviceCodes: ['FGK8b'] },
+      { code: '120', name: 'Administrasjon', serviceCodes: ['FGK1b'] },
+    ],
+    accountingArts: {
+      202: [
+        { code: 'AGD49', name: 'Andre overføringer', values: { 2025: { amount: 10 } } },
+        { code: 'AGD28', name: 'Finansinntekter', values: { 2025: { amount: 5 } } },
+      ],
+      120: [{ code: 'AGD49', name: 'Andre overføringer', values: { 2025: { amount: 20 } } }],
+    },
+  }
+
+  const breakdown = accountingArtsFunctionBreakdown(detail, 2025, ['AGD49', 'AGD28'], 35)
+
+  assert.deepEqual(breakdown.rows.map((row) => [row.code, row.amount]), [
+    ['120', 20], ['202', 15],
+  ])
+  assert.equal(breakdown.summation.status, 'matches')
+  assert.equal(isFunctionBreakdownDrillable(breakdown), true)
+  assert.equal(isFunctionBreakdownDrillable(
+    accountingArtsFunctionBreakdown(detail, 2025, ['AGD49', 'AGD28'], 40),
+  ), false)
 })
 
 test('innebygd kommuneutforsker driller til dypeste tilgjengelige KOSTRA-nivå', () => {
@@ -872,6 +1176,23 @@ test('stat-kommune-oppsummering summerer bare komplette, adskilte pengestrommer'
   })
 })
 
+test('personskatt viser kommunens inntekts- og formuesskatt for siste fulle år', () => {
+  assert.deepEqual(personalTaxAllocation(2025, '1103'), {
+    year: 2025,
+    municipalIncomeRate: 12.75,
+    municipalWealthRate: 0.525,
+    stateWealthRate: 0.475,
+    stateWealthTopRate: 0.575,
+    wealthAllowance: 1_760_000,
+    wealthTopThreshold: 20_700_000,
+    reducedWealthRate: false,
+    sourceUrl: 'https://lovdata.no/dokument/STV/forskrift/2024-12-13-3203',
+  })
+  assert.equal(personalTaxAllocation(2025, '1867').municipalWealthRate, 0.2)
+  assert.equal(personalTaxAllocation(2025, '1514').reducedWealthRate, true)
+  assert.equal(personalTaxAllocation(2024, '1103'), null)
+})
+
 test('inntektsutjevning skiller bidragsyter fra mottaker og sammenligner frie inntekter', () => {
   const incomeEqualization = { values: { 2025: {
     population: 150_123,
@@ -917,6 +1238,182 @@ test('inntektsutjevning skiller bidragsyter fra mottaker og sammenligner frie in
   } }] }, 2025, 'perCapita').freeIncomeSource, 'block_grant')
 })
 
+test('utjevningsgrafen viser kommuner før og etter og markerer valgt kommune', () => {
+  const index = {
+    entities: [
+      { id: 'municipality:1103', code: '1103', name: 'Stavanger', kind: 'municipality' },
+      { id: 'municipality:0301', code: '0301', name: 'Oslo kommune - Oslo suohkan', kind: 'municipality' },
+      { id: 'county:11', code: '1100', name: 'Rogaland fylkeskommune', kind: 'county' },
+    ],
+    incomeEqualization: { 2025: {
+      'municipality:1103': { taxBefore: { perCapita: 53_807 }, taxAfter: { perCapita: 46_276 }, equalization: { perCapita: -7_531 } },
+      'municipality:0301': { taxBefore: { perCapita: 55_309 }, taxAfter: { perCapita: 46_846 }, equalization: { perCapita: -8_463 } },
+      'county:11': { taxBefore: { perCapita: 60_000 }, taxAfter: { perCapita: 50_000 }, equalization: { perCapita: -10_000 } },
+      'municipality:9999': { taxBefore: { perCapita: null }, taxAfter: { perCapita: 40_000 }, equalization: { perCapita: null } },
+    } },
+  }
+
+  assert.deepEqual(incomeEqualizationChartRows(index, 2025, 'municipality:1103'), [
+    { id: 'municipality:1103', name: 'Stavanger', before: 53_807, after: 46_276, equalization: -7_531, selected: true },
+    { id: 'municipality:0301', name: 'Oslo kommune', before: 55_309, after: 46_846, equalization: -8_463, selected: false },
+  ])
+  assert.deepEqual(incomeEqualizationChartRows(index, 2024, 'municipality:1103'), [])
+})
+
+test('utgiftsgrafen illustrerer finansieringsbehov før og etter utgiftsutjevning', () => {
+  const index = {
+    entities: [
+      { id: 'municipality:1103', name: 'Stavanger', kind: 'municipality' },
+      { id: 'municipality:0301', name: 'Oslo kommune - Oslo suohkan', kind: 'municipality' },
+      { id: 'county:11', name: 'Rogaland fylkeskommune', kind: 'county' },
+    ],
+    values: { net_expenses: { 2025: {
+      'municipality:1103': { perCapita: 80_000 },
+      'municipality:0301': { perCapita: 90_000 },
+      'county:11': { perCapita: 100_000 },
+      'municipality:9999': { perCapita: null },
+    } } },
+    incomeEqualization: { 2025: {
+      'municipality:1103': { expenseEqualization: { perCapita: -3_000 } },
+      'municipality:0301': { expenseEqualization: { perCapita: 2_000 } },
+      'county:11': { expenseEqualization: { perCapita: 1_000 } },
+      'municipality:9999': { expenseEqualization: { perCapita: 500 } },
+    } },
+  }
+
+  assert.deepEqual(expenseEqualizationChartRows(index, 2025, 'municipality:1103'), [
+    { id: 'municipality:1103', name: 'Stavanger', before: 80_000, after: 83_000, equalization: -3_000, selected: true },
+    { id: 'municipality:0301', name: 'Oslo kommune', before: 90_000, after: 88_000, equalization: 2_000, selected: false },
+  ])
+  assert.deepEqual(expenseEqualizationChartRows(index, 2024, 'municipality:1103'), [])
+})
+
+test('ROBEK-grunnlag leser bare bokstavledd og ikke g-en i ordet og', () => {
+  assert.deepEqual(robekLegalBasisLetters('a, b, c og d'), ['a', 'b', 'c', 'd'])
+  assert.deepEqual(robekLegalBasisLetters('c og d'), ['c', 'd'])
+  assert.deepEqual(robekLegalBasisLetters(null), [])
+})
+
+test('kommuneoppsummeringen lager en komplett rangering av skatteinntekt per innbygger', () => {
+  const index = {
+    entities: [
+      { id: 'municipality:1103', name: 'Stavanger', kind: 'municipality' },
+      { id: 'municipality:0301', name: 'Oslo', kind: 'municipality' },
+      { id: 'municipality:1124', name: 'Sola', kind: 'municipality' },
+      { id: 'county:11', name: 'Rogaland', kind: 'county' },
+    ],
+    incomeEqualization: { 2025: {
+      'municipality:1103': { taxBefore: { perCapita: 53_807 } },
+      'municipality:0301': { taxBefore: { perCapita: 55_309 } },
+      'municipality:1124': { taxBefore: { perCapita: 53_807 } },
+      'county:11': { taxBefore: { perCapita: 80_000 } },
+      'municipality:9999': { taxBefore: { perCapita: 70_000 } },
+    } },
+  }
+
+  assert.deepEqual(municipalityIncomeRankingRows(index, 2025, 'municipality:1103'), [
+    { id: 'municipality:0301', name: 'Oslo kommune', rank: 1, taxPerCapita: 55_309, selected: false },
+    { id: 'municipality:1124', name: 'Sola', rank: 2, taxPerCapita: 53_807, selected: false },
+    { id: 'municipality:1103', name: 'Stavanger', rank: 2, taxPerCapita: 53_807, selected: true },
+  ])
+  assert.deepEqual(municipalityIncomeRankingRows(index, 2024, 'municipality:1103'), [])
+})
+
+test('frie inntekter rangerer bare skatteinntekter og bokført rammetilskudd med samme folketall', () => {
+  const index = {
+    entities: [
+      { id: 'municipality:1103', name: 'Stavanger', kind: 'municipality' },
+      { id: 'municipality:0301', name: 'Oslo', kind: 'municipality' },
+      { id: 'municipality:1124', name: 'Sola', kind: 'municipality' },
+      { id: 'county:11', name: 'Rogaland', kind: 'county' },
+    ],
+    incomeEqualization: { 2025: {
+      'municipality:1103': { population: 1_000, taxBefore: { perCapita: 53_000 }, blockGrant: { amount: 23_000 } },
+      'municipality:0301': { population: 1_000, taxBefore: { perCapita: 60_000 }, blockGrant: { amount: 10_000 } },
+      'municipality:1124': { population: 1_000, taxBefore: { perCapita: 50_000 }, blockGrant: { amount: 30_000 } },
+      'county:11': { population: 1_000, taxBefore: { perCapita: 100_000 }, blockGrant: { amount: 100_000 } },
+    } },
+  }
+
+  assert.deepEqual(municipalityFreeIncomeRankingRows(index, 2025, 'municipality:1103'), [
+    { id: 'municipality:1124', name: 'Sola', rank: 1, taxPerCapita: 50_000, blockGrantPerCapita: 30_000, totalPerCapita: 80_000, selected: false },
+    { id: 'municipality:1103', name: 'Stavanger', rank: 2, taxPerCapita: 53_000, blockGrantPerCapita: 23_000, totalPerCapita: 76_000, selected: true },
+    { id: 'municipality:0301', name: 'Oslo kommune', rank: 3, taxPerCapita: 60_000, blockGrantPerCapita: 10_000, totalPerCapita: 70_000, selected: false },
+  ])
+  assert.deepEqual(municipalityFreeIncomeRankingRows(index, 2024, 'municipality:1103'), [])
+})
+
+test('samlet utjevning summerer inntekts- og utgiftsutjevning og kan sorteres', () => {
+  const index = {
+    entities: [
+      { id: 'municipality:1103', name: 'Stavanger', kind: 'municipality' },
+      { id: 'municipality:0301', name: 'Oslo', kind: 'municipality' },
+      { id: 'municipality:1124', name: 'Sola', kind: 'municipality' },
+      { id: 'county:11', name: 'Rogaland', kind: 'county' },
+    ],
+    incomeEqualization: { 2025: {
+      'municipality:1103': {
+        equalization: { perCapita: -7_532 },
+        expenseEqualization: { perCapita: -3_635 },
+      },
+      'municipality:0301': {
+        equalization: { perCapita: -8_463 },
+        expenseEqualization: { perCapita: 2_000 },
+      },
+      'municipality:1124': {
+        equalization: { perCapita: -4_000 },
+        expenseEqualization: { perCapita: -1_000 },
+      },
+      'county:11': {
+        equalization: { perCapita: -20_000 },
+        expenseEqualization: { perCapita: -20_000 },
+      },
+    } },
+  }
+
+  const rows = municipalityEqualizationRows(index, 2025, 'municipality:1103')
+  assert.deepEqual(rows, [
+    { id: 'municipality:1103', name: 'Stavanger', incomePerCapita: -7_532, expensePerCapita: -3_635, totalPerCapita: -11_167, selected: true },
+    { id: 'municipality:0301', name: 'Oslo kommune', incomePerCapita: -8_463, expensePerCapita: 2_000, totalPerCapita: -6_463, selected: false },
+    { id: 'municipality:1124', name: 'Sola', incomePerCapita: -4_000, expensePerCapita: -1_000, totalPerCapita: -5_000, selected: false },
+  ])
+  assert.deepEqual(
+    sortMunicipalityEqualizationRows(rows, 'name', 'asc').map((row) => row.name),
+    ['Oslo kommune', 'Sola', 'Stavanger'],
+  )
+  assert.deepEqual(
+    sortMunicipalityEqualizationRows(rows, 'incomePerCapita', 'desc').map((row) => row.incomePerCapita),
+    [-4_000, -7_532, -8_463],
+  )
+  assert.deepEqual(municipalityEqualizationRows(index, 2024, 'municipality:1103'), [])
+})
+
+test('ROBEK-status bruker departementets løpende register med kilde og dato', () => {
+  const tromso = robekStatusForMunicipality('5501')
+  assert.equal(tromso.registered, true)
+  assert.equal(tromso.legalBasis, 'd')
+  assert.equal(tromso.updated, '2026-09-03')
+  assert.equal(tromso.currentPeriod.entered, '2026-08-26')
+  assert.equal(formatRobekDuration(tromso.currentPeriod, tromso.updated), '8 dager')
+
+  const stavanger = robekStatusForMunicipality('1103')
+  assert.equal(stavanger.registered, false)
+  assert.equal(stavanger.legalBasis, null)
+  assert.deepEqual(stavanger.periods, [])
+
+  const kragero = robekStatusForMunicipality('4014')
+  assert.deepEqual(kragero.periods, [
+    { entered: '2001-01-01', exited: '2006-07-11' },
+    { entered: '2024-06-05', exited: null },
+  ])
+  assert.equal(formatRobekDuration(kragero.periods[0]), '5 år og 6 måneder')
+
+  const current = robekCurrentMunicipalities()
+  assert.equal(current.length, 35)
+  assert.equal(current[0].name, 'Andøy')
+  assert.ok(current.every((row) => row.currentPeriod))
+})
+
 test('skatt og rammetilskudd samles i én sammenlignbar oppstilling', () => {
   const summary = {
     taxBefore: 53_807,
@@ -929,27 +1426,30 @@ test('skatt og rammetilskudd samles i én sammenlignbar oppstilling', () => {
     {
       id: 'municipality:1103', label: 'Stavanger', taxBeforePerCapita: 53_807,
       blockGrantBeforeEqualizationPerCapita: 30_994, equalizationPerCapita: -7_532,
+      expenseEqualizationPerCapita: -3_635,
       blockGrantPerCapita: 23_462,
     },
     {
       id: 'peer_group:12', label: 'KOSTRA-gruppe 12', taxBeforePerCapita: 42_000,
       blockGrantBeforeEqualizationPerCapita: 31_527, equalizationPerCapita: -2_072,
+      expenseEqualizationPerCapita: -1_100,
       blockGrantPerCapita: 29_455,
     },
     {
       id: 'country:EAK', label: 'Landet', taxBeforePerCapita: 42_250,
       blockGrantBeforeEqualizationPerCapita: 35_970, equalizationPerCapita: 0,
+      expenseEqualizationPerCapita: 0,
       blockGrantPerCapita: 35_970,
     },
   ]
 
-  assert.deepEqual(incomeSystemTableColumns(summary, comparisons, 'Stavanger', 'perCapita'), [
-    { id: 'municipality:1103', label: 'Stavanger', tax: 53_807, before: 30_994, equalization: -7_532, booked: 23_462, total: 77_269 },
-    { id: 'peer_group:12', label: 'KOSTRA-gruppe 12', tax: 42_000, before: 31_527, equalization: -2_072, booked: 29_455, total: 71_455 },
-    { id: 'country:EAK', label: 'Norge', tax: 42_250, before: 35_970, equalization: 0, booked: 35_970, total: 78_220 },
+  assert.deepEqual(incomeSystemTableColumns(summary, comparisons, 'Stavanger', 'perCapita', -3_635), [
+    { id: 'municipality:1103', label: 'Stavanger', tax: 53_807, before: 34_629, expenseEqualization: -3_635, incomeEqualization: -7_532, booked: 23_462, total: 77_269 },
+    { id: 'peer_group:12', label: 'KOSTRA-gruppe 12', tax: 42_000, before: 32_627, expenseEqualization: -1_100, incomeEqualization: -2_072, booked: 29_455, total: 71_455 },
+    { id: 'country:EAK', label: 'Norge', tax: 42_250, before: 35_970, expenseEqualization: 0, incomeEqualization: 0, booked: 35_970, total: 78_220 },
   ])
-  assert.deepEqual(incomeSystemTableColumns(summary, comparisons, 'Stavanger', 'amount'), [
-    { id: 'selected', label: 'Stavanger', tax: 53_807, before: 30_994, equalization: -7_532, booked: 23_462, total: 77_269 },
+  assert.deepEqual(incomeSystemTableColumns(summary, comparisons, 'Stavanger', 'amount', -3_635), [
+    { id: 'selected', label: 'Stavanger', tax: 53_807, before: 34_629, expenseEqualization: -3_635, incomeEqualization: -7_532, booked: 23_462, total: 77_269 },
   ])
 })
 

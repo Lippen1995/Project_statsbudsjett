@@ -34,4 +34,3 @@ export function loadKostraDetail(kind, code) {
   if (!details.has(key)) details.set(key, json(`./data/kostra/entities/${key}.json`, true))
   return details.get(key)
 }
-

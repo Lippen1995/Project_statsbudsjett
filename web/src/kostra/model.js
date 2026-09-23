@@ -191,6 +191,33 @@ export function stateFlowSummary(stateFlows, direction, year, mode) {
   }
 }
 
+const PERSONAL_TAX_ALLOCATION = {
+  2025: {
+    municipalIncomeRate: 12.75,
+    municipalWealthRate: 0.525,
+    stateWealthRate: 0.475,
+    stateWealthTopRate: 0.575,
+    wealthAllowance: 1_760_000,
+    wealthTopThreshold: 20_700_000,
+    sourceUrl: 'https://lovdata.no/dokument/STV/forskrift/2024-12-13-3203',
+  },
+}
+
+const REDUCED_WEALTH_TAX_2025 = new Set(['1514', '1867'])
+
+/** Lovbestemt kommunal andel av personskatten i siste ferdigstilte inntektsår. */
+export function personalTaxAllocation(year, municipalityCode) {
+  const rule = PERSONAL_TAX_ALLOCATION[year]
+  if (!rule) return null
+  const reducedWealthRate = year === 2025 && REDUCED_WEALTH_TAX_2025.has(String(municipalityCode))
+  return {
+    year,
+    ...rule,
+    municipalWealthRate: reducedWealthRate ? 0.2 : rule.municipalWealthRate,
+    reducedWealthRate,
+  }
+}
+
 /** Forklar om kommunen mottar eller bidrar i den løpende inntektsutjevningen. */
 export function incomeEqualizationSummary(incomeEqualization, stateFlows, year, mode) {
   const point = incomeEqualization?.values?.[year]
@@ -245,30 +272,47 @@ export function incomeEqualizationSummary(incomeEqualization, stateFlows, year, 
 }
 
 /** Samle skatt og rammetilskudd i én tabell uten å sammenligne nominelle totalsummer. */
-export function incomeSystemTableColumns(summary, comparisonRows, entityName, mode) {
+export function incomeSystemTableColumns(summary, comparisonRows, entityName, mode, selectedExpenseEqualization = null) {
   if (!summary) return []
+  const normalizedSelectedExpense = Number.isFinite(selectedExpenseEqualization) && Math.abs(selectedExpenseEqualization) < 0.5
+    ? 0
+    : selectedExpenseEqualization
   if (mode !== 'perCapita' || !comparisonRows?.length) {
+    const before = Number.isFinite(summary.blockGrantBeforeEqualization) && Number.isFinite(normalizedSelectedExpense)
+      ? summary.blockGrantBeforeEqualization - normalizedSelectedExpense
+      : summary.blockGrantBeforeEqualization
     return [{
       id: 'selected',
       label: entityName,
       tax: summary.taxBefore,
-      before: summary.blockGrantBeforeEqualization,
-      equalization: summary.equalization,
+      before,
+      expenseEqualization: normalizedSelectedExpense,
+      incomeEqualization: summary.equalization,
       booked: summary.blockGrant,
       total: summary.taxAndBlockGrant,
     }]
   }
-  return comparisonRows.map((row) => ({
-    id: row.id,
-    label: row.id === 'country:EAK' ? 'Norge' : row.label,
-    tax: row.taxBeforePerCapita,
-    before: row.blockGrantBeforeEqualizationPerCapita,
-    equalization: row.equalizationPerCapita,
-    booked: row.blockGrantPerCapita,
-    total: Number.isFinite(row.taxBeforePerCapita) && Number.isFinite(row.blockGrantPerCapita)
-      ? row.taxBeforePerCapita + row.blockGrantPerCapita
-      : null,
-  }))
+  return comparisonRows.map((row) => {
+    const expenseEqualization = Number.isFinite(row.expenseEqualizationPerCapita)
+      && Math.abs(row.expenseEqualizationPerCapita) < 0.5
+      ? 0
+      : row.expenseEqualizationPerCapita
+    const before = Number.isFinite(row.blockGrantBeforeEqualizationPerCapita) && Number.isFinite(expenseEqualization)
+      ? row.blockGrantBeforeEqualizationPerCapita - expenseEqualization
+      : row.blockGrantBeforeEqualizationPerCapita
+    return {
+      id: row.id,
+      label: row.id === 'country:EAK' ? 'Norge' : row.label,
+      tax: row.taxBeforePerCapita,
+      before,
+      expenseEqualization,
+      incomeEqualization: row.equalizationPerCapita,
+      booked: row.blockGrantPerCapita,
+      total: Number.isFinite(row.taxBeforePerCapita) && Number.isFinite(row.blockGrantPerCapita)
+        ? row.taxBeforePerCapita + row.blockGrantPerCapita
+        : null,
+    }
+  })
 }
 
 /** Avstem statsbudsjettets beregning mot faktisk bokført rammetilskudd. */
@@ -314,6 +358,164 @@ export function incomeEqualizationPoint(index, year, entityId) {
     ...point,
     status: amount < 0 ? 'contributor' : amount > 0 ? 'recipient' : 'neutral',
   }
+}
+
+/** Kommunevise før/etter-punkter til visualisering av inntektsutjevningen. */
+export function incomeEqualizationChartRows(index, year, selectedEntityId) {
+  const entities = new Map([
+    ...(index?.entities ?? []),
+    ...(index?.historicalEntities ?? []),
+  ].map((entity) => [entity.id, entity]))
+
+  return Object.entries(index?.incomeEqualization?.[year] ?? {})
+    .flatMap(([id, point]) => {
+      const entity = entities.get(id)
+      const before = point?.taxBefore?.perCapita
+      const after = point?.taxAfter?.perCapita
+      const equalization = point?.equalization?.perCapita
+      if (entity?.kind !== 'municipality' || !Number.isFinite(before) || !Number.isFinite(after) || !Number.isFinite(equalization)) return []
+      return [{
+        id,
+        name: displayEntityName(entity),
+        before,
+        after,
+        equalization,
+        selected: id === selectedEntityId,
+      }]
+    })
+    .sort((a, b) => a.before - b.before || a.name.localeCompare(b.name, 'nb-NO'))
+}
+
+/** Illustrert finansieringsbehov med netto driftsutgifter som utgangspunkt og utgiftsutjevningen lagt til eller trukket fra. */
+export function expenseEqualizationChartRows(index, year, selectedEntityId) {
+  const entities = new Map([
+    ...(index?.entities ?? []),
+    ...(index?.historicalEntities ?? []),
+  ].map((entity) => [entity.id, entity]))
+  const expenses = index?.values?.net_expenses?.[year] ?? {}
+  const equalization = index?.incomeEqualization?.[year] ?? {}
+
+  return Object.entries(expenses)
+    .flatMap(([id, point]) => {
+      const entity = entities.get(id)
+      const before = point?.perCapita
+      const rawEqualization = equalization[id]?.expenseEqualization?.perCapita
+      const adjustment = Number.isFinite(rawEqualization) && Math.abs(rawEqualization) < 0.5
+        ? 0
+        : rawEqualization
+      if (entity?.kind !== 'municipality' || !Number.isFinite(before) || !Number.isFinite(adjustment)) return []
+      return [{
+        id,
+        name: displayEntityName(entity),
+        before,
+        after: before - adjustment,
+        equalization: adjustment,
+        selected: id === selectedEntityId,
+      }]
+    })
+    .sort((a, b) => a.before - b.before || a.name.localeCompare(b.name, 'nb-NO'))
+}
+
+/** Ranger kommunene etter skatteinntekt per innbygger og marker valgt kommune. */
+export function municipalityIncomeRankingRows(index, year, selectedEntityId) {
+  const entities = new Map([
+    ...(index?.entities ?? []),
+    ...(index?.historicalEntities ?? []),
+  ].map((entity) => [entity.id, entity]))
+  const rows = Object.entries(index?.incomeEqualization?.[year] ?? {})
+    .flatMap(([id, point]) => {
+      const entity = entities.get(id)
+      const taxPerCapita = point?.taxBefore?.perCapita
+      if (entity?.kind !== 'municipality' || !Number.isFinite(taxPerCapita)) return []
+      return [{ id, name: displayEntityName(entity), taxPerCapita }]
+    })
+    .sort((a, b) => b.taxPerCapita - a.taxPerCapita || a.name.localeCompare(b.name, 'nb-NO'))
+
+  let rank = 0
+  let previousValue = null
+  return rows.map((row, index) => {
+    if (previousValue === null || row.taxPerCapita < previousValue) rank = index + 1
+    previousValue = row.taxPerCapita
+    return { ...row, rank, selected: row.id === selectedEntityId }
+  })
+}
+
+/** Ranger skatt og bokført rammetilskudd med ett felles folketallsgrunnlag. */
+export function municipalityFreeIncomeRankingRows(index, year, selectedEntityId) {
+  const entities = new Map([
+    ...(index?.entities ?? []),
+    ...(index?.historicalEntities ?? []),
+  ].map((entity) => [entity.id, entity]))
+  const rows = Object.entries(index?.incomeEqualization?.[year] ?? {})
+    .flatMap(([id, point]) => {
+      const entity = entities.get(id)
+      const taxPerCapita = point?.taxBefore?.perCapita
+      const population = point?.population
+      const blockGrantAmount = point?.blockGrant?.amount
+      const blockGrantPerCapita = Number.isFinite(blockGrantAmount) && Number.isFinite(population) && population > 0
+        ? blockGrantAmount * 1000 / population
+        : point?.blockGrant?.perCapita
+      if (entity?.kind !== 'municipality' || !Number.isFinite(taxPerCapita) || !Number.isFinite(blockGrantPerCapita)) return []
+      return [{
+        id,
+        name: displayEntityName(entity),
+        taxPerCapita,
+        blockGrantPerCapita,
+        totalPerCapita: taxPerCapita + blockGrantPerCapita,
+      }]
+    })
+    .sort((a, b) => b.totalPerCapita - a.totalPerCapita || a.name.localeCompare(b.name, 'nb-NO'))
+
+  let rank = 0
+  let previousValue = null
+  return rows.map((row, index) => {
+    if (previousValue === null || row.totalPerCapita < previousValue) rank = index + 1
+    previousValue = row.totalPerCapita
+    return { ...row, rank, selected: row.id === selectedEntityId }
+  })
+}
+
+const EQUALIZATION_SORT_KEYS = new Set([
+  'name',
+  'incomePerCapita',
+  'expensePerCapita',
+  'totalPerCapita',
+])
+
+/** Sorter kommunevis samlet utjevning. Laveste totalsum vises først som standard. */
+export function sortMunicipalityEqualizationRows(rows, key = 'totalPerCapita', direction = 'asc') {
+  const sortKey = EQUALIZATION_SORT_KEYS.has(key) ? key : 'totalPerCapita'
+  const factor = direction === 'desc' ? -1 : 1
+  return [...rows].sort((a, b) => {
+    const comparison = sortKey === 'name'
+      ? a.name.localeCompare(b.name, 'nb-NO')
+      : a[sortKey] - b[sortKey]
+    return factor * comparison || a.name.localeCompare(b.name, 'nb-NO')
+  })
+}
+
+/** Kommunenes inntekts- og utgiftsutjevning samlet per innbygger. */
+export function municipalityEqualizationRows(index, year, selectedEntityId) {
+  const entities = new Map([
+    ...(index?.entities ?? []),
+    ...(index?.historicalEntities ?? []),
+  ].map((entity) => [entity.id, entity]))
+  const rows = Object.entries(index?.incomeEqualization?.[year] ?? {})
+    .flatMap(([id, point]) => {
+      const entity = entities.get(id)
+      const incomePerCapita = point?.equalization?.perCapita
+      const expensePerCapita = point?.expenseEqualization?.perCapita
+      if (entity?.kind !== 'municipality' || !Number.isFinite(incomePerCapita) || !Number.isFinite(expensePerCapita)) return []
+      return [{
+        id,
+        name: displayEntityName(entity),
+        incomePerCapita,
+        expensePerCapita,
+        totalPerCapita: incomePerCapita + expensePerCapita,
+        selected: id === selectedEntityId,
+      }]
+    })
+  return sortMunicipalityEqualizationRows(rows)
 }
 
 /** Vis omfordelingens to sider; et nettotall alene ville skjult volumet. */
@@ -497,7 +699,14 @@ export function formatKostraValue(value, mode) {
   const abs = Math.abs(mill)
   const sign = mill < 0 ? '−' : ''
   if (abs >= 1000) return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 }).format(abs / 1000)} mrd.`
+  if (abs > 0 && abs < 1) return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(Math.abs(value) * 1000)} kr`
   return `${sign}${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 }).format(abs)} mill.`
+}
+
+export function formatKostraShare(value) {
+  if (!Number.isFinite(value)) return '–'
+  const maximumFractionDigits = Math.abs(value) > 0 && Math.abs(value) < 0.1 ? 2 : 1
+  return `${new Intl.NumberFormat('nb-NO', { maximumFractionDigits }).format(value)} %`
 }
 
 /** Annualisert vekst fra første gyldige år, samt endring fra året før. */

@@ -14,6 +14,11 @@ import DinAndel from './seksjoner/DinAndel'
 import Utforsk from './seksjoner/Utforsk'
 import OmTallene from './seksjoner/OmTallene'
 import SeoFallback from './SeoFallback'
+import {
+  MunicipalLaunchAnnouncement,
+  MunicipalLaunchBadge,
+  useMunicipalLaunchNewsVisibility,
+} from './MunicipalLaunchNews.jsx'
 import Kostra from '../kostra/Kostra'
 import './fellestall.css'
 
@@ -28,6 +33,7 @@ const START_UTFORSK = {
 }
 
 export default function Fellestall() {
+  const showMunicipalLaunchNews = useMunicipalLaunchNewsVisibility()
   const [data, setData] = useState(null)
   const [feil, setFeil] = useState(null)
   const [aar, setAar] = useState(null)
@@ -199,7 +205,10 @@ export default function Fellestall() {
             {navLenker.map((n) => (
               <a key={n.id} href={`#${n.id}`} className={`ft-navlenke ${n.aktiv ? 'aktiv' : ''}`}>
                 <span className="ft-navnr num">{n.nr}</span>
-                <span>{n.navn}</span>
+                <span className="ft-navtekst">
+                  {n.navn}
+                  {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
+                </span>
               </a>
             ))}
           </nav>
@@ -220,6 +229,7 @@ export default function Fellestall() {
                 {navLenker.map((n) => (
                   <a key={n.id} href={`#${n.id}`} className={`ft-toppnavlenke ${n.aktiv ? 'aktiv' : ''}`}>
                     {n.navn}
+                    {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
                   </a>
                 ))}
                 <a href="#om-tallene">Om tallene</a>
@@ -229,9 +239,12 @@ export default function Fellestall() {
 
           <header className="ft-hero">
             <div className="ft-kicker">
-              Statsbudsjettet og statsregnskapet · {aarListe[0]}–{meta.siste_budsjett_aar}
+              {`Statsbudsjettet og statsregnskapet · ${aarListe[0]}–${meta.siste_budsjett_aar}`}
             </div>
-            <h1>Hvor blir det av skattepengene?</h1>
+            <div className="ft-hero-topp">
+              <h1>Hvor blir det av skattepengene?</h1>
+              {showMunicipalLaunchNews ? <MunicipalLaunchAnnouncement /> : null}
+            </div>
             <div className="ft-hero-grid">
               <p className="ft-ingress">
                 Hvert år fører staten regnskap over hver eneste krone, fordelt på 16 departementer, flere
@@ -327,8 +340,7 @@ export default function Fellestall() {
             <div className="ft-fot-slagord">En oversikt over norske statsfinanser</div>
             <p className="ft-fot-tekst">Statsbudsjettet og statsregnskapet, normalisert og forklart.</p>
             <div className="ft-fot-dato">
-              Sist oppdatert{' '}
-              {new Date(meta.oppdatert).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })}
+              {`Sist oppdatert ${new Date(meta.oppdatert).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })}`}
             </div>
           </div>
           <div>

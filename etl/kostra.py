@@ -42,7 +42,7 @@ METADATA_CACHE_MAX_AGE_SECONDS = 24 * 60 * 60
 TABLES = {
     "municipality": {
         "overview": "12137", "financial_detail": "13551", "investment_detail": "13552",
-        "balance_detail": "13202", "service": "12362", "detail": "12367",
+        "balance_detail": "13202", "tax_detail": "13553", "service": "12362", "detail": "12367",
         "region": "KOKkommuneregion0000", "scope": "KOKregnskapsomfa0000",
     },
     "county": {
@@ -91,6 +91,7 @@ INCOME_EQUALIZATION_METRIC = {
 
 STATE_BLOCK_GRANT_CODE = "A800"
 TAX_TABLE = "07022"
+TAX_DETAIL_CODES = {"AG12", "AG44", "AG47", "AG46"}
 KDD_INCOME_EQUALIZATION_PAGE = (
     "https://www.regjeringen.no/no/tema/kommuner-og-regioner/kommuneokonomi/"
     "inntektssystemet-for-kommuner-og-fylkeskommuner/lopende-inntektsutjevning/id548672/"
@@ -879,6 +880,29 @@ def _income_system_comparisons(
         ).fetchone()
         return (row["tax_before"], row["equalization"], row["population"]) if row else (None, None, None)
 
+    def aggregate_expense_equalization(comparison_id: str, year: int):
+        if comparison_id == entity["id"]:
+            slots = ",".join("?" for _ in series_entity_ids)
+            row = db.execute(
+                """SELECT per_capita FROM block_grant_component_fact
+                     WHERE entity_id IN (""" + slots + """) AND year=?
+                       AND component_code='expense_equalization' LIMIT 1""",
+                (*series_entity_ids, year),
+            ).fetchone()
+            return row["per_capita"] if row else None
+        peer_clause = "AND e.peer_group_id=?" if comparison_id.startswith("peer_group:") else ""
+        parameters = (year, comparison_id) if peer_clause else (year,)
+        row = db.execute(
+            """SELECT SUM(c.amount)*1000.0/SUM(i.population) AS expense_equalization
+                 FROM block_grant_component_fact c
+                 JOIN income_equalization_fact i
+                   ON i.entity_id=c.entity_id AND i.year=c.year
+                 JOIN entity e ON e.id=c.entity_id
+                WHERE c.year=? AND c.component_code='expense_equalization' """ + peer_clause,
+            parameters,
+        ).fetchone()
+        return row["expense_equalization"] if row else None
+
     values = {}
     for year in years:
         rows = []
@@ -901,6 +925,7 @@ def _income_system_comparisons(
                     (comparison_id, year, STATE_BLOCK_GRANT_CODE),
                 ).fetchone()
             tax_before, equalization, population = aggregate_equalization(comparison_id, year)
+            expense_equalization = aggregate_expense_equalization(comparison_id, year)
             block_grant = (
                 grant["amount"] * 1000 / population
                 if grant and grant["amount"] is not None and population else
@@ -915,6 +940,7 @@ def _income_system_comparisons(
                 "label": labels.get(comparison_id, comparison_id),
                 "taxBeforePerCapita": tax_before,
                 "equalizationPerCapita": equalization,
+                "expenseEqualizationPerCapita": expense_equalization,
                 "blockGrantBeforeEqualizationPerCapita": before_equalization,
                 "blockGrantPerCapita": block_grant,
             })
@@ -1012,6 +1038,8 @@ def _entity_detail(db: sqlite3.Connection, entity: dict, latest_year: int) -> di
         "investment": TABLES[entity["kind"]]["investment_detail"],
         "balance": TABLES[entity["kind"]]["balance_detail"],
     }
+    if TABLES[entity["kind"]].get("tax_detail"):
+        statement_sources["tax"] = TABLES[entity["kind"]]["tax_detail"]
     for statement, source_table in statement_sources.items():
         codes = {}
         rows = db.execute(
@@ -1264,12 +1292,24 @@ def write_frontend_data(db: sqlite3.Connection, output_dir: Path | str, boundari
 
     income_equalization = {}
     equalization_rows = db.execute(
-        """SELECT entity_id,year,population,tax_before_amount,tax_before_per_capita,
-                  tax_before_national_ratio,equalization_amount,equalization_per_capita,
-                  tax_after_amount,tax_after_per_capita,tax_after_national_ratio,
-                  basis,source_url,source_period
-             FROM income_equalization_fact
-            ORDER BY year,entity_id"""
+        """SELECT i.entity_id,i.year,i.population,i.tax_before_amount,i.tax_before_per_capita,
+                  i.tax_before_national_ratio,i.equalization_amount,i.equalization_per_capita,
+                  i.tax_after_amount,i.tax_after_per_capita,i.tax_after_national_ratio,
+                  i.basis,i.source_url,i.source_period,
+                  c.amount AS expense_equalization_amount,
+                  c.per_capita AS expense_equalization_per_capita,
+                  g.amount AS block_grant_amount,
+                  g.per_capita AS block_grant_per_capita
+             FROM income_equalization_fact i
+             LEFT JOIN block_grant_component_fact c
+               ON c.entity_id=i.entity_id AND c.year=i.year
+              AND c.component_code='expense_equalization'
+             LEFT JOIN fact g
+               ON g.entity_id=i.entity_id AND g.year=i.year
+              AND g.dataset_id='kostra_actuals' AND g.metric_code='A800'
+              AND g.function_code='' AND g.accounting_art_code=''
+              AND g.source_table='12137'
+            ORDER BY i.year,i.entity_id"""
     )
     for row in equalization_rows:
         export_entity_id = current_entity_id(row["entity_id"])
@@ -1283,6 +1323,14 @@ def write_frontend_data(db: sqlite3.Connection, output_dir: Path | str, boundari
             "equalization": {
                 "amount": row["equalization_amount"],
                 "perCapita": row["equalization_per_capita"],
+            },
+            "expenseEqualization": {
+                "amount": row["expense_equalization_amount"],
+                "perCapita": row["expense_equalization_per_capita"],
+            },
+            "blockGrant": {
+                "amount": row["block_grant_amount"],
+                "perCapita": row["block_grant_per_capita"],
             },
             "taxAfter": {
                 "amount": row["tax_after_amount"],
@@ -1457,7 +1505,7 @@ def _import_statement_details(
     KOSTRA-parene for samme enhet og år; mangler grunnlaget, beholdes
     per-innbyggerverdien som manglende i stedet for å settes til null.
     """
-    if statement not in {"result", "investment", "balance"}:
+    if statement not in {"result", "investment", "balance", "tax"}:
         raise ValueError(f"Ukjent regnskapsoppstilling: {statement}")
     region_dim = TABLES[kind]["region"]
     value_dim = _dimension_by_label(metadata, dimension_label)
@@ -1770,9 +1818,10 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             balance_meta = client.metadata(config["balance_detail"])
             service_meta = client.metadata(config["service"])
             detail_meta = client.metadata(config["detail"])
+            tax_detail_meta = client.metadata(config["tax_detail"]) if config.get("tax_detail") else None
             metadata_by_kind[kind] = (
                 overview_meta, financial_meta, investment_meta, balance_meta,
-                service_meta, detail_meta,
+                service_meta, detail_meta, tax_detail_meta,
             )
             latest_year = max(int(code) for code in _ordered_codes(overview_meta["dimension"]["Tid"]))
             current_codes = {entity["code"] for entity in geo_entities[kind]}
@@ -1796,14 +1845,22 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             _register_classification(
                 db, balance_meta, balance_chapter_dim, "balance_chapter", "balance_chapter"
             )
-            for table, meta in [
+            if tax_detail_meta:
+                tax_detail_dim = _dimension_by_label(tax_detail_meta, "regnskapsbegrep")
+                _register_classification(
+                    db, tax_detail_meta, tax_detail_dim, "tax_component", "statement_tax"
+                )
+            source_metadata = [
                 (config["overview"], overview_meta),
                 (config["financial_detail"], financial_meta),
                 (config["investment_detail"], investment_meta),
                 (config["balance_detail"], balance_meta),
                 (config["service"], service_meta),
                 (config["detail"], detail_meta),
-            ]:
+            ]
+            if tax_detail_meta:
+                source_metadata.append((config["tax_detail"], tax_detail_meta))
+            for table, meta in source_metadata:
                 _record_source(db, table, meta)
         _record_source(db, TAX_TABLE, tax_meta)
 
@@ -1815,7 +1872,7 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
             config = TABLES[kind]
             (
                 overview_meta, financial_meta, investment_meta, balance_meta,
-                service_meta, detail_meta,
+                service_meta, detail_meta, tax_detail_meta,
             ) = metadata_by_kind[kind]
             region = config["region"]
             current = [entity["code"] for entity in geo_entities[kind]]
@@ -1851,6 +1908,29 @@ def ingest(client: SsbClient, db_path: Path, output: Path) -> dict:
                 db, kind, config["financial_detail"], financial_meta,
                 financial_cube, "art", "result",
             )
+
+            if tax_detail_meta:
+                tax_detail_regions = region_codes_for_import(
+                    tax_detail_meta, region, current, comparison
+                )
+                tax_detail_dimension = _dimension_by_label(
+                    tax_detail_meta, "regnskapsbegrep"
+                )
+                available_tax_details = set(_labels(tax_detail_meta, tax_detail_dimension))
+                amount_contents = [
+                    code for code, label in _labels(tax_detail_meta, "ContentsCode").items()
+                    if "beløp" in label.lower()
+                ]
+                tax_detail_cube = client.data(config["tax_detail"], {
+                    region: tax_detail_regions,
+                    tax_detail_dimension: sorted(TAX_DETAIL_CODES & available_tax_details),
+                    "ContentsCode": amount_contents,
+                    "Tid": ["*"],
+                })
+                _import_statement_details(
+                    db, kind, config["tax_detail"], tax_detail_meta,
+                    tax_detail_cube, "regnskapsbegrep", "tax",
+                )
 
             for statement, meta, table_key, dimension_label in [
                 ("investment", investment_meta, "investment_detail", "art"),

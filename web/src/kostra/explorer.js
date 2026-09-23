@@ -103,18 +103,21 @@ export function accountingArtBreakdown(detail, year, functionCode) {
  * samme offisielle funksjon/art-faktaene uten å konstruere nye kategorier.
  * Null er en rapportert verdi, mens manglende observasjoner utelates.
  */
-export function accountingArtFunctionBreakdown(detail, year, artCode) {
+export function accountingArtsFunctionBreakdown(detail, year, artCodes, summaryTotal = null) {
+  const selectedCodes = new Set(artCodes ?? [])
   const population = detailPopulation(detail, year)
   const rows = (detail?.functions ?? [])
     .map((item) => {
-      const art = (detail?.accountingArts?.[item.code] ?? [])
-        .find((candidate) => candidate.code === artCode)
-      const value = accountingArtValue(art, year, detail?.latestYear)
-      if (!Number.isFinite(value?.amount)) return null
+      const values = (detail?.accountingArts?.[item.code] ?? [])
+        .filter((candidate) => selectedCodes.has(candidate.code))
+        .map((art) => accountingArtValue(art, year, detail?.latestYear)?.amount)
+        .filter(Number.isFinite)
+      if (values.length === 0) return null
+      const amount = values.reduce((sum, value) => sum + value, 0)
       return {
         ...row(item.code, item.name, {
-          amount: value.amount,
-          perCapita: population ? value.amount * 1000 / population : null,
+          amount,
+          perCapita: population ? amount * 1000 / population : null,
         }, 'function', false),
         serviceCodes: item.serviceCodes ?? [],
       }
@@ -125,11 +128,13 @@ export function accountingArtFunctionBreakdown(detail, year, artCode) {
   // Sammendraget er eksportert fra de samme funksjon/art-faktaene. Det er
   // derfor en kontroll av at UI-utvalget summerer likt, ikke en uavhengig
   // avstemming mot en annen SSB-total.
-  const published = year === detail?.latestYear
+  const published = year === detail?.latestYear && selectedCodes.size === 1
     ? [...(detail?.revenueBreakdown ?? []), ...(detail?.expenseBreakdown ?? [])]
-      .find((item) => item.code === artCode)
+      .find((item) => selectedCodes.has(item.code))
     : null
-  const publishedTotal = Number.isFinite(published?.amount) ? published.amount : null
+  const publishedTotal = Number.isFinite(summaryTotal)
+    ? summaryTotal
+    : Number.isFinite(published?.amount) ? published.amount : null
   const difference = Number.isFinite(publishedTotal) ? componentTotal - publishedTotal : null
   const tolerance = Number.isFinite(publishedTotal)
     ? Math.max(1, Math.abs(publishedTotal) * 1e-6)
@@ -149,6 +154,15 @@ export function accountingArtFunctionBreakdown(detail, year, artCode) {
       .sort((a, b) => Math.abs(b.perCapita ?? b.amount) - Math.abs(a.perCapita ?? a.amount)),
     summation: { functionTotal: componentTotal, breakdownTotal: publishedTotal, difference, status },
   }
+}
+
+export function accountingArtFunctionBreakdown(detail, year, artCode) {
+  return accountingArtsFunctionBreakdown(detail, year, [artCode])
+}
+
+/** En funksjonsfordeling er bare et gyldig undernivå når den avstemmer. */
+export function isFunctionBreakdownDrillable(breakdown) {
+  return Boolean(breakdown?.rows?.length) && breakdown?.summation?.status === 'matches'
 }
 
 /** Legg bare til generelle andeler når raden ikke allerede eier en andelsverdi. */

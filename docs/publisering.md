@@ -13,12 +13,12 @@ nettstedet utilgjengelig – ikke ødelagt, men borte til DNS-en har spredd seg.
 | Skriftene ligger lokalt, ingen tredjeparter | På plass |
 | Varsling når ETL-en feiler | På plass (`etl.yml` → GitHub-sak) |
 | Publiseringssjekk | På plass (`npm run sjekk`) |
-| **Domenet `fellestall.no`** | **Ikke registrert** – slår ikke opp i DNS |
+| Domenet `fellestall.no` | På plass med HTTPS på GitHub Pages |
 | **Lisens** | **Ikke bestemt** – vilkårssiden sier det åpent |
-| Utgiver og kontaktpunkt | Utsatt med hensikt |
+| Kontaktpunkt | På plass (`info@fjordinsight.com`) |
 
-De to uthevede punktene er det som står igjen, og begge krever en avgjørelse
-utenfor koden.
+Lisensvalget er den eneste åpne beslutningen i tabellen og påvirker ikke
+muligheten til å publisere nettstedet.
 
 ## 1. Registrer domenet
 
@@ -135,11 +135,6 @@ trenger å være i produksjon.
   lisens har ingen rett til å gjenbruke koden selv om repoet er offentlig.
   Vilkårssiden sier dette rett ut i stedet for å være taus. Tallgrunnlaget er
   upåvirket: NLOD og CC BY 4.0 gjelder fra DFØ og SSB uansett.
-- **Utgiver og kontaktpunkt.** Både vilkårssiden og
-  tilgjengelighetssiden sier at kontaktpunkt ikke er satt opp, i stedet for å
-  oppgi en adresse som ikke leses. Bruk ikke en jobbadresse: på et privat
-  nettsted om statsfinanser leses en arbeidsgiveradresse som om arbeidsgiveren
-  står bak.
 - **Nyttelast.** Forsiden laster ~500 kB komprimert ved første besøk, mest
   `utgifter.json` og `inntekter.json`. Å la ETL-en skrive det kompakte formatet
   direkte er målt til 13 % mindre over nettet (350 → 303 kB gzip) og sparer

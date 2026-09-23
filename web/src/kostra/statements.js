@@ -9,27 +9,81 @@ export const DIMENSIONS = {
   service: { id: 'service', label: 'Tjenesteområde' },
   function: { id: 'function', label: 'KOSTRA-funksjon' },
   art: { id: 'art', label: 'KOSTRA-art' },
+  tax: { id: 'tax', label: 'Skattetype' },
   balance_chapter: { id: 'balance_chapter', label: 'Balansekapittel' },
   sector: { id: 'sector', label: 'Sektor / motpart' },
+}
+
+export function statementDrillScope(parentLine, childLine, dimensions = []) {
+  const allowed = parentLine?.availableDimensions ?? []
+  if (!childLine) {
+    return {
+      visibleDimensions: dimensions.filter((dimension) => allowed.includes(dimension)),
+      alternativeDimensions: [],
+    }
+  }
+  const childAllowed = new Set(['line', ...(childLine.availableDimensions ?? [])])
+  return {
+    visibleDimensions: dimensions.filter((dimension) => childAllowed.has(dimension)),
+    alternativeDimensions: allowed.filter((dimension) => (
+      dimension !== 'line' && !childAllowed.has(dimension)
+    )),
+  }
+}
+
+export function statementRowInteraction(row) {
+  const drillable = typeof row?.canDrill === 'boolean'
+    ? row.canDrill
+    : Boolean(row?.availableDimensions?.length)
+  const tone = row?.id === 'net_operating_result' && Number.isFinite(row.value) && row.value !== 0
+    ? row.value > 0 ? 'positive' : 'negative'
+    : null
+  return {
+    action: drillable ? 'drill' : 'graph',
+    hint: drillable ? 'Se detaljer' : 'Vis i grafen',
+    tone,
+  }
 }
 
 const source = (dataset, code, factor = 1) => ({ dataset, code, factor })
 const resultSource = (code, factor = 1) => source('result', code, factor)
 const balanceSource = (code, factor = 1) => source('balance', code, factor)
 const investmentSource = (code, factor = 1) => source('investment', code, factor)
+const taxSource = (code, factor = 1) => source('tax', code, factor)
 
 const RESULT_SECTIONS = [
   {
     id: 'operating_revenue', label: 'Driftsinntekter', totalId: 'total_operating_revenue',
     rows: [
-      { id: 'tax_income', label: 'Skatteinntekter', sources: [resultSource('AGD75')] },
+      {
+        id: 'tax_income', label: 'Skatteinntekter', sources: [resultSource('AGD75')],
+        drillTaxComponents: [
+          {
+            code: 'AG12–AG44', name: 'Inntekts- og formuesskatt uten naturressursskatt',
+            sources: [taxSource('AG12'), taxSource('AG44', -1)],
+          },
+          { code: 'AG44', name: 'Naturressursskatt', sources: [taxSource('AG44')] },
+        ],
+        drillNote: 'Skatteinntektene fordeles etter skattetype, ikke etter kommunale tjenester. Første rad er beregnet som SSB-post AG12 fratrukket AG44; ingen rapporterte tall er justert.',
+      },
       { id: 'block_grant', label: 'Rammetilskudd', sources: [resultSource('A800')] },
-      { id: 'property_tax', label: 'Eiendomsskatt', sources: [resultSource('AG10')] },
+      {
+        id: 'property_tax', label: 'Eiendomsskatt', sources: [resultSource('AG10')],
+        drillTaxComponents: [
+          { code: 'AG47', name: 'Eiendomsskatt på boliger og fritidsboliger', sources: [taxSource('AG47')] },
+          { code: 'AG46', name: 'Eiendomsskatt på annen eiendom', sources: [taxSource('AG46')] },
+        ],
+        drillNote: 'Eiendomsskatten fordeles etter eiendomstype slik kommunen har rapportert den til SSB.',
+      },
       { id: 'other_tax', label: 'Andre skatteinntekter', sources: [resultSource('AGD76')] },
       { id: 'user_payments', label: 'Brukerbetalinger', sources: [resultSource('A600')], drillArtCodes: ['A600'] },
       { id: 'sales_rent', label: 'Salgs- og leieinntekter', sources: [resultSource('AGD96')], drillArtCodes: ['AGD34'] },
-      { id: 'state_grants', label: 'Statlige tilskudd og refusjoner', sources: [resultSource('AGD77')] },
-      { id: 'other_operating_revenue', label: 'Andre driftsinntekter', sources: [resultSource('AGD78')], drillArtCodes: ['AGD49', 'AGD28'] },
+      {
+        id: 'state_grants', label: 'Statlige tilskudd og refusjoner', sources: [resultSource('AGD77')],
+        drillArtCodes: ['AG48'],
+        drillNote: 'Funksjonsfordelingen viser overføringsinntekter med krav til motytelse, ekskludert merverdiavgiftskompensasjon, slik SSB publiserer denne inntektsarten.',
+      },
+      { id: 'other_operating_revenue', label: 'Andre driftsinntekter', sources: [resultSource('AGD78')], drillArtCodes: ['AGD49'] },
       { id: 'total_operating_revenue', label: 'Sum driftsinntekter', sources: [resultSource('AGD45')], kind: 'total' },
     ],
   },
@@ -108,6 +162,8 @@ const BALANCE_SECTIONS = [
   {
     id: 'assets', label: 'Eiendeler',
     rows: [
+      { id: 'noncurrent_assets', label: 'Anleggsmidler', sources: [balanceSource('KG41')], drillBalanceCodes: ['KG43', 'KG44', 'KG46', 'KG47', 'KG48', 'KG49', 'KG109', 'KG50'] },
+      { id: 'current_assets', label: 'Omløpsmidler', sources: [balanceSource('KG51')], drillBalanceCodes: ['KG52', 'KG54', 'KG55', 'KG56', 'KG57', 'KG59', 'KG60', 'KG98', 'KG61', 'KG111'] },
       { id: 'fixed_property', label: 'Fast eiendom og anlegg', sources: [balanceSource('KG43')], drillBalanceCodes: ['KG43'] },
       { id: 'equipment', label: 'Maskiner, utstyr og transportmidler', sources: [balanceSource('KG44')], drillBalanceCodes: ['KG44'] },
       { id: 'shares', label: 'Aksjer og andeler', sources: [balanceSource('KG46')], drillBalanceCodes: ['KG46'] },
@@ -124,11 +180,12 @@ const BALANCE_SECTIONS = [
   {
     id: 'equity_debt', label: 'Egenkapital og gjeld',
     rows: [
+      { id: 'equity', label: 'Egenkapital', sources: [balanceSource('KG63')], drillBalanceCodes: ['KG65', 'KG66', 'KG69', 'KG70', 'KG72'] },
       { id: 'discretionary_fund', label: 'Disposisjonsfond', sources: [balanceSource('KG65')], drillBalanceCodes: ['KG65'] },
       { id: 'restricted_operating_fund', label: 'Bundne driftsfond', sources: [balanceSource('KG66')], drillBalanceCodes: ['KG66'] },
       { id: 'investment_funds', label: 'Investeringsfond', sources: [balanceSource('KG69'), balanceSource('KG70')], drillBalanceCodes: ['KG69', 'KG70'] },
       { id: 'other_equity', label: 'Kapitalkonto og øvrig egenkapital', sources: [balanceSource('KG72')], drillBalanceCodes: ['KG73', 'KG74', 'KG75'] },
-      { id: 'long_term_debt', label: 'Langsiktig gjeld', sources: [balanceSource('KG76')], kind: 'subtotal', drillBalanceCodes: ['KG78', 'KG112', 'KG79', 'KG80', 'KG81', 'KG113', 'KG82'] },
+      { id: 'long_term_debt', label: 'Langsiktig gjeld', sources: [balanceSource('KG76')], drillBalanceCodes: ['KG78', 'KG112', 'KG79', 'KG80', 'KG81', 'KG113', 'KG82'] },
       { id: 'pension_obligations', label: 'Pensjonsforpliktelser', sources: [balanceSource('KG82')], drillBalanceCodes: ['KG82'] },
       { id: 'bank_debt', label: 'Bank- og kredittinstitusjonslån', sources: [balanceSource('KG78')], drillBalanceCodes: ['KG78'] },
       { id: 'bond_debt', label: 'Obligasjonslån', sources: [balanceSource('KG79'), balanceSource('KG80')], drillBalanceCodes: ['KG79', 'KG80'] },
@@ -136,6 +193,7 @@ const BALANCE_SECTIONS = [
       { id: 'other_long_term_debt', label: 'Annen langsiktig gjeld', sources: [balanceSource('KG112'), balanceSource('KG113')], drillBalanceCodes: ['KG112', 'KG113'] },
       { id: 'supplier_debt', label: 'Leverandørgjeld', sources: [balanceSource('KG85')], drillBalanceCodes: ['KG85'] },
       { id: 'other_short_term_debt', label: 'Annen kortsiktig gjeld', sources: [balanceSource('KG86'), balanceSource('KG87'), balanceSource('KG88'), balanceSource('KG110'), balanceSource('KG89')], drillBalanceCodes: ['KG86', 'KG87', 'KG88', 'KG110', 'KG89'] },
+      { id: 'short_term_debt', label: 'Kortsiktig gjeld', sources: [balanceSource('KG83')], drillBalanceCodes: ['KG85', 'KG86', 'KG87', 'KG88', 'KG110', 'KG89'] },
       { id: 'total_equity_debt', label: 'Sum egenkapital og gjeld', sources: [balanceSource('KG90')], kind: 'total', drillBalanceCodes: ['KG63', 'KG76', 'KG83'] },
     ],
   },
@@ -143,12 +201,12 @@ const BALANCE_SECTIONS = [
 
 const BALANCE_OVERVIEW = [
   {
-    id: 'assets', label: 'Eiendeler', sources: [balanceSource('KG62')], kind: 'total',
-    childLineIds: ['fixed_property', 'equipment', 'shares', 'loans_receivable', 'pension_assets', 'other_noncurrent_assets', 'cash', 'receivables', 'current_financial_assets', 'other_current_assets'],
+    id: 'assets', label: 'Eiendeler', sources: [balanceSource('KG62')], kind: 'subtotal',
+    childLineIds: ['noncurrent_assets', 'current_assets'],
   },
   {
-    id: 'equity_debt', label: 'Egenkapital og gjeld', sources: [balanceSource('KG90')], kind: 'total',
-    childLineIds: ['discretionary_fund', 'restricted_operating_fund', 'investment_funds', 'other_equity', 'long_term_debt', 'supplier_debt', 'other_short_term_debt'],
+    id: 'equity_debt', label: 'Egenkapital og gjeld', sources: [balanceSource('KG90')], kind: 'subtotal',
+    childLineIds: ['equity', 'long_term_debt', 'short_term_debt'],
   },
 ]
 
@@ -176,8 +234,13 @@ function sourcesValue(detail, sources, year, mode) {
 
 function materializeLine(detail, definition, year, mode, statementId) {
   const sourceSummary = sourcesSummary(detail, definition.sources, year, mode)
+  const hasTaxDetails = definition.drillTaxComponents?.some(
+    (component) => sourcesSummary(detail, component.sources, year, 'amount').complete,
+  )
   const availableDimensions = definition.drillBalanceCodes?.length
     ? ['balance_chapter']
+    : hasTaxDetails
+      ? ['tax']
     : definition.drillMetricId
       ? ['service', 'function']
     : definition.drillArtCodes?.length
@@ -310,8 +373,21 @@ function metricRecords(detail, line, year) {
   }).filter((record) => Number.isFinite(record.amount))
 }
 
+function taxRecords(detail, line, year) {
+  return (line?.drillTaxComponents ?? []).map((component) => {
+    const summary = sourcesSummary(detail, component.sources, year, 'amount')
+    return {
+      dimensions: { tax: { code: component.code, name: component.name } },
+      amount: summary.complete ? summary.value : null,
+      values: {},
+      sourceTable: '13553',
+    }
+  }).filter((record) => Number.isFinite(record.amount))
+}
+
 function recordsForLine(detail, statementId, line, year) {
   if (statementId === 'balance') return balanceRecords(detail, line, year)
+  if (line?.drillTaxComponents) return taxRecords(detail, line, year)
   if (line?.drillMetricId) return metricRecords(detail, line, year)
   return resultRecords(detail, line, year)
 }
@@ -370,17 +446,83 @@ export function statementDrill(detail, options) {
     statementId = 'result', lineId, dimensions = [], selections = {}, year, mode = 'amount', years = [],
   } = options ?? {}
   const line = statementLine(detail, statementId, lineId, year, mode)
-  const nextDimension = dimensions.find((dimension) => !selections?.[dimension]) ?? null
+  const selectedChild = selections?.line
+    ? statementLine(detail, statementId, selections.line, year, mode)
+    : null
+  const supportedDimensions = selectedChild
+    ? dimensions.filter((dimension) => dimension === 'line' || selectedChild.availableDimensions.includes(dimension))
+    : dimensions
+  const activeDimensions = selectedChild
+    ? [...supportedDimensions, ...selectedChild.availableDimensions.filter((dimension) => !supportedDimensions.includes(dimension))]
+    : supportedDimensions
+  const nextDimension = activeDimensions.find((dimension) => !selections?.[dimension]) ?? null
   const hasEarlierSelection = Object.keys(selections ?? {}).some((dimension) => dimension !== 'line')
   const records = nextDimension === 'line' && !hasEarlierSelection && !selections?.line
     ? lineSummaryRecords(detail, statementId, line, year)
     : atomicRecords(detail, statementId, line, year)
   const filtered = filterRecords(records, selections)
-  const rows = nextDimension ? groupRecords(filtered, nextDimension, detail, year, mode) : []
-  const amountTotal = filtered.reduce((sum, record) => sum + record.amount, 0)
-  const selectedChild = selections?.line
-    ? statementLine(detail, statementId, selections.line, year, mode)
-    : null
+  const groupedRows = nextDimension
+    ? groupRecords(filtered, nextDimension, detail, year, mode)
+        .map((row) => ({ ...row, dimension: nextDimension }))
+    : []
+  // Når brukeren starter med tjeneste, funksjon eller art finnes det
+  // regnskapslinjer som SSB ikke publiserer i den valgte dimensjonen. Behold
+  // disse som regnskapslinjer i samme liste i stedet for å filtrere dem bort.
+  // En linje får bare fallback dersom ingen av dens atomobservasjoner har den
+  // valgte dimensjonen; dermed vises aldri både hele linjen og dens fordeling.
+  const fallbackRows = nextDimension && nextDimension !== 'line' && !hasEarlierSelection && !selections?.line
+    ? (() => {
+        const representedLines = new Set(records
+          .filter((record) => record.dimensions?.[nextDimension])
+          .map((record) => record.dimensions?.line?.code)
+          .filter(Boolean))
+        return lineSummaryRecords(detail, statementId, line, year)
+          .filter((record) => record.amount !== 0 && !representedLines.has(record.dimensions.line.code))
+          .map((record) => ({
+            ...record.dimensions.line,
+            amount: record.amount,
+            value: observationValue(record.amount, detail, year, mode),
+            share: null,
+            dimension: 'line',
+            fallback: true,
+          }))
+      })()
+    : []
+  const visibleRows = [...groupedRows, ...fallbackRows]
+    .sort((a, b) => Math.abs(b.value ?? -Infinity) - Math.abs(a.value ?? -Infinity))
+  if (fallbackRows.length) {
+    const visibleTotal = visibleRows.reduce((sum, row) => sum + row.amount, 0)
+    visibleRows.forEach((row) => {
+      row.share = visibleTotal !== 0 ? row.amount / visibleTotal * 100 : null
+    })
+  }
+  // En synlig dimensjon betyr ikke nødvendigvis at hver rad faktisk har data på
+  // nivået under. Merk derfor radene ut fra de atomiske observasjonene som er
+  // tilgjengelige for akkurat denne raden, slik at et sluttpunkt kan brukes til
+  // grafvalg uten å opprette et tomt drillnivå.
+  const deeperRecords = nextDimension === 'line'
+    ? atomicRecords(detail, statementId, line, year)
+    : records
+  const rows = visibleRows.map((row) => {
+    const rowDimension = row.dimension ?? nextDimension
+    const rowSelections = { ...selections, [rowDimension]: row.code }
+    const rowChild = rowDimension === 'line'
+      ? statementLine(detail, statementId, row.code, year, mode)
+      : selectedChild
+    const rowDimensions = rowChild
+      ? [
+          ...dimensions.filter((dimension) => dimension === 'line' || rowChild.availableDimensions.includes(dimension)),
+          ...rowChild.availableDimensions.filter((dimension) => !dimensions.includes(dimension)),
+        ]
+      : activeDimensions
+    const followingDimension = rowDimensions.find((dimension) => !rowSelections[dimension]) ?? null
+    const canDrill = Boolean(followingDimension && filterRecords(deeperRecords, rowSelections)
+      .some((record) => record.dimensions?.[followingDimension]))
+    return { ...row, canDrill }
+  })
+  const amountTotal = fallbackRows.length
+    ? visibleRows.reduce((sum, row) => sum + row.amount, 0)
+    : filtered.reduce((sum, record) => sum + record.amount, 0)
   const onlyLineSelected = selectedChild && Object.keys(selections ?? {}).every((dimension) => dimension === 'line')
   const activeSourceLine = selectedChild ?? (!line?.childLineIds?.length ? line : null)
   const sourceIncomplete = activeSourceLine?.sourceStatus === 'incomplete'
@@ -402,7 +544,7 @@ export function statementDrill(detail, options) {
   })
   return {
     line, rows, nextDimension, activeTotal, history,
-    remainingDimensions: dimensions.filter((dimension) => !selections?.[dimension]),
+    remainingDimensions: activeDimensions.filter((dimension) => !selections?.[dimension]),
     reconciliation: {
       componentTotal: activeTotal,
       reportedTotal: expected ?? null,
@@ -411,12 +553,12 @@ export function statementDrill(detail, options) {
         ? 'incomplete'
         : Math.abs(difference) <= tolerance ? 'reconciled' : 'difference',
     },
-    note: statementId === 'result' && dimensions.some((dimension) => ['service', 'function', 'art'].includes(dimension))
+    note: statementId === 'result' && activeDimensions.some((dimension) => ['service', 'function', 'art'].includes(dimension))
       ? 'Tjenesteområder er en analysegruppering. Funksjoner som kan høre til flere områder plasseres én gang for å unngå dobbelttelling. SSBs oppstillingstabell og funksjon/art-tabell bruker enkelte ulike regnskapsdefinisjoner; avvik mot oppstillingslinjen vises derfor åpent.'
       : null,
     coverageNote: [
-      line?.partialDimensions?.includes(nextDimension)
-        ? `SSB publiserer ikke alle regnskapslinjene med dimensjonen «${DIMENSIONS[nextDimension]?.label}». Fordelingen viser den delen som kan brytes ned; resten er fortsatt med i totalen.`
+      (selectedChild ?? line)?.partialDimensions?.includes(nextDimension)
+        ? `SSB publiserer ikke alle regnskapslinjene med dimensjonen «${DIMENSIONS[nextDimension]?.label}». Poster uten denne fordelingen vises uendret som regnskapslinjer; resten vises på valgt nivå.`
         : null,
       sourceIncomplete
         ? `Én eller flere underposter mangler i SSB for valgt år (${activeSourceLine.missingSourceCodes.join(', ')}). Rapporterte underposter vises, men summen er markert som ufullstendig.`
@@ -462,26 +604,131 @@ function resultView(detail, year, mode) {
   }
 }
 
+const FINANCIAL_INCOME_LINE_IDS = new Set(['interest_income', 'dividends', 'financial_gains'])
+
+function withCompositionShares(rows) {
+  const complete = rows.length > 0 && rows.every((row) => Number.isFinite(row.amount))
+  const total = complete ? rows.reduce((sum, row) => sum + row.amount, 0) : null
+  return rows.map((row) => ({
+    ...row,
+    share: Number.isFinite(total) && total !== 0 ? row.amount / total * 100 : null,
+  }))
+}
+
+/**
+ * Hele inntektssiden i resultatregnskapet, uten summer som ville ha
+ * dobbelttelt underpostene. Finansinntektene ligger utenfor SSBs sum
+ * driftsinntekter og legges derfor til eksplisitt.
+ */
+export function incomeCompositionRows(detail, year) {
+  const view = resultView(detail, year, 'amount')
+  const operatingRevenue = view.sections
+    .find((section) => section.id === 'operating_revenue')
+    ?.rows.filter((row) => row.id !== 'total_operating_revenue') ?? []
+  const financialRevenue = view.sections
+    .find((section) => section.id === 'operating_result')
+    ?.rows.filter((row) => FINANCIAL_INCOME_LINE_IDS.has(row.id)) ?? []
+
+  return withCompositionShares([...operatingRevenue, ...financialRevenue]
+    .map((row) => ({
+      code: row.id,
+      name: row.label,
+      amount: row.sourceStatus === 'complete' && Number.isFinite(row.value) ? row.value : null,
+      sourceStatus: row.sourceStatus,
+      missingSourceCodes: row.missingSourceCodes,
+    }))
+    .sort((a, b) => {
+      if (!Number.isFinite(a.amount)) return Number.isFinite(b.amount) ? 1 : 0
+      if (!Number.isFinite(b.amount)) return -1
+      return Math.abs(b.amount) - Math.abs(a.amount)
+    }))
+}
+
+/**
+ * De samme gjensidig utelukkende kostnadslinjene som vises i
+ * resultatoppstillingen. Sammendraget skal ikke blande inn artsgrupper fra
+ * funksjonstabellen, siden de bruker andre regnskapsdefinisjoner.
+ */
+export function expenseCompositionRows(detail, year) {
+  const view = resultView(detail, year, 'amount')
+  const operatingExpense = view.sections
+    .find((section) => section.id === 'operating_expense')
+    ?.rows.filter((row) => row.id !== 'total_operating_expense') ?? []
+
+  return withCompositionShares(operatingExpense.map((row) => ({
+    code: row.id,
+    name: row.label,
+    amount: row.sourceStatus === 'complete' && Number.isFinite(row.value) ? row.value : null,
+    sourceStatus: row.sourceStatus,
+    missingSourceCodes: row.missingSourceCodes,
+  })))
+}
+
 function balanceView(detail, year, mode) {
   const sections = BALANCE_SECTIONS.map((section) => ({
     ...section,
     rows: section.rows.map((row) => materializeLine(detail, row, year, mode, 'balance')),
   }))
+  const overviewRows = BALANCE_OVERVIEW.map((row) => ({
+    ...materializeOverviewLine(detail, row, year, mode, 'balance', sections),
+    availableDimensions: [],
+    partialDimensions: [],
+  }))
+  const balanceLines = new Map(sections.flatMap((section) => section.rows).map((row) => [row.id, row]))
+  const defaultRows = overviewRows.flatMap((subtotal) => [
+    { ...subtotal, overviewLevel: 0 },
+    ...subtotal.childLineIds
+      .map((id) => balanceLines.get(id))
+      .filter(Boolean)
+      .map((row) => {
+        const complete = row.sourceStatus === 'complete' && Number.isFinite(row.value)
+        return {
+          ...row,
+          value: complete ? row.value : null,
+          clickable: complete && row.clickable,
+          availableDimensions: complete ? row.availableDimensions : [],
+          overviewLevel: 1,
+          overviewParentLabel: subtotal.label,
+        }
+      }),
+  ])
   const totalAssets = sections[0].rows.find((row) => row.id === 'total_assets')?.value
   const totalEquityDebt = sections[1].rows.find((row) => row.id === 'total_equity_debt')?.value
   const complete = Number.isFinite(totalAssets) && Number.isFinite(totalEquityDebt)
   const difference = complete ? totalAssets - totalEquityDebt : null
   const tolerance = complete ? Math.max(1e-9, Math.abs(totalEquityDebt) * 1e-9) : null
+  // KG33–KG36 er SSBs kontrollposter for forskjeller mellom kommunens og
+  // særbedriftenes rapporterte interne fordringer og gjeld. Når motpostene
+  // ikke er like, vil kommunekonsernets publiserte totaler heller ikke balansere.
+  const internalControls = ['KG33', 'KG34', 'KG35', 'KG36']
+    .map((code) => detail?.statementData?.balance?.[code]?.values?.[year]?.[mode])
+  const internalDifference = internalControls.every(Number.isFinite)
+    ? -(internalControls[0] + internalControls[1] - internalControls[2] - internalControls[3])
+    : null
+  const unexplainedDifference = Number.isFinite(difference) && Number.isFinite(internalDifference)
+    ? difference - internalDifference
+    : null
+  const internalTolerance = Number.isFinite(difference)
+    ? Math.max(mode === 'amount' ? 5 : 0.1, Math.abs(difference) * 0.001)
+    : null
+  const cause = Number.isFinite(unexplainedDifference) && Math.abs(unexplainedDifference) <= internalTolerance
+    ? 'unmatched-intercompany-balances'
+    : null
+  const balanceCheck = {
+    componentTotal: totalAssets ?? null,
+    reportedTotal: totalEquityDebt ?? null,
+    difference,
+    status: !complete ? 'incomplete' : Math.abs(difference) <= tolerance ? 'reconciled' : 'difference',
+  }
+  if (balanceCheck.status === 'difference' && Number.isFinite(internalDifference)) {
+    Object.assign(balanceCheck, { internalDifference, unexplainedDifference, cause })
+  }
   return {
     id: 'balance', label: 'Balanse', year, mode, sections,
-    overviewRows: BALANCE_OVERVIEW.map((row) => materializeOverviewLine(detail, row, year, mode, 'balance', sections)),
+    overviewRows,
+    defaultRows,
     reconciliations: {
-      balance: {
-        componentTotal: totalAssets ?? null,
-        reportedTotal: totalEquityDebt ?? null,
-        difference,
-        status: !complete ? 'incomplete' : Math.abs(difference) <= tolerance ? 'reconciled' : 'difference',
-      },
+      balance: balanceCheck,
     },
     limitations: ['SSBs publiserte balanse for kommunekonsern har balansekapittel, men ikke sektor eller motpart.'],
   }
