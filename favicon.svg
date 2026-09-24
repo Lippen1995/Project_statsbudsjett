@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Fellestall">
+  <!--
+    Merket er tre søyler av ulik høyde på papirfarget grunn – budsjettet delt i
+    ulike store poster. Fargene er nettstedets egne: papir, blekk, rust, grønn.
+    Tegnet som SVG slik at det er skarpt i alle størrelser; PNG-ene i lenkene
+    er bare til bruk der SVG-favicon ikke støttes.
+  -->
+  <rect width="64" height="64" rx="12" fill="#14161A"/>
+  <rect x="12" y="34" width="10" height="18" rx="2" fill="#F7F5F0"/>
+  <rect x="27" y="20" width="10" height="32" rx="2" fill="#C5452E"/>
+  <rect x="42" y="27" width="10" height="25" rx="2" fill="#2F6E6A"/>
+</svg>
