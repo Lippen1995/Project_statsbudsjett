@@ -1,5 +1,7 @@
 etl/raw/
-web/public/data/
+web/public/data/*
+!web/public/data/kostra/
+!web/public/data/kostra/**
 web/node_modules/
 web/dist/
 __pycache__/

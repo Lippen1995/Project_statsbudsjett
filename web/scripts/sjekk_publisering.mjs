@@ -258,6 +258,35 @@ try {
     if (!brutt) ok(`sitemap.xml: ${adresser.length} adresser, alle finnes`)
   }
 
+  // Detaljdata lå tidligere bare lokalt fordi den genererte datamappen var
+  // ignorert av Git. Kontroller både et fylke og en kommune mot det ferdige
+  // bygget, og krev feltene som driver regnskapsfanene.
+  console.log('\nKOSTRA-detaljdata')
+  for (const fil of ['county-1100.json', 'municipality-1103.json']) {
+    const detalj = await finnes(`${BASE}/data/kostra/entities/${fil}`)
+    if (!detalj.ok) {
+      nei(`${fil}: ${detalj.hvorfor}`)
+      continue
+    }
+    try {
+      const data = JSON.parse(detalj.kropp)
+      const krav = [
+        ['resultatregnskap', data.statementData?.result],
+        ['balanse', data.statementData?.balance],
+        ...(fil.startsWith('municipality-') ? [
+          ['kontantstrøm', data.stateFlows],
+          ['rammetilskuddsberegning', data.blockGrantCalculation],
+        ] : []),
+      ]
+      const mangler = krav.filter(([, verdi]) => !verdi).map(([navn]) => navn)
+      mangler.length
+        ? nei(`${fil} mangler ${mangler.join(', ')}`)
+        : ok(`${fil}: nødvendige regnskapsdata finnes`)
+    } catch {
+      nei(`${fil}: detaljfilen er ikke gyldig JSON`)
+    }
+  }
+
   // --- 3. Ingen forespørsler ut av huset -----------------------------------
   console.log('\nTredjeparter')
   for (const sti of SIDER) {
