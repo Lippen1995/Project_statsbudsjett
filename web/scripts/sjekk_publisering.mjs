@@ -14,11 +14,12 @@
  *   bakgrunnsvandring som forkastet «rgb(247, 245, 240)» ga en gang 4,41:1 der
  *   den virkelige verdien var 4,54:1 – altså feil på begge sider av grensen.
  *
- *   Animasjonene slås ikke av. Seksjonene ligger på opacity: 0 og reises opp av
- *   en animasjon; slår man den av, måles hele siden som usynlig. De ventes ut i
- *   stedet. Og målingen kjøres i begge bevegelsesinnstillinger: flisene i
- *   kartet var en gang dempet til 88 %, noe som bare slo inn for dem som ba om
- *   redusert bevegelse – og senket kontrasten under kravet nettopp for dem.
+ *   Hovedseksjonene skal være synlige også før brukeren har scrollet. Viktig
+ *   innhold må ikke forsvinne dersom en IntersectionObserver blir forsinket
+ *   eller avbrutt. Kontrastmålingen kjøres i begge bevegelsesinnstillinger:
+ *   flisene i kartet var en gang dempet til 88 %, noe som bare slo inn for dem
+ *   som ba om redusert bevegelse – og senket kontrasten under kravet nettopp
+ *   for dem.
  *
  *   Forespørsler utenfor eget domene telles. Skriftene lå hos Google, og
  *   personvernerklæringen sier nå at ingenting går til en tredjepart. Den
@@ -277,6 +278,20 @@ try {
   // --- 4. Tastatur og tekstalternativ --------------------------------------
   console.log('\nTilgjengelighet – tastatur og tekstalternativ')
   await side.goto(`${BASE}/`, { waitUntil: 'networkidle' })
+
+  const skjulteHovedseksjoner = await side.evaluate(() =>
+    [...document.querySelectorAll('main [data-avslor]')]
+      .filter((el) => {
+        const stil = getComputedStyle(el)
+        const boks = el.getBoundingClientRect()
+        return stil.display === 'none' || stil.visibility === 'hidden'
+          || Number(stil.opacity) < 0.99 || !boks.width || !boks.height
+      })
+      .map((el) => el.id || el.className || el.tagName)
+  )
+  skjulteHovedseksjoner.length
+    ? nei(`hovedseksjoner er skjult før scrolling: ${skjulteHovedseksjoner.join(', ')}`)
+    : ok('alle hovedseksjoner er synlige før scrolling')
   await side.evaluate(() => document.querySelectorAll('[data-avslor]').forEach(e => e.classList.add('synlig')))
   await settledeAnimasjoner(side)
   await side.keyboard.press('Tab')

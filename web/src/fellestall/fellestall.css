@@ -99,8 +99,12 @@ body.ft-body { background: #F7F5F0; }
 @keyframes ftReisOpp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 @keyframes ftTonInn { from { opacity: 0; } to { opacity: 1; } }
 
-.ft [data-avslor] { opacity: 0; }
-.ft [data-avslor].synlig { animation: ftReisOpp .85s var(--mykt) forwards; }
+/*
+ * Hovedinnhold skal aldri være avhengig av IntersectionObserver for å synes.
+ * Avsløringsanimasjonen gjorde alle seksjoner under første skjermbilde helt
+ * transparente dersom observatøren ble forsinket eller avbrutt.
+ */
+.ft [data-avslor] { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .ft [data-avslor] { opacity: 1 !important; }
