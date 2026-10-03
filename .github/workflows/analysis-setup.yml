@@ -30,5 +30,9 @@ jobs:
             '| Innstilling | Status |\n| --- | --- |\n' +
             checks.map(([name, configured]) => `| ${name} | ${configured ? 'Konfigurert' : 'Mangler eller deaktivert'} |`).join('\n') +
             '\n\nKontrollen viser bare tilstedeværelse og aktiveringsflagget. Gyldig API-tilgang, modell og opprettelse av gjennomgang verifiseres ved en manuell kjøring av «Analyser – ukentlig utkast».\n')
-          if (checks.some(([, configured]) => !configured)) process.exitCode = 1
+          const missing = checks.filter(([, configured]) => !configured).map(([name]) => name)
+          if (missing.length) {
+            console.error(`::error::Mangler analyseoppsett: ${missing.join(', ')}`)
+            process.exitCode = 1
+          }
           NODE
