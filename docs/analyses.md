@@ -110,6 +110,8 @@ Første støttede analysetype er utgiftsutvikling per innbygger, justert med KPI
 
 AI skal forklare et mønster i tidsserien og hva det kan antyde, fremfor å ramse opp tall. Nye rapporter har `factsVersion: 2` og kontrollerte faktum om året med størst absolutt årlig endring og utviklingen før og etter dette året. Fortegnet avgjør om det er vekst eller nedgang; tidspunktet er ingen årsaksforklaring. Eldre frosne rapporter uten versjonsfelt beholder sitt opprinnelige faktagrunnlag og kan fortsatt valideres. Alle tre grafer beregnes fra rapportens kontrollerte tidsserie.
 
+Den redaksjonelle fortellingen skal la leseren følge fra observasjon og spørsmål til tolkning. Hovedfunnet oppsummeres klart; brødteksten bruker grafene til å gjøre sammenhengen synlig uten belærende formuleringer. LinkedIn gir et konkret funn, en naturlig humoristisk inngang når det passer og et relevant åpent spørsmål. Invitasjonen ved lenken skal gjelde noe analysen faktisk belyser. AI-instruksene følger disse føringene, og den aktuelle pilotteksten prøver dem i praksis.
+
 Det skal ikke produseres like analyser av samme avgrensning og årstall uten endrede verdier. Hvis de kontrollerte problemstillingene er brukt opp eller grunnlaget er utilstrekkelig, hoppes uken over. Utvalg av relevante vinkler og flere faglige rapporttyper kan utvides uten å endre godkjenningsflyten.
 
 ## Feil og duplikater

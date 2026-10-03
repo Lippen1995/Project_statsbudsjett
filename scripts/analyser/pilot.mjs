@@ -6,24 +6,24 @@ const report = buildReport(new URL('../../web/public/data', import.meta.url).pat
 const copy = {
   title: 'Statens regning har vokst. Prisvekst forklarer ikke alt.',
   description:
-    'Prisvekst og flere innbyggere forklarer mye av veksten, men ikke hele. Grafene viser et tydelig løft i utgiftsnivået og gir oss et mer konkret spørsmål å følge opp.',
-  lead: 'Når kvitteringen blir lengre, er det fristende å skylde på prislappen. Vi har korrigert for både dyrere kroner og flere innbyggere. Regningen er fortsatt større, og grafene viser at mye av endringen kom som et sprang.',
+    'Når priser og folketall er tatt med i regnestykket, står en økning igjen. Følg kurven og se når utgiftene tok spranget, hvor de landet, og hvilket spørsmål det åpner for.',
+  lead: 'En større regning. Dyrere kroner. Flere innbyggere. Det virker ganske lett å forklare veksten i statsregnskapet – helt til vi legger utviklingen på samme målestokk. Da dukker et annet spørsmål opp: Når tok utgiftene spranget, og hvor landet de etterpå?',
   conclusion:
-    'Staten har fått et høyere utgiftsnivå per innbygger i denne avgrensningen. Etter KPI-justering er økningen {{fact:realPerCapitaGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Fram til {{fact:previousYear}} var veksten {{fact:growthBeforeChange}}; det største årlige spranget kom i {{fact:largestChangeYear}}. At nivået fortsatt er høyere i sluttåret, antyder mer enn en kort topp i regnskapet. Neste spørsmål er hvilke utgiftsområder som løftet nivået, og hva endringen betyr for statens forpliktelser. KPI måler konsumpriser, så dette er en vurdering av pengebruk målt med den målestokken, ikke av tjenestevolum.',
+    'Etter KPI-justering økte statens utgift per innbygger med {{fact:realPerCapitaGrowth}} fra {{fact:startYear}} til {{fact:endYear}} i denne avgrensningen. Fram til {{fact:previousYear}} var veksten {{fact:growthBeforeChange}}; det største årlige spranget kom i {{fact:largestChangeYear}}. Nivået ligger fortsatt høyere flere år etterpå. Mønsteret peker mot en endring som varer utover selve spranget. Hva løftet regningen, og hvilke forpliktelser fulgte med? Det er spørsmålet totalsummen åpner for. KPI måler konsumpriser, så økningen sier noe om pengebruken med denne målestokken, ikke om tjenestevolum.',
   linkedin:
-    'Statsregnskapet har vokst. Kronen har krympet. Begge deler må få plass i regnestykket.\n\nFra {{fact:startYear}} til {{fact:endYear}} økte statens utgifter med {{fact:nominalGrowth}}. Etter justering for priser og folketall er økningen per innbygger {{fact:realPerCapitaGrowth}}.\n\nDet mest interessante er når det skjedde: Fram til {{fact:previousYear}} var den prisjusterte veksten {{fact:growthBeforeChange}}. Det største årlige spranget kom i {{fact:largestChangeYear}}.\n\nVår vurdering: Prisvekst forklarer mye, men ikke hele økningen. Nå bør vi undersøke hvilke deler av regnskapet som har løftet nivået.\n\nGrafene og regnestykkene ligger i analysen.',
+    'Statsregnskapet har vokst med {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}.\n\nInflasjonen rekker opp hånden. For en gangs skyld bidrar den til en mindre dramatisk overskrift.\n\nNår vi justerer for priser og folketall, står en økning på {{fact:realPerCapitaGrowth}} per innbygger igjen.\n\nSluttsummen skjuler likevel det mest interessante:\nVar dette en topp som gikk over, eller et nivå som ble værende?\n\nVi fulgte kurven gjennom perioden. Se spranget og årene etterpå i analysen med grafer ↓',
   sections: [
     {
-      heading: 'Samme regnskap. Tre forskjellige spørsmål.',
+      heading: 'Hvor stor er regningen når målestokken er lik?',
       factIds: ['nominalGrowth', 'nominalPerCapitaGrowth', 'realPerCapitaGrowth'],
       paragraphs: [
-        'Den store overskriften er en vekst på {{fact:nominalGrowth}} i løpende utgifter. Det beskriver regnskapsbeløpet, men ikke hvor mye av endringen som skyldes flere innbyggere eller dyrere kroner. En sammenligning som stopper der, kan få staten til å se ut som om den har vokst langt mer enn den prisjusterte pengebruken per innbygger.',
-        'Deler vi først på folketallet, blir veksten {{fact:nominalPerCapitaGrowth}}. Justerer vi også for konsumprisene, står {{fact:realPerCapitaGrowth}} igjen. Figuren under viser disse som alternative mål på samme utvikling. De skal ikke legges sammen eller trekkes direkte fra hverandre; justeringene skjer gjennom forholdstall.',
-        'Dette gjør hovedfunnet mer presist: En betydelig del av den nominelle veksten forsvinner når målestokken blir lik. Samtidig forsvinner ikke hele økningen. Prisvekst og befolkningsvekst er derfor viktige deler av forklaringen på endringen i regnskapets størrelse, men den valgte justeringen etterlater en tydelig økning per innbygger.',
+        'Utgiftene har økt med {{fact:nominalGrowth}} i løpende kroner. Det er et tall som tar plass. Men en gammel krone og en ny krone kjøper ikke nødvendigvis det samme, og flere innbyggere deler regningen. Hvor mye av økningen står igjen når vi tar hensyn til begge deler?',
+        'Først deler vi beløpene på folketallet. Da blir veksten {{fact:nominalPerCapitaGrowth}}. Deretter justerer vi for konsumprisene, og står igjen med {{fact:realPerCapitaGrowth}}. Figuren under lar oss lese det samme regnskapet med ulike målestokker. Hvert mål svarer på et eget spørsmål; prosentene kan ikke legges sammen eller trekkes direkte fra hverandre.',
+        'Legg merke til den siste stolpen. Den er betydelig kortere enn den første, men den er fortsatt over null. Dyrere kroner og flere innbyggere gjør altså mye av veksten mindre dramatisk. Likevel gjenstår en økning i KPI-justert pengebruk per innbygger. Det er denne forskjellen det blir interessant å følge videre.',
       ],
     },
     {
-      heading: 'Det store løftet kom i {{fact:largestChangeYear}}',
+      heading: 'Følg kurven, ikke bare sluttsummen',
       factIds: [
         'startYear',
         'previousYear',
@@ -34,44 +34,44 @@ const copy = {
         'lastPerCapita',
       ],
       paragraphs: [
-        'En sammenligning mellom start og slutt kan skjule hvordan endringen faktisk skjedde. Fra {{fact:startYear}} til {{fact:previousYear}} økte den KPI-justerte utgiften per innbygger med {{fact:growthBeforeChange}}. Grafen viser et forholdsvis stabilt nivå gjennom denne delen av perioden. Den store endringen i tidsserien kommer deretter i {{fact:largestChangeYear}}.',
-        'I samme kroneverdi går beløpet fra {{fact:firstRealPerCapita}} per innbygger i startåret til {{fact:lastPerCapita}} i {{fact:endYear}}. Den stiplede linjen holder startårets nivå fast. Dermed kan vi se både spranget og at utgiften per innbygger fortsatt ligger over utgangspunktet flere år senere.',
-        'Vår lesning av forløpet er at staten ender perioden på et høyere prisjustert utgiftsnivå. Den årlige utviklingen er ujevn, så endepunktene bør ikke omtales som jevn vekst gjennom hele perioden. Grafen gjør det også vanskelig å beskrive hele forskjellen som en kortvarig topp som allerede er borte ved sluttåret.',
+        'En startverdi og en sluttverdi forteller hvor langt vi har kommet, men lite om veien dit. Fra {{fact:startYear}} til {{fact:previousYear}} var økningen i KPI-justert utgift per innbygger {{fact:growthBeforeChange}}. Kurven beveger seg forholdsvis beskjedent gjennom disse årene. Så kommer {{fact:largestChangeYear}}, og forløpet skifter karakter.',
+        'I samme kroneverdi går regningen fra {{fact:firstRealPerCapita}} per innbygger i startåret til {{fact:lastPerCapita}} i {{fact:endYear}}. Den stiplede linjen holder startårets nivå fast. Følg avstanden mellom den og utgiftskurven: Hvor åpner den seg, og lukker den seg igjen?',
+        'Spranget er lett å få øye på. Årene etterpå fortjener like mye oppmerksomhet. Kurven faller noe tilbake før den stiger igjen, men ender fortsatt over nivået før spranget. Allerede her blir det vanskelig å lese hele perioden som jevn vekst, eller som en kort topp som er borte ved sluttåret.',
       ],
     },
     {
-      heading: 'Årsveksten avslører rykkene',
+      heading: 'Et sprang. Og så?',
       factIds: ['largestChangeYear', 'largestAnnualChange', 'growthAfterChange', 'endYear'],
       paragraphs: [
-        'Den største årlige endringen i absoluttverdi er en økning på {{fact:largestAnnualChange}} i {{fact:largestChangeYear}}. Stolpene under gjør spranget synlig og viser at det også finnes år med nedgang etterpå. Regnskapet beveger seg i rykk, ikke som en rett linje mellom endepunktene.',
-        'Fra året med det store spranget til {{fact:endYear}} økte den KPI-justerte utgiften per innbygger videre med {{fact:growthAfterChange}}. Det betyr at en del av nivåendringen ble etterfulgt av ny vekst, selv om enkelte mellomår trakk i motsatt retning. Et godt oppfølgingsspørsmål må derfor skille mellom det store spranget og utviklingen som kom senere.',
-        'Tidspunktet er en observasjon, ikke en dokumentert årsaksforklaring. Grafen viser når regnskapsnivået endret seg. For å forklare hvorfor trenger vi å gå inn i utgiftsområdene og undersøke hvilke poster som økte, om oppgaver ble flyttet, og om endringene gjelder drift, investeringer eller overføringer.',
+        'Årsstolpene gjør det enklere å se rykkene. I {{fact:largestChangeYear}} øker den KPI-justerte utgiften per innbygger med {{fact:largestAnnualChange}}. Det er den største årlige endringen i absoluttverdi i perioden. Se så på stolpene som følger: Noen peker nedover. Likevel tar de ikke regnskapet tilbake dit det startet.',
+        'Fra sprangåret til {{fact:endYear}} er den samlede økningen ytterligere {{fact:growthAfterChange}}. Det er altså både et stort løft og en videre utvikling å forklare. Slår vi alt sammen til én vekstprosent, forsvinner forskjellen mellom dem. Årsstolpene gir oss et mer presist spørsmål: Hva skjedde i sprangåret, og hva holdt nivået oppe etterpå?',
+        'Å kjenne tidspunktet er et sted å begynne letingen. Det er ikke i seg selv en forklaring. Den finnes eventuelt i utgiftsområdene: hvilke poster som økte, om oppgaver ble flyttet, og hvor mye av endringen som gjelder drift, investeringer eller overføringer. Totalsummen kan peke oss i en retning, men ikke avgjøre hvilken forklaring som er riktig.',
       ],
     },
     {
-      heading: 'Hva resultatet antyder',
+      heading: 'En topp – eller et nytt nivå?',
       factIds: ['realPerCapitaGrowth', 'startYear', 'endYear'],
       paragraphs: [
-        'Vi vurderer økningen på {{fact:realPerCapitaGrowth}} som en tydelig endring i prisjustert pengebruk per innbygger. Målt med denne målestokken bruker staten mer ved slutten av perioden enn i {{fact:startYear}}. Kombinert med tidsforløpet peker det mot et høyere regnskapsnivå som strekker seg over flere år, fremfor en utvikling som bare drives av et større folketall og dyrere konsumvarer.',
-        'Det er relevant når man diskuterer størrelsen på offentlige forpliktelser. En større prisjustert utgift kan henge sammen med større behov, andre oppgaver, endret kostnadsutvikling eller andre prioriteringer. Dette er mulige spørsmål å undersøke, ikke forklaringer vi har bevist med totalsummen. Vi vet heller ikke fra denne serien hvilke endringer som vil fortsette etter {{fact:endYear}}.',
-        'KPI-forbeholdet betyr noe akkurat her: Staten kjøper ikke husholdningenes handlekurv. Dersom statens egne kostnader øker annerledes enn konsumprisene, blir ikke KPI-justert vekst det samme som vekst i tjenestevolum. Hovedfunnet gir grunn til å undersøke endringen nærmere, men det gir ikke alene et mål på hvor mye mer offentlig tjenesteproduksjon innbyggerne får.',
+        'Hvis dette bare var en kortvarig topp som raskt gikk over, ville vi ventet å finne kurven tilbake nær nivået før spranget. Slik ser ikke denne serien ut. I {{fact:endYear}} ligger den KPI-justerte pengebruken per innbygger {{fact:realPerCapitaGrowth}} over {{fact:startYear}}. Sammen med forløpet gjennom mellomårene peker det mot et høyere regnskapsnivå som strekker seg over flere år.',
+        'Da åpner det seg et spørsmål om offentlige forpliktelser: Hvilke behov, oppgaver eller prioriteringer ligger bak den større regningen? Også kostnadene staten møter kan ha utviklet seg annerledes. Dette er spor å undersøke, ikke forklaringer vi har påvist. Serien alene kan heller ikke fortelle hvilke utgifter som vil fortsette etter {{fact:endYear}}.',
+        'Akkurat her er målestokken viktig. Staten handler ikke med husholdningenes handlekurv. Dersom statens egne kostnader øker annerledes enn konsumprisene, betyr ikke KPI-justert vekst at tjenestevolumet har vokst tilsvarende. Det høyere nivået er synlig i regnskapet med denne justeringen; hva som ligger bak det, må vi undersøke nærmere.',
       ],
     },
     {
-      heading: 'Hva den større regningen ikke avgjør',
+      heading: 'Hva fikk vi for den større regningen?',
       factIds: [],
       paragraphs: [
-        'Summen inkluderer pensjoner, tilskudd og andre overføringer sammen med statens egen drift. En økning i regnskapet kan derfor ikke uten videre oversettes til flere ansatte, flere behandlinger eller bedre kvalitet. Den kan heller ikke brukes som en ferdig dom over effektivitet eller sløsing.',
-        'Befolkningsjusteringen gir alle innbyggere samme vekt og tar ikke hensyn til endret alderssammensetning. Vi holder sammenligningen til regnskap og bruker samme avgrensning som Fellestalls standardvisning. Forbeholdene endrer ikke det beregnede resultatet, men de begrenser hva vi kan slutte fra det.',
+        'Det er nærliggende å spørre hva innbyggerne fikk igjen. Men summen rommer pensjoner, tilskudd og andre overføringer sammen med statens egen drift. Den større regningen kan derfor ikke leses direkte som flere behandlinger, flere ansatte eller bedre kvalitet. Et svar om resultater trenger andre mål enn beløpet alene.',
+        'Også uttrykket «per innbygger» fortjener en ekstra tanke. Vi gir alle innbyggere samme vekt, selv om en endret alderssammensetning kan gi andre behov. Regnskapet følger samme avgrensning som Fellestalls standardvisning. Det gjør pengebruken sammenlignbar med den visningen, men gir oss ingen ferdig karakterbok for effektivitet eller sløsing.',
       ],
     },
     {
-      heading: 'Neste spørsmål: Hvor kom nivåendringen fra?',
+      heading: 'Neste spor ligger inni totalsummen',
       factIds: ['previousYear', 'largestChangeYear', 'endYear'],
       paragraphs: [
-        'Den mest nyttige oppfølgingen er å undersøke hvilke utgiftsområder som bidro til forskjellen mellom {{fact:previousYear}} og {{fact:endYear}}, og hvilke som stod for spranget i {{fact:largestChangeYear}}. Først bør beløpene avstemmes mot totalsummen. Deretter kan vi se på oppgaver og regnskapsposter som kan forklare endringen.',
-        'En slik gjennomgang må skille bokførte endringer fra endringer i faktiske tjenester. Flyttede ansvarsområder og ulike kostnadsforløp kan påvirke sammenligningen. En seriøs forklaring trenger derfor mer enn å rangere departementene etter vekst og gi dem karakterer.',
-        'Konklusjonen her er at prisvekst og flere innbyggere ikke forklarer hele økningen målt med KPI, og at tidsserien gir oss et konkret sted å begynne letingen. Vi har funnet et mønster i regnskapet. Neste analyse bør undersøke hva som ligger bak det, med samme åpne regnestykke og tydelige avgrensning.',
+        'Hvilke utgiftsområder bidro mest til forskjellen mellom {{fact:previousYear}} og {{fact:endYear}}? Og er det de samme områdene som står bak spranget i {{fact:largestChangeYear}}? En oppfølging bør begynne med å bryte ned beløpene og avstemme dem mot totalsummen, før vi undersøker oppgavene og postene bak endringen.',
+        'Deretter må vi se etter det regnskapet ikke forklarer på egen hånd. Flyttede ansvarsområder og ulik kostnadsutvikling kan påvirke sammenligningen. Det har også betydning om økningen gjelder overføringer eller statens egne tjenester. En rangering av departementer etter vekst kan være en inngang, men er ingen forklaring uten den gjennomgangen.',
+        'Vi begynte med en større regning og tok hensyn til dyrere kroner og flere innbyggere. Det som står igjen, er både en økning og et tydelig sprang i tidsserien. Kurven har gitt oss et sted å lete videre. Nå ligger det interessante sporet i postene som løftet nivået, og forpliktelsene de kan fortelle om.',
       ],
     },
   ],
