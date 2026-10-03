@@ -20,11 +20,12 @@ import { yearTickIndices } from './akse'
 export default function LinjeGraf({
   serier, aar, W = 356, H = 150, fraNull = true, aksefmt, tips, velg, mork = false,
   anslagFra = null, beskrivelse,
+  akseFont = 9, akseMarg = 44, bunnMarg = 20,
 }) {
   const [hover, setHover] = useState(null)
   const [dragg, setDragg] = useState(null)
 
-  const ml = 44, mr = 8, mt = 10, mb = 20
+  const ml = akseMarg, mr = 8, mt = 10, mb = bunnMarg
   const alle = serier.flatMap((s) => s.punkter.map((p) => p.v)).filter((v) => v != null)
   if (!alle.length) return <div className="ft-graf-tom">Ingen data</div>
 
@@ -99,7 +100,7 @@ export default function LinjeGraf({
         return (
           <g key={`g${g}`}>
             <line x1={ml} x2={W - mr} y1={y(v)} y2={y(v)} stroke={mork ? GRID_MORK : GRID} strokeWidth={1} />
-            <SvgTekst x={ml - 6} y={y(v) + 3} size={9} fill={mork ? BLEK_MORK : BLEK} anchor="end">
+            <SvgTekst x={ml - 6} y={y(v) + 3} size={akseFont} fill={mork ? BLEK_MORK : BLEK} anchor="end">
               {aksefmt ? aksefmt(v) : belopMill(v)}
             </SvgTekst>
           </g>
@@ -178,7 +179,7 @@ export default function LinjeGraf({
             key={`x${a}`}
             x={x(i, aar.length)}
             y={H - 4}
-            size={9}
+            size={akseFont}
             fill={mork ? BLEK_MORK : BLEK}
             anchor={i === 0 ? 'start' : i === aar.length - 1 ? 'end' : 'middle'}
           >

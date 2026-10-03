@@ -5,7 +5,7 @@ Avtalt produktplan og tone ligger i [analysis-plan.md](analysis-plan.md).
 ## Det som er implementert
 
 - `/analyser/`: søk, kombinerbare filtre for tema, geografi og analysetype, nyeste først. Søket og filtrene kan deles som en URL.
-- `/analyser/<slug>/`: ferdig HTML for søkemotorer og besøkende uten JavaScript, med hovedfunn, graf, årstabell, metode, kilder og begrensninger. Egne metadata, kanonisk adresse, Article-data og sitemap.
+- `/analyser/<slug>/`: ferdig HTML for søkemotorer og besøkende uten JavaScript, med faglig vurdering, tre grafer, årstabell, metode, kilder og begrensninger. Grafene viser vekst med forskjellige justeringer, KPI-justert utgift per innbygger gjennom perioden og årlige endringer. Egne metadata, kanonisk adresse, Article-data og sitemap.
 - Et frosset datagrunnlag følger hver artikkel som `datagrunnlag.json`. Nye ETL-kjøringer omskriver ikke gamle analyser.
 - En reell pilot ligger i `editorial/drafts/pilot.json`. Den er **ikke publisert eller menneskelig godkjent**. Biblioteket er tomt til første godkjenning.
 - Ukentlig AI-produksjon, tilbakemelding i vanlig språk og ny godkjenning av hver versjon via GitHub.
@@ -41,7 +41,7 @@ Godkjenneren bruker GitHub-appen eller GitHub i mobilnettleseren. Når automatis
 
 Den manuelt klargjorte piloten og PR-en for implementeringen er ikke en automatisk redaksjonell gjennomgang. De utløser ikke i seg selv et varsel om godkjenning. Implementerings-PR-en opprettes med brukerens eksisterende GitHub-tilgang; en PR-forfatter kan ikke godkjenne sin egen PR. De ukentlige analyseutkastene opprettes senere av GitHub Actions-boten, slik at den ansvarlige kan gi en review på mobilen.
 
-Implementeringen finnes i [utkast-PR #8](https://github.com/Lippen1995/Project_statsbudsjett/pull/8). Piloten kan åpnes på mobilen som [PDF](https://raw.githubusercontent.com/Lippen1995/Project_statsbudsjett/ea9f124a8059b0e620df08279b239bf412cebc1b/editorial/review/pilot-til-gjennomgang.pdf) eller [tekstversjon](https://github.com/Lippen1995/Project_statsbudsjett/blob/codex/analyser-og-godkjenning/editorial/drafts/pilot.md). PDF-en er kontrollert mot den lokale gjennomgangsfilen. Disse lenkene gir tilgang til utkastet; en review request er ikke sendt, og varslings-/godkjenningsflyten er fortsatt ikke aktivert.
+Implementeringen finnes i [utkast-PR #8](https://github.com/Lippen1995/Project_statsbudsjett/pull/8). Piloten kan åpnes på mobilen som [PDF](https://raw.githubusercontent.com/Lippen1995/Project_statsbudsjett/codex/analyser-og-godkjenning/editorial/review/pilot-til-gjennomgang.pdf) eller [tekstversjon](https://github.com/Lippen1995/Project_statsbudsjett/blob/codex/analyser-og-godkjenning/editorial/drafts/pilot.md). Lenken følger siste versjon på arbeidsgrenen. PDF-en er kontrollert mot den lokale gjennomgangsfilen. Disse lenkene gir tilgang til utkastet; en review request er ikke sendt, og varslings-/godkjenningsflyten er fortsatt ikke aktivert.
 
 Innsyn følger repositoryets innstillinger. Gjennomgangen er ikke privat dersom repositoryet er offentlig. Trenger dere private redaksjonelle utkast, må flyten flyttes til et privat repository eller en autentisert gjennomgangstjeneste før den aktiveres.
 
@@ -107,6 +107,8 @@ LinkedIn-administrasjon er en egen rolle: en ny godkjenner trenger ikke overta L
 Tidsplanen kjører mandager kl. 07.00 UTC: kl. 08.00 norsk vintertid og 09.00 sommertid. Den validerer data, velger en ennå ikke dekket problemstilling og åpner maksimalt én gjennomgang. Et eksisterende åpent utkast får bli ferdig før neste analyse produseres.
 
 Første støttede analysetype er utgiftsutvikling per innbygger, justert med KPI: staten samlet og hvert departement, både historisk og over siste fem tilgjengelige år. Departementsanalyser oppgir uttrykkelig at ansvarsområder kan endres. Utvalg og avgrensning kommer fra kode, ikke AI. Kommune-, budsjettavviks- og årsaksanalyser trenger egne kontrollerte rapporttyper før AI kan produsere dem. Biblioteket støtter allerede disse temaene og filtrene når godkjente analyser legges til.
+
+AI skal forklare et mønster i tidsserien og hva det kan antyde, fremfor å ramse opp tall. Nye rapporter har `factsVersion: 2` og kontrollerte faktum om året med størst absolutt årlig endring og utviklingen før og etter dette året. Fortegnet avgjør om det er vekst eller nedgang; tidspunktet er ingen årsaksforklaring. Eldre frosne rapporter uten versjonsfelt beholder sitt opprinnelige faktagrunnlag og kan fortsatt valideres. Alle tre grafer beregnes fra rapportens kontrollerte tidsserie.
 
 Det skal ikke produseres like analyser av samme avgrensning og årstall uten endrede verdier. Hvis de kontrollerte problemstillingene er brukt opp eller grunnlaget er utilstrekkelig, hoppes uken over. Utvalg av relevante vinkler og flere faglige rapporttyper kan utvides uten å endre godkjenningsflyten.
 

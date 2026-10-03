@@ -111,7 +111,12 @@ export function validateArticle(article, { published = false } = {}) {
     )
       throw Error('Grafverdiene samsvarer ikke med regnestykket')
   }
-  if (JSON.stringify(r.facts) !== JSON.stringify(calculateFacts(first, last)))
+  if (r.factsVersion !== undefined && r.factsVersion !== 2)
+    throw Error('Ukjent versjon av faktagrunnlaget')
+  if (
+    JSON.stringify(r.facts) !==
+    JSON.stringify(calculateFacts(first, last, r.factsVersion === 2 ? r.rows : undefined))
+  )
     throw Error('Fakta samsvarer ikke med datagrunnlaget')
   if (
     !Array.isArray(r.methodology) ||

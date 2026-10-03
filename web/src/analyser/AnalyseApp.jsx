@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import LinjeGraf from '../fellestall/grafer/LinjeGraf'
+import { GrowthComparison, RealExpenditureChart, AnnualChangeChart } from './AnalyseCharts'
+import { annualChanges } from './insights'
 import { analysisPath, displayDate, factText, filterAnalyses, number } from './model'
 
 function Frame({ children }) {
@@ -163,6 +164,7 @@ function Archive({ articles }) {
 function Article({ article, preview }) {
   const { report: r, copy: c } = article
   const t = (text) => factText(text, r)
+  const changes = new Map(annualChanges(r.rows).map((row) => [row.year, row.change]))
   const words = c.sections
     .flatMap((s) => s.paragraphs)
     .join(' ')
@@ -190,6 +192,9 @@ function Article({ article, preview }) {
             {preview ? 'Laget' : 'Publisert'}{' '}
             {displayDate(preview ? article.createdAt : article.publishedAt)}
           </time>
+          {preview && article.generatedAt && article.generatedAt !== article.createdAt && (
+            <time dateTime={article.generatedAt}>Revidert {displayDate(article.generatedAt)}</time>
+          )}
           <span>{Math.ceil(words / 180)} min lesetid</span>
         </div>
         <p className="an-data-date">
@@ -198,7 +203,7 @@ function Article({ article, preview }) {
       </header>
       <section className="an-conclusion" aria-labelledby="konklusjon">
         <div className="ft-stikkord">Hovedfunn</div>
-        <h2 id="konklusjon">Hva forteller tallene?</h2>
+        <h2 id="konklusjon">Vår vurdering</h2>
         <p>{t(c.conclusion)}</p>
       </section>
       <div className="an-stat-grid">
@@ -234,48 +239,9 @@ function Article({ article, preview }) {
               </p>
             )}
           </section>
-          {i === 2 && (
-            <figure className="an-figure">
-              <figcaption>
-                <h2>Utgiftene møter prisveksten</h2>
-                <p>Utgift per innbygger og KPI. Begge serier er satt til 100 i {r.start}.</p>
-              </figcaption>
-              <div className="an-legend">
-                <span>
-                  <i style={{ background: '#C5452E' }} />
-                  Utgift per innbygger
-                </span>
-                <span>
-                  <i style={{ background: '#14594F' }} />
-                  Konsumpriser
-                </span>
-              </div>
-              <LinjeGraf
-                aar={r.rows.map((row) => row.year)}
-                W={680}
-                H={280}
-                fraNull={false}
-                aksefmt={(v) => number(v)}
-                beskrivelse="Utvikling i utgiftene per innbygger sammenlignet med konsumprisene, indeksert til startåret"
-                serier={[
-                  {
-                    navn: 'Utgift per innbygger',
-                    farge: '#C5452E',
-                    punkter: r.rows.map((row) => ({ v: row.nominalIndex })),
-                  },
-                  {
-                    navn: 'Konsumpriser',
-                    farge: '#14594F',
-                    punkter: r.rows.map((row) => ({ v: row.priceIndex })),
-                  },
-                ]}
-              />
-              <p className="an-chart-note">
-                Y-aksen starter over null for å vise forskjellen i utvikling. Underliggende verdier
-                finnes i tabellen nedenfor.
-              </p>
-            </figure>
-          )}
+          {i === 0 && <GrowthComparison report={r} />}
+          {i === 1 && <RealExpenditureChart report={r} />}
+          {i === 2 && <AnnualChangeChart report={r} />}
         </React.Fragment>
       ))}
       <section id="metode" className="an-method">
@@ -325,6 +291,7 @@ function Article({ article, preview }) {
                 <th scope="col">Løpende kroner</th>
                 <th scope="col">Faste kroner</th>
                 <th scope="col">KPI</th>
+                <th scope="col">Årlig KPI-justert endring</th>
               </tr>
             </thead>
             <tbody>
@@ -334,6 +301,9 @@ function Article({ article, preview }) {
                   <td className="num">{number(row.perCapita)}</td>
                   <td className="num">{number(row.realPerCapita)}</td>
                   <td className="num">{number(row.cpi, 1)}</td>
+                  <td className="num">
+                    {changes.has(row.year) ? `${number(changes.get(row.year), 1)} %` : '–'}
+                  </td>
                 </tr>
               ))}
             </tbody>

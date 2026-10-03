@@ -4,65 +4,77 @@ Les begge tekstene under. **Vil du endre noe? Skriv ønsket i en vanlig kommenta
 
 **Varsler:** Følg denne gjennomgangen i GitHub-appen og aktiver pushvarsler for review requests. Innsyn følger repositoryets tilgang; dette er ikke en separat privat kanal.
 
-Versjon: `6396c788c1b36a6f3e515a45b3386a0d362f166d95dda5d701b784b8c1c691ae` · Datagrunnlag: 2026-09-23T18:32:24.776647+00:00 · Regnskap 2014–2025
+Versjon: `2d514e5de478a0e003c48e4b4ba2f9722ad1384fc8cf3a263143ff0b6c1a2c3a` · Datagrunnlag: 2026-09-23T18:32:24.776647+00:00 · Regnskap 2014–2025
 
 ## LinkedIn-utkast
 
-En milliard her og en milliard der. Men kronen har også blitt eldre.
+Statsregnskapet har vokst. Kronen har krympet. Begge deler må få plass i regnestykket.
 
-Fra 2014 til 2025 økte statens utgifter med 86,5 %. Trekker vi inn folketall og prisvekst, er økningen per innbygger 21,1 %.
+Fra 2014 til 2025 økte statens utgifter med 86,5 %. Etter justering for priser og folketall er økningen per innbygger 21,1 %.
 
-Regnskapet forteller hvor mye mer vi bruker. Hva vi får igjen, krever flere spørsmål.
+Det mest interessante er når det skjedde: Fram til 2019 var den prisjusterte veksten 3,7 %. Det største årlige spranget kom i 2020.
 
-Vi har ryddet i regningen — og forklart hva tallene ikke sier.
+Vår vurdering: Prisvekst forklarer mye, men ikke hele økningen. Nå bør vi undersøke hvilke deler av regnskapet som har løftet nivået.
+
+Grafene og regnestykkene ligger i analysen.
 
 Lenke etter publisering: https://fellestall.no/analyser/staten-prisvekst-og-utgifter-per-innbygger/
 
 ---
 
-# Staten vokser. Hvor mye er bare dyrere kroner?
+# Statens regning har vokst. Prisvekst forklarer ikke alt.
 
-En milliard er et stort tall. En milliard mange år senere er et annet stort tall. Før vi diskuterer hvor mye staten har vokst, må vi finne ut hvor mye av veksten som skyldes dyrere kroner og flere innbyggere.
+Når kvitteringen blir lengre, er det fristende å skylde på prislappen. Vi har korrigert for både dyrere kroner og flere innbyggere. Regningen er fortsatt større, og grafene viser at mye av endringen kom som et sprang.
 
 ## Hovedfunn
 
-Fra 2014 til 2025 økte de avgrensede statlige utgiftene med 86,5 % i løpende kroner. Etter justering for folketall og konsumprisvekst var økningen per innbygger 21,1 %. Det er en målt endring i pengebruk, ikke en karakter på tjenestene.
+Staten har fått et høyere utgiftsnivå per innbygger i denne avgrensningen. Etter KPI-justering er økningen 21,1 % fra 2014 til 2025. Fram til 2019 var veksten 3,7 %; det største årlige spranget kom i 2020. At nivået fortsatt er høyere i sluttåret, antyder mer enn en kort topp i regnskapet. Neste spørsmål er hvilke utgiftsområder som løftet nivået, og hva endringen betyr for statens forpliktelser. KPI måler konsumpriser, så dette er en vurdering av pengebruk målt med den målestokken, ikke av tjenestevolum.
 
-## Den store regningen trenger en målestokk
+## Samme regnskap. Tre forskjellige spørsmål.
 
-Statens samlede utgifter er lette å omtale og vanskelige å forestille seg. I sluttåret i denne analysen utgjorde utgiftene 2 101,8 mrd. kr, etter at finansposter og overføringer til Oljefondet er tatt ut. Sammenligner vi bare dette beløpet med startåret, finner vi en vekst på 86,5 %. Det er riktig regnet, men alene er det en ufullstendig beskrivelse.
+Den store overskriften er en vekst på 86,5 % i løpende utgifter. Det beskriver regnskapsbeløpet, men ikke hvor mye av endringen som skyldes flere innbyggere eller dyrere kroner. En sammenligning som stopper der, kan få staten til å se ut som om den har vokst langt mer enn den prisjusterte pengebruken per innbygger.
 
-Et nominelt beløp forteller hva som er bokført i det aktuelle årets kroner. Det sier ikke hva kronene kunne kjøpe, eller hvor mange innbyggere pengene skal fordeles på. Derfor starter analysen med det store beløpet og deler spørsmålet opp: Hvor mye endres når vi tar hensyn til befolkning, og hvor mye gjenstår når vi også tar hensyn til konsumprisene?
+Deler vi først på folketallet, blir veksten 70,3 %. Justerer vi også for konsumprisene, står 21,1 % igjen. Figuren under viser disse som alternative mål på samme utvikling. De skal ikke legges sammen eller trekkes direkte fra hverandre; justeringene skjer gjennom forholdstall.
 
-## Flere innbyggere deler på beløpet
+Dette gjør hovedfunnet mer presist: En betydelig del av den nominelle veksten forsvinner når målestokken blir lik. Samtidig forsvinner ikke hele økningen. Prisvekst og befolkningsvekst er derfor viktige deler av forklaringen på endringen i regnskapets størrelse, men den valgte justeringen etterlater en tydelig økning per innbygger.
 
-Befolkningen økte med 9,5 % i perioden. Hvis utgiftene hadde steget like mye som folketallet, ville utgift per innbygger vært uendret i løpende kroner. Å dele på befolkningen gir derfor et mer nyttig størrelsesmål når vi vil sammenligne år med ulikt innbyggertall.
+## Det store løftet kom i 2020
 
-Utgiftene per innbygger gikk fra 220 608 kr til 375 698 kr. Dette er en fordeling av statens samlede regnskapsbeløp på folketallet, ikke en faktura til hver innbygger og ikke et anslag på verdien av offentlige tjenester den enkelte mottar. Pensjoner, tilskudd og overføringer inngår sammen med statens egen drift.
+En sammenligning mellom start og slutt kan skjule hvordan endringen faktisk skjedde. Fra 2014 til 2019 økte den KPI-justerte utgiften per innbygger med 3,7 %. Grafen viser et forholdsvis stabilt nivå gjennom denne delen av perioden. Den store endringen i tidsserien kommer deretter i 2020.
 
-## Kronene har også endret seg
+I samme kroneverdi går beløpet fra 310 278 kr per innbygger i startåret til 375 698 kr i 2025. Den stiplede linjen holder startårets nivå fast. Dermed kan vi se både spranget og at utgiften per innbygger fortsatt ligger over utgangspunktet flere år senere.
 
-Konsumprisindeksen steg med 40,6 % fra startåret til sluttåret. For å gi beløpene samme prisnivå regner vi startårets utgifter om til sluttårets kroner. Da blir startårets beløp per innbygger 310 278 kr, mot 375 698 kr i sluttåret. Sammenligningen er nå justert både for befolkningen og for konsumprisnivået.
+Vår lesning av forløpet er at staten ender perioden på et høyere prisjustert utgiftsnivå. Den årlige utviklingen er ujevn, så endepunktene bør ikke omtales som jevn vekst gjennom hele perioden. Grafen gjør det også vanskelig å beskrive hele forskjellen som en kortvarig topp som allerede er borte ved sluttåret.
 
-Vi bruker KPI fordi det er et kjent og etterprøvbart mål på prisutvikling, og fordi den samme serien brukes i Fellestalls øvrige visninger. Det er samtidig en viktig begrensning: Staten kjøper ikke den samme handlekurven som en husholdning. Lønn, bygg og enkelte andre innkjøp kan utvikle seg annerledes. Faste kroner i denne analysen må derfor leses som KPI-justerte beløp.
+## Årsveksten avslører rykkene
 
-## Det som står igjen etter justeringene
+Den største årlige endringen i absoluttverdi er en økning på 10,3 % i 2020. Stolpene under gjør spranget synlig og viser at det også finnes år med nedgang etterpå. Regnskapet beveger seg i rykk, ikke som en rett linje mellom endepunktene.
 
-Etter begge justeringene er endringen i utgift per innbygger 21,1 %. Beregningen deler først utgiftene på folketallet og justerer deretter med forholdet mellom konsumprisindeksene. Vi trekker ikke prosentene direkte fra hverandre; det ville gi et annet og mindre presist resultat.
+Fra året med det store spranget til 2025 økte den KPI-justerte utgiften per innbygger videre med 5,9 %. Det betyr at en del av nivåendringen ble etterfulgt av ny vekst, selv om enkelte mellomår trakk i motsatt retning. Et godt oppfølgingsspørsmål må derfor skille mellom det store spranget og utviklingen som kom senere.
 
-Grafen viser forløpet mellom endepunktene, ikke bare forskjellen mellom start og slutt. Begge kurver er satt til samme indeksverdi i startåret. Når utgift per innbygger stiger raskere enn priskurven, øker det KPI-justerte beløpet. Tabellen under grafen gjør det mulig å undersøke enkeltår og følge regnestykket uten å måtte tolke kurvene alene.
+Tidspunktet er en observasjon, ikke en dokumentert årsaksforklaring. Grafen viser når regnskapsnivået endret seg. For å forklare hvorfor trenger vi å gå inn i utgiftsområdene og undersøke hvilke poster som økte, om oppgaver ble flyttet, og om endringene gjelder drift, investeringer eller overføringer.
 
-## Mer pengebruk er ikke automatisk mer tjeneste
+## Hva resultatet antyder
 
-Et samlet regnskap kan ikke svare på om innbyggerne får bedre tjenester, om behovene har vokst eller om pengene brukes mer effektivt. En slik vurdering krever opplysninger om aktiviteter, resultater, kvalitet og hvem som mottar tjenestene. Å beskrive endringen som sløsing eller effektivisering ville gå lenger enn dette datagrunnlaget tillater.
+Vi vurderer økningen på 21,1 % som en tydelig endring i prisjustert pengebruk per innbygger. Målt med denne målestokken bruker staten mer ved slutten av perioden enn i 2014. Kombinert med tidsforløpet peker det mot et høyere regnskapsnivå som strekker seg over flere år, fremfor en utvikling som bare drives av et større folketall og dyrere konsumvarer.
 
-Analysen identifiserer heller ikke hvilke beslutninger eller hendelser som forklarer veksten. Befolkningen kan få en annen alderssammensetning, og regnskapet kan inneholde ulike blandinger av drift og overføringer gjennom perioden. Dette er relevante spørsmål for videre analyser, men de er ikke forklaringer vi har dokumentert her.
+Det er relevant når man diskuterer størrelsen på offentlige forpliktelser. En større prisjustert utgift kan henge sammen med større behov, andre oppgaver, endret kostnadsutvikling eller andre prioriteringer. Dette er mulige spørsmål å undersøke, ikke forklaringer vi har bevist med totalsummen. Vi vet heller ikke fra denne serien hvilke endringer som vil fortsette etter 2025.
 
-## Hva du kan bruke sammenligningen til
+KPI-forbeholdet betyr noe akkurat her: Staten kjøper ikke husholdningenes handlekurv. Dersom statens egne kostnader øker annerledes enn konsumprisene, blir ikke KPI-justert vekst det samme som vekst i tjenestevolum. Hovedfunnet gir grunn til å undersøke endringen nærmere, men det gir ikke alene et mål på hvor mye mer offentlig tjenesteproduksjon innbyggerne får.
 
-Sammenligningen gir et utgangspunkt for en mer konkret diskusjon: Når noen omtaler veksten i statens pengebruk, gjelder det nominelle beløp, kroner per innbygger eller prisjusterte kroner per innbygger? Alle målene kan være nyttige, men de svarer på forskjellige spørsmål. Å oppgi målestokken gjør påstanden lettere å etterprøve.
+## Hva den større regningen ikke avgjør
 
-Neste steg er å se hvilke utgiftsområder som bidrar til endringen, og undersøke aktivitet og resultater der datagrunnlaget tillater det. Her har vi avgrenset oss til totalsummen og samme filtre som standardvisningen på Fellestall. Kilder, beregningsmetode og datadato følger artikkelen, slik at resultatet kan leses som en dokumentert måling fremfor en ferdig dom over staten.
+Summen inkluderer pensjoner, tilskudd og andre overføringer sammen med statens egen drift. En økning i regnskapet kan derfor ikke uten videre oversettes til flere ansatte, flere behandlinger eller bedre kvalitet. Den kan heller ikke brukes som en ferdig dom over effektivitet eller sløsing.
+
+Befolkningsjusteringen gir alle innbyggere samme vekt og tar ikke hensyn til endret alderssammensetning. Vi holder sammenligningen til regnskap og bruker samme avgrensning som Fellestalls standardvisning. Forbeholdene endrer ikke det beregnede resultatet, men de begrenser hva vi kan slutte fra det.
+
+## Neste spørsmål: Hvor kom nivåendringen fra?
+
+Den mest nyttige oppfølgingen er å undersøke hvilke utgiftsområder som bidro til forskjellen mellom 2019 og 2025, og hvilke som stod for spranget i 2020. Først bør beløpene avstemmes mot totalsummen. Deretter kan vi se på oppgaver og regnskapsposter som kan forklare endringen.
+
+En slik gjennomgang må skille bokførte endringer fra endringer i faktiske tjenester. Flyttede ansvarsområder og ulike kostnadsforløp kan påvirke sammenligningen. En seriøs forklaring trenger derfor mer enn å rangere departementene etter vekst og gi dem karakterer.
+
+Konklusjonen her er at prisvekst og flere innbyggere ikke forklarer hele økningen målt med KPI, og at tidsserien gir oss et konkret sted å begynne letingen. Vi har funnet et mønster i regnskapet. Neste analyse bør undersøke hva som ligger bak det, med samme åpne regnestykke og tydelige avgrensning.
 
 ## Metode
 
@@ -72,7 +84,9 @@ Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inng
 
 Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.
 
-Indeksgrafen setter begge serier til hundre i startåret. Den viser utgift per innbygger i løpende kroner og prisnivået, slik at vekst utover prisstigningen kan leses uten å blande måleenheter.
+Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.
+
+Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn.
 
 ## Begrensninger
 
@@ -115,6 +129,20 @@ Indeksgrafen setter begge serier til hundre i startåret. Den viser utgift per i
 - Startåret i sluttårets priser: **310 278 kr**
 
 - Utgifter i sluttåret: **2 101,8 mrd. kr**
+
+- Vekst per innbygger, løpende kroner: **70,3 %**
+
+- Året før største årlige endring: **2019**
+
+- År med største årlige endring i absoluttverdi: **2020**
+
+- Største årlige endring, KPI-justert per innbygger: **10,3 %**
+
+- KPI-justert vekst per innbygger, 2014–2019: **3,7 %**
+
+- KPI-justert vekst per innbygger, 2019–2025: **16,8 %**
+
+- KPI-justert vekst per innbygger, 2020–2025: **5,9 %**
 
 | År | Løpende kr/innbygger | Faste kr/innbygger | KPI |
 |---|---:|---:|---:|

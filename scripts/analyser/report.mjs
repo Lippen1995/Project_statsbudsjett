@@ -39,9 +39,10 @@ export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
   if (rows.length !== end - start + 1) throw Error('Brudd i tidsserien')
   const first = rows[0],
     last = rows.at(-1)
-  const facts = calculateFacts(first, last)
+  const facts = calculateFacts(first, last, rows)
   return {
     kind: 'real-expenditure-per-capita',
+    factsVersion: 2,
     scopeId: departmentId ?? 'state',
     scopeName,
     start,
@@ -82,7 +83,8 @@ export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
       `Vi summerer regnskapsførte utgifter på postnivå for ${scopeName}. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.`,
       'Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.',
       'Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.',
-      'Indeksgrafen setter begge serier til hundre i startåret. Den viser utgift per innbygger i løpende kroner og prisnivået, slik at vekst utover prisstigningen kan leses uten å blande måleenheter.',
+      'Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.',
+      'Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn.',
     ],
     limitations: [
       ...(departmentId

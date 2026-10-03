@@ -2,13 +2,13 @@
 
 Klargjort 2. oktober 2026 mens LinkedIn-søknaden behandles. Piloten er et komplett utkast; de øvrige punktene er redaksjonelle forslag med beregnet kontrollgrunnlag. Ingen av dem er menneskelig godkjent eller publisert. Rekkefølgen under er et forslag, ikke en aktiv publiseringskø eller en endring av automatikkens emnevalg.
 
-## Staten vokser. Hvor mye er bare dyrere kroner?
+## Statens regning har vokst. Prisvekst forklarer ikke alt.
 
 - Komplett [pilotutkast](drafts/pilot.md) og [PDF til gjennomgang](review/pilot-til-gjennomgang.pdf).
 - Avgrensning: statens regnskapsførte utgifter 2014–2025, uten finansposter og SPU-overføringer.
 - Kontrollgrunnlag: 86,5 % vekst i løpende utgifter; 21,1 % vekst per innbygger etter KPI-justering.
-- Leserspørsmål: Hvor mye av den store veksten blir igjen når vi sammenligner i samme kroneverdi og tar hensyn til folketallet?
-- Mål for gjennomgangen: prøve den underholdende, saklige tonen og se om metode og begrensninger er forståelige på mobil.
+- Leserspørsmål: Hvor mye av veksten står igjen etter justering, når endret nivået seg, og hva bør vi undersøke videre?
+- Mål for gjennomgangen: prøve den underholdende, saklige tonen, tre grafer og en tydelig faglig vurdering på mobil. Piloten er revidert etter innspill om mindre dataoppramsing; den er fortsatt et utkast.
 
 ## Helseregningen vokser. Men kronen krymper.
 
@@ -35,4 +35,4 @@ Klargjort 2. oktober 2026 mens LinkedIn-søknaden behandles. Piloten er et kompl
 
 Beregningene er gjort med `scripts/analyser/report.mjs` mot Fellestalls eksisterende data, oppdatert 23. september 2026. Departements-ID-er: `u-07` for helse, `u-13` for samferdsel og `u-02` for kunnskap. Departementsforslagene bruker 2020–2025, slik at de passer dagens kontrollerte rapporttype.
 
-Før hvert forslag kan publiseres, må det få en komplett analyse med graf, metode, kilder, begrensninger og et kort LinkedIn-utkast. Begge tekstene skal gjennom den avtalte menneskelige godkjenningen. LinkedIn-publisering venter i tillegg på API-tilgang og kontrollert tilkobling. Nettsidepublisering kan prøves med `LINKEDIN_ENABLED` deaktivert.
+Før hvert forslag kan publiseres, må det få en komplett analyse med grafer, faglig vurdering, metode, kilder, begrensninger og et kort LinkedIn-utkast. Begge tekstene skal gjennom den avtalte menneskelige godkjenningen. LinkedIn-publisering venter i tillegg på API-tilgang og kontrollert tilkobling. Nettsidepublisering kan prøves med `LINKEDIN_ENABLED` deaktivert.

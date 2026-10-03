@@ -18,6 +18,8 @@ import {
 import { filterAnalyses, factText } from '../src/analyser/model.js'
 import { kompaktData, rot, sumRot } from '../src/fellestall/kompakt.js'
 import { renderReview } from '../../scripts/analyser/render-review.mjs'
+import { calculateFacts } from '../../scripts/analyser/facts.mjs'
+import { annualChanges, largestAnnualChange, growthMeasures } from '../src/analyser/insights.js'
 import { githubClient } from '../../scripts/analyser/github.mjs'
 import { writeCopy } from '../../scripts/analyser/ai.mjs'
 const root = new URL('../../', import.meta.url).pathname
@@ -62,6 +64,63 @@ test('befolkning og priser justeres multiplikativt, med kjente tall', () => {
   } finally {
     rmSync(dir, { recursive: true, force: true })
   }
+})
+test('årlig vekst bruker faste kroner og største endring velges også ved nedgang', () => {
+  const rows = [
+    { year: 2020, perCapita: 100, cpi: 100 },
+    { year: 2021, perCapita: 120, cpi: 120 },
+    { year: 2022, perCapita: 90, cpi: 120 },
+    { year: 2023, perCapita: 108, cpi: 120 },
+  ]
+  const changes = annualChanges(rows)
+  for (const [i, value] of [0, -25, 20].entries())
+    assert.ok(Math.abs(changes[i].change - value) < 1e-10)
+  assert.equal(largestAnnualChange(rows).year, 2022)
+  assert.equal(largestAnnualChange(rows).previousYear, 2021)
+  assert.equal(largestAnnualChange(rows).change, -25)
+  assert.equal(largestAnnualChange(rows.slice(0, 2)).change, 0)
+})
+test('vekstgrafen skiller samlet regnskap, folketall og prisjustering', () => {
+  const report = {
+    rows: [
+      { expenditure: 100, perCapita: 100, cpi: 100 },
+      { expenditure: 132, perCapita: 120, cpi: 120 },
+    ],
+  }
+  const measures = growthMeasures(report)
+  for (const [i, value] of [32, 20, 0].entries())
+    assert.ok(Math.abs(measures[i].value - value) < 1e-10)
+})
+test('nye faktum om tidsforløpet må stemme med hele tidsserien', () => {
+  const a = draft()
+  assert.equal(a.report.factsVersion, 2)
+  assert.equal(a.report.facts.largestChangeYear.value, 2020)
+  assert.equal(a.report.facts.previousYear.value, 2019)
+  assert.equal(a.report.facts.growthBeforeChange.text, '3,7 %')
+  assert.equal(a.report.facts.largestAnnualChange.text, '10,3 %')
+  a.report.facts.largestChangeYear.value = 2019
+  assert.throws(() => validateArticle(a), /Fakta samsvarer/)
+  const b = draft()
+  b.report.factsVersion = 3
+  assert.throws(() => validateArticle(b), /Ukjent versjon/)
+})
+test('eldre frosne artikler uten utvidede faktum kan fortsatt valideres', () => {
+  const a = draft()
+  delete a.report.factsVersion
+  a.report.facts = calculateFacts(a.report.rows[0], a.report.rows.at(-1))
+  const legacyText = (text) =>
+    text.replace(/\{\{fact:([A-Za-z]+)\}\}/g, (match, key) =>
+      Object.hasOwn(a.report.facts, key) ? match : 'et beregnet tall',
+    )
+  for (const key of ['title', 'description', 'lead', 'conclusion', 'linkedin'])
+    a.copy[key] = legacyText(a.copy[key])
+  for (const section of a.copy.sections) {
+    section.heading = legacyText(section.heading)
+    section.paragraphs = section.paragraphs.map(legacyText)
+    section.factIds = section.factIds.filter((key) => Object.hasOwn(a.report.facts, key))
+  }
+  assert.doesNotThrow(() => validateArticle(a))
+  assert.equal(a.report.facts.nominalPerCapitaGrowth, undefined)
 })
 test('en tidsserie med manglende år avvises', () => {
   const a = draft()

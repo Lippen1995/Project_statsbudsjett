@@ -291,6 +291,73 @@
 .an-chart-note {
   margin-top: 16px;
 }
+.an-chart-compact {
+  display: none;
+}
+.an-figure svg {
+  display: block;
+}
+.an-growth-comparison {
+  display: grid;
+  gap: 22px;
+  margin: 24px 0;
+}
+.an-growth-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  margin-bottom: 9px;
+}
+.an-growth-label strong,
+.an-growth-label small {
+  display: block;
+}
+.an-growth-label small {
+  font-size: 12px;
+  color: var(--dempet);
+  margin-top: 5px;
+  line-height: 1.5;
+}
+.an-growth-label b {
+  font-size: 20px;
+  white-space: nowrap;
+}
+.an-growth-track {
+  position: relative;
+  height: 14px;
+  background: var(--flate);
+}
+.an-growth-bar {
+  position: absolute;
+  height: 100%;
+  background: #858077;
+}
+.an-growth-adjusted .an-growth-bar {
+  background: #14594f;
+}
+.an-growth-zero {
+  position: absolute;
+  height: 100%;
+  border-left: 1px solid var(--dempet);
+}
+@media (max-width: 600px) {
+  .an-chart-wide {
+    display: none;
+  }
+  .an-chart-compact {
+    display: block;
+  }
+}
+@media print {
+  .an-chart-wide {
+    display: block !important;
+  }
+  .an-chart-compact {
+    display: none !important;
+  }
+}
 .an-method {
   padding: 32px;
   background: var(--flate);
