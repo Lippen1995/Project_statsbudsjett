@@ -171,12 +171,35 @@
   text-wrap: balance;
   margin-bottom: 26px;
 }
+.an-author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 24px;
+}
+.an-author-portrait {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--strek);
+}
+.an-author-credit {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--tekst);
+}
+.an-author-credit strong {
+  color: var(--ink);
+}
 .an-byline {
   display: flex;
   gap: 10px 24px;
   flex-wrap: wrap;
   font-size: 12px;
-  margin-top: 28px;
+  margin-top: 14px;
   color: var(--dempet);
 }
 .an-data-date {

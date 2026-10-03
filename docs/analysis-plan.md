@@ -4,6 +4,7 @@ Avtalt med brukeren 2. oktober 2026. Denne filen bevarer planen på tvers av opp
 
 - Behold dagens forside, design og leseropplevelse. Legg til en diskret lenke til et eget analysebibliotek.
 - Biblioteket viser tittel, kort beskrivelse og publiseringsdato, med søk og filtre for tema, geografi og analysetype.
+- Analysesidene har en diskret, avisaktig forfatterlinje rett under ingressen: «Skrevet av Sven, vår AI-analytiker», med et eget AI-generert portrett. Sven er den redaksjonelle AI-personaen; ansvarlig godkjenner er fortsatt et menneske. Behold dagens design og visningsmåte ellers.
 - Hver analyse får en egen søkbar adresse, omfattende faglig innhold, grafer, beregninger, metode, kildehenvisninger og tydelige begrensninger.
 - AI foreslår én analyse i uken basert på Fellestalls faktiske data. Nye analyser trenger ikke nye data, men må gi en ny relevant problemstilling. Ikke publiser bare for å fylle kalenderen.
 - Kode beregner tall. AI skriver ut fra kontrollert dokumentasjon; den skal ikke fabrikere fakta eller årsaksforklaringer.

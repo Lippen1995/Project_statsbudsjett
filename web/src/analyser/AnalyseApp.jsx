@@ -191,6 +191,19 @@ function Article({ article, preview }) {
         </div>
         <h1>{t(c.title)}</h1>
         <p className="an-lead">{t(c.lead)}</p>
+        <div className="an-author">
+          <img
+            className="an-author-portrait"
+            src="/bilder/sven-ai-analytiker.webp"
+            width="56"
+            height="56"
+            alt="AI-generert portrett av Sven"
+            decoding="async"
+          />
+          <p className="an-author-credit">
+            Skrevet av <strong>Sven</strong>, vår AI-analytiker
+          </p>
+        </div>
         <div className="an-byline">
           <span>Fellestall · {preview ? 'Utkast' : 'Analyse'}</span>
           <time dateTime={preview ? article.createdAt : article.publishedAt}>
