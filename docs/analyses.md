@@ -41,6 +41,8 @@ Godkjenneren bruker GitHub-appen eller GitHub i mobilnettleseren. Når automatis
 
 Den manuelt klargjorte piloten og PR-en for implementeringen er ikke en automatisk redaksjonell gjennomgang. De utløser ikke i seg selv et varsel om godkjenning. Implementerings-PR-en opprettes med brukerens eksisterende GitHub-tilgang; en PR-forfatter kan ikke godkjenne sin egen PR. De ukentlige analyseutkastene opprettes senere av GitHub Actions-boten, slik at den ansvarlige kan gi en review på mobilen.
 
+Implementeringen finnes i [utkast-PR #8](https://github.com/Lippen1995/Project_statsbudsjett/pull/8). Piloten kan åpnes på mobilen som [PDF](https://raw.githubusercontent.com/Lippen1995/Project_statsbudsjett/ea9f124a8059b0e620df08279b239bf412cebc1b/editorial/review/pilot-til-gjennomgang.pdf) eller [tekstversjon](https://github.com/Lippen1995/Project_statsbudsjett/blob/codex/analyser-og-godkjenning/editorial/drafts/pilot.md). PDF-en er kontrollert mot den lokale gjennomgangsfilen. Disse lenkene gir tilgang til utkastet; en review request er ikke sendt, og varslings-/godkjenningsflyten er fortsatt ikke aktivert.
+
 Innsyn følger repositoryets innstillinger. Gjennomgangen er ikke privat dersom repositoryet er offentlig. Trenger dere private redaksjonelle utkast, må flyten flyttes til et privat repository eller en autentisert gjennomgangstjeneste før den aktiveres.
 
 1. Les utkastene i PR-beskrivelsen.
