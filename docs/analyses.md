@@ -50,7 +50,7 @@ Innsyn følger repositoryets innstillinger. Gjennomgangen er ikke privat dersom 
 3. AI behandler ubehandlede endringsønsker fra brukere med skrivetilgang, oppdaterer det komplette utkastet og sender en ny review request. Tekst i en «Request changes»-review behandles også. Inline-kommentarer på enkelte JSON-linjer inngår ikke; bruk samtalen eller reviewens samlede tekst.
 4. Godkjenn med GitHubs **Review changes → Approve**. Godkjenningen må peke på gjeldende commit. En eldre godkjenning eller et nytt ubehandlet endringsønske stopper publisering.
 5. Den identiske godkjente versjonen testes og bygges. Et enkelt merge-commit oppdaterer det offentlige biblioteket på `main`; bare biblioteksfilen endres. Gjennomgangens head er andre forelder, slik at GitHub registrerer gjennomgangen som flettet. Utkastet følger ikke med inn i bibliotekets tre.
-6. Eksisterende deploy-workflow publiserer nettstedet. LinkedIn-jobben kjører etter vellykket deploy og kontrollerer artikkelens offentlige datagrunnlag mot godkjenningshashen før sending.
+6. Etter vellykket publiseringscommit starter en egen jobb deploy-workflowen med `workflow_dispatch` på `main`. Review-hendelser bruker en PR-ref, og en push med `GITHUB_TOKEN` starter ikke i seg selv en ny push-workflow; derfor sendes utrullingen uttrykkelig til main. Deploy-workflowens sperre mot andre brancher beholdes. LinkedIn-jobben kjører etter vellykket deploy og kontrollerer artikkelens offentlige datagrunnlag mot godkjenningshashen før sending.
 
 Ikke flett utkast-PR manuelt: et utkast i `editorial/drafts` er aldri et publiseringssignal. Dersom regler på `main` blokkerer den automatiske publiseringscommitten, stopper jobben; den omgår ikke grenbeskyttelse. Gjennomgangen kan fremdeles revideres.
 
@@ -79,6 +79,8 @@ LinkedIn krever en reell organisasjonsside, en administrator, OAuth-tilgang med 
 - Ellers kan `LINKEDIN_ACCESS_TOKEN` settes i Secrets. Det varer ikke nødvendigvis permanent; ny autorisering vil kreves ved utløp. Helt vedlikeholdsfri kontotilgang kan derfor ikke loves.
 
 Bekreft tilganger med en manuell kjøring av «Analyser – ukentlig utkast» før tidsplanen tas i bruk. En ekstern ende-til-ende-kjøring er ennå ikke verifisert; API-tilganger og godkjenner er ikke tilgjengelige i utviklingsmiljøet. Lokale beregninger, versjonsvern, API-kontrakter med simulerte svar, nettleservisning og bygg er testet.
+
+«Analyser – kontroller oppsett» kan kjøres manuelt og kjører også når kontroll-workflowen legges til på main. Den rapporterer om nøkkelen, modell og godkjenner er konfigurert, og om automatiseringen er aktivert. Den skriver aldri nøkkelverdier til logger eller filer. Dette er en kontroll av grunninnstillinger; en vellykket kjøring beviser ikke at nøkkelen eller modelltilgangen er gyldig, eller at GitHub tillater botopprettede gjennomganger. Den manuelle utkastkjøringen verifiserer disse delene.
 
 ## Arbeid mens LinkedIn-søknaden behandles
 

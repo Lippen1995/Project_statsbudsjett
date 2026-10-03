@@ -56,7 +56,14 @@ jobs:
   deploy:
     needs: review
     if: github.event.review.state == 'approved'
-    uses: ./.github/workflows/deploy.yml
-    secrets: inherit
+    runs-on: ubuntu-latest
     permissions:
-      contents: write
+      actions: write
+    steps:
+      # Review events use a pull-request ref. Dispatch on main explicitly so
+      # the deployment's main-only guard stays intact. workflow_dispatch can
+      # start a new workflow even when publication uses GITHUB_TOKEN.
+      - name: Start utrulling fra main etter godkjent publisering
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/deploy.yml/dispatches" --raw-field ref=main
