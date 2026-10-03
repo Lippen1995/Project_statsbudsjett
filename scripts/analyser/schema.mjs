@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto'
 import { calculateFacts } from './facts.mjs'
+import { validateEventEvidence, eventEvidenceFacts } from './event-evidence.mjs'
 export const contentHash = (article) =>
   createHash('sha256')
     .update(
@@ -113,9 +114,13 @@ export function validateArticle(article, { published = false } = {}) {
   }
   if (r.factsVersion !== undefined && r.factsVersion !== 2)
     throw Error('Ukjent versjon av faktagrunnlaget')
+  validateEventEvidence(r.eventEvidence, r.rows, r.scopeId)
   if (
     JSON.stringify(r.facts) !==
-    JSON.stringify(calculateFacts(first, last, r.factsVersion === 2 ? r.rows : undefined))
+    JSON.stringify({
+      ...calculateFacts(first, last, r.factsVersion === 2 ? r.rows : undefined),
+      ...eventEvidenceFacts(r.eventEvidence, r.rows),
+    })
   )
     throw Error('Fakta samsvarer ikke med datagrunnlaget')
   if (

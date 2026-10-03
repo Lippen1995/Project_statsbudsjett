@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { calculateFacts } from './facts.mjs'
+import { selectEventEvidence, eventEvidenceFacts } from './event-evidence.mjs'
 
 export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
   const names = ['meta', 'utgifter', 'befolkning', 'kpi']
@@ -34,12 +35,22 @@ export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
       if (!(population > 0) || !(cpi > 0)) throw Error(`Mangler befolkning eller KPI for ${year}`)
       const expenditure = nodes.reduce((s, n) => s + sum(n, year), 0)
       if (!(expenditure > 0)) throw Error(`Ingen utgifter for ${year}`)
-      return { year, expenditure, population, cpi, perCapita: (expenditure * 1e6) / population }
+      return {
+        year,
+        expenditure,
+        population,
+        cpi,
+        perCapita: (expenditure * 1e6) / population,
+      }
     })
   if (rows.length !== end - start + 1) throw Error('Brudd i tidsserien')
   const first = rows[0],
     last = rows.at(-1)
-  const facts = calculateFacts(first, last, rows)
+  const eventEvidence = selectEventEvidence(nodes, rows)
+  const facts = {
+    ...calculateFacts(first, last, rows),
+    ...eventEvidenceFacts(eventEvidence, rows),
+  }
   return {
     kind: 'real-expenditure-per-capita',
     factsVersion: 2,
@@ -52,6 +63,7 @@ export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
       .update(names.map((n) => raw[n]).join('\n'))
       .digest('hex'),
     facts,
+    ...(eventEvidence ? { eventEvidence } : {}),
     rows: rows.map((r) => ({
       ...r,
       nominalIndex: (r.perCapita / first.perCapita) * 100,
@@ -59,6 +71,17 @@ export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
       realPerCapita: (r.perCapita * last.cpi) / r.cpi,
     })),
     sources: [
+      ...(eventEvidence
+        ? [
+            {
+              name: 'Fellestall: de konkrete regnskapspostene',
+              url: 'https://fellestall.no/data/utgifter.json',
+              local: '/data/utgifter.json',
+              description:
+                'Hendelseseksemplene er valgt fra samme DFØ-uttrekk som hovedserien. Navn, post-ID-er og årlige beløp er frosset i artikkelens datagrunnlag. Utvalget er ikke et fullstendig koronaregnskap eller en årsaksfordeling av hele veksten.',
+            },
+          ]
+        : []),
       {
         name: 'DFØ Statsregnskapet',
         url: 'https://statsregnskapet.dfo.no',
@@ -80,6 +103,11 @@ export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
       },
     ],
     methodology: [
+      ...(eventEvidence
+        ? [
+            'Hendelsesgrunnlaget følger et lite, redaksjonelt valgt utvalg regnskapsposter. Beløpene er i løpende mill. kroner; eventuelle KPI-justerte endringer per innbygger bruker samme folketall og prisserie som hovedanalysen. En post uten regnskapsføring i uttrekket er merket som ikke observert, ikke som et komplett mål på alle utgifter til formålet. Postene identifiseres med navn og ID.',
+          ]
+        : []),
       `Vi summerer regnskapsførte utgifter på postnivå for ${scopeName}. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.`,
       'Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.',
       'Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.',

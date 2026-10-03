@@ -272,6 +272,9 @@
   color: var(--dempet);
   line-height: 1.6;
 }
+.an-event-evidence th:first-child {
+  white-space: normal;
+}
 .an-legend {
   display: flex;
   gap: 18px;
@@ -351,6 +354,9 @@
   }
 }
 @media print {
+  .an-event-evidence {
+    break-inside: avoid;
+  }
   .an-chart-wide {
     display: block !important;
   }

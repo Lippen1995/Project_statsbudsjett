@@ -22,6 +22,24 @@ export function renderReview(article) {
     '## Hovedfunn',
     escape(c.conclusion),
     ...c.sections.flatMap((s) => [`## ${escape(s.heading)}`, ...s.paragraphs.map(escape)]),
+    ...(r.eventEvidence
+      ? [
+          '## Hendelser og konkrete regnskapsposter',
+          'Utvalgte eksempler, ikke et fullstendig kriseregnskap eller en fordeling av hele veksten. Løpende mill. kroner. «—» betyr ingen regnskapsføring på denne posten i uttrekket.',
+          ...r.eventEvidence.items.flatMap((item) => [
+            `### ${item.title}`,
+            `${item.event}. ${item.context}`,
+            ...item.nodes.map((node) => `- ${node.id}: ${node.name}`),
+            [
+              '| År | Bokført beløp, mill. kr |',
+              '|---|---:|',
+              ...item.rows.map(
+                (row) => `| ${row.year} | ${row.reported ? number(row.expenditure, 1) : '—'} |`,
+              ),
+            ].join('\n'),
+          ]),
+        ]
+      : []),
     '## Metode',
     ...r.methodology,
     '## Begrensninger',

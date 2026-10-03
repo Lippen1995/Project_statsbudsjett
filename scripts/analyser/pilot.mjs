@@ -4,14 +4,14 @@ import { validateArticle } from './schema.mjs'
 import { renderReview } from './render-review.mjs'
 const report = buildReport(new URL('../../web/public/data', import.meta.url).pathname)
 const copy = {
-  title: 'Statens regning har vokst. Prisvekst forklarer ikke alt.',
+  title: 'Pandemien slapp taket. Hva holdt statens regning oppe?',
   description:
-    'Når priser og folketall er tatt med i regnestykket, står en økning igjen. Følg kurven og se når utgiftene tok spranget, hvor de landet, og hvilket spørsmål det åpner for.',
-  lead: 'En større regning. Dyrere kroner. Flere innbyggere. Det virker ganske lett å forklare veksten i statsregnskapet – helt til vi legger utviklingen på samme målestokk. Da dukker et annet spørsmål opp: Når tok utgiftene spranget, og hvor landet de etterpå?',
+    'Koronapandemien setter utgiftsspranget i sammenheng. Men hva skjedde etter gjenåpningen? Vi følger konkrete kriseposter, Ukraina-støtte og pensjonsutgifter gjennom regnskapet.',
+  lead: 'Under koronapandemien skulle ekstraordinære utgifter holde samfunnet og økonomien i gang. Så åpnet samfunnet igjen. Flere kriseutgifter falt, men den prisjusterte regningen per innbygger kom ikke tilbake til nivået før pandemien. Hva holdt den oppe? Svaret blir mer interessant når vi åpner regnskapet og ser hvilke poster som faktisk endret seg.',
   conclusion:
-    'Etter KPI-justering økte statens utgift per innbygger med {{fact:realPerCapitaGrowth}} fra {{fact:startYear}} til {{fact:endYear}} i denne avgrensningen. Fram til {{fact:previousYear}} var veksten {{fact:growthBeforeChange}}; det største årlige spranget kom i {{fact:largestChangeYear}}. Nivået ligger fortsatt høyere flere år etterpå. Mønsteret peker mot en endring som varer utover selve spranget. Hva løftet regningen, og hvilke forpliktelser fulgte med? Det er spørsmålet totalsummen åpner for. KPI måler konsumpriser, så økningen sier noe om pengebruken med denne målestokken, ikke om tjenestevolum.',
+    'Koronapandemien gir spranget i {{fact:largestChangeYear}} en konkret historisk sammenheng. Etterpå falt dagpengeutgiftene kraftig, og en navngitt koronakompensasjon ble nesten borte. Samtidig kom bokført militær støtte til Ukraina til, og pensjonsutgiftene vokste også målt per innbygger etter KPI-justering. Regningen skiftet innhold. At totalnivået ble værende høyt, viser derfor ikke i seg selv at koronatiltakene ble permanente. Hovedserien økte {{fact:realPerCapitaGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Eksemplene forklarer deler av bildet; en full fordeling av veksten krever alle postene.',
   linkedin:
-    'Statsregnskapet har vokst med {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}.\n\nInflasjonen rekker opp hånden. For en gangs skyld bidrar den til en mindre dramatisk overskrift.\n\nNår vi justerer for priser og folketall, står en økning på {{fact:realPerCapitaGrowth}} per innbygger igjen.\n\nSluttsummen skjuler likevel det mest interessante:\nVar dette en topp som gikk over, eller et nivå som ble værende?\n\nVi fulgte kurven gjennom perioden. Se spranget og årene etterpå i analysen med grafer ↓',
+    'Koronastøtten skulle være midlertidig.\nTotalsummen leste tydeligvis ikke det med liten skrift.\n\nFlere kriseutgifter falt. Likevel ble statens utgifter per innbygger liggende over nivået før pandemien, også etter prisjustering.\n\nSå kom vrien: Regningen var fortsatt stor, men innholdet hadde endret seg.\n\nKoronakompensasjon krympet. Militær støtte til Ukraina og pensjonsutgifter tok mer plass.\n\nHva holdt regningen oppe da krisetiltakene krympet?\n\nVi åpnet regnskapet. Se hva som krympet, og hva som tok plass ↓',
   sections: [
     {
       heading: 'Hvor stor er regningen når målestokken er lik?',
@@ -23,7 +23,7 @@ const copy = {
       ],
     },
     {
-      heading: 'Følg kurven, ikke bare sluttsummen',
+      heading: 'Sprangåret har et navn: koronapandemien',
       factIds: [
         'startYear',
         'previousYear',
@@ -32,46 +32,63 @@ const copy = {
         'endYear',
         'firstRealPerCapita',
         'lastPerCapita',
+        'largestAnnualChange',
+        'dagpengerPeakAmount',
       ],
       paragraphs: [
-        'En startverdi og en sluttverdi forteller hvor langt vi har kommet, men lite om veien dit. Fra {{fact:startYear}} til {{fact:previousYear}} var økningen i KPI-justert utgift per innbygger {{fact:growthBeforeChange}}. Kurven beveger seg forholdsvis beskjedent gjennom disse årene. Så kommer {{fact:largestChangeYear}}, og forløpet skifter karakter.',
-        'I samme kroneverdi går regningen fra {{fact:firstRealPerCapita}} per innbygger i startåret til {{fact:lastPerCapita}} i {{fact:endYear}}. Den stiplede linjen holder startårets nivå fast. Følg avstanden mellom den og utgiftskurven: Hvor åpner den seg, og lukker den seg igjen?',
-        'Spranget er lett å få øye på. Årene etterpå fortjener like mye oppmerksomhet. Kurven faller noe tilbake før den stiger igjen, men ender fortsatt over nivået før spranget. Allerede her blir det vanskelig å lese hele perioden som jevn vekst, eller som en kort topp som er borte ved sluttåret.',
+        'Fra {{fact:startYear}} til {{fact:previousYear}} var økningen i KPI-justert utgift per innbygger {{fact:growthBeforeChange}}. Så kommer {{fact:largestChangeYear}}, med et årlig løft på {{fact:largestAnnualChange}}. Koronapandemien og nedstengingene utløste behov for inntektsstøtte, kompensasjon og ekstra helseinnsats. Her gir pandemien en konkret forklaring på hvorfor det oppstod ekstraordinære utgifter.',
+        'Et konkret utslag finnes i dagpengeposten. Den når {{fact:dagpengerPeakAmount}} i sprangåret. Posten omfatter også ordinær arbeidsledighet, så vi kan ikke føre hele beløpet som koronastøtte. Men den gir oss en faktisk regnskapslinje å følge når vi undersøker hva som skjedde under pandemien og etterpå.',
+        'I samme kroneverdi går hovedserien fra {{fact:firstRealPerCapita}} per innbygger i startåret til {{fact:lastPerCapita}} i {{fact:endYear}}. Den stiplede linjen holder startnivået fast. Følg kurven gjennom spranget og årene etterpå. Det interessante spørsmålet er nå hva som skulle falle bort da samfunnet åpnet igjen, og hva som i stedet holdt regningen oppe.',
       ],
     },
     {
-      heading: 'Et sprang. Og så?',
-      factIds: ['largestChangeYear', 'largestAnnualChange', 'growthAfterChange', 'endYear'],
+      heading: 'Kriseutgiftene falt. Hele kurven fulgte ikke etter.',
+      factIds: [
+        'largestChangeYear',
+        'growthAfterChange',
+        'endYear',
+        'dagpengerLastAmount',
+        'dagpengerRealGrowthSinceReference',
+      ],
       paragraphs: [
-        'Årsstolpene gjør det enklere å se rykkene. I {{fact:largestChangeYear}} øker den KPI-justerte utgiften per innbygger med {{fact:largestAnnualChange}}. Det er den største årlige endringen i absoluttverdi i perioden. Se så på stolpene som følger: Noen peker nedover. Likevel tar de ikke regnskapet tilbake dit det startet.',
-        'Fra sprangåret til {{fact:endYear}} er den samlede økningen ytterligere {{fact:growthAfterChange}}. Det er altså både et stort løft og en videre utvikling å forklare. Slår vi alt sammen til én vekstprosent, forsvinner forskjellen mellom dem. Årsstolpene gir oss et mer presist spørsmål: Hva skjedde i sprangåret, og hva holdt nivået oppe etterpå?',
-        'Å kjenne tidspunktet er et sted å begynne letingen. Det er ikke i seg selv en forklaring. Den finnes eventuelt i utgiftsområdene: hvilke poster som økte, om oppgaver ble flyttet, og hvor mye av endringen som gjelder drift, investeringer eller overføringer. Totalsummen kan peke oss i en retning, men ikke avgjøre hvilken forklaring som er riktig.',
+        'Det er rimelig å vente at midlertidige kriseutgifter blir mindre når behovet avtar. Det skjedde også med dagpenger: I {{fact:endYear}} er beløpet {{fact:dagpengerLastAmount}}, klart under sprangårets nivå. Med samme pris- og befolkningsjustering som hovedserien er endringen {{fact:dagpengerRealGrowthSinceReference}}. Denne posten ble altså betydelig mindre, selv om statens samlede utgifter holdt seg høye.',
+        'Årsstolpene viser at hovedserien også har år med nedgang etter {{fact:largestChangeYear}}. Utgiftsnivået faller noe tilbake før det stiger igjen. Ved slutten av perioden er KPI-justert utgift per innbygger ytterligere {{fact:growthAfterChange}} over sprangåret. En nedgang i en stor krisepost og et høyt totalnivå kan dermed finnes i det samme regnskapet.',
+        'Her er skillet som totalsummen lett skjuler: Den viser størrelsen på regningen, ikke om innholdet er det samme. For å avgjøre om en midlertidig ordning ble videreført, må vi følge ordningen. For å forklare hvorfor hele kurven holder seg oppe, må vi også se på postene som vokser mens den krymper.',
       ],
     },
     {
-      heading: 'En topp – eller et nytt nivå?',
-      factIds: ['realPerCapitaGrowth', 'startYear', 'endYear'],
+      heading: 'Noe forsvant nesten. Andre utgifter kom til.',
+      factIds: [
+        'koronakompensasjonPeakYear',
+        'koronakompensasjonPeakAmount',
+        'koronakompensasjonLastAmount',
+        'ukrainastotteFirstRecordedYear',
+        'ukrainastotteLastAmount',
+        'alderspensjonRealGrowthSinceReference',
+        'endYear',
+      ],
       paragraphs: [
-        'Hvis dette bare var en kortvarig topp som raskt gikk over, ville vi ventet å finne kurven tilbake nær nivået før spranget. Slik ser ikke denne serien ut. I {{fact:endYear}} ligger den KPI-justerte pengebruken per innbygger {{fact:realPerCapitaGrowth}} over {{fact:startYear}}. Sammen med forløpet gjennom mellomårene peker det mot et høyere regnskapsnivå som strekker seg over flere år.',
-        'Da åpner det seg et spørsmål om offentlige forpliktelser: Hvilke behov, oppgaver eller prioriteringer ligger bak den større regningen? Også kostnadene staten møter kan ha utviklet seg annerledes. Dette er spor å undersøke, ikke forklaringer vi har påvist. Serien alene kan heller ikke fortelle hvilke utgifter som vil fortsette etter {{fact:endYear}}.',
-        'Akkurat her er målestokken viktig. Staten handler ikke med husholdningenes handlekurv. Dersom statens egne kostnader øker annerledes enn konsumprisene, betyr ikke KPI-justert vekst at tjenestevolumet har vokst tilsvarende. Det høyere nivået er synlig i regnskapet med denne justeringen; hva som ligger bak det, må vi undersøke nærmere.',
+        'En post heter uttrykkelig «Midlertidig kompensasjonsordning for foretak med stort omsetningsfall som følge av koronapandemien». Den er på {{fact:koronakompensasjonPeakAmount}} i {{fact:koronakompensasjonPeakYear}}, men bare {{fact:koronakompensasjonLastAmount}} i {{fact:endYear}}. Her er «midlertidig» synlig i beløpene. Dette er én post, ikke et komplett koronaregnskap; tidligere utbetalinger kan være ført andre steder.',
+        'Så kommer en annen virkelig hendelse inn i bildet: krigen i Ukraina. Posten «Militær støtte til Ukraina» har regnskapsføring fra {{fact:ukrainastotteFirstRecordedYear}} i denne serien, og er på {{fact:ukrainastotteLastAmount}} i {{fact:endYear}}. Det er bokført støtte på denne posten, ikke all norsk Ukraina-støtte. Den viser likevel konkret at nye utgifter kom til etter pandemispranget.',
+        'Også løpende utgifter beveget seg. Pensjonskapitlet «Alderdom» økte {{fact:alderspensjonRealGrowthSinceReference}} per innbygger etter KPI-justering fra sprangåret til {{fact:endYear}}. Regnskapet skiller ikke mellom flere mottakere, regulering og regelendringer. Det viser at veksten her ikke forsvinner med den samme justeringen vi bruker på totalen. Regningen rommer både skiftende kriser og utgifter som fortsetter mellom dem.',
       ],
     },
     {
-      heading: 'Hva fikk vi for den større regningen?',
+      heading: 'En høy totalsum er ikke bevis på permanente koronatiltak',
       factIds: [],
       paragraphs: [
-        'Det er nærliggende å spørre hva innbyggerne fikk igjen. Men summen rommer pensjoner, tilskudd og andre overføringer sammen med statens egen drift. Den større regningen kan derfor ikke leses direkte som flere behandlinger, flere ansatte eller bedre kvalitet. Et svar om resultater trenger andre mål enn beløpet alene.',
-        'Også uttrykket «per innbygger» fortjener en ekstra tanke. Vi gir alle innbyggere samme vekt, selv om en endret alderssammensetning kan gi andre behov. Regnskapet følger samme avgrensning som Fellestalls standardvisning. Det gjør pengebruken sammenlignbar med den visningen, men gir oss ingen ferdig karakterbok for effektivitet eller sløsing.',
+        'Når kurven ikke vender tilbake til nivået før pandemien, er det fristende å tenke at koronaregningen ble permanent. Eksemplene gir grunn til å stoppe ved den slutningen. Noen utgifter falt kraftig samtidig som andre vokste eller kom til. En høy totalsum kan derfor bestå selv når konkrete midlertidige ordninger blir langt mindre.',
+        'Det sier noe om hvordan offentlige forpliktelser endrer seg gjennom perioden. Nye hendelser møter et regnskap som allerede har løpende oppgaver. Eksemplene viser deler av denne endringen i innhold, men summerer ikke hele veksten. De beviser heller ikke at alle kriseutgifter ble avviklet eller at en bestemt utgiftsøkning var nødvendig eller unødvendig.',
+        'KPI måler husholdningenes konsumpriser, ikke statens egne kostnader. Utgifter rommer også pensjoner og overføringer, og beløpene forteller ikke hvor mye tjenesteproduksjon eller kvalitet innbyggerne fikk. Når vi bruker samme målestokk gjennom perioden, får vi et klarere bilde av pengebruken. En vurdering av resultatene krever andre mål i tillegg.',
       ],
     },
     {
-      heading: 'Neste spor ligger inni totalsummen',
+      heading: 'Neste spørsmål: Hvem bidro hvor mye til den nye regningen?',
       factIds: ['previousYear', 'largestChangeYear', 'endYear'],
       paragraphs: [
-        'Hvilke utgiftsområder bidro mest til forskjellen mellom {{fact:previousYear}} og {{fact:endYear}}? Og er det de samme områdene som står bak spranget i {{fact:largestChangeYear}}? En oppfølging bør begynne med å bryte ned beløpene og avstemme dem mot totalsummen, før vi undersøker oppgavene og postene bak endringen.',
-        'Deretter må vi se etter det regnskapet ikke forklarer på egen hånd. Flyttede ansvarsområder og ulik kostnadsutvikling kan påvirke sammenligningen. Det har også betydning om økningen gjelder overføringer eller statens egne tjenester. En rangering av departementer etter vekst kan være en inngang, men er ingen forklaring uten den gjennomgangen.',
-        'Vi begynte med en større regning og tok hensyn til dyrere kroner og flere innbyggere. Det som står igjen, er både en økning og et tydelig sprang i tidsserien. Kurven har gitt oss et sted å lete videre. Nå ligger det interessante sporet i postene som løftet nivået, og forpliktelsene de kan fortelle om.',
+        'Nå kan vi stille et mer presist spørsmål enn hvorfor regningen ikke forsvant sammen med nedstengingene: Hvor mye av forskjellen mellom {{fact:previousYear}} og {{fact:endYear}} skyldes poster som falt, poster som vokste og utgifter som kom til? En slik fordeling må ta med hele regnskapet og avstemmes mot totalen.',
+        'Den bør skille spranget i {{fact:largestChangeYear}} fra utviklingen etterpå, og følge endrede postnavn og ansvarsområder slik at flytting ikke telles som ny pengebruk. Først da kan vi vekte eksemplene opp mot hverandre og forklare resten av forskjellen. Tabellen under viser de utvalgte postene som denne analysen faktisk har fulgt.',
+        'Pandemien gir oss bakgrunnen for å forstå krisespranget. Postene etterpå viser hvorfor det ikke holder å vente at én hendelse skal ta hele regningen med seg ut døren. Innholdet endret seg mens totalsummen forble høy. Det er denne endringen neste gjennomgang bør gjøre fullt rede for.',
       ],
     },
   ],

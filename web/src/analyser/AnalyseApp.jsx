@@ -41,7 +41,12 @@ function Frame({ children }) {
   )
 }
 function Archive({ articles }) {
-  const [filters, setFilters] = useState({ query: '', topic: '', geography: '', type: '' })
+  const [filters, setFilters] = useState({
+    query: '',
+    topic: '',
+    geography: '',
+    type: '',
+  })
   const [visibleCount, setVisibleCount] = useState(12)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -235,7 +240,17 @@ function Article({ article, preview }) {
             ))}
             {s.factIds.length > 0 && (
               <p className="an-reference">
-                <a href="#faktagrunnlag">Se beregningene for dette avsnittet ↓</a>
+                <a
+                  href={
+                    r.eventEvidence?.items.some((item) =>
+                      s.factIds.some((id) => id.startsWith(item.id)),
+                    )
+                      ? '#hendelsesgrunnlag'
+                      : '#faktagrunnlag'
+                  }
+                >
+                  Se tallgrunnlaget for dette avsnittet ↓
+                </a>
               </p>
             )}
           </section>
@@ -244,6 +259,7 @@ function Article({ article, preview }) {
           {i === 2 && <AnnualChangeChart report={r} />}
         </React.Fragment>
       ))}
+      {r.eventEvidence && <EventEvidence report={r} />}
       <section id="metode" className="an-method">
         <div className="ft-kicker">Åpent regnestykke</div>
         <h2>Metode og kilder</h2>
@@ -274,7 +290,10 @@ function Article({ article, preview }) {
       </section>
       <section id="faktagrunnlag" className="an-evidence">
         <h2>Tallene bak analysen</h2>
-        <p>Beløp i kroner per innbygger. Faste priser er oppgitt i {r.end}-kroner.</p>
+        <p>
+          Beløp i kroner per innbygger. Faste priser er oppgitt i {r.end}
+          -kroner.
+        </p>
         <div
           className="an-table-scroll"
           tabIndex={0}
@@ -326,6 +345,74 @@ function Article({ article, preview }) {
         <a href="/#prisvekst">Undersøk utviklingen selv i Fellestall →</a>
       </div>
     </article>
+  )
+}
+
+function EventEvidence({ report }) {
+  const years = [
+    ...new Set([
+      report.start <= 2019 && report.end >= 2019 ? 2019 : report.start,
+      2020,
+      2021,
+      report.end,
+    ]),
+  ]
+    .filter((year) => year >= report.start && year <= report.end)
+    .sort((a, b) => a - b)
+  return (
+    <section className="an-evidence an-event-evidence" id="hendelsesgrunnlag">
+      <h2>Hva skjedde med de konkrete postene?</h2>
+      <p>Utvalgte eksempler fra det samme regnskapet. Beløp i løpende millioner kroner.</p>
+      <div
+        className="an-table-scroll"
+        tabIndex={0}
+        role="region"
+        aria-label="Utvalgte regnskapsposter gjennom perioden"
+      >
+        <table>
+          <caption>
+            Dette er et utvalg poster, ikke et fullstendig regnskap for pandemien eller
+            Ukraina-støtten.
+          </caption>
+          <colgroup>
+            <col style={{ width: '40%' }} />
+            {years.map((year) => (
+              <col key={year} />
+            ))}
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col">Regnskapspost</th>
+              {years.map((year) => (
+                <th key={year} scope="col">
+                  {year}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {report.eventEvidence.items.map((item) => (
+              <tr key={item.id}>
+                <th scope="row">{item.title}</th>
+                {years.map((year) => {
+                  const row = item.rows.find((row) => row.year === year)
+                  return (
+                    <td className="num" key={year}>
+                      {row.reported ? number(row.expenditure, 1) : '—'}
+                    </td>
+                  )
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p>
+        «—» betyr ingen regnskapsføring på denne posten i uttrekket. Føring på andre poster og
+        endrede ordninger kan påvirke sammenligningen. Underliggende post-ID-er og hele tidsseriene
+        følger det frosne datagrunnlaget.
+      </p>
+    </section>
   )
 }
 export default function AnalyseApp({

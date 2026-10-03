@@ -2,13 +2,13 @@
 
 Klargjort 2. oktober 2026 mens LinkedIn-søknaden behandles. Piloten er et komplett utkast; de øvrige punktene er redaksjonelle forslag med beregnet kontrollgrunnlag. Ingen av dem er menneskelig godkjent eller publisert. Rekkefølgen under er et forslag, ikke en aktiv publiseringskø eller en endring av automatikkens emnevalg.
 
-## Statens regning har vokst. Prisvekst forklarer ikke alt.
+## Pandemien slapp taket. Hva holdt statens regning oppe?
 
 - Komplett [pilotutkast](drafts/pilot.md) og [PDF til gjennomgang](review/pilot-til-gjennomgang.pdf).
 - Avgrensning: statens regnskapsførte utgifter 2014–2025, uten finansposter og SPU-overføringer.
 - Kontrollgrunnlag: 86,5 % vekst i løpende utgifter; 21,1 % vekst per innbygger etter KPI-justering.
-- Leserspørsmål: Hvor mye av veksten står igjen etter justering, når endret nivået seg, og hva bør vi undersøke videre?
-- Mål for gjennomgangen: prøve den underholdende, saklige tonen, tre grafer og en tydelig faglig vurdering på mobil. Piloten er revidert etter innspill om mindre dataoppramsing; den er fortsatt et utkast.
+- Leserspørsmål: Hvorfor vendte ikke totalnivået tilbake da samfunnet åpnet igjen? Vi følger utvalgte kriseposter, militær Ukraina-støtte og pensjonsutgifter for å undersøke endringen i innhold.
+- Mål for gjennomgangen: prøve en fengende, saklig fortelling med virkelige hendelser, tre grafer, posttabell og et nytt LinkedIn-utkast på mobil. Dette er eksempler, ikke en full fordeling av veksten. Piloten er fortsatt et utkast.
 
 ## Helseregningen vokser. Men kronen krymper.
 

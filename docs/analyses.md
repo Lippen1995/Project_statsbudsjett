@@ -112,6 +112,10 @@ AI skal forklare et mønster i tidsserien og hva det kan antyde, fremfor å rams
 
 Den redaksjonelle fortellingen skal la leseren følge fra observasjon og spørsmål til tolkning. Hovedfunnet oppsummeres klart; brødteksten bruker grafene til å gjøre sammenhengen synlig uten belærende formuleringer. LinkedIn gir et konkret funn, en naturlig humoristisk inngang når det passer og et relevant åpent spørsmål. Invitasjonen ved lenken skal gjelde noe analysen faktisk belyser. AI-instruksene følger disse føringene, og den aktuelle pilotteksten prøver dem i praksis.
 
+Nye rapporter får et valgfritt `eventEvidence` med et kontrollert utvalg poster fra samme DFØ-uttrekk: dagpenger, én navngitt midlertidig koronakompensasjon, én post for militær støtte til Ukraina og pensjonskapitlet Alderdom. Utvalget begrenses til valgt departement og regnskapsperiode. Postnavn, ID-er, forklaringer og årsverdier fryses og hashes; kode beregner tilhørende faktum og kontrollerer dem før godkjenning. En tabell viser noen år i artikkelen, og gjennomgangen og JSON-grunnlaget inneholder hele serien. Ingen regnskapsføring markeres med «—» og må ikke omtales som null i et komplett formålsregnskap.
+
+Hendelsesgrunnlaget gir historisk sammenheng og konkrete eksempler på utgifter som falt eller kom til. Det er ingen fullstendig fordeling av veksten eller oversikt over all koronastøtte eller Ukraina-støtte. Nye hendelser krever kontrollerte kilder og relevant postutvalg før AI kan bruke dem; modellen får ikke finne på kildehenvisninger. Eldre frosne rapporter uten hendelsesgrunnlag kan fortsatt valideres. Endringer i kontekst og beløp er omfattet av den samme versjonsgodkjenningen som teksten.
+
 Det skal ikke produseres like analyser av samme avgrensning og årstall uten endrede verdier. Hvis de kontrollerte problemstillingene er brukt opp eller grunnlaget er utilstrekkelig, hoppes uken over. Utvalg av relevante vinkler og flere faglige rapporttyper kan utvides uten å endre godkjenningsflyten.
 
 ## Feil og duplikater

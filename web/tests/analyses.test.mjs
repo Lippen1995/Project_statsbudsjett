@@ -19,6 +19,7 @@ import { filterAnalyses, factText } from '../src/analyser/model.js'
 import { kompaktData, rot, sumRot } from '../src/fellestall/kompakt.js'
 import { renderReview } from '../../scripts/analyser/render-review.mjs'
 import { calculateFacts } from '../../scripts/analyser/facts.mjs'
+import { evidenceHash, eventEvidenceFacts } from '../../scripts/analyser/event-evidence.mjs'
 import { annualChanges, largestAnnualChange, growthMeasures } from '../src/analyser/insights.js'
 import { githubClient } from '../../scripts/analyser/github.mjs'
 import { writeCopy } from '../../scripts/analyser/ai.mjs'
@@ -47,8 +48,15 @@ test('befolkning og priser justeres multiplikativt, med kjente tall', () => {
     const data = {
       meta: { regnskap_aar: [2020, 2021], oppdatert: '2026-10-01T00:00:00Z' },
       utgifter: [
-        { id: 'ordinary', serier: { 2020: { regnskap: 100 }, 2021: { regnskap: 132 } } },
-        { id: 'finance', fin: true, serier: { 2020: { regnskap: 999 }, 2021: { regnskap: 9999 } } },
+        {
+          id: 'ordinary',
+          serier: { 2020: { regnskap: 100 }, 2021: { regnskap: 132 } },
+        },
+        {
+          id: 'finance',
+          fin: true,
+          serier: { 2020: { regnskap: 999 }, 2021: { regnskap: 9999 } },
+        },
       ],
       befolkning: { 2020: 100, 2021: 110 },
       kpi: { 2020: 100, 2021: 120 },
@@ -107,6 +115,7 @@ test('nye faktum om tidsforløpet må stemme med hele tidsserien', () => {
 test('eldre frosne artikler uten utvidede faktum kan fortsatt valideres', () => {
   const a = draft()
   delete a.report.factsVersion
+  delete a.report.eventEvidence
   a.report.facts = calculateFacts(a.report.rows[0], a.report.rows.at(-1))
   const legacyText = (text) =>
     text.replace(/\{\{fact:([A-Za-z]+)\}\}/g, (match, key) =>
@@ -121,6 +130,74 @@ test('eldre frosne artikler uten utvidede faktum kan fortsatt valideres', () => 
   }
   assert.doesNotThrow(() => validateArticle(a))
   assert.equal(a.report.facts.nominalPerCapitaGrowth, undefined)
+})
+test('hendelseseksemplene bruker bokførte poster, bevarer ukjent føring og riktige justeringer', () => {
+  const a = draft()
+  const items = a.report.eventEvidence.items
+  const compensation = items.find((item) => item.id === 'koronakompensasjon')
+  assert.equal(compensation.rows.find((row) => row.year === 2020).reported, false)
+  assert.equal(compensation.rows.find((row) => row.year === 2021).expenditure, 7823)
+  assert.equal(compensation.rows.at(-1).expenditure, 1.3)
+  assert.equal(a.report.facts.koronakompensasjonReferenceAmount, undefined)
+  assert.equal(a.report.facts.ukrainastotteLastAmount.text, '41,2 mrd. kr')
+  assert.equal(a.report.facts.dagpengerRealGrowthSinceReference.text, '−68,8 %')
+  assert.equal(a.report.facts.alderspensjonRealGrowthSinceReference.text, '8,3 %')
+  assert.ok(renderReview(a).includes('Hendelser og konkrete regnskapsposter'))
+  assert.ok(renderReview(a).includes('u-09-0900-85'))
+  const evidence = structuredClone(a.report.eventEvidence)
+  const last = evidence.items.find((item) => item.id === 'dagpenger').rows.at(-1)
+  last.reported = false
+  last.expenditure = 0
+  const missing = eventEvidenceFacts(evidence, a.report.rows)
+  assert.equal(missing.dagpengerLastAmount, undefined)
+  assert.equal(missing.dagpengerRealGrowthSinceReference, undefined)
+  last.reported = true
+  const observedZero = eventEvidenceFacts(evidence, a.report.rows)
+  assert.equal(observedZero.dagpengerLastAmount.value, 0)
+  assert.equal(observedZero.dagpengerRealGrowthSinceReference.value, -100)
+})
+test('endrede hendelsesbeløp, avgrensning og faktatekst avvises', () => {
+  const a = draft()
+  a.report.eventEvidence.items[0].rows[0].expenditure += 100
+  assert.throws(() => validateArticle(a), /hendelsesgrunnlag/)
+  const b = draft()
+  b.report.facts.ukrainastotteLastAmount.text = '1,0 mrd. kr'
+  assert.throws(() => validateArticle(b), /Fakta samsvarer/)
+  const c = draft()
+  c.report.scopeId = 'u-17'
+  assert.throws(() => validateArticle(c), /avgrensning/)
+  const d = draft()
+  d.report.eventEvidence.items[0].rows.pop()
+  d.report.eventEvidence.hash = evidenceHash(d.report.eventEvidence.items)
+  assert.throws(() => validateArticle(d), /hendelsesserie/)
+  const e = draft()
+  for (const row of e.report.eventEvidence.items[0].rows) {
+    row.reported = false
+    row.expenditure = 0
+  }
+  e.report.eventEvidence.hash = evidenceHash(e.report.eventEvidence.items)
+  assert.throws(() => validateArticle(e), /hendelsesserie/)
+})
+test('hendelsesgrunnlaget begrenses til valgt departement og fryses ved godkjenning', () => {
+  const r = buildReport(join(root, 'web/public/data'), {
+    departmentId: 'u-17',
+  })
+  assert.deepEqual(
+    r.eventEvidence.items.map((item) => item.id),
+    ['ukrainastotte'],
+  )
+  const a = approved()
+  a.report.eventEvidence.items[0].context += ' Endret tolkning.'
+  a.report.eventEvidence.hash = evidenceHash(a.report.eventEvidence.items)
+  assert.throws(() => validateArticle(a, { published: true }), /godkjenning/)
+  const frozen = draft()
+  frozen.report.eventEvidence.items[0].title = 'Tidligere redaksjonelt navn'
+  frozen.report.eventEvidence.hash = evidenceHash(frozen.report.eventEvidence.items)
+  frozen.report.facts = {
+    ...calculateFacts(frozen.report.rows[0], frozen.report.rows.at(-1), frozen.report.rows),
+    ...eventEvidenceFacts(frozen.report.eventEvidence, frozen.report.rows),
+  }
+  assert.doesNotThrow(() => validateArticle(frozen))
 })
 test('en tidsserie med manglende år avvises', () => {
   const a = draft()
@@ -162,7 +239,10 @@ test('gamle godkjenninger og ubehandlede endringsønsker stopper publisering', (
 })
 test('revisjon fjerner tidligere godkjenning og krever ny gjennomgang', () => {
   const article = approved(),
-    copy = { ...article.copy, title: 'Dyrere kroner trenger en bedre målestokk' }
+    copy = {
+      ...article.copy,
+      title: 'Dyrere kroner trenger en bedre målestokk',
+    }
   const next = reviseArticle(article, copy, {
     feedbackId: 'comment-123',
     feedbackAt: '2026-10-02T14:00:00Z',
@@ -207,7 +287,10 @@ test('AI kan ikke introdusere uverifiserte sifre, lenker eller ukjente faktum', 
 test('vanlige PR-er og PR-er fra forks er ikke publiseringskanaler', () => {
   const pr = {
     state: 'open',
-    head: { ref: 'analysis/weekly-2026-10-02', repo: { full_name: 'owner/repo' } },
+    head: {
+      ref: 'analysis/weekly-2026-10-02',
+      repo: { full_name: 'owner/repo' },
+    },
     base: { ref: 'main' },
   }
   assert.doesNotThrow(() => assertReviewBranch(pr, 'owner/repo'))
@@ -357,7 +440,11 @@ test('hele revisjonsløpet: tekstønske, nytt utkast, gammel godkjenning avvist,
     pr = {
       number: 7,
       state: 'open',
-      head: { sha: 'old-head', ref: 'analysis/weekly-test', repo: { full_name: 'owner/repo' } },
+      head: {
+        sha: 'old-head',
+        ref: 'analysis/weekly-test',
+        repo: { full_name: 'owner/repo' },
+      },
       base: { ref: 'main', sha: 'main-head' },
     }
   const comments = [
@@ -375,7 +462,9 @@ test('hele revisjonsløpet: tekstønske, nytt utkast, gammel godkjenning avvist,
     root: '/repos/owner/repo',
     repository: 'owner/repo',
     permission: async (login) => login === 'editor',
-    content: async (path) => ({ value: path === registry ? mainPublished : current }),
+    content: async (path) => ({
+      value: path === registry ? mainPublished : current,
+    }),
     pages: async (path) =>
       path.includes('/files')
         ? [{ filename: draftPath, status: 'added' }]
@@ -492,7 +581,12 @@ test('OAuth-fornyelse skjer før LinkedIn-publisering uten å lagre nøkler', as
 
 test('trukket godkjenning og en tom request-changes-review stopper publisering', async () => {
   const { assertActiveApproval } = await import('../../scripts/analyser/review.mjs')
-  const review = { id: 100, state: 'APPROVED', user: { login: 'editor' }, commit_id: 'head' }
+  const review = {
+    id: 100,
+    state: 'APPROVED',
+    user: { login: 'editor' },
+    commit_id: 'head',
+  }
   assert.doesNotThrow(() => assertActiveApproval([review], review, 'head'))
   assert.throws(
     () => assertActiveApproval([{ ...review, state: 'DISMISSED' }], review, 'head'),
@@ -556,6 +650,9 @@ test('overføring sender et eksisterende utkast til ny godkjenner uten å genere
     },
   })
   assert.deepEqual(requests, [
-    { path: '/repos/owner/repo/pulls/42/requested_reviewers', body: { reviewers: ['new-editor'] } },
+    {
+      path: '/repos/owner/repo/pulls/42/requested_reviewers',
+      body: { reviewers: ['new-editor'] },
+    },
   ])
 })
