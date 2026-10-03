@@ -173,3 +173,7 @@ Frontenden merker anslagsår overalt: stjerne med fotnote i tabellen, skravert
 område med stiplet linje i grafen, og «(anslag)» i tooltipen.
 - **Dataformat**: Statisk JSON, ingen backend i drift
 - **Hosting**: Statisk (GitHub Pages, Cloudflare Pages o.l.)
+
+## Analyser og redaksjonell automatisering
+
+Analysebiblioteket ligger på `/analyser/`. Se [oppsett, mobilgodkjenning og publiseringsvern](docs/analyses.md) og [avtalt plan](docs/analysis-plan.md). Pilotanalysen er et utkast og blir ikke publisert før menneskelig godkjenning.

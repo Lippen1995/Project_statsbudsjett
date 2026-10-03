@@ -94,7 +94,7 @@ export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026,
               </a>
             ))}
           </nav>
-          <div className="ft-sidefot"><a href="#om-tallene">Om tallene</a></div>
+          <div className="ft-sidefot"><a href="/analyser/">Analyser</a><a href="#om-tallene">Om tallene</a></div>
         </aside>
 
         <main className="ft-hovedspalte" id="hovedinnhold">
@@ -109,6 +109,7 @@ export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026,
                   </a>
                 ))}
                 <a href="#om-tallene">Om tallene</a>
+                <a href="/analyser/">Analyser</a>
               </nav>
             </div>
           </div>

@@ -213,6 +213,7 @@ export default function Fellestall() {
             ))}
           </nav>
           <div className="ft-sidefot">
+            <a href="/analyser/">Analyser</a>
             <a href="#om-tallene">Om tallene</a>
           </div>
         </aside>
@@ -233,6 +234,7 @@ export default function Fellestall() {
                   </a>
                 ))}
                 <a href="#om-tallene">Om tallene</a>
+                <a href="/analyser/">Analyser</a>
               </nav>
             </div>
           </div>
@@ -347,6 +349,7 @@ export default function Fellestall() {
             <div className="ft-stikkord">Innhold</div>
             <div className="ft-fot-lenker">
               {SEKSJONER.map((s) => <a key={s.id} href={`#${s.id}`}>{s.navn}</a>)}
+              <a href="/analyser/">Analyser</a>
             </div>
           </div>
           <div>

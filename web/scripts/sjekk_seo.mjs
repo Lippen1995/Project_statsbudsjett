@@ -2,6 +2,8 @@ import { readFileSync } from 'node:fs'
 
 const html = readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8')
 const sitemap = readFileSync(new URL('../dist/sitemap.xml', import.meta.url), 'utf8')
+const analyses = JSON.parse(readFileSync(process.env.ANALYSIS_PUBLICATIONS_FILE ?? new URL('../src/analyser/publications.json', import.meta.url), 'utf8'))
+const archive = readFileSync(new URL('../dist/analyser/index.html', import.meta.url), 'utf8')
 const feil = []
 
 const krev = (krav, melding) => { if (!krav) feil.push(melding) }
@@ -36,6 +38,19 @@ if (jsonTreff) {
 
 krev(sitemap.includes('<lastmod>'), 'sitemap mangler korrekt oppdateringssignal')
 krev(!sitemap.includes('<changefreq>') && !sitemap.includes('<priority>'), 'sitemap inneholder signaler Google ignorerer')
+krev(archive.includes('<h1>Bak tallene.</h1>'), 'analyseoversikten mangler statisk innhold')
+krev(archive.includes('rel="canonical" href="https://fellestall.no/analyser/"'), 'analyseoversikten mangler kanonisk adresse')
+krev(sitemap.includes('https://fellestall.no/analyser/'), 'analyseoversikten mangler i sitemap')
+krev(!sitemap.includes('/forhandsvisning/'), 'utkast skal ikke være i sitemap')
+for (const article of analyses) {
+  const page = readFileSync(new URL(`../dist/analyser/${article.slug}/index.html`, import.meta.url), 'utf8')
+  const snapshot = JSON.parse(readFileSync(new URL(`../dist/analyser/${article.slug}/datagrunnlag.json`, import.meta.url), 'utf8'))
+  krev([...page.matchAll(/<h1(?:\s|>)/g)].length === 1, `${article.slug}: feil antall hovedoverskrifter`)
+  krev(page.includes(`rel="canonical" href="https://fellestall.no/analyser/${article.slug}/"`), `${article.slug}: feil kanonisk adresse`)
+  krev(page.includes('"@type":"Article"'), `${article.slug}: Article-data mangler`)
+  krev(page.includes('Metode og kilder') && page.includes('Tallene bak analysen'), `${article.slug}: faglig innhold mangler i HTML`)
+  krev(snapshot.contentHash === article.approval.contentHash, `${article.slug}: publisert datagrunnlag avviker fra godkjent versjon`)
+}
 
 if (feil.length) {
   console.error('SEO-sjekken fant feil:')

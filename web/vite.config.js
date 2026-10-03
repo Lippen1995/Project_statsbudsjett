@@ -4,6 +4,7 @@ import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { readFileSync } from 'node:fs'
 import SeoFallback from './src/fellestall/SeoFallback.jsx'
+import { analysesPlugin } from './src/analyser/vite-plugin.jsx'
 
 const NETTSTED = 'https://fellestall.no/'
 
@@ -87,6 +88,6 @@ function seo() {
 }
 
 export default defineConfig({
-  plugins: [react(), seo()],
+  plugins: [react(), seo(), analysesPlugin()],
   base: './',
 })

@@ -1,17 +1,13 @@
 import React from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import Fellestall from './fellestall/Fellestall.jsx'
+import AnalyseApp from './analyser/AnalyseApp.jsx'
 import './index.css'
+import './analyser/analyser.css'
 
-/*
- * Fellestall er hele nettstedet. Det opprinnelige analyseverktøyet (App.jsx og
- * components/) er IKKE lenger nåbart: én offentlig flate betyr ett design å
- * holde tilgjengelig. Stortingets voteringer og virksomhetsnivået finnes bare
- * der, og skal migreres inn i forsiden – til da ligger filene i repoet som
- * referanse for migreringen, ikke som død kode ved en forglemmelse.
- */
+const isAnalysis = /^\/analyser(?:\/|$)/.test(window.location.pathname)
 hydrateRoot(document.getElementById('root'),
   <React.StrictMode>
-    <Fellestall />
+    {isAnalysis ? <AnalyseApp {...(window.__FELLESTALL_ANALYSES__ ?? { notFound: true })} /> : <Fellestall />}
   </React.StrictMode>
 )
