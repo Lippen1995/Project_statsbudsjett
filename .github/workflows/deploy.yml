@@ -62,3 +62,11 @@ jobs:
             gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  distribute-analyses:
+    needs: build-deploy
+    if: github.ref_name == 'main' && vars.ANALYSIS_AUTOMATION_ENABLED == 'true' && vars.LINKEDIN_ENABLED == 'true'
+    uses: ./.github/workflows/analysis-distribute.yml
+    secrets: inherit
+    permissions:
+      contents: write

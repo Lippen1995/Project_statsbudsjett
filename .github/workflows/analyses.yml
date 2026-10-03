@@ -1,0 +1,31 @@
+name: Analyser – ukentlig utkast
+on:
+  schedule:
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: analysis-weekly
+  cancel-in-progress: false
+jobs:
+  draft:
+    if: vars.ANALYSIS_AUTOMATION_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Lag kontrollert utkast og be om gjennomgang
+        run: node scripts/analyser/cli.mjs weekly
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ANALYSIS_REVIEWER: ${{ vars.ANALYSIS_REVIEWER }}
+          ANALYSIS_AI_API_KEY: ${{ secrets.ANALYSIS_AI_API_KEY }}
+          ANALYSIS_AI_MODEL: ${{ vars.ANALYSIS_AI_MODEL }}

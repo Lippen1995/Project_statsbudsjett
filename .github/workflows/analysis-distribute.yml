@@ -1,0 +1,32 @@
+name: Analyser – distribuer til LinkedIn
+on:
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: analysis-linkedin
+  cancel-in-progress: false
+jobs:
+  linkedin:
+    if: vars.ANALYSIS_AUTOMATION_ENABLED == 'true' && vars.LINKEDIN_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Kontroller publisert side og send godkjent innlegg
+        run: node scripts/analyser/distribute.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_REFRESH_TOKEN: ${{ secrets.LINKEDIN_REFRESH_TOKEN }}
+          LINKEDIN_CLIENT_ID: ${{ vars.LINKEDIN_CLIENT_ID }}
+          LINKEDIN_CLIENT_SECRET: ${{ secrets.LINKEDIN_CLIENT_SECRET }}
+          LINKEDIN_ORGANIZATION_ID: ${{ vars.LINKEDIN_ORGANIZATION_ID }}
+          LINKEDIN_VERSION: ${{ vars.LINKEDIN_VERSION }}
