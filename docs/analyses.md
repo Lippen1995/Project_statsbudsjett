@@ -88,6 +88,21 @@ Analysebiblioteket og nettsidepubliseringen er uavhengige av LinkedIn-tilgangen.
 
 Nettverksendringen med `api.github.com` og `fellestall.no` er lagret. Etter endringen fungerer repository- og PR-operasjoner mot GitHubs API. Den autentiserte GitHub-kontoen er `Lippen1995`. Actions-variabler og Secrets svarer fortsatt `Resource not accessible by integration` (HTTP 403); de må settes i repositoryets innstillinger med nødvendig tilgang. Eksisterende credential-bindinger er beholdt, og det er ikke bedt om en ny personlig token.
 
+## Status ved første utrulling, 3. oktober 2026
+
+Biblioteket er live. Produksjonsbygg og utrulling passerer, biblioteket og forsiden svarer med riktig HTML, Sven-portrettet er identisk med deployet fil, og utkastadressen svarer 404.
+
+Oppsettskontrollen rapporterer fire manglende eller deaktiverte innstillinger: `ANALYSIS_AI_API_KEY`, `ANALYSIS_AI_MODEL`, `ANALYSIS_REVIEWER` og `ANALYSIS_AUTOMATION_ENABLED`. En manuell utkastkjøring er bekreftet hoppet over på grunn av aktiveringsflagget. Integrasjonen kan starte og lese workflows, men får HTTP 403 ved endring av repository-variabler og kan ikke administrere Secrets eller workflow-innstillinger.
+
+Engangsverdiene legges derfor inn fra eierens konto:
+
+- [Actions Secrets](https://github.com/Lippen1995/Project_statsbudsjett/settings/secrets/actions): API-nøkkelen som `ANALYSIS_AI_API_KEY`.
+- [Actions Variables](https://github.com/Lippen1995/Project_statsbudsjett/settings/variables/actions): `ANALYSIS_REVIEWER=Lippen1995`, `ANALYSIS_AI_MODEL=gpt-4.1` som startmodell og `ANALYSIS_AUTOMATION_ENABLED=true`. Faktisk modelltilgang og API-nøkkel verifiseres ved første utkastkjøring.
+- [Actions-innstillinger](https://github.com/Lippen1995/Project_statsbudsjett/settings/actions): tillat at GitHub Actions oppretter pull requests. Behold eksisterende grenregler; publiseringsjobbene oppgir sine nødvendige rettigheter selv.
+- Hold `LINKEDIN_ENABLED` deaktivert mens nettsideflyten prøves. Mobilens pushvarsler for review requests aktiveres i GitHub-appen av brukeren.
+
+Når innstillingene er lagret, kan oppsettskontrollen og første utkastkjøring startes fra denne integrasjonen. En review request og faktisk mobilvarsel er ennå ikke bekreftet.
+
 ## Overføre godkjenningsansvaret
 
 Brukeren er første ansvarlige godkjenner. Den eksisterende autentiserte GitHub-tilgangen bruker `Lippen1995`. Rollen ligger i repository-variabelen `ANALYSIS_REVIEWER`, ikke hardkodet i artikkelsider, AI-tekster eller workflowfiler. Variabelen er ennå ikke lagret fra denne økten; integrasjonen har ikke tilgang til Actions-innstillingene.
