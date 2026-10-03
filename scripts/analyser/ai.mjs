@@ -45,7 +45,13 @@ export async function writeCopy(
     },
     body: JSON.stringify({
       model,
-      instructions: [instructions, editorialGuidance, linkedInGuidance, eventGuidance].join('\n\n'),
+      instructions: [
+        instructions,
+        editorialGuidance,
+        linkedInGuidance,
+        eventGuidance,
+        'Når hovedfunnet er stor utgiftsvekst, skal tittel og åpning sette denne veksten først. Bruk en konkret, kontrollert observasjon som gir leseren grunn til å undersøke regningen. Historiske hendelser og andre forklaringer kommer deretter. Mellomtitlene skal føre fra økning til forklaring, og LinkedIn får samme rekkefølge med en snedig kommentar om størrelsen på regningen. Gjør periode og målestokk tydelig tidlig: ikke fremstille løpende kroner som prisjustert vekst. La faktiske funn styre vinkelen også når utgiftene faller; stor pengebruk alene dokumenterer ikke sløsing.',
+      ].join('\n\n'),
       input: JSON.stringify({ report, previous, feedback }),
       text: {
         format: {

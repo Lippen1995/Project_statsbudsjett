@@ -485,7 +485,10 @@ test('hele revisjonsløpet: tekstønske, nytt utkast, gammel godkjenning avvist,
         })
         return {}
       }
-      if (options.method === 'PATCH') return {}
+      if (options.method === 'PATCH') {
+        Object.assign(pr, options.body)
+        return {}
+      }
       return structuredClone(pr)
     },
     commit: async (branch, parent, changes, message, options) => {
@@ -509,10 +512,17 @@ test('hele revisjonsløpet: tekstønske, nytt utkast, gammel godkjenning avvist,
       now: () => '2026-10-02T15:01:00Z',
       generateCopy: async (_r, options) => {
         assert.ok(options.feedback.includes('Gjør tittelen morsommere'))
-        return { ...article.copy, title: 'Kronen trenger også lesebriller' }
+        return {
+          ...article.copy,
+          title: 'Regningen vokste {{fact:nominalGrowth}}. Den trenger større papir.',
+        }
       },
     })
     assert.equal(current.status, 'draft')
+    assert.equal(
+      pr.title,
+      'Analyse til gjennomgang: Regningen vokste 86,5 %. Den trenger større papir.',
+    )
     assert.equal(mainPublished.length, 0)
     assert.deepEqual(notifications, [['editor']])
     const review = {
@@ -545,7 +555,7 @@ test('hele revisjonsløpet: tekstønske, nytt utkast, gammel godkjenning avvist,
     assert.equal(mainPublished.length, 0)
     assert.equal(
       JSON.parse(readFileSync(registry))[0].copy.title,
-      'Kronen trenger også lesebriller',
+      'Regningen vokste {{fact:nominalGrowth}}. Den trenger større papir.',
     )
     await runWorkflow({
       command: 'publish',

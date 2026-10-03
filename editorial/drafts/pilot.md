@@ -4,18 +4,18 @@ Les begge tekstene under. **Vil du endre noe? Skriv ønsket i en vanlig kommenta
 
 **Varsler:** Følg denne gjennomgangen i GitHub-appen og aktiver pushvarsler for review requests. Innsyn følger repositoryets tilgang; dette er ikke en separat privat kanal.
 
-Versjon: `8821b18101e6cd727531c29229567dbb01d893df9920c717edc3394016deec51` · Datagrunnlag: 2026-09-23T18:32:24.776647+00:00 · Regnskap 2014–2025
+Versjon: `25befc0affca9fd9914fc3855db84d8d6c0d76f2fbc43ebcd6468fe439d53fd5` · Datagrunnlag: 2026-09-23T18:32:24.776647+00:00 · Regnskap 2014–2025
 
 ## LinkedIn-utkast
 
-Koronastøtten skulle være midlertidig.
-Totalsummen leste tydeligvis ikke det med liten skrift.
+Statens regning har vokst 86,5 % fra 2014 til 2025.
+Kvitteringen burde snart komme med innholdsfortegnelse.
 
-Flere kriseutgifter falt. Likevel ble statens utgifter per innbygger liggende over nivået før pandemien, også etter prisjustering.
+Prisvekst og flere innbyggere forklarer mye av økningen i løpende kroner. Likevel er regningen større også etter begge justeringene.
 
-Så kom vrien: Regningen var fortsatt stor, men innholdet hadde endret seg.
+Pandemien ga et sprang. Men så kom vrien: Flere kriseutgifter falt etterpå, mens andre tok mer plass.
 
-Koronakompensasjon krympet. Militær støtte til Ukraina og pensjonsutgifter tok mer plass.
+Koronakompensasjon krympet. Militær støtte til Ukraina og pensjonsutgifter vokste.
 
 Hva holdt regningen oppe da krisetiltakene krympet?
 
@@ -25,15 +25,15 @@ Lenke etter publisering: https://fellestall.no/analyser/staten-prisvekst-og-utgi
 
 ---
 
-# Pandemien slapp taket. Hva holdt statens regning oppe?
+# Statens regning har vokst 86,5 %. Hva holder den oppe?
 
-Under koronapandemien skulle ekstraordinære utgifter holde samfunnet og økonomien i gang. Så åpnet samfunnet igjen. Flere kriseutgifter falt, men den prisjusterte regningen per innbygger kom ikke tilbake til nivået før pandemien. Hva holdt den oppe? Svaret blir mer interessant når vi åpner regnskapet og ser hvilke poster som faktisk endret seg.
+Fra 2014 til 2025 har statens utgifter nesten doblet seg i løpende kroner. Prisvekst og flere innbyggere forklarer mye, men ikke hele økningen. Også etter begge justeringene er regningen større. Hva holder den oppe? Vi følger spranget under pandemien og postene som tok mer plass etterpå.
 
 ## Hovedfunn
 
-Koronapandemien gir spranget i 2020 en konkret historisk sammenheng. Etterpå falt dagpengeutgiftene kraftig, og en navngitt koronakompensasjon ble nesten borte. Samtidig kom bokført militær støtte til Ukraina til, og pensjonsutgiftene vokste også målt per innbygger etter KPI-justering. Regningen skiftet innhold. At totalnivået ble værende høyt, viser derfor ikke i seg selv at koronatiltakene ble permanente. Hovedserien økte 21,1 % fra 2014 til 2025. Eksemplene forklarer deler av bildet; en full fordeling av veksten krever alle postene.
+Statens utgifter per innbygger økte 21,1 % etter KPI-justering fra 2014 til 2025. Koronapandemien gir spranget i 2020 en konkret historisk sammenheng. Etterpå falt dagpengeutgiftene kraftig, og en navngitt koronakompensasjon ble nesten borte. Samtidig kom bokført militær støtte til Ukraina til, og pensjonsutgiftene vokste også målt per innbygger etter KPI-justering. Regningen skiftet innhold. At totalnivået ble værende høyt, viser derfor ikke i seg selv at koronatiltakene ble permanente. Eksemplene forklarer deler av bildet; en full fordeling av veksten krever alle postene.
 
-## Hvor stor er regningen når målestokken er lik?
+## Regningen vokste også etter pris- og befolkningsjustering
 
 Utgiftene har økt med 86,5 % i løpende kroner. Det er et tall som tar plass. Men en gammel krone og en ny krone kjøper ikke nødvendigvis det samme, og flere innbyggere deler regningen. Hvor mye av økningen står igjen når vi tar hensyn til begge deler?
 
@@ -41,7 +41,7 @@ Først deler vi beløpene på folketallet. Da blir veksten 70,3 %. Deretter just
 
 Legg merke til den siste stolpen. Den er betydelig kortere enn den første, men den er fortsatt over null. Dyrere kroner og flere innbyggere gjør altså mye av veksten mindre dramatisk. Likevel gjenstår en økning i KPI-justert pengebruk per innbygger. Det er denne forskjellen det blir interessant å følge videre.
 
-## Sprangåret har et navn: koronapandemien
+## Det største utgiftsløftet kom med pandemien
 
 Fra 2014 til 2019 var økningen i KPI-justert utgift per innbygger 3,7 %. Så kommer 2020, med et årlig løft på 10,3 %. Koronapandemien og nedstengingene utløste behov for inntektsstøtte, kompensasjon og ekstra helseinnsats. Her gir pandemien en konkret forklaring på hvorfor det oppstod ekstraordinære utgifter.
 
@@ -49,7 +49,7 @@ Et konkret utslag finnes i dagpengeposten. Den når 38,6 mrd. kr i sprangåret. 
 
 I samme kroneverdi går hovedserien fra 310 278 kr per innbygger i startåret til 375 698 kr i 2025. Den stiplede linjen holder startnivået fast. Følg kurven gjennom spranget og årene etterpå. Det interessante spørsmålet er nå hva som skulle falle bort da samfunnet åpnet igjen, og hva som i stedet holdt regningen oppe.
 
-## Kriseutgiftene falt. Hele kurven fulgte ikke etter.
+## Totalen holdt seg høy mens krisepostene krympet
 
 Det er rimelig å vente at midlertidige kriseutgifter blir mindre når behovet avtar. Det skjedde også med dagpenger: I 2025 er beløpet 15,4 mrd. kr, klart under sprangårets nivå. Med samme pris- og befolkningsjustering som hovedserien er endringen −68,8 %. Denne posten ble altså betydelig mindre, selv om statens samlede utgifter holdt seg høye.
 
@@ -57,7 +57,7 @@ Det er rimelig å vente at midlertidige kriseutgifter blir mindre når behovet a
 
 Her er skillet som totalsummen lett skjuler: Den viser størrelsen på regningen, ikke om innholdet er det samme. For å avgjøre om en midlertidig ordning ble videreført, må vi følge ordningen. For å forklare hvorfor hele kurven holder seg oppe, må vi også se på postene som vokser mens den krymper.
 
-## Noe forsvant nesten. Andre utgifter kom til.
+## Nye og løpende utgifter tok mer plass
 
 En post heter uttrykkelig «Midlertidig kompensasjonsordning for foretak med stort omsetningsfall som følge av koronapandemien». Den er på 7,8 mrd. kr i 2021, men bare 1,3 mill. kr i 2025. Her er «midlertidig» synlig i beløpene. Dette er én post, ikke et komplett koronaregnskap; tidligere utbetalinger kan være ført andre steder.
 
@@ -65,7 +65,7 @@ Så kommer en annen virkelig hendelse inn i bildet: krigen i Ukraina. Posten «M
 
 Også løpende utgifter beveget seg. Pensjonskapitlet «Alderdom» økte 8,3 % per innbygger etter KPI-justering fra sprangåret til 2025. Regnskapet skiller ikke mellom flere mottakere, regulering og regelendringer. Det viser at veksten her ikke forsvinner med den samme justeringen vi bruker på totalen. Regningen rommer både skiftende kriser og utgifter som fortsetter mellom dem.
 
-## En høy totalsum er ikke bevis på permanente koronatiltak
+## En større regning kan skjule at innholdet har endret seg
 
 Når kurven ikke vender tilbake til nivået før pandemien, er det fristende å tenke at koronaregningen ble permanent. Eksemplene gir grunn til å stoppe ved den slutningen. Noen utgifter falt kraftig samtidig som andre vokste eller kom til. En høy totalsum kan derfor bestå selv når konkrete midlertidige ordninger blir langt mindre.
 
@@ -73,7 +73,7 @@ Det sier noe om hvordan offentlige forpliktelser endrer seg gjennom perioden. Ny
 
 KPI måler husholdningenes konsumpriser, ikke statens egne kostnader. Utgifter rommer også pensjoner og overføringer, og beløpene forteller ikke hvor mye tjenesteproduksjon eller kvalitet innbyggerne fikk. Når vi bruker samme målestokk gjennom perioden, får vi et klarere bilde av pengebruken. En vurdering av resultatene krever andre mål i tillegg.
 
-## Neste spørsmål: Hvem bidro hvor mye til den nye regningen?
+## Neste spørsmål: Hva står bak resten av økningen?
 
 Nå kan vi stille et mer presist spørsmål enn hvorfor regningen ikke forsvant sammen med nedstengingene: Hvor mye av forskjellen mellom 2019 og 2025 skyldes poster som falt, poster som vokste og utgifter som kom til? En slik fordeling må ta med hele regnskapet og avstemmes mot totalen.
 

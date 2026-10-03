@@ -2,7 +2,7 @@
 
 Klargjort 2. oktober 2026 mens LinkedIn-søknaden behandles. Piloten er et komplett utkast; de øvrige punktene er redaksjonelle forslag med beregnet kontrollgrunnlag. Ingen av dem er menneskelig godkjent eller publisert. Rekkefølgen under er et forslag, ikke en aktiv publiseringskø eller en endring av automatikkens emnevalg.
 
-## Pandemien slapp taket. Hva holdt statens regning oppe?
+## Statens regning har vokst 86,5 %. Hva holder den oppe?
 
 - Komplett [pilotutkast](drafts/pilot.md) og [PDF til gjennomgang](review/pilot-til-gjennomgang.pdf).
 - Avgrensning: statens regnskapsførte utgifter 2014–2025, uten finansposter og SPU-overføringer.

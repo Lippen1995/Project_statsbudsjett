@@ -11,6 +11,7 @@ import {
 } from './review.mjs'
 import { writeCopy } from './ai.mjs'
 import { renderReview } from './render-review.mjs'
+import { factText } from '../../web/src/analyser/model.js'
 export async function runWorkflow({
   command,
   event,
@@ -133,7 +134,7 @@ export async function runWorkflow({
     const pr = await g.api(`${g.root}/pulls`, {
       method: 'POST',
       body: {
-        title: `Analyse til gjennomgang: ${article.copy.title}`,
+        title: `Analyse til gjennomgang: ${factText(article.copy.title, article.report)}`,
         head: branch,
         base: 'main',
         body: renderReview(article),
@@ -178,7 +179,10 @@ export async function runWorkflow({
     )
     await g.api(`${g.root}/pulls/${number}`, {
       method: 'PATCH',
-      body: { body: renderReview(next) },
+      body: {
+        title: `Analyse til gjennomgang: ${factText(next.copy.title, next.report)}`,
+        body: renderReview(next),
+      },
     })
     await comment(
       number,

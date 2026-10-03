@@ -4,17 +4,17 @@ import { validateArticle } from './schema.mjs'
 import { renderReview } from './render-review.mjs'
 const report = buildReport(new URL('../../web/public/data', import.meta.url).pathname)
 const copy = {
-  title: 'Pandemien slapp taket. Hva holdt statens regning oppe?',
+  title: 'Statens regning har vokst {{fact:nominalGrowth}}. Hva holder den oppe?',
   description:
-    'Koronapandemien setter utgiftsspranget i sammenheng. Men hva skjedde etter gjenåpningen? Vi følger konkrete kriseposter, Ukraina-støtte og pensjonsutgifter gjennom regnskapet.',
-  lead: 'Under koronapandemien skulle ekstraordinære utgifter holde samfunnet og økonomien i gang. Så åpnet samfunnet igjen. Flere kriseutgifter falt, men den prisjusterte regningen per innbygger kom ikke tilbake til nivået før pandemien. Hva holdt den oppe? Svaret blir mer interessant når vi åpner regnskapet og ser hvilke poster som faktisk endret seg.',
+    'Statens utgifter økte {{fact:nominalGrowth}} i løpende kroner fra {{fact:startYear}} til {{fact:endYear}}. Vi følger pandemispranget, krisepostene som falt, og utgiftene som tok mer plass etterpå.',
+  lead: 'Fra {{fact:startYear}} til {{fact:endYear}} har statens utgifter nesten doblet seg i løpende kroner. Prisvekst og flere innbyggere forklarer mye, men ikke hele økningen. Også etter begge justeringene er regningen større. Hva holder den oppe? Vi følger spranget under pandemien og postene som tok mer plass etterpå.',
   conclusion:
-    'Koronapandemien gir spranget i {{fact:largestChangeYear}} en konkret historisk sammenheng. Etterpå falt dagpengeutgiftene kraftig, og en navngitt koronakompensasjon ble nesten borte. Samtidig kom bokført militær støtte til Ukraina til, og pensjonsutgiftene vokste også målt per innbygger etter KPI-justering. Regningen skiftet innhold. At totalnivået ble værende høyt, viser derfor ikke i seg selv at koronatiltakene ble permanente. Hovedserien økte {{fact:realPerCapitaGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Eksemplene forklarer deler av bildet; en full fordeling av veksten krever alle postene.',
+    'Statens utgifter per innbygger økte {{fact:realPerCapitaGrowth}} etter KPI-justering fra {{fact:startYear}} til {{fact:endYear}}. Koronapandemien gir spranget i {{fact:largestChangeYear}} en konkret historisk sammenheng. Etterpå falt dagpengeutgiftene kraftig, og en navngitt koronakompensasjon ble nesten borte. Samtidig kom bokført militær støtte til Ukraina til, og pensjonsutgiftene vokste også målt per innbygger etter KPI-justering. Regningen skiftet innhold. At totalnivået ble værende høyt, viser derfor ikke i seg selv at koronatiltakene ble permanente. Eksemplene forklarer deler av bildet; en full fordeling av veksten krever alle postene.',
   linkedin:
-    'Koronastøtten skulle være midlertidig.\nTotalsummen leste tydeligvis ikke det med liten skrift.\n\nFlere kriseutgifter falt. Likevel ble statens utgifter per innbygger liggende over nivået før pandemien, også etter prisjustering.\n\nSå kom vrien: Regningen var fortsatt stor, men innholdet hadde endret seg.\n\nKoronakompensasjon krympet. Militær støtte til Ukraina og pensjonsutgifter tok mer plass.\n\nHva holdt regningen oppe da krisetiltakene krympet?\n\nVi åpnet regnskapet. Se hva som krympet, og hva som tok plass ↓',
+    'Statens regning har vokst {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}.\nKvitteringen burde snart komme med innholdsfortegnelse.\n\nPrisvekst og flere innbyggere forklarer mye av økningen i løpende kroner. Likevel er regningen større også etter begge justeringene.\n\nPandemien ga et sprang. Men så kom vrien: Flere kriseutgifter falt etterpå, mens andre tok mer plass.\n\nKoronakompensasjon krympet. Militær støtte til Ukraina og pensjonsutgifter vokste.\n\nHva holdt regningen oppe da krisetiltakene krympet?\n\nVi åpnet regnskapet. Se hva som krympet, og hva som tok plass ↓',
   sections: [
     {
-      heading: 'Hvor stor er regningen når målestokken er lik?',
+      heading: 'Regningen vokste også etter pris- og befolkningsjustering',
       factIds: ['nominalGrowth', 'nominalPerCapitaGrowth', 'realPerCapitaGrowth'],
       paragraphs: [
         'Utgiftene har økt med {{fact:nominalGrowth}} i løpende kroner. Det er et tall som tar plass. Men en gammel krone og en ny krone kjøper ikke nødvendigvis det samme, og flere innbyggere deler regningen. Hvor mye av økningen står igjen når vi tar hensyn til begge deler?',
@@ -23,7 +23,7 @@ const copy = {
       ],
     },
     {
-      heading: 'Sprangåret har et navn: koronapandemien',
+      heading: 'Det største utgiftsløftet kom med pandemien',
       factIds: [
         'startYear',
         'previousYear',
@@ -42,7 +42,7 @@ const copy = {
       ],
     },
     {
-      heading: 'Kriseutgiftene falt. Hele kurven fulgte ikke etter.',
+      heading: 'Totalen holdt seg høy mens krisepostene krympet',
       factIds: [
         'largestChangeYear',
         'growthAfterChange',
@@ -57,7 +57,7 @@ const copy = {
       ],
     },
     {
-      heading: 'Noe forsvant nesten. Andre utgifter kom til.',
+      heading: 'Nye og løpende utgifter tok mer plass',
       factIds: [
         'koronakompensasjonPeakYear',
         'koronakompensasjonPeakAmount',
@@ -74,7 +74,7 @@ const copy = {
       ],
     },
     {
-      heading: 'En høy totalsum er ikke bevis på permanente koronatiltak',
+      heading: 'En større regning kan skjule at innholdet har endret seg',
       factIds: [],
       paragraphs: [
         'Når kurven ikke vender tilbake til nivået før pandemien, er det fristende å tenke at koronaregningen ble permanent. Eksemplene gir grunn til å stoppe ved den slutningen. Noen utgifter falt kraftig samtidig som andre vokste eller kom til. En høy totalsum kan derfor bestå selv når konkrete midlertidige ordninger blir langt mindre.',
@@ -83,7 +83,7 @@ const copy = {
       ],
     },
     {
-      heading: 'Neste spørsmål: Hvem bidro hvor mye til den nye regningen?',
+      heading: 'Neste spørsmål: Hva står bak resten av økningen?',
       factIds: ['previousYear', 'largestChangeYear', 'endYear'],
       paragraphs: [
         'Nå kan vi stille et mer presist spørsmål enn hvorfor regningen ikke forsvant sammen med nedstengingene: Hvor mye av forskjellen mellom {{fact:previousYear}} og {{fact:endYear}} skyldes poster som falt, poster som vokste og utgifter som kom til? En slik fordeling må ta med hele regnskapet og avstemmes mot totalen.',
