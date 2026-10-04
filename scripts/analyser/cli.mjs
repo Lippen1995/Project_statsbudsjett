@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
 import { githubClient } from './github.mjs'
 import { runWorkflow } from './workflow.mjs'
 import { analysisSettings } from './config.mjs'
@@ -14,4 +15,5 @@ await runWorkflow({
   event,
   g: githubClient(),
   reviewer: settings.reviewer,
+  trustedMain: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
 })

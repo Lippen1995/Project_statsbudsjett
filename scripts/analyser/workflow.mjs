@@ -69,6 +69,7 @@ export async function runWorkflow({
     throw Error('Tekst må leveres fra den planlagte oppgaven; AI-API er deaktivert')
   },
   expectedHead = null,
+  trustedMain = null,
   dataDir = 'web/public/data',
   publicationPath = 'web/src/analyser/publications.json',
   now = () => new Date().toISOString(),
@@ -256,7 +257,7 @@ export async function runWorkflow({
       )
         authorizedReviews.push(review)
     assertActiveApproval(authorizedReviews, event.review, pr.head.sha)
-    const published = [...(await g.content(publicationPath, pr.base.sha)).value]
+    const published = [...(await g.content(publicationPath, trustedMain ?? pr.base.sha)).value]
     if (published.some((a) => a.slug === approved.slug))
       throw Error('Analyseadressen finnes allerede')
     published.forEach((a) => validateArticle(a, { published: true }))
@@ -273,7 +274,7 @@ export async function runWorkflow({
       if (latest.head.sha !== pr.head.sha || latest.state !== 'open')
         throw Error('Gjennomgangen ble endret før publisering')
       const main = await g.api(`${g.root}/git/ref/heads/main`)
-      if (main.object.sha !== pr.base.sha)
+      if (main.object.sha !== (trustedMain ?? pr.base.sha))
         throw Error('Main er endret; ny validering kreves før publisering')
       if ((await feedbackFor(number, article)).length)
         throw Error('Et nytt endringsønske kom før fletting; automatisk publisering er stoppet')
