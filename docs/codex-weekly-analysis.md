@@ -4,6 +4,12 @@ Brukeren viste 4. oktober 2026 bekreftelsen på at **«Ukentlig Fellestall-analy
 
 Kjør med abonnementspålogging og prosjektets vanlige tilganger. Bruk ingen OpenAI API-nøkkel til tekstproduksjon. Bruken inngår i kvotene for appen og modellen som utfører oppgaven. GitHub- og LinkedIn-integrasjoner er separate fra valg av AI-produksjon.
 
+## Nåværende gjennomgang
+
+Botleveringen er verifisert med [vellykket kjøring](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/37213764387) og [gjennomgang #11](https://github.com/Lippen1995/Project_statsbudsjett/pull/11). PR-forfatteren er `github-actions[bot]`, og `Lippen1995` er bedt om review. Artikkel og LinkedIn-tekst er identiske med den aksepterte piloten. Innholdshash: `954412d7058f1681baf7e0be30cf94fe0e9ae785637611a4e35c760abe1856cf`. Utkastet er ikke publisert eller godkjent.
+
+Kontroller den aktuelle PR-statusen ved neste kjøring; ikke anta at den fortsatt er åpen. Ved åpen gjennomgang prioriteres ubehandlede endringsønsker. Uten nye ønsker: rapporter ventestatus i oppgavens chat og lag ikke et nytt utkast. Ikke post egne statuskommentarer fra brukerens GitHub-konto i gjennomgangen; de kan oppfattes som menneskelige endringsønsker. Publisering etter menneskelig godkjenning og telefonens faktiske pushvarsel gjenstår å prøve.
+
 ## Levering uten AI-API
 
 Teksten skrives i den planlagte oppgaven. `analysis-handoff.yml` lar GitHub Actions-boten validere og levere den ferdige teksten; boten skriver ikke teksten med en AI-API. `editorial/analysis-settings.json` inneholder aktiv godkjenner og aktiveringsflagget for levering. En eksplisitt `ANALYSIS_REVIEWER`-variabel har forrang hvis den finnes. Ikke legg til AI-nøkkel eller aktiver det tidligere API-oppsettet.

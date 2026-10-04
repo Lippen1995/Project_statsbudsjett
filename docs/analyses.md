@@ -2,7 +2,7 @@
 
 Avtalt produktplan og tone ligger i [analysis-plan.md](analysis-plan.md).
 
-**Oppdatert 4. oktober 2026:** Brukeren ønsker produksjon gjennom en planlagt AI-oppgave fremfor en separat AI-API. Brukerens skjermbilde dokumenterer at **«Ukentlig Fellestall-analyse»** er opprettet og rapportert aktiv, mandager klokken 09.00 i Europe/Oslo, første gang 5. oktober. Den leser [oppgavebeskrivelsen](codex-weekly-analysis.md) fra main. Første kjøring skal kontrollere prosjekt-, script-, GitHub- og PR/review-tilgang. Botlevering og revisjon uten AI-API er nå implementert. En reell botgjennomgang og mobilvarsling må fortsatt bekreftes. Engangsoppsettet for AI-API nedenfor beskriver den tidligere implementeringen og skal ikke aktiveres som neste steg for det nye valget. Menneskelig godkjenning og publiseringsvern gjelder fortsatt.
+**Oppdatert 4. oktober 2026:** Brukeren ønsker produksjon gjennom en planlagt AI-oppgave fremfor en separat AI-API. Brukerens skjermbilde dokumenterer at **«Ukentlig Fellestall-analyse»** er opprettet og rapportert aktiv, mandager klokken 09.00 i Europe/Oslo, første gang 5. oktober. Den leser [oppgavebeskrivelsen](codex-weekly-analysis.md) fra main. Første kjøring skal kontrollere prosjekt-, script-, GitHub- og PR/review-tilgang. Botlevering og revisjon uten AI-API er nå implementert. Botgjennomgang og review request til Lippen1995 er verifisert med [PR #11](https://github.com/Lippen1995/Project_statsbudsjett/pull/11). Faktisk mobilpush og publisering etter menneskelig godkjenning gjenstår. Engangsoppsettet for AI-API nedenfor beskriver den tidligere implementeringen og skal ikke aktiveres som neste steg for det nye valget. Menneskelig godkjenning og publiseringsvern gjelder fortsatt.
 
 ## Det som er implementert
 
