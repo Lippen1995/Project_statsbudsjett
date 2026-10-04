@@ -1,0 +1,48 @@
+name: Analyser – lever fra planlagt oppgave
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [weekly, feedback]
+        default: weekly
+        required: true
+      source_commit:
+        description: Full commit-SHA med ferdig JSON-utkast
+        required: true
+      source_path:
+        description: JSON-fil under editorial/drafts eller editorial/handoff
+        required: true
+      pr_number:
+        description: Gjennomgangsnummer ved revisjon
+        required: false
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+concurrency:
+  group: analysis-weekly
+  cancel-in-progress: false
+jobs:
+  deliver:
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Source inputs are JSON only. Execute scripts exclusively from trusted main.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Lever ferdig tekst med boten og be om menneskelig gjennomgang
+        run: node scripts/analyser/handoff.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ANALYSIS_REVIEWER: ${{ vars.ANALYSIS_REVIEWER }}
+          ANALYSIS_MODE: ${{ inputs.mode }}
+          ANALYSIS_SOURCE_COMMIT: ${{ inputs.source_commit }}
+          ANALYSIS_SOURCE_PATH: ${{ inputs.source_path }}
+          ANALYSIS_PR_NUMBER: ${{ inputs.pr_number }}

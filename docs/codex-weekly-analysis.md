@@ -4,6 +4,31 @@ Brukeren viste 4. oktober 2026 bekreftelsen på at **«Ukentlig Fellestall-analy
 
 Kjør med abonnementspålogging og prosjektets vanlige tilganger. Bruk ingen OpenAI API-nøkkel til tekstproduksjon. Bruken inngår i kvotene for appen og modellen som utfører oppgaven. GitHub- og LinkedIn-integrasjoner er separate fra valg av AI-produksjon.
 
+## Levering uten AI-API
+
+Teksten skrives i den planlagte oppgaven. `analysis-handoff.yml` lar GitHub Actions-boten validere og levere den ferdige teksten; boten skriver ikke teksten med en AI-API. `editorial/analysis-settings.json` inneholder aktiv godkjenner og aktiveringsflagget for levering. En eksplisitt `ANALYSIS_REVIEWER`-variabel har forrang hvis den finnes. Ikke legg til AI-nøkkel eller aktiver det tidligere API-oppsettet.
+
+Fra repositoryets rot, med vanlig GitHub-tilgang og `GITHUB_REPOSITORY=Lippen1995/Project_statsbudsjett`:
+
+```sh
+node scripts/analyser/prepare.mjs editorial/handoff/ukens-analyse.json
+```
+
+Dette lager rapporten og et `article.copy`-felt som AI skal fylle. For et åpent utkast med endringsønsker, oppgi gjennomgangsnummer som siste argument. Da hentes riktig rapport, gjeldende head og alle autoriserte ubehandlede endringsønsker. Behold `base` og `article.report` uendret mens teksten revideres. Valider den ferdige artikkelen med `validateArticle` fra `scripts/analyser/schema.mjs` før levering.
+
+Lagre bare den ferdige JSON-filen på en egen leveringsgren, for eksempel `analysis/input-YYYY-MM-DD`. Ikke opprett en PR fra brukerens konto. Start deretter botens workflow fra main; `source_commit` skal være den fulle SHA-en som faktisk inneholder JSON-filen:
+
+```sh
+gh workflow run analysis-handoff.yml --ref main \
+  -f mode=weekly \
+  -f source_commit=<full-commit-sha> \
+  -f source_path=editorial/handoff/ukens-analyse.json
+```
+
+Ved revisjon brukes `mode=feedback` og `-f pr_number=<gjennomgangsnummer>`. Gjennomgangens head og innspill sammenlignes igjen før boten skriver. Nye innspill eller endret utkast gjør leveringen ugyldig; hent oppdatert grunnlag og revider på nytt. Boten sender en ny review request etter revisjon, og tidligere godkjenning gjelder ikke den nye teksten.
+
+Kontroller workflowens faktiske konklusjon, PR-forfatter og review request. En godkjent dispatch er ikke bevis på levering. Dersom repositoryet nekter botopprettede PR-er, må den konkrete Actions-innstillingen endres av en administrator; ingen egen PR eller automatisk egen-godkjenning brukes som omvei. GitHub-kommentarer registreres straks, men starter ingen AI-kjøring. Revisjon skjer ved neste planlagte kjøring eller når brukeren ber om den i oppgavens chat.
+
 ## Oppgavetekst
 
 ```text
@@ -33,6 +58,6 @@ Avslutt med lenke til det ferdige utkastet eller gjennomgangen, hovedfunnet, dat
 ## Før dette kan bli en aktiv flyt
 
 - Tidsplanen er dokumentert opprettet med brukerens skjermbilde. Kontroller første faktiske kjøring og prosjektets tilganger; en opprettet tidsplan dokumenterer ikke en fungerende analyseflyt.
-- Tilpass levering av Codex-skrevet innhold til GitHub Actions-boten uten en AI-API-kjøring. Botens PR må ha et kontrollert utkast og gyldig review request til den konfigurerte godkjenneren.
+- Prøv `analysis-handoff.yml` med et kontrollert utkast. Botens PR må ha gyldig review request til den konfigurerte godkjenneren; lokalt beståtte tester er ikke tilstrekkelig.
 - Tilpass naturlige endringsønsker til Codex. Det kan være en støttet kommentar-trigger eller en egen oppgave som kontrollerer tilbakemeldinger; tidspunkt og eventuelle forsinkelser må beskrives for brukeren.
 - Prøv hele runden: utkast, gjennomgang på mobil, endringsønske, nytt utkast, ny godkjenning og publisering av riktig versjon. Bruk eksisterende godkjennings- og publiseringsvern.

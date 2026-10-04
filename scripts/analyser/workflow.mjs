@@ -9,15 +9,66 @@ import {
   assertDesignatedReviewer,
   isDesignatedReviewer,
 } from './review.mjs'
-import { writeCopy } from './ai.mjs'
 import { renderReview } from './render-review.mjs'
 import { factText } from '../../web/src/analyser/model.js'
+export async function pendingFeedback(g, number, article) {
+  const comments = await g.pages(`/issues/${number}/comments`)
+  const reviews = await g.pages(`/pulls/${number}/reviews`)
+  const rows = [
+    ...comments
+      .filter((c) => c.user.type !== 'Bot' && c.body?.trim())
+      .map((c) => ({
+        id: `comment-${c.id}`,
+        user: c.user.login,
+        at: c.created_at,
+        body: c.body,
+      })),
+    ...reviews
+      .filter(
+        (r) =>
+          ['CHANGES_REQUESTED', 'COMMENTED'].includes(r.state) &&
+          r.body?.trim() &&
+          r.user.type !== 'Bot',
+      )
+      .map((r) => ({
+        id: `review-${r.id}`,
+        user: r.user.login,
+        at: r.submitted_at,
+        body: r.body,
+      })),
+  ]
+  const allowed = []
+  for (const row of rows.sort((a, b) => Date.parse(a.at) - Date.parse(b.at)))
+    if (!(article.processedFeedbackIds ?? []).includes(row.id) && (await g.permission(row.user)))
+      allowed.push(row)
+  return allowed
+}
+
+export async function readReviewContext(g, event) {
+  const number = event?.issue?.number ?? event?.pull_request?.number
+  if (!number) throw Error('Mangler gjennomgangsnummer')
+  const pr = await g.api(`${g.root}/pulls/${number}`)
+  assertReviewBranch(pr, g.repository)
+  const files = await g.pages(`/pulls/${number}/files`)
+  if (
+    files.length !== 1 ||
+    !/^editorial\/drafts\/[a-z0-9-]+\.json$/.test(files[0].filename) ||
+    files[0].status !== 'added'
+  )
+    throw Error('Gjennomgangen inneholder uventede filendringer; automatisk behandling er stoppet')
+  const path = files[0].filename
+  const file = await g.content(path, pr.head.sha)
+  return { number, pr, path, article: validateArticle(file.value) }
+}
 export async function runWorkflow({
   command,
   event,
   g,
   reviewer,
-  generateCopy = writeCopy,
+  generateCopy = async () => {
+    throw Error('Tekst må leveres fra den planlagte oppgaven; AI-API er deaktivert')
+  },
+  expectedHead = null,
   dataDir = 'web/public/data',
   publicationPath = 'web/src/analyser/publications.json',
   now = () => new Date().toISOString(),
@@ -30,57 +81,8 @@ export async function runWorkflow({
       method: 'POST',
       body: { reviewers: [reviewer] },
     })
-  const pendingFeedback = async (number, article) => {
-    const comments = await g.pages(`/issues/${number}/comments`)
-    const reviews = await g.pages(`/pulls/${number}/reviews`)
-    const rows = [
-      ...comments
-        .filter((c) => c.user.type !== 'Bot' && c.body?.trim())
-        .map((c) => ({
-          id: `comment-${c.id}`,
-          user: c.user.login,
-          at: c.created_at,
-          body: c.body,
-        })),
-      ...reviews
-        .filter(
-          (r) =>
-            ['CHANGES_REQUESTED', 'COMMENTED'].includes(r.state) &&
-            r.body?.trim() &&
-            r.user.type !== 'Bot',
-        )
-        .map((r) => ({
-          id: `review-${r.id}`,
-          user: r.user.login,
-          at: r.submitted_at,
-          body: r.body,
-        })),
-    ]
-    const allowed = []
-    for (const row of rows.sort((a, b) => Date.parse(a.at) - Date.parse(b.at)))
-      if (!(article.processedFeedbackIds ?? []).includes(row.id) && (await g.permission(row.user)))
-        allowed.push(row)
-    return allowed
-  }
-  async function context() {
-    const number = event?.issue?.number ?? event?.pull_request?.number
-    if (!number) throw Error('Mangler gjennomgangsnummer')
-    const pr = await g.api(`${g.root}/pulls/${number}`)
-    assertReviewBranch(pr, g.repository)
-    const files = await g.pages(`/pulls/${number}/files`)
-    if (
-      files.length !== 1 ||
-      !files[0].filename.startsWith(draftPrefix) ||
-      !/^editorial\/drafts\/[a-z0-9-]+\.json$/.test(files[0].filename) ||
-      files[0].status !== 'added'
-    )
-      throw Error(
-        'Gjennomgangen inneholder uventede filendringer; automatisk behandling er stoppet',
-      )
-    const path = files[0].filename
-    const file = await g.content(path, pr.head.sha)
-    return { number, pr, path, article: validateArticle(file.value) }
-  }
+  const feedbackFor = (number, article) => pendingFeedback(g, number, article)
+  const context = () => readReviewContext(g, event)
   if (command === 'weekly') {
     if (!reviewer || !(await g.permission(reviewer)))
       throw Error('ANALYSIS_REVIEWER må være en bruker med skrivetilgang til repositoryet')
@@ -142,16 +144,25 @@ export async function runWorkflow({
     })
     await requestReview(pr.number)
     console.log(`Utkast klart i gjennomgang #${pr.number}. Ingen offentlig publisering.`)
-  } else if (command === 'feedback') {
+  } else if (command === 'feedback' || command === 'feedback-notice') {
     const actor = event.comment?.user ?? event.review?.user
     if (actor?.type === 'Bot' || !(await g.permission(actor?.login ?? ''))) {
       console.log('Ingen autorisert menneskelig tilbakemelding.')
       return
     }
     const { number, pr, path, article } = await context()
-    const feedback = await pendingFeedback(number, article)
+    if (expectedHead && pr.head.sha !== expectedHead)
+      throw Error('Revisjonen gjelder ikke gjeldende gjennomgangsversjon')
+    const feedback = await feedbackFor(number, article)
     if (!feedback.length) {
       console.log('Ingen nye endringsønsker.')
+      return
+    }
+    if (command === 'feedback-notice') {
+      await comment(
+        number,
+        'Endringsønsket er registrert. Den planlagte AI-oppgaven må revidere utkastet før ny godkjenning. Ingen AI-API-kjøring er startet. Oppgaven kontrollerer innspill ved neste kjøring; du kan også be AI revidere tidligere i oppgavens chat.',
+      )
       return
     }
     const copy = await generateCopy(article.report, {
@@ -202,7 +213,7 @@ export async function runWorkflow({
       commitId: event.review.commit_id,
       currentHead: pr.head.sha,
       approvedAt: event.review.submitted_at,
-      pendingFeedback: (await pendingFeedback(number, article)).length > 0,
+      pendingFeedback: (await feedbackFor(number, article)).length > 0,
     })
     const reviews = await g.pages(`/pulls/${number}/reviews`)
     const authorizedReviews = []
@@ -232,7 +243,7 @@ export async function runWorkflow({
       const main = await g.api(`${g.root}/git/ref/heads/main`)
       if (main.object.sha !== pr.base.sha)
         throw Error('Main er endret; ny validering kreves før publisering')
-      if ((await pendingFeedback(number, article)).length)
+      if ((await feedbackFor(number, article)).length)
         throw Error('Et nytt endringsønske kom før fletting; automatisk publisering er stoppet')
       // A single merge commit changes only the registry on trusted main. The
       // review head is a second parent so GitHub records the review as merged.
@@ -246,5 +257,5 @@ export async function runWorkflow({
       )
       console.log(`Godkjent analyse flettet: ${sha}`)
     }
-  } else throw Error('Bruk weekly, feedback, stage eller publish')
+  } else throw Error('Bruk weekly, feedback, feedback-notice, stage eller publish')
 }

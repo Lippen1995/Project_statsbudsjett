@@ -2,7 +2,7 @@
 
 Avtalt produktplan og tone ligger i [analysis-plan.md](analysis-plan.md).
 
-**Oppdatert 4. oktober 2026:** Brukeren ønsker produksjon gjennom en planlagt AI-oppgave fremfor en separat AI-API. Brukerens skjermbilde dokumenterer at **«Ukentlig Fellestall-analyse»** er opprettet og rapportert aktiv, mandager klokken 09.00 i Europe/Oslo, første gang 5. oktober. Den leser [oppgavebeskrivelsen](codex-weekly-analysis.md) fra main. Første kjøring skal kontrollere prosjekt-, script-, GitHub- og PR/review-tilgang. Tilpasset leverings-/revisjonsflyt er fortsatt ikke ferdig verifisert. Engangsoppsettet for AI-API nedenfor beskriver den tidligere implementeringen og skal ikke aktiveres som neste steg for det nye valget. Menneskelig godkjenning og publiseringsvern gjelder fortsatt.
+**Oppdatert 4. oktober 2026:** Brukeren ønsker produksjon gjennom en planlagt AI-oppgave fremfor en separat AI-API. Brukerens skjermbilde dokumenterer at **«Ukentlig Fellestall-analyse»** er opprettet og rapportert aktiv, mandager klokken 09.00 i Europe/Oslo, første gang 5. oktober. Den leser [oppgavebeskrivelsen](codex-weekly-analysis.md) fra main. Første kjøring skal kontrollere prosjekt-, script-, GitHub- og PR/review-tilgang. Botlevering og revisjon uten AI-API er nå implementert. En reell botgjennomgang og mobilvarsling må fortsatt bekreftes. Engangsoppsettet for AI-API nedenfor beskriver den tidligere implementeringen og skal ikke aktiveres som neste steg for det nye valget. Menneskelig godkjenning og publiseringsvern gjelder fortsatt.
 
 ## Det som er implementert
 
@@ -10,10 +10,18 @@ Avtalt produktplan og tone ligger i [analysis-plan.md](analysis-plan.md).
 - `/analyser/<slug>/`: ferdig HTML for søkemotorer og besøkende uten JavaScript, med faglig vurdering, tre grafer, årstabell, metode, kilder og begrensninger. Grafene viser vekst med forskjellige justeringer, KPI-justert utgift per innbygger gjennom perioden og årlige endringer. Egne metadata, kanonisk adresse, Article-data og sitemap.
 - Et frosset datagrunnlag følger hver artikkel som `datagrunnlag.json`. Nye ETL-kjøringer omskriver ikke gamle analyser.
 - En reell pilot ligger i `editorial/drafts/pilot.json`. Den er **ikke publisert eller menneskelig godkjent**. Biblioteket er tomt til første godkjenning.
-- Ukentlig AI-produksjon, tilbakemelding i vanlig språk og ny godkjenning av hver versjon via GitHub.
+- Levering av tekst fra den planlagte AI-oppgaven via GitHub Actions-boten, tilbakemelding i vanlig språk og ny godkjenning av hver versjon via GitHub. GitHub-kommentarer registreres, men starter ingen AI-kjøring; revisjon skjer ved neste planlagte kjøring eller etter beskjed i oppgavens chat.
 - LinkedIn-integrasjon som krever godkjent tekst og kontrollerer den eksakte publiserte analysesiden før sending.
 
 Forsiden får bare diskrete lenker til Analyser. Diagrammer, årvelger og eksisterende innhold beholder oppførselen.
+
+## Nåværende oppsett uten AI-API
+
+Se [leveringsinstruksjonen](codex-weekly-analysis.md). Den planlagte oppgaven skriver teksten og bruker `scripts/analyser/prepare.mjs` til å hente kontrollert grunnlag. Den leverer en JSON-fil fra en fast commit til `analysis-handoff.yml`. Boten oppretter eller reviderer gjennomgangen, ber om menneskelig godkjenning og publiserer først etter gyldig review. Bare scripts fra main kjøres; innsendt kode kjøres aldri.
+
+`editorial/analysis-settings.json` inneholder `producer=scheduled-task`, `enabled` og `reviewer`. Brukeren `Lippen1995` er første godkjenner. Bytt `reviewer` for å overføre ansvaret, eller bruk repository-variabelen `ANALYSIS_REVIEWER` som eksplisitt overstyring. Den nye leveringen krever ingen AI-API-nøkkel, modellvariabel eller `ANALYSIS_AUTOMATION_ENABLED`. Sett `enabled=false` i innstillingsfilen for å stoppe levering og publisering. GitHubs tillatelse til botopprettede PR-er kreves fortsatt.
+
+Den tidligere ukentlige GitHub-cronen er fjernet, og CLI stopper de gamle API-baserte `weekly`-/`feedback`-kommandoene. `analysis-review.yml` gjør bare registrering, validering og godkjent publisering. LinkedIn er fortsatt separat deaktivert; tilgang og OAuth må kontrolleres før distribusjon aktiveres.
 
 ## Lokal gjennomgang
 
@@ -41,7 +49,7 @@ Både metadata og artikkelinnhold finnes i HTML ved første svar; GitHub Pages t
 
 Godkjenneren bruker GitHub-appen eller GitHub i mobilnettleseren. Når automatiseringen er aktivert, åpner AI en gjennomgang (pull request) med hele analysen, kontrollgrunnlaget, årstabell og LinkedIn-tekst i beskrivelsen. Den valgte godkjenneren mottar en review request. Pushvarsler krever at vedkommende har logget inn i appen og aktivert varsler for review requests. GitHub tilbyr også e-postvarsler. Vi kan be om gjennomgang, men kan ikke slå på telefonens varslingsinnstillinger.
 
-Den manuelt klargjorte piloten og PR-en for implementeringen er ikke en automatisk redaksjonell gjennomgang. De utløser ikke i seg selv et varsel om godkjenning. Implementerings-PR-en opprettes med brukerens eksisterende GitHub-tilgang; en PR-forfatter kan ikke godkjenne sin egen PR. De ukentlige analyseutkastene opprettes senere av GitHub Actions-boten, slik at den ansvarlige kan gi en review på mobilen.
+Den manuelt klargjorte piloten og PR-en for implementeringen er ikke en automatisk redaksjonell gjennomgang. De utløser ikke i seg selv et varsel om godkjenning. Implementerings-PR-en opprettes med brukerens eksisterende GitHub-tilgang; en PR-forfatter kan ikke godkjenne sin egen PR. Analyseutkastene leveres av GitHub Actions-boten, slik at den ansvarlige kan gi en review på mobilen.
 
 Implementeringen er flettet gjennom [PR #8](https://github.com/Lippen1995/Project_statsbudsjett/pull/8), og [analysebiblioteket er live](https://fellestall.no/analyser/) fra 3. oktober 2026. AI-produksjon og mobilgodkjenning er fortsatt avhengig av engangsoppsettet nedenfor. Piloten kan åpnes på mobilen som [PDF](https://raw.githubusercontent.com/Lippen1995/Project_statsbudsjett/codex/analyser-og-godkjenning/editorial/review/pilot-til-gjennomgang.pdf) eller [tekstversjon](https://github.com/Lippen1995/Project_statsbudsjett/blob/codex/analyser-og-godkjenning/editorial/drafts/pilot.md). Lenken følger siste versjon på arbeidsgrenen. PDF-en er kontrollert mot den lokale gjennomgangsfilen. Disse lenkene gir tilgang til utkastet; en review request er ikke sendt, og varslings-/godkjenningsflyten er fortsatt ikke aktivert.
 
@@ -49,14 +57,14 @@ Innsyn følger repositoryets innstillinger. Gjennomgangen er ikke privat dersom 
 
 1. Les utkastene i PR-beskrivelsen.
 2. Skriv ønsket i en vanlig kommentar, eksempelvis «Gjør åpningen morsommere og forklar KPI-forbeholdet tydeligere». Man trenger ingen spesialkommando.
-3. AI behandler ubehandlede endringsønsker fra brukere med skrivetilgang, oppdaterer det komplette utkastet og sender en ny review request. Tekst i en «Request changes»-review behandles også. Inline-kommentarer på enkelte JSON-linjer inngår ikke; bruk samtalen eller reviewens samlede tekst.
+3. Den planlagte AI-oppgaven behandler ubehandlede endringsønsker fra brukere med skrivetilgang ved neste kjøring, eller etter beskjed i oppgavens chat. Den leverer den reviderte teksten til boten, som oppdaterer utkastet og sender en ny review request. Tekst i en «Request changes»-review behandles også. Inline-kommentarer på enkelte JSON-linjer inngår ikke; bruk samtalen eller reviewens samlede tekst.
 4. Godkjenn med GitHubs **Review changes → Approve**. Godkjenningen må peke på gjeldende commit. En eldre godkjenning eller et nytt ubehandlet endringsønske stopper publisering.
 5. Den identiske godkjente versjonen testes og bygges. Et enkelt merge-commit oppdaterer det offentlige biblioteket på `main`; bare biblioteksfilen endres. Gjennomgangens head er andre forelder, slik at GitHub registrerer gjennomgangen som flettet. Utkastet følger ikke med inn i bibliotekets tre.
 6. Etter vellykket publiseringscommit starter en egen jobb deploy-workflowen med `workflow_dispatch` på `main`. Review-hendelser bruker en PR-ref, og en push med `GITHUB_TOKEN` starter ikke i seg selv en ny push-workflow; derfor sendes utrullingen uttrykkelig til main. Deploy-workflowens sperre mot andre brancher beholdes. LinkedIn-jobben kjører etter vellykket deploy og kontrollerer artikkelens offentlige datagrunnlag mot godkjenningshashen før sending.
 
 Ikke flett utkast-PR manuelt: et utkast i `editorial/drafts` er aldri et publiseringssignal. Dersom regler på `main` blokkerer den automatiske publiseringscommitten, stopper jobben; den omgår ikke grenbeskyttelse. Gjennomgangen kan fremdeles revideres.
 
-## Engangsoppsett før aktivering
+## Tidligere AI-API-oppsett (historikk, ikke valgt løsning)
 
 Automatiseringen er deaktivert til `ANALYSIS_AUTOMATION_ENABLED=true`. Ingen eksterne analyser, meldinger eller LinkedIn-innlegg er produsert/publisert under implementeringen.
 
@@ -107,6 +115,8 @@ Når innstillingene er lagret, kan oppsettskontrollen og første utkastkjøring 
 
 ## Overføre godkjenningsansvaret
 
+Nåværende løsning: gi den nye personen skrivetilgang og endre `reviewer` i `editorial/analysis-settings.json`. Finnes en eksplisitt `ANALYSIS_REVIEWER`-variabel, må også den oppdateres eller fjernes. Be boten om ny review request; gamle godkjenninger kan ikke brukes av en ny kjøring med endret ansvarlig. Fremgangsmåten under beskriver det tidligere variabelbaserte oppsettet.
+
 Brukeren er første ansvarlige godkjenner. Den eksisterende autentiserte GitHub-tilgangen bruker `Lippen1995`. Rollen ligger i repository-variabelen `ANALYSIS_REVIEWER`, ikke hardkodet i artikkelsider, AI-tekster eller workflowfiler. Variabelen er ennå ikke lagret fra denne økten; integrasjonen har ikke tilgang til Actions-innstillingene.
 
 Ved senere overføring:
@@ -123,7 +133,7 @@ LinkedIn-administrasjon er en egen rolle: en ny godkjenner trenger ikke overta L
 
 ## Ukentlig innhold
 
-Tidsplanen kjører mandager kl. 07.00 UTC: kl. 08.00 norsk vintertid og 09.00 sommertid. Den validerer data, velger en ennå ikke dekket problemstilling og åpner maksimalt én gjennomgang. Et eksisterende åpent utkast får bli ferdig før neste analyse produseres.
+Den opprettede AI-oppgaven kjører mandager kl. 09.00 i Europe/Oslo. Den tidligere GitHub-cronen er fjernet, slik at den ikke konkurrerer med oppgaven eller starter API-produksjon. Den validerer data, velger en ennå ikke dekket problemstilling og åpner maksimalt én gjennomgang. Et eksisterende åpent utkast får bli ferdig før neste analyse produseres.
 
 Første støttede analysetype er utgiftsutvikling per innbygger, justert med KPI: staten samlet og hvert departement, både historisk og over siste fem tilgjengelige år. Departementsanalyser oppgir uttrykkelig at ansvarsområder kan endres. Utvalg og avgrensning kommer fra kode, ikke AI. Kommune-, budsjettavviks- og årsaksanalyser trenger egne kontrollerte rapporttyper før AI kan produsere dem. Biblioteket støtter allerede disse temaene og filtrene når godkjente analyser legges til.
 
