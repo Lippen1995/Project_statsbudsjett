@@ -67,3 +67,8 @@ Avslutt med lenke til det ferdige utkastet eller gjennomgangen, hovedfunnet, dat
 - Prøv `analysis-handoff.yml` med et kontrollert utkast. Botens PR må ha gyldig review request til den konfigurerte godkjenneren; lokalt beståtte tester er ikke tilstrekkelig.
 - Tilpass naturlige endringsønsker til Codex. Det kan være en støttet kommentar-trigger eller en egen oppgave som kontrollerer tilbakemeldinger; tidspunkt og eventuelle forsinkelser må beskrives for brukeren.
 - Prøv hele runden: utkast, gjennomgang på mobil, endringsønske, nytt utkast, ny godkjenning og publisering av riktig versjon. Bruk eksisterende godkjennings- og publiseringsvern.
+
+
+### Oppdatert pilotstatus, 4. oktober 2026
+
+PR #11 er menneskelig godkjent på head `d222e0caac4e22532adf3cf25e53135c67bed965` og flettet. Den finnes nå i publiseringsregisteret med hash `954412d7058f1681baf7e0be30cf94fe0e9ae785637611a4e35c760abe1856cf`. Dette erstatter tidligere status om at PR #11 venter på godkjenning. Kontroller fortsatt den faktiske køen og registeret ved hver kjøring. LinkedIn er ikke aktivert.
