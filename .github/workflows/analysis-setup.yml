@@ -5,34 +5,22 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/analysis-setup.yml'
+      - 'editorial/analysis-settings.json'
+      - 'scripts/analyser/config.mjs'
 permissions:
   contents: read
 jobs:
   configuration:
     runs-on: ubuntu-latest
     steps:
-      - name: Kontroller innstillinger uten å vise nøkkelverdier
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Kontroller planlagt leveringsoppsett uten AI-API
+        run: node scripts/analyser/config.mjs
         env:
-          ANALYSIS_AI_API_KEY: ${{ secrets.ANALYSIS_AI_API_KEY }}
-          ANALYSIS_AI_MODEL: ${{ vars.ANALYSIS_AI_MODEL }}
           ANALYSIS_REVIEWER: ${{ vars.ANALYSIS_REVIEWER }}
-          ANALYSIS_AUTOMATION_ENABLED: ${{ vars.ANALYSIS_AUTOMATION_ENABLED }}
-        run: |
-          node --input-type=module <<'NODE'
-          import { appendFileSync } from 'node:fs'
-          const settings = ['ANALYSIS_AI_API_KEY', 'ANALYSIS_AI_MODEL', 'ANALYSIS_REVIEWER']
-          const checks = settings.map(name => [name, Boolean(process.env[name]?.trim())])
-          checks.push(['ANALYSIS_AUTOMATION_ENABLED', process.env.ANALYSIS_AUTOMATION_ENABLED === 'true'])
-          for (const [name, configured] of checks)
-            console.log(`${name}: ${configured ? 'konfigurert' : 'mangler eller deaktivert'}`)
-          appendFileSync(process.env.GITHUB_STEP_SUMMARY,
-            '## Grunninnstillinger for analyseproduksjon\n\n' +
-            '| Innstilling | Status |\n| --- | --- |\n' +
-            checks.map(([name, configured]) => `| ${name} | ${configured ? 'Konfigurert' : 'Mangler eller deaktivert'} |`).join('\n') +
-            '\n\nKontrollen viser bare tilstedeværelse og aktiveringsflagget. Gyldig API-tilgang, modell og opprettelse av gjennomgang verifiseres ved en manuell kjøring av «Analyser – ukentlig utkast».\n')
-          const missing = checks.filter(([, configured]) => !configured).map(([name]) => name)
-          if (missing.length) {
-            console.error(`::error::Mangler analyseoppsett: ${missing.join(', ')}`)
-            process.exitCode = 1
-          }
-          NODE

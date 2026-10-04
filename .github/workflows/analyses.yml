@@ -1,19 +1,11 @@
-name: Analyser – ukentlig utkast
+name: Analyser – kontroller planlagt produksjon
 on:
-  schedule:
-    - cron: '0 7 * * 1'
   workflow_dispatch:
 permissions:
-  contents: write
-  pull-requests: write
-concurrency:
-  group: analysis-weekly
-  cancel-in-progress: false
+  contents: read
 jobs:
-  draft:
-    if: vars.ANALYSIS_AUTOMATION_ENABLED == 'true'
+  configuration:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,10 +14,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Lag kontrollert utkast og be om gjennomgang
-        run: node scripts/analyser/cli.mjs weekly
+      - name: Kontroller oppsett uten å starte AI-produksjon
+        run: node scripts/analyser/config.mjs
         env:
-          GH_TOKEN: ${{ github.token }}
           ANALYSIS_REVIEWER: ${{ vars.ANALYSIS_REVIEWER }}
-          ANALYSIS_AI_API_KEY: ${{ secrets.ANALYSIS_AI_API_KEY }}
-          ANALYSIS_AI_MODEL: ${{ vars.ANALYSIS_AI_MODEL }}

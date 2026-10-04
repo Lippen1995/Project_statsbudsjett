@@ -14,7 +14,6 @@ concurrency:
 jobs:
   review:
     if: >-
-      vars.ANALYSIS_AUTOMATION_ENABLED == 'true' &&
       github.actor != 'github-actions[bot]' &&
       ((github.event.issue.pull_request && startsWith(github.event.issue.title, 'Analyse til gjennomgang:')) || startsWith(github.event.pull_request.head.ref, 'analysis/weekly-'))
     runs-on: ubuntu-latest
@@ -31,12 +30,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Revider ved endringsønske
+      - name: Les aktiv godkjenner og kontroller leveringsoppsettet
+        run: node scripts/analyser/config.mjs
+      - name: Registrer endringsønske for den planlagte AI-oppgaven
         if: github.event_name == 'issue_comment' || github.event.review.state != 'approved'
-        run: node scripts/analyser/cli.mjs feedback
-        env:
-          ANALYSIS_AI_API_KEY: ${{ secrets.ANALYSIS_AI_API_KEY }}
-          ANALYSIS_AI_MODEL: ${{ vars.ANALYSIS_AI_MODEL }}
+        run: node scripts/analyser/cli.mjs feedback-notice
       - name: Klargjør nøyaktig godkjent versjon
         if: github.event.review.state == 'approved'
         run: node scripts/analyser/cli.mjs stage

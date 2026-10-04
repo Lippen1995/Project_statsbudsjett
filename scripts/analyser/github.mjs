@@ -17,7 +17,18 @@ export function githubClient({
       signal: AbortSignal.timeout(30000),
     })
     if (response.status === 404 && allow404) return null
-    if (!response.ok) throw Error(`GitHub ${method} ${path.split('?')[0]}: HTTP ${response.status}`)
+    if (!response.ok) {
+      if (response.status === 403 && method === 'POST' && path.endsWith('/pulls')) {
+        const detail = await response.json().catch(() => null)
+        if (
+          detail?.message === 'GitHub Actions is not permitted to create or approve pull requests.'
+        )
+          throw Error(
+            'GitHub Actions har ikke tillatelse til å opprette pull requests. Aktiver «Allow GitHub Actions to create and approve pull requests» i repositoryets Actions-innstillinger.',
+          )
+      }
+      throw Error(`GitHub ${method} ${path.split('?')[0]}: HTTP ${response.status}`)
+    }
     return response.status === 204 ? {} : response.json()
   }
   const root = `/repos/${repository}`

@@ -12,6 +12,7 @@ export function renderReview(article) {
     '# Til godkjenning: analyse og LinkedIn-innlegg',
     'Les begge tekstene under. **Vil du endre noe? Skriv ønsket i en vanlig kommentar. AI reviderer og ber om ny godkjenning.** Bruk GitHubs «Review changes → Approve» når denne versjonen er klar. Å slå sammen manuelt publiserer ikke et utkast.',
     '**Varsler:** Følg denne gjennomgangen i GitHub-appen og aktiver pushvarsler for review requests. Innsyn følger repositoryets tilgang; dette er ikke en separat privat kanal.',
+    '**Endringsønsker:** Behandles ved neste kjøring av den planlagte AI-oppgaven. Du kan også be om revisjon tidligere i oppgavens chat. GitHub-kommentaren starter ikke i seg selv en ny AI-kjøring. Ubehandlede ønsker stopper publisering.',
     `Versjon: \`${contentHash(article)}\` · Datagrunnlag: ${r.dataUpdated} · Regnskap ${r.start}–${r.end}`,
     '## LinkedIn-utkast',
     escape(c.linkedin),
