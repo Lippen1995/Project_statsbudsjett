@@ -55,3 +55,5 @@ Kildekontroll i denne revisjonen: Fellestalls offentlige `utgifter.json` og `met
 ## Godkjent pilot, 4. oktober 2026
 
 Lippen1995 godkjente PR #11 på eksakt head `d222e0caac4e22532adf3cf25e53135c67bed965` (review 5407026403). Publiseringskontrollen brukte først utkastets eldre merge-base; rettet i PR #12 til å bruke faktisk utsjekket og testet main, med fortsatt stopp ved nye main-endringer. Alle 99 tester passerer. Ny kjøring 37215023444, forsøk 2, bestod publiseringskontrollen og flettet PR #11 som `9b8ceb8df23161300df39a741c5b0ac7d3c84e19`. Registeret inneholder den godkjente analysen med innholdshash `954412d7058f1681baf7e0be30cf94fe0e9ae785637611a4e35c760abe1856cf`. Nettsideutrulling er startet; LinkedIn er fortsatt deaktivert og avventer API-tilgang.
+
+Live-verifisering: Pages-kjøring 37215596658 bestod. Analysesiden og datagrunnlag.json returnerer HTTP 200; publisert hash og rapport samsvarer med godkjent versjon. Tittel, Sven-byline og grafer finnes i HTML.
