@@ -543,10 +543,13 @@ test('hele revisjonsløpet: tekstønske, nytt utkast, gammel godkjenning avvist,
         }),
       /gjeldende versjon/,
     )
+    // The reviewed branch can have an older merge base than trusted main.
+    pr.base.sha = 'older-main'
     review.commit_id = 'revised-head'
     reviews.push(review)
     await runWorkflow({
       command: 'stage',
+      trustedMain: 'main-head',
       reviewer: 'editor',
       event: { pull_request: { number: 7 }, review },
       g,
@@ -559,6 +562,7 @@ test('hele revisjonsløpet: tekstønske, nytt utkast, gammel godkjenning avvist,
     )
     await runWorkflow({
       command: 'publish',
+      trustedMain: 'main-head',
       reviewer: 'editor',
       event: { pull_request: { number: 7 }, review },
       g,
