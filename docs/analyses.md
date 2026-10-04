@@ -2,6 +2,8 @@
 
 Avtalt produktplan og tone ligger i [analysis-plan.md](analysis-plan.md).
 
+**Oppdatert 4. oktober 2026:** Brukeren har valgt Codex som ønsket produsent av analysene fremfor en separat AI-API. Et [utkast til ukentlig Codex-oppgave](codex-weekly-analysis.md) er klargjort, men tidsplan og tilpasset leverings-/revisjonsflyt er ikke aktivert. Engangsoppsettet for AI-API nedenfor beskriver den tidligere implementeringen og skal ikke aktiveres som neste steg for det nye valget. Menneskelig godkjenning og publiseringsvern gjelder fortsatt.
+
 ## Det som er implementert
 
 - `/analyser/`: søk, kombinerbare filtre for tema, geografi og analysetype, nyeste først. Søket og filtrene kan deles som en URL.

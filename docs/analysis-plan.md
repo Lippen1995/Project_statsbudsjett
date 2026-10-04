@@ -2,6 +2,16 @@
 
 Avtalt med brukeren 2. oktober 2026. Denne filen bevarer planen på tvers av oppgaver.
 
+## Oppdatert valg av AI-produksjon, 4. oktober 2026
+
+Brukeren ønsker at Codex lager ukens analyse som en planlagt oppgave, fremfor en separat OpenAI API-kjøring. Prioriter dette ved videre oppsett. En Codex-kjøring med abonnementspålogging bruker abonnementets kvoter; den tidligere API-løsningen har separat fakturering. Ikke aktiver API-produksjon eller be om en AI-API-nøkkel som neste steg for den valgte løsningen.
+
+En ny planlagt oppgave kan ikke forutsettes å arve hele denne samtalen. Den skal lese denne filen, den redaksjonelt aksepterte piloten og tidligere analyser ved hver kjøring. Et konkret [oppgaveutkast](codex-weekly-analysis.md) er klargjort. Selve tidsplanen er ikke opprettet: denne samtalen har ingen tilgjengelig funksjon for å opprette Codex Automations. Tilgjengelighet og lokal eller skybasert kjøring må bekreftes i brukerens app før ukentlig drift kan loves.
+
+Den eksisterende GitHub-flyten kaller AI-API-et både ved nye analyser og tilbakemeldinger. Den er ikke ferdig tilpasset Codex-produksjon. Behold menneskelig, versjonsbundet godkjenning, mobilgjennomgang og overførbart ansvar. Ved bruk av GitHub må en egen bot opprette analyse-PR-en: Codex sin nåværende GitHub-tilgang bruker samme konto som godkjenneren, og GitHub tillater ikke godkjenning av egen PR. Naturlige endringsønsker må også få en fungerende Codex-trigger eller egen kontrolloppgave; en ukentlig tidsplan alene gir ikke øyeblikkelig revisjon etter en GitHub-kommentar. Automatiseringen er fortsatt ikke bekreftet aktiv.
+
+## Avtalt innhold og gjennomgang
+
 - Behold dagens forside, design og leseropplevelse. Legg til en diskret lenke til et eget analysebibliotek.
 - Biblioteket viser tittel, kort beskrivelse og publiseringsdato, med søk og filtre for tema, geografi og analysetype.
 - Analysesidene har en diskret, avisaktig forfatterlinje rett under ingressen: «Skrevet av Sven, vår AI-analytiker», med et eget AI-generert portrett. Sven er den redaksjonelle AI-personaen; ansvarlig godkjenner er fortsatt et menneske. Behold dagens design og visningsmåte ellers.
