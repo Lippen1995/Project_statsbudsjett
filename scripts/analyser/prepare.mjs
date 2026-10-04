@@ -10,7 +10,8 @@ const output = process.argv[2]
 if (!output || !/^editorial\/handoff\/[a-z0-9-]+\.json$/.test(output))
   throw Error('Oppgi editorial/handoff/<navn>.json som utfil')
 if (!analysisSettings().enabled) throw Error('Analyselevering er deaktivert')
-const g = githubClient()
+// Use the already authenticated CLI/proxy in native cloud tasks; no new token is requested.
+const g = githubClient({ transport: 'gh' })
 const number = Number(process.argv[3])
 let packet
 if (process.argv[3]) {

@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 import { deliverScheduled } from '../../scripts/analyser/handoff.mjs'
 import { analysisSettings } from '../../scripts/analyser/config.mjs'
 import { contentHash } from '../../scripts/analyser/schema.mjs'
+import { githubClient } from '../../scripts/analyser/github.mjs'
 const root = new URL('../../', import.meta.url).pathname
 const pilot = () => JSON.parse(readFileSync(`${root}editorial/drafts/pilot.json`))
 const input = {
@@ -29,9 +30,11 @@ function fixture({ packet = pilot(), comments = [], existing = false } = {}) {
     repository: 'owner/repo',
     permission: async (login) => ['agent', 'reviewer'].includes(login),
     content: async (file, ref) => {
-      if (file === input.sourcePath && ref === input.sourceCommit) return { value: packet }
+      if (file === input.sourcePath && ref === input.sourceCommit)
+        return { value: structuredClone(packet) }
       if (file === 'web/src/analyser/publications.json') return { value: [] }
-      if (file === path && ref === pr.head.sha) return { value: current }
+      if ((file === path || changes.at(-1)?.files[file]) && ref === pr.head.sha)
+        return { value: current }
       throw Error(`Uventet fil: ${file}`)
     },
     pages: async (route) => {
@@ -44,6 +47,15 @@ function fixture({ packet = pilot(), comments = [], existing = false } = {}) {
     api: async (route, options = {}) => {
       calls.push({ route, ...options })
       if (route.endsWith('/git/ref/heads/main')) return { object: { sha: 'a'.repeat(40) } }
+      if (route.includes('/git/ref/heads/analysis/'))
+        return changes.length ? { object: { sha: pr.head.sha } } : null
+      if (route.includes('/compare/'))
+        return {
+          files: Object.keys(changes.at(-1).files).map((filename) => ({
+            filename,
+            status: 'added',
+          })),
+        }
       if (route.endsWith('/pulls/123') && !options.method) return structuredClone(pr)
       if (route.endsWith('/pulls') && options.method === 'POST') return { number: 123 }
       return {}
@@ -178,4 +190,69 @@ test('godkjennerrollen kan overføres gjennom innstillinger, uten en AI-nøkkel'
   assert.equal(analysisSettings({ path, reviewer: 'new-reviewer' }).reviewer, 'new-reviewer')
   assert.equal(analysisSettings({ path, reviewer: '' }).reviewer, 'Lippen1995')
   assert.throws(() => analysisSettings({ path, reviewer: 'bad\nVALUE=x' }), /Ugyldig/)
+})
+
+test('en levering kan prøves på nytt etter PR-forbud uten å endre utkastet', async () => {
+  const f = fixture()
+  const api = f.g.api
+  let reject = true
+  f.g.api = async (path, options = {}) => {
+    if (path.endsWith('/pulls') && options.method === 'POST' && reject) {
+      reject = false
+      throw Error('PR-opprettelse er deaktivert')
+    }
+    return api(path, options)
+  }
+  await assert.rejects(() => deliver(f), /deaktivert/)
+  const original = contentHash(f.current())
+  await deliver(f, { now: () => '2026-10-04T11:00:00Z' })
+  assert.equal(f.changes.length, 1)
+  assert.equal(contentHash(f.current()), original)
+  assert.equal(f.current().createdAt, '2026-10-04T10:00:00Z')
+  assert.ok(f.calls.some((call) => call.route.endsWith('/requested_reviewers')))
+})
+
+test('ny levering overskriver ikke et endret utkast og gjenåpner ikke en lukket gjennomgang', async () => {
+  for (const closed of [false, true]) {
+    const f = fixture()
+    const api = f.g.api
+    f.g.api = async (path, options = {}) => {
+      if (path.endsWith('/pulls') && options.method === 'POST') throw Error('PR-forbud')
+      return api(path, options)
+    }
+    await assert.rejects(() => deliver(f), /PR-forbud/)
+    if (closed) {
+      const pages = f.g.pages
+      f.g.pages = async (path) => (path.startsWith('/pulls?state=closed') ? [{}] : pages(path))
+    } else f.current().copy.title = 'Et endret utkast'
+    await assert.rejects(() => deliver(f), closed ? /lukket/ : /overskrives ikke/)
+    assert.equal(f.changes.length, 1)
+  }
+})
+
+test('klargjøring kan bruke eksisterende GitHub CLI-binding uten å hente en tokenverdi', async () => {
+  const calls = []
+  const g = githubClient({
+    token: null,
+    repository: 'owner/repo',
+    transport: 'gh',
+    runGh: (binary, args, options) => {
+      calls.push({ binary, args, options })
+      const value = args[1].includes('/contents/')
+        ? {
+            type: 'file',
+            sha: 'blob',
+            encoding: 'base64',
+            content: Buffer.from(JSON.stringify({ safe: true })).toString('base64'),
+          }
+        : {}
+      return { status: 0, stdout: JSON.stringify(value), stderr: '' }
+    },
+  })
+  assert.deepEqual((await g.content('editorial/handoff/test.json')).value, { safe: true })
+  const body = { text: 'Literal $() og flere\nlinjer' }
+  await g.api('/repos/owner/repo/test', { method: 'POST', body })
+  assert.equal(calls[1].options.input, JSON.stringify(body))
+  assert.deepEqual(calls[1].args.slice(-2), ['--input', '-'])
+  assert.equal(calls[1].binary, 'gh')
 })

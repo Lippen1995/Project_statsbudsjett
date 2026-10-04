@@ -1,10 +1,28 @@
+import { spawnSync } from 'node:child_process'
 export function githubClient({
   token = process.env.GH_TOKEN,
   repository = process.env.GITHUB_REPOSITORY,
+  transport = 'fetch',
+  runGh = spawnSync,
 } = {}) {
-  if (!token || !repository || !/^[-\w.]+\/[-\w.]+$/.test(repository))
+  if ((transport !== 'gh' && !token) || !repository || !/^[-\w.]+\/[-\w.]+$/.test(repository))
     throw Error('GitHub-tilgang og repository mangler')
   const api = async (path, { method = 'GET', body, allow404 = false } = {}) => {
+    if (transport === 'gh') {
+      const args = ['api', path.replace(/^\//, ''), '--method', method]
+      if (body) args.push('--input', '-')
+      const result = runGh('gh', args, {
+        encoding: 'utf8',
+        timeout: 30000,
+        maxBuffer: 32 * 1024 * 1024,
+        input: body ? JSON.stringify(body) : undefined,
+      })
+      if (result.status !== 0) {
+        if (allow404 && /HTTP\s+404/.test(result.stderr ?? '')) return null
+        throw Error(`GitHub CLI ${method} ${path.split('?')[0]}: forespørselen feilet`)
+      }
+      return result.stdout.trim() ? JSON.parse(result.stdout) : {}
+    }
     const response = await fetch(`https://api.github.com${path}`, {
       method,
       headers: {

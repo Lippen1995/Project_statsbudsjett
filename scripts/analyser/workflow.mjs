@@ -110,7 +110,7 @@ export async function runWorkflow({
     const createdAt = now(),
       date = createdAt.slice(0, 10)
     const slug = `utgifter-per-innbygger-${report.scopeId}-${report.start}-${report.end}-${date}`
-    const article = validateArticle({
+    let article = validateArticle({
       slug,
       status: 'draft',
       createdAt,
@@ -123,16 +123,48 @@ export async function runWorkflow({
     })
     const main = await g.api(`${g.root}/git/ref/heads/main`)
     const branch = `analysis/weekly-${date}-${report.scopeId}-${report.start}-${report.end}`
-    await g.api(`${g.root}/git/refs`, {
-      method: 'POST',
-      body: { ref: `refs/heads/${branch}`, sha: main.object.sha },
-    })
-    await g.commit(
-      branch,
-      main.object.sha,
-      { [`${draftPrefix}${slug}.json`]: article },
-      `analysis: utkast ${date}`,
-    )
+    const path = `${draftPrefix}${slug}.json`
+    const existingRef = await g.api(`${g.root}/git/ref/heads/${branch}`, { allow404: true })
+    if (existingRef) {
+      const closed = await g.pages(
+        `/pulls?state=closed&head=${encodeURIComponent(g.repository.split('/')[0] + ':' + branch)}`,
+      )
+      if (closed.length)
+        throw Error('Gjennomgangen er allerede lukket; den åpnes ikke automatisk på nytt')
+      const difference = await g.api(
+        `${g.root}/compare/${main.object.sha}...${existingRef.object.sha}`,
+      )
+      if (
+        difference.files?.length !== 1 ||
+        difference.files[0].filename !== path ||
+        difference.files[0].status !== 'added'
+      )
+        throw Error('Eksisterende leveringsgren har uventede endringer')
+      const stored = validateArticle((await g.content(path, existingRef.object.sha)).value)
+      const identity = (a) =>
+        JSON.stringify({
+          slug: a.slug,
+          report: a.report,
+          copy: a.copy,
+          topic: a.topic,
+          geography: a.geography,
+          type: a.type,
+        })
+      if (
+        stored.status !== 'draft' ||
+        stored.approval ||
+        stored.publishedAt ||
+        identity(stored) !== identity(article)
+      )
+        throw Error('Eksisterende utkast er endret; det overskrives ikke')
+      article = stored
+    } else {
+      await g.api(`${g.root}/git/refs`, {
+        method: 'POST',
+        body: { ref: `refs/heads/${branch}`, sha: main.object.sha },
+      })
+      await g.commit(branch, main.object.sha, { [path]: article }, `analysis: utkast ${date}`)
+    }
     const pr = await g.api(`${g.root}/pulls`, {
       method: 'POST',
       body: {
