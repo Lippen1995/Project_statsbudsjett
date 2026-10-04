@@ -1,1 +1,811 @@
-[]
+[
+  {
+    "slug": "utgifter-per-innbygger-state-2014-2025-2026-10-04",
+    "status": "published",
+    "createdAt": "2026-10-04T15:25:13.614Z",
+    "generatedAt": "2026-10-04T15:25:13.614Z",
+    "topic": "Statsfinanser",
+    "geography": "Staten",
+    "type": "Utvikling over tid",
+    "report": {
+      "kind": "real-expenditure-per-capita",
+      "factsVersion": 2,
+      "scopeId": "state",
+      "scopeName": "Staten",
+      "start": 2014,
+      "end": 2025,
+      "dataUpdated": "2026-09-23T18:32:24.776647+00:00",
+      "dataHash": "f1b13cde59cdf86414d04658d10ab5872d6d2e7d586aad03eb021517441d52e1",
+      "facts": {
+        "startYear": {
+          "value": 2014,
+          "text": "2014",
+          "label": "Første regnskapsår"
+        },
+        "endYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Siste regnskapsår"
+        },
+        "nominalGrowth": {
+          "value": 86.47737938694067,
+          "text": "86,5 %",
+          "label": "Vekst i løpende utgifter"
+        },
+        "populationGrowth": {
+          "value": 9.49850618196395,
+          "text": "9,5 %",
+          "label": "Befolkningsvekst"
+        },
+        "priceGrowth": {
+          "value": 40.646976090014086,
+          "text": "40,6 %",
+          "label": "Prisvekst målt med KPI"
+        },
+        "realPerCapitaGrowth": {
+          "value": 21.08422422109133,
+          "text": "21,1 %",
+          "label": "Realvekst per innbygger"
+        },
+        "firstPerCapita": {
+          "value": 220607.89703616477,
+          "text": "220 608 kr",
+          "label": "Per innbygger i startåret, løpende kroner"
+        },
+        "lastPerCapita": {
+          "value": 375698.11631041364,
+          "text": "375 698 kr",
+          "label": "Per innbygger i sluttåret, løpende kroner"
+        },
+        "firstRealPerCapita": {
+          "value": 310278.33619713754,
+          "text": "310 278 kr",
+          "label": "Startåret i sluttårets priser"
+        },
+        "total": {
+          "value": 2101.7829999999994,
+          "text": "2 101,8 mrd. kr",
+          "label": "Utgifter i sluttåret"
+        },
+        "nominalPerCapitaGrowth": {
+          "value": 70.30129988901737,
+          "text": "70,3 %",
+          "label": "Vekst per innbygger, løpende kroner"
+        },
+        "previousYear": {
+          "value": 2019,
+          "text": "2019",
+          "label": "Året før største årlige endring"
+        },
+        "largestChangeYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "År med største årlige endring i absoluttverdi"
+        },
+        "largestAnnualChange": {
+          "value": 10.320425369173215,
+          "text": "10,3 %",
+          "label": "Største årlige endring, KPI-justert per innbygger"
+        },
+        "growthBeforeChange": {
+          "value": 3.680223576689512,
+          "text": "3,7 %",
+          "label": "KPI-justert vekst per innbygger, 2014–2019"
+        },
+        "growthSinceChange": {
+          "value": 16.78622985561806,
+          "text": "16,8 %",
+          "label": "KPI-justert vekst per innbygger, 2019–2025"
+        },
+        "growthAfterChange": {
+          "value": 5.860931432060612,
+          "text": "5,9 %",
+          "label": "KPI-justert vekst per innbygger, 2020–2025"
+        },
+        "dagpengerPeakYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Dagpenger: år med høyeste løpende beløp i perioden"
+        },
+        "dagpengerPeakAmount": {
+          "value": 38562.8,
+          "text": "38,6 mrd. kr",
+          "label": "Dagpenger: høyeste løpende beløp, 2020"
+        },
+        "dagpengerLastAmount": {
+          "value": 15365.5,
+          "text": "15,4 mrd. kr",
+          "label": "Dagpenger: løpende beløp, 2025"
+        },
+        "dagpengerReferenceYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Dagpenger: sammenligningsår"
+        },
+        "dagpengerReferenceAmount": {
+          "value": 38562.8,
+          "text": "38,6 mrd. kr",
+          "label": "Dagpenger: løpende beløp, 2020"
+        },
+        "dagpengerFirstRecordedYear": {
+          "value": 2014,
+          "text": "2014",
+          "label": "Dagpenger: første år med regnskapsføring på denne posten i perioden"
+        },
+        "dagpengerRealGrowthSinceReference": {
+          "value": -68.84229835747212,
+          "text": "−68,8 %",
+          "label": "Dagpenger: KPI-justert endring per innbygger, 2020–2025"
+        },
+        "koronakompensasjonPeakYear": {
+          "value": 2021,
+          "text": "2021",
+          "label": "Midlertidig koronakompensasjon til foretak, én post: år med høyeste løpende beløp i perioden"
+        },
+        "koronakompensasjonPeakAmount": {
+          "value": 7823,
+          "text": "7,8 mrd. kr",
+          "label": "Midlertidig koronakompensasjon til foretak, én post: høyeste løpende beløp, 2021"
+        },
+        "koronakompensasjonLastAmount": {
+          "value": 1.3,
+          "text": "1,3 mill. kr",
+          "label": "Midlertidig koronakompensasjon til foretak, én post: løpende beløp, 2025"
+        },
+        "koronakompensasjonReferenceYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Midlertidig koronakompensasjon til foretak, én post: sammenligningsår"
+        },
+        "koronakompensasjonFirstRecordedYear": {
+          "value": 2021,
+          "text": "2021",
+          "label": "Midlertidig koronakompensasjon til foretak, én post: første år med regnskapsføring på denne posten i perioden"
+        },
+        "ukrainastottePeakYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Militær støtte til Ukraina, én post: år med høyeste løpende beløp i perioden"
+        },
+        "ukrainastottePeakAmount": {
+          "value": 41227.3,
+          "text": "41,2 mrd. kr",
+          "label": "Militær støtte til Ukraina, én post: høyeste løpende beløp, 2025"
+        },
+        "ukrainastotteLastAmount": {
+          "value": 41227.3,
+          "text": "41,2 mrd. kr",
+          "label": "Militær støtte til Ukraina, én post: løpende beløp, 2025"
+        },
+        "ukrainastotteReferenceYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Militær støtte til Ukraina, én post: sammenligningsår"
+        },
+        "ukrainastotteFirstRecordedYear": {
+          "value": 2022,
+          "text": "2022",
+          "label": "Militær støtte til Ukraina, én post: første år med regnskapsføring på denne posten i perioden"
+        },
+        "alderspensjonPeakYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Pensjonskapitlet Alderdom: år med høyeste løpende beløp i perioden"
+        },
+        "alderspensjonPeakAmount": {
+          "value": 334204.80000000005,
+          "text": "334,2 mrd. kr",
+          "label": "Pensjonskapitlet Alderdom: høyeste løpende beløp, 2025"
+        },
+        "alderspensjonLastAmount": {
+          "value": 334204.80000000005,
+          "text": "334,2 mrd. kr",
+          "label": "Pensjonskapitlet Alderdom: løpende beløp, 2025"
+        },
+        "alderspensjonReferenceYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Pensjonskapitlet Alderdom: sammenligningsår"
+        },
+        "alderspensjonReferenceAmount": {
+          "value": 241254,
+          "text": "241,3 mrd. kr",
+          "label": "Pensjonskapitlet Alderdom: løpende beløp, 2020"
+        },
+        "alderspensjonFirstRecordedYear": {
+          "value": 2014,
+          "text": "2014",
+          "label": "Pensjonskapitlet Alderdom: første år med regnskapsføring på denne posten i perioden"
+        },
+        "alderspensjonRealGrowthSinceReference": {
+          "value": 8.324186891980423,
+          "text": "8,3 %",
+          "label": "Pensjonskapitlet Alderdom: KPI-justert endring per innbygger, 2020–2025"
+        }
+      },
+      "eventEvidence": {
+        "version": 1,
+        "items": [
+          {
+            "id": "dagpenger",
+            "title": "Dagpenger",
+            "event": "Koronapandemien og årene etter nedstengingene",
+            "context": "Pandemien er bakgrunn for å undersøke inntektsstøtte og permitteringer. Dagpengeposten omfatter også ordinær arbeidsledighet og kan ikke i sin helhet merkes som koronastøtte.",
+            "nodeIds": [
+              "u-06-2541-70"
+            ],
+            "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+            "nodes": [
+              {
+                "id": "u-06-2541-70",
+                "name": "Dagpenger"
+              }
+            ],
+            "rows": [
+              {
+                "year": 2014,
+                "expenditure": 11597.2,
+                "reported": true
+              },
+              {
+                "year": 2015,
+                "expenditure": 13764.1,
+                "reported": true
+              },
+              {
+                "year": 2016,
+                "expenditure": 15447.8,
+                "reported": true
+              },
+              {
+                "year": 2017,
+                "expenditure": 13952.4,
+                "reported": true
+              },
+              {
+                "year": 2018,
+                "expenditure": 10959.6,
+                "reported": true
+              },
+              {
+                "year": 2019,
+                "expenditure": 9324.4,
+                "reported": true
+              },
+              {
+                "year": 2020,
+                "expenditure": 38562.8,
+                "reported": true
+              },
+              {
+                "year": 2021,
+                "expenditure": 26003.3,
+                "reported": true
+              },
+              {
+                "year": 2022,
+                "expenditure": 12866.3,
+                "reported": true
+              },
+              {
+                "year": 2023,
+                "expenditure": 10281.8,
+                "reported": true
+              },
+              {
+                "year": 2024,
+                "expenditure": 13300.2,
+                "reported": true
+              },
+              {
+                "year": 2025,
+                "expenditure": 15365.5,
+                "reported": true
+              }
+            ]
+          },
+          {
+            "id": "koronakompensasjon",
+            "title": "Midlertidig koronakompensasjon til foretak, én post",
+            "event": "Koronapandemien og midlertidige støtteordninger",
+            "context": "Postnavnet knytter ordningen uttrykkelig til omsetningsfall som følge av koronapandemien. Denne posten alene dekker ikke alle koronaordninger eller tidligere føring på andre poster.",
+            "nodeIds": [
+              "u-09-0900-85"
+            ],
+            "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+            "nodes": [
+              {
+                "id": "u-09-0900-85",
+                "name": "Midlertidig kompensasjonsordning for foretak med stort omsetningsfall som følge av koronapandemien"
+              }
+            ],
+            "rows": [
+              {
+                "year": 2014,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2015,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2016,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2017,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2018,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2019,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2020,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2021,
+                "expenditure": 7823,
+                "reported": true
+              },
+              {
+                "year": 2022,
+                "expenditure": 464.3,
+                "reported": true
+              },
+              {
+                "year": 2023,
+                "expenditure": 24.1,
+                "reported": true
+              },
+              {
+                "year": 2024,
+                "expenditure": 2.7,
+                "reported": true
+              },
+              {
+                "year": 2025,
+                "expenditure": 1.3,
+                "reported": true
+              }
+            ]
+          },
+          {
+            "id": "ukrainastotte",
+            "title": "Militær støtte til Ukraina, én post",
+            "event": "Krigen i Ukraina og nye støtteutgifter",
+            "context": "Posten viser bokført militær støtte til Ukraina. Den er et konkret eksempel på andre utgifter etter pandemispranget, ikke et mål på all norsk støtte til Ukraina eller alle forsvarsutgifter.",
+            "nodeIds": [
+              "u-17-1700-79"
+            ],
+            "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+            "nodes": [
+              {
+                "id": "u-17-1700-79",
+                "name": "Militær støtte til Ukraina"
+              }
+            ],
+            "rows": [
+              {
+                "year": 2014,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2015,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2016,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2017,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2018,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2019,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2020,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2021,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2022,
+                "expenditure": 2239.3,
+                "reported": true
+              },
+              {
+                "year": 2023,
+                "expenditure": 1270,
+                "reported": true
+              },
+              {
+                "year": 2024,
+                "expenditure": 9728.2,
+                "reported": true
+              },
+              {
+                "year": 2025,
+                "expenditure": 41227.3,
+                "reported": true
+              }
+            ]
+          },
+          {
+            "id": "alderspensjon",
+            "title": "Pensjonskapitlet Alderdom",
+            "event": "Løpende pensjonsutgifter",
+            "context": "Kapitlet gir et eksempel på løpende utgifter ved siden av krisetiltakene. Regnskapet alene skiller ikke virkningen av flere mottakere, regulering eller regelendringer.",
+            "nodeIds": [
+              "u-06-2670"
+            ],
+            "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+            "nodes": [
+              {
+                "id": "u-06-2670",
+                "name": "Alderdom"
+              }
+            ],
+            "rows": [
+              {
+                "year": 2014,
+                "expenditure": 179196.5,
+                "reported": true
+              },
+              {
+                "year": 2015,
+                "expenditure": 190563.30000000005,
+                "reported": true
+              },
+              {
+                "year": 2016,
+                "expenditure": 201708.69999999998,
+                "reported": true
+              },
+              {
+                "year": 2017,
+                "expenditure": 211187.19999999998,
+                "reported": true
+              },
+              {
+                "year": 2018,
+                "expenditure": 221068.30000000002,
+                "reported": true
+              },
+              {
+                "year": 2019,
+                "expenditure": 232106.9,
+                "reported": true
+              },
+              {
+                "year": 2020,
+                "expenditure": 241254,
+                "reported": true
+              },
+              {
+                "year": 2021,
+                "expenditure": 256906,
+                "reported": true
+              },
+              {
+                "year": 2022,
+                "expenditure": 272358.2,
+                "reported": true
+              },
+              {
+                "year": 2023,
+                "expenditure": 296881,
+                "reported": true
+              },
+              {
+                "year": 2024,
+                "expenditure": 316171.19999999995,
+                "reported": true
+              },
+              {
+                "year": 2025,
+                "expenditure": 334204.80000000005,
+                "reported": true
+              }
+            ]
+          }
+        ],
+        "hash": "c13f93441b60566dad5091df1c5b49eb2cd4ddbc53b9af8fa3ee76b59c8ebe52"
+      },
+      "rows": [
+        {
+          "year": 2014,
+          "expenditure": 1127098.0999999999,
+          "population": 5109056,
+          "cpi": 71.1,
+          "perCapita": 220607.89703616477,
+          "nominalIndex": 100,
+          "priceIndex": 100,
+          "realPerCapita": 310278.33619713754
+        },
+        {
+          "year": 2015,
+          "expenditure": 1194464.1999999997,
+          "population": 5165802,
+          "cpi": 72.6,
+          "perCapita": 231225.31603030852,
+          "nominalIndex": 104.81280096351367,
+          "priceIndex": 102.1097046413502,
+          "realPerCapita": 318492.1708406454
+        },
+        {
+          "year": 2016,
+          "expenditure": 1246092.4,
+          "population": 5213985,
+          "cpi": 75.2,
+          "perCapita": 238990.40752898215,
+          "nominalIndex": 108.33266203965668,
+          "priceIndex": 105.76652601969059,
+          "realPerCapita": 317806.3929906678
+        },
+        {
+          "year": 2017,
+          "expenditure": 1280866,
+          "population": 5258317,
+          "cpi": 76.6,
+          "perCapita": 243588.58547326075,
+          "nominalIndex": 110.4169835920827,
+          "priceIndex": 107.73558368495077,
+          "realPerCapita": 318000.7643254057
+        },
+        {
+          "year": 2018,
+          "expenditure": 1318145.7000000002,
+          "population": 5295619,
+          "cpi": 78.7,
+          "perCapita": 248912.48785080653,
+          "nominalIndex": 112.8302708991427,
+          "priceIndex": 110.68917018284108,
+          "realPerCapita": 316280.1624533755
+        },
+        {
+          "year": 2019,
+          "expenditure": 1378113.3000000003,
+          "population": 5328212,
+          "cpi": 80.4,
+          "perCapita": 258644.6072340966,
+          "nominalIndex": 117.24177180823965,
+          "priceIndex": 113.08016877637132,
+          "realPerCapita": 321697.2726792246
+        },
+        {
+          "year": 2020,
+          "expenditure": 1552528,
+          "population": 5367580,
+          "cpi": 81.5,
+          "perCapita": 289241.70669091097,
+          "nominalIndex": 131.11122066654528,
+          "priceIndex": 114.62728551336147,
+          "realPerCapita": 354897.79962074966
+        },
+        {
+          "year": 2021,
+          "expenditure": 1584176.7,
+          "population": 5391369,
+          "cpi": 84.3,
+          "perCapita": 293835.7029541105,
+          "nominalIndex": 133.1936466925032,
+          "priceIndex": 118.56540084388185,
+          "realPerCapita": 348559.5527332272
+        },
+        {
+          "year": 2022,
+          "expenditure": 1665935.1000000006,
+          "population": 5425270,
+          "cpi": 89.2,
+          "perCapita": 307069.52833683864,
+          "nominalIndex": 139.19244617362904,
+          "priceIndex": 125.45710267229255,
+          "realPerCapita": 344248.3501534065
+        },
+        {
+          "year": 2023,
+          "expenditure": 1806801.5999999999,
+          "population": 5488984,
+          "cpi": 94.1,
+          "perCapita": 329168.6767532935,
+          "nominalIndex": 149.2098339069576,
+          "priceIndex": 132.34880450070324,
+          "realPerCapita": 349807.3079206095
+        },
+        {
+          "year": 2024,
+          "expenditure": 1953331.4,
+          "population": 5550203,
+          "cpi": 97.1,
+          "perCapita": 351938.7308896629,
+          "nominalIndex": 159.53133845973284,
+          "priceIndex": 136.56821378340368,
+          "realPerCapita": 362449.77434568794
+        },
+        {
+          "year": 2025,
+          "expenditure": 2101782.9999999995,
+          "population": 5594340,
+          "cpi": 100,
+          "perCapita": 375698.11631041364,
+          "nominalIndex": 170.30129988901737,
+          "priceIndex": 140.64697609001408,
+          "realPerCapita": 375698.11631041364
+        }
+      ],
+      "sources": [
+        {
+          "name": "Fellestall: de konkrete regnskapspostene",
+          "url": "https://fellestall.no/data/utgifter.json",
+          "local": "/data/utgifter.json",
+          "description": "Hendelseseksemplene er valgt fra samme DFØ-uttrekk som hovedserien. Navn, post-ID-er og årlige beløp er frosset i artikkelens datagrunnlag. Utvalget er ikke et fullstendig koronaregnskap eller en årsaksfordeling av hele veksten."
+        },
+        {
+          "name": "DFØ Statsregnskapet",
+          "url": "https://statsregnskapet.dfo.no",
+          "local": "/data/utgifter.json",
+          "description": "Regnskapsførte utgifter i mill. kroner. Finansposter og SPU-overføringer er utelatt."
+        },
+        {
+          "name": "SSB folkemengde, tabell 07459",
+          "url": "https://www.ssb.no/statbank/table/07459/",
+          "local": "/data/befolkning.json",
+          "description": "Folkemengde ved inngangen til året, som i resten av Fellestall."
+        },
+        {
+          "name": "SSB konsumprisindeks",
+          "url": "https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen",
+          "local": "/data/kpi.json",
+          "description": "Årsgjennomsnitt for KPI, fra Fellestalls normaliserte serie."
+        }
+      ],
+      "methodology": [
+        "Hendelsesgrunnlaget følger et lite, redaksjonelt valgt utvalg regnskapsposter. Beløpene er i løpende mill. kroner; eventuelle KPI-justerte endringer per innbygger bruker samme folketall og prisserie som hovedanalysen. En post uten regnskapsføring i uttrekket er merket som ikke observert, ikke som et komplett mål på alle utgifter til formålet. Postene identifiseres med navn og ID.",
+        "Vi summerer regnskapsførte utgifter på postnivå for Staten. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.",
+        "Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.",
+        "Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.",
+        "Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.",
+        "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn."
+      ],
+      "limitations": [
+        "KPI måler husholdningenes konsumpriser, ikke statens lønns-, bygge- eller innkjøpskostnader. KPI-justering er et sammenligningsmål, ikke et mål på produksjonsvolum.",
+        "Utgifter sier ikke hvor mye eller hvor god tjenesteproduksjon innbyggerne får. Overføringer, pensjoner og tilskudd inngår også.",
+        "Tallene identifiserer ikke årsakene til endringene. De kan ikke alene brukes til å konkludere om effektivitet, sløsing eller virkningen av politiske beslutninger.",
+        "Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.",
+        "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse."
+      ]
+    },
+    "copy": {
+      "title": "Statens regning har vokst {{fact:nominalGrowth}}. Hva holder den oppe?",
+      "description": "Statens utgifter økte {{fact:nominalGrowth}} i løpende kroner fra {{fact:startYear}} til {{fact:endYear}}. Vi følger pandemispranget, krisepostene som falt, og utgiftene som tok mer plass etterpå.",
+      "lead": "Fra {{fact:startYear}} til {{fact:endYear}} har statens utgifter nesten doblet seg i løpende kroner. Prisvekst og flere innbyggere forklarer mye, men ikke hele økningen. Også etter begge justeringene er regningen større. Hva holder den oppe? Vi følger spranget under pandemien og postene som tok mer plass etterpå.",
+      "conclusion": "Statens utgifter per innbygger økte {{fact:realPerCapitaGrowth}} etter KPI-justering fra {{fact:startYear}} til {{fact:endYear}}. Koronapandemien gir spranget i {{fact:largestChangeYear}} en konkret historisk sammenheng. Etterpå falt dagpengeutgiftene kraftig, og en navngitt koronakompensasjon ble nesten borte. Samtidig kom bokført militær støtte til Ukraina til, og pensjonsutgiftene vokste også målt per innbygger etter KPI-justering. Regningen skiftet innhold. At totalnivået ble værende høyt, viser derfor ikke i seg selv at koronatiltakene ble permanente. Eksemplene forklarer deler av bildet; en full fordeling av veksten krever alle postene.",
+      "linkedin": "Statens regning har vokst {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}.\nKvitteringen burde snart komme med innholdsfortegnelse.\n\nPrisvekst og flere innbyggere forklarer mye av økningen i løpende kroner. Likevel er regningen større også etter begge justeringene.\n\nPandemien ga et sprang. Men så kom vrien: Flere kriseutgifter falt etterpå, mens andre tok mer plass.\n\nKoronakompensasjon krympet. Militær støtte til Ukraina og pensjonsutgifter vokste.\n\nHva holdt regningen oppe da krisetiltakene krympet?\n\nVi åpnet regnskapet. Se hva som krympet, og hva som tok plass ↓",
+      "sections": [
+        {
+          "heading": "Regningen vokste også etter pris- og befolkningsjustering",
+          "factIds": [
+            "nominalGrowth",
+            "nominalPerCapitaGrowth",
+            "realPerCapitaGrowth"
+          ],
+          "paragraphs": [
+            "Utgiftene har økt med {{fact:nominalGrowth}} i løpende kroner. Det er et tall som tar plass. Men en gammel krone og en ny krone kjøper ikke nødvendigvis det samme, og flere innbyggere deler regningen. Hvor mye av økningen står igjen når vi tar hensyn til begge deler?",
+            "Først deler vi beløpene på folketallet. Da blir veksten {{fact:nominalPerCapitaGrowth}}. Deretter justerer vi for konsumprisene, og står igjen med {{fact:realPerCapitaGrowth}}. Figuren under lar oss lese det samme regnskapet med ulike målestokker. Hvert mål svarer på et eget spørsmål; prosentene kan ikke legges sammen eller trekkes direkte fra hverandre.",
+            "Legg merke til den siste stolpen. Den er betydelig kortere enn den første, men den er fortsatt over null. Dyrere kroner og flere innbyggere gjør altså mye av veksten mindre dramatisk. Likevel gjenstår en økning i KPI-justert pengebruk per innbygger. Det er denne forskjellen det blir interessant å følge videre."
+          ]
+        },
+        {
+          "heading": "Det største utgiftsløftet kom med pandemien",
+          "factIds": [
+            "startYear",
+            "previousYear",
+            "growthBeforeChange",
+            "largestChangeYear",
+            "endYear",
+            "firstRealPerCapita",
+            "lastPerCapita",
+            "largestAnnualChange",
+            "dagpengerPeakAmount"
+          ],
+          "paragraphs": [
+            "Fra {{fact:startYear}} til {{fact:previousYear}} var økningen i KPI-justert utgift per innbygger {{fact:growthBeforeChange}}. Så kommer {{fact:largestChangeYear}}, med et årlig løft på {{fact:largestAnnualChange}}. Koronapandemien og nedstengingene utløste behov for inntektsstøtte, kompensasjon og ekstra helseinnsats. Her gir pandemien en konkret forklaring på hvorfor det oppstod ekstraordinære utgifter.",
+            "Et konkret utslag finnes i dagpengeposten. Den når {{fact:dagpengerPeakAmount}} i sprangåret. Posten omfatter også ordinær arbeidsledighet, så vi kan ikke føre hele beløpet som koronastøtte. Men den gir oss en faktisk regnskapslinje å følge når vi undersøker hva som skjedde under pandemien og etterpå.",
+            "I samme kroneverdi går hovedserien fra {{fact:firstRealPerCapita}} per innbygger i startåret til {{fact:lastPerCapita}} i {{fact:endYear}}. Den stiplede linjen holder startnivået fast. Følg kurven gjennom spranget og årene etterpå. Det interessante spørsmålet er nå hva som skulle falle bort da samfunnet åpnet igjen, og hva som i stedet holdt regningen oppe."
+          ]
+        },
+        {
+          "heading": "Totalen holdt seg høy mens krisepostene krympet",
+          "factIds": [
+            "largestChangeYear",
+            "growthAfterChange",
+            "endYear",
+            "dagpengerLastAmount",
+            "dagpengerRealGrowthSinceReference"
+          ],
+          "paragraphs": [
+            "Det er rimelig å vente at midlertidige kriseutgifter blir mindre når behovet avtar. Det skjedde også med dagpenger: I {{fact:endYear}} er beløpet {{fact:dagpengerLastAmount}}, klart under sprangårets nivå. Med samme pris- og befolkningsjustering som hovedserien er endringen {{fact:dagpengerRealGrowthSinceReference}}. Denne posten ble altså betydelig mindre, selv om statens samlede utgifter holdt seg høye.",
+            "Årsstolpene viser at hovedserien også har år med nedgang etter {{fact:largestChangeYear}}. Utgiftsnivået faller noe tilbake før det stiger igjen. Ved slutten av perioden er KPI-justert utgift per innbygger ytterligere {{fact:growthAfterChange}} over sprangåret. En nedgang i en stor krisepost og et høyt totalnivå kan dermed finnes i det samme regnskapet.",
+            "Her er skillet som totalsummen lett skjuler: Den viser størrelsen på regningen, ikke om innholdet er det samme. For å avgjøre om en midlertidig ordning ble videreført, må vi følge ordningen. For å forklare hvorfor hele kurven holder seg oppe, må vi også se på postene som vokser mens den krymper."
+          ]
+        },
+        {
+          "heading": "Nye og løpende utgifter tok mer plass",
+          "factIds": [
+            "koronakompensasjonPeakYear",
+            "koronakompensasjonPeakAmount",
+            "koronakompensasjonLastAmount",
+            "ukrainastotteFirstRecordedYear",
+            "ukrainastotteLastAmount",
+            "alderspensjonRealGrowthSinceReference",
+            "endYear"
+          ],
+          "paragraphs": [
+            "En post heter uttrykkelig «Midlertidig kompensasjonsordning for foretak med stort omsetningsfall som følge av koronapandemien». Den er på {{fact:koronakompensasjonPeakAmount}} i {{fact:koronakompensasjonPeakYear}}, men bare {{fact:koronakompensasjonLastAmount}} i {{fact:endYear}}. Her er «midlertidig» synlig i beløpene. Dette er én post, ikke et komplett koronaregnskap; tidligere utbetalinger kan være ført andre steder.",
+            "Så kommer en annen virkelig hendelse inn i bildet: krigen i Ukraina. Posten «Militær støtte til Ukraina» har regnskapsføring fra {{fact:ukrainastotteFirstRecordedYear}} i denne serien, og er på {{fact:ukrainastotteLastAmount}} i {{fact:endYear}}. Det er bokført støtte på denne posten, ikke all norsk Ukraina-støtte. Den viser likevel konkret at nye utgifter kom til etter pandemispranget.",
+            "Også løpende utgifter beveget seg. Pensjonskapitlet «Alderdom» økte {{fact:alderspensjonRealGrowthSinceReference}} per innbygger etter KPI-justering fra sprangåret til {{fact:endYear}}. Regnskapet skiller ikke mellom flere mottakere, regulering og regelendringer. Det viser at veksten her ikke forsvinner med den samme justeringen vi bruker på totalen. Regningen rommer både skiftende kriser og utgifter som fortsetter mellom dem."
+          ]
+        },
+        {
+          "heading": "En større regning kan skjule at innholdet har endret seg",
+          "factIds": [],
+          "paragraphs": [
+            "Når kurven ikke vender tilbake til nivået før pandemien, er det fristende å tenke at koronaregningen ble permanent. Eksemplene gir grunn til å stoppe ved den slutningen. Noen utgifter falt kraftig samtidig som andre vokste eller kom til. En høy totalsum kan derfor bestå selv når konkrete midlertidige ordninger blir langt mindre.",
+            "Det sier noe om hvordan offentlige forpliktelser endrer seg gjennom perioden. Nye hendelser møter et regnskap som allerede har løpende oppgaver. Eksemplene viser deler av denne endringen i innhold, men summerer ikke hele veksten. De beviser heller ikke at alle kriseutgifter ble avviklet eller at en bestemt utgiftsøkning var nødvendig eller unødvendig.",
+            "KPI måler husholdningenes konsumpriser, ikke statens egne kostnader. Utgifter rommer også pensjoner og overføringer, og beløpene forteller ikke hvor mye tjenesteproduksjon eller kvalitet innbyggerne fikk. Når vi bruker samme målestokk gjennom perioden, får vi et klarere bilde av pengebruken. En vurdering av resultatene krever andre mål i tillegg."
+          ]
+        },
+        {
+          "heading": "Neste spørsmål: Hva står bak resten av økningen?",
+          "factIds": [
+            "previousYear",
+            "largestChangeYear",
+            "endYear"
+          ],
+          "paragraphs": [
+            "Nå kan vi stille et mer presist spørsmål enn hvorfor regningen ikke forsvant sammen med nedstengingene: Hvor mye av forskjellen mellom {{fact:previousYear}} og {{fact:endYear}} skyldes poster som falt, poster som vokste og utgifter som kom til? En slik fordeling må ta med hele regnskapet og avstemmes mot totalen.",
+            "Den bør skille spranget i {{fact:largestChangeYear}} fra utviklingen etterpå, og følge endrede postnavn og ansvarsområder slik at flytting ikke telles som ny pengebruk. Først da kan vi vekte eksemplene opp mot hverandre og forklare resten av forskjellen. Tabellen under viser de utvalgte postene som denne analysen faktisk har fulgt.",
+            "Pandemien gir oss bakgrunnen for å forstå krisespranget. Postene etterpå viser hvorfor det ikke holder å vente at én hendelse skal ta hele regningen med seg ut døren. Innholdet endret seg mens totalsummen forble høy. Det er denne endringen neste gjennomgang bør gjøre fullt rede for."
+          ]
+        }
+      ]
+    },
+    "publishedAt": "2026-10-04T15:58:29Z",
+    "approval": {
+      "reviewer": "Lippen1995",
+      "approvedAt": "2026-10-04T15:58:29Z",
+      "commitId": "d222e0caac4e22532adf3cf25e53135c67bed965",
+      "contentHash": "954412d7058f1681baf7e0be30cf94fe0e9ae785637611a4e35c760abe1856cf"
+    }
+  }
+]
