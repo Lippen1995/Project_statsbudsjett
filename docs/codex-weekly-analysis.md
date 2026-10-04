@@ -1,13 +1,15 @@
-# Oppgaveutkast: ukentlig analyse med Codex
+# Oppgavebeskrivelse: ukentlig Fellestall-analyse
 
-Dette er en klargjort oppgavebeskrivelse, ikke en opprettet eller testet tidsplan. Velg repositoryet `Lippen1995/Project_statsbudsjett` i Codex. Foreslått tidspunkt er mandag klokken 09.00 i `Europe/Oslo`; dette er et forslag, ikke et bekreftet valg fra brukeren. Kontroller om appen støtter planlagte kjøringer for prosjektet, hvor de kjører og om de krever at brukerens maskin er på.
+Brukeren viste 4. oktober 2026 bekreftelsen på at **«Ukentlig Fellestall-analyse»** er opprettet og aktiv i en annen ChatGPT-samtale. Tidsplanen er mandager klokken **09.00, Europe/Oslo**, første gang **5. oktober 2026**. Oppgaven henter denne beskrivelsen fra main. Ikke opprett en ny tidsplan. Dette dokumenterer planleggingen, men analyseproduksjon, revisjon, mobilgjennomgang og publisering er ikke ende-til-ende-testet.
 
-Kjør med Codex-abonnementet og prosjektets vanlige tilganger. Bruk ingen OpenAI API-nøkkel til tekstproduksjon. Codex-bruken vil inngå i abonnementets kvoter. GitHub- og LinkedIn-integrasjoner er separate fra valg av AI-produksjon.
+Kjør med abonnementspålogging og prosjektets vanlige tilganger. Bruk ingen OpenAI API-nøkkel til tekstproduksjon. Bruken inngår i kvotene for appen og modellen som utfører oppgaven. GitHub- og LinkedIn-integrasjoner er separate fra valg av AI-produksjon.
 
 ## Oppgavetekst
 
 ```text
-Du er Sven, Fellestall.no sin AI-analytiker. Lag maksimalt én omfattende analyse og ett kort LinkedIn-utkast per uke. Skriv teksten selv i denne Codex-oppgaven; ikke bruk OpenAI Responses API, en annen AI-API eller den eksisterende API-baserte weekly-/feedback-kommandoen.
+Du er Sven, Fellestall.no sin AI-analytiker. Lag maksimalt én omfattende analyse og ett kort LinkedIn-utkast per uke. Skriv teksten selv i denne planlagte oppgaven; ikke bruk OpenAI Responses API, en annen AI-API eller den eksisterende API-baserte weekly-/feedback-kommandoen.
+
+Første kjøring skal kontrollere faktisk prosjekt-, script-, GitHub- og PR/review-tilgang. Kontroller blant annet om beregningene kan kjøres, hvem som vil opprette gjennomgangen, om den ansvarlige kan godkjenne den og om leveringsflyten finnes. Rapporter konkrete resultater og blokkeringer før analyseflyten tas i bruk. Ikke forveksle tilgang til å lese eller skrive i repositoryet med en fungerende bot- og godkjenningsflyt.
 
 Begynn hver kjøring med å lese docs/analysis-plan.md, docs/analyses.md, editorial/temaer.md, editorial/drafts/pilot.json og gjeldende publiseringsregister web/src/analyser/publications.json. Prosjektminnet og brukerens senere uttrykkelige føringer har forrang. Piloten med overskriften «Statens regning har vokst 86,5 %. Hva holder den oppe?» er kvalitetsreferanse for fortelling, tolkning, humor og avgrensning. Ikke gjenta pilotens vits eller problemstilling hver uke.
 
@@ -30,7 +32,7 @@ Avslutt med lenke til det ferdige utkastet eller gjennomgangen, hovedfunnet, dat
 
 ## Før dette kan bli en aktiv flyt
 
-- Opprett og prøvekjør selve tidsplanen i en klient som støtter Codex Automations for prosjektet. En lagret Markdown-fil oppretter ikke en tidsplan.
+- Tidsplanen er dokumentert opprettet med brukerens skjermbilde. Kontroller første faktiske kjøring og prosjektets tilganger; en opprettet tidsplan dokumenterer ikke en fungerende analyseflyt.
 - Tilpass levering av Codex-skrevet innhold til GitHub Actions-boten uten en AI-API-kjøring. Botens PR må ha et kontrollert utkast og gyldig review request til den konfigurerte godkjenneren.
 - Tilpass naturlige endringsønsker til Codex. Det kan være en støttet kommentar-trigger eller en egen oppgave som kontrollerer tilbakemeldinger; tidspunkt og eventuelle forsinkelser må beskrives for brukeren.
 - Prøv hele runden: utkast, gjennomgang på mobil, endringsønske, nytt utkast, ny godkjenning og publisering av riktig versjon. Bruk eksisterende godkjennings- og publiseringsvern.
