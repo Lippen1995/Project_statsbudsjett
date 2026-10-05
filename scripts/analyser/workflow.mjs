@@ -12,6 +12,14 @@ import {
 import { renderReview } from './render-review.mjs'
 import { factText } from '../../web/src/analyser/model.js'
 export async function pendingFeedback(g, number, article) {
+  // Direct scheduled-task revisions have also stored GitHub issue-comment IDs
+  // as numbers. Preserve those acknowledgements without confusing comments
+  // with reviews that happen to have the same numeric ID.
+  const processed = new Set(
+    (article.processedFeedbackIds ?? []).map((id) =>
+      Number.isSafeInteger(id) && id > 0 ? `comment-${id}` : id,
+    ),
+  )
   const comments = await g.pages(`/issues/${number}/comments`)
   const reviews = await g.pages(`/pulls/${number}/reviews`)
   const rows = [
@@ -39,8 +47,7 @@ export async function pendingFeedback(g, number, article) {
   ]
   const allowed = []
   for (const row of rows.sort((a, b) => Date.parse(a.at) - Date.parse(b.at)))
-    if (!(article.processedFeedbackIds ?? []).includes(row.id) && (await g.permission(row.user)))
-      allowed.push(row)
+    if (!processed.has(row.id) && (await g.permission(row.user))) allowed.push(row)
   return allowed
 }
 
