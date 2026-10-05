@@ -1,0 +1,749 @@
+{
+  "purpose": "Forberedende referanse, ikke 2027-analyse. Beregn på nytt fra ferske kilder ved fremleggelsen.",
+  "fiscalYear": 2026,
+  "series": "saldert",
+  "unit": "mill_kr",
+  "dataUpdated": "2026-10-05T12:55:03.864885+00:00",
+  "preparedAt": "2026-10-05",
+  "filter": "Post < 90; kapittel 2800, 5800 og statslånemidler 5999 utelatt.",
+  "precision": "Website amounts rounded to 0.1 mill. kr; rounding difference possible in aggregated totals.",
+  "sides": {
+    "utgifter": {
+      "source": "https://fellestall.no/data/utgifter.json",
+      "sha256": "dc071d77c43e8fd742c78bd7c113746d2524aea5ed407a20ccedce2b829ef78e",
+      "total": 2210162.5,
+      "departments": [
+        {
+          "name": "Arbeids- og inkluderingsdepartementet",
+          "amount": 738874.8
+        },
+        {
+          "name": "Helse- og omsorgsdepartementet",
+          "amount": 305764.8
+        },
+        {
+          "name": "Kommunal- og distriktsdepartementet",
+          "amount": 289813.3
+        },
+        {
+          "name": "Forsvarsdepartementet",
+          "amount": 179781.9
+        },
+        {
+          "name": "Kunnskapsdepartementet",
+          "amount": 108023.1
+        },
+        {
+          "name": "Samferdselsdepartementet",
+          "amount": 98495.4
+        },
+        {
+          "name": "Finansdepartementet",
+          "amount": 93269.1
+        },
+        {
+          "name": "Barne- og familiedepartementet",
+          "amount": 82814.0
+        },
+        {
+          "name": "Nærings- og fiskeridepartementet",
+          "amount": 62116.1
+        },
+        {
+          "name": "Justis- og beredskapsdepartementet",
+          "amount": 60813.6
+        },
+        {
+          "name": "Utenriksdepartementet",
+          "amount": 56911.0
+        },
+        {
+          "name": "Landbruks- og matdepartementet",
+          "amount": 34989.6
+        },
+        {
+          "name": "Klima- og miljødepartementet",
+          "amount": 27869.2
+        },
+        {
+          "name": "Kultur- og likestillingsdepartementet",
+          "amount": 27113.1
+        },
+        {
+          "name": "Digitaliserings- og forvaltningsdepartementet",
+          "amount": 23365.6
+        },
+        {
+          "name": "Energidepartementet",
+          "amount": 20147.9
+        }
+      ],
+      "largestPosts": [
+        {
+          "key": "0571-60",
+          "chapterName": "Rammetilskudd til kommuner",
+          "postName": "Innbyggertilskudd",
+          "department": "Kommunal- og distriktsdepartementet",
+          "amount": 202053.1,
+          "chapter": "0571",
+          "post": 60
+        },
+        {
+          "key": "2670-71",
+          "chapterName": "Alderdom",
+          "postName": "Tilleggspensjon",
+          "department": "Arbeids- og inkluderingsdepartementet",
+          "amount": 197400,
+          "chapter": "2670",
+          "post": 71
+        },
+        {
+          "key": "2655-70",
+          "chapterName": "Uførhet",
+          "postName": "Grunnpensjon",
+          "department": "Arbeids- og inkluderingsdepartementet",
+          "amount": 140800,
+          "chapter": "2655",
+          "post": 70,
+          "official2026ProposalPostName": "Uføretrygd",
+          "official2026ProposalChapterName": "Uførhet",
+          "nameNeedsReview": true
+        },
+        {
+          "key": "2670-70",
+          "chapterName": "Alderdom",
+          "postName": "Grunnpensjon",
+          "department": "Arbeids- og inkluderingsdepartementet",
+          "amount": 96840,
+          "chapter": "2670",
+          "post": 70
+        },
+        {
+          "key": "0732-72",
+          "chapterName": "Regionale helseforetak",
+          "postName": "Basisbevilgning Helse Sør-Øst RHF",
+          "department": "Helse- og omsorgsdepartementet",
+          "amount": 94970.7,
+          "chapter": "0732",
+          "post": 72
+        },
+        {
+          "key": "2650-70",
+          "chapterName": "Sykepenger",
+          "postName": "Sykepenger for arbeidstakere mv.",
+          "department": "Arbeids- og inkluderingsdepartementet",
+          "amount": 64750,
+          "chapter": "2650",
+          "post": 70
+        },
+        {
+          "key": "0572-60",
+          "chapterName": "Rammetilskudd til fylkeskommuner",
+          "postName": "Innbyggertilskudd",
+          "department": "Kommunal- og distriktsdepartementet",
+          "amount": 56772.3,
+          "chapter": "0572",
+          "post": 60
+        },
+        {
+          "key": "2651-70",
+          "chapterName": "Arbeidsavklaringspenger",
+          "postName": "Arbeidsavklaringspenger",
+          "department": "Arbeids- og inkluderingsdepartementet",
+          "amount": 55906,
+          "chapter": "2651",
+          "post": 70
+        },
+        {
+          "key": "1720-01",
+          "chapterName": "Felles ledelse og kommandoapparat",
+          "postName": "Driftsutgifter",
+          "department": "Forsvarsdepartementet",
+          "amount": 49166,
+          "chapter": "1720",
+          "post": 1,
+          "official2026ProposalPostName": "Driftsutgifter",
+          "official2026ProposalChapterName": "Forsvaret",
+          "nameNeedsReview": true
+        },
+        {
+          "key": "2670-72",
+          "chapterName": "Alderdom",
+          "postName": "Ventetillegg",
+          "department": "Arbeids- og inkluderingsdepartementet",
+          "amount": 46390,
+          "chapter": "2670",
+          "post": 72,
+          "official2026ProposalPostName": "Inntektspensjon",
+          "official2026ProposalChapterName": "Alderdom",
+          "nameNeedsReview": true
+        },
+        {
+          "key": "0260-50",
+          "chapterName": "Universiteter og høyskoler",
+          "postName": "Statlige universiteter og høyskoler",
+          "department": "Kunnskapsdepartementet",
+          "amount": 45892.7,
+          "chapter": "0260",
+          "post": 50
+        },
+        {
+          "key": "1750-79",
+          "chapterName": "Militær støtte til Ukraina",
+          "postName": "Tilskudd til militær støtte for Ukraina",
+          "department": "Forsvarsdepartementet",
+          "amount": 38596,
+          "chapter": "1750",
+          "post": 79
+        },
+        {
+          "key": "2440-30",
+          "chapterName": "Statens direkte økonomiske engasjement i petroleumsvirksomheten",
+          "postName": "Investeringer",
+          "department": "Nærings- og fiskeridepartementet",
+          "amount": 36100,
+          "chapter": "2440",
+          "post": 30
+        },
+        {
+          "key": "1760-45",
+          "chapterName": "Nyanskaffelser av materiell og nybygg og nyanlegg",
+          "postName": "Større utstyrsanskaffelser og vedlikehold",
+          "department": "Forsvarsdepartementet",
+          "amount": 34295.1,
+          "chapter": "1760",
+          "post": 45,
+          "official2026ProposalPostName": "Større utstyrsanskaffelser og vedlikehold",
+          "official2026ProposalChapterName": "Forsvarsmateriell og større anskaffelser og vedlikehold",
+          "nameNeedsReview": true
+        },
+        {
+          "key": "0732-76",
+          "chapterName": "Regionale helseforetak",
+          "postName": "Innsatsstyrt finansiering",
+          "department": "Helse- og omsorgsdepartementet",
+          "amount": 33605.1,
+          "chapter": "0732",
+          "post": 76
+        },
+        {
+          "key": "1632-61",
+          "chapterName": "Kompensasjon for merverdiavgift",
+          "postName": "Tilskudd til kommuner og fylkeskommuner",
+          "department": "Finansdepartementet",
+          "amount": 33600,
+          "chapter": "1632",
+          "post": 61
+        },
+        {
+          "key": "0732-73",
+          "chapterName": "Regionale helseforetak",
+          "postName": "Basisbevilgning Helse Vest RHF",
+          "department": "Helse- og omsorgsdepartementet",
+          "amount": 33370.2,
+          "chapter": "0732",
+          "post": 73
+        },
+        {
+          "key": "0845-70",
+          "chapterName": "Barnetrygd",
+          "postName": "Tilskudd",
+          "department": "Barne- og familiedepartementet",
+          "amount": 30309,
+          "chapter": "0845",
+          "post": 70
+        },
+        {
+          "key": "2530-70",
+          "chapterName": "Foreldrepenger",
+          "postName": "Foreldrepenger ved fødsel",
+          "department": "Barne- og familiedepartementet",
+          "amount": 29269,
+          "chapter": "2530",
+          "post": 70
+        },
+        {
+          "key": "1750-21",
+          "chapterName": "Militær støtte til Ukraina",
+          "postName": "Spesielle driftsutgifter",
+          "department": "Forsvarsdepartementet",
+          "amount": 28610,
+          "chapter": "1750",
+          "post": 21
+        },
+        {
+          "key": "0440-01",
+          "chapterName": "Politidirektoratet - politi- og lensmannsetaten",
+          "postName": "Driftsutgifter",
+          "department": "Justis- og beredskapsdepartementet",
+          "amount": 25481.8,
+          "chapter": "0440",
+          "post": 1,
+          "official2026ProposalPostName": "Driftsutgifter",
+          "official2026ProposalChapterName": "Politiet",
+          "nameNeedsReview": true
+        },
+        {
+          "key": "0732-74",
+          "chapterName": "Regionale helseforetak",
+          "postName": "Basisbevilgning Helse Midt-Norge RHF",
+          "department": "Helse- og omsorgsdepartementet",
+          "amount": 24631.5,
+          "chapter": "0732",
+          "post": 74
+        },
+        {
+          "key": "0732-75",
+          "chapterName": "Regionale helseforetak",
+          "postName": "Basisbevilgning Helse Nord RHF",
+          "department": "Helse- og omsorgsdepartementet",
+          "amount": 20815.7,
+          "chapter": "0732",
+          "post": 75
+        },
+        {
+          "key": "1650-89",
+          "chapterName": "Statsgjeld, renter mv.",
+          "postName": "Renter og provisjon mv. på innenlandsk statsgjeld",
+          "department": "Finansdepartementet",
+          "amount": 20081.4,
+          "chapter": "1650",
+          "post": 89
+        },
+        {
+          "key": "1150-74",
+          "chapterName": "Til gjennomføring av jordbruksavtalen m.m.",
+          "postName": "Direkte tilskudd",
+          "department": "Landbruks- og matdepartementet",
+          "amount": 17886.4,
+          "chapter": "1150",
+          "post": 74
+        },
+        {
+          "key": "0671-60",
+          "chapterName": "Bosetting av flyktninger og tiltak for innvandrere",
+          "postName": "Integreringstilskudd",
+          "department": "Arbeids- og inkluderingsdepartementet",
+          "amount": 17435.2,
+          "chapter": "0671",
+          "post": 60
+        },
+        {
+          "key": "2541-70",
+          "chapterName": "Dagpenger",
+          "postName": "Dagpenger",
+          "department": "Arbeids- og inkluderingsdepartementet",
+          "amount": 16867,
+          "chapter": "2541",
+          "post": 70
+        },
+        {
+          "key": "0605-01",
+          "chapterName": "Arbeids- og velferdsetaten",
+          "postName": "Driftsutgifter",
+          "department": "Arbeids- og inkluderingsdepartementet",
+          "amount": 15581.2,
+          "chapter": "0605",
+          "post": 1
+        },
+        {
+          "key": "2751-70",
+          "chapterName": "Legemidler mv.",
+          "postName": "Legemidler",
+          "department": "Helse- og omsorgsdepartementet",
+          "amount": 15569,
+          "chapter": "2751",
+          "post": 70
+        },
+        {
+          "key": "0612-01",
+          "chapterName": "Tilskudd til Statens pensjonskasse",
+          "postName": "Driftsutgifter",
+          "department": "Arbeids- og inkluderingsdepartementet",
+          "amount": 14513.9,
+          "chapter": "0612",
+          "post": 1
+        }
+      ]
+    },
+    "inntekter": {
+      "source": "https://fellestall.no/data/inntekter.json",
+      "sha256": "fe45e05f42122c35a1262982353f79377208cac70f0ed76028de790e0303a37e",
+      "total": 2274843.4,
+      "departments": [
+        {
+          "name": "Finansdepartementet",
+          "amount": 1911717.6
+        },
+        {
+          "name": "Nærings- og fiskeridepartementet",
+          "amount": 291303.6
+        },
+        {
+          "name": "Kunnskapsdepartementet",
+          "amount": 15697.1
+        },
+        {
+          "name": "Forsvarsdepartementet",
+          "amount": 13987.0
+        },
+        {
+          "name": "Kommunal- og distriktsdepartementet",
+          "amount": 10180.7
+        },
+        {
+          "name": "Justis- og beredskapsdepartementet",
+          "amount": 6128.6
+        },
+        {
+          "name": "Helse- og omsorgsdepartementet",
+          "amount": 5671.5
+        },
+        {
+          "name": "Digitaliserings- og forvaltningsdepartementet",
+          "amount": 5474.4
+        },
+        {
+          "name": "Barne- og familiedepartementet",
+          "amount": 3558.8
+        },
+        {
+          "name": "Arbeids- og inkluderingsdepartementet",
+          "amount": 3035.6
+        },
+        {
+          "name": "Klima- og miljødepartementet",
+          "amount": 2927.2
+        },
+        {
+          "name": "Samferdselsdepartementet",
+          "amount": 2214.5
+        },
+        {
+          "name": "Energidepartementet",
+          "amount": 1588.2
+        },
+        {
+          "name": "Landbruks- og matdepartementet",
+          "amount": 673.8
+        },
+        {
+          "name": "Utenriksdepartementet",
+          "amount": 353.8
+        },
+        {
+          "name": "Kultur- og likestillingsdepartementet",
+          "amount": 331.0
+        },
+        {
+          "name": "nan",
+          "amount": 0
+        }
+      ],
+      "largestPosts": [
+        {
+          "key": "5521-70",
+          "chapterName": "Merverdiavgift",
+          "postName": "Merverdiavgift",
+          "department": "Finansdepartementet",
+          "amount": 420970,
+          "chapter": "5521",
+          "post": 70
+        },
+        {
+          "key": "5700-72",
+          "chapterName": "Folketrygdens inntekter",
+          "postName": "Arbeidsgiveravgift",
+          "department": "Finansdepartementet",
+          "amount": 283011,
+          "chapter": "5700",
+          "post": 72
+        },
+        {
+          "key": "5700-71",
+          "chapterName": "Folketrygdens inntekter",
+          "postName": "Trygdeavgift",
+          "department": "Finansdepartementet",
+          "amount": 231189.4,
+          "chapter": "5700",
+          "post": 71
+        },
+        {
+          "key": "5501-72",
+          "chapterName": "Skatter på formue og inntekt",
+          "postName": "Fellesskatt",
+          "department": "Finansdepartementet",
+          "amount": 206312.8,
+          "chapter": "5501",
+          "post": 72,
+          "official2026ProposalPostName": "Fellesskatt mv. fra personlige skattytere",
+          "official2026ProposalChapterName": "Skatter på formue og inntekt",
+          "nameNeedsReview": true
+        },
+        {
+          "key": "5507-72",
+          "chapterName": "Skatt og avgift på utvinning av petroleum",
+          "postName": "Særskatt på oljeinntekter",
+          "department": "Finansdepartementet",
+          "amount": 198200,
+          "chapter": "5507",
+          "post": 72
+        },
+        {
+          "key": "5440-24",
+          "chapterName": "Statens direkte økonomiske engasjement i petroleumsvirksomheten",
+          "postName": "Driftsresultat:",
+          "department": "Nærings- og fiskeridepartementet",
+          "amount": 184900,
+          "chapter": "5440",
+          "post": 24
+        },
+        {
+          "key": "5501-70",
+          "chapterName": "Skatter på formue og inntekt",
+          "postName": "Toppskatt mv.",
+          "department": "Finansdepartementet",
+          "amount": 158017,
+          "chapter": "5501",
+          "post": 70,
+          "official2026ProposalPostName": "Trinnskatt og formuesskatt mv.",
+          "official2026ProposalChapterName": "Skatter på formue og inntekt",
+          "nameNeedsReview": true
+        },
+        {
+          "key": "5501-74",
+          "chapterName": "Skatter på formue og inntekt",
+          "postName": "Selskapsskatter mv. fra upersonlige skattytere utenom petroleum",
+          "department": "Finansdepartementet",
+          "amount": 129450,
+          "chapter": "5501",
+          "post": 74
+        },
+        {
+          "key": "5507-71",
+          "chapterName": "Skatt og avgift på utvinning av petroleum",
+          "postName": "Ordinær skatt på formue og inntekt",
+          "department": "Finansdepartementet",
+          "amount": 93300,
+          "chapter": "5507",
+          "post": 71
+        },
+        {
+          "key": "5440-30",
+          "chapterName": "Statens direkte økonomiske engasjement i petroleumsvirksomheten",
+          "postName": "Avskrivninger",
+          "department": "Nærings- og fiskeridepartementet",
+          "amount": 39300,
+          "chapter": "5440",
+          "post": 30
+        },
+        {
+          "key": "5656-85",
+          "chapterName": "Aksjer i selskaper under NFDs forvaltning",
+          "postName": "Utbytte",
+          "department": "Nærings- og fiskeridepartementet",
+          "amount": 27304.6,
+          "chapter": "5656",
+          "post": 85,
+          "official2026ProposalPostName": "Utbytte",
+          "official2026ProposalChapterName": "Aksjer under Nærings- og fiskeridepartementets forvaltning",
+          "nameNeedsReview": true
+        },
+        {
+          "key": "5685-85",
+          "chapterName": "Aksjer i Equinor ASA",
+          "postName": "Utbytte",
+          "department": "Nærings- og fiskeridepartementet",
+          "amount": 25804.6,
+          "chapter": "5685",
+          "post": 85
+        },
+        {
+          "key": "5351-85",
+          "chapterName": "Overføring fra Norges Bank",
+          "postName": "Overføring",
+          "department": "Finansdepartementet",
+          "amount": 20100,
+          "chapter": "5351",
+          "post": 85
+        },
+        {
+          "key": "5543-70",
+          "chapterName": "Miljøavgift på mineralske produkter mv.",
+          "postName": "CO2-avgift",
+          "department": "Finansdepartementet",
+          "amount": 19532,
+          "chapter": "5543",
+          "post": 70
+        },
+        {
+          "key": "5526-70",
+          "chapterName": "Avgift på alkohol",
+          "postName": "Avgift på alkohol",
+          "department": "Finansdepartementet",
+          "amount": 16300,
+          "chapter": "5526",
+          "post": 70
+        },
+        {
+          "key": "5565-70",
+          "chapterName": "Dokumentavgift",
+          "postName": "Dokumentavgift",
+          "department": "Finansdepartementet",
+          "amount": 15500,
+          "chapter": "5565",
+          "post": 70
+        },
+        {
+          "key": "5617-80",
+          "chapterName": "Renter fra Statens lånekasse for utdanning",
+          "postName": "Renter",
+          "department": "Kunnskapsdepartementet",
+          "amount": 15100.2,
+          "chapter": "5617",
+          "post": 80
+        },
+        {
+          "key": "5501-76",
+          "chapterName": "Skatter på formue og inntekt",
+          "postName": "Kildeskatt på utbytte",
+          "department": "Finansdepartementet",
+          "amount": 14100,
+          "chapter": "5501",
+          "post": 76
+        },
+        {
+          "key": "5600-85",
+          "chapterName": "Overføring fra Statens pensjonsfond Norge",
+          "postName": "Overføring fra Statens pensjonsfond Norge",
+          "department": "Finansdepartementet",
+          "amount": 12300,
+          "chapter": "5600",
+          "post": 85
+        },
+        {
+          "key": "5508-70",
+          "chapterName": "Avgift på utslipp av CO2 i petroleumsvirksomhet på kontinentalsokkelen",
+          "postName": "CO2-avgift i petroleumsvirksomheten på kontinentalsokkelen",
+          "department": "Finansdepartementet",
+          "amount": 9600,
+          "chapter": "5508",
+          "post": 70
+        },
+        {
+          "key": "5536-72",
+          "chapterName": "Avgift på motorvogner mv.",
+          "postName": "Årsavgift",
+          "department": "Finansdepartementet",
+          "amount": 9290,
+          "chapter": "5536",
+          "post": 72,
+          "official2026ProposalPostName": "Avgift på trafikkforsikring",
+          "official2026ProposalChapterName": "Avgift på motorvogner mv.",
+          "nameNeedsReview": true
+        },
+        {
+          "key": "5615-80",
+          "chapterName": "Husbanken",
+          "postName": "Renter",
+          "department": "Kommunal- og distriktsdepartementet",
+          "amount": 8483,
+          "chapter": "5615",
+          "post": 80
+        },
+        {
+          "key": "5605-80",
+          "chapterName": "Renter av statskassens kontantbeholdning og andre fordringer",
+          "postName": "Av statskassens foliokonto i Norges Bank",
+          "department": "Finansdepartementet",
+          "amount": 7810,
+          "chapter": "5605",
+          "post": 80
+        },
+        {
+          "key": "5531-70",
+          "chapterName": "Avgift på tobakkvarer mv.",
+          "postName": "Avgift på tobakkvarer mv.",
+          "department": "Finansdepartementet",
+          "amount": 7700,
+          "chapter": "5531",
+          "post": 70,
+          "official2026ProposalPostName": "Avgift på tobakksvarer mv.",
+          "official2026ProposalChapterName": "Avgift på tobakksvarer mv.",
+          "nameNeedsReview": true
+        },
+        {
+          "key": "4710-01",
+          "chapterName": "Forsvarsbygg og nybygg og nyanlegg",
+          "postName": "Driftsinntekter",
+          "department": "Forsvarsdepartementet",
+          "amount": 7461.8,
+          "chapter": "4710",
+          "post": 1
+        },
+        {
+          "key": "5536-71",
+          "chapterName": "Avgift på motorvogner mv.",
+          "postName": "Engangsavgift",
+          "department": "Finansdepartementet",
+          "amount": 7180,
+          "chapter": "5536",
+          "post": 71
+        },
+        {
+          "key": "5541-70",
+          "chapterName": "Avgift på elektrisk kraft",
+          "postName": "Avgift på elektrisk kraft",
+          "department": "Finansdepartementet",
+          "amount": 6225,
+          "chapter": "5541",
+          "post": 70
+        },
+        {
+          "key": "5538-71",
+          "chapterName": "Veibruksavgift på drivstoff",
+          "postName": "Veibruksavgift på autodiesel",
+          "department": "Finansdepartementet",
+          "amount": 5220,
+          "chapter": "5538",
+          "post": 71
+        },
+        {
+          "key": "5440-80",
+          "chapterName": "Statens direkte økonomiske engasjement i petroleumsvirksomheten",
+          "postName": "Renter av statens kapital",
+          "department": "Nærings- og fiskeridepartementet",
+          "amount": 4900,
+          "chapter": "5440",
+          "post": 80
+        },
+        {
+          "key": "4760-45",
+          "chapterName": "Nyanskaffelser av materiell og nybygg og nyanlegg",
+          "postName": "Store nyanskaffelser",
+          "department": "Forsvarsdepartementet",
+          "amount": 4324.8,
+          "chapter": "4760",
+          "post": 45,
+          "official2026ProposalPostName": "Større utstyrsanskaffelser og vedlikehold, inntekter",
+          "official2026ProposalChapterName": "Forsvarsmateriell og større anskaffelser og vedlikehold",
+          "nameNeedsReview": true
+        }
+      ]
+    }
+  },
+  "sourceCommit": "d3f6411",
+  "limitations": [
+    "Ikke et mål på oljepengebruk eller budsjettbalanse; utgifts- og inntektstotaler kan ikke trekkes fra hverandre for slike konklusjoner.",
+    "Skatteinntekter er provenyanslag, ikke endringer i satser eller fordelingsvirkninger.",
+    "Saldert 2026 er ikke samme sammenligningsgrunnlag som RNB 2026 i kommuneproposisjonen.",
+    "Postnavn på nettstedet kan være historiske. Navn fra Gul bok 2026 er kun en kontrollreferanse fra forslaget, ikke verifiserte navn fra endelig vedtak."
+  ],
+  "nameReference": {
+    "year": 2026,
+    "phase": "proposal",
+    "url": "https://www.regjeringen.no/contentassets/bad238c9c4d94a639dbc8104fce42e1c/2026_gulbok_datagrunnlag.xlsx",
+    "sha256": "57fb7430a3ccecdbdf5cdb4575400beb8ac4398cdefaf5b2d4ad2be4a53ecfcb",
+    "note": "Bare kildekontroll av navn; ingen salderte beløp erstattes med forslagsbeløp."
+  }
+}
