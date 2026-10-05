@@ -99,3 +99,7 @@ Når vedtak senere blir tilgjengelig, vil neste native kjøring kunne velge fors
 ## Verifikasjon
 
 Importen er prøvd mot den offisielle Gul bok-filen for 2026. Tester dekker egen forslagsserie, uendrede eksisterende bevilgninger, arkiv og originalfil, gjentatt/korrigert import, manglende/ugyldige tall, DFØ-overgang, postflytting, kontrollert politisk dokumentasjon og at RNB krever både kildebevis og DFØ-vedtak. Verifisert: 108 JavaScript-tester og 85 Python-tester, workflow-syntaks, produksjonsbygg/SEO, tre faktiske budsjettgrafer på mobil uten horisontal sideflyt, Sven-byline og forslagsvelger. En SVG-tittel som gav ulik server-/klientstruktur ble rettet; mobilvisningen lastes nå uten React-feil. Faktiske 2027-data kan først prøves når regjeringen publiserer dem.
+
+## SSB-bakgrunn til budsjettanalysen
+
+Les `docs/ssb-analysis-research.md`. Undersøk relevante befolknings-, pris-/lønns- og arbeidsmarkedsvariabler før forklaringer på utgiftsveksten låses. Bruk scope `budget:2027` for denne analysen, og noter at siste observerte år kan være tidligere enn budsjettåret. Uttrekk må kontrolleres og arkiveres før rapporten bygges på nytt. Ingen årsaksandel utledes fra samtidige endringer alene.

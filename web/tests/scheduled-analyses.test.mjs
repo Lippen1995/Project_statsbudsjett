@@ -1,12 +1,18 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
+import { buildReport } from '../../scripts/analyser/report.mjs'
 import { deliverScheduled } from '../../scripts/analyser/handoff.mjs'
 import { analysisSettings } from '../../scripts/analyser/config.mjs'
 import { contentHash } from '../../scripts/analyser/schema.mjs'
 import { githubClient } from '../../scripts/analyser/github.mjs'
 const root = new URL('../../', import.meta.url).pathname
-const pilot = () => JSON.parse(readFileSync(`${root}editorial/drafts/pilot.json`))
+const pilot = () => {
+  const article = JSON.parse(readFileSync(`${root}editorial/drafts/pilot.json`))
+  // These delivery tests need a fresh packet; keep the historical pilot file frozen.
+  article.report = buildReport(`${root}web/public/data`)
+  return article
+}
 const input = {
   mode: 'weekly',
   sourceCommit: 'a'.repeat(40),

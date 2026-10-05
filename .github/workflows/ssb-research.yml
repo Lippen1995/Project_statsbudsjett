@@ -1,0 +1,53 @@
+name: Analyse – hent og kontroller SSB-uttrekk
+on:
+  push:
+    branches: ['analysis/ssb-research-*']
+    paths: ['editorial/handoff/ssb-research.json']
+permissions:
+  contents: write
+concurrency:
+  group: budget-data-import
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r etl/requirements.txt
+      - name: Hent SSB-data fra kontrollert JSON og fast commit
+        run: python etl/ssb_research_handoff.py
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Arkiver data, uten å publisere analyse
+        id: commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -f web/public/data/ssb-research/
+          if ! git diff --cached --quiet; then
+            git commit -m 'analysis: arkiver kontrollerte SSB-uttrekk'
+            git pull --rebase origin main
+            git push origin main
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          fi
+  deploy:
+    needs: verify
+    if: needs.verify.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Gjør det kontrollerte kildearkivet tilgjengelig på nettstedet
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/deploy.yml/dispatches" --raw-field ref=main
