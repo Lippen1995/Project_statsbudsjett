@@ -1,0 +1,296 @@
+{
+  "slug": "utgifter-per-innbygger-u-01-2020-2025-2026-10-05",
+  "status": "draft",
+  "createdAt": "2026-10-05T08:33:18.194Z",
+  "generatedAt": "2026-10-05T08:33:18.194Z",
+  "topic": "Utenriksdepartementet",
+  "geography": "Staten",
+  "type": "Utvikling over tid",
+  "report": {
+    "kind": "real-expenditure-per-capita",
+    "factsVersion": 2,
+    "scopeId": "u-01",
+    "scopeName": "Utenriksdepartementet",
+    "start": 2020,
+    "end": 2025,
+    "dataUpdated": "2026-09-23T18:32:24.776647+00:00",
+    "dataHash": "f1b13cde59cdf86414d04658d10ab5872d6d2e7d586aad03eb021517441d52e1",
+    "facts": {
+      "startYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Første regnskapsår"
+      },
+      "endYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Siste regnskapsår"
+      },
+      "nominalGrowth": {
+        "value": 36.728822363828264,
+        "text": "36,7 %",
+        "label": "Vekst i løpende utgifter"
+      },
+      "populationGrowth": {
+        "value": 4.224622641860942,
+        "text": "4,2 %",
+        "label": "Befolkningsvekst"
+      },
+      "priceGrowth": {
+        "value": 22.699386503067487,
+        "text": "22,7 %",
+        "label": "Prisvekst målt med KPI"
+      },
+      "realPerCapitaGrowth": {
+        "value": 6.917144338753878,
+        "text": "6,9 %",
+        "label": "Realvekst per innbygger"
+      },
+      "firstPerCapita": {
+        "value": 7926.048610360721,
+        "text": "7 926 kr",
+        "label": "Per innbygger i startåret, løpende kroner"
+      },
+      "lastPerCapita": {
+        "value": 10397.920040612476,
+        "text": "10 398 kr",
+        "label": "Per innbygger i sluttåret, løpende kroner"
+      },
+      "firstRealPerCapita": {
+        "value": 9725.213018847511,
+        "text": "9 725 kr",
+        "label": "Startåret i sluttårets priser"
+      },
+      "total": {
+        "value": 58.1695,
+        "text": "58,2 mrd. kr",
+        "label": "Utgifter i sluttåret"
+      },
+      "nominalPerCapitaGrowth": {
+        "value": 31.18668017025017,
+        "text": "31,2 %",
+        "label": "Vekst per innbygger, løpende kroner"
+      },
+      "previousYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Året før største årlige endring"
+      },
+      "largestChangeYear": {
+        "value": 2022,
+        "text": "2022",
+        "label": "År med største årlige endring i absoluttverdi"
+      },
+      "largestAnnualChange": {
+        "value": 17.239216232438913,
+        "text": "17,2 %",
+        "label": "Største årlige endring, KPI-justert per innbygger"
+      },
+      "growthBeforeChange": {
+        "value": -1.8025979912611456,
+        "text": "−1,8 %",
+        "label": "KPI-justert vekst per innbygger, 2020–2021"
+      },
+      "growthSinceChange": {
+        "value": 8.879809599483114,
+        "text": "8,9 %",
+        "label": "KPI-justert vekst per innbygger, 2021–2025"
+      },
+      "growthAfterChange": {
+        "value": -7.130213678998332,
+        "text": "−7,1 %",
+        "label": "KPI-justert vekst per innbygger, 2022–2025"
+      }
+    },
+    "rows": [
+      {
+        "year": 2020,
+        "expenditure": 42543.7,
+        "population": 5367580,
+        "cpi": 81.5,
+        "perCapita": 7926.048610360721,
+        "nominalIndex": 100,
+        "priceIndex": 100,
+        "realPerCapita": 9725.213018847511
+      },
+      {
+        "year": 2021,
+        "expenditure": 43403.6,
+        "population": 5391369,
+        "cpi": 84.3,
+        "perCapita": 8050.571200005045,
+        "nominalIndex": 101.57105508388571,
+        "priceIndex": 103.43558282208589,
+        "realPerCapita": 9549.906524323898
+      },
+      {
+        "year": 2022,
+        "expenditure": 54182.40000000001,
+        "population": 5425270,
+        "cpi": 89.2,
+        "perCapita": 9987.042119562715,
+        "nominalIndex": 126.00278664084799,
+        "priceIndex": 109.44785276073621,
+        "realPerCapita": 11196.235560047888
+      },
+      {
+        "year": 2023,
+        "expenditure": 65439.9,
+        "population": 5488984,
+        "cpi": 94.1,
+        "perCapita": 11922.042403475762,
+        "nominalIndex": 150.4159637362252,
+        "priceIndex": 115.4601226993865,
+        "realPerCapita": 12669.545593491777
+      },
+      {
+        "year": 2024,
+        "expenditure": 58151.499999999985,
+        "population": 5550203,
+        "cpi": 97.1,
+        "perCapita": 10477.364521622,
+        "nominalIndex": 132.18900156537353,
+        "priceIndex": 119.14110429447852,
+        "realPerCapita": 10790.282720516992
+      },
+      {
+        "year": 2025,
+        "expenditure": 58169.5,
+        "population": 5594340,
+        "cpi": 100,
+        "perCapita": 10397.920040612476,
+        "nominalIndex": 131.18668017025016,
+        "priceIndex": 122.69938650306749,
+        "realPerCapita": 10397.920040612476
+      }
+    ],
+    "sources": [
+      {
+        "name": "DFØ Statsregnskapet",
+        "url": "https://statsregnskapet.dfo.no",
+        "local": "/data/utgifter.json",
+        "description": "Regnskapsførte utgifter i mill. kroner. Finansposter og SPU-overføringer er utelatt."
+      },
+      {
+        "name": "SSB folkemengde, tabell 07459",
+        "url": "https://www.ssb.no/statbank/table/07459/",
+        "local": "/data/befolkning.json",
+        "description": "Folkemengde ved inngangen til året, som i resten av Fellestall."
+      },
+      {
+        "name": "SSB konsumprisindeks",
+        "url": "https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen",
+        "local": "/data/kpi.json",
+        "description": "Årsgjennomsnitt for KPI, fra Fellestalls normaliserte serie."
+      }
+    ],
+    "methodology": [
+      "Vi summerer regnskapsførte utgifter på postnivå for Utenriksdepartementet. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.",
+      "Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.",
+      "Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.",
+      "Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.",
+      "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn."
+    ],
+    "limitations": [
+      "Departementenes ansvarsområder kan endres over tid. Serien følger Fellestalls normaliserte departementsinndeling, og må ikke alene tolkes som vekst i identiske tjenester.",
+      "KPI måler husholdningenes konsumpriser, ikke statens lønns-, bygge- eller innkjøpskostnader. KPI-justering er et sammenligningsmål, ikke et mål på produksjonsvolum.",
+      "Utgifter sier ikke hvor mye eller hvor god tjenesteproduksjon innbyggerne får. Overføringer, pensjoner og tilskudd inngår også.",
+      "Tallene identifiserer ikke årsakene til endringene. De kan ikke alene brukes til å konkludere om effektivitet, sløsing eller virkningen av politiske beslutninger.",
+      "Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.",
+      "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse."
+    ]
+  },
+  "copy": {
+    "title": "Utenriksregningen vokste {{fact:nominalGrowth}}. Men toppen kom midtveis.",
+    "description": "Utenriksdepartementets utgifter steg fra {{fact:startYear}} til {{fact:endYear}}, men utviklingen var langt fra jevn. Vi følger spranget, toppen og tilbaketuren.",
+    "lead": "Utenriksdepartementets regning vokste tydelig fra {{fact:startYear}} til {{fact:endYear}}. Men sluttsummen forteller bare halve historien. Underveis kom et kraftig sprang, før deler av veksten ble reversert. Hva står igjen når vi justerer for både prisvekst og flere innbyggere?",
+    "conclusion": "Utenriksdepartementets utgifter økte {{fact:nominalGrowth}} i løpende kroner fra {{fact:startYear}} til {{fact:endYear}}. Etter justering for folketall og KPI står {{fact:realPerCapitaGrowth}} igjen. Den viktigste observasjonen er likevel formen på kurven: Den største årlige endringen kom i {{fact:largestChangeYear}}, mens nivået deretter falt {{fact:growthAfterChange}} fram til periodens slutt. Regningen ble større, men mye av spranget viste seg ikke å være et nytt varig toppnivå. Tallene dokumenterer utviklingen, ikke hvilke tiltak eller hendelser som forklarer den.",
+    "linkedin": "Utenriksregningen tok først heisen opp. Deretter valgte den trappen ned.\n\nUtgiftene vokste {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}} i løpende kroner. Etter pris- og befolkningsjustering står {{fact:realPerCapitaGrowth}} igjen.\n\nMen sluttsummen skjuler et kraftig sprang midt i perioden – og at deler av det senere ble reversert.\n\nHva forteller kurven, og hva kan den ikke fortelle uten at vi åpner regningen post for post?\n\nVi følger toppen og tilbaketuren ↓",
+    "sections": [
+      {
+        "heading": "Regningen vokste mer enn prisene",
+        "factIds": [
+          "nominalGrowth",
+          "populationGrowth",
+          "priceGrowth",
+          "nominalPerCapitaGrowth",
+          "realPerCapitaGrowth"
+        ],
+        "paragraphs": [
+          "I løpende kroner økte Utenriksdepartementets utgifter med {{fact:nominalGrowth}} gjennom perioden. Det er den mest synlige veksten, men også den minst justerte. Kronene mistet kjøpekraft, og regningen ble fordelt på flere innbyggere. Først når begge forholdene tas med, kan vi sammenligne start og slutt med en mer stabil målestokk.",
+          "Folketallet steg {{fact:populationGrowth}}, mens konsumprisene økte {{fact:priceGrowth}}. Deler vi først på innbyggertallet, blir veksten {{fact:nominalPerCapitaGrowth}}. Justerer vi deretter for KPI, står {{fact:realPerCapitaGrowth}} igjen. Dette er alternative måter å lese den samme regningen på, ikke biter som kan trekkes mekanisk fra hverandre.",
+          "Den første grafen gjør forskjellen synlig. Den nominelle stolpen er høy, stolpen per innbygger er lavere, og den prisjusterte stolpen er langt kortere. Likevel forsvinner ikke veksten. Utgiftene økte altså mer enn det som alene kan forklares av prisnivå og folketall i denne sammenligningen. Hva pengene kjøpte, sier grafen derimot ingenting om."
+        ]
+      },
+      {
+        "heading": "Sluttsummen skjuler et sprang",
+        "factIds": [
+          "startYear",
+          "previousYear",
+          "largestChangeYear",
+          "growthBeforeChange",
+          "largestAnnualChange"
+        ],
+        "paragraphs": [
+          "En rett linje mellom {{fact:startYear}} og periodens slutt ville gitt et misvisende bilde. Fram til {{fact:previousYear}} falt KPI-justert utgift per innbygger med {{fact:growthBeforeChange}}. Veksten i hele perioden kom derfor ikke som en jevn opptrapping. Kurven begynte snarere med en liten nedgang før den skiftet retning.",
+          "Det tydeligste bruddet kom i {{fact:largestChangeYear}}. Da steg KPI-justert utgift per innbygger med {{fact:largestAnnualChange}} fra året før, den største årlige endringen i serien. Et slikt sprang fortjener oppmerksomhet, men tidspunktet er ikke en årsaksforklaring. Regnskapet viser at noe endret seg; det forteller ikke alene hva som gjorde utslaget.",
+          "Den andre grafen viser nivået i samme kroneverdi gjennom hele perioden. Her blir det lettere å skille trend fra trinn. Før spranget ligger serien lavere og forholdsvis samlet. Etterpå flyttes den opp på et nytt nivå. Men heller ikke dette nivået blir stående urørt. Kurven fortsetter først oppover, før retningen igjen snur."
+        ]
+      },
+      {
+        "heading": "Toppen ble ikke det nye gulvet",
+        "factIds": [
+          "largestChangeYear",
+          "endYear",
+          "growthAfterChange",
+          "realPerCapitaGrowth"
+        ],
+        "paragraphs": [
+          "Et stort hopp kan se permanent ut dersom vi bare sammenligner året før og året etter. Resten av serien gir et mer nyansert bilde. Fra sprangåret {{fact:largestChangeYear}} til {{fact:endYear}} falt KPI-justert utgift per innbygger med {{fact:growthAfterChange}}. Deler av løftet ble med andre ord reversert før perioden var over.",
+          "Tilbaketuren tok likevel ikke serien helt tilbake til utgangspunktet. Sammenligner vi periodens første og siste år, er realveksten per innbygger fortsatt {{fact:realPerCapitaGrowth}}. Begge observasjonene er sanne samtidig: Regningen endte høyere enn den begynte, men lavere enn den midlertidige toppen underveis skulle tilsi.",
+          "Dette skillet er viktig når en tidsserie skal tolkes. Sluttveksten forteller hvor langt start og slutt ligger fra hverandre. Toppen forteller hvor store svingninger som skjules mellom dem. En analyse som bare omtaler veksten, kan få utviklingen til å se jevn ut. En analyse som bare omtaler toppen, kan få et forbigående nivå til å se varig ut."
+        ]
+      },
+      {
+        "heading": "En større kvittering er ikke det samme som mer av alt",
+        "factIds": [
+          "total",
+          "lastPerCapita",
+          "firstRealPerCapita",
+          "endYear"
+        ],
+        "paragraphs": [
+          "Ved utgangen av perioden viser avgrensningen samlede utgifter på {{fact:total}}. Fordelt på innbyggertallet er det {{fact:lastPerCapita}} per person i {{fact:endYear}}. Til sammenligning tilsvarer startnivået {{fact:firstRealPerCapita}} per innbygger målt i sluttårets priser. Disse størrelsene gjør nivåforskjellen konkret, men de fordeler ikke regningen på formål.",
+          "Departementssummen kan romme overføringer, administrasjon, internasjonalt samarbeid og oppgaver som flyttes mellom organisatoriske grenser. En oppgang i totalen betyr derfor ikke nødvendigvis at alle aktiviteter har vokst, eller at innholdet er identisk gjennom perioden. Noen poster kan øke mens andre faller, uten at nettovirkningen avslører bevegelsene under overflaten.",
+          "Det samme gjelder resultatene av pengebruken. Regnskapet måler kroner, ikke diplomatisk gjennomslag, bistandseffekt eller beredskap. En høyere prisjustert sum kan dokumentere økt pengebruk innenfor avgrensningen. Den kan ikke alene avgjøre om ressursene ga mer aktivitet, bedre resultater eller høyere kostnader for samme leveranse."
+        ]
+      },
+      {
+        "heading": "KPI rydder i bildet, men løser ikke hele regnestykket",
+        "factIds": [
+          "priceGrowth",
+          "populationGrowth",
+          "realPerCapitaGrowth"
+        ],
+        "paragraphs": [
+          "KPI-justeringen fjerner mye av den nominelle veksten fordi konsumprisene steg {{fact:priceGrowth}}. Befolkningsjusteringen trekker i samme retning når innbyggertallet økte {{fact:populationGrowth}}. Resultatet på {{fact:realPerCapitaGrowth}} er derfor et nyttig sammenligningsmål: Det viser utviklingen når vi bruker samme generelle prisnivå og fordeler beløpet på befolkningen.",
+          "Men KPI følger husholdningenes handlekurv, ikke departementets faktiske kostnadsstruktur. Valuta, lønn, innkjøp og tilskudd kan utvikle seg annerledes enn konsumprisene. Den prisjusterte kurven er derfor ikke et volumregnskap. Den sier ikke hvor mange tjenester eller tiltak som ble levert, bare hvordan pengebruken utviklet seg med en konsekvent målestokk.",
+          "Også departementsgrensen krever varsomhet. Ansvarsområder og posteringer kan endres, og serien følger Fellestalls normaliserte inndeling. Før et hopp knyttes til en bestemt beslutning eller hendelse, må postene under totalsummen spores over tid. Ellers kan en organisatorisk flytting feilaktig se ut som ny pengebruk."
+        ]
+      },
+      {
+        "heading": "Neste spørsmål ligger under totalsummen",
+        "factIds": [
+          "previousYear",
+          "largestChangeYear",
+          "growthAfterChange"
+        ],
+        "paragraphs": [
+          "Kurven gir et presist neste spørsmål: Hvilke poster forklarer spranget mellom {{fact:previousYear}} og {{fact:largestChangeYear}}, og hvilke av dem forklarer at nivået senere falt {{fact:growthAfterChange}}? For å svare må hele endringen fordeles på poster som vokste, krympet, kom til eller forsvant. Summen alene kan ikke gjøre den jobben.",
+          "En slik gjennomgang bør følge post-ID-er og navn gjennom perioden, kontrollere om ansvar er flyttet og avstemme bidragene mot departementssummen. Først da kan midlertidige utslag skilles fra mer varige endringer. Det er også nødvendig før kurven kobles til virkelige hendelser med større sikkerhet enn tidspunktet alene gir.",
+          "Hovedfunnet står likevel klart uten å gjette på årsaker: Utenriksregningen vokste mer enn priser og folketall, men utviklingen var ikke jevn. Et kraftig sprang løftet serien, før deler av veksten ble reversert. Kvitteringen ble større. Samtidig viser kurven hvorfor det er klokt å åpne den før vi bestemmer oss for hva som egentlig ble dyrere."
+        ]
+      }
+    ]
+  }
+}
