@@ -71,19 +71,351 @@
       "limitations": [
         "Regjeringens plan, ikke selvstendig kilde til de øvrige partienes standpunkter. Planen varsler årlige revisjoner; kontroller oppdateringer."
       ]
+    },
+    {
+      "id": "Ap-latest",
+      "url": "https://www.arbeiderpartiet.no/aktuelt/mer-av-det-viktigste/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "7cd9d283aaec0130c542ea7fd04605c6721b4bf4bece5936cf4d4e952a00edb6",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": [
+        "Vi kutter skatten på arbeid, slik at du sitter igjen med mer av lønnen."
+      ]
+    },
+    {
+      "id": "Ap-2026-deal",
+      "url": "https://www.arbeiderpartiet.no/aktuelt/flertall-for-statsbudsjett-2026-med-arbeiderpartiet-sv-sp-rodt-og-mdg/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "ad3431f45a979faa6a6def0d55026ff5d427c9848a1dea7389206dffffb42177",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "H-program",
+      "url": "https://hoyre.no/politikk/partiprogram/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "d727c4c4275aea000e2da98a09f09d35ee6720ad60ec46d78eebc610db2770a8",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": [
+        "Fjerne formuesskatten på arbeidende kapital"
+      ]
+    },
+    {
+      "id": "H-2026-budget",
+      "url": "https://hoyre.no/hoyres-alternative-budsjett-2026/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "313eafc161f5bcb7f99d0280c5f12683a4c8ae6923b7d4a424fd7aa6cf4377c1",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "H-latest",
+      "url": "https://hoyre.no/2026/10/05/ti-forslag-fra-hoyre/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "9b231c243fb12ee3e9eec7321b00f8e37a7feebca89e9b1c842e6bd3ec838ce0",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "H-tax-latest",
+      "url": "https://hoyre.no/2026/10/01/det-handler-om-politisk-vilje/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "3800417a0dd59c571138d2c1d97eaf7f218df45d9f46710dd64e6ef36550de5f",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "FrP-program-pdf",
+      "url": "https://www.frp.no/files/Program/2025/FrP-Partiprogram-2025-2029.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "a63d399b4b4abdadc6e102a03c06537a40d49a500961bed9e10f33319e616b69",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": []
+    },
+    {
+      "id": "FrP-budget-pdf",
+      "url": "https://www.frp.no/files/Alternativt-statsbudsjett/alternativt-statsbudsjett-2026-web.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "dea792b2c58f479b1e92ec6e623b8e280e303553dfedaf0b7cff651384cbb890",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": []
+    },
+    {
+      "id": "FrP-2026-budget",
+      "url": "https://www.frp.no/nyheter/frp-prioriterer-kjerneoppgavene-og-gir-folk-mer-a-rutte-med",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "8cef5eb99acc1460cae311a333e865a148093025d153ce57b2786c5e4f54a476",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "FrP-fuel",
+      "url": "https://www.frp.no/nyheter/frp-vil-gjeninnfore-avgiftskutt-pa-drivstoff",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "1d097c873dd9b61a533ed53c66b281127b65b3fd1fb1ee0ab4d7dd8a60313e2f",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": [
+        "Fremskrittspartiet vil fremme forslag om å gjeninnføre kuttene i drivstoffavgiftene."
+      ]
+    },
+    {
+      "id": "SV-program-pdf",
+      "url": "https://www.sv.no/wp-content/uploads/2025/10/arbeidsprogram-2025-interaktiv-bokmal.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "473f00217f84ba3cbe99b10d39e36c64c491509d2b141c2ad53b36745eb8c548",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": []
+    },
+    {
+      "id": "SV-2026-budget",
+      "url": "https://www.sv.no/blog/2025/11/13/svs-alternative-budsjett-redningsaksjon-for-velferd-og-miljo/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "2d745617bc74c883a834206834a4ecd37fabd3ce6b218dec57d246fb8e459e44",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": [
+        "SV vil gjøre SFO gratis også for 4. klasse, og barnehagen gratis, samtidig som vi styrker bemanninga."
+      ]
+    },
+    {
+      "id": "SV-budget-pdf",
+      "url": "https://www.sv.no/wp-content/uploads/2025/11/alt-statsbudsjett-2026-interaktiv.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "986aa91970cf202c29a025387eec7b63741ba53357db1ee5ff294a9ebd656427",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": []
+    },
+    {
+      "id": "SV-2026-deal",
+      "url": "https://www.sv.no/blog/2025/12/03/et-gronnere-og-mer-rettferdig-budsjett/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "e7932c535702abce94c570f3aba3185a98b9e0fbecaaea620bd285e936bc40b1",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "Sp-program-pdf",
+      "url": "https://www.senterpartiet.no/politikk/program-uttaler/Nytt%20prinsipp-%20og%20handlingsprogram%202025-2029/_/attachment/inline/ea7e4063-1374-47bf-8b10-839bf68904c0:3c54bc9ec99b5e017f069f2312b3962bd934c78a/Senterpartiets%20stortingsvalgprogram%202025-2029%20bokm%C3%A5l%20i%20PDF.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "fd3b73e962899bc2bd2acb1f3bc89ce9b52866becf20c108574827b87b4edf33",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": [
+        "Sikre at overføringer til kommuner og fylkeskommuner i hovedsak gis som frie midler."
+      ],
+      "quotePdfPage": 10
+    },
+    {
+      "id": "Sp-claims",
+      "url": "https://www.senterpartiet.no/politikk/hjertesaker",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "4be9cc8df625131b0f5592527485baa91e7ea3aa1b8af2ab447a83ba6a1ec040",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "R-program-pdf",
+      "url": "https://roedt.no/fil/7393ab981e025ec77c5c78797892dfc9f020fc17.pdf?dl=",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "b3aa1058ba0451d3708cd6731c3b13c58e0f86b09f4bd7fc5af141a4d64cafd0",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": []
+    },
+    {
+      "id": "R-2026-budget",
+      "url": "https://roedt.no/budsjett2026",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "10a333042792e3bb90f9ff64a1f4a14164818b84bf4076f03a8f482b9d88453d",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": [
+        "Øke minstesatsene for uføre, pensjonister og AAP-mottakere med 15 000 i året."
+      ]
+    },
+    {
+      "id": "R-latest",
+      "url": "https://roedt.no/vi-ma-fa-ned-levekostnadene",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "e5949c970d562fee9e32bcebf2c4c1c25289ff838d15793dea35ff73bca96a90",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "MDG-program-pdf",
+      "url": "https://mdg.no/_service/505809/download/id/1506077/name/MDGs+arbeidsprogram+2025-2029.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "8016e77b8191c2171029b1414309c2ebdc999beefc925b5380cdf6cf93db1dec",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": [
+        "Øke bunnfradraget i formuesskatten kraftig og øke skattesatsen for de aller største formuene."
+      ],
+      "quotePdfPage": 49
+    },
+    {
+      "id": "MDG-budget-pdf",
+      "url": "https://mdg.no/_service/505809/download/id/1583667/name/Alternativt-statsbudsjett-MDG-2026.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "08513c2fb64b326a10df23c4c179b5567ac7c061582cee675b92dc69ae4f928d",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": []
+    },
+    {
+      "id": "MDG-tax",
+      "url": "https://mdg.no/politikk/aktuelt/nyhet/skattekommisjon",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "d2359eb1f42d534e2f4709225e9249cec95d2be145de3f37e60304be0b7a6061",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "V-program-pdf",
+      "url": "https://www.venstre.no/content/uploads/venstre-stortingsprogram-2025-2029.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "f2206c5a6bd7c5322afa91017585c1626823ee34ea75dba39f60c9174bdcf34f",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": []
+    },
+    {
+      "id": "V-2026-rnb",
+      "url": "https://www.venstre.no/artikkel/2026/06/07/venstres-forslag-til-revidert-nasjonalbudsjett-2026/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "332f624de0c11ba1d6c2df0ea9422edf106be52535db1194ffb058a1f03bedcc",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "V-rnb-pdf",
+      "url": "https://www.venstre.no/content/uploads/Venstres-RNB-2026-alle-tall.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "1bfab596aaf6bba6bac6c168e3677f9dff6d5f70f72d5e6a8e6dab7eeb3b84ff",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": []
+    },
+    {
+      "id": "V-latest",
+      "url": "https://www.venstre.no/artikkel/2026/06/15/ny-politikk-vedtatt-venstre-vil-slippe-talentene-fri/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "7b19cde5a27e6c616df8d3a217a48b6851c6ada401488c68f934c846a5711d77",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": [
+        "500 millioner kroner årlig til å bygge opp mer norsk risikokapital, slik at vekstselskaper finner finansiering her hjemme"
+      ]
+    },
+    {
+      "id": "KrF-program-pdf",
+      "url": "https://krf.no/content/uploads/2020/09/Partiprogram-2025-2029.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "d9b652789b7fceb4d8213fc8101fb6234aa5982ea1b317d0bfa724ffb7601a46",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": [
+        "Øke barnetrygden til 2500 kr i måneden."
+      ],
+      "quotePdfPage": 6
+    },
+    {
+      "id": "KrF-budget-pdf",
+      "url": "https://krf.no/content/uploads/2025/11/Alternativt-Budsjett_MASTER_web3.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "9ae430ba6a79b0e7ed1ac7787a7562b7e2c5b3a873018a3ce38cc34acf159104",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": []
+    },
+    {
+      "id": "KrF-2026-budget",
+      "url": "https://krf.no/nyheter/alternative-budsjett-sett-norske-familier-foran-offentlig-slosing/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "9567757b1b17d4d24ab46ecf294459a329977318573096c62cc8e37258a9260b",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "KrF-family",
+      "url": "https://krf.no/politikk/familien-forst/",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "8dee5f2813af898062826f1028cc3d621e714d5b9546655c012e2668a983c4d3",
+      "readingScope": "Sidens politiske innhold. Partiets omtale er kilde til egne standpunkter, ikke uavhengig dokumentasjon av effekter.",
+      "quotes": []
+    },
+    {
+      "id": "deal-2026-pdf",
+      "url": "https://www.sv.no/wp-content/uploads/2025/12/budsjettavtale-og-verbaler-ferdig.pdf",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "party-primary",
+      "sha256": "43b984cdf765c4bed4652270c62fcf2dea95842b38f14706f113eebce2b5c9b5",
+      "readingScope": "Budsjettrelevante kapitler og prioriteringer; fullteksten er hentet, ikke alle programkapitler nærstudert.",
+      "quotes": []
+    },
+    {
+      "id": "parliament-2025-2029",
+      "url": "https://data.stortinget.no/eksport/representanter?stortingsperiodeid=2025-2029&format=json",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "parliament-primary",
+      "sha256": "1eca8673670ae667553033584fab66ebab8ea6e9cebb28b538cb293a5f6ba4e3",
+      "quotes": []
     }
   ],
   "blocked": [
-    "arbeiderpartiet.no",
-    "hoyre.no",
-    "frp.no",
-    "sv.no",
-    "senterpartiet.no",
-    "roedt.no",
-    "mdg.no",
-    "venstre.no",
-    "krf.no",
-    "data.stortinget.no"
+    "res.cloudinary.com",
+    "program.arbeiderpartiet.no"
   ],
-  "networkStatus": "Miljøutkast med utvidet tillatelsesliste er lagret, men må publiseres før nettverkstilgangen kan verifiseres. Direkte og eskalert kildehenting gav proxy 403."
+  "networkStatus": "Alle ni partisider og Stortingets API fungerer. Ap-programmets nettutgave og Ap/Høyres program-/budsjett-PDF på Cloudinary er fortsatt blokkert. Høyres programoversikt og budsjettabeller er lest på hoyre.no; Ap er kartlagt fra egne prioriteringer, budsjettavtale og regjeringens plan."
 }
