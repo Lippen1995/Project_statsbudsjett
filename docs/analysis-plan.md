@@ -62,3 +62,5 @@ Live-verifisering: Pages-kjøring 37215596658 bestod. Analysesiden og datagrunnl
 ## Automatisk input-levering, 5. oktober 2026
 
 Den planlagte oppgaven meldte at dagens analyse er skrevet, men mangler workflow_dispatch-tilgang. Levering starter derfor også ved push av `editorial/handoff/ukens-analyse.json` til `analysis/input-*`. Jobben kjører scripts fra betrodd main og henter JSON fra pushens faste SHA; øvrig validering, botgjennomgang og eksakt menneskelig godkjenning beholdes. Dagens levering er ikke bekreftet før en vellykket workflow og bot-PR med review request finnes.
+
+Verifisert levering 5. oktober: PR #13 aktiverte push-triggeren. Dagens eksisterende JSON ble levert uendret fra en ny gren på oppdatert main, `analysis/input-2026-10-05-delivery`, commit `87256cfc7ee580340418a2ef39846b7e080d20a6`. Workflow 37284328619 bestod og opprettet bot-PR #14 «Utenriksregningen vokste 36,7 %. Men toppen kom midtveis.», head `2966432c871fdb5921df7459b0152a95d7fe65a9`, med review request til Lippen1995. Ingen publisering eller bekreftet mobilpush.
