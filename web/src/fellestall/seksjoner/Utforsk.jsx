@@ -62,7 +62,7 @@ export default function Utforsk({
     : 0
   const aar = data.meta.budsjett_aar.includes(u.aar) ? u.aar : globalAar
   const erUtg = u.side === 'utgifter'
-  const folk = data.befolkning?.[aar] ?? (si === 3 ? null : data.befolkning?.[globalAar])
+  const folk = data.befolkning?.[aar]
   const perPerson = u.modus === 'person' && !!folk
 
   const skaler = (v) => (perPerson ? (v * 1e6) / folk : v)
@@ -167,11 +167,12 @@ export default function Utforsk({
             : 'artskontoer'
 
   const fokus = u.fokus ?? sisteNode
-  const grafAar = si === 3 ? data.meta.budsjett_aar : aarListe
+  const budsjettGraf = si === 3 || aar > data.meta.siste_regnskap_aar
+  const grafAar = budsjettGraf ? data.meta.budsjett_aar : aarListe
   const serieFor = (node, serieIdx) =>
     grafAar.map((y) => {
       const v = node ? verdi(node, y, serieIdx, skjulFin) : sumRot(rotN, y, serieIdx)
-      return { v: v === 0 && si === 3 ? null : v }
+      return { v: v === 0 && budsjettGraf ? null : v }
     })
   const tilVisning = (punkter) =>
     punkter.map((p) => ({ v: p.v == null ? null : perPerson ? skaler(p.v) : p.v }))
@@ -340,11 +341,13 @@ export default function Utforsk({
                   aar: year,
                   serie: activeProposal
                     ? 3
-                    : si === 3
-                      ? year > data.meta.siste_regnskap_aar
-                        ? 1
-                        : 0
-                      : si,
+                    : si === 0 && year > data.meta.siste_regnskap_aar
+                      ? 1
+                      : si === 3
+                        ? year > data.meta.siste_regnskap_aar
+                          ? 1
+                          : 0
+                        : si,
                 })
               }}
             >

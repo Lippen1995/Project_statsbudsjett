@@ -31,7 +31,9 @@ export default function Endringer({ data, aar, uRot, skjulFin, onAapneUtforsk })
     for (let si = 0; si < 4; si++) {
       if (si === 3 && !data.meta.budsjettforslag?.some((p) => p.year === y)) continue
       if (uRot.some((n) => verdi(n, y, si) !== 0)) {
-        opsjoner.push({ verdi: `${y}:${si}`, navn: `${SERIENAVN[si]} ${y}`, aar: y, si })
+        const label =
+          si === 3 ? data.meta.budsjettforslag.find((p) => p.year === y).label : SERIENAVN[si]
+        opsjoner.push({ verdi: `${y}:${si}`, navn: `${label} ${y}`, aar: y, si })
       }
     }
   }
@@ -61,7 +63,7 @@ export default function Endringer({ data, aar, uRot, skjulFin, onAapneUtforsk })
     .filter((r) => Math.abs(r.delta) >= TERSKEL)
     .sort((a, b) => b.delta - a.delta)
 
-  const folkTil = data.befolkning?.[til.aar] ?? (til.si === 3 ? null : data.befolkning?.[aar])
+  const folkTil = data.befolkning?.[til.aar]
 
   const drill = (node, nyRest) => {
     if (nyRest) {
