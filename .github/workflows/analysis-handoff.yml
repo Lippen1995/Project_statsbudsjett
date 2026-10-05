@@ -51,3 +51,14 @@ jobs:
           ANALYSIS_SOURCE_COMMIT: ${{ github.event_name == 'push' && github.sha || inputs.source_commit }}
           ANALYSIS_SOURCE_PATH: ${{ github.event_name == 'push' && 'editorial/handoff/ukens-analyse.json' || inputs.source_path }}
           ANALYSIS_PR_NUMBER: ${{ inputs.pr_number }}
+
+  preview:
+    needs: deliver
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Bygg forhåndsvisning fra betrodd main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/deploy.yml/dispatches" --raw-field ref=main

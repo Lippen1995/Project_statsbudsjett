@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   # Gruppen må inneholde referansen. Med én felles gruppe for alle brancher
@@ -40,8 +41,16 @@ jobs:
           cache: 'npm'
           cache-dependency-path: web/package-lock.json
 
+      - name: Hent validerte utkast for forhåndsvisning
+        run: node scripts/analyser/previews.mjs collect
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ANALYSIS_REVIEW_PREVIEWS_FILE: ${{ runner.temp }}/analysis-previews.json
+
       - name: Installer og bygg
         working-directory: web
+        env:
+          ANALYSIS_REVIEW_PREVIEWS_FILE: ${{ runner.temp }}/analysis-previews.json
         run: |
           npm ci
           if [ ! -f public/data/meta.json ]; then
@@ -62,6 +71,12 @@ jobs:
             gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Legg forhåndsvisningslenker i gjennomgangene
+        run: node scripts/analyser/previews.mjs notify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ANALYSIS_REVIEW_PREVIEWS_FILE: ${{ runner.temp }}/analysis-previews.json
 
   distribute-analyses:
     needs: build-deploy
