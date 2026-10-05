@@ -467,7 +467,8 @@ def download_all(years=None, force: bool = False) -> dict:
                 raise
 
     logger.info("--- Laster ned bevilgningshistorikk ---")
-    files["bevilgning"] = download_bevilgning(force=force)
+    # Bevilgninger are mutable, unlike closed historical accounts.
+    files["bevilgning"] = download_bevilgning(force=True)
 
     logger.info("--- Laster ned befolkning fra SSB ---")
     files["befolkning"] = download_befolkning(force=force)

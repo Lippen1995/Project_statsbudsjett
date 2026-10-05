@@ -27,7 +27,7 @@ function kompaktNode(node) {
   if (node.postType) ut.pt = node.postType
   if (node.harDetaljer != null) ut.hd = node.harDetaljer ? 1 : 0
   for (const [aar, serie] of Object.entries(node.serier ?? {})) {
-    ut.s[aar] = [serie.regnskap ?? 0, serie.saldert ?? null, serie.revidert ?? null]
+    ut.s[aar] = [serie.regnskap ?? 0, serie.saldert ?? null, serie.revidert ?? null, serie.forslag ?? null]
   }
   if (node.children?.length) ut.c = node.children.map(kompaktNode)
   return ut

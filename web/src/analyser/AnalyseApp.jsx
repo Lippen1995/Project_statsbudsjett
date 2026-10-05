@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { GrowthComparison, RealExpenditureChart, AnnualChangeChart } from './AnalyseCharts'
 import { annualChanges } from './insights'
+import {
+  BudgetTotals,
+  BudgetChanges,
+  BudgetEvidence,
+  BudgetBridge,
+  PoliticalEvidence,
+} from './BudgetCharts.jsx'
 import { analysisPath, displayDate, factText, filterAnalyses, number } from './model'
 
 function Frame({ children }) {
@@ -169,7 +176,8 @@ function Archive({ articles }) {
 function Article({ article, preview, review }) {
   const { report: r, copy: c } = article
   const t = (text) => factText(text, r)
-  const changes = new Map(annualChanges(r.rows).map((row) => [row.year, row.change]))
+  const budget = r.kind === 'budget-comparison'
+  const changes = new Map(annualChanges(budget ? [] : r.rows).map((row) => [row.year, row.change]))
   const words = c.sections
     .flatMap((s) => s.paragraphs)
     .join(' ')
@@ -223,7 +231,8 @@ function Article({ article, preview, review }) {
           <span>{Math.ceil(words / 180)} min lesetid</span>
         </div>
         <p className="an-data-date">
-          Regnskap {r.start}–{r.end} · Datagrunnlag oppdatert {displayDate(r.dataUpdated)}
+          {budget ? `${r.beforeLabel} → ${r.afterLabel}` : `Regnskap ${r.start}–${r.end}`} ·
+          Datagrunnlag oppdatert {displayDate(r.dataUpdated)}
         </p>
       </header>
       <section className="an-conclusion" aria-labelledby="konklusjon">
@@ -232,7 +241,10 @@ function Article({ article, preview, review }) {
         <p>{t(c.conclusion)}</p>
       </section>
       <div className="an-stat-grid">
-        {['nominalGrowth', 'priceGrowth', 'realPerCapitaGrowth'].map((key) => (
+        {(budget
+          ? ['beforeTotal', 'afterTotal', 'absoluteChange']
+          : ['nominalGrowth', 'priceGrowth', 'realPerCapitaGrowth']
+        ).map((key) => (
           <div key={key}>
             <span>{r.facts[key].label}</span>
             <strong className="num">{r.facts[key].text}</strong>
@@ -274,12 +286,13 @@ function Article({ article, preview, review }) {
               </p>
             )}
           </section>
-          {i === 0 && <GrowthComparison report={r} />}
-          {i === 1 && <RealExpenditureChart report={r} />}
-          {i === 2 && <AnnualChangeChart report={r} />}
+          {i === 0 && (budget ? <BudgetTotals report={r} /> : <GrowthComparison report={r} />)}
+          {i === 1 && (budget ? <BudgetChanges report={r} /> : <RealExpenditureChart report={r} />)}
+          {i === 2 && (budget ? <BudgetBridge report={r} /> : <AnnualChangeChart report={r} />)}
         </React.Fragment>
       ))}
       {r.eventEvidence && <EventEvidence report={r} />}
+      {budget && <PoliticalEvidence report={r} />}
       <section id="metode" className="an-method">
         <div className="ft-kicker">Åpent regnestykke</div>
         <h2>Metode og kilder</h2>
@@ -308,52 +321,61 @@ function Article({ article, preview, review }) {
           Beregningene er gjort i kode.
         </p>
       </section>
-      <section id="faktagrunnlag" className="an-evidence">
-        <h2>Tallene bak analysen</h2>
-        <p>
-          Beløp i kroner per innbygger. Faste priser er oppgitt i {r.end}
-          -kroner.
-        </p>
-        <div
-          className="an-table-scroll"
-          tabIndex={0}
-          role="region"
-          aria-label="Årlige verdier i analysen"
-        >
-          <table>
-            <caption>
-              Regnskap {r.start}–{r.end}, uten finansposter og SPU-overføringer
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">År</th>
-                <th scope="col">Løpende kroner</th>
-                <th scope="col">Faste kroner</th>
-                <th scope="col">KPI</th>
-                <th scope="col">Årlig KPI-justert endring</th>
-              </tr>
-            </thead>
-            <tbody>
-              {r.rows.map((row) => (
-                <tr key={row.year}>
-                  <th scope="row">{row.year}</th>
-                  <td className="num">{number(row.perCapita)}</td>
-                  <td className="num">{number(row.realPerCapita)}</td>
-                  <td className="num">{number(row.cpi, 1)}</td>
-                  <td className="num">
-                    {changes.has(row.year) ? `${number(changes.get(row.year), 1)} %` : '–'}
-                  </td>
+      {budget ? (
+        <BudgetEvidence report={r} />
+      ) : (
+        <section id="faktagrunnlag" className="an-evidence">
+          <h2>Tallene bak analysen</h2>
+          <p>
+            Beløp i kroner per innbygger. Faste priser er oppgitt i {r.end}
+            -kroner.
+          </p>
+          <div
+            className="an-table-scroll"
+            tabIndex={0}
+            role="region"
+            aria-label="Årlige verdier i analysen"
+          >
+            <table>
+              <caption>
+                Regnskap {r.start}–{r.end}, uten finansposter og SPU-overføringer
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">År</th>
+                  <th scope="col">Løpende kroner</th>
+                  <th scope="col">Faste kroner</th>
+                  <th scope="col">KPI</th>
+                  <th scope="col">Årlig KPI-justert endring</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {!preview && (
-          <a href="./datagrunnlag.json" download>
-            Last ned analysens frosne datagrunnlag (JSON) ↓
-          </a>
-        )}
-      </section>
+              </thead>
+              <tbody>
+                {r.rows.map((row) => (
+                  <tr key={row.year}>
+                    <th scope="row">{row.year}</th>
+                    <td className="num">{number(row.perCapita)}</td>
+                    <td className="num">{number(row.realPerCapita)}</td>
+                    <td className="num">{number(row.cpi, 1)}</td>
+                    <td className="num">
+                      {changes.has(row.year) ? `${number(changes.get(row.year), 1)} %` : '–'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {!preview && (
+            <a href="./datagrunnlag.json" download>
+              Last ned analysens frosne datagrunnlag (JSON) ↓
+            </a>
+          )}
+        </section>
+      )}
+      {budget && !preview && (
+        <a href="./datagrunnlag.json" download>
+          Last ned analysens frosne datagrunnlag (JSON) ↓
+        </a>
+      )}
       {preview && (
         <section className="an-method">
           <h2>LinkedIn-utkast</h2>

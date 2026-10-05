@@ -1,6 +1,9 @@
 import { readFileSync } from 'node:fs'
 import { buildReport } from './report.mjs'
+import { nextBudgetReport } from './budget-report.mjs'
 export function nextReport(dataDir, published) {
+  const budget = nextBudgetReport(dataDir, published)
+  if (budget) return budget
   const meta = JSON.parse(readFileSync(`${dataDir}/meta.json`))
   const nodes = JSON.parse(readFileSync(`${dataDir}/utgifter.json`))
   const end = meta.regnskap_aar.at(-1),

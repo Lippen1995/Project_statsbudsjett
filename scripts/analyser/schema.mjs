@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+import { validateBudgetReport } from './budget-report.mjs'
 import { calculateFacts } from './facts.mjs'
 import { validateEventEvidence, eventEvidenceFacts } from './event-evidence.mjs'
 export const contentHash = (article) =>
@@ -64,65 +65,68 @@ export function validateArticle(article, { published = false } = {}) {
   if (!r?.scopeId || !r.scopeName) throw Error('Mangler avgrensning')
   if (
     !r ||
-    r.kind !== 'real-expenditure-per-capita' ||
+    !['real-expenditure-per-capita', 'budget-comparison'].includes(r.kind) ||
     !/^[a-f0-9]{64}$/.test(r.dataHash) ||
     !Number.isFinite(Date.parse(r.dataUpdated))
   )
     throw Error('Mangler datagrunnlag')
-  if (
-    !Array.isArray(r.rows) ||
-    r.rows.length < 2 ||
-    r.rows.some((row) =>
-      [
-        'year',
-        'expenditure',
-        'population',
-        'cpi',
-        'perCapita',
-        'nominalIndex',
-        'priceIndex',
-        'realPerCapita',
-      ].some((k) => !Number.isFinite(row[k])),
-    )
-  )
-    throw Error('Ugyldige grafdata')
-  if (
-    !r.facts ||
-    Object.values(r.facts).some((f) => !Number.isFinite(f.value) || typeof f.text !== 'string')
-  )
-    throw Error('Ugyldige fakta')
-  if (
-    r.rows.length !== r.end - r.start + 1 ||
-    r.rows.some(
-      (row, i) =>
-        row.year !== r.start + i || row.population <= 0 || row.cpi <= 0 || row.expenditure <= 0,
-    )
-  )
-    throw Error('Ufullstendig eller ugyldig tidsserie')
-  const first = r.rows[0],
-    last = r.rows.at(-1)
-  const near = (a, b) => Math.abs(a - b) <= Math.max(1, Math.abs(b)) * 1e-10
-  for (const row of r.rows) {
-    const perCapita = (row.expenditure * 1e6) / row.population
+  if (r.kind === 'budget-comparison') validateBudgetReport(r)
+  else {
     if (
-      !near(row.perCapita, perCapita) ||
-      !near(row.realPerCapita, (perCapita * last.cpi) / row.cpi) ||
-      !near(row.nominalIndex, (perCapita / first.perCapita) * 100) ||
-      !near(row.priceIndex, (row.cpi / first.cpi) * 100)
+      !Array.isArray(r.rows) ||
+      r.rows.length < 2 ||
+      r.rows.some((row) =>
+        [
+          'year',
+          'expenditure',
+          'population',
+          'cpi',
+          'perCapita',
+          'nominalIndex',
+          'priceIndex',
+          'realPerCapita',
+        ].some((k) => !Number.isFinite(row[k])),
+      )
     )
-      throw Error('Grafverdiene samsvarer ikke med regnestykket')
+      throw Error('Ugyldige grafdata')
+    if (
+      !r.facts ||
+      Object.values(r.facts).some((f) => !Number.isFinite(f.value) || typeof f.text !== 'string')
+    )
+      throw Error('Ugyldige fakta')
+    if (
+      r.rows.length !== r.end - r.start + 1 ||
+      r.rows.some(
+        (row, i) =>
+          row.year !== r.start + i || row.population <= 0 || row.cpi <= 0 || row.expenditure <= 0,
+      )
+    )
+      throw Error('Ufullstendig eller ugyldig tidsserie')
+    const first = r.rows[0],
+      last = r.rows.at(-1)
+    const near = (a, b) => Math.abs(a - b) <= Math.max(1, Math.abs(b)) * 1e-10
+    for (const row of r.rows) {
+      const perCapita = (row.expenditure * 1e6) / row.population
+      if (
+        !near(row.perCapita, perCapita) ||
+        !near(row.realPerCapita, (perCapita * last.cpi) / row.cpi) ||
+        !near(row.nominalIndex, (perCapita / first.perCapita) * 100) ||
+        !near(row.priceIndex, (row.cpi / first.cpi) * 100)
+      )
+        throw Error('Grafverdiene samsvarer ikke med regnestykket')
+    }
+    if (r.factsVersion !== undefined && r.factsVersion !== 2)
+      throw Error('Ukjent versjon av faktagrunnlaget')
+    validateEventEvidence(r.eventEvidence, r.rows, r.scopeId)
+    if (
+      JSON.stringify(r.facts) !==
+      JSON.stringify({
+        ...calculateFacts(first, last, r.factsVersion === 2 ? r.rows : undefined),
+        ...eventEvidenceFacts(r.eventEvidence, r.rows),
+      })
+    )
+      throw Error('Fakta samsvarer ikke med datagrunnlaget')
   }
-  if (r.factsVersion !== undefined && r.factsVersion !== 2)
-    throw Error('Ukjent versjon av faktagrunnlaget')
-  validateEventEvidence(r.eventEvidence, r.rows, r.scopeId)
-  if (
-    JSON.stringify(r.facts) !==
-    JSON.stringify({
-      ...calculateFacts(first, last, r.factsVersion === 2 ? r.rows : undefined),
-      ...eventEvidenceFacts(r.eventEvidence, r.rows),
-    })
-  )
-    throw Error('Fakta samsvarer ikke med datagrunnlaget')
   if (
     !Array.isArray(r.methodology) ||
     !r.methodology.length ||

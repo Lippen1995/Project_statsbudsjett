@@ -83,3 +83,13 @@ Botlevering starter nettstedets bygg av versjonsbundet forhåndsvisning. Lenken 
 Direkte push av revidert JSON til botens analyse-PR starter også forhåndsvisningsbygg. Ikke overskriv PR-beskrivelsen etter at bygget har satt inn forhåndsvisningsblokken; behold `<!-- analysis-preview:start -->` til `<!-- analysis-preview:end -->` dersom beskrivelsen oppdateres uten en ny commit. Vent på en lenke som matcher gjeldende head.
 
 Ved revisjon skal processedFeedbackIds bruke de autoritative ID-ene fra pendingFeedback: `comment-<id>` eller `review-<id>`. Numeriske ID-er fra eldre direkte revisjoner støttes bare som issue-kommentarer. Ikke skriv automatiske statuskommentarer fra brukerens konto; de kan registreres som menneskelige endringsønsker.
+
+### Budsjettforslag og parlamentariske vedtak
+
+Les også `docs/budsjettdagen-2027.md` ved hver kjøring. `prepare.mjs` og `candidates.mjs` prioriterer nye arkiverte budsjettforslag og forslag-mot-vedtak foran historiske regnskapstemaer. Rapporttype `budget-comparison` bruker kapittel/post-beløp og løpende kroner, ikke fremtidige observerte KPI-er eller folketall. Behold beregnet rapport og hash uendret; bruk rapportens egne fakta i teksten. Tre budsjettgrafer bygges automatisk med eksisterende design og Sven-byline.
+
+Les regjeringens budsjettdokumenter for å forklare konkrete forslag. For partiers gjennomslag skal offisielle sitater og postkoblinger først leveres gjennom `budget-evidence.yml` som beskrevet i budsjettdokumentet. Vent på vellykket kontroll, hent fersk main og lag rapporten etterpå. Tallendringer og stemmegivning alene dokumenterer ikke forhandlingsseier.
+
+Gul bok gjelder «Regjeringens budsjettforslag», fase `initial`. RNB er fase `revised` og trenger faktisk kontrollert kildeformat samt dokumentert Stortings-vedtak og samsvarende DFØ-vedtak før utfallet fryses. Ikke behandle en vilkårlig kumulativ revidert serie som endelig RNB.
+
+Den daglige DFØ-kontrollen og den særskilte Gul bok-importen er datajobber, ikke nye AI-tidsplaner. Ikke oppgi at de oppretter analyser eller vekker denne native oppgaven. Ekstra kjøring på budsjettdagen er en egen, foreløpig uopprettet forutsetning; mandagsplanen skal beholdes.

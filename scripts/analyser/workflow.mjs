@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { nextReport } from './candidates.mjs'
+import { articleMetadata } from './article-metadata.mjs'
 import { validateArticle } from './schema.mjs'
 import {
   approveArticle,
@@ -117,15 +118,13 @@ export async function runWorkflow({
     }
     const createdAt = now(),
       date = createdAt.slice(0, 10)
-    const slug = `utgifter-per-innbygger-${report.scopeId}-${report.start}-${report.end}-${date}`
+    const metadata = articleMetadata(report, date)
+    const { slug } = metadata
     let article = validateArticle({
-      slug,
+      ...metadata,
       status: 'draft',
       createdAt,
       generatedAt: createdAt,
-      topic: report.scopeId === 'state' ? 'Statsfinanser' : report.scopeName,
-      geography: 'Staten',
-      type: 'Utvikling over tid',
       report,
       copy: await generateCopy(report),
     })

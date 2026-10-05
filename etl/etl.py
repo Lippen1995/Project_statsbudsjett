@@ -179,6 +179,8 @@ def _skriv_fondsverdi():
 
 
 def run(years=None, force=False):
+    previous_meta_path = OUTPUT_DIR / "meta.json"
+    previous_meta = json.loads(previous_meta_path.read_text()) if previous_meta_path.exists() else {}
     if years is None:
         years = YEARS
 
@@ -323,6 +325,8 @@ def run(years=None, force=False):
             }
         ]
     }
+    if previous_meta.get("bekreftede_rnb_vedtak"):
+        meta["bekreftede_rnb_vedtak"] = previous_meta["bekreftede_rnb_vedtak"]
     if kpi:
         _save_json({str(a): round(v, 2) for a, v in kpi.items()}, OUTPUT_DIR / "kpi.json")
         meta["kpi_basisaar"] = max(a for a in kpi if a <= max(actual_years))
@@ -342,6 +346,8 @@ def run(years=None, force=False):
         logger.warning("  [ADVARSEL] Ingen BNP-prognose — budsjettår kan ikke måles mot BNP")
 
     _save_json(meta, OUTPUT_DIR / "meta.json")
+    from budget_proposals import reconcile
+    reconcile(OUTPUT_DIR, bevilgning_df=bevilgning_df)
 
     skriv_status(
         vellykket=True,

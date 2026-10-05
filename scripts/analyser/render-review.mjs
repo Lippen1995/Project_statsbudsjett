@@ -13,7 +13,7 @@ export function renderReview(article) {
     'Les begge tekstene under. **Vil du endre noe? Skriv ønsket i en vanlig kommentar. AI reviderer og ber om ny godkjenning.** Bruk GitHubs «Review changes → Approve» når denne versjonen er klar. Å slå sammen manuelt publiserer ikke et utkast.',
     '**Varsler:** Følg denne gjennomgangen i GitHub-appen og aktiver pushvarsler for review requests. Innsyn følger repositoryets tilgang; dette er ikke en separat privat kanal.',
     '**Endringsønsker:** Behandles ved neste kjøring av den planlagte AI-oppgaven. Du kan også be om revisjon tidligere i oppgavens chat. GitHub-kommentaren starter ikke i seg selv en ny AI-kjøring. Ubehandlede ønsker stopper publisering.',
-    `Versjon: \`${contentHash(article)}\` · Datagrunnlag: ${r.dataUpdated} · Regnskap ${r.start}–${r.end}`,
+    `Versjon: \`${contentHash(article)}\` · Datagrunnlag: ${r.dataUpdated} · ${r.kind === 'budget-comparison' ? 'Budsjett' : 'Regnskap'} ${r.start}–${r.end}`,
     '## LinkedIn-utkast',
     escape(c.linkedin),
     `Lenke etter publisering: https://fellestall.no/analyser/${article.slug}/`,
@@ -41,6 +41,16 @@ export function renderReview(article) {
           ]),
         ]
       : []),
+    ...(r.politicalEvidence?.length
+      ? [
+          '## Dokumentert parlamentarisk behandling',
+          ...r.politicalEvidence.flatMap((e) => [
+            `${e.parties.join(', ')} · ${e.kind} · poster ${e.recordKeys.join(', ')}`,
+            escape(e.quote),
+            `[Offisiell kilde](${e.url})`,
+          ]),
+        ]
+      : []),
     '## Metode',
     ...r.methodology,
     '## Begrensninger',
@@ -49,14 +59,26 @@ export function renderReview(article) {
     ...r.sources.map((s) => `- [${s.name}](${s.url}) — ${s.description}`),
     '## Kontrollgrunnlag',
     ...Object.values(r.facts).map((f) => `- ${f.label}: **${f.text}**`),
-    [
-      '| År | Løpende kr/innbygger | Faste kr/innbygger | KPI |',
-      '|---|---:|---:|---:|',
-      ...r.rows.map(
-        (row) =>
-          `| ${row.year} | ${number(row.perCapita)} | ${number(row.realPerCapita)} | ${number(row.cpi, 1)} |`,
-      ),
-    ].join('\n'),
+    r.kind === 'budget-comparison'
+      ? [
+          `| Post | ${r.beforeLabel} | ${r.afterLabel} | Endring, mill. kr |`,
+          '|---|---:|---:|---:|',
+          ...[...r.rows]
+            .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
+            .slice(0, 20)
+            .map(
+              (row) =>
+                `| ${row.id} | ${number(row.before, 1)} | ${number(row.after, 1)} | ${number(row.change, 1)} |`,
+            ),
+        ].join('\n')
+      : [
+          '| År | Løpende kr/innbygger | Faste kr/innbygger | KPI |',
+          '|---|---:|---:|---:|',
+          ...r.rows.map(
+            (row) =>
+              `| ${row.year} | ${number(row.perCapita)} | ${number(row.realPerCapita)} | ${number(row.cpi, 1)} |`,
+          ),
+        ].join('\n'),
     '\nAI-støttet utkast. Beregningene er gjort i kode. Ingen publisering uten godkjenning av denne versjonen.',
   ].join('\n\n')
 }

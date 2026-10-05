@@ -1,0 +1,54 @@
+name: Budsjett – kontroller dokumentasjon fra planlagt AI
+on:
+  push:
+    branches: ['analysis/budget-evidence-*']
+    paths: ['editorial/handoff/budget-evidence.json']
+permissions:
+  contents: write
+concurrency:
+  group: budget-data-import
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: startsWith(github.ref_name, 'analysis/budget-evidence-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r etl/requirements.txt
+      - name: Les bare JSON fra fast SHA; verifiser mot offisielle kilder
+        run: python etl/budget_evidence_handoff.py
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Behold kontrollert dokumentasjon på main
+        id: commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -f web/public/data/
+          if git diff --cached --quiet; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            git commit -m 'budget: arkiver kontrollert parlamentarisk dokumentasjon'
+            git pull --rebase origin main
+            git push origin main
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+  deploy:
+    needs: verify
+    if: needs.verify.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Bygg nettstedet fra oppdatert main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/deploy.yml/dispatches" --raw-field ref=main
