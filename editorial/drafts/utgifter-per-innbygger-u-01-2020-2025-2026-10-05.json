@@ -2,7 +2,12 @@
   "slug": "utgifter-per-innbygger-u-01-2020-2025-2026-10-05",
   "status": "draft",
   "createdAt": "2026-10-05T08:33:18.194Z",
-  "generatedAt": "2026-10-05T08:33:18.194Z",
+  "generatedAt": "2026-10-05T09:05:00.000Z",
+  "lastFeedbackId": 5991074084,
+  "lastFeedbackAt": "2026-10-05T09:05:00.000Z",
+  "processedFeedbackIds": [
+    5991074084
+  ],
   "topic": "Utenriksdepartementet",
   "geography": "Staten",
   "type": "Utvikling over tid",
@@ -201,94 +206,79 @@
     ]
   },
   "copy": {
-    "title": "Utenriksregningen vokste {{fact:nominalGrowth}}. Men toppen kom midtveis.",
-    "description": "Utenriksdepartementets utgifter steg fra {{fact:startYear}} til {{fact:endYear}}, men utviklingen var langt fra jevn. Vi følger spranget, toppen og tilbaketuren.",
-    "lead": "Utenriksdepartementets regning vokste tydelig fra {{fact:startYear}} til {{fact:endYear}}. Men sluttsummen forteller bare halve historien. Underveis kom et kraftig sprang, før deler av veksten ble reversert. Hva står igjen når vi justerer for både prisvekst og flere innbyggere?",
-    "conclusion": "Utenriksdepartementets utgifter økte {{fact:nominalGrowth}} i løpende kroner fra {{fact:startYear}} til {{fact:endYear}}. Etter justering for folketall og KPI står {{fact:realPerCapitaGrowth}} igjen. Den viktigste observasjonen er likevel formen på kurven: Den største årlige endringen kom i {{fact:largestChangeYear}}, mens nivået deretter falt {{fact:growthAfterChange}} fram til periodens slutt. Regningen ble større, men mye av spranget viste seg ikke å være et nytt varig toppnivå. Tallene dokumenterer utviklingen, ikke hvilke tiltak eller hendelser som forklarer den.",
-    "linkedin": "Utenriksregningen tok først heisen opp. Deretter valgte den trappen ned.\n\nUtgiftene vokste {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}} i løpende kroner. Etter pris- og befolkningsjustering står {{fact:realPerCapitaGrowth}} igjen.\n\nMen sluttsummen skjuler et kraftig sprang midt i perioden – og at deler av det senere ble reversert.\n\nHva forteller kurven, og hva kan den ikke fortelle uten at vi åpner regningen post for post?\n\nVi følger toppen og tilbaketuren ↓",
+    "title": "Utenriksregningen vokste {{fact:nominalGrowth}}. Krigen endret innholdet.",
+    "description": "Ukraina-støtte, flyktningutgifter i Norge og EØS-utbetalinger forklarer mer av kurven enn totalsummen alene.",
+    "lead": "Utenriksdepartementets utgifter steg {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Det avgjørende er ikke at kurven gikk opp og senere litt ned, men hva som faktisk flyttet den: en ny og voksende Ukraina-post, høye flyktningutgifter ført som bistand og en tidsavgrenset topp i EØS-utbetalingene.",
+    "conclusion": "Regnskapet viser et geopolitisk skifte, ikke bare en dyrere versjon av det samme departementet. Krigen utløste en ny stor Ukraina-post og høyere flyktningutgifter i Norge. EØS-midlene bidro samtidig til toppen, før programperioden gikk mot slutten. Senere falt både EØS-utbetalingene og flyktningposten, mens Ukraina-støtten fortsatte å vokse. Det forklarer hvorfor totalen kunne gå ned fra toppen og likevel ende klart over utgangspunktet. Den presise fordelingen av hele endringen krever en egen bidragsanalyse post for post.",
+    "linkedin": "Utenriksregningen vokste {{fact:nominalGrowth}}. Men en del av den ble faktisk skrevet i Norge.\n\nEtter Russlands fullskalainvasjon kom en ny Ukraina-post. Samtidig ble deler av kostnadene for ukrainske flyktninger i Norge ført som bistand, mens EØS-utbetalingene nådde en programstyrt topp og deretter falt.\n\nDermed er kurven ikke én historie om «mer utenriks». Den er tre ulike bevegelser med hver sin forklaring. Det er først når kvitteringen åpnes post for post at totalsummen begynner å snakke.",
     "sections": [
       {
-        "heading": "Regningen vokste mer enn prisene",
+        "heading": "Spranget kom da krigen endret budsjettet",
         "factIds": [
-          "nominalGrowth",
-          "populationGrowth",
-          "priceGrowth",
-          "nominalPerCapitaGrowth",
-          "realPerCapitaGrowth"
-        ],
-        "paragraphs": [
-          "I løpende kroner økte Utenriksdepartementets utgifter med {{fact:nominalGrowth}} gjennom perioden. Det er den mest synlige veksten, men også den minst justerte. Kronene mistet kjøpekraft, og regningen ble fordelt på flere innbyggere. Først når begge forholdene tas med, kan vi sammenligne start og slutt med en mer stabil målestokk.",
-          "Folketallet steg {{fact:populationGrowth}}, mens konsumprisene økte {{fact:priceGrowth}}. Deler vi først på innbyggertallet, blir veksten {{fact:nominalPerCapitaGrowth}}. Justerer vi deretter for KPI, står {{fact:realPerCapitaGrowth}} igjen. Dette er alternative måter å lese den samme regningen på, ikke biter som kan trekkes mekanisk fra hverandre.",
-          "Den første grafen gjør forskjellen synlig. Den nominelle stolpen er høy, stolpen per innbygger er lavere, og den prisjusterte stolpen er langt kortere. Likevel forsvinner ikke veksten. Utgiftene økte altså mer enn det som alene kan forklares av prisnivå og folketall i denne sammenligningen. Hva pengene kjøpte, sier grafen derimot ingenting om."
-        ]
-      },
-      {
-        "heading": "Sluttsummen skjuler et sprang",
-        "factIds": [
-          "startYear",
           "previousYear",
           "largestChangeYear",
-          "growthBeforeChange",
           "largestAnnualChange"
         ],
         "paragraphs": [
-          "En rett linje mellom {{fact:startYear}} og periodens slutt ville gitt et misvisende bilde. Fram til {{fact:previousYear}} falt KPI-justert utgift per innbygger med {{fact:growthBeforeChange}}. Veksten i hele perioden kom derfor ikke som en jevn opptrapping. Kurven begynte snarere med en liten nedgang før den skiftet retning.",
-          "Det tydeligste bruddet kom i {{fact:largestChangeYear}}. Da steg KPI-justert utgift per innbygger med {{fact:largestAnnualChange}} fra året før, den største årlige endringen i serien. Et slikt sprang fortjener oppmerksomhet, men tidspunktet er ikke en årsaksforklaring. Regnskapet viser at noe endret seg; det forteller ikke alene hva som gjorde utslaget.",
-          "Den andre grafen viser nivået i samme kroneverdi gjennom hele perioden. Her blir det lettere å skille trend fra trinn. Før spranget ligger serien lavere og forholdsvis samlet. Etterpå flyttes den opp på et nytt nivå. Men heller ikke dette nivået blir stående urørt. Kurven fortsetter først oppover, før retningen igjen snur."
+          "Det klare bruddet ligger mellom {{fact:previousYear}} og {{fact:largestChangeYear}}. Da steg KPI-justert utgift per innbygger med {{fact:largestAnnualChange}}, den største årlige endringen i serien. Samme år ble posten «Ukraina og naboland» synlig i regnskapet etter Russlands fullskalainvasjon. Den omfatter blant annet humanitær hjelp, støtte til ukrainsk statsdrift og tiltak i land som tok imot flyktninger.",
+          "Dette gir en konkret forklaring på hvorfor kurven skifter nivå. Det var ikke bare eksisterende diplomati og bistand som ble litt dyrere; en ny sikkerhets- og humanitær krise fikk en egen, stor budsjettlinje. Posten fortsatte å vokse fram mot {{fact:endYear}}, slik at Ukraina-støtten holdt totalsummen oppe også etter at andre poster begynte å falle."
         ]
       },
       {
-        "heading": "Toppen ble ikke det nye gulvet",
+        "heading": "Noe av utenriksregningen ble brukt i Norge",
         "factIds": [
           "largestChangeYear",
-          "endYear",
-          "growthAfterChange",
-          "realPerCapitaGrowth"
-        ],
-        "paragraphs": [
-          "Et stort hopp kan se permanent ut dersom vi bare sammenligner året før og året etter. Resten av serien gir et mer nyansert bilde. Fra sprangåret {{fact:largestChangeYear}} til {{fact:endYear}} falt KPI-justert utgift per innbygger med {{fact:growthAfterChange}}. Deler av løftet ble med andre ord reversert før perioden var over.",
-          "Tilbaketuren tok likevel ikke serien helt tilbake til utgangspunktet. Sammenligner vi periodens første og siste år, er realveksten per innbygger fortsatt {{fact:realPerCapitaGrowth}}. Begge observasjonene er sanne samtidig: Regningen endte høyere enn den begynte, men lavere enn den midlertidige toppen underveis skulle tilsi.",
-          "Dette skillet er viktig når en tidsserie skal tolkes. Sluttveksten forteller hvor langt start og slutt ligger fra hverandre. Toppen forteller hvor store svingninger som skjules mellom dem. En analyse som bare omtaler veksten, kan få utviklingen til å se jevn ut. En analyse som bare omtaler toppen, kan få et forbigående nivå til å se varig ut."
-        ]
-      },
-      {
-        "heading": "En større kvittering er ikke det samme som mer av alt",
-        "factIds": [
-          "total",
-          "lastPerCapita",
-          "firstRealPerCapita",
           "endYear"
         ],
         "paragraphs": [
-          "Ved utgangen av perioden viser avgrensningen samlede utgifter på {{fact:total}}. Fordelt på innbyggertallet er det {{fact:lastPerCapita}} per person i {{fact:endYear}}. Til sammenligning tilsvarer startnivået {{fact:firstRealPerCapita}} per innbygger målt i sluttårets priser. Disse størrelsene gjør nivåforskjellen konkret, men de fordeler ikke regningen på formål.",
-          "Departementssummen kan romme overføringer, administrasjon, internasjonalt samarbeid og oppgaver som flyttes mellom organisatoriske grenser. En oppgang i totalen betyr derfor ikke nødvendigvis at alle aktiviteter har vokst, eller at innholdet er identisk gjennom perioden. Noen poster kan øke mens andre faller, uten at nettovirkningen avslører bevegelsene under overflaten.",
-          "Det samme gjelder resultatene av pengebruken. Regnskapet måler kroner, ikke diplomatisk gjennomslag, bistandseffekt eller beredskap. En høyere prisjustert sum kan dokumentere økt pengebruk innenfor avgrensningen. Den kan ikke alene avgjøre om ressursene ga mer aktivitet, bedre resultater eller høyere kostnader for samme leveranse."
+          "En annen viktig bevegelse er posten «Flyktningtiltak i Norge». Internasjonale regler åpner for at enkelte kostnader i det første året etter at flyktninger kommer til Norge, kan regnes som offentlig utviklingsbistand. Derfor kan utgifter til blant annet mottak og bosetting ligge under Utenriksdepartementets bistandsregnskap, selv om pengene brukes her hjemme.",
+          "Posten steg kraftig i {{fact:largestChangeYear}}, da mange ukrainere søkte beskyttelse i Norge. Deretter avtok den fram mot {{fact:endYear}}. Det bidro til å trekke totalen ned fra toppen. Tolkningen er viktig: Nedgangen betyr ikke i seg selv at norsk støtte til Ukraina ble redusert. Den viser at én bestemt type flyktningkostnad utviklet seg annerledes enn den direkte støtten til Ukraina og nabolandene."
         ]
       },
       {
-        "heading": "KPI rydder i bildet, men løser ikke hele regnestykket",
+        "heading": "EØS-midlene laget en midlertidig topp",
         "factIds": [
-          "priceGrowth",
-          "populationGrowth",
-          "realPerCapitaGrowth"
-        ],
-        "paragraphs": [
-          "KPI-justeringen fjerner mye av den nominelle veksten fordi konsumprisene steg {{fact:priceGrowth}}. Befolkningsjusteringen trekker i samme retning når innbyggertallet økte {{fact:populationGrowth}}. Resultatet på {{fact:realPerCapitaGrowth}} er derfor et nyttig sammenligningsmål: Det viser utviklingen når vi bruker samme generelle prisnivå og fordeler beløpet på befolkningen.",
-          "Men KPI følger husholdningenes handlekurv, ikke departementets faktiske kostnadsstruktur. Valuta, lønn, innkjøp og tilskudd kan utvikle seg annerledes enn konsumprisene. Den prisjusterte kurven er derfor ikke et volumregnskap. Den sier ikke hvor mange tjenester eller tiltak som ble levert, bare hvordan pengebruken utviklet seg med en konsekvent målestokk.",
-          "Også departementsgrensen krever varsomhet. Ansvarsområder og posteringer kan endres, og serien følger Fellestalls normaliserte inndeling. Før et hopp knyttes til en bestemt beslutning eller hendelse, må postene under totalsummen spores over tid. Ellers kan en organisatorisk flytting feilaktig se ut som ny pengebruk."
-        ]
-      },
-      {
-        "heading": "Neste spørsmål ligger under totalsummen",
-        "factIds": [
-          "previousYear",
           "largestChangeYear",
           "growthAfterChange"
         ],
         "paragraphs": [
-          "Kurven gir et presist neste spørsmål: Hvilke poster forklarer spranget mellom {{fact:previousYear}} og {{fact:largestChangeYear}}, og hvilke av dem forklarer at nivået senere falt {{fact:growthAfterChange}}? For å svare må hele endringen fordeles på poster som vokste, krympet, kom til eller forsvant. Summen alene kan ikke gjøre den jobben.",
-          "En slik gjennomgang bør følge post-ID-er og navn gjennom perioden, kontrollere om ansvar er flyttet og avstemme bidragene mot departementssummen. Først da kan midlertidige utslag skilles fra mer varige endringer. Det er også nødvendig før kurven kobles til virkelige hendelser med større sikkerhet enn tidspunktet alene gir.",
-          "Hovedfunnet står likevel klart uten å gjette på årsaker: Utenriksregningen vokste mer enn priser og folketall, men utviklingen var ikke jevn. Et kraftig sprang løftet serien, før deler av veksten ble reversert. Kvitteringen ble større. Samtidig viser kurven hvorfor det er klokt å åpne den før vi bestemmer oss for hva som egentlig ble dyrere."
+          "EØS-finansieringsordningene følger en programperiode der utbetalingene ikke fordeles jevnt fra år til år. Mot slutten av perioden ble mange prosjekter ferdigstilt og utbetalt. Det løftet utenriksregnskapet ytterligere etter sprangåret. Da de ordinære utbetalingene senere gikk mot slutten, falt denne delen av regningen markant.",
+          "Denne betalingsrytmen forklarer noe av tilbaketuren på {{fact:growthAfterChange}} etter {{fact:largestChangeYear}}. Fallet er derfor ikke ett samlet politisk kutt. Det består blant annet av en programstyrt nedgang i EØS-midler og lavere flyktningutgifter i Norge, samtidig som Ukraina-posten utviklet seg motsatt vei."
+        ]
+      },
+      {
+        "heading": "Hva gikk opp, og hva gikk ned?",
+        "factIds": [
+          "startYear",
+          "endYear",
+          "growthAfterChange"
+        ],
+        "paragraphs": [
+          "Fra {{fact:startYear}} til {{fact:endYear}} er regionbevilgningene den tydeligste voksende gruppen i underpostene. Ukraina og naboland står sentralt i denne veksten. I den andre retningen trekker særlig EØS-midlene etter utbetalingstoppen og flyktningtiltak i Norge etter det første kriseåret. Også enkelte andre bistandsområder og administrative posteringer endrer seg, men der kan omorganisering og flytting mellom kapitler gjøre en ren årssammenligning misvisende.",
+          "Dermed kan ikke nettobevegelsen leses som om alle formål steg først og deretter ble skåret ned. Kurven er summen av poster med ulike drivere: krig og humanitær støtte, mottak av flyktninger i Norge og avslutningen av en flerårig EØS-programperiode. Det er disse motgående bevegelsene som gjør at totalen faller etter toppen uten å vende tilbake til det gamle nivået."
+        ]
+      },
+      {
+        "heading": "Veksten er reell, men totalsummen er ikke årsaken",
+        "factIds": [
+          "nominalGrowth",
+          "priceGrowth",
+          "populationGrowth",
+          "realPerCapitaGrowth"
+        ],
+        "paragraphs": [
+          "Pris- og befolkningsjusteringen trengs fortsatt for å måle størrelsen på endringen. Konsumprisene steg {{fact:priceGrowth}} og folketallet {{fact:populationGrowth}}. Etter begge justeringene står en realvekst per innbygger på {{fact:realPerCapitaGrowth}} igjen. Det viser at økningen ikke bare er inflasjon eller flere innbyggere.",
+          "Men justeringen forklarer ikke hvorfor utgiftene endret seg. Den forklaringen ligger i postene og hendelsene: Ukraina-støtten kom til og vokste, flyktningkostnader i Norge skjøt opp og avtok, og EØS-utbetalingene fulgte sin programsyklus. KPI er målestokken; den er ikke historien."
+        ]
+      },
+      {
+        "heading": "Hva regnskapet fortsatt ikke beviser",
+        "factIds": [
+          "endYear"
+        ],
+        "paragraphs": [
+          "Sammenfallet mellom krigen og de nye postene er godt dokumentert i budsjettmaterialet, men totalsummen kan ikke alene måle effekten av tiltakene. Den sier heller ikke om pengebruken var effektiv. Departementsgrenser og regnskapsføring kan endres, og særlig administrative utslag bør kontrolleres før de tolkes som faktisk aktivitetsvekst.",
+          "Denne analysen identifiserer derfor de viktigste bevegelsene og hendelsene som passer med dem, men den fordeler ikke hver krone av totalendringen. En full bidragsanalyse må avstemme alle underposter år for år og skille reelle utgiftsendringer fra omposteringer. Det er neste kontrollpunkt, ikke en grunn til å gjenta totalsummen en gang til."
         ]
       }
     ]
