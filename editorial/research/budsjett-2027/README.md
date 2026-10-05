@@ -8,7 +8,9 @@ Brukeren ønsker en vesentlig større onsdagsanalyse, grundig kjennskap til alle
 
 Regjeringens plan, kommunerundskrivet, pensjonsforslaget, fremleggelsesplanen og forsvarsdepartementets presseinvitasjon er lest. `sources.json` dokumenterer adresser, lesedato, kildehash og utvalgte kontrollerte sitater. `baseline-2026.json` gir salderte referansebeløp fra oppdatert main. `partier.md` beskriver konkret hva som skal innhentes om hvert parti.
 
-**Alle ni partiprofilene er foreløpig uverifiserte.** Partinettstedene og Stortingets API gir nettverksproxyens 403-feil, også etter et autorisert forsøk med utvidede rettigheter. Miljøets nettverksutkast er utvidet med kildedomenene, men krever publisering i miljøinnstillingene. Ikke behandle en lagret tillatelsesliste som fungerende tilgang. Ingen partiprogrammer er fremstilt som lest. Når tilgangen virker, må researchen fortsette før sammenligningen skrives.
+**Partikartleggingen er nå gjennomført fra egne kilder for alle ni partier.** Nettverkstilgangen til partisidene og Stortingets API er verifisert. `partier.md` inneholder dokumenterte profiler med finansiering, nyere utspill, historiske referanser og konkrete kontrollpunkter. `sammenligningsmatrise.md` viser forskjeller og parlamentarisk ramme. Syv program-PDF-er er gjennomgått i budsjettrelevante deler; Høyres egen programoversikt er lest på nettet. Ap-programmets fulltekst og Ap/Høyres PDF-er på Cloudinary er fortsatt blokkert. Ap-profilen bygger derfor på egne prioriteringer, 2026-forliket og regjeringens plan. Ikke fremstille dette som en nærlesing av alle programkapitler.
+
+Kilderegisteret inneholder nå 38 faktisk leste kilder, med ni kontrollerte partisitat og en oppdatert mandatfordeling. Dokumentene gir et vesentlig bedre sammenligningsgrunnlag, men flere partier har ikke en bekreftet samlet 2027-kravliste i materialet. Nye krav og reaksjoner må leses på budsjettdagen.
 
 ## Det vi allerede vet fra leste primærkilder
 
@@ -79,7 +81,7 @@ Undersøk også husholdninger med ulike inntekter, familier, pensjonister, perso
 
 ## Fortsettelse før onsdag
 
-Først fullføres de ni kildeprofilene i `partier.md` når nettverkstilgangen fungerer. Deretter prioriteres partienes ferske, konkrete 2027-krav fremfor generelle slagord. Programmer og alternative budsjetter fra 2026 gir bakgrunn, men skal merkes med riktig år. Les selve dokumentene; søkeresultater og pressemeldingstitler er ikke nok.
+De ni kildeprofilene i `partier.md` er nå laget fra tilgjengelige originalkilder. Før publisering oppdateres de med partienes ferske, konkrete 2027-krav. Ap-programmets fulltekst og eventuelle endringer i programmer/landsmøtevedtak kontrolleres når kildene er tilgjengelige. Programmer og alternative budsjetter fra 2026 gir bakgrunn, men skal merkes med riktig år. Les selve dokumentene; søkeresultater og pressemeldingstitler er ikke nok.
 
 Før publisering må partienes originalkilder kunne følge med i artikkelens kontrollerte kildegrunnlag. Dagens `budget-evidence` gjelder parlamentarisk gjennomslag og tillater regjeringen/Stortinget; partiprogrammer skal ikke kamufleres som slike kilder. Hvis rapporttypen ikke kan dokumentere de nødvendige partikildene, må kildehåndteringen utvides kontrollert før partivurderingene leveres.
 

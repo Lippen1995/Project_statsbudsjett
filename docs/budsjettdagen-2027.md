@@ -74,7 +74,7 @@ Vent på vellykket kildekontroll, hent oppdatert main og kontroller deretter rap
 
 ### Ressurser og utvidet oppdrag vedtatt 5. oktober
 
-Brukeren ønsker en større analyse med vesentlige ressurser og grundig forhåndsresearch om alle stortingspartiene. Les `editorial/research/budsjett-2027/README.md`, `partier.md`, `sources.json` og baseline før arbeidet starter. Fullfør kildeprofilene som er merket uverifiserte; nettverksutkastet må publiseres før tilgangen til partienes egne nettsider kan kontrolleres. Ikke erstatt kildearbeid med generelle antakelser om partiene.
+Brukeren ønsker en større analyse med vesentlige ressurser og grundig forhåndsresearch om alle stortingspartiene. Les `editorial/research/budsjett-2027/README.md`, `partier.md`, `sources.json` og baseline før arbeidet starter. Partiprofilene og sammenligningsmatrisen er nå kildebelagt, og alle ni partisider samt Stortingets API fungerer. Kontroller resterende fulltekstkilder som er merket utilgjengelige, og oppdater profilene med ferske 2027-krav før publisering. Ikke erstatt kildearbeid med generelle antakelser om partiene.
 
 Dette er en uttrykkelig ekstra analyse utover den vanlige ukerytmen. Sikt mot **2 500–3 500 ord og åtte til ti seksjoner**, innenfor eksisterende artikkelskjema. Bruk den sterkeste tilgjengelige modellen og høy tilgjengelig resonneringsinnsats i den native oppgaven. Gjennomfør egne gjennomganger av kildegrunnlag, beregninger, politiske konklusjoner og redaksjonell tekst. Instruksen endrer ikke modellinnstillinger eller reserverer faktisk kvote; slike innstillinger må være tilgjengelige i oppgaven. Ingen separat AI-API.
 

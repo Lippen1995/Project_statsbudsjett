@@ -1,0 +1,26 @@
+{
+  "period": "2025-2029",
+  "readAt": "2026-10-05",
+  "source": "https://data.stortinget.no/eksport/representanter?stortingsperiodeid=2025-2029&format=json",
+  "sha256": "1eca8673670ae667553033584fab66ebab8ea6e9cebb28b538cb293a5f6ba4e3",
+  "members": 169,
+  "partyMandates": {
+    "V": 3,
+    "FrP": 47,
+    "A": 53,
+    "H": 24,
+    "SV": 9,
+    "MDG": 8,
+    "Sp": 9,
+    "R": 9,
+    "KrF": 7
+  },
+  "derived": {
+    "ApSVSpRMDG": 88,
+    "HFrPKrFV": 81
+  },
+  "limitations": [
+    "Mandater, ikke antall fremmøtte eller stemmegivning.",
+    "2026-avtalen dokumenterer ikke en allerede inngått 2027-avtale."
+  ]
+}
