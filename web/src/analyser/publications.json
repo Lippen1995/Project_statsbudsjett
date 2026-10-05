@@ -807,5 +807,299 @@
       "commitId": "d222e0caac4e22532adf3cf25e53135c67bed965",
       "contentHash": "954412d7058f1681baf7e0be30cf94fe0e9ae785637611a4e35c760abe1856cf"
     }
+  },
+  {
+    "slug": "utgifter-per-innbygger-u-01-2020-2025-2026-10-05",
+    "status": "published",
+    "createdAt": "2026-10-05T08:33:18.194Z",
+    "generatedAt": "2026-10-05T09:27:00.000Z",
+    "lastFeedbackId": 5991074084,
+    "lastFeedbackAt": "2026-10-05T09:05:00.000Z",
+    "processedFeedbackIds": [
+      5991074084,
+      5991422745
+    ],
+    "topic": "Utenriksdepartementet",
+    "geography": "Staten",
+    "type": "Utvikling over tid",
+    "report": {
+      "kind": "real-expenditure-per-capita",
+      "factsVersion": 2,
+      "scopeId": "u-01",
+      "scopeName": "Utenriksdepartementet",
+      "start": 2020,
+      "end": 2025,
+      "dataUpdated": "2026-09-23T18:32:24.776647+00:00",
+      "dataHash": "f1b13cde59cdf86414d04658d10ab5872d6d2e7d586aad03eb021517441d52e1",
+      "facts": {
+        "startYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Første regnskapsår"
+        },
+        "endYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Siste regnskapsår"
+        },
+        "nominalGrowth": {
+          "value": 36.728822363828264,
+          "text": "36,7 %",
+          "label": "Vekst i løpende utgifter"
+        },
+        "populationGrowth": {
+          "value": 4.224622641860942,
+          "text": "4,2 %",
+          "label": "Befolkningsvekst"
+        },
+        "priceGrowth": {
+          "value": 22.699386503067487,
+          "text": "22,7 %",
+          "label": "Prisvekst målt med KPI"
+        },
+        "realPerCapitaGrowth": {
+          "value": 6.917144338753878,
+          "text": "6,9 %",
+          "label": "Realvekst per innbygger"
+        },
+        "firstPerCapita": {
+          "value": 7926.048610360721,
+          "text": "7 926 kr",
+          "label": "Per innbygger i startåret, løpende kroner"
+        },
+        "lastPerCapita": {
+          "value": 10397.920040612476,
+          "text": "10 398 kr",
+          "label": "Per innbygger i sluttåret, løpende kroner"
+        },
+        "firstRealPerCapita": {
+          "value": 9725.213018847511,
+          "text": "9 725 kr",
+          "label": "Startåret i sluttårets priser"
+        },
+        "total": {
+          "value": 58.1695,
+          "text": "58,2 mrd. kr",
+          "label": "Utgifter i sluttåret"
+        },
+        "nominalPerCapitaGrowth": {
+          "value": 31.18668017025017,
+          "text": "31,2 %",
+          "label": "Vekst per innbygger, løpende kroner"
+        },
+        "previousYear": {
+          "value": 2021,
+          "text": "2021",
+          "label": "Året før største årlige endring"
+        },
+        "largestChangeYear": {
+          "value": 2022,
+          "text": "2022",
+          "label": "År med største årlige endring i absoluttverdi"
+        },
+        "largestAnnualChange": {
+          "value": 17.239216232438913,
+          "text": "17,2 %",
+          "label": "Største årlige endring, KPI-justert per innbygger"
+        },
+        "growthBeforeChange": {
+          "value": -1.8025979912611456,
+          "text": "−1,8 %",
+          "label": "KPI-justert vekst per innbygger, 2020–2021"
+        },
+        "growthSinceChange": {
+          "value": 8.879809599483114,
+          "text": "8,9 %",
+          "label": "KPI-justert vekst per innbygger, 2021–2025"
+        },
+        "growthAfterChange": {
+          "value": -7.130213678998332,
+          "text": "−7,1 %",
+          "label": "KPI-justert vekst per innbygger, 2022–2025"
+        }
+      },
+      "rows": [
+        {
+          "year": 2020,
+          "expenditure": 42543.7,
+          "population": 5367580,
+          "cpi": 81.5,
+          "perCapita": 7926.048610360721,
+          "nominalIndex": 100,
+          "priceIndex": 100,
+          "realPerCapita": 9725.213018847511
+        },
+        {
+          "year": 2021,
+          "expenditure": 43403.6,
+          "population": 5391369,
+          "cpi": 84.3,
+          "perCapita": 8050.571200005045,
+          "nominalIndex": 101.57105508388571,
+          "priceIndex": 103.43558282208589,
+          "realPerCapita": 9549.906524323898
+        },
+        {
+          "year": 2022,
+          "expenditure": 54182.40000000001,
+          "population": 5425270,
+          "cpi": 89.2,
+          "perCapita": 9987.042119562715,
+          "nominalIndex": 126.00278664084799,
+          "priceIndex": 109.44785276073621,
+          "realPerCapita": 11196.235560047888
+        },
+        {
+          "year": 2023,
+          "expenditure": 65439.9,
+          "population": 5488984,
+          "cpi": 94.1,
+          "perCapita": 11922.042403475762,
+          "nominalIndex": 150.4159637362252,
+          "priceIndex": 115.4601226993865,
+          "realPerCapita": 12669.545593491777
+        },
+        {
+          "year": 2024,
+          "expenditure": 58151.499999999985,
+          "population": 5550203,
+          "cpi": 97.1,
+          "perCapita": 10477.364521622,
+          "nominalIndex": 132.18900156537353,
+          "priceIndex": 119.14110429447852,
+          "realPerCapita": 10790.282720516992
+        },
+        {
+          "year": 2025,
+          "expenditure": 58169.5,
+          "population": 5594340,
+          "cpi": 100,
+          "perCapita": 10397.920040612476,
+          "nominalIndex": 131.18668017025016,
+          "priceIndex": 122.69938650306749,
+          "realPerCapita": 10397.920040612476
+        }
+      ],
+      "sources": [
+        {
+          "name": "DFØ Statsregnskapet",
+          "url": "https://statsregnskapet.dfo.no",
+          "local": "/data/utgifter.json",
+          "description": "Regnskapsførte utgifter i mill. kroner. Finansposter og SPU-overføringer er utelatt."
+        },
+        {
+          "name": "SSB folkemengde, tabell 07459",
+          "url": "https://www.ssb.no/statbank/table/07459/",
+          "local": "/data/befolkning.json",
+          "description": "Folkemengde ved inngangen til året, som i resten av Fellestall."
+        },
+        {
+          "name": "SSB konsumprisindeks",
+          "url": "https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen",
+          "local": "/data/kpi.json",
+          "description": "Årsgjennomsnitt for KPI, fra Fellestalls normaliserte serie."
+        }
+      ],
+      "methodology": [
+        "Vi summerer regnskapsførte utgifter på postnivå for Utenriksdepartementet. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.",
+        "Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.",
+        "Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.",
+        "Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.",
+        "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn."
+      ],
+      "limitations": [
+        "Departementenes ansvarsområder kan endres over tid. Serien følger Fellestalls normaliserte departementsinndeling, og må ikke alene tolkes som vekst i identiske tjenester.",
+        "KPI måler husholdningenes konsumpriser, ikke statens lønns-, bygge- eller innkjøpskostnader. KPI-justering er et sammenligningsmål, ikke et mål på produksjonsvolum.",
+        "Utgifter sier ikke hvor mye eller hvor god tjenesteproduksjon innbyggerne får. Overføringer, pensjoner og tilskudd inngår også.",
+        "Tallene identifiserer ikke årsakene til endringene. De kan ikke alene brukes til å konkludere om effektivitet, sløsing eller virkningen av politiske beslutninger.",
+        "Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.",
+        "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse."
+      ]
+    },
+    "copy": {
+      "title": "Utenriksregningen steg {{fact:nominalGrowth}}. Ukraina snudde opp ned på regnestykket.",
+      "description": "Ukraina-støtten skjøt fart, flyktningregningen flyttet hjem og EØS-midlene løftet toppen.",
+      "lead": "Utenriksdepartementets utgifter steg {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Bak hoppet ligger en ny og voksende Ukraina-post, høye flyktningutgifter ført som bistand og en tidsavgrenset topp i EØS-utbetalingene.",
+      "conclusion": "Krigen tegnet utenriksregningen på nytt. Posten Ukraina og naboland kom til og fortsatte å vokse, mens flyktningutgifter i Norge skjøt opp og senere avtok. Samtidig traff EØS-utbetalingene toppen av sin programsyklus før de falt. Resultatet ble en regning som trakk seg ned fra toppen, men aldri tilbake til utgangspunktet. Noe av veksten kan fortsatt skyldes omposteringer; en full fordeling krever avstemming av alle underpostene.",
+      "linkedin": "Utenriksdepartementets regning steg {{fact:nominalGrowth}}. Og plutselig fikk deler av «utenriks» norsk postadresse.\n\nEtter Russlands fullskalainvasjon vokste Ukraina-posten kraftig. Samtidig ble deler av mottaksutgiftene for ukrainske flyktninger i Norge ført som bistand. EØS-utbetalingene nådde også en programstyrt topp før de falt.\n\nRegnskapet hadde altså både krig, flyktningmottak og en EØS-kalender i samme handlekurv. Ikke rart kvitteringen trengte mer enn én forklaring.\n\nVi åpnet den ↓",
+      "sections": [
+        {
+          "heading": "Spranget kom da krigen endret budsjettet",
+          "factIds": [
+            "previousYear",
+            "largestChangeYear",
+            "largestAnnualChange"
+          ],
+          "paragraphs": [
+            "Det klare bruddet ligger mellom {{fact:previousYear}} og {{fact:largestChangeYear}}. Da steg KPI-justert utgift per innbygger med {{fact:largestAnnualChange}}, den største årlige endringen i serien. Samme år ble posten «Ukraina og naboland» synlig i regnskapet etter Russlands fullskalainvasjon. Den omfatter blant annet humanitær hjelp, støtte til ukrainsk statsdrift og tiltak i land som tok imot flyktninger.",
+            "En ny sikkerhets- og humanitær krise fikk dermed en egen, stor budsjettlinje. Posten fortsatte å vokse fram mot {{fact:endYear}}, slik at Ukraina-støtten holdt totalsummen oppe også etter at andre poster begynte å falle."
+          ]
+        },
+        {
+          "heading": "Noe av utenriksregningen ble brukt i Norge",
+          "factIds": [
+            "largestChangeYear",
+            "endYear"
+          ],
+          "paragraphs": [
+            "En annen viktig bevegelse er posten «Flyktningtiltak i Norge». Internasjonale regler åpner for at enkelte kostnader i det første året etter at flyktninger kommer til Norge, kan regnes som offentlig utviklingsbistand. Derfor kan utgifter til blant annet mottak og bosetting ligge under Utenriksdepartementets bistandsregnskap, selv om pengene brukes her hjemme.",
+            "Posten steg kraftig i {{fact:largestChangeYear}}, da mange ukrainere søkte beskyttelse i Norge. Deretter avtok den fram mot {{fact:endYear}} og trakk totalen ned fra toppen. Samtidig fortsatte den direkte støtten til Ukraina og nabolandene å vokse."
+          ]
+        },
+        {
+          "heading": "EØS-midlene laget en midlertidig topp",
+          "factIds": [
+            "largestChangeYear",
+            "growthAfterChange"
+          ],
+          "paragraphs": [
+            "EØS-finansieringsordningene følger en programperiode der utbetalingene ikke fordeles jevnt fra år til år. Mot slutten av perioden ble mange prosjekter ferdigstilt og utbetalt. Det løftet utenriksregnskapet ytterligere etter sprangåret. Da de ordinære utbetalingene senere gikk mot slutten, falt denne delen av regningen markant.",
+            "Denne betalingsrytmen forklarer noe av tilbaketuren på {{fact:growthAfterChange}} etter {{fact:largestChangeYear}}. Fallet er derfor ikke ett samlet politisk kutt. Det består blant annet av en programstyrt nedgang i EØS-midler og lavere flyktningutgifter i Norge, samtidig som Ukraina-posten utviklet seg motsatt vei."
+          ]
+        },
+        {
+          "heading": "Hva gikk opp, og hva gikk ned?",
+          "factIds": [
+            "startYear",
+            "endYear",
+            "growthAfterChange"
+          ],
+          "paragraphs": [
+            "Fra {{fact:startYear}} til {{fact:endYear}} er regionbevilgningene den tydeligste voksende gruppen i underpostene. Ukraina og naboland står sentralt i denne veksten. I den andre retningen trekker særlig EØS-midlene etter utbetalingstoppen og flyktningtiltak i Norge etter det første kriseåret. Også enkelte andre bistandsområder og administrative posteringer endrer seg, men der kan omorganisering og flytting mellom kapitler gjøre en ren årssammenligning misvisende.",
+            "Postene beveget seg i motsatt retning: krig og humanitær støtte trakk opp, mens flyktningutgifter i Norge og EØS-utbetalinger trakk ned etter sine topper. Derfor falt totalen uten å vende tilbake til det gamle nivået."
+          ]
+        },
+        {
+          "heading": "Prisene tok mye – men ikke hele veksten",
+          "factIds": [
+            "nominalGrowth",
+            "priceGrowth",
+            "populationGrowth",
+            "realPerCapitaGrowth"
+          ],
+          "paragraphs": [
+            "Konsumprisene steg {{fact:priceGrowth}} og folketallet {{fact:populationGrowth}}. Etter begge justeringene står en realvekst per innbygger på {{fact:realPerCapitaGrowth}} igjen. Økningen var altså større enn inflasjonen og befolkningsveksten alene.",
+            "Ukraina-støtten kom til og vokste, flyktningkostnadene i Norge skjøt opp og avtok, og EØS-utbetalingene fulgte sin programsyklus. KPI setter beløpene i samme kroneverdi; postene viser hva regningen bestod av."
+          ]
+        },
+        {
+          "heading": "Noen kroner kan ha flyttet adresse",
+          "factIds": [
+            "endYear"
+          ],
+          "paragraphs": [
+            "Sammenfallet mellom krigen og de nye postene er godt dokumentert i budsjettmaterialet, men totalsummen kan ikke alene måle effekten av tiltakene. Den sier heller ikke om pengebruken var effektiv. Departementsgrenser og regnskapsføring kan endres, og særlig administrative utslag bør kontrolleres før de tolkes som faktisk aktivitetsvekst.",
+            "Analysen fordeler ikke hver krone av totalendringen. En full bidragsanalyse må avstemme alle underposter år for år og skille reelle utgiftsendringer fra omposteringer."
+          ]
+        }
+      ]
+    },
+    "publishedAt": "2026-10-05T09:38:48Z",
+    "approval": {
+      "reviewer": "Lippen1995",
+      "approvedAt": "2026-10-05T09:38:48Z",
+      "commitId": "c509eb046e009a8367d55b16fb317d4978eb22a2",
+      "contentHash": "82fb4f03b6ec71bdd3f08b829bd5fb81638d4474d76804facb2646196dbde9ba"
+    }
   }
 ]
