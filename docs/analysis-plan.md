@@ -108,3 +108,7 @@ Onsdag vurderes samsvar mellom regjeringens forslag og dokumenterte partipriorit
 ### Oppdatert researchstatus 5. oktober 2026
 
 Tilgangen til alle ni partisider og Stortingets API er nå verifisert. `editorial/research/budsjett-2027/partier.md` inneholder kildebelagte profiler, og `sammenligningsmatrise.md` kobler prioriteringer, finansiering og tolkningsfeller. Kilderegisteret omfatter 38 leste kilder og ni kontrollerte partisitat. Stortingets 169 faste representanter er kontrollert direkte; 2026-avtalepartiene har 88 mandater, men dette bekrefter ikke et 2027-forlik. Syv program-PDF-er er gjennomgått i relevante deler, Høyres nettoversikt er lest og Ap er kartlagt fra egne prioriteringer og regjeringens plan. Ap-programmets fulltekst og Ap/Høyres Cloudinary-filer gjenstår; nye 2027-krav må oppdateres ved fremleggelsen. Den tidligere statusen med ni uverifiserte leselister er erstattet.
+
+## SSB i analyseflyten
+
+Brukeren har bestilt selvstendig tilgang til SSB-data for forklaringsvariabler og sammenhenger. `etl/ssb_research.py` støtter søk, metadata og eksplisitte årsuttrekk. JSON-forespørsler kontrolleres mot SSB av betrodd workflow før immutable uttrekk knyttes til rapportens fakta, kilde- og godkjenningshash. Prosjektet bruker ingen separat AI-API. Metode og begrensninger står i `docs/ssb-analysis-research.md`; nettverk til data.ssb.no er nødvendig.

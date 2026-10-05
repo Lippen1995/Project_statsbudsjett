@@ -1,0 +1,28 @@
+name: SSB research – test API and analysis integration
+on:
+  pull_request:
+    paths:
+      - 'etl/ssb_research*'
+      - 'etl/tests/test_ssb_research.py'
+      - 'scripts/analyser/ssb-research.mjs'
+      - '.github/workflows/ssb-research-ci.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: pip install -r etl/requirements.txt
+      - run: python -m pytest etl/tests/test_ssb_research.py -q -s
+        env:
+          SSB_LIVE_TEST: '1'
+      - run: node --test web/tests/ssb-research.test.mjs

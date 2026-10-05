@@ -1,3 +1,4 @@
+import { ssbEvidenceFacts } from './ssb-research.mjs'
 import { createHash } from 'node:crypto'
 import { validateBudgetReport } from './budget-report.mjs'
 import { calculateFacts } from './facts.mjs'
@@ -123,6 +124,7 @@ export function validateArticle(article, { published = false } = {}) {
       JSON.stringify({
         ...calculateFacts(first, last, r.factsVersion === 2 ? r.rows : undefined),
         ...eventEvidenceFacts(r.eventEvidence, r.rows),
+        ...ssbEvidenceFacts(r.ssbEvidence),
       })
     )
       throw Error('Fakta samsvarer ikke med datagrunnlaget')

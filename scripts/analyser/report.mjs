@@ -1,3 +1,4 @@
+import { attachSsbEvidence } from './ssb-research.mjs'
 import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { calculateFacts } from './facts.mjs'
@@ -51,7 +52,7 @@ export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
     ...calculateFacts(first, last, rows),
     ...eventEvidenceFacts(eventEvidence, rows),
   }
-  return {
+  return attachSsbEvidence(dataDir, {
     kind: 'real-expenditure-per-capita',
     factsVersion: 2,
     scopeId: departmentId ?? 'state',
@@ -126,5 +127,5 @@ export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
       'Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.',
       'Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse.',
     ],
-  }
+  })
 }

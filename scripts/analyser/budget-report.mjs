@@ -1,3 +1,4 @@
+import { attachSsbEvidence, ssbEvidenceFacts } from './ssb-research.mjs'
 import { existsSync, readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { number } from '../../web/src/analyser/model.js'
@@ -159,7 +160,7 @@ export function nextBudgetReport(dataDir, published) {
       )
         continue
       const facts = budgetFacts(rows, item.year, baseYear, politicalEvidence)
-      return {
+      return attachSsbEvidence(dataDir, {
         kind: 'budget-comparison',
         comparison,
         year: item.year,
@@ -229,7 +230,7 @@ export function nextBudgetReport(dataDir, published) {
           'Partiers gjennomslag krever dokumentert kobling til budsjettavtale, innstilling eller vedtak. En stemme for budsjettet dokumenterer støtte, ikke nødvendigvis eierskap til en endring.',
         ],
         politicalEvidence,
-      }
+      })
     }
   }
   return null
@@ -259,7 +260,10 @@ export function validateBudgetReport(r) {
   }
   if (
     JSON.stringify(r.facts) !==
-    JSON.stringify(budgetFacts(r.rows, r.year, r.start, r.politicalEvidence ?? []))
+    JSON.stringify({
+      ...budgetFacts(r.rows, r.year, r.start, r.politicalEvidence ?? []),
+      ...ssbEvidenceFacts(r.ssbEvidence),
+    })
   )
     throw Error('Budsjettfakta samsvarer ikke med datagrunnlaget')
   if (
