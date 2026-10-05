@@ -2,7 +2,7 @@
   "slug": "utgifter-per-innbygger-u-01-2020-2025-2026-10-05",
   "status": "draft",
   "createdAt": "2026-10-05T08:33:18.194Z",
-  "generatedAt": "2026-10-05T09:27:00.000Z",
+  "generatedAt": "2026-10-05T11:56:00.000Z",
   "lastFeedbackId": 5991074084,
   "lastFeedbackAt": "2026-10-05T09:05:00.000Z",
   "processedFeedbackIds": [
@@ -211,7 +211,7 @@
     "description": "Ukraina-støtten skjøt fart, flyktningregningen flyttet hjem og EØS-midlene løftet toppen.",
     "lead": "Utenriksdepartementets utgifter steg {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Bak hoppet ligger en ny og voksende Ukraina-post, høye flyktningutgifter ført som bistand og en tidsavgrenset topp i EØS-utbetalingene.",
     "conclusion": "Krigen tegnet utenriksregningen på nytt. Posten Ukraina og naboland kom til og fortsatte å vokse, mens flyktningutgifter i Norge skjøt opp og senere avtok. Samtidig traff EØS-utbetalingene toppen av sin programsyklus før de falt. Resultatet ble en regning som trakk seg ned fra toppen, men aldri tilbake til utgangspunktet. Noe av veksten kan fortsatt skyldes omposteringer; en full fordeling krever avstemming av alle underpostene.",
-    "linkedin": "Utenriksdepartementets regning steg {{fact:nominalGrowth}}. Og plutselig fikk deler av «utenriks» norsk postadresse.\n\nEtter Russlands fullskalainvasjon vokste Ukraina-posten kraftig. Samtidig ble deler av mottaksutgiftene for ukrainske flyktninger i Norge ført som bistand. EØS-utbetalingene nådde også en programstyrt topp før de falt.\n\nRegnskapet hadde altså både krig, flyktningmottak og en EØS-kalender i samme handlekurv. Ikke rart kvitteringen trengte mer enn én forklaring.\n\nVi åpnet den ↓",
+    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nUtenriksdepartementets regning steg {{fact:nominalGrowth}}. Og plutselig fikk deler av «utenriks» norsk postadresse.\n\nEtter Russlands fullskalainvasjon vokste Ukraina-posten kraftig. Samtidig ble deler av mottaksutgiftene for ukrainske flyktninger i Norge ført som bistand. EØS-utbetalingene nådde også en programstyrt topp før de falt.\n\nRegnskapet hadde altså både krig, flyktningmottak og en EØS-kalender i samme handlekurv. Ikke rart kvitteringen trengte mer enn én forklaring.\n\nVi åpnet den ↓",
     "sections": [
       {
         "heading": "Spranget kom da krigen endret budsjettet",
