@@ -2,11 +2,12 @@
   "slug": "utgifter-per-innbygger-u-01-2020-2025-2026-10-05",
   "status": "draft",
   "createdAt": "2026-10-05T08:33:18.194Z",
-  "generatedAt": "2026-10-05T09:05:00.000Z",
+  "generatedAt": "2026-10-05T09:27:00.000Z",
   "lastFeedbackId": 5991074084,
   "lastFeedbackAt": "2026-10-05T09:05:00.000Z",
   "processedFeedbackIds": [
-    5991074084
+    5991074084,
+    5991422745
   ],
   "topic": "Utenriksdepartementet",
   "geography": "Staten",
@@ -206,11 +207,11 @@
     ]
   },
   "copy": {
-    "title": "Utenriksregningen vokste {{fact:nominalGrowth}}. Krigen endret innholdet.",
-    "description": "Ukraina-støtte, flyktningutgifter i Norge og EØS-utbetalinger forklarer mer av kurven enn totalsummen alene.",
-    "lead": "Utenriksdepartementets utgifter steg {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Det avgjørende er ikke at kurven gikk opp og senere litt ned, men hva som faktisk flyttet den: en ny og voksende Ukraina-post, høye flyktningutgifter ført som bistand og en tidsavgrenset topp i EØS-utbetalingene.",
-    "conclusion": "Regnskapet viser et geopolitisk skifte, ikke bare en dyrere versjon av det samme departementet. Krigen utløste en ny stor Ukraina-post og høyere flyktningutgifter i Norge. EØS-midlene bidro samtidig til toppen, før programperioden gikk mot slutten. Senere falt både EØS-utbetalingene og flyktningposten, mens Ukraina-støtten fortsatte å vokse. Det forklarer hvorfor totalen kunne gå ned fra toppen og likevel ende klart over utgangspunktet. Den presise fordelingen av hele endringen krever en egen bidragsanalyse post for post.",
-    "linkedin": "Utenriksregningen vokste {{fact:nominalGrowth}}. Men en del av den ble faktisk skrevet i Norge.\n\nEtter Russlands fullskalainvasjon kom en ny Ukraina-post. Samtidig ble deler av kostnadene for ukrainske flyktninger i Norge ført som bistand, mens EØS-utbetalingene nådde en programstyrt topp og deretter falt.\n\nDermed er kurven ikke én historie om «mer utenriks». Den er tre ulike bevegelser med hver sin forklaring. Det er først når kvitteringen åpnes post for post at totalsummen begynner å snakke.",
+    "title": "Utenriksregningen steg {{fact:nominalGrowth}}. Ukraina snudde opp ned på regnestykket.",
+    "description": "Ukraina-støtten skjøt fart, flyktningregningen flyttet hjem og EØS-midlene løftet toppen.",
+    "lead": "Utenriksdepartementets utgifter steg {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Bak hoppet ligger en ny og voksende Ukraina-post, høye flyktningutgifter ført som bistand og en tidsavgrenset topp i EØS-utbetalingene.",
+    "conclusion": "Krigen tegnet utenriksregningen på nytt. Posten Ukraina og naboland kom til og fortsatte å vokse, mens flyktningutgifter i Norge skjøt opp og senere avtok. Samtidig traff EØS-utbetalingene toppen av sin programsyklus før de falt. Resultatet ble en regning som trakk seg ned fra toppen, men aldri tilbake til utgangspunktet. Noe av veksten kan fortsatt skyldes omposteringer; en full fordeling krever avstemming av alle underpostene.",
+    "linkedin": "Utenriksdepartementets regning steg {{fact:nominalGrowth}}. Og plutselig fikk deler av «utenriks» norsk postadresse.\n\nEtter Russlands fullskalainvasjon vokste Ukraina-posten kraftig. Samtidig ble deler av mottaksutgiftene for ukrainske flyktninger i Norge ført som bistand. EØS-utbetalingene nådde også en programstyrt topp før de falt.\n\nRegnskapet hadde altså både krig, flyktningmottak og en EØS-kalender i samme handlekurv. Ikke rart kvitteringen trengte mer enn én forklaring.\n\nVi åpnet den ↓",
     "sections": [
       {
         "heading": "Spranget kom da krigen endret budsjettet",
@@ -221,7 +222,7 @@
         ],
         "paragraphs": [
           "Det klare bruddet ligger mellom {{fact:previousYear}} og {{fact:largestChangeYear}}. Da steg KPI-justert utgift per innbygger med {{fact:largestAnnualChange}}, den største årlige endringen i serien. Samme år ble posten «Ukraina og naboland» synlig i regnskapet etter Russlands fullskalainvasjon. Den omfatter blant annet humanitær hjelp, støtte til ukrainsk statsdrift og tiltak i land som tok imot flyktninger.",
-          "Dette gir en konkret forklaring på hvorfor kurven skifter nivå. Det var ikke bare eksisterende diplomati og bistand som ble litt dyrere; en ny sikkerhets- og humanitær krise fikk en egen, stor budsjettlinje. Posten fortsatte å vokse fram mot {{fact:endYear}}, slik at Ukraina-støtten holdt totalsummen oppe også etter at andre poster begynte å falle."
+          "En ny sikkerhets- og humanitær krise fikk dermed en egen, stor budsjettlinje. Posten fortsatte å vokse fram mot {{fact:endYear}}, slik at Ukraina-støtten holdt totalsummen oppe også etter at andre poster begynte å falle."
         ]
       },
       {
@@ -232,7 +233,7 @@
         ],
         "paragraphs": [
           "En annen viktig bevegelse er posten «Flyktningtiltak i Norge». Internasjonale regler åpner for at enkelte kostnader i det første året etter at flyktninger kommer til Norge, kan regnes som offentlig utviklingsbistand. Derfor kan utgifter til blant annet mottak og bosetting ligge under Utenriksdepartementets bistandsregnskap, selv om pengene brukes her hjemme.",
-          "Posten steg kraftig i {{fact:largestChangeYear}}, da mange ukrainere søkte beskyttelse i Norge. Deretter avtok den fram mot {{fact:endYear}}. Det bidro til å trekke totalen ned fra toppen. Tolkningen er viktig: Nedgangen betyr ikke i seg selv at norsk støtte til Ukraina ble redusert. Den viser at én bestemt type flyktningkostnad utviklet seg annerledes enn den direkte støtten til Ukraina og nabolandene."
+          "Posten steg kraftig i {{fact:largestChangeYear}}, da mange ukrainere søkte beskyttelse i Norge. Deretter avtok den fram mot {{fact:endYear}} og trakk totalen ned fra toppen. Samtidig fortsatte den direkte støtten til Ukraina og nabolandene å vokse."
         ]
       },
       {
@@ -255,11 +256,11 @@
         ],
         "paragraphs": [
           "Fra {{fact:startYear}} til {{fact:endYear}} er regionbevilgningene den tydeligste voksende gruppen i underpostene. Ukraina og naboland står sentralt i denne veksten. I den andre retningen trekker særlig EØS-midlene etter utbetalingstoppen og flyktningtiltak i Norge etter det første kriseåret. Også enkelte andre bistandsområder og administrative posteringer endrer seg, men der kan omorganisering og flytting mellom kapitler gjøre en ren årssammenligning misvisende.",
-          "Dermed kan ikke nettobevegelsen leses som om alle formål steg først og deretter ble skåret ned. Kurven er summen av poster med ulike drivere: krig og humanitær støtte, mottak av flyktninger i Norge og avslutningen av en flerårig EØS-programperiode. Det er disse motgående bevegelsene som gjør at totalen faller etter toppen uten å vende tilbake til det gamle nivået."
+          "Postene beveget seg i motsatt retning: krig og humanitær støtte trakk opp, mens flyktningutgifter i Norge og EØS-utbetalinger trakk ned etter sine topper. Derfor falt totalen uten å vende tilbake til det gamle nivået."
         ]
       },
       {
-        "heading": "Veksten er reell, men totalsummen er ikke årsaken",
+        "heading": "Prisene tok mye – men ikke hele veksten",
         "factIds": [
           "nominalGrowth",
           "priceGrowth",
@@ -267,18 +268,18 @@
           "realPerCapitaGrowth"
         ],
         "paragraphs": [
-          "Pris- og befolkningsjusteringen trengs fortsatt for å måle størrelsen på endringen. Konsumprisene steg {{fact:priceGrowth}} og folketallet {{fact:populationGrowth}}. Etter begge justeringene står en realvekst per innbygger på {{fact:realPerCapitaGrowth}} igjen. Det viser at økningen ikke bare er inflasjon eller flere innbyggere.",
-          "Men justeringen forklarer ikke hvorfor utgiftene endret seg. Den forklaringen ligger i postene og hendelsene: Ukraina-støtten kom til og vokste, flyktningkostnader i Norge skjøt opp og avtok, og EØS-utbetalingene fulgte sin programsyklus. KPI er målestokken; den er ikke historien."
+          "Konsumprisene steg {{fact:priceGrowth}} og folketallet {{fact:populationGrowth}}. Etter begge justeringene står en realvekst per innbygger på {{fact:realPerCapitaGrowth}} igjen. Økningen var altså større enn inflasjonen og befolkningsveksten alene.",
+          "Ukraina-støtten kom til og vokste, flyktningkostnadene i Norge skjøt opp og avtok, og EØS-utbetalingene fulgte sin programsyklus. KPI setter beløpene i samme kroneverdi; postene viser hva regningen bestod av."
         ]
       },
       {
-        "heading": "Hva regnskapet fortsatt ikke beviser",
+        "heading": "Noen kroner kan ha flyttet adresse",
         "factIds": [
           "endYear"
         ],
         "paragraphs": [
           "Sammenfallet mellom krigen og de nye postene er godt dokumentert i budsjettmaterialet, men totalsummen kan ikke alene måle effekten av tiltakene. Den sier heller ikke om pengebruken var effektiv. Departementsgrenser og regnskapsføring kan endres, og særlig administrative utslag bør kontrolleres før de tolkes som faktisk aktivitetsvekst.",
-          "Denne analysen identifiserer derfor de viktigste bevegelsene og hendelsene som passer med dem, men den fordeler ikke hver krone av totalendringen. En full bidragsanalyse må avstemme alle underposter år for år og skille reelle utgiftsendringer fra omposteringer. Det er neste kontrollpunkt, ikke en grunn til å gjenta totalsummen en gang til."
+          "Analysen fordeler ikke hver krone av totalendringen. En full bidragsanalyse må avstemme alle underposter år for år og skille reelle utgiftsendringer fra omposteringer."
         ]
       }
     ]
