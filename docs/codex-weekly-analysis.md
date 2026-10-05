@@ -79,3 +79,5 @@ PR #11 er menneskelig godkjent på head `d222e0caac4e22532adf3cf25e53135c67bed96
 ### Visuell gjennomgang
 
 Botlevering starter nettstedets bygg av versjonsbundet forhåndsvisning. Lenken legges øverst i analyse-PR-en og viser faktisk analyseside med grafer og LinkedIn-utkast. Utkastlenken er offentlig tilgjengelig, merket utkast og utelatt fra bibliotek/sitemap. Bekreft at lenken gjelder gjeldende head og fungerer før levering beskrives som ferdig; GitHub Pages kan bruke litt tid etter byggingen. Ikke endre eller godkjenn teksten for å få vist grafene.
+
+Direkte push av revidert JSON til botens analyse-PR starter også forhåndsvisningsbygg. Ikke overskriv PR-beskrivelsen etter at bygget har satt inn forhåndsvisningsblokken; behold `<!-- analysis-preview:start -->` til `<!-- analysis-preview:end -->` dersom beskrivelsen oppdateres uten en ny commit. Vent på en lenke som matcher gjeldende head.

@@ -73,3 +73,6 @@ Godkjenneren ønsker å lese den faktiske analysesiden fremfor bare GitHub-tekst
 Lokalt verifisert: 102 tester, actionlint og produksjonsbygg/SEO består. Mobiltest ved 390 px viser dagens PR #14 med grafer, ingen JavaScript-feil eller horisontal scrolling, noindex og korrekt retur til GitHub.
 
 Live-verifisert etter PR #15: deploy 37287453321 og Pages 37287617359 bestod. PR #14 har lenken øverst; `/analyser/utkast/pr-14/2966432c871fdb5921df7459b0152a95d7fe65a9/` returnerer HTTP 200 med eksakt utkast og review-head, grafer og noindex. Lokal mobiltest bestod; direkte Chromium mot live møtte miljøets sertifikatfeil, mens curl verifiserte TLS og live HTML. Ingen ordinær publisering av PR #14.
+
+
+Direkte revisjon av PR #14 fra den planlagte AI-en endret head til `2d2a8086624a97dddced0a2caf151028f1e5b0dd` og erstattet PR-beskrivelsen, inkludert forhåndsvisningslenken. Legg til pull_request_target/synchronize for samme repos botanalyse-PR-er: bare dispatch av deploy på main, ingen kjøring av PR-kode. Dette dekker direkte revisjoner i tillegg til handoff. Gamle lenker gjelder gammel versjon; nye lenker skal kontrolleres mot gjeldende head.
