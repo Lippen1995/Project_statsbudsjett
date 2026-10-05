@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "extracts": [
+    {
+      "id": "Priser",
+      "scope": "state",
+      "purpose": "Kontroller observert års-KPI og avgrens hvor mye nominell utgiftsvekst som består etter prisjustering.",
+      "table": "14711",
+      "selections": {
+        "ContentsCode": [
+          "KpiAar"
+        ],
+        "Tid": [
+          "2014",
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "Befolkning",
+      "scope": "state",
+      "purpose": "Kontroller folkemengde ved inngangen til året for samme observerte regnskapsperiode.",
+      "table": "06913",
+      "selections": {
+        "Region": [
+          "0"
+        ],
+        "ContentsCode": [
+          "Folkemengde"
+        ],
+        "Tid": [
+          "2014",
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    }
+  ]
+}
