@@ -74,3 +74,8 @@ Avslutt med lenke til det ferdige utkastet eller gjennomgangen, hovedfunnet, dat
 ### Oppdatert pilotstatus, 4. oktober 2026
 
 PR #11 er menneskelig godkjent på head `d222e0caac4e22532adf3cf25e53135c67bed965` og flettet. Den finnes nå i publiseringsregisteret med hash `954412d7058f1681baf7e0be30cf94fe0e9ae785637611a4e35c760abe1856cf`. Dette erstatter tidligere status om at PR #11 venter på godkjenning. Kontroller fortsatt den faktiske køen og registeret ved hver kjøring. LinkedIn er ikke aktivert.
+
+
+### Visuell gjennomgang
+
+Botlevering starter nettstedets bygg av versjonsbundet forhåndsvisning. Lenken legges øverst i analyse-PR-en og viser faktisk analyseside med grafer og LinkedIn-utkast. Utkastlenken er offentlig tilgjengelig, merket utkast og utelatt fra bibliotek/sitemap. Bekreft at lenken gjelder gjeldende head og fungerer før levering beskrives som ferdig; GitHub Pages kan bruke litt tid etter byggingen. Ikke endre eller godkjenn teksten for å få vist grafene.

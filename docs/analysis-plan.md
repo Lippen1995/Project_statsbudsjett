@@ -64,3 +64,10 @@ Live-verifisering: Pages-kjøring 37215596658 bestod. Analysesiden og datagrunnl
 Den planlagte oppgaven meldte at dagens analyse er skrevet, men mangler workflow_dispatch-tilgang. Levering starter derfor også ved push av `editorial/handoff/ukens-analyse.json` til `analysis/input-*`. Jobben kjører scripts fra betrodd main og henter JSON fra pushens faste SHA; øvrig validering, botgjennomgang og eksakt menneskelig godkjenning beholdes. Dagens levering er ikke bekreftet før en vellykket workflow og bot-PR med review request finnes.
 
 Verifisert levering 5. oktober: PR #13 aktiverte push-triggeren. Dagens eksisterende JSON ble levert uendret fra en ny gren på oppdatert main, `analysis/input-2026-10-05-delivery`, commit `87256cfc7ee580340418a2ef39846b7e080d20a6`. Workflow 37284328619 bestod og opprettet bot-PR #14 «Utenriksregningen vokste 36,7 %. Men toppen kom midtveis.», head `2966432c871fdb5921df7459b0152a95d7fe65a9`, med review request til Lippen1995. Ingen publisering eller bekreftet mobilpush.
+
+
+## Forhåndsvisning med grafer, 5. oktober 2026
+
+Godkjenneren ønsker å lese den faktiske analysesiden fremfor bare GitHub-tekst. Deploy fra betrodd main samler validerte JSON-utkast fra åpne bot-PR-er, bygger versjonsbundne sider under `/analyser/utkast/pr-N/<head>/`, og legger lenken øverst i gjennomgangen. Sidene bruker samme layout, grafer og Sven-byline, viser LinkedIn-utkast og lenker tilbake til godkjenning. De er offentlig tilgjengelige via lenken, tydelig merket utkast, noindex/nofollow, og holdes utenfor bibliotek og sitemap. Bare eksakt menneskelig godkjenning gir ordinær publisering. Ny botlevering starter deploy for å oppdatere forhåndsvisning; en revidert versjon får ny lenke. Tidligere forhåndsvisninger fjernes ved neste bygg og erstattes ikke med annet innhold på samme adresse.
+
+Lokalt verifisert: 102 tester, actionlint og produksjonsbygg/SEO består. Mobiltest ved 390 px viser dagens PR #14 med grafer, ingen JavaScript-feil eller horisontal scrolling, noindex og korrekt retur til GitHub.

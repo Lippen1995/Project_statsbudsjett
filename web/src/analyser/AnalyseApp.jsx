@@ -166,7 +166,7 @@ function Archive({ articles }) {
     </>
   )
 }
-function Article({ article, preview }) {
+function Article({ article, preview, review }) {
   const { report: r, copy: c } = article
   const t = (text) => factText(text, r)
   const changes = new Map(annualChanges(r.rows).map((row) => [row.year, row.change]))
@@ -182,7 +182,14 @@ function Article({ article, preview }) {
       {preview && (
         <aside className="an-preview" role="note">
           <strong>Utkast til gjennomgang</strong>
-          <p>Denne analysen og LinkedIn-teksten er ikke godkjent eller publisert.</p>
+          <p>Denne analysen og LinkedIn-teksten er ikke godkjent for publisering.</p>
+          {review && (
+            <p>
+              <a href={review.url}>Gi tilbakemelding eller godkjenn i GitHub →</a>
+              <br />
+              Versjon {review.head.slice(0, 8)}
+            </p>
+          )}
         </aside>
       )}
       <header className="an-article-header">
@@ -432,6 +439,7 @@ export default function AnalyseApp({
   articles = [],
   article = null,
   preview = false,
+  review = null,
   notFound = false,
 }) {
   useEffect(() => {
@@ -447,7 +455,7 @@ export default function AnalyseApp({
           <a href="/analyser/">Se alle analyser →</a>
         </div>
       ) : article ? (
-        <Article article={article} preview={preview} />
+        <Article article={article} preview={preview} review={review} />
       ) : (
         <Archive articles={articles} />
       )}

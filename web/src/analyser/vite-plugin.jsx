@@ -5,6 +5,7 @@ import { renderToString } from 'react-dom/server'
 import AnalyseApp from './AnalyseApp.jsx'
 import { validateArticle, contentHash } from '../../../scripts/analyser/schema.mjs'
 import { factText, analysisPath, archiveEntries } from './model.js'
+import { previewPath } from '../../../scripts/analyser/previews.mjs'
 
 const escape = (s) =>
   String(s).replace(
@@ -163,6 +164,29 @@ export function analysesPlugin() {
             null,
             2,
           ),
+        })
+      }
+      const reviewPreviews = process.env.ANALYSIS_REVIEW_PREVIEWS_FILE
+        ? JSON.parse(readFileSync(process.env.ANALYSIS_REVIEW_PREVIEWS_FILE, 'utf8'))
+        : []
+      for (const review of reviewPreviews) {
+        const article = validateArticle(review.article)
+        if (
+          article.status !== 'draft' ||
+          article.approval ||
+          article.publishedAt ||
+          contentHash(article) !== review.hash
+        )
+          throw Error('Ugyldig versjon i forhåndsvisningen')
+        const path = previewPath(review.number, review.head)
+        this.emitFile({
+          type: 'asset',
+          fileName: `${path.slice(1)}index.html`,
+          source: page(html, path, {
+            article,
+            preview: true,
+            review: { number: review.number, head: review.head, url: review.url },
+          }),
         })
       }
       const draft = preview()
