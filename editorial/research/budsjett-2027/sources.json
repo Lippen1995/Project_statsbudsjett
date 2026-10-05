@@ -1,0 +1,89 @@
+{
+  "preparedAt": "2026-10-05",
+  "sources": [
+    {
+      "id": "municipal_circular",
+      "url": "https://www.regjeringen.no/no/dokumenter/rundskriv-h-126-kommuneproposisjonen-2027-og-revidert-nasjonalbudsjett-2026/id3167627/",
+      "publicationDate": "2026-06-24",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "government-primary",
+      "sha256": "d10b1b4a7eeb335347f055a223d942a44c4c1ab883c4da1db68be47b53ca2f3e",
+      "quotes": [
+        "Veksten på 3,5–4,0 mrd. kroner vil gi et handlingsrom utover merutgifter til demografi på 0,5–1,0 mrd. kroner.",
+        "1 mrd. kroner er et ekstraordinært og midlertidig tilskudd til vedlikehold og mindre investeringer på fylkesveier."
+      ]
+    },
+    {
+      "id": "pension",
+      "url": "https://www.regjeringen.no/no/aktuelt/slik-vil-arbeiderparti-regjeringen-lofte-pensjonen-til-sliterne/id3171033/",
+      "publicationDate": "2026-08-24",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "government-primary",
+      "sha256": "286ad938cd50c6f98f6165ab1695820eee98e58e568cf32dbb917d2bc1415887",
+      "quotes": []
+    },
+    {
+      "id": "defence2027",
+      "url": "https://www.regjeringen.no/no/aktuelt/forsvarsbudsjettet27/id3175212/",
+      "publicationDate": "2026-10-02",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "government-primary",
+      "sha256": "86a87f4b99242cc73b5426333e5b3237d19ff2b9aaa56ce4d70b61af016991e4",
+      "quotes": []
+    },
+    {
+      "id": "release2027",
+      "url": "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/",
+      "publicationDate": null,
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "government-primary",
+      "sha256": "352ff296111aff12f0f64f7e23f2d1347d71a7b72db13000d07d3d97c4f2b42b",
+      "quotes": []
+    },
+    {
+      "id": "government_members",
+      "url": "https://www.regjeringen.no/no/om-regjeringa/noverande/regjeringensmedlemmer/id543170/",
+      "publicationDate": null,
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "government-primary",
+      "sha256": "0d1b146f63918c66c3b064368b8e81aded5064c247be673e3de0234aed88f3cc",
+      "quotes": [
+        "Senterpartiet gikk ut av regjering 4. februar 2025, og regjeringen består etter det av medlemmer fra Arbeiderpartiet."
+      ]
+    },
+    {
+      "id": "government_plan",
+      "url": "https://www.regjeringen.no/contentassets/66a93755b6f04e0494d842ec64d42fd9/regjeringens-plan-for-norge.pdf",
+      "publicationDate": "2025-12",
+      "readAt": "2026-10-05",
+      "status": "read",
+      "sourceType": "government-primary",
+      "sha256": "4bfc123aaaffb01f901463baafe157d5961cedb6ea00fd1eba1a97cb61ad227e",
+      "quotes": [
+        "Inntekter fra klimaavgiftene skal komme folk og næringsliv til gode gjennom skattekutt."
+      ],
+      "quotePage": 6,
+      "limitations": [
+        "Regjeringens plan, ikke selvstendig kilde til de øvrige partienes standpunkter. Planen varsler årlige revisjoner; kontroller oppdateringer."
+      ]
+    }
+  ],
+  "blocked": [
+    "arbeiderpartiet.no",
+    "hoyre.no",
+    "frp.no",
+    "sv.no",
+    "senterpartiet.no",
+    "roedt.no",
+    "mdg.no",
+    "venstre.no",
+    "krf.no",
+    "data.stortinget.no"
+  ],
+  "networkStatus": "Miljøutkast med utvidet tillatelsesliste er lagret, men må publiseres før nettverkstilgangen kan verifiseres. Direkte og eskalert kildehenting gav proxy 403."
+}

@@ -93,3 +93,9 @@ Les regjeringens budsjettdokumenter for å forklare konkrete forslag. For partie
 Gul bok gjelder «Regjeringens budsjettforslag», fase `initial`. RNB er fase `revised` og trenger faktisk kontrollert kildeformat samt dokumentert Stortings-vedtak og samsvarende DFØ-vedtak før utfallet fryses. Ikke behandle en vilkårlig kumulativ revidert serie som endelig RNB.
 
 Den daglige DFØ-kontrollen og den særskilte Gul bok-importen er datajobber, ikke nye AI-tidsplaner. Ikke oppgi at de oppretter analyser eller vekker denne native oppgaven. Ekstra kjøring på budsjettdagen er en egen, foreløpig uopprettet forutsetning; mandagsplanen skal beholdes.
+
+### Utvidet budsjettdagsanalyse og forhåndsresearch
+
+Brukeren har 5. oktober uttrykkelig bestilt en ekstra, større onsdagsanalyse med vesentlige ressurser. På budsjettdagen gjelder mål om 2 500–3 500 ord og åtte til ti seksjoner fremfor den vanlige korte ukesanalysen. Les hele ressursinstruksen i `docs/budsjettdagen-2027.md` og researchen i `editorial/research/budsjett-2027/README.md`. Bruk den sterkeste tilgjengelige native modellen, høy tilgjengelig resonneringsinnsats og separate kilde-, tall-, tolknings- og språkpass. Ingen separat AI-API.
+
+Fullfør kildebelagte profiler for alle ni stortingspartier før politiske vurderinger skrives; profiler merket uverifiserte er leselister. Kontroller ferske 2027-krav mot vedtatte programmer, finansiering og faktisk budsjettforslag. Skill samsvar på onsdag fra gjennomslag i senere forhandlinger. Undersøk også husholdninger, kommuner og næringsliv, med nettoeffekter og tydelige forutsetninger. Kort LinkedIn-format, grafer, byline, forhåndsvisning og godkjenning av eksakt versjon gjelder fortsatt. En større leveranse endrer ikke den faktiske tidsplanen for denne native oppgaven.

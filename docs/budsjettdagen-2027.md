@@ -72,6 +72,22 @@ Vent på vellykket kildekontroll, hent oppdatert main og kontroller deretter rap
 
 ## Native AI-kjøring på onsdag: egen forutsetning
 
+### Ressurser og utvidet oppdrag vedtatt 5. oktober
+
+Brukeren ønsker en større analyse med vesentlige ressurser og grundig forhåndsresearch om alle stortingspartiene. Les `editorial/research/budsjett-2027/README.md`, `partier.md`, `sources.json` og baseline før arbeidet starter. Fullfør kildeprofilene som er merket uverifiserte; nettverksutkastet må publiseres før tilgangen til partienes egne nettsider kan kontrolleres. Ikke erstatt kildearbeid med generelle antakelser om partiene.
+
+Dette er en uttrykkelig ekstra analyse utover den vanlige ukerytmen. Sikt mot **2 500–3 500 ord og åtte til ti seksjoner**, innenfor eksisterende artikkelskjema. Bruk den sterkeste tilgjengelige modellen og høy tilgjengelig resonneringsinnsats i den native oppgaven. Gjennomfør egne gjennomganger av kildegrunnlag, beregninger, politiske konklusjoner og redaksjonell tekst. Instruksen endrer ikke modellinnstillinger eller reserverer faktisk kvote; slike innstillinger må være tilgjengelige i oppgaven. Ingen separat AI-API.
+
+Arbeidsrekkefølgen er: verifiser import og dokumentversjon; les nasjonalbudsjettet, Gul bok, skatteforslaget og relevante fagproposisjoner; forklar de største endringsdriverne; sammenhold konkrete partiløfter med faktiske forslag; undersøk nettoeffekten for berørte grupper; kontroller alle konklusjoner mot kildene; skriv og vurder mobilutkastet; lever til menneskelig godkjenning.
+
+Skill politisk samsvar på fremleggelsesdagen fra dokumentert forhandlingsgjennomslag etter Stortingets behandling. Vis konkrete oppfylte eller uoppfylte krav med begrunnelse, heller enn en samlet partikarakter. Skatteproveny alene viser ikke skatteendring for husholdninger. Kommunerammen må vurderes etter kostnader, demografi og oppgaver, og med riktig sammenligningsbase. Kontroller historiske postnavn før omtale. Bruk offisielle fremtidige prisanslag som anslag, aldri som observerte KPI-er.
+
+Partienes originalkilder må kunne dokumenteres i artikkelens kontrollerte kildegrunnlag. Dagens parlamentariske `budget-evidence` skal ikke brukes til å kamuflere partiprogrammer som forlik. Nødvendig utvidelse av kildehåndteringen må være kontrollert før slike vurderinger leveres.
+
+En oppstart rundt klokken 11 er ikke en leveringsfrist. Forsvarsdepartementet presenterer budsjettet klokken 14, ifølge den kontrollerte invitasjonen i researchregisteret. Dersom forsvar er en vesentlig driver, les også denne presentasjonen før hovedkonklusjonen låses. Prioriter et grundig utkast senere samme dag fremfor tidlig, ufullstendig levering. Publisering samme dag avhenger av faktisk datatilgang, særskilt AI-kjøring og menneskelig godkjenning.
+
+Behold de eksisterende tre grafene, designet og Sven-byline. Mer tekst skal gi leseren flere forklarte sammenhenger, ikke flere løsrevne tall. LinkedIn-teksten skal fortsatt være kort, med den avtalte Unicode-innledningen, en konkret krok, tørr vennlig humor og et spørsmål hovedanalysen besvarer. Kontroller teksten mot feltgrensen og publiseringsflyten.
+
 GitHub-workflowene importerer og validerer data. De starter ikke den native AI-en. Den eksisterende AI-oppgaven kjører mandager, og denne økten har ikke verktøy for å opprette eller endre oppgaven i den andre samtalen. **En særskilt onsdagskjøring er derfor ikke opprettet her.**
 
 Bruk denne instruksen i den eksisterende oppgavens chat for en særskilt kjøring onsdag 7. oktober 2026, for eksempel klokken **11.00 Europe/Oslo**. Ikke erstatt mandagsplanen:
