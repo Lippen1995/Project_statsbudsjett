@@ -86,7 +86,7 @@ test('SSB archive hashes, scopes and controlled paths are enforced', () => {
     const enriched = attachSsbEvidence(dir, report)
     assert.equal(enriched.facts.ssbEldreEnd.value, 110)
     assert.notEqual(enriched.dataHash, report.dataHash)
-    assert.equal(enriched.sources[0].local, `/data/ssb-research/${hash}.json`)
+    assert.equal(enriched.sources[1].local, `/data/ssb-research/${hash}.json`)
     assert.equal(attachSsbEvidence(dir, { ...report, scopeId: 'u-01' }).ssbEvidence, undefined)
     writeFileSync(`${dir}/ssb-research/${hash}.json`, raw + ' ')
     assert.throws(() => attachSsbEvidence(dir, report), /hash/)

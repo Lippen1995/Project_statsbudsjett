@@ -117,12 +117,20 @@ export function attachSsbEvidence(dataDir, report) {
     facts: { ...report.facts, ...facts },
     sources: [
       ...report.sources,
-      ...evidence.map((e) => ({
-        name: `SSB: ${e.title} (tabell ${e.table})`,
-        url: `https://www.ssb.no/statbank/table/${e.table}/`,
-        local: `/data/ssb-research/${e.hash}.json`,
-        description: `Frosset uttrekk hentet ${e.retrievedAt}. Utvalg, metadata, originalrespons og kildehash følger arkivet. ${e.purpose}`,
-      })),
+      ...evidence.flatMap((e) => [
+        {
+          name: `SSB: ${e.title} — ${e.id} (tabell ${e.table})`,
+          url: `https://www.ssb.no/statbank/table/${e.table}/`,
+          description: `Frosset uttrekk hentet ${e.retrievedAt}. ${e.purpose}`,
+        },
+        {
+          name: `Frosset SSB-uttrekk: ${e.id}`,
+          url: `https://fellestall.no/data/ssb-research/${e.hash}.json`,
+          local: `/data/ssb-research/${e.hash}.json`,
+          description:
+            'Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget.',
+        },
+      ]),
     ],
     methodology: [
       ...report.methodology,

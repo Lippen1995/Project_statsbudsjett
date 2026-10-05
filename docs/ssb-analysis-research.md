@@ -49,7 +49,7 @@ Fra oppdatert `main`, opprett en gren `analysis/ssb-research-<unik-id>`. Grenen 
 
 Workflowen `ssb-research.yml` kontrollerer senderens skrivetilgang og den faste leveringscommitten. Den kjører Python fra betrodd main og henter selv metadata og observasjoner fra SSB. Lever bare forespørsler, aldri egne observasjonsverdier. Den arkiverer metadata, utvalg, originalrespons, normalisert serie, tidspunkt og SHA-256 under `web/public/data/ssb-research/`. En ny versjon overskriver ikke en gammel arkivfil. Registeret velger den siste kontrollerte versjonen av en serie for nye rapporter; gamle artiklers innebygde grunnlag endres ikke.
 
-Vent på en vellykket kildekontroll, hent fersk main og kjør `prepare.mjs` på nytt. Rapporten får automatisk SSB-fakta, kildelenke, lenke til frosset uttrekk, metode og forbehold. Endringen i grunnlaget inngår i rapport- og artikkelhash. Eksisterende botgjennomgang og menneskelig godkjenning gjelder fortsatt. Workflowen publiserer ingen artikkel og vekker ikke AI-oppgaven.
+Vent på en vellykket kildekontroll, hent fersk main og kjør `prepare.mjs` på nytt. Rapporten får automatisk SSB-fakta, kildelenke, lenke til frosset uttrekk, metode og forbehold. Endringen i grunnlaget inngår i rapport- og artikkelhash. Eksisterende botgjennomgang og menneskelig godkjenning gjelder fortsatt. Workflowen gjør de kontrollerte kildefilene tilgjengelige på nettstedet, men publiserer ingen ny artikkel og vekker ikke AI-oppgaven.
 
 ## Bruk i analysen
 
@@ -62,3 +62,5 @@ Se etter alternative forklaringer og moteksempler. Samtidig vekst er ikke bevis 
 ## Drift og verifikasjon
 
 SSBs API krever nettverk til `data.ssb.no`, ikke bare `www.ssb.no`. Domenet er lagret i miljøutkastet; publisering av miljøinnstillingene er nødvendig før direkte tilgang kan bekreftes. `ssb-research-ci.yml` kontrollerer en faktisk tabell og et lite testuttrekk fra GitHub Actions; testdataene arkiveres eller publiseres ikke. En lokal test uten nettverk markerer livekontrollen som utelatt, ikke bestått.
+
+Livekontrollen i GitHub Actions er bekreftet bestått 5. oktober 2026: https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/37338143460. Den kjørte faktisk søk, metadata og årsuttrekk fra tabell 07459 med live-testflagget aktivt. Lokal direkte API-tilgang er en egen miljøforutsetning.

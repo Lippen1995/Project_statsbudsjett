@@ -1,4 +1,3 @@
-import copy
 import os
 import sys
 from pathlib import Path
@@ -61,6 +60,7 @@ def test_packet_bounds_and_ssrf():
 def test_actual_ssb_api():
     catalog=get('',{'lang':'no','query':'folkemengde','pageSize':3})
     assert isinstance(catalog,(dict,list)) and catalog
+    assert 'folkemengde' in __import__('json').dumps(catalog,ensure_ascii=False).lower()
     md=metadata('07459');selections={}
     time_id=md.get('role',{}).get('time',['Tid'])[0]
     for code in md['id']:
@@ -72,3 +72,19 @@ def test_actual_ssb_api():
     snapshot=fetch_snapshot('07459',selections)
     assert len(snapshot['series']['rows'])==2
     print('Verified actual SSB API:',snapshot['title'],selections,snapshot['series'])
+
+def test_archive_preserves_versions_and_rejects_missing_identity(tmp_path, monkeypatch):
+    import ssb_research
+    import json
+    request={'id':'Population','scope':'state','purpose':'Undersøk befolkningsutvikling','table':'07459','selections':{}}
+    snapshot={'version':1,'series':{'rows':[{'year':2024,'value':100},{'year':2025,'value':110}]}}
+    monkeypatch.setattr(ssb_research,'fetch_snapshot',lambda *args:snapshot)
+    first=ssb_research.archive(tmp_path,request)
+    before=(tmp_path/first['path']).read_bytes()
+    snapshot['series']['rows'][1]['value']=111
+    second=ssb_research.archive(tmp_path,request)
+    assert first['hash']!=second['hash']
+    assert (tmp_path/first['path']).read_bytes()==before
+    index=json.loads((tmp_path/'ssb-research/index.json').read_text())
+    assert index['extracts']==[second]
+    with pytest.raises(ValueError):ssb_research.archive(tmp_path,{**request,'scope':'../../escape'})
