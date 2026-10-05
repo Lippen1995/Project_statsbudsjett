@@ -1,0 +1,24 @@
+name: Analyser – oppdater forhåndsvisning ved revisjon
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+    paths: ['editorial/drafts/**']
+permissions:
+  actions: write
+concurrency:
+  group: analysis-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  preview:
+    if: >-
+      github.event.pull_request.user.login == 'github-actions[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.event.pull_request.head.ref, 'analysis/weekly-')
+    runs-on: ubuntu-latest
+    steps:
+      # Never check out or run code from the PR. Main validates JSON and builds.
+      - name: Oppdater forhåndsvisning fra betrodd main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/deploy.yml/dispatches" --raw-field ref=main
