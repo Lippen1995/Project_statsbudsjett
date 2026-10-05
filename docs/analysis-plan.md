@@ -82,3 +82,5 @@ Live-verifisert etter PR #15: deploy 37287453321 og Pages 37287617359 bestod. PR
 
 
 Direkte revisjon av PR #14 fra den planlagte AI-en endret head til `2d2a8086624a97dddced0a2caf151028f1e5b0dd` og erstattet PR-beskrivelsen, inkludert forhåndsvisningslenken. Legg til pull_request_target/synchronize for samme repos botanalyse-PR-er: bare dispatch av deploy på main, ingen kjøring av PR-kode. Dette dekker direkte revisjoner i tillegg til handoff. Gamle lenker gjelder gammel versjon; nye lenker skal kontrolleres mot gjeldende head.
+
+Revisjonsforhåndsvisning gjenopprettet: deploy 37288211236 bygget head `2d2a8086624a97dddced0a2caf151028f1e5b0dd`. PR #14 fikk ny lenke øverst, og siden returnerer HTTP 200 med eksakt revidert JSON, review-head og grafer. Automatisk preview-workflow dekker også edited-hendelser fra andre enn Actions-boten, slik at overskrevet PR-beskrivelse gjenopprettes uten å utløse en bot-loop. Ingen endring av selve utkastet eller godkjenning er gjort her.
