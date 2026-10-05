@@ -537,3 +537,13 @@
     font-size: 16px;
   }
 }
+
+.an-budget-figure h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+@media (max-width: 640px) {
+  .an-budget-figure {
+    padding: 16px;
+  }
+}

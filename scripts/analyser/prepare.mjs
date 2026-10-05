@@ -5,6 +5,7 @@ import { analysisSettings } from './config.mjs'
 import { nextReport } from './candidates.mjs'
 import { pendingFeedback, readReviewContext } from './workflow.mjs'
 import { validateArticle } from './schema.mjs'
+import { articleMetadata } from './article-metadata.mjs'
 
 const output = process.argv[2]
 if (!output || !/^editorial\/handoff\/[a-z0-9-]+\.json$/.test(output))
@@ -38,13 +39,10 @@ if (process.argv[3]) {
   const createdAt = new Date().toISOString()
   packet = {
     article: {
-      slug: `utgifter-per-innbygger-${report.scopeId}-${report.start}-${report.end}-${createdAt.slice(0, 10)}`,
+      ...articleMetadata(report, createdAt.slice(0, 10)),
       status: 'draft',
       createdAt,
       generatedAt: createdAt,
-      topic: report.scopeId === 'state' ? 'Statsfinanser' : report.scopeName,
-      geography: 'Staten',
-      type: 'Utvikling over tid',
       report,
       copy: null,
     },

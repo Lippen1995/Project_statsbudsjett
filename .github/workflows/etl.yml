@@ -5,9 +5,14 @@ on:
   schedule:
     - cron: '0 6 5 * *'     # Den 5. hver måned kl 06:00 UTC (DFØ oppdaterer månedlig)
   push:
+    branches: [main]
     paths:
       - '.github/workflows/etl.yml'
       - 'etl/**'
+
+concurrency:
+  group: budget-data-import
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -94,6 +99,7 @@ jobs:
             echo "Ingen dataendringer – hopper over commit."
           else
             git commit -m "chore: oppdater data fra DFØ og SSB (automatisk ETL)"
+            git pull --rebase origin main
             git push
           fi
 
@@ -185,3 +191,4 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     permissions:
       contents: write
+      pull-requests: write

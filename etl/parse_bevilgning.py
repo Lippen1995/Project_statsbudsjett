@@ -148,4 +148,6 @@ def parse_bevilgning(paths: list) -> pd.DataFrame:
         f"  -> {len(wide)} poster over årene "
         f"{int(wide['aar'].min())}–{int(wide['aar'].max())}"
     )
+    wide.attrs["saldert_aar"] = sorted(int(y) for y in df.loc[df["serie"] == "saldert", "aar"].dropna().unique())
+    wide.attrs["bevilgning_vedtak"] = {str(int(year)): sorted(set(rows["bev_tekst"].dropna())) for year, rows in df[df["serie"] == "endring"].groupby("aar")}
     return wide

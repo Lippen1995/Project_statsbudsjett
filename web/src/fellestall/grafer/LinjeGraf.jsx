@@ -46,10 +46,10 @@ export default function LinjeGraf({
   // Tekstalternativ: en oppsummering av hva kurvene faktisk viser. Kallstedet
   // kjenner enheten, så beskrivelsen kommer derfra; fallbacket dekker resten.
   const forstSist = (s) => {
-    const p = s.punkter.filter((x) => x.v != null)
+    const p = s.punkter.map((point, i) => ({ ...point, i })).filter((x) => x.v != null)
     if (!p.length) return null
     const f = (v) => (aksefmt ? aksefmt(v) : belopMill(v))
-    return `${f(p[0].v)} i ${aar[0]} til ${f(p[p.length - 1].v)} i ${aar[aar.length - 1]}`
+    return `${f(p[0].v)} i ${aar[p[0].i]} til ${f(p[p.length - 1].v)} i ${aar[p[p.length - 1].i]}`
   }
   const auto = serier
     .map((s, i) => { const d = forstSist(s); return d ? `${s.navn ?? `serie ${i + 1}`}: ${d}` : null })

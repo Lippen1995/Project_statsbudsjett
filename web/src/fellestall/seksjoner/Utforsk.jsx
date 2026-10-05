@@ -5,7 +5,7 @@ import { RUST, GRONN, BLEK, NIVAANAVN, visNavn } from '../design'
 import { verdi, barn, rot, artskontoTre, detaljFil, sumRot } from '../kompakt'
 import { belopMill, kr, pct, pctBnp, n0, n1, n2 } from '../tall'
 
-const SERIER = ['Regnskap', 'Saldert budsjett', 'Revidert budsjett']
+const SERIER = ['Regnskap', 'Saldert budsjett', 'Revidert budsjett', 'Regjeringens budsjettforslag']
 
 /** Kortere søk enn dette gir for mange treff til å være nyttig */
 const MIN_SOK = 2
@@ -18,8 +18,14 @@ const MAKS_AREAL = 7
 function lastNedCSV(rader, filnavn, aar) {
   const linjer = [['navn', 'tag', 'niva', 'belop_mill_kr', 'aar'].join(';')].concat(
     rader.map((r) =>
-      [r.node.n.replace(/;/g, ','), r.node.t ?? '', r.node.l, String(r.verdi).replace('.', ','), aar].join(';')
-    )
+      [
+        r.node.n.replace(/;/g, ','),
+        r.node.t ?? '',
+        r.node.l,
+        String(r.verdi).replace('.', ','),
+        aar,
+      ].join(';'),
+    ),
   )
   // BOM slik at Excel leser æøå riktig
   const blob = new Blob(['﻿' + linjer.join('\n')], { type: 'text/csv;charset=utf-8' })
@@ -36,22 +42,39 @@ function lastNedCSV(rader, filnavn, aar) {
  * kan åpne verktøyet ferdig drillet på et område.
  */
 export default function Utforsk({
-  data, aarListe, globalAar, u, setU, skjulFin, setSkjulFin, detaljer, hentDetaljer,
+  data,
+  aarListe,
+  globalAar,
+  u,
+  setU,
+  skjulFin,
+  setSkjulFin,
+  detaljer,
+  hentDetaljer,
 }) {
-  const si = [0, 1, 2].includes(u.serie) ? u.serie : 0
+  const forslag = data.meta.budsjettforslag?.find((p) => p.year === (u.aar ?? globalAar))
+  const si = [0, 1, 2, 3].includes(u.serie)
+    ? u.serie === 3 && !forslag
+      ? u.aar > data.meta.siste_regnskap_aar
+        ? 1
+        : 0
+      : u.serie
+    : 0
   const aar = data.meta.budsjett_aar.includes(u.aar) ? u.aar : globalAar
   const erUtg = u.side === 'utgifter'
-  const folk = data.befolkning?.[aar] ?? data.befolkning?.[globalAar]
+  const folk = data.befolkning?.[aar] ?? (si === 3 ? null : data.befolkning?.[globalAar])
+  const perPerson = u.modus === 'person' && !!folk
 
-  const skaler = (v) => (u.modus === 'person' && folk ? (v * 1e6) / folk : v)
-  const fmt = (v) => (u.modus === 'person' ? kr(Math.round(skaler(v))) : `${belopMill(v)} kr`)
+  const skaler = (v) => (perPerson ? (v * 1e6) / folk : v)
+  const fmt = (v) => (perPerson ? kr(Math.round(skaler(v))) : `${belopMill(v)} kr`)
 
   const rotN = rot(data, u.side, skjulFin)
   const sisteNode = u.sti.length ? u.sti[u.sti.length - 1] : null
 
   let gjeldende
   if (!sisteNode) gjeldende = rotN
-  else if (sisteNode.l === 'p') gjeldende = artskontoTre(sisteNode, detaljer[detaljFil(sisteNode.i)])
+  else if (sisteNode.l === 'p')
+    gjeldende = artskontoTre(sisteNode, detaljer[detaljFil(sisteNode.i)])
   else gjeldende = barn(sisteNode, skjulFin)
 
   const venterDetaljer = sisteNode?.l === 'p' && !gjeldende.length
@@ -127,34 +150,59 @@ export default function Utforsk({
   const ental = rader.length === 1
   const enhet = !sisteNode
     ? 'departementer'
-    : sisteNode.l === 'd' ? (ental ? 'kapittel' : 'kapitler')
-    : sisteNode.l === 'k' ? (ental ? 'post' : 'poster')
-    : sisteNode.l === 'p' ? (ental ? 'kontoklasse' : 'kontoklasser')
-    : (ental ? 'artskonto' : 'artskontoer')
+    : sisteNode.l === 'd'
+      ? ental
+        ? 'kapittel'
+        : 'kapitler'
+      : sisteNode.l === 'k'
+        ? ental
+          ? 'post'
+          : 'poster'
+        : sisteNode.l === 'p'
+          ? ental
+            ? 'kontoklasse'
+            : 'kontoklasser'
+          : ental
+            ? 'artskonto'
+            : 'artskontoer'
 
   const fokus = u.fokus ?? sisteNode
+  const grafAar = si === 3 ? data.meta.budsjett_aar : aarListe
   const serieFor = (node, serieIdx) =>
-    aarListe.map((y) => ({
-      v: node ? verdi(node, y, serieIdx, skjulFin) : sumRot(rotN, y, serieIdx),
-    }))
-  const tilVisning = (punkter) => punkter.map((p) => ({ v: u.modus === 'person' ? skaler(p.v) : p.v }))
+    grafAar.map((y) => {
+      const v = node ? verdi(node, y, serieIdx, skjulFin) : sumRot(rotN, y, serieIdx)
+      return { v: v === 0 && si === 3 ? null : v }
+    })
+  const tilVisning = (punkter) =>
+    punkter.map((p) => ({ v: p.v == null ? null : perPerson ? skaler(p.v) : p.v }))
 
   const graf = [
     { farge: RUST, navn: SERIER[0], punkter: tilVisning(serieFor(fokus, 0)) },
-    { farge: BLEK, bredde: 1.5, stiplet: true, navn: SERIER[1], punkter: tilVisning(serieFor(fokus, 1)) },
+    {
+      farge: BLEK,
+      bredde: 1.5,
+      stiplet: true,
+      navn: SERIER[1],
+      punkter: tilVisning(serieFor(fokus, 1)),
+    },
   ]
-  if (u.pinnet) graf.push({ farge: GRONN, punkter: tilVisning(serieFor(u.pinnet, 0)) })
+  if (si === 3)
+    graf.push({ farge: GRONN, navn: forslag.label, punkter: tilVisning(serieFor(fokus, 3)) })
+  if (u.pinnet && si !== 3) graf.push({ farge: GRONN, punkter: tilVisning(serieFor(u.pinnet, 0)) })
 
   const grafTittel = fokus ? visNavn(fokus) : erUtg ? 'Alle utgifter' : 'Alle inntekter'
-  const grafFmt = (v) => (v == null ? '–' : u.modus === 'person' ? kr(Math.round(v)) : `${belopMill(v)} kr`)
+  const grafFmt = (v) => (v == null ? '–' : perPerson ? kr(Math.round(v)) : `${belopMill(v)} kr`)
 
   // Årlig vekstrate (geometrisk snitt) for regnskapsserien som vises
   const gp = graf[0].punkter
-    .map((p, i) => ({ v: p.v, aar: aarListe[i] }))
+    .map((p, i) => ({ v: p.v, aar: grafAar[i] }))
     .filter((p) => p.v != null && p.v !== 0)
-  let cagr = '–', cagrFarge = BLEK, cagrPeriode = ''
+  let cagr = '–',
+    cagrFarge = BLEK,
+    cagrPeriode = ''
   if (gp.length > 1) {
-    const f = gp[0], l = gp[gp.length - 1]
+    const f = gp[0],
+      l = gp[gp.length - 1]
     const rate = (Math.pow(Math.abs(l.v) / Math.abs(f.v), 1 / (l.aar - f.aar)) - 1) * 100
     cagr = (rate >= 0 ? '+' : '−') + n1.format(Math.abs(rate)) + ' %'
     cagrFarge = rate >= 0 ? RUST : GRONN
@@ -171,7 +219,9 @@ export default function Utforsk({
    */
   const bnpRefSi = si === 0 ? 1 : 0
   const bnpBelopFor = (serieIdx) =>
-    bnpAarListe.map((y) => (fokus ? verdi(fokus, y, serieIdx, skjulFin) : sumRot(rotN, y, serieIdx)))
+    bnpAarListe.map((y) =>
+      fokus ? verdi(fokus, y, serieIdx, skjulFin) : sumRot(rotN, y, serieIdx),
+    )
   // 0 betyr «ingen tall for dette året», ikke null kroner – da skal linjen brytes
   const bnpAndelFor = (belop) =>
     belop.map((v, i) => ({ v: v ? (v / bnpFor(bnpAarListe[i])) * 100 : null }))
@@ -179,7 +229,13 @@ export default function Utforsk({
   const bnpBelop = harBnp ? bnpBelopFor(si) : []
   const bnpGraf = [{ farge: RUST, navn: SERIER[si], punkter: bnpAndelFor(bnpBelop) }]
   if (harBnp) {
-    bnpGraf.push({ farge: BLEK, bredde: 1.5, stiplet: true, navn: SERIER[bnpRefSi], punkter: bnpAndelFor(bnpBelopFor(bnpRefSi)) })
+    bnpGraf.push({
+      farge: BLEK,
+      bredde: 1.5,
+      stiplet: true,
+      navn: SERIER[bnpRefSi],
+      punkter: bnpAndelFor(bnpBelopFor(bnpRefSi)),
+    })
   }
   if (harBnp && u.pinnet) {
     bnpGraf.push({
@@ -204,11 +260,16 @@ export default function Utforsk({
   const arealTekst =
     (u.sti.length
       ? `${sisteNode.t ?? sisteNode.n}${sisteNode.l === 'p' ? ' fordelt på artskonto' : ' fordelt på underposter'}`
-      : erUtg ? 'Departementenes andel av utgiftene' : 'Inntektskildenes fordeling') +
-    `, ${aarListe[0]}–${aarListe[aarListe.length - 1]}`
+      : erUtg
+        ? 'Departementenes andel av utgiftene'
+        : 'Inntektskildenes fordeling') + `, ${aarListe[0]}–${aarListe[aarListe.length - 1]}`
 
   const smuler = [
-    { navn: erUtg ? 'Alle utgifter' : 'Alle inntekter', aktiv: !u.sti.length, klikk: () => setU({ sti: [], fokus: null }) },
+    {
+      navn: erUtg ? 'Alle utgifter' : 'Alle inntekter',
+      aktiv: !u.sti.length,
+      klikk: () => setU({ sti: [], fokus: null }),
+    },
     ...u.sti.map((n, i) => ({
       navn: n.t ?? n.n,
       aktiv: i === u.sti.length - 1,
@@ -222,9 +283,9 @@ export default function Utforsk({
         <div>
           <h2>Utforsk staten</h2>
           <p>
-            Samme datagrunnlag, uten forenklinger: departement → kapittel → post → artskonto. Velg om du
-            vil se regnskapet eller budsjettet, søk på tvers, sammenlign to områder, og se utviklingen
-            fra {aarListe[0]}.
+            Samme datagrunnlag, uten forenklinger: departement → kapittel → post → artskonto. Velg
+            om du vil se regnskapet eller budsjettet, søk på tvers, sammenlign to områder, og se
+            utviklingen fra {aarListe[0]}.
           </p>
         </div>
       </div>
@@ -249,36 +310,63 @@ export default function Utforsk({
 
         <div className="ft-seriegruppe">
           <div className="ft-serieknapper">
-            {SERIER.map((navn, i) => (
-              <button
-                key={navn}
-                type="button"
-                className={`ft-bytte ${i === si ? 'aktiv' : ''}`}
-                onClick={() => {
-                  // Artskontonivåene finnes bare i regnskapet – trim stien ved bytte
-                  let ny = u.sti.filter((n) => n.l !== 'kl' && n.l !== 'ak')
-                  if (i !== 0 && ny[ny.length - 1]?.l === 'p') ny = ny.slice(0, -1)
-                  setU({ serie: i, sti: ny, fokus: ny[ny.length - 1] ?? null })
-                }}
-              >
-                {navn}
-              </button>
-            ))}
+            {SERIER.map((navn, i) =>
+              i === 3 && !forslag ? null : (
+                <button
+                  key={navn}
+                  type="button"
+                  className={`ft-bytte ${i === si ? 'aktiv' : ''}`}
+                  onClick={() => {
+                    // Artskontonivåene finnes bare i regnskapet – trim stien ved bytte
+                    let ny = u.sti.filter((n) => n.l !== 'kl' && n.l !== 'ak')
+                    if (i !== 0 && ny[ny.length - 1]?.l === 'p') ny = ny.slice(0, -1)
+                    setU({ serie: i, sti: ny, fokus: ny[ny.length - 1] ?? null })
+                  }}
+                >
+                  {i === 3 ? forslag.label : navn}
+                </button>
+              ),
+            )}
           </div>
           <label className="ft-aarvalg">
             <span className="ft-skjult">År</span>
-            <select className="ft-select" value={aar} onChange={(e) => setU({ aar: +e.target.value })}>
-              {data.meta.budsjett_aar.map((y) => <option key={y} value={y}>{y}</option>)}
+            <select
+              className="ft-select"
+              value={aar}
+              onChange={(e) => {
+                const year = +e.target.value
+                const activeProposal = data.meta.budsjettforslag?.some((p) => p.year === year)
+                setU({
+                  aar: year,
+                  serie: activeProposal
+                    ? 3
+                    : si === 3
+                      ? year > data.meta.siste_regnskap_aar
+                        ? 1
+                        : 0
+                      : si,
+                })
+              }}
+            >
+              {data.meta.budsjett_aar.map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
+              ))}
             </select>
           </label>
         </div>
 
         <div className="ft-bytter">
-          {[{ id: 'lopende', navn: 'Mill. kr' }, { id: 'person', navn: 'Per innbygger' }].map((m) => (
+          {[
+            { id: 'lopende', navn: 'Mill. kr' },
+            { id: 'person', navn: 'Per innbygger' },
+          ].map((m) => (
             <button
               key={m.id}
               type="button"
-              className={`ft-bytte ${u.modus === m.id ? 'aktiv' : ''}`}
+              className={`ft-bytte ${(perPerson ? 'person' : 'lopende') === m.id ? 'aktiv' : ''}`}
+              disabled={m.id === 'person' && !folk}
               onClick={() => setU({ modus: m.id })}
             >
               {m.navn}
@@ -287,7 +375,11 @@ export default function Utforsk({
         </div>
 
         <label className="ft-avkryss">
-          <input type="checkbox" checked={skjulFin} onChange={(e) => setSkjulFin(e.target.checked)} />
+          <input
+            type="checkbox"
+            checked={skjulFin}
+            onChange={(e) => setSkjulFin(e.target.checked)}
+          />
           Skjul finanstransaksjoner og fondsoverføringer
         </label>
 
@@ -306,7 +398,7 @@ export default function Utforsk({
             lastNedCSV(
               rader,
               `statsregnskapet-${u.side}-${SERIER[si].toLowerCase().replace(/ /g, '-')}-${aar}.csv`,
-              aar
+              aar,
             )
           }
         >
@@ -318,7 +410,12 @@ export default function Utforsk({
         <div>
           <div className="ft-smuler ft-smuler--flat">
             {smuler.map((b, i) => (
-              <button key={i} type="button" className={`ft-smule ${b.aktiv ? 'aktiv' : ''}`} onClick={b.klikk}>
+              <button
+                key={i}
+                type="button"
+                className={`ft-smule ${b.aktiv ? 'aktiv' : ''}`}
+                onClick={b.klikk}
+              >
                 {i > 0 && <span className="ft-smulepil">›</span>}
                 {b.navn}
               </button>
@@ -338,7 +435,7 @@ export default function Utforsk({
           {rader.length > 0 && (
             <div className={`ft-tabellhode ${harBnp ? 'med-bnp' : ''}`}>
               <span />
-              <span>{u.modus === 'person' ? 'Per innb.' : 'Beløp'}</span>
+              <span>{perPerson ? 'Per innb.' : 'Beløp'}</span>
               <span>Andel</span>
               {harBnp && (
                 <span title={erAnslag(aar) ? `Målt mot SSBs BNP-anslag for ${aar}` : undefined}>
@@ -352,9 +449,11 @@ export default function Utforsk({
           {rader.map((r) => {
             const kanNed = r.node.l === 'p' ? harArtskonto(r.node) : (r.node.c?.length ?? 0) > 0
             const merke =
-              r.node.l === 'p' ? (r.node.pt ?? 'Post')
-              : r.node.l === 'k' ? (r.node.om ?? 'Kapittel')
-              : (NIVAANAVN[r.node.l] ?? 'Departement')
+              r.node.l === 'p'
+                ? (r.node.pt ?? 'Post')
+                : r.node.l === 'k'
+                  ? (r.node.om ?? 'Kapittel')
+                  : (NIVAANAVN[r.node.l] ?? 'Departement')
             return (
               <button
                 key={r.node.i}
@@ -366,17 +465,24 @@ export default function Utforsk({
                   <span className="ft-utforsktittel">
                     <span className="ft-utforsknavn">{r.node.n}</span>
                     {r.node.t && <span className="ft-utforsktag num">{r.node.t}</span>}
-                    <span className="ft-merke">{merke.length > 34 ? merke.slice(0, 34) + '…' : merke}</span>
+                    <span className="ft-merke">
+                      {merke.length > 34 ? merke.slice(0, 34) + '…' : merke}
+                    </span>
                   </span>
                   <span className="ft-bar ft-bar--tynn">
                     <span
                       className="ft-bar-fyll"
-                      style={{ width: `${((Math.abs(r.verdi) / maks) * 100).toFixed(1)}%`, background: farge }}
+                      style={{
+                        width: `${((Math.abs(r.verdi) / maks) * 100).toFixed(1)}%`,
+                        background: farge,
+                      }}
                     />
                   </span>
                 </span>
                 <span className="num ft-utforskbelop">{fmt(r.verdi)}</span>
-                <span className="num ft-utforskandel">{pct(total ? Math.abs((r.verdi / total) * 100) : 0, 1)}</span>
+                <span className="num ft-utforskandel">
+                  {pct(total ? Math.abs((r.verdi / total) * 100) : 0, 1)}
+                </span>
                 {harBnp && <span className="num ft-utforskbnp">{pctBnp(r.verdi, bnpAar)}</span>}
                 <span className="ft-utforskpil">{kanNed ? '›' : ''}</span>
               </button>
@@ -385,7 +491,8 @@ export default function Utforsk({
 
           {harBnp && erAnslag(aar) && rader.length > 0 && (
             <p className="ft-anslagsnote">
-              * BNP for {aar} er SSBs anslag (tabell 12880); nasjonalregnskapet rekker til {Math.max(...Object.keys(data.bnp ?? {}).map(Number))}.
+              * BNP for {aar} er SSBs anslag (tabell 12880); nasjonalregnskapet rekker til{' '}
+              {Math.max(...Object.keys(data.bnp ?? {}).map(Number))}.
             </p>
           )}
 
@@ -406,46 +513,65 @@ export default function Utforsk({
             <div className="ft-nivaatopp">
               <span className="ft-graftittel">{grafTittel}</span>
               <span className="ft-cagr">
-                <span className="num" style={{ color: cagrFarge }}>{cagr}</span>
+                <span className="num" style={{ color: cagrFarge }}>
+                  {cagr}
+                </span>
                 <span className="ft-cagrperiode">årlig {cagrPeriode}</span>
               </span>
             </div>
             <div className="ft-kort-graf">
               <LinjeGraf
                 serier={graf}
-                aar={aarListe}
+                aar={grafAar}
                 W={356}
                 H={160}
-                aksefmt={(v) => (u.modus === 'person' ? n0.format(v) : belopMill(v))}
-                beskrivelse={`Utvikling over tid for ${grafTittel}, ${u.modus === 'person' ? 'kroner per innbygger' : 'millioner kroner'}`}
+                aksefmt={(v) => (perPerson ? n0.format(v) : belopMill(v))}
+                beskrivelse={`Utvikling over tid for ${grafTittel}, ${perPerson ? 'kroner per innbygger' : 'millioner kroner'}`}
                 tips={(i) => {
                   const r = graf[0].punkter[i]?.v
                   const sa = graf[1].punkter[i]?.v
                   const pi = graf[2]?.punkter[i]?.v
                   const avvik = r && sa ? ((r - sa) / Math.abs(sa)) * 100 : null
                   return {
-                    tittel: `${aarListe[i]} · ${grafTittel}`,
+                    tittel: `${grafAar[i]} · ${grafTittel}`,
                     linjer: [
                       { farge: RUST, tekst: `Regnskap: ${grafFmt(r)}` },
                       { farge: BLEK, tekst: `Saldert: ${grafFmt(sa)}` },
                       avvik != null
-                        ? { farge: 'transparent', tekst: `${avvik >= 0 ? '+' : '−'}${pct(Math.abs(avvik), 1)} mot budsjett` }
+                        ? {
+                            farge: 'transparent',
+                            tekst: `${avvik >= 0 ? '+' : '−'}${pct(Math.abs(avvik), 1)} mot budsjett`,
+                          }
                         : null,
-                      pi != null ? { farge: GRONN, tekst: `${visNavn(u.pinnet)}: ${grafFmt(pi)}` } : null,
+                      pi != null
+                        ? {
+                            farge: GRONN,
+                            tekst: `${si === 3 ? forslag.label : visNavn(u.pinnet)}: ${grafFmt(pi)}`,
+                          }
+                        : null,
                     ],
                   }
                 }}
               />
             </div>
             <div className="ft-tegnforklaring ft-tegnforklaring--liten">
-              <span><span className="ft-strek" style={{ background: RUST }} />Regnskap</span>
-              <span><span className="ft-strek" style={{ background: BLEK }} />Saldert budsjett</span>
-              <span><span className="ft-strek" style={{ background: GRONN }} />{u.pinnet ? visNavn(u.pinnet) : 'Sammenlign'}</span>
+              <span>
+                <span className="ft-strek" style={{ background: RUST }} />
+                Regnskap
+              </span>
+              <span>
+                <span className="ft-strek" style={{ background: BLEK }} />
+                Saldert budsjett
+              </span>
+              <span>
+                <span className="ft-strek" style={{ background: GRONN }} />
+                {si === 3 ? forslag.label : u.pinnet ? visNavn(u.pinnet) : 'Sammenlign'}
+              </span>
             </div>
             <button
               type="button"
               className="ft-knapp ft-knapp--luft"
-              disabled={!u.pinnet && !fokus}
+              disabled={si === 3 || (!u.pinnet && !fokus)}
               onClick={() => setU({ pinnet: u.pinnet ? null : fokus })}
             >
               {u.pinnet ? 'Fjern sammenligning' : 'Fest til sammenligning'}
@@ -494,15 +620,24 @@ export default function Utforsk({
                 />
               </div>
               <div className="ft-tegnforklaring ft-tegnforklaring--liten">
-                <span><span className="ft-strek" style={{ background: RUST }} />{SERIER[si]}</span>
-                <span><span className="ft-strek ft-strek--stiplet" style={{ background: BLEK }} />{SERIER[bnpRefSi]}</span>
+                <span>
+                  <span className="ft-strek" style={{ background: RUST }} />
+                  {SERIER[si]}
+                </span>
+                <span>
+                  <span className="ft-strek ft-strek--stiplet" style={{ background: BLEK }} />
+                  {SERIER[bnpRefSi]}
+                </span>
                 {u.pinnet && (
-                  <span><span className="ft-strek" style={{ background: GRONN }} />{visNavn(u.pinnet)}</span>
+                  <span>
+                    <span className="ft-strek" style={{ background: GRONN }} />
+                    {visNavn(u.pinnet)}
+                  </span>
                 )}
               </div>
               <p className="ft-kort-fot">
-                {grafTittel} som andel av bruttonasjonalproduktet, {bnpAarListe[0]}–{bnpSisteAar}. BNP i
-                løpende priser, så både teller og nevner er i årets kroner.
+                {grafTittel} som andel av bruttonasjonalproduktet, {bnpAarListe[0]}–{bnpSisteAar}.
+                BNP i løpende priser, så både teller og nevner er i årets kroner.
                 {anslagsAar.length > 0
                   ? ` Det skraverte området (${anslagsAar.join(', ')}) måles mot SSBs BNP-anslag, ikke nasjonalregnskapet – andelen der endrer seg når anslaget revideres.`
                   : ''}
