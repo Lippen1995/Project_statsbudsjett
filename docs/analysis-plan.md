@@ -91,3 +91,6 @@ Godkjenning av PR #14 på head `c509eb046e009a8367d55b16fb317d4978eb22a2` (revie
 Godkjent publisering av PR #14: workflow 37291423990, forsøk 2, bestod stage, 104 tester, produksjonsbygg og publish etter PR #18. PR #14 er flettet som `cd0d63ec70555ea12a5db95368a1a18b4eb25d31` med uendret godkjent head `c509eb046e009a8367d55b16fb317d4978eb22a2`. Publiseringsregisteret inneholder analyse `utgifter-per-innbygger-u-01-2020-2025-2026-10-05` med godkjent hash `82fb4f03b6ec71bdd3f08b829bd5fb81638d4474d76804facb2646196dbde9ba`. Nettsideutrulling er startet. LinkedIn er fortsatt deaktivert.
 
 Live-verifisert: analysesiden og datagrunnlag.json svarer HTTP 200, med nøyaktig godkjent artikkel, rapport og innholdshash `82fb4f03b6ec71bdd3f08b829bd5fb81638d4474d76804facb2646196dbde9ba`. Grafer finnes i HTML og siden er ordinær analyse, ikke preview. LinkedIn er ikke publisert.
+
+
+Brukeren ønsker rask import av statsbudsjettet 2027 og analyse på lanseringsdagen. Offisiell fremleggelse er kontrollert til onsdag 7. oktober 2026 klokken 10.00 Europe/Oslo, med enkelte nøkkeltall klokken 08.00. Beredskap og nødvendige utviklingssteg er dokumentert i docs/budsjettdagen-2027.md. Dette er en forberedelsesplan; onsdagskjøring, import av budsjettforslag og ny analysetype er ikke implementert eller bekreftet. Ingen separat AI-API skal innføres.
