@@ -22,7 +22,9 @@ node scripts/analyser/prepare.mjs editorial/handoff/ukens-analyse.json
 
 Dette lager rapporten og et `article.copy`-felt som AI skal fylle. For et åpent utkast med endringsønsker, oppgi gjennomgangsnummer som siste argument. Da hentes riktig rapport, gjeldende head og alle autoriserte ubehandlede endringsønsker. Behold `base` og `article.report` uendret mens teksten revideres. Valider den ferdige artikkelen med `validateArticle` fra `scripts/analyser/schema.mjs` før levering.
 
-Lagre bare den ferdige JSON-filen på en egen leveringsgren, for eksempel `analysis/input-YYYY-MM-DD`. Ikke opprett en PR fra brukerens konto. Start deretter botens workflow fra main; `source_commit` skal være den fulle SHA-en som faktisk inneholder JSON-filen:
+Lagre bare den ferdige JSON-filen på en egen leveringsgren, for eksempel `analysis/input-YYYY-MM-DD`. Ikke opprett en PR fra brukerens konto. Opprett leveringsgrenen fra oppdatert main og push bare `editorial/handoff/ukens-analyse.json`. Push til `analysis/input-*` starter botens workflow automatisk i weekly-modus med pushens faste SHA. Vent til kjøringen er ferdig og bekreft botens PR og review request; en lagret fil alene er ikke fullført levering. Ingen eksplisitt workflow_dispatch eller GitHub CLI er nødvendig dersom GitHub-tilgangen kan opprette grenen og committen. Push med GITHUB_TOKEN starter normalt ikke en ny workflow; bruk den planlagte oppgavens eksisterende GitHub-tilgang.
+
+Manuell reserve ved tilgjengelig dispatch-tilgang: Start botens workflow fra main; `source_commit` skal være den fulle SHA-en som faktisk inneholder JSON-filen:
 
 ```sh
 gh workflow run analysis-handoff.yml --ref main \

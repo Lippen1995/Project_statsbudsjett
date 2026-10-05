@@ -1,5 +1,8 @@
 name: Analyser – lever fra planlagt oppgave
 on:
+  push:
+    branches: ["analysis/input-*"]
+    paths: ["editorial/handoff/ukens-analyse.json"]
   workflow_dispatch:
     inputs:
       mode:
@@ -25,7 +28,9 @@ concurrency:
   cancel-in-progress: false
 jobs:
   deliver:
-    if: github.ref_name == 'main'
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref_name == 'main') ||
+      (github.event_name == 'push' && startsWith(github.ref_name, 'analysis/input-'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -42,7 +47,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           ANALYSIS_REVIEWER: ${{ vars.ANALYSIS_REVIEWER }}
-          ANALYSIS_MODE: ${{ inputs.mode }}
-          ANALYSIS_SOURCE_COMMIT: ${{ inputs.source_commit }}
-          ANALYSIS_SOURCE_PATH: ${{ inputs.source_path }}
+          ANALYSIS_MODE: ${{ github.event_name == 'push' && 'weekly' || inputs.mode }}
+          ANALYSIS_SOURCE_COMMIT: ${{ github.event_name == 'push' && github.sha || inputs.source_commit }}
+          ANALYSIS_SOURCE_PATH: ${{ github.event_name == 'push' && 'editorial/handoff/ukens-analyse.json' || inputs.source_path }}
           ANALYSIS_PR_NUMBER: ${{ inputs.pr_number }}
