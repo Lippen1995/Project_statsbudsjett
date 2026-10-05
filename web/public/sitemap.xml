@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://fellestall.no/</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-10-05</lastmod>
   </url>
   <url>
     <loc>https://fellestall.no/personvern.html</loc>
@@ -14,6 +14,18 @@
     <loc>https://fellestall.no/tilgjengelighet.html</loc>
   </url>
   <url>
+    <loc>https://fellestall.no/analyser/mot-sven/</loc>
+  </url>
+  <url>
     <loc>https://fellestall.no/analyser/</loc>
+    <lastmod>2026-10-05</lastmod>
+  </url>
+  <url>
+    <loc>https://fellestall.no/analyser/utgifter-per-innbygger-state-2014-2025-2026-10-04/</loc>
+    <lastmod>2026-10-04</lastmod>
+  </url>
+  <url>
+    <loc>https://fellestall.no/analyser/utgifter-per-innbygger-u-01-2020-2025-2026-10-05/</loc>
+    <lastmod>2026-10-05</lastmod>
   </url>
 </urlset>

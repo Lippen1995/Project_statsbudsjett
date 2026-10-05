@@ -27,6 +27,7 @@ export function analysesPlugin() {
     const slugs = new Set()
     for (const article of articles) {
       validateArticle(article, { published: true })
+      if (article.slug === 'mot-sven') throw Error('Analyseadressen er reservert for Sven')
       if (slugs.has(article.slug)) throw Error('Duplisert analyseadresse')
       slugs.add(article.slug)
     }
@@ -40,19 +41,24 @@ export function analysesPlugin() {
     const articles = load(),
       draft = preview()
     if (path === '/analyser/' || path === '/analyser') return { articles: archiveEntries(articles) }
+    if (path === '/analyser/mot-sven/' || path === '/analyser/mot-sven') return { meetSven: true }
     if (draft && path === '/analyser/forhandsvisning/') return { article: draft, preview: true }
     const article = articles.find((a) => analysisPath(a.slug) === path)
     return article ? { article } : { notFound: true }
   }
   const page = (html, path, props) => {
     const article = props.article
-    const title = article
+    const title = props.meetSven
+      ? 'Møt Sven – vår AI-analytiker | Fellestall.no'
+      : article
       ? `${factText(article.copy.title, article.report)} | Fellestall.no`
       : 'Analyser av offentlig pengebruk | Fellestall.no'
-    const description = article
+    const description = props.meetSven
+      ? 'Møt Sven, Fellestalls AI-analytiker. Skattepengenes Vaktbikkje, Etterforsker og Nøkkeltallsanalytiker gjør offentlig pengebruk lettere å forstå.'
+      : article
       ? factText(article.copy.description, article.report)
       : 'Les grundige analyser av statens og kommunenes pengebruk. Finn temaer, sammenligninger og utvikling over tid, med grafer, metode og åpne kilder.'
-    const url = `https://fellestall.no${path}`
+    const url = `https://fellestall.no${props.meetSven ? '/analyser/mot-sven/' : path}`
     const structured = article
       ? {
           '@context': 'https://schema.org',
@@ -69,7 +75,7 @@ export function analysesPlugin() {
         }
       : {
           '@context': 'https://schema.org',
-          '@type': 'CollectionPage',
+          '@type': props.meetSven ? 'AboutPage' : 'CollectionPage',
           name: title,
           url,
           description,
@@ -149,6 +155,11 @@ export function analysesPlugin() {
         type: 'asset',
         fileName: 'analyser/index.html',
         source: page(html, '/analyser/', { articles: archiveEntries(articles) }),
+      })
+      this.emitFile({
+        type: 'asset',
+        fileName: 'analyser/mot-sven/index.html',
+        source: page(html, '/analyser/mot-sven/', { meetSven: true }),
       })
       for (const article of articles) {
         this.emitFile({

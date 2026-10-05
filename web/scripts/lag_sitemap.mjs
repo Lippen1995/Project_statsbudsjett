@@ -11,6 +11,7 @@ const adresser = [
   { loc: 'https://fellestall.no/personvern.html' },
   { loc: 'https://fellestall.no/vilkar.html' },
   { loc: 'https://fellestall.no/tilgjengelighet.html' },
+  { loc: 'https://fellestall.no/analyser/mot-sven/' },
   { loc: 'https://fellestall.no/analyser/', ...(analyses.length ? { lastmod: analyses.map(a => a.publishedAt.slice(0, 10)).sort().at(-1) } : {}) },
   ...analyses.map(a => ({ loc: `https://fellestall.no/analyser/${a.slug}/`, lastmod: a.publishedAt.slice(0, 10) })),
 ]

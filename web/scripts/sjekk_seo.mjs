@@ -4,6 +4,7 @@ const html = readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8'
 const sitemap = readFileSync(new URL('../dist/sitemap.xml', import.meta.url), 'utf8')
 const analyses = JSON.parse(readFileSync(process.env.ANALYSIS_PUBLICATIONS_FILE ?? new URL('../src/analyser/publications.json', import.meta.url), 'utf8'))
 const archive = readFileSync(new URL('../dist/analyser/index.html', import.meta.url), 'utf8')
+const sven = readFileSync(new URL('../dist/analyser/mot-sven/index.html', import.meta.url), 'utf8')
 const feil = []
 
 const krev = (krav, melding) => { if (!krav) feil.push(melding) }
@@ -41,6 +42,11 @@ krev(!sitemap.includes('<changefreq>') && !sitemap.includes('<priority>'), 'site
 krev(archive.includes('<h1>Bak tallene.</h1>'), 'analyseoversikten mangler statisk innhold')
 krev(archive.includes('rel="canonical" href="https://fellestall.no/analyser/"'), 'analyseoversikten mangler kanonisk adresse')
 krev(sitemap.includes('https://fellestall.no/analyser/'), 'analyseoversikten mangler i sitemap')
+krev(archive.includes('href="/analyser/mot-sven/"'), 'analyseoversikten mangler lenke til Sven')
+krev(sven.includes('<h1>Møt Sven.</h1>'), 'Sven-siden mangler statisk innhold')
+krev(sven.includes('rel="canonical" href="https://fellestall.no/analyser/mot-sven/"'), 'Sven-siden mangler kanonisk adresse')
+krev(sven.includes('"@type":"AboutPage"'), 'Sven-siden mangler AboutPage-data')
+krev(sitemap.includes('https://fellestall.no/analyser/mot-sven/'), 'Sven-siden mangler i sitemap')
 krev(!sitemap.includes('/forhandsvisning/'), 'utkast skal ikke være i sitemap')
 for (const article of analyses) {
   const page = readFileSync(new URL(`../dist/analyser/${article.slug}/index.html`, import.meta.url), 'utf8')

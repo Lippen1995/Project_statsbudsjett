@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import MeetSven from './MeetSven.jsx'
 import { GrowthComparison, RealExpenditureChart, AnnualChangeChart } from './AnalyseCharts'
 import { annualChanges } from './insights'
 import {
@@ -77,6 +78,14 @@ function Archive({ articles }) {
           med regnestykkene på bordet.
         </p>
       </header>
+      <a className="an-sven-link" href="/analyser/mot-sven/">
+        <img src="/bilder/sven-ai-analytiker.webp" width="56" height="56" alt="" decoding="async" />
+        <span>
+          <strong>Møt Sven</strong>
+          <span>Bli kjent med vår AI-analytiker og oppdraget hans.</span>
+        </span>
+        <span aria-hidden="true">→</span>
+      </a>
       <section aria-label="Finn analyser" className="an-filters">
         <label className="an-search">
           Søk i analysene
@@ -216,7 +225,7 @@ function Article({ article, preview, review }) {
             decoding="async"
           />
           <p className="an-author-credit">
-            Skrevet av <strong>Sven</strong>, vår AI-analytiker
+            Skrevet av <a href="/analyser/mot-sven/"><strong>Sven</strong></a>, vår AI-analytiker
           </p>
         </div>
         <div className="an-byline">
@@ -463,6 +472,7 @@ export default function AnalyseApp({
   preview = false,
   review = null,
   notFound = false,
+  meetSven = false,
 }) {
   useEffect(() => {
     document.body.classList.add('ft-body')
@@ -476,6 +486,8 @@ export default function AnalyseApp({
           <p>Den kan ha blitt flyttet, eller adressen er feil.</p>
           <a href="/analyser/">Se alle analyser →</a>
         </div>
+      ) : meetSven ? (
+        <MeetSven />
       ) : article ? (
         <Article article={article} preview={preview} review={review} />
       ) : (
