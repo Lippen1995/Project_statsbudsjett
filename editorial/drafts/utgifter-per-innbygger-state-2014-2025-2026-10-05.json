@@ -1,0 +1,1061 @@
+{
+  "slug": "utgifter-per-innbygger-state-2014-2025-2026-10-05",
+  "topic": "Statsfinanser",
+  "geography": "Staten",
+  "type": "Utvikling over tid",
+  "status": "draft",
+  "createdAt": "2026-10-05T19:23:06.875Z",
+  "generatedAt": "2026-10-05T19:23:06.875Z",
+  "report": {
+    "kind": "real-expenditure-per-capita",
+    "factsVersion": 2,
+    "scopeId": "state",
+    "scopeName": "Staten",
+    "start": 2014,
+    "end": 2025,
+    "dataUpdated": "2026-10-05T16:25:11.496735+00:00",
+    "dataHash": "18a136c4447c76cb55482925e29f07c3b78eaa67ce349303e57bf8707c3bae32",
+    "facts": {
+      "startYear": {
+        "value": 2014,
+        "text": "2014",
+        "label": "Første regnskapsår"
+      },
+      "endYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Siste regnskapsår"
+      },
+      "nominalGrowth": {
+        "value": 86.47737938694067,
+        "text": "86,5 %",
+        "label": "Vekst i løpende utgifter"
+      },
+      "populationGrowth": {
+        "value": 9.49850618196395,
+        "text": "9,5 %",
+        "label": "Befolkningsvekst"
+      },
+      "priceGrowth": {
+        "value": 40.646976090014086,
+        "text": "40,6 %",
+        "label": "Prisvekst målt med KPI"
+      },
+      "realPerCapitaGrowth": {
+        "value": 21.08422422109133,
+        "text": "21,1 %",
+        "label": "Realvekst per innbygger"
+      },
+      "firstPerCapita": {
+        "value": 220607.89703616477,
+        "text": "220 608 kr",
+        "label": "Per innbygger i startåret, løpende kroner"
+      },
+      "lastPerCapita": {
+        "value": 375698.11631041364,
+        "text": "375 698 kr",
+        "label": "Per innbygger i sluttåret, løpende kroner"
+      },
+      "firstRealPerCapita": {
+        "value": 310278.33619713754,
+        "text": "310 278 kr",
+        "label": "Startåret i sluttårets priser"
+      },
+      "total": {
+        "value": 2101.7829999999994,
+        "text": "2 101,8 mrd. kr",
+        "label": "Utgifter i sluttåret"
+      },
+      "nominalPerCapitaGrowth": {
+        "value": 70.30129988901737,
+        "text": "70,3 %",
+        "label": "Vekst per innbygger, løpende kroner"
+      },
+      "previousYear": {
+        "value": 2019,
+        "text": "2019",
+        "label": "Året før største årlige endring"
+      },
+      "largestChangeYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "År med største årlige endring i absoluttverdi"
+      },
+      "largestAnnualChange": {
+        "value": 10.320425369173215,
+        "text": "10,3 %",
+        "label": "Største årlige endring, KPI-justert per innbygger"
+      },
+      "growthBeforeChange": {
+        "value": 3.680223576689512,
+        "text": "3,7 %",
+        "label": "KPI-justert vekst per innbygger, 2014–2019"
+      },
+      "growthSinceChange": {
+        "value": 16.78622985561806,
+        "text": "16,8 %",
+        "label": "KPI-justert vekst per innbygger, 2019–2025"
+      },
+      "growthAfterChange": {
+        "value": 5.860931432060612,
+        "text": "5,9 %",
+        "label": "KPI-justert vekst per innbygger, 2020–2025"
+      },
+      "dagpengerPeakYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Dagpenger: år med høyeste løpende beløp i perioden"
+      },
+      "dagpengerPeakAmount": {
+        "value": 38562.8,
+        "text": "38,6 mrd. kr",
+        "label": "Dagpenger: høyeste løpende beløp, 2020"
+      },
+      "dagpengerLastAmount": {
+        "value": 15365.5,
+        "text": "15,4 mrd. kr",
+        "label": "Dagpenger: løpende beløp, 2025"
+      },
+      "dagpengerReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Dagpenger: sammenligningsår"
+      },
+      "dagpengerReferenceAmount": {
+        "value": 38562.8,
+        "text": "38,6 mrd. kr",
+        "label": "Dagpenger: løpende beløp, 2020"
+      },
+      "dagpengerFirstRecordedYear": {
+        "value": 2014,
+        "text": "2014",
+        "label": "Dagpenger: første år med regnskapsføring på denne posten i perioden"
+      },
+      "dagpengerRealGrowthSinceReference": {
+        "value": -68.84229835747212,
+        "text": "−68,8 %",
+        "label": "Dagpenger: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "koronakompensasjonPeakYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Midlertidig koronakompensasjon til foretak, én post: år med høyeste løpende beløp i perioden"
+      },
+      "koronakompensasjonPeakAmount": {
+        "value": 7823,
+        "text": "7,8 mrd. kr",
+        "label": "Midlertidig koronakompensasjon til foretak, én post: høyeste løpende beløp, 2021"
+      },
+      "koronakompensasjonLastAmount": {
+        "value": 1.3,
+        "text": "1,3 mill. kr",
+        "label": "Midlertidig koronakompensasjon til foretak, én post: løpende beløp, 2025"
+      },
+      "koronakompensasjonReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Midlertidig koronakompensasjon til foretak, én post: sammenligningsår"
+      },
+      "koronakompensasjonFirstRecordedYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Midlertidig koronakompensasjon til foretak, én post: første år med regnskapsføring på denne posten i perioden"
+      },
+      "ukrainastottePeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Militær støtte til Ukraina, én post: år med høyeste løpende beløp i perioden"
+      },
+      "ukrainastottePeakAmount": {
+        "value": 41227.3,
+        "text": "41,2 mrd. kr",
+        "label": "Militær støtte til Ukraina, én post: høyeste løpende beløp, 2025"
+      },
+      "ukrainastotteLastAmount": {
+        "value": 41227.3,
+        "text": "41,2 mrd. kr",
+        "label": "Militær støtte til Ukraina, én post: løpende beløp, 2025"
+      },
+      "ukrainastotteReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Militær støtte til Ukraina, én post: sammenligningsår"
+      },
+      "ukrainastotteFirstRecordedYear": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Militær støtte til Ukraina, én post: første år med regnskapsføring på denne posten i perioden"
+      },
+      "alderspensjonPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Pensjonskapitlet Alderdom: år med høyeste løpende beløp i perioden"
+      },
+      "alderspensjonPeakAmount": {
+        "value": 334204.80000000005,
+        "text": "334,2 mrd. kr",
+        "label": "Pensjonskapitlet Alderdom: høyeste løpende beløp, 2025"
+      },
+      "alderspensjonLastAmount": {
+        "value": 334204.80000000005,
+        "text": "334,2 mrd. kr",
+        "label": "Pensjonskapitlet Alderdom: løpende beløp, 2025"
+      },
+      "alderspensjonReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Pensjonskapitlet Alderdom: sammenligningsår"
+      },
+      "alderspensjonReferenceAmount": {
+        "value": 241254,
+        "text": "241,3 mrd. kr",
+        "label": "Pensjonskapitlet Alderdom: løpende beløp, 2020"
+      },
+      "alderspensjonFirstRecordedYear": {
+        "value": 2014,
+        "text": "2014",
+        "label": "Pensjonskapitlet Alderdom: første år med regnskapsføring på denne posten i perioden"
+      },
+      "alderspensjonRealGrowthSinceReference": {
+        "value": 8.324186891980423,
+        "text": "8,3 %",
+        "label": "Pensjonskapitlet Alderdom: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "ssbPriserStartYear": {
+        "value": 2014,
+        "text": "2014",
+        "label": "14711: Konsumprisindeks, historisk serie (2025=100) 1865-2025: første observasjonsår"
+      },
+      "ssbPriserEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "14711: Konsumprisindeks, historisk serie (2025=100) 1865-2025: siste observasjonsår"
+      },
+      "ssbPriserStart": {
+        "value": 71.1,
+        "text": "71,1 indeks",
+        "label": "14711: Konsumprisindeks, historisk serie (2025=100) 1865-2025: startverdi"
+      },
+      "ssbPriserEnd": {
+        "value": 100,
+        "text": "100 indeks",
+        "label": "14711: Konsumprisindeks, historisk serie (2025=100) 1865-2025: sluttverdi"
+      },
+      "ssbPriserChange": {
+        "value": 28.900000000000006,
+        "text": "28,9 indeks",
+        "label": "14711: Konsumprisindeks, historisk serie (2025=100) 1865-2025: endring i måleenheten"
+      },
+      "ssbPriserGrowth": {
+        "value": 40.646976090014086,
+        "text": "40,65 %",
+        "label": "14711: Konsumprisindeks, historisk serie (2025=100) 1865-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbBefolkningStartYear": {
+        "value": 2014,
+        "text": "2014",
+        "label": "06913: Endringer i kommuner, fylker og hele landets befolkning (K) 1951-2026: første observasjonsår"
+      },
+      "ssbBefolkningEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "06913: Endringer i kommuner, fylker og hele landets befolkning (K) 1951-2026: siste observasjonsår"
+      },
+      "ssbBefolkningStart": {
+        "value": 5109056,
+        "text": "5 109 056 personer",
+        "label": "06913: Endringer i kommuner, fylker og hele landets befolkning (K) 1951-2026: startverdi"
+      },
+      "ssbBefolkningEnd": {
+        "value": 5594340,
+        "text": "5 594 340 personer",
+        "label": "06913: Endringer i kommuner, fylker og hele landets befolkning (K) 1951-2026: sluttverdi"
+      },
+      "ssbBefolkningChange": {
+        "value": 485284,
+        "text": "485 284 personer",
+        "label": "06913: Endringer i kommuner, fylker og hele landets befolkning (K) 1951-2026: endring i måleenheten"
+      },
+      "ssbBefolkningGrowth": {
+        "value": 9.49850618196395,
+        "text": "9,5 %",
+        "label": "06913: Endringer i kommuner, fylker og hele landets befolkning (K) 1951-2026: prosentvis endring, ikke prosentpoeng"
+      }
+    },
+    "eventEvidence": {
+      "version": 1,
+      "items": [
+        {
+          "id": "dagpenger",
+          "title": "Dagpenger",
+          "event": "Koronapandemien og årene etter nedstengingene",
+          "context": "Pandemien er bakgrunn for å undersøke inntektsstøtte og permitteringer. Dagpengeposten omfatter også ordinær arbeidsledighet og kan ikke i sin helhet merkes som koronastøtte.",
+          "nodeIds": [
+            "u-06-2541-70"
+          ],
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-06-2541-70",
+              "name": "Dagpenger"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2014,
+              "expenditure": 11597.2,
+              "reported": true
+            },
+            {
+              "year": 2015,
+              "expenditure": 13764.1,
+              "reported": true
+            },
+            {
+              "year": 2016,
+              "expenditure": 15447.8,
+              "reported": true
+            },
+            {
+              "year": 2017,
+              "expenditure": 13952.4,
+              "reported": true
+            },
+            {
+              "year": 2018,
+              "expenditure": 10959.6,
+              "reported": true
+            },
+            {
+              "year": 2019,
+              "expenditure": 9324.4,
+              "reported": true
+            },
+            {
+              "year": 2020,
+              "expenditure": 38562.8,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 26003.3,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 12866.3,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 10281.8,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 13300.2,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 15365.5,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "koronakompensasjon",
+          "title": "Midlertidig koronakompensasjon til foretak, én post",
+          "event": "Koronapandemien og midlertidige støtteordninger",
+          "context": "Postnavnet knytter ordningen uttrykkelig til omsetningsfall som følge av koronapandemien. Denne posten alene dekker ikke alle koronaordninger eller tidligere føring på andre poster.",
+          "nodeIds": [
+            "u-09-0900-85"
+          ],
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-09-0900-85",
+              "name": "Midlertidig kompensasjonsordning for foretak med stort omsetningsfall som følge av koronapandemien"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2014,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2015,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2016,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2017,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2018,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2019,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2020,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2021,
+              "expenditure": 7823,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 464.3,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 24.1,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 2.7,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 1.3,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "ukrainastotte",
+          "title": "Militær støtte til Ukraina, én post",
+          "event": "Krigen i Ukraina og nye støtteutgifter",
+          "context": "Posten viser bokført militær støtte til Ukraina. Den er et konkret eksempel på andre utgifter etter pandemispranget, ikke et mål på all norsk støtte til Ukraina eller alle forsvarsutgifter.",
+          "nodeIds": [
+            "u-17-1700-79"
+          ],
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-17-1700-79",
+              "name": "Militær støtte til Ukraina"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2014,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2015,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2016,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2017,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2018,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2019,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2020,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2021,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2022,
+              "expenditure": 2239.3,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 1270,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 9728.2,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 41227.3,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "alderspensjon",
+          "title": "Pensjonskapitlet Alderdom",
+          "event": "Løpende pensjonsutgifter",
+          "context": "Kapitlet gir et eksempel på løpende utgifter ved siden av krisetiltakene. Regnskapet alene skiller ikke virkningen av flere mottakere, regulering eller regelendringer.",
+          "nodeIds": [
+            "u-06-2670"
+          ],
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-06-2670",
+              "name": "Alderdom"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2014,
+              "expenditure": 179196.5,
+              "reported": true
+            },
+            {
+              "year": 2015,
+              "expenditure": 190563.30000000005,
+              "reported": true
+            },
+            {
+              "year": 2016,
+              "expenditure": 201708.69999999998,
+              "reported": true
+            },
+            {
+              "year": 2017,
+              "expenditure": 211187.19999999998,
+              "reported": true
+            },
+            {
+              "year": 2018,
+              "expenditure": 221068.30000000002,
+              "reported": true
+            },
+            {
+              "year": 2019,
+              "expenditure": 232106.9,
+              "reported": true
+            },
+            {
+              "year": 2020,
+              "expenditure": 241254,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 256906,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 272358.2,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 296881,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 316171.19999999995,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 334204.80000000005,
+              "reported": true
+            }
+          ]
+        }
+      ],
+      "hash": "c13f93441b60566dad5091df1c5b49eb2cd4ddbc53b9af8fa3ee76b59c8ebe52"
+    },
+    "rows": [
+      {
+        "year": 2014,
+        "expenditure": 1127098.0999999999,
+        "population": 5109056,
+        "cpi": 71.1,
+        "perCapita": 220607.89703616477,
+        "nominalIndex": 100,
+        "priceIndex": 100,
+        "realPerCapita": 310278.33619713754
+      },
+      {
+        "year": 2015,
+        "expenditure": 1194464.1999999997,
+        "population": 5165802,
+        "cpi": 72.6,
+        "perCapita": 231225.31603030852,
+        "nominalIndex": 104.81280096351367,
+        "priceIndex": 102.1097046413502,
+        "realPerCapita": 318492.1708406454
+      },
+      {
+        "year": 2016,
+        "expenditure": 1246092.4,
+        "population": 5213985,
+        "cpi": 75.2,
+        "perCapita": 238990.40752898215,
+        "nominalIndex": 108.33266203965668,
+        "priceIndex": 105.76652601969059,
+        "realPerCapita": 317806.3929906678
+      },
+      {
+        "year": 2017,
+        "expenditure": 1280866,
+        "population": 5258317,
+        "cpi": 76.6,
+        "perCapita": 243588.58547326075,
+        "nominalIndex": 110.4169835920827,
+        "priceIndex": 107.73558368495077,
+        "realPerCapita": 318000.7643254057
+      },
+      {
+        "year": 2018,
+        "expenditure": 1318145.6000000003,
+        "population": 5295619,
+        "cpi": 78.7,
+        "perCapita": 248912.4689672728,
+        "nominalIndex": 112.83026233937039,
+        "priceIndex": 110.68917018284108,
+        "realPerCapita": 316280.1384590506
+      },
+      {
+        "year": 2019,
+        "expenditure": 1378113.3000000003,
+        "population": 5328212,
+        "cpi": 80.4,
+        "perCapita": 258644.6072340966,
+        "nominalIndex": 117.24177180823965,
+        "priceIndex": 113.08016877637132,
+        "realPerCapita": 321697.2726792246
+      },
+      {
+        "year": 2020,
+        "expenditure": 1552528,
+        "population": 5367580,
+        "cpi": 81.5,
+        "perCapita": 289241.70669091097,
+        "nominalIndex": 131.11122066654528,
+        "priceIndex": 114.62728551336147,
+        "realPerCapita": 354897.79962074966
+      },
+      {
+        "year": 2021,
+        "expenditure": 1584176.7,
+        "population": 5391369,
+        "cpi": 84.3,
+        "perCapita": 293835.7029541105,
+        "nominalIndex": 133.1936466925032,
+        "priceIndex": 118.56540084388185,
+        "realPerCapita": 348559.5527332272
+      },
+      {
+        "year": 2022,
+        "expenditure": 1665935.1000000006,
+        "population": 5425270,
+        "cpi": 89.2,
+        "perCapita": 307069.52833683864,
+        "nominalIndex": 139.19244617362904,
+        "priceIndex": 125.45710267229255,
+        "realPerCapita": 344248.3501534065
+      },
+      {
+        "year": 2023,
+        "expenditure": 1806801.5999999999,
+        "population": 5488984,
+        "cpi": 94.1,
+        "perCapita": 329168.6767532935,
+        "nominalIndex": 149.2098339069576,
+        "priceIndex": 132.34880450070324,
+        "realPerCapita": 349807.3079206095
+      },
+      {
+        "year": 2024,
+        "expenditure": 1953331.2999999998,
+        "population": 5550203,
+        "cpi": 97.1,
+        "perCapita": 351938.7128723039,
+        "nominalIndex": 159.53133029259138,
+        "priceIndex": 136.56821378340368,
+        "realPerCapita": 362449.7557902203
+      },
+      {
+        "year": 2025,
+        "expenditure": 2101782.9999999995,
+        "population": 5594340,
+        "cpi": 100,
+        "perCapita": 375698.11631041364,
+        "nominalIndex": 170.30129988901737,
+        "priceIndex": 140.64697609001408,
+        "realPerCapita": 375698.11631041364
+      }
+    ],
+    "sources": [
+      {
+        "name": "Fellestall: de konkrete regnskapspostene",
+        "url": "https://fellestall.no/data/utgifter.json",
+        "local": "/data/utgifter.json",
+        "description": "Hendelseseksemplene er valgt fra samme DFØ-uttrekk som hovedserien. Navn, post-ID-er og årlige beløp er frosset i artikkelens datagrunnlag. Utvalget er ikke et fullstendig koronaregnskap eller en årsaksfordeling av hele veksten."
+      },
+      {
+        "name": "DFØ Statsregnskapet",
+        "url": "https://statsregnskapet.dfo.no",
+        "local": "/data/utgifter.json",
+        "description": "Regnskapsførte utgifter i mill. kroner. Finansposter og SPU-overføringer er utelatt."
+      },
+      {
+        "name": "SSB folkemengde, tabell 07459",
+        "url": "https://www.ssb.no/statbank/table/07459/",
+        "local": "/data/befolkning.json",
+        "description": "Folkemengde ved inngangen til året, som i resten av Fellestall."
+      },
+      {
+        "name": "SSB konsumprisindeks",
+        "url": "https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen",
+        "local": "/data/kpi.json",
+        "description": "Årsgjennomsnitt for KPI, fra Fellestalls normaliserte serie."
+      },
+      {
+        "name": "SSB: 14711: Konsumprisindeks, historisk serie (2025=100) 1865-2025 — Priser (tabell 14711)",
+        "url": "https://www.ssb.no/statbank/table/14711/",
+        "description": "Frosset uttrekk hentet 2026-10-05T19:20:21.232720+00:00. Kontroller observert års-KPI og avgrens hvor mye nominell utgiftsvekst som består etter prisjustering."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Priser",
+        "url": "https://fellestall.no/data/ssb-research/06531580d033e1a157e3b52f21f6dca120ed057ddbcaed4c8f164087eae1a99a.json",
+        "local": "/data/ssb-research/06531580d033e1a157e3b52f21f6dca120ed057ddbcaed4c8f164087eae1a99a.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 06913: Endringer i kommuner, fylker og hele landets befolkning (K) 1951-2026 — Befolkning (tabell 06913)",
+        "url": "https://www.ssb.no/statbank/table/06913/",
+        "description": "Frosset uttrekk hentet 2026-10-05T19:20:22.034246+00:00. Kontroller folkemengde ved inngangen til året for samme observerte regnskapsperiode."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Befolkning",
+        "url": "https://fellestall.no/data/ssb-research/b81875272430ddd6bdb26391db4dd1c703f9dd87ceb6965f038073081b97c4d5.json",
+        "local": "/data/ssb-research/b81875272430ddd6bdb26391db4dd1c703f9dd87ceb6965f038073081b97c4d5.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      }
+    ],
+    "methodology": [
+      "Hendelsesgrunnlaget følger et lite, redaksjonelt valgt utvalg regnskapsposter. Beløpene er i løpende mill. kroner; eventuelle KPI-justerte endringer per innbygger bruker samme folketall og prisserie som hovedanalysen. En post uten regnskapsføring i uttrekket er merket som ikke observert, ikke som et komplett mål på alle utgifter til formålet. Postene identifiseres med navn og ID.",
+      "Vi summerer regnskapsførte utgifter på postnivå for Staten. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.",
+      "Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.",
+      "Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.",
+      "Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.",
+      "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn.",
+      "SSB-serier er eksplisitte årlige utvalg. Start-/sluttverdier, forskjell og eventuell prosentvis endring beregnes fra arkiverte observasjoner. Prosentvis endring er ikke prosentpoeng."
+    ],
+    "limitations": [
+      "KPI måler husholdningenes konsumpriser, ikke statens lønns-, bygge- eller innkjøpskostnader. KPI-justering er et sammenligningsmål, ikke et mål på produksjonsvolum.",
+      "Utgifter sier ikke hvor mye eller hvor god tjenesteproduksjon innbyggerne får. Overføringer, pensjoner og tilskudd inngår også.",
+      "Tallene identifiserer ikke årsakene til endringene. De kan ikke alene brukes til å konkludere om effektivitet, sløsing eller virkningen av politiske beslutninger.",
+      "Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.",
+      "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse.",
+      "SSB-seriene er bakgrunnsvariabler, ikke en dokumentert årsaksfordeling av budsjettveksten. Geografi, definisjoner, tidsperiode, revisjoner og eventuelle prognoser må vurderes før tolkning. Siste observerte år erstatter ikke et fremtidig budsjettår."
+    ],
+    "ssbEvidence": [
+      {
+        "id": "Priser",
+        "scope": "state",
+        "purpose": "Kontroller observert års-KPI og avgrens hvor mye nominell utgiftsvekst som består etter prisjustering.",
+        "hash": "06531580d033e1a157e3b52f21f6dca120ed057ddbcaed4c8f164087eae1a99a",
+        "table": "14711",
+        "title": "14711: Konsumprisindeks, historisk serie (2025=100) 1865-2025",
+        "retrievedAt": "2026-10-05T19:20:21.232720+00:00",
+        "updated": "2026-02-06T07:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "KpiAar"
+          ],
+          "Tid": [
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+            "2019",
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "KpiAar",
+            "label": "Konsumprisindeks"
+          }
+        },
+        "unit": "indeks",
+        "rows": [
+          {
+            "value": 71.1,
+            "year": 2014
+          },
+          {
+            "value": 72.6,
+            "year": 2015
+          },
+          {
+            "value": 75.2,
+            "year": 2016
+          },
+          {
+            "value": 76.6,
+            "year": 2017
+          },
+          {
+            "value": 78.7,
+            "year": 2018
+          },
+          {
+            "value": 80.4,
+            "year": 2019
+          },
+          {
+            "value": 81.5,
+            "year": 2020
+          },
+          {
+            "value": 84.3,
+            "year": 2021
+          },
+          {
+            "value": 89.2,
+            "year": 2022
+          },
+          {
+            "value": 94.1,
+            "year": 2023
+          },
+          {
+            "value": 97.1,
+            "year": 2024
+          },
+          {
+            "value": 100,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "Befolkning",
+        "scope": "state",
+        "purpose": "Kontroller folkemengde ved inngangen til året for samme observerte regnskapsperiode.",
+        "hash": "b81875272430ddd6bdb26391db4dd1c703f9dd87ceb6965f038073081b97c4d5",
+        "table": "06913",
+        "title": "06913: Endringer i kommuner, fylker og hele landets befolkning (K) 1951-2026",
+        "retrievedAt": "2026-10-05T19:20:22.034246+00:00",
+        "updated": "2026-04-15T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Folkemengde"
+          ],
+          "Region": [
+            "0"
+          ],
+          "Tid": [
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+            "2019",
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Folkemengde",
+            "label": "Befolkning 1. januar"
+          },
+          "Region": {
+            "code": "0",
+            "label": "Hele landet"
+          }
+        },
+        "unit": "personer",
+        "rows": [
+          {
+            "value": 5109056,
+            "year": 2014
+          },
+          {
+            "value": 5165802,
+            "year": 2015
+          },
+          {
+            "value": 5213985,
+            "year": 2016
+          },
+          {
+            "value": 5258317,
+            "year": 2017
+          },
+          {
+            "value": 5295619,
+            "year": 2018
+          },
+          {
+            "value": 5328212,
+            "year": 2019
+          },
+          {
+            "value": 5367580,
+            "year": 2020
+          },
+          {
+            "value": 5391369,
+            "year": 2021
+          },
+          {
+            "value": 5425270,
+            "year": 2022
+          },
+          {
+            "value": 5488984,
+            "year": 2023
+          },
+          {
+            "value": 5550203,
+            "year": 2024
+          },
+          {
+            "value": 5594340,
+            "year": 2025
+          }
+        ]
+      }
+    ]
+  },
+  "copy": {
+    "title": "Statens regning steg {{fact:nominalGrowth}}. Hvor mye kan dyrtid forklare?",
+    "description": "Ferske SSB-uttrekk bekrefter prisvekst og flere innbyggere. Vi følger regningen gjennom begge justeringene og ser hva som fortsatt står igjen.",
+    "lead": "Statens utgifter har steget {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Dyrere varer og flere innbyggere gjør en større regning forståelig. Men når vi tar høyde for begge deler, har regningen fortsatt vokst {{fact:realPerCapitaGrowth}} per innbygger. Hva er det justeringene rydder bort — og hva står igjen?",
+    "conclusion": "Prisvekst og befolkningsvekst demper bildet av utgiftsøkningen betydelig. Likevel står en KPI-justert økning på {{fact:realPerCapitaGrowth}} per innbygger igjen. Regnskapspostene viser at enkelte kriseutgifter falt mens andre oppgaver vokste. Resten kan ikke uten videre kalles hverken koronaregning eller sløsing.",
+    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nStatens regning har vokst {{fact:nominalGrowth}} siden {{fact:startYear}}. Inflasjonen rekker opp hånden: «Jeg kan forklare en del.» Flere innbyggere melder seg også.\n\nVi gir begge ordet. Likevel står {{fact:realPerCapitaGrowth}} økning per innbygger igjen etter KPI-justering. Regningen tok visst ikke hele pandemipausen med seg ut døren.\n\nMen noen kriseutgifter falt faktisk. Så hva tok plassen deres? Sven følger pengene — og sjekker forklaringene mot ferske SSB-uttrekk. Les analysen.",
+    "sections": [
+      {
+        "heading": "En stor økning får en mer presis målestokk",
+        "factIds": [
+          "startYear",
+          "endYear",
+          "nominalGrowth",
+          "firstPerCapita",
+          "lastPerCapita"
+        ],
+        "paragraphs": [
+          "Fra {{fact:startYear}} til {{fact:endYear}} økte de regnskapsførte utgiftene i denne avgrensningen med {{fact:nominalGrowth}}. Vi følger statens utgifter uten finansposter og overføringer til Oljefondet. Beløpet er en samlet regning for mange ulike oppgaver: tjenester, pensjoner, støtteordninger og tilskudd. Det er dermed heller ikke en prislapp på en uendret handlekurv.",
+          "Per innbygger gikk regningen fra {{fact:firstPerCapita}} til {{fact:lastPerCapita}}, i hvert års kroner. Før vi spør hva staten fikk igjen for pengene, må vi spørre hvor mye av forskjellen som følger av at kronene ble mindre verdt og at flere mennesker deler regningen. Grafene viser hvordan bildet flytter seg når vi gjør disse justeringene."
+        ]
+      },
+      {
+        "heading": "Dyrtiden har et tydelig fingeravtrykk",
+        "factIds": [
+          "ssbPriserStartYear",
+          "ssbPriserEndYear",
+          "ssbPriserGrowth",
+          "priceGrowth"
+        ],
+        "paragraphs": [
+          "SSBs historiske årsserie for konsumprisindeksen viser en prisøkning på {{fact:ssbPriserGrowth}} fra {{fact:ssbPriserStartYear}} til {{fact:ssbPriserEndYear}}. Det ferske uttrekket bekrefter veksten som ligger bak Fellestalls prisjustering. Årsserien bruker gjennomsnittet gjennom året, slik at en enkelt dyr måned ikke får representere et helt regnskapsår.",
+          "Prisveksten gjør at mer pengebruk kan kjøpe det samme som før. Derfor er det lite opplysende å lese hele den nominelle økningen som om staten økte aktiviteten tilsvarende. Samtidig måler KPI husholdningenes konsumpriser. Staten kjøper en annen blanding av varer og tjenester og betaler også lønn og overføringer. Justeringen gir en felles målestokk gjennom perioden, men ingen fasit på statens faktiske kostnadsvekst."
+        ]
+      },
+      {
+        "heading": "Flere deler regningen — men også behovene",
+        "factIds": [
+          "ssbBefolkningStartYear",
+          "ssbBefolkningEndYear",
+          "ssbBefolkningGrowth",
+          "populationGrowth"
+        ],
+        "paragraphs": [
+          "Folkemengden ved inngangen til året økte {{fact:ssbBefolkningGrowth}} mellom {{fact:ssbBefolkningStartYear}} og {{fact:ssbBefolkningEndYear}}. Også her samsvarer det nye SSB-uttrekket med Fellestalls grunnlag. Vi bruker observerte folketall for hele landet, ikke framskrivinger, og holder oss til samme tidspunkt hvert år.",
+          "Flere innbyggere kan gi større behov for tjenester, men utgiftene trenger ikke vokse helt i takt med folketallet. Alderssammensetning, bosetting og hvilke oppgaver staten finansierer spiller også inn. Et gjennomsnitt per innbygger forteller heller ikke hvem som mottar pengene. Det gjør regningen lettere å sammenligne, samtidig som det lar oss stille mer konkrete spørsmål om mottakere og behov."
+        ]
+      },
+      {
+        "heading": "Etter begge justeringene står en økning igjen",
+        "factIds": [
+          "nominalGrowth",
+          "nominalPerCapitaGrowth",
+          "realPerCapitaGrowth",
+          "largestChangeYear",
+          "largestAnnualChange",
+          "growthAfterChange"
+        ],
+        "paragraphs": [
+          "Den samme utgiftsutviklingen kan dermed beskrives på flere måter: {{fact:nominalGrowth}} for totalsummen, {{fact:nominalPerCapitaGrowth}} per innbygger i løpende kroner og {{fact:realPerCapitaGrowth}} per innbygger etter KPI-justering. Dette er alternative mål på samme regnskap. Prosentene kan ikke trekkes direkte fra hverandre for å beregne hvor stor del hver forklaring bidrar med.",
+          "Året {{fact:largestChangeYear}} har det største årlige spranget i den justerte serien, på {{fact:largestAnnualChange}}. Pandemien gir en konkret historisk bakgrunn for å undersøke dette bruddet. Men ved slutten av perioden ligger den justerte regningen fortsatt {{fact:growthAfterChange}} over sprangåret. Hvis midlertidige kriseordninger krympet, hvilke andre poster beveget seg i motsatt retning?"
+        ]
+      },
+      {
+        "heading": "Kriseutgifter falt mens andre regninger vokste",
+        "factIds": [
+          "dagpengerPeakAmount",
+          "dagpengerLastAmount",
+          "dagpengerPeakYear",
+          "koronakompensasjonLastAmount",
+          "ukrainastotteLastAmount",
+          "endYear"
+        ],
+        "paragraphs": [
+          "Dagpengeposten gikk fra {{fact:dagpengerPeakAmount}} i {{fact:dagpengerPeakYear}} til {{fact:dagpengerLastAmount}} i {{fact:endYear}}, i løpende kroner. Den omfatter også ordinær arbeidsledighet, men bevegelsen viser at en stor post knyttet til inntektsstøtte faktisk ble mindre etter krisespranget. En utvalgt post for midlertidig koronakompensasjon til foretak var ved slutten av perioden nede i {{fact:koronakompensasjonLastAmount}}.",
+          "Samtidig kom nye forpliktelser til. Den bokførte posten for militær støtte til Ukraina er på {{fact:ukrainastotteLastAmount}} i {{fact:endYear}}. Posten dekker ikke all Ukraina-støtte, akkurat som den utvalgte koronaposten ikke dekker alle pandemitiltak. Eksemplene viser likevel hvorfor en høy totalsum kan bestå mens innholdet endrer seg. En kriseregning kan bli mindre uten at statens samlede regning gjør det samme."
+        ]
+      },
+      {
+        "heading": "Hva fikk vi igjen for resten?",
+        "factIds": [
+          "realPerCapitaGrowth"
+        ],
+        "paragraphs": [
+          "Den gjenværende økningen på {{fact:realPerCapitaGrowth}} per innbygger etter KPI-justering er et funn som trenger en forklaring. Den er ikke i seg selv bevis på ineffektivitet. Flere mottakere av pensjon, endret sammensetning av oppgaver, nye politiske prioriteringer og andre kostnadsforløp enn husholdningenes kan trekke utgiftene opp uten at samme tjeneste blir tilsvarende dyrere.",
+          "Neste forklaringsarbeid må følge alle postene som bidrar til økningen, avstemme dem mot totalen og skille flytting av ansvar fra nye utgifter. Skal vi vurdere resultatene, trenger vi også mål på tjenester, kvalitet og hvem ordningene når. SSB hjelper oss å få målestokken på plass. Regnskapet viser hvor vi bør lete videre etter hva som ligger på regningen."
+        ]
+      }
+    ]
+  }
+}
