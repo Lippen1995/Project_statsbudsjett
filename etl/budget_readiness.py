@@ -36,14 +36,15 @@ def previous_failure(run_id=37310297347):
     return "No diagnostic exception found in retained import logs"
 
 
-def check():
+def check(fetch=None, diagnostic=None):
+    fetch = fetch or get
     result = {"checkedAt": datetime.now(timezone.utc).isoformat(), "oldRun": 37310297347,
               "oldFailure": previous_failure(), "partyRun": 37458117681,
               "partyRunFailure": previous_failure(37458117681), "steps": {}}
     # Check the already-read original 2026 file independently of CMS discovery.
     reference = json.loads(Path("editorial/research/budsjett-2027/baseline-2026.json").read_text())["nameReference"]
     try:
-        raw = get(reference["url"]).content
+        raw = fetch(reference["url"]).content
         import hashlib
         if hashlib.sha256(raw).hexdigest() != reference["sha256"]:
             raise ValueError("Previously verified 2026 original has changed")
@@ -54,18 +55,17 @@ def check():
     # Do not retry this way when the response explicitly denies proxy policy.
     url = "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/"
     try:
-        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (compatible; Fellestall/1.0; +https://fellestall.no)",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "Accept-Language": "nb-NO,nb;q=0.9,en;q=0.5"}, timeout=45)
-        result["httpDiagnostic"] = {"url": url, "status": response.status_code,
-            "server": response.headers.get("Server"), "contentType": response.headers.get("Content-Type"),
-            "policyDenied": "domain forbidden" in response.text[:500].lower()}
+        if diagnostic is not None:
+            result["httpDiagnostic"] = diagnostic
+        else:
+            result["httpDiagnostic"] = http_diagnostic(url)
     except requests.RequestException:
         result["httpDiagnostic"] = {"url": url, "status": "connection-failed"}
     try:
-        source = discover(2026)
+        source = discover(2026, fetch=fetch)
         if not source:
             raise ValueError("Official 2026 Gul bok not discovered")
-        raw = get(source["url"]).content
+        raw = fetch(source["url"]).content
         records = parse_gulbok(raw)
         if len(records) < 1000:
             raise ValueError("Unexpectedly incomplete real Gul bok fixture")
@@ -82,12 +82,20 @@ def check():
     except (requests.RequestException, ValueError, OSError) as error:
         result["steps"]["actual2026Import"] = {"status": "failed", "reason": str(error)}
     try:
-        source = discover(2027)
+        source = discover(2027, fetch=fetch)
         result["steps"]["release2027"] = {"status": "available" if source else "not-released", "source": source}
     except (requests.RequestException, ValueError) as error:
         result["steps"]["release2027"] = {"status": "failed", "reason": str(error)}
     result["passed"] = all(s["status"] != "failed" for s in result["steps"].values())
     return result
+
+
+def http_diagnostic(url):
+    response = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (compatible; Fellestall/1.0; +https://fellestall.no)",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "Accept-Language": "nb-NO,nb;q=0.9,en;q=0.5"}, timeout=45)
+    return {"url": url, "status": response.status_code,
+        "server": response.headers.get("Server"), "contentType": response.headers.get("Content-Type"),
+        "policyDenied": "domain forbidden" in response.text[:500].lower()}
 
 
 if __name__ == "__main__":

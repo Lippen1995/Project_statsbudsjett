@@ -6,6 +6,8 @@ on:
     paths:
       - 'etl/budget_proposals.py'
       - 'etl/budget_readiness.py'
+      - 'etl/readiness_sources.py'
+      - 'editorial/research/budsjett-2027/readiness-evidence/**'
       - '.github/workflows/budget-readiness.yml'
 permissions:
   contents: write
@@ -25,8 +27,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r etl/requirements.txt
-      - name: Test kildediscovery, ekte Excel og import i midlertidig katalog
-        run: python etl/budget_readiness.py --output editorial/research/budsjett-2027/readiness.json
+      - name: Verifiser ferske native kilder, discovery og ekte import i midlertidig katalog
+        run: python etl/readiness_sources.py --output editorial/research/budsjett-2027/readiness.json
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Behold faktisk kontrollresultat også ved feil
