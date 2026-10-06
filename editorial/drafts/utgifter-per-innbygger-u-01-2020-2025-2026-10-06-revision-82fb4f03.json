@@ -1,0 +1,2785 @@
+{
+  "slug": "utgifter-per-innbygger-u-01-2020-2025-2026-10-06-revision-82fb4f03",
+  "topic": "Utenriksdepartementet",
+  "geography": "Staten",
+  "type": "Utvikling over tid",
+  "status": "draft",
+  "createdAt": "2026-10-06T07:30:09.308Z",
+  "generatedAt": "2026-10-06T07:30:09.308Z",
+  "report": {
+    "kind": "real-expenditure-per-capita",
+    "factsVersion": 2,
+    "scopeId": "u-01",
+    "scopeName": "Utenriksdepartementet",
+    "start": 2020,
+    "end": 2025,
+    "dataUpdated": "2026-09-23T18:32:24.776647+00:00",
+    "dataHash": "f1b13cde59cdf86414d04658d10ab5872d6d2e7d586aad03eb021517441d52e1",
+    "facts": {
+      "startYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Første regnskapsår"
+      },
+      "endYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Siste regnskapsår"
+      },
+      "nominalGrowth": {
+        "value": 36.728822363828264,
+        "text": "36,7 %",
+        "label": "Vekst i løpende utgifter"
+      },
+      "populationGrowth": {
+        "value": 4.224622641860942,
+        "text": "4,2 %",
+        "label": "Befolkningsvekst"
+      },
+      "priceGrowth": {
+        "value": 22.699386503067487,
+        "text": "22,7 %",
+        "label": "Prisvekst målt med KPI"
+      },
+      "realPerCapitaGrowth": {
+        "value": 6.917144338753878,
+        "text": "6,9 %",
+        "label": "Realvekst per innbygger"
+      },
+      "firstPerCapita": {
+        "value": 7926.048610360721,
+        "text": "7 926 kr",
+        "label": "Per innbygger i startåret, løpende kroner"
+      },
+      "lastPerCapita": {
+        "value": 10397.920040612476,
+        "text": "10 398 kr",
+        "label": "Per innbygger i sluttåret, løpende kroner"
+      },
+      "firstRealPerCapita": {
+        "value": 9725.213018847511,
+        "text": "9 725 kr",
+        "label": "Startåret i sluttårets priser"
+      },
+      "total": {
+        "value": 58.1695,
+        "text": "58,2 mrd. kr",
+        "label": "Utgifter i sluttåret"
+      },
+      "nominalPerCapitaGrowth": {
+        "value": 31.18668017025017,
+        "text": "31,2 %",
+        "label": "Vekst per innbygger, løpende kroner"
+      },
+      "previousYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Året før største årlige endring"
+      },
+      "largestChangeYear": {
+        "value": 2022,
+        "text": "2022",
+        "label": "År med største årlige endring i absoluttverdi"
+      },
+      "largestAnnualChange": {
+        "value": 17.239216232438913,
+        "text": "17,2 %",
+        "label": "Største årlige endring, KPI-justert per innbygger"
+      },
+      "growthBeforeChange": {
+        "value": -1.8025979912611456,
+        "text": "−1,8 %",
+        "label": "KPI-justert vekst per innbygger, 2020–2021"
+      },
+      "growthSinceChange": {
+        "value": 8.879809599483114,
+        "text": "8,9 %",
+        "label": "KPI-justert vekst per innbygger, 2021–2025"
+      },
+      "growthAfterChange": {
+        "value": -7.130213678998332,
+        "text": "−7,1 %",
+        "label": "KPI-justert vekst per innbygger, 2022–2025"
+      },
+      "ukrainaPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Ukraina og naboland (Regionbevilgninger): år med høyeste løpende beløp i perioden"
+      },
+      "ukrainaPeakAmount": {
+        "value": 12153.9,
+        "text": "12,2 mrd. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): høyeste løpende beløp, 2025"
+      },
+      "ukrainaLastAmount": {
+        "value": 12153.9,
+        "text": "12,2 mrd. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): løpende beløp, 2025"
+      },
+      "ukrainaReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Ukraina og naboland (Regionbevilgninger): sammenligningsår"
+      },
+      "ukrainaFirstRecordedYear": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Ukraina og naboland (Regionbevilgninger): første år med regnskapsføring på denne posten i perioden"
+      },
+      "ukrainaYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Ukraina og naboland (Regionbevilgninger): regnskapsår"
+      },
+      "ukrainaYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Ukraina og naboland (Regionbevilgninger): regnskapsår"
+      },
+      "ukrainaYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Ukraina og naboland (Regionbevilgninger): regnskapsår"
+      },
+      "ukrainaAmountC": {
+        "value": 3995,
+        "text": "4,0 mrd. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): løpende beløp, 2022"
+      },
+      "ukrainaYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Ukraina og naboland (Regionbevilgninger): regnskapsår"
+      },
+      "ukrainaAmountD": {
+        "value": 8727.9,
+        "text": "8,7 mrd. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): løpende beløp, 2023"
+      },
+      "ukrainaYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Ukraina og naboland (Regionbevilgninger): regnskapsår"
+      },
+      "ukrainaAmountE": {
+        "value": 9698.2,
+        "text": "9,7 mrd. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): løpende beløp, 2024"
+      },
+      "ukrainaYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Ukraina og naboland (Regionbevilgninger): regnskapsår"
+      },
+      "ukrainaAmountF": {
+        "value": 12153.9,
+        "text": "12,2 mrd. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): løpende beløp, 2025"
+      },
+      "ukrainaFirstRecordedAmount": {
+        "value": 3995,
+        "text": "4,0 mrd. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): første observerte beløp på postutvalget"
+      },
+      "ukrainaChangeSinceFirst": {
+        "value": 8158.9,
+        "text": "8,2 mrd. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "ukrainaGrowthSinceFirst": {
+        "value": 204.22778473091364,
+        "text": "204,2 %",
+        "label": "Ukraina og naboland (Regionbevilgninger): prosentvis endring fra første observerte år"
+      },
+      "ukrainaContributionAmount": {
+        "value": 12153.9,
+        "text": "12,2 mrd. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "ukrainaNetChangeRatio": {
+        "value": 77.78097761394615,
+        "text": "77,8 %",
+        "label": "Ukraina og naboland (Regionbevilgninger): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "ukrainaChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): beløpsendring fra høyeste observerte år"
+      },
+      "ukrainaGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Ukraina og naboland (Regionbevilgninger): prosentvis endring fra høyeste observerte år"
+      },
+      "ukrainaLastAnnualChangeAmount": {
+        "value": 2455.699999999999,
+        "text": "2,5 mrd. kr",
+        "label": "Ukraina og naboland (Regionbevilgninger): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "ukrainaGrowthLastYear": {
+        "value": 25.321193623559,
+        "text": "25,3 %",
+        "label": "Ukraina og naboland (Regionbevilgninger): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "flyktningnorgePeakYear": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): år med høyeste løpende beløp i perioden"
+      },
+      "flyktningnorgePeakAmount": {
+        "value": 4689.2,
+        "text": "4,7 mrd. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): høyeste løpende beløp, 2022"
+      },
+      "flyktningnorgeLastAmount": {
+        "value": 3003.2,
+        "text": "3,0 mrd. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): løpende beløp, 2025"
+      },
+      "flyktningnorgeReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): sammenligningsår"
+      },
+      "flyktningnorgeReferenceAmount": {
+        "value": 479.4,
+        "text": "479,4 mill. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): løpende beløp, 2020"
+      },
+      "flyktningnorgeFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): første år med regnskapsføring på denne posten i perioden"
+      },
+      "flyktningnorgeYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): regnskapsår"
+      },
+      "flyktningnorgeAmountA": {
+        "value": 479.4,
+        "text": "479,4 mill. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): løpende beløp, 2020"
+      },
+      "flyktningnorgeYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): regnskapsår"
+      },
+      "flyktningnorgeAmountB": {
+        "value": 473.4,
+        "text": "473,4 mill. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): løpende beløp, 2021"
+      },
+      "flyktningnorgeYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): regnskapsår"
+      },
+      "flyktningnorgeAmountC": {
+        "value": 4689.2,
+        "text": "4,7 mrd. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): løpende beløp, 2022"
+      },
+      "flyktningnorgeYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): regnskapsår"
+      },
+      "flyktningnorgeAmountD": {
+        "value": 4494.9,
+        "text": "4,5 mrd. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): løpende beløp, 2023"
+      },
+      "flyktningnorgeYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): regnskapsår"
+      },
+      "flyktningnorgeAmountE": {
+        "value": 4012.2,
+        "text": "4,0 mrd. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): løpende beløp, 2024"
+      },
+      "flyktningnorgeYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): regnskapsår"
+      },
+      "flyktningnorgeAmountF": {
+        "value": 3003.2,
+        "text": "3,0 mrd. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): løpende beløp, 2025"
+      },
+      "flyktningnorgeFirstRecordedAmount": {
+        "value": 479.4,
+        "text": "479,4 mill. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): første observerte beløp på postutvalget"
+      },
+      "flyktningnorgeChangeSinceFirst": {
+        "value": 2523.7999999999997,
+        "text": "2,5 mrd. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "flyktningnorgeGrowthSinceFirst": {
+        "value": 526.4497288277013,
+        "text": "526,4 %",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): prosentvis endring fra første observerte år"
+      },
+      "flyktningnorgeContributionAmount": {
+        "value": 2523.7999999999997,
+        "text": "2,5 mrd. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "flyktningnorgeNetChangeRatio": {
+        "value": 16.151493043556165,
+        "text": "16,2 %",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "flyktningnorgeChangeFromPeak": {
+        "value": -1686,
+        "text": "−1,7 mrd. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): beløpsendring fra høyeste observerte år"
+      },
+      "flyktningnorgeGrowthFromPeak": {
+        "value": -35.9549603343854,
+        "text": "−36,0 %",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): prosentvis endring fra høyeste observerte år"
+      },
+      "flyktningnorgeLastAnnualChangeAmount": {
+        "value": -1009,
+        "text": "−1,0 mrd. kr",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "flyktningnorgeGrowthLastYear": {
+        "value": -25.14829769203928,
+        "text": "−25,1 %",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "flyktningnorgeRealGrowthSinceReference": {
+        "value": 389.86171986341714,
+        "text": "389,9 %",
+        "label": "Spesielle driftsutgifter (Flyktningtiltak i Norge): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "eosmidlerPeakYear": {
+        "value": 2023,
+        "text": "2023",
+        "label": "EØS-finansieringsordningene: år med høyeste løpende beløp i perioden"
+      },
+      "eosmidlerPeakAmount": {
+        "value": 7058.4,
+        "text": "7,1 mrd. kr",
+        "label": "EØS-finansieringsordningene: høyeste løpende beløp, 2023"
+      },
+      "eosmidlerLastAmount": {
+        "value": 1101.2,
+        "text": "1,1 mrd. kr",
+        "label": "EØS-finansieringsordningene: løpende beløp, 2025"
+      },
+      "eosmidlerReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "EØS-finansieringsordningene: sammenligningsår"
+      },
+      "eosmidlerReferenceAmount": {
+        "value": 3213.2,
+        "text": "3,2 mrd. kr",
+        "label": "EØS-finansieringsordningene: løpende beløp, 2020"
+      },
+      "eosmidlerFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "EØS-finansieringsordningene: første år med regnskapsføring på denne posten i perioden"
+      },
+      "eosmidlerYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "EØS-finansieringsordningene: regnskapsår"
+      },
+      "eosmidlerAmountA": {
+        "value": 3213.2,
+        "text": "3,2 mrd. kr",
+        "label": "EØS-finansieringsordningene: løpende beløp, 2020"
+      },
+      "eosmidlerYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "EØS-finansieringsordningene: regnskapsår"
+      },
+      "eosmidlerAmountB": {
+        "value": 3668.6000000000004,
+        "text": "3,7 mrd. kr",
+        "label": "EØS-finansieringsordningene: løpende beløp, 2021"
+      },
+      "eosmidlerYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "EØS-finansieringsordningene: regnskapsår"
+      },
+      "eosmidlerAmountC": {
+        "value": 4964.1,
+        "text": "5,0 mrd. kr",
+        "label": "EØS-finansieringsordningene: løpende beløp, 2022"
+      },
+      "eosmidlerYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "EØS-finansieringsordningene: regnskapsår"
+      },
+      "eosmidlerAmountD": {
+        "value": 7058.4,
+        "text": "7,1 mrd. kr",
+        "label": "EØS-finansieringsordningene: løpende beløp, 2023"
+      },
+      "eosmidlerYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "EØS-finansieringsordningene: regnskapsår"
+      },
+      "eosmidlerAmountE": {
+        "value": 3671.3,
+        "text": "3,7 mrd. kr",
+        "label": "EØS-finansieringsordningene: løpende beløp, 2024"
+      },
+      "eosmidlerYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "EØS-finansieringsordningene: regnskapsår"
+      },
+      "eosmidlerAmountF": {
+        "value": 1101.2,
+        "text": "1,1 mrd. kr",
+        "label": "EØS-finansieringsordningene: løpende beløp, 2025"
+      },
+      "eosmidlerFirstRecordedAmount": {
+        "value": 3213.2,
+        "text": "3,2 mrd. kr",
+        "label": "EØS-finansieringsordningene: første observerte beløp på postutvalget"
+      },
+      "eosmidlerChangeSinceFirst": {
+        "value": -2112,
+        "text": "−2,1 mrd. kr",
+        "label": "EØS-finansieringsordningene: beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "eosmidlerGrowthSinceFirst": {
+        "value": -65.72886841777668,
+        "text": "−65,7 %",
+        "label": "EØS-finansieringsordningene: prosentvis endring fra første observerte år"
+      },
+      "eosmidlerContributionAmount": {
+        "value": -2112,
+        "text": "−2,1 mrd. kr",
+        "label": "EØS-finansieringsordningene: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "eosmidlerNetChangeRatio": {
+        "value": -13.516107975271662,
+        "text": "−13,5 %",
+        "label": "EØS-finansieringsordningene: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "eosmidlerChangeFromPeak": {
+        "value": -5957.2,
+        "text": "−6,0 mrd. kr",
+        "label": "EØS-finansieringsordningene: beløpsendring fra høyeste observerte år"
+      },
+      "eosmidlerGrowthFromPeak": {
+        "value": -84.3987305905021,
+        "text": "−84,4 %",
+        "label": "EØS-finansieringsordningene: prosentvis endring fra høyeste observerte år"
+      },
+      "eosmidlerLastAnnualChangeAmount": {
+        "value": -2570.1000000000004,
+        "text": "−2,6 mrd. kr",
+        "label": "EØS-finansieringsordningene: beløpsendring mellom de siste to regnskapsårene"
+      },
+      "eosmidlerGrowthLastYear": {
+        "value": -70.0051752785117,
+        "text": "−70,0 %",
+        "label": "EØS-finansieringsordningene: prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "eosmidlerRealGrowthSinceReference": {
+        "value": -73.20117690856117,
+        "text": "−73,2 %",
+        "label": "EØS-finansieringsordningene: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "driftudPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Driftsutgifter (Utenriksdepartementet): år med høyeste løpende beløp i perioden"
+      },
+      "driftudPeakAmount": {
+        "value": 4862.6,
+        "text": "4,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): høyeste løpende beløp, 2025"
+      },
+      "driftudLastAmount": {
+        "value": 4862.6,
+        "text": "4,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): løpende beløp, 2025"
+      },
+      "driftudReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Driftsutgifter (Utenriksdepartementet): sammenligningsår"
+      },
+      "driftudReferenceAmount": {
+        "value": 2300.9,
+        "text": "2,3 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): løpende beløp, 2020"
+      },
+      "driftudFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Driftsutgifter (Utenriksdepartementet): første år med regnskapsføring på denne posten i perioden"
+      },
+      "driftudYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Driftsutgifter (Utenriksdepartementet): regnskapsår"
+      },
+      "driftudAmountA": {
+        "value": 2300.9,
+        "text": "2,3 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): løpende beløp, 2020"
+      },
+      "driftudYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Driftsutgifter (Utenriksdepartementet): regnskapsår"
+      },
+      "driftudAmountB": {
+        "value": 2307.6,
+        "text": "2,3 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): løpende beløp, 2021"
+      },
+      "driftudYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Driftsutgifter (Utenriksdepartementet): regnskapsår"
+      },
+      "driftudAmountC": {
+        "value": 2474.3,
+        "text": "2,5 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): løpende beløp, 2022"
+      },
+      "driftudYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Driftsutgifter (Utenriksdepartementet): regnskapsår"
+      },
+      "driftudAmountD": {
+        "value": 2594.1,
+        "text": "2,6 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): løpende beløp, 2023"
+      },
+      "driftudYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Driftsutgifter (Utenriksdepartementet): regnskapsår"
+      },
+      "driftudAmountE": {
+        "value": 2739.7,
+        "text": "2,7 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): løpende beløp, 2024"
+      },
+      "driftudYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Driftsutgifter (Utenriksdepartementet): regnskapsår"
+      },
+      "driftudAmountF": {
+        "value": 4862.6,
+        "text": "4,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): løpende beløp, 2025"
+      },
+      "driftudFirstRecordedAmount": {
+        "value": 2300.9,
+        "text": "2,3 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): første observerte beløp på postutvalget"
+      },
+      "driftudChangeSinceFirst": {
+        "value": 2561.7000000000003,
+        "text": "2,6 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "driftudGrowthSinceFirst": {
+        "value": 111.33469511930114,
+        "text": "111,3 %",
+        "label": "Driftsutgifter (Utenriksdepartementet): prosentvis endring fra første observerte år"
+      },
+      "driftudContributionAmount": {
+        "value": 2561.7000000000003,
+        "text": "2,6 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "driftudNetChangeRatio": {
+        "value": 16.39404062511999,
+        "text": "16,4 %",
+        "label": "Driftsutgifter (Utenriksdepartementet): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "driftudChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): beløpsendring fra høyeste observerte år"
+      },
+      "driftudGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Driftsutgifter (Utenriksdepartementet): prosentvis endring fra høyeste observerte år"
+      },
+      "driftudLastAnnualChangeAmount": {
+        "value": 2122.9000000000005,
+        "text": "2,1 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "driftudGrowthLastYear": {
+        "value": 77.48658612256818,
+        "text": "77,5 %",
+        "label": "Driftsutgifter (Utenriksdepartementet): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "driftudRealGrowthSinceReference": {
+        "value": 65.25632058566227,
+        "text": "65,3 %",
+        "label": "Driftsutgifter (Utenriksdepartementet): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "driftbistandPeakYear": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): år med høyeste løpende beløp i perioden"
+      },
+      "driftbistandPeakAmount": {
+        "value": 1905.1,
+        "text": "1,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): høyeste løpende beløp, 2024"
+      },
+      "driftbistandReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): sammenligningsår"
+      },
+      "driftbistandReferenceAmount": {
+        "value": 1583.1,
+        "text": "1,6 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2020"
+      },
+      "driftbistandFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): første år med regnskapsføring på denne posten i perioden"
+      },
+      "driftbistandYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftbistandAmountA": {
+        "value": 1583.1,
+        "text": "1,6 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2020"
+      },
+      "driftbistandYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftbistandAmountB": {
+        "value": 1581.7,
+        "text": "1,6 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2021"
+      },
+      "driftbistandYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftbistandAmountC": {
+        "value": 1663.9,
+        "text": "1,7 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2022"
+      },
+      "driftbistandYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftbistandAmountD": {
+        "value": 1757.9,
+        "text": "1,8 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2023"
+      },
+      "driftbistandYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftbistandAmountE": {
+        "value": 1905.1,
+        "text": "1,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2024"
+      },
+      "driftbistandYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftbistandFirstRecordedAmount": {
+        "value": 1583.1,
+        "text": "1,6 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): første observerte beløp på postutvalget"
+      },
+      "driftsamletPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): år med høyeste løpende beløp i perioden"
+      },
+      "driftsamletPeakAmount": {
+        "value": 4862.6,
+        "text": "4,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): høyeste løpende beløp, 2025"
+      },
+      "driftsamletLastAmount": {
+        "value": 4862.6,
+        "text": "4,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2025"
+      },
+      "driftsamletReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): sammenligningsår"
+      },
+      "driftsamletReferenceAmount": {
+        "value": 3884,
+        "text": "3,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2020"
+      },
+      "driftsamletFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): første år med regnskapsføring på denne posten i perioden"
+      },
+      "driftsamletYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftsamletAmountA": {
+        "value": 3884,
+        "text": "3,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2020"
+      },
+      "driftsamletYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftsamletAmountB": {
+        "value": 3889.3,
+        "text": "3,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2021"
+      },
+      "driftsamletYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftsamletAmountC": {
+        "value": 4138.200000000001,
+        "text": "4,1 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2022"
+      },
+      "driftsamletYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftsamletAmountD": {
+        "value": 4352,
+        "text": "4,4 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2023"
+      },
+      "driftsamletYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftsamletAmountE": {
+        "value": 4644.799999999999,
+        "text": "4,6 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2024"
+      },
+      "driftsamletYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): regnskapsår"
+      },
+      "driftsamletAmountF": {
+        "value": 4862.6,
+        "text": "4,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): løpende beløp, 2025"
+      },
+      "driftsamletFirstRecordedAmount": {
+        "value": 3884,
+        "text": "3,9 mrd. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): første observerte beløp på postutvalget"
+      },
+      "driftsamletChangeSinceFirst": {
+        "value": 978.6000000000004,
+        "text": "978,6 mill. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "driftsamletGrowthSinceFirst": {
+        "value": 25.19567456230691,
+        "text": "25,2 %",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): prosentvis endring fra første observerte år"
+      },
+      "driftsamletContributionAmount": {
+        "value": 978.6000000000004,
+        "text": "978,6 mill. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "driftsamletNetChangeRatio": {
+        "value": 6.262719348769344,
+        "text": "6,3 %",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "driftsamletChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): beløpsendring fra høyeste observerte år"
+      },
+      "driftsamletGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): prosentvis endring fra høyeste observerte år"
+      },
+      "driftsamletLastAnnualChangeAmount": {
+        "value": 217.8000000000011,
+        "text": "217,8 mill. kr",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "driftsamletGrowthLastYear": {
+        "value": 4.689114708921838,
+        "text": "4,7 %",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "driftsamletRealGrowthSinceReference": {
+        "value": -2.101372802381507,
+        "text": "−2,1 %",
+        "label": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "matsikkerhetPeakYear": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): år med høyeste løpende beløp i perioden"
+      },
+      "matsikkerhetPeakAmount": {
+        "value": 3156.7,
+        "text": "3,2 mrd. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): høyeste løpende beløp, 2023"
+      },
+      "matsikkerhetLastAmount": {
+        "value": 1977.9,
+        "text": "2,0 mrd. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): løpende beløp, 2025"
+      },
+      "matsikkerhetReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): sammenligningsår"
+      },
+      "matsikkerhetReferenceAmount": {
+        "value": 1191.3,
+        "text": "1,2 mrd. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): løpende beløp, 2020"
+      },
+      "matsikkerhetFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): første år med regnskapsføring på denne posten i perioden"
+      },
+      "matsikkerhetYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): regnskapsår"
+      },
+      "matsikkerhetAmountA": {
+        "value": 1191.3,
+        "text": "1,2 mrd. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): løpende beløp, 2020"
+      },
+      "matsikkerhetYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): regnskapsår"
+      },
+      "matsikkerhetAmountB": {
+        "value": 815.4,
+        "text": "815,4 mill. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): løpende beløp, 2021"
+      },
+      "matsikkerhetYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): regnskapsår"
+      },
+      "matsikkerhetAmountC": {
+        "value": 1648.4,
+        "text": "1,6 mrd. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): løpende beløp, 2022"
+      },
+      "matsikkerhetYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): regnskapsår"
+      },
+      "matsikkerhetAmountD": {
+        "value": 3156.7,
+        "text": "3,2 mrd. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): løpende beløp, 2023"
+      },
+      "matsikkerhetYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): regnskapsår"
+      },
+      "matsikkerhetAmountE": {
+        "value": 1819.5,
+        "text": "1,8 mrd. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): løpende beløp, 2024"
+      },
+      "matsikkerhetYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): regnskapsår"
+      },
+      "matsikkerhetAmountF": {
+        "value": 1977.9,
+        "text": "2,0 mrd. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): løpende beløp, 2025"
+      },
+      "matsikkerhetFirstRecordedAmount": {
+        "value": 1191.3,
+        "text": "1,2 mrd. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): første observerte beløp på postutvalget"
+      },
+      "matsikkerhetChangeSinceFirst": {
+        "value": 786.6000000000001,
+        "text": "786,6 mill. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "matsikkerhetGrowthSinceFirst": {
+        "value": 66.0287081339713,
+        "text": "66,0 %",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): prosentvis endring fra første observerte år"
+      },
+      "matsikkerhetContributionAmount": {
+        "value": 786.6000000000001,
+        "text": "786,6 mill. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "matsikkerhetNetChangeRatio": {
+        "value": 5.033982260108282,
+        "text": "5,0 %",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "matsikkerhetChangeFromPeak": {
+        "value": -1178.7999999999997,
+        "text": "−1,2 mrd. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): beløpsendring fra høyeste observerte år"
+      },
+      "matsikkerhetGrowthFromPeak": {
+        "value": -37.34279469065795,
+        "text": "−37,3 %",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): prosentvis endring fra høyeste observerte år"
+      },
+      "matsikkerhetLastAnnualChangeAmount": {
+        "value": 158.4000000000001,
+        "text": "158,4 mill. kr",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "matsikkerhetGrowthLastYear": {
+        "value": 8.705688375927467,
+        "text": "8,7 %",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "matsikkerhetRealGrowthSinceReference": {
+        "value": 29.828627534736786,
+        "text": "29,8 %",
+        "label": "Matsikkerhet og landbruk (Overgangsbistand (gap)): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "klimafondPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): år med høyeste løpende beløp i perioden"
+      },
+      "klimafondPeakAmount": {
+        "value": 750,
+        "text": "750,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): høyeste løpende beløp, 2025"
+      },
+      "klimafondLastAmount": {
+        "value": 750,
+        "text": "750,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): løpende beløp, 2025"
+      },
+      "klimafondReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): sammenligningsår"
+      },
+      "klimafondFirstRecordedYear": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): første år med regnskapsføring på denne posten i perioden"
+      },
+      "klimafondYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): regnskapsår"
+      },
+      "klimafondYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): regnskapsår"
+      },
+      "klimafondYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): regnskapsår"
+      },
+      "klimafondAmountC": {
+        "value": 250,
+        "text": "250,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): løpende beløp, 2022"
+      },
+      "klimafondYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): regnskapsår"
+      },
+      "klimafondAmountD": {
+        "value": 250,
+        "text": "250,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): løpende beløp, 2023"
+      },
+      "klimafondYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): regnskapsår"
+      },
+      "klimafondAmountE": {
+        "value": 250,
+        "text": "250,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): løpende beløp, 2024"
+      },
+      "klimafondYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): regnskapsår"
+      },
+      "klimafondAmountF": {
+        "value": 750,
+        "text": "750,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): løpende beløp, 2025"
+      },
+      "klimafondFirstRecordedAmount": {
+        "value": 250,
+        "text": "250,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): første observerte beløp på postutvalget"
+      },
+      "klimafondChangeSinceFirst": {
+        "value": 500,
+        "text": "500,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "klimafondGrowthSinceFirst": {
+        "value": 200,
+        "text": "200,0 %",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): prosentvis endring fra første observerte år"
+      },
+      "klimafondContributionAmount": {
+        "value": 750,
+        "text": "750,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "klimafondNetChangeRatio": {
+        "value": 4.799754252582266,
+        "text": "4,8 %",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "klimafondChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): beløpsendring fra høyeste observerte år"
+      },
+      "klimafondGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): prosentvis endring fra høyeste observerte år"
+      },
+      "klimafondLastAnnualChangeAmount": {
+        "value": 500,
+        "text": "500,0 mill. kr",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "klimafondGrowthLastYear": {
+        "value": 200,
+        "text": "200,0 %",
+        "label": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap)): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "sivilsamfunnPeakYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): år med høyeste løpende beløp i perioden"
+      },
+      "sivilsamfunnPeakAmount": {
+        "value": 5781.2,
+        "text": "5,8 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): høyeste løpende beløp, 2021"
+      },
+      "sivilsamfunnLastAmount": {
+        "value": 3615.8,
+        "text": "3,6 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): løpende beløp, 2025"
+      },
+      "sivilsamfunnReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): sammenligningsår"
+      },
+      "sivilsamfunnReferenceAmount": {
+        "value": 5182.7,
+        "text": "5,2 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): løpende beløp, 2020"
+      },
+      "sivilsamfunnFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): første år med regnskapsføring på denne posten i perioden"
+      },
+      "sivilsamfunnYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): regnskapsår"
+      },
+      "sivilsamfunnAmountA": {
+        "value": 5182.7,
+        "text": "5,2 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): løpende beløp, 2020"
+      },
+      "sivilsamfunnYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): regnskapsår"
+      },
+      "sivilsamfunnAmountB": {
+        "value": 5781.2,
+        "text": "5,8 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): løpende beløp, 2021"
+      },
+      "sivilsamfunnYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): regnskapsår"
+      },
+      "sivilsamfunnAmountC": {
+        "value": 3660.3,
+        "text": "3,7 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): løpende beløp, 2022"
+      },
+      "sivilsamfunnYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): regnskapsår"
+      },
+      "sivilsamfunnAmountD": {
+        "value": 3368.5,
+        "text": "3,4 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): løpende beløp, 2023"
+      },
+      "sivilsamfunnYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): regnskapsår"
+      },
+      "sivilsamfunnAmountE": {
+        "value": 3695.8,
+        "text": "3,7 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): løpende beløp, 2024"
+      },
+      "sivilsamfunnYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): regnskapsår"
+      },
+      "sivilsamfunnAmountF": {
+        "value": 3615.8,
+        "text": "3,6 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): løpende beløp, 2025"
+      },
+      "sivilsamfunnFirstRecordedAmount": {
+        "value": 5182.7,
+        "text": "5,2 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): første observerte beløp på postutvalget"
+      },
+      "sivilsamfunnChangeSinceFirst": {
+        "value": -1566.8999999999996,
+        "text": "−1,6 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "sivilsamfunnGrowthSinceFirst": {
+        "value": -30.233276091612478,
+        "text": "−30,2 %",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): prosentvis endring fra første observerte år"
+      },
+      "sivilsamfunnContributionAmount": {
+        "value": -1566.8999999999996,
+        "text": "−1,6 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "sivilsamfunnNetChangeRatio": {
+        "value": -10.027646584494871,
+        "text": "−10,0 %",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "sivilsamfunnChangeFromPeak": {
+        "value": -2165.3999999999996,
+        "text": "−2,2 mrd. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): beløpsendring fra høyeste observerte år"
+      },
+      "sivilsamfunnGrowthFromPeak": {
+        "value": -37.45589151041305,
+        "text": "−37,5 %",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): prosentvis endring fra høyeste observerte år"
+      },
+      "sivilsamfunnLastAnnualChangeAmount": {
+        "value": -80,
+        "text": "−80,0 mill. kr",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "sivilsamfunnGrowthLastYear": {
+        "value": -2.1646192975810385,
+        "text": "−2,2 %",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "sivilsamfunnRealGrowthSinceReference": {
+        "value": -45.44486845424323,
+        "text": "−45,4 %",
+        "label": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "naringsutviklingPeakYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Næringsutvikling (Næringsutvikling): år med høyeste løpende beløp i perioden"
+      },
+      "naringsutviklingPeakAmount": {
+        "value": 2332.6,
+        "text": "2,3 mrd. kr",
+        "label": "Næringsutvikling (Næringsutvikling): høyeste løpende beløp, 2020"
+      },
+      "naringsutviklingLastAmount": {
+        "value": 784.5,
+        "text": "784,5 mill. kr",
+        "label": "Næringsutvikling (Næringsutvikling): løpende beløp, 2025"
+      },
+      "naringsutviklingReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Næringsutvikling (Næringsutvikling): sammenligningsår"
+      },
+      "naringsutviklingReferenceAmount": {
+        "value": 2332.6,
+        "text": "2,3 mrd. kr",
+        "label": "Næringsutvikling (Næringsutvikling): løpende beløp, 2020"
+      },
+      "naringsutviklingFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Næringsutvikling (Næringsutvikling): første år med regnskapsføring på denne posten i perioden"
+      },
+      "naringsutviklingYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Næringsutvikling (Næringsutvikling): regnskapsår"
+      },
+      "naringsutviklingAmountA": {
+        "value": 2332.6,
+        "text": "2,3 mrd. kr",
+        "label": "Næringsutvikling (Næringsutvikling): løpende beløp, 2020"
+      },
+      "naringsutviklingYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Næringsutvikling (Næringsutvikling): regnskapsår"
+      },
+      "naringsutviklingAmountB": {
+        "value": 1934.6,
+        "text": "1,9 mrd. kr",
+        "label": "Næringsutvikling (Næringsutvikling): løpende beløp, 2021"
+      },
+      "naringsutviklingYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Næringsutvikling (Næringsutvikling): regnskapsår"
+      },
+      "naringsutviklingAmountC": {
+        "value": 1158.6,
+        "text": "1,2 mrd. kr",
+        "label": "Næringsutvikling (Næringsutvikling): løpende beløp, 2022"
+      },
+      "naringsutviklingYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Næringsutvikling (Næringsutvikling): regnskapsår"
+      },
+      "naringsutviklingAmountD": {
+        "value": 944.4,
+        "text": "944,4 mill. kr",
+        "label": "Næringsutvikling (Næringsutvikling): løpende beløp, 2023"
+      },
+      "naringsutviklingYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Næringsutvikling (Næringsutvikling): regnskapsår"
+      },
+      "naringsutviklingAmountE": {
+        "value": 1014.7,
+        "text": "1,0 mrd. kr",
+        "label": "Næringsutvikling (Næringsutvikling): løpende beløp, 2024"
+      },
+      "naringsutviklingYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Næringsutvikling (Næringsutvikling): regnskapsår"
+      },
+      "naringsutviklingAmountF": {
+        "value": 784.5,
+        "text": "784,5 mill. kr",
+        "label": "Næringsutvikling (Næringsutvikling): løpende beløp, 2025"
+      },
+      "naringsutviklingFirstRecordedAmount": {
+        "value": 2332.6,
+        "text": "2,3 mrd. kr",
+        "label": "Næringsutvikling (Næringsutvikling): første observerte beløp på postutvalget"
+      },
+      "naringsutviklingChangeSinceFirst": {
+        "value": -1548.1,
+        "text": "−1,5 mrd. kr",
+        "label": "Næringsutvikling (Næringsutvikling): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "naringsutviklingGrowthSinceFirst": {
+        "value": -66.36800137185973,
+        "text": "−66,4 %",
+        "label": "Næringsutvikling (Næringsutvikling): prosentvis endring fra første observerte år"
+      },
+      "naringsutviklingContributionAmount": {
+        "value": -1548.1,
+        "text": "−1,5 mrd. kr",
+        "label": "Næringsutvikling (Næringsutvikling): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "naringsutviklingNetChangeRatio": {
+        "value": -9.907332744563476,
+        "text": "−9,9 %",
+        "label": "Næringsutvikling (Næringsutvikling): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "naringsutviklingChangeFromPeak": {
+        "value": -1548.1,
+        "text": "−1,5 mrd. kr",
+        "label": "Næringsutvikling (Næringsutvikling): beløpsendring fra høyeste observerte år"
+      },
+      "naringsutviklingGrowthFromPeak": {
+        "value": -66.36800137185972,
+        "text": "−66,4 %",
+        "label": "Næringsutvikling (Næringsutvikling): prosentvis endring fra høyeste observerte år"
+      },
+      "naringsutviklingLastAnnualChangeAmount": {
+        "value": -230.20000000000005,
+        "text": "−230,2 mill. kr",
+        "label": "Næringsutvikling (Næringsutvikling): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "naringsutviklingGrowthLastYear": {
+        "value": -22.68650832758451,
+        "text": "−22,7 %",
+        "label": "Næringsutvikling (Næringsutvikling): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "naringsutviklingRealGrowthSinceReference": {
+        "value": -73.7009564658042,
+        "text": "−73,7 %",
+        "label": "Næringsutvikling (Næringsutvikling): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "afrikaregionPeakYear": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Afrika (Regionbevilgninger): år med høyeste løpende beløp i perioden"
+      },
+      "afrikaregionPeakAmount": {
+        "value": 2988.2,
+        "text": "3,0 mrd. kr",
+        "label": "Afrika (Regionbevilgninger): høyeste løpende beløp, 2023"
+      },
+      "afrikaregionLastAmount": {
+        "value": 2160.3,
+        "text": "2,2 mrd. kr",
+        "label": "Afrika (Regionbevilgninger): løpende beløp, 2025"
+      },
+      "afrikaregionReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Afrika (Regionbevilgninger): sammenligningsår"
+      },
+      "afrikaregionReferenceAmount": {
+        "value": 1173.2,
+        "text": "1,2 mrd. kr",
+        "label": "Afrika (Regionbevilgninger): løpende beløp, 2020"
+      },
+      "afrikaregionFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Afrika (Regionbevilgninger): første år med regnskapsføring på denne posten i perioden"
+      },
+      "afrikaregionYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Afrika (Regionbevilgninger): regnskapsår"
+      },
+      "afrikaregionAmountA": {
+        "value": 1173.2,
+        "text": "1,2 mrd. kr",
+        "label": "Afrika (Regionbevilgninger): løpende beløp, 2020"
+      },
+      "afrikaregionYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Afrika (Regionbevilgninger): regnskapsår"
+      },
+      "afrikaregionAmountB": {
+        "value": 2333,
+        "text": "2,3 mrd. kr",
+        "label": "Afrika (Regionbevilgninger): løpende beløp, 2021"
+      },
+      "afrikaregionYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Afrika (Regionbevilgninger): regnskapsår"
+      },
+      "afrikaregionAmountC": {
+        "value": 2540.5,
+        "text": "2,5 mrd. kr",
+        "label": "Afrika (Regionbevilgninger): løpende beløp, 2022"
+      },
+      "afrikaregionYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Afrika (Regionbevilgninger): regnskapsår"
+      },
+      "afrikaregionAmountD": {
+        "value": 2988.2,
+        "text": "3,0 mrd. kr",
+        "label": "Afrika (Regionbevilgninger): løpende beløp, 2023"
+      },
+      "afrikaregionYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Afrika (Regionbevilgninger): regnskapsår"
+      },
+      "afrikaregionAmountE": {
+        "value": 2519.1,
+        "text": "2,5 mrd. kr",
+        "label": "Afrika (Regionbevilgninger): løpende beløp, 2024"
+      },
+      "afrikaregionYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Afrika (Regionbevilgninger): regnskapsår"
+      },
+      "afrikaregionAmountF": {
+        "value": 2160.3,
+        "text": "2,2 mrd. kr",
+        "label": "Afrika (Regionbevilgninger): løpende beløp, 2025"
+      },
+      "afrikaregionFirstRecordedAmount": {
+        "value": 1173.2,
+        "text": "1,2 mrd. kr",
+        "label": "Afrika (Regionbevilgninger): første observerte beløp på postutvalget"
+      },
+      "afrikaregionChangeSinceFirst": {
+        "value": 987.1000000000001,
+        "text": "987,1 mill. kr",
+        "label": "Afrika (Regionbevilgninger): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "afrikaregionGrowthSinceFirst": {
+        "value": 84.13740197749745,
+        "text": "84,1 %",
+        "label": "Afrika (Regionbevilgninger): prosentvis endring fra første observerte år"
+      },
+      "afrikaregionContributionAmount": {
+        "value": 987.1000000000001,
+        "text": "987,1 mill. kr",
+        "label": "Afrika (Regionbevilgninger): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "afrikaregionNetChangeRatio": {
+        "value": 6.3171165636319415,
+        "text": "6,3 %",
+        "label": "Afrika (Regionbevilgninger): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "afrikaregionChangeFromPeak": {
+        "value": -827.8999999999996,
+        "text": "−827,9 mill. kr",
+        "label": "Afrika (Regionbevilgninger): beløpsendring fra høyeste observerte år"
+      },
+      "afrikaregionGrowthFromPeak": {
+        "value": -27.705642192624314,
+        "text": "−27,7 %",
+        "label": "Afrika (Regionbevilgninger): prosentvis endring fra høyeste observerte år"
+      },
+      "afrikaregionLastAnnualChangeAmount": {
+        "value": -358.7999999999997,
+        "text": "−358,8 mill. kr",
+        "label": "Afrika (Regionbevilgninger): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "afrikaregionGrowthLastYear": {
+        "value": -14.243182088841245,
+        "text": "−14,2 %",
+        "label": "Afrika (Regionbevilgninger): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "afrikaregionRealGrowthSinceReference": {
+        "value": 43.9889910921925,
+        "text": "44,0 %",
+        "label": "Afrika (Regionbevilgninger): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "utenrikstotalPeakYear": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Utenriksdepartementet: år med høyeste løpende beløp i perioden"
+      },
+      "utenrikstotalPeakAmount": {
+        "value": 65439.9,
+        "text": "65,4 mrd. kr",
+        "label": "Utenriksdepartementet: høyeste løpende beløp, 2023"
+      },
+      "utenrikstotalLastAmount": {
+        "value": 58169.5,
+        "text": "58,2 mrd. kr",
+        "label": "Utenriksdepartementet: løpende beløp, 2025"
+      },
+      "utenrikstotalReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Utenriksdepartementet: sammenligningsår"
+      },
+      "utenrikstotalReferenceAmount": {
+        "value": 42543.7,
+        "text": "42,5 mrd. kr",
+        "label": "Utenriksdepartementet: løpende beløp, 2020"
+      },
+      "utenrikstotalFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Utenriksdepartementet: første år med regnskapsføring på denne posten i perioden"
+      },
+      "utenrikstotalYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Utenriksdepartementet: regnskapsår"
+      },
+      "utenrikstotalAmountA": {
+        "value": 42543.7,
+        "text": "42,5 mrd. kr",
+        "label": "Utenriksdepartementet: løpende beløp, 2020"
+      },
+      "utenrikstotalYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Utenriksdepartementet: regnskapsår"
+      },
+      "utenrikstotalAmountB": {
+        "value": 43403.6,
+        "text": "43,4 mrd. kr",
+        "label": "Utenriksdepartementet: løpende beløp, 2021"
+      },
+      "utenrikstotalYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Utenriksdepartementet: regnskapsår"
+      },
+      "utenrikstotalAmountC": {
+        "value": 54182.40000000001,
+        "text": "54,2 mrd. kr",
+        "label": "Utenriksdepartementet: løpende beløp, 2022"
+      },
+      "utenrikstotalYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Utenriksdepartementet: regnskapsår"
+      },
+      "utenrikstotalAmountD": {
+        "value": 65439.9,
+        "text": "65,4 mrd. kr",
+        "label": "Utenriksdepartementet: løpende beløp, 2023"
+      },
+      "utenrikstotalYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Utenriksdepartementet: regnskapsår"
+      },
+      "utenrikstotalAmountE": {
+        "value": 58151.499999999985,
+        "text": "58,2 mrd. kr",
+        "label": "Utenriksdepartementet: løpende beløp, 2024"
+      },
+      "utenrikstotalYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Utenriksdepartementet: regnskapsår"
+      },
+      "utenrikstotalAmountF": {
+        "value": 58169.5,
+        "text": "58,2 mrd. kr",
+        "label": "Utenriksdepartementet: løpende beløp, 2025"
+      },
+      "utenrikstotalFirstRecordedAmount": {
+        "value": 42543.7,
+        "text": "42,5 mrd. kr",
+        "label": "Utenriksdepartementet: første observerte beløp på postutvalget"
+      },
+      "utenrikstotalChangeSinceFirst": {
+        "value": 15625.800000000003,
+        "text": "15,6 mrd. kr",
+        "label": "Utenriksdepartementet: beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "utenrikstotalGrowthSinceFirst": {
+        "value": 36.728822363828264,
+        "text": "36,7 %",
+        "label": "Utenriksdepartementet: prosentvis endring fra første observerte år"
+      },
+      "utenrikstotalContributionAmount": {
+        "value": 15625.800000000003,
+        "text": "15,6 mrd. kr",
+        "label": "Utenriksdepartementet: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "utenrikstotalNetChangeRatio": {
+        "value": 100,
+        "text": "100,0 %",
+        "label": "Utenriksdepartementet: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "utenrikstotalChangeFromPeak": {
+        "value": -7270.4000000000015,
+        "text": "−7,3 mrd. kr",
+        "label": "Utenriksdepartementet: beløpsendring fra høyeste observerte år"
+      },
+      "utenrikstotalGrowthFromPeak": {
+        "value": -11.110041427324923,
+        "text": "−11,1 %",
+        "label": "Utenriksdepartementet: prosentvis endring fra høyeste observerte år"
+      },
+      "utenrikstotalLastAnnualChangeAmount": {
+        "value": 18.000000000014552,
+        "text": "18,0 mill. kr",
+        "label": "Utenriksdepartementet: beløpsendring mellom de siste to regnskapsårene"
+      },
+      "utenrikstotalGrowthLastYear": {
+        "value": 0.030953629743013522,
+        "text": "0,0 %",
+        "label": "Utenriksdepartementet: prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "utenrikstotalRealGrowthSinceReference": {
+        "value": 6.917144338753878,
+        "text": "6,9 %",
+        "label": "Utenriksdepartementet: KPI-justert endring per innbygger, 2020–2025"
+      }
+    },
+    "rows": [
+      {
+        "year": 2020,
+        "expenditure": 42543.7,
+        "population": 5367580,
+        "cpi": 81.5,
+        "perCapita": 7926.048610360721,
+        "nominalIndex": 100,
+        "priceIndex": 100,
+        "realPerCapita": 9725.213018847511
+      },
+      {
+        "year": 2021,
+        "expenditure": 43403.6,
+        "population": 5391369,
+        "cpi": 84.3,
+        "perCapita": 8050.571200005045,
+        "nominalIndex": 101.57105508388571,
+        "priceIndex": 103.43558282208589,
+        "realPerCapita": 9549.906524323898
+      },
+      {
+        "year": 2022,
+        "expenditure": 54182.40000000001,
+        "population": 5425270,
+        "cpi": 89.2,
+        "perCapita": 9987.042119562715,
+        "nominalIndex": 126.00278664084799,
+        "priceIndex": 109.44785276073621,
+        "realPerCapita": 11196.235560047888
+      },
+      {
+        "year": 2023,
+        "expenditure": 65439.9,
+        "population": 5488984,
+        "cpi": 94.1,
+        "perCapita": 11922.042403475762,
+        "nominalIndex": 150.4159637362252,
+        "priceIndex": 115.4601226993865,
+        "realPerCapita": 12669.545593491777
+      },
+      {
+        "year": 2024,
+        "expenditure": 58151.499999999985,
+        "population": 5550203,
+        "cpi": 97.1,
+        "perCapita": 10477.364521622,
+        "nominalIndex": 132.18900156537353,
+        "priceIndex": 119.14110429447852,
+        "realPerCapita": 10790.282720516992
+      },
+      {
+        "year": 2025,
+        "expenditure": 58169.5,
+        "population": 5594340,
+        "cpi": 100,
+        "perCapita": 10397.920040612476,
+        "nominalIndex": 131.18668017025016,
+        "priceIndex": 122.69938650306749,
+        "realPerCapita": 10397.920040612476
+      }
+    ],
+    "sources": [
+      {
+        "name": "DFØ Statsregnskapet",
+        "url": "https://statsregnskapet.dfo.no",
+        "local": "/data/utgifter.json",
+        "description": "Regnskapsførte utgifter i mill. kroner. Finansposter og SPU-overføringer er utelatt."
+      },
+      {
+        "name": "SSB folkemengde, tabell 07459",
+        "url": "https://www.ssb.no/statbank/table/07459/",
+        "local": "/data/befolkning.json",
+        "description": "Folkemengde ved inngangen til året, som i resten av Fellestall."
+      },
+      {
+        "name": "SSB konsumprisindeks",
+        "url": "https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen",
+        "local": "/data/kpi.json",
+        "description": "Årsgjennomsnitt for KPI, fra Fellestalls normaliserte serie."
+      },
+      {
+        "name": "Fellestall: postgrunnlag a7e0474e",
+        "url": "https://fellestall.no/data/utgifter.json",
+        "local": "/data/utgifter.json",
+        "description": "Postutvalget er beregnet fra det versjonerte uttrekket oppdatert 2026-10-05T16:25:11.496735+00:00. Post-ID-er, postnavn, årlige beløp og kildeversjon er bevart i artikkelens datagrunnlag."
+      }
+    ],
+    "methodology": [
+      "Vi summerer regnskapsførte utgifter på postnivå for Utenriksdepartementet. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.",
+      "Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.",
+      "Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.",
+      "Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.",
+      "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn.",
+      "Hovedserien og de tidligere faktaene er bevart. Postutvalget beregnes fra det offentlige regnskapsgrunnlaget og godtas bare når årlige totalsummer er identiske med hovedserien. Flere poster i samme utvalg summeres. Overlappende utvalg skal ikke legges sammen. En ikke-observert post er markert som manglende; den bidrar ikke til regnskapssummen, men dette beviser ikke at formålet hadde null utgifter. Forholdet mellom en posts bokførte endring og nettoendringen i totalen er en regnskapsmessig sammenligning, ikke en dokumentert årsaksandel."
+    ],
+    "limitations": [
+      "Departementenes ansvarsområder kan endres over tid. Serien følger Fellestalls normaliserte departementsinndeling, og må ikke alene tolkes som vekst i identiske tjenester.",
+      "KPI måler husholdningenes konsumpriser, ikke statens lønns-, bygge- eller innkjøpskostnader. KPI-justering er et sammenligningsmål, ikke et mål på produksjonsvolum.",
+      "Utgifter sier ikke hvor mye eller hvor god tjenesteproduksjon innbyggerne får. Overføringer, pensjoner og tilskudd inngår også.",
+      "Tallene identifiserer ikke årsakene til endringene. De kan ikke alene brukes til å konkludere om effektivitet, sløsing eller virkningen av politiske beslutninger.",
+      "Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.",
+      "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse.",
+      "Postnavn og kapittelnavn kan være historiske etiketter i Fellestalls normaliserte serie. Post-ID-er kan også endre innhold over tid. En ny post er ikke automatisk et helt nytt formål, og en post som forsvinner er ikke automatisk et reelt kutt. Omgrupperte drifts- og bistandsposter må derfor vurderes samlet og mot budsjettmaterialet før årsak eller aktivitetsvekst fastslås."
+    ],
+    "detailSelections": [
+      {
+        "id": "ukraina",
+        "nodeIds": [
+          "u-01-0159-73"
+        ]
+      },
+      {
+        "id": "flyktningnorge",
+        "nodeIds": [
+          "u-01-0179-21"
+        ]
+      },
+      {
+        "id": "eosmidler",
+        "nodeIds": [
+          "u-01-0117"
+        ]
+      },
+      {
+        "id": "driftud",
+        "nodeIds": [
+          "u-01-0100-01"
+        ]
+      },
+      {
+        "id": "driftbistand",
+        "nodeIds": [
+          "u-01-0140-01"
+        ]
+      },
+      {
+        "id": "driftsamlet",
+        "nodeIds": [
+          "u-01-0100-01",
+          "u-01-0140-01"
+        ]
+      },
+      {
+        "id": "matsikkerhet",
+        "nodeIds": [
+          "u-01-0162-71"
+        ]
+      },
+      {
+        "id": "klimafond",
+        "nodeIds": [
+          "u-01-0162-76"
+        ]
+      },
+      {
+        "id": "sivilsamfunn",
+        "nodeIds": [
+          "u-01-0160-70"
+        ]
+      },
+      {
+        "id": "naringsutvikling",
+        "nodeIds": [
+          "u-01-0161-70"
+        ]
+      },
+      {
+        "id": "afrikaregion",
+        "nodeIds": [
+          "u-01-0159-75"
+        ]
+      },
+      {
+        "id": "utenrikstotal",
+        "nodeIds": [
+          "u-01"
+        ]
+      }
+    ],
+    "eventEvidence": {
+      "version": 2,
+      "items": [
+        {
+          "id": "ukraina",
+          "nodeIds": [
+            "u-01-0159-73"
+          ],
+          "title": "Ukraina og naboland (Regionbevilgninger)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0159-73",
+              "name": "Ukraina og naboland"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2021,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2022,
+              "expenditure": 3995,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 8727.9,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 9698.2,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 12153.9,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "flyktningnorge",
+          "nodeIds": [
+            "u-01-0179-21"
+          ],
+          "title": "Spesielle driftsutgifter (Flyktningtiltak i Norge)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0179-21",
+              "name": "Spesielle driftsutgifter"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 479.4,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 473.4,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 4689.2,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 4494.9,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 4012.2,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 3003.2,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "eosmidler",
+          "nodeIds": [
+            "u-01-0117"
+          ],
+          "title": "EØS-finansieringsordningene",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0117",
+              "name": "EØS-finansieringsordningene"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 3213.2,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 3668.6000000000004,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 4964.1,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 7058.4,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 3671.3,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 1101.2,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "driftud",
+          "nodeIds": [
+            "u-01-0100-01"
+          ],
+          "title": "Driftsutgifter (Utenriksdepartementet)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0100-01",
+              "name": "Driftsutgifter"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 2300.9,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 2307.6,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 2474.3,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 2594.1,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 2739.7,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 4862.6,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "driftbistand",
+          "nodeIds": [
+            "u-01-0140-01"
+          ],
+          "title": "Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0140-01",
+              "name": "Driftsutgifter"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 1583.1,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 1581.7,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 1663.9,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 1757.9,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 1905.1,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 0,
+              "reported": false
+            }
+          ]
+        },
+        {
+          "id": "driftsamlet",
+          "nodeIds": [
+            "u-01-0100-01",
+            "u-01-0140-01"
+          ],
+          "title": "Driftsutgifter (Utenriksdepartementet) + Driftsutgifter (Utenriksdepartementets administrasjon av utviklingshjelpen)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0100-01",
+              "name": "Driftsutgifter"
+            },
+            {
+              "id": "u-01-0140-01",
+              "name": "Driftsutgifter"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 3884,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 3889.3,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 4138.200000000001,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 4352,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 4644.799999999999,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 4862.6,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "matsikkerhet",
+          "nodeIds": [
+            "u-01-0162-71"
+          ],
+          "title": "Matsikkerhet og landbruk (Overgangsbistand (gap))",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0162-71",
+              "name": "Matsikkerhet og landbruk"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 1191.3,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 815.4,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 1648.4,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 3156.7,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 1819.5,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 1977.9,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "klimafond",
+          "nodeIds": [
+            "u-01-0162-76"
+          ],
+          "title": "Norfund klimainvesteringsfond - risikokapital (Overgangsbistand (gap))",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0162-76",
+              "name": "Norfund klimainvesteringsfond - risikokapital"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2021,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2022,
+              "expenditure": 250,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 250,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 250,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 750,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "sivilsamfunn",
+          "nodeIds": [
+            "u-01-0160-70"
+          ],
+          "title": "Sivilt samfunn (Sivilt samfunn og demokratiutvikling)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0160-70",
+              "name": "Sivilt samfunn"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 5182.7,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 5781.2,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 3660.3,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 3368.5,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 3695.8,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 3615.8,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "naringsutvikling",
+          "nodeIds": [
+            "u-01-0161-70"
+          ],
+          "title": "Næringsutvikling (Næringsutvikling)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0161-70",
+              "name": "Næringsutvikling"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 2332.6,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 1934.6,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 1158.6,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 944.4,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 1014.7,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 784.5,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "afrikaregion",
+          "nodeIds": [
+            "u-01-0159-75"
+          ],
+          "title": "Afrika (Regionbevilgninger)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01-0159-75",
+              "name": "Afrika"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 1173.2,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 2333,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 2540.5,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 2988.2,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 2519.1,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 2160.3,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "utenrikstotal",
+          "nodeIds": [
+            "u-01"
+          ],
+          "title": "Utenriksdepartementet",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-01",
+              "name": "Utenriksdepartementet"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 42543.7,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 43403.6,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 54182.40000000001,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 65439.9,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 58151.499999999985,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 58169.5,
+              "reported": true
+            }
+          ]
+        }
+      ],
+      "hash": "12958dad046440538f3004fe328eaedd2dc665dd96775e5c76c9995eea862704"
+    },
+    "detailSource": {
+      "dataHash": "a7e0474eaee9e0204eb26ef9c7fac45f66fe2c8fa41d738f942a1233d868a5c2",
+      "dataUpdated": "2026-10-05T16:25:11.496735+00:00"
+    }
+  },
+  "copy": {
+    "title": "Utenriksregningen steg {{fact:nominalGrowth}}. Men ikke alle milliardhopp er det de ser ut som.",
+    "description": "Ukraina-posten vokste videre. EØS-midler og flyktningutgifter falt fra toppene. Og et voldsomt driftshopp ble langt mindre da naboposten kom med.",
+    "lead": "Utenriksdepartementets regning er blitt {{fact:nominalGrowth}} større siden {{fact:startYear}}. Én Ukraina-post står nå med {{fact:ukrainaLastAmount}}. Men et oppsiktsvekkende driftshopp forteller en annen historie: Hva skjer med veksten når vi åpner skuffen ved siden av?",
+    "conclusion": "Ukraina-posten er den største bokførte bevegelsen fra utgangspunktet. Flyktningutgifter og EØS-utbetalinger faller fra toppene, mens utvalgte mat- og klimabeløp vokser. Driftspostene viser samtidig hvorfor en stor økning på én linje ikke uten videre er en like stor økning i samlet pengebruk.",
+    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nUtenriksregningen steg {{fact:nominalGrowth}}. Én Ukraina-post er oppe i {{fact:ukrainaLastAmount}}. Det er store penger.\n\nSå fant vi et driftshopp på {{fact:driftudGrowthLastYear}} siste år. En overskrift som nesten skrev seg selv.\n\nHelt til vi åpnet regnskapsskuffen ved siden av. Med den gamle driftsposten tatt med var økningen {{fact:driftsamletGrowthLastYear}}. Kalkulatoren hadde rett. Overskriften hadde litt dårlig tid.\n\nHva vokste faktisk, og hva kan ha skiftet skuff? Sven følger milliardene — fra Ukraina til flyktningmottak, EØS-midler og drift. Les analysen.",
+    "sections": [
+      {
+        "heading": "Regningen vokste. Men den vokste ikke rett opp.",
+        "paragraphs": [
+          "Utenriksdepartementet brukte {{fact:utenrikstotalReferenceAmount}} i {{fact:startYear}} og {{fact:utenrikstotalLastAmount}} i {{fact:endYear}}. Forskjellen er {{fact:utenrikstotalChangeSinceFirst}} i løpende kroner. Den som bare ser på endepunktene, får en ganske enkel fortelling: staten bruker mer på utenriks enn før. Midt i serien ligger det derimot en regning som først ble enda større, og deretter mindre igjen.",
+          "Toppen kom i {{fact:utenrikstotalPeakYear}}, med {{fact:utenrikstotalPeakAmount}}. Fra den toppen til siste år falt utgiftene {{fact:utenrikstotalGrowthFromPeak}}. Vi skal altså forklare både en varig oppgang fra utgangspunktet og en tilbaketur fra et ekstraordinært høyt nivå. De samme postene trenger ikke å forklare begge bevegelsene.",
+          "Det største årlige spranget, etter justering for priser og folketall, kom i {{fact:largestChangeYear}}. Det var året Russlands fullskalainvasjon av Ukraina endret Europas sikkerhetssituasjon. Sammenfallet gir en viktig historisk ramme. Regnskapspostene under gjør det mulig å undersøke hvilke penger som faktisk beveget seg."
+        ],
+        "factIds": [
+          "utenrikstotalReferenceAmount",
+          "startYear",
+          "utenrikstotalLastAmount",
+          "endYear",
+          "utenrikstotalChangeSinceFirst",
+          "utenrikstotalPeakYear",
+          "utenrikstotalPeakAmount",
+          "utenrikstotalGrowthFromPeak",
+          "largestChangeYear"
+        ]
+      },
+      {
+        "heading": "Hvor mye av veksten overlever dyrtiden?",
+        "paragraphs": [
+          "Prisnivået steg {{fact:priceGrowth}} og folketallet {{fact:populationGrowth}} gjennom perioden. Når vi justerer for begge deler, er økningen {{fact:realPerCapitaGrowth}} per innbygger. Det er fortsatt en økning, men et ganske annet bilde enn en ujustert regning som vokste {{fact:nominalGrowth}}. Justeringene skal gjøres sammen, ikke ved å trekke prosentene direkte fra hverandre.",
+          "Heller ikke dette er et mål på hvor mye mer hjelp eller sikkerhet Norge fikk. Utenriksregnskapet består i stor grad av overføringer og tilskudd, og mange mottakere bor utenfor Norge. Norske innbyggere er her en målestokk for regningens størrelse, ikke en opptelling av dem som mottar tjenestene. KPI setter kroner på sammenlignbart prisnivå, men treffer heller ikke nødvendigvis departementets kostnader i andre valutaer.",
+          "Med den målestokken på plass kan vi åpne postene. Et beløp kan vokse fordi en prioritering blir større, fordi behovene blir større, eller fordi regnskapet fører pengene et annet sted enn tidligere. Det siste er særlig viktig når en post plutselig ser dramatisk ut."
+        ],
+        "factIds": [
+          "priceGrowth",
+          "populationGrowth",
+          "realPerCapitaGrowth",
+          "nominalGrowth"
+        ]
+      },
+      {
+        "heading": "Ukraina-posten vokste mens flyktningposten snudde",
+        "paragraphs": [
+          "Posten «Ukraina og naboland» viser {{fact:ukrainaFirstRecordedAmount}} i sitt første observerte regnskapsår, {{fact:ukrainaFirstRecordedYear}}. I {{fact:endYear}} er den oppe i {{fact:ukrainaLastAmount}}. Økningen fra første observerte år er {{fact:ukrainaChangeSinceFirst}}. Det er ikke bare et engangsutslag i invasjonsåret: den bokførte serien fortsetter oppover gjennom de påfølgende årene.",
+          "Sluttbeløpet på denne ene posten tilsvarer {{fact:ukrainaNetChangeRatio}} av hele departementets nettoøkning fra {{fact:startYear}} til {{fact:endYear}}. Det viser hvor stor posten er i regnestykket. Det er ikke en dokumentert årsaksandel: posten mangler føring ved starten av perioden, og tidligere støtte kan ha ligget på andre poster. Dette er dessuten UD-posten for Ukraina og naboland, ikke den militære Ukraina-støtten under Forsvarsdepartementet.",
+          "Den andre kurven har en norsk adresse. Posten under «Flyktningtiltak i Norge» gikk fra {{fact:flyktningnorgeReferenceAmount}} til en topp på {{fact:flyktningnorgePeakAmount}} i {{fact:flyktningnorgePeakYear}}. Deretter falt den til {{fact:flyktningnorgeLastAmount}} i {{fact:endYear}}. Den var altså lavere enn under toppen, men fortsatt langt over utgangspunktet. Beløpet dekker denne regnskapsposten, ikke alle norske kostnader knyttet til flyktninger.",
+          "Her ligger en viktig forskjell mellom krisens første fase og årene etterpå. Den voksende Ukraina-posten trekker opp samtidig som den norske flyktningposten trekker ned fra sin topp. En lavere totalsum betyr derfor ikke automatisk at støtten til Ukraina ble mindre."
+        ],
+        "factIds": [
+          "ukrainaFirstRecordedAmount",
+          "ukrainaFirstRecordedYear",
+          "endYear",
+          "ukrainaLastAmount",
+          "ukrainaChangeSinceFirst",
+          "ukrainaNetChangeRatio",
+          "startYear",
+          "flyktningnorgeReferenceAmount",
+          "flyktningnorgePeakAmount",
+          "flyktningnorgePeakYear",
+          "flyktningnorgeLastAmount"
+        ]
+      },
+      {
+        "heading": "EØS-toppen var ingen ny normal",
+        "paragraphs": [
+          "EØS-finansieringsordningene stod med {{fact:eosmidlerReferenceAmount}} ved starten av perioden, nådde {{fact:eosmidlerPeakAmount}} i {{fact:eosmidlerPeakYear}} og endte på {{fact:eosmidlerLastAmount}}. Fra toppen er den bokførte nedgangen {{fact:eosmidlerChangeFromPeak}}. Det er en betydelig bevegelse også sammenlignet med fallet i hele utenriksregningen.",
+          "Slike finansieringsordninger løper gjennom programperioder. Utbetalingene kan bli ujevne når prosjekter gjennomføres, avsluttes og avregnes. Derfor er betalingsrytmen en relevant forklaring å undersøke før et fall i ett regnskapsår leses som et tilsvarende varig kutt i ordningen. Årets kontantutbetalinger og langsiktige forpliktelser er forskjellige størrelser.",
+          "Kurven dokumenterer selve toppen og nedgangen. Den forteller ikke alene hvilke prosjekter som var ferdige, hvor mye som gjenstod å betale eller hvordan nye programperioder vil slå ut. Men den viser hvorfor toppåret er et krevende sammenligningsår: en stor utbetalingstopp kan løfte totalen selv om den løpende aktiviteten ellers ikke vokser i samme takt."
+        ],
+        "factIds": [
+          "eosmidlerReferenceAmount",
+          "eosmidlerPeakAmount",
+          "eosmidlerPeakYear",
+          "eosmidlerLastAmount",
+          "eosmidlerChangeFromPeak"
+        ]
+      },
+      {
+        "heading": "Driftshoppet krympet da vi åpnet naboskuffen",
+        "paragraphs": [
+          "På UD-posten «Driftsutgifter» øker beløpet fra {{fact:driftudAmountE}} i {{fact:driftudYearE}} til {{fact:driftudAmountF}} i {{fact:driftudYearF}}. Det er {{fact:driftudGrowthLastYear}} på ett år. Et slikt hopp ber nesten om en overskrift. Men ved siden av ligger en annen driftspost, under administrasjon av utviklingshjelpen, med {{fact:driftbistandAmountE}} i {{fact:driftbistandYearE}}. Den har ikke regnskapsføring i uttrekket for sluttåret.",
+          "Summerer vi disse to identifiserte driftspostene, endres bildet: {{fact:driftsamletAmountE}} blir til {{fact:driftsamletAmountF}}, en økning på {{fact:driftsamletGrowthLastYear}}. Over hele perioden vokser den bokførte summen {{fact:driftsamletGrowthSinceFirst}}. Etter samme pris- og befolkningsjustering som i hovedanalysen er endringen {{fact:driftsamletRealGrowthSinceReference}}.",
+          "Mønsteret er forenlig med at drift er samlet eller ompostert. Postseriene alene beviser ikke hvilke oppgaver, ansatte eller kostnader som flyttet. Og manglende føring på den gamle posten er ikke bevis på at virksomheten opphørte. Men forskjellen mellom enkeltposten og summen er stor nok til at vi bør kontrollere organiseringen før vi beskriver hoppet som eksplosiv vekst i driften.",
+          "Hvilket av tallene ville du brukt før du konkluderte om pengebruken? Regnskapsskuffen kan ha blitt mye større selv om summen i de to skuffene endret seg langt mindre."
+        ],
+        "factIds": [
+          "driftudAmountE",
+          "driftudYearE",
+          "driftudAmountF",
+          "driftudYearF",
+          "driftudGrowthLastYear",
+          "driftbistandAmountE",
+          "driftbistandYearE",
+          "driftsamletAmountE",
+          "driftsamletAmountF",
+          "driftsamletGrowthLastYear",
+          "driftsamletGrowthSinceFirst",
+          "driftsamletRealGrowthSinceReference"
+        ]
+      },
+      {
+        "heading": "Mat og klima vokste på ulike måter",
+        "paragraphs": [
+          "Matsikkerhet og landbruk øker fra {{fact:matsikkerhetReferenceAmount}} til {{fact:matsikkerhetLastAmount}}, opp {{fact:matsikkerhetGrowthSinceFirst}}. Men også denne posten har en topp underveis: {{fact:matsikkerhetPeakAmount}} i {{fact:matsikkerhetPeakYear}}. Sluttåret ligger dermed over utgangspunktet og under toppen. Et svar som bare sier «mer», overser hvordan bevilgningen ble trappet opp og deretter ned.",
+          "Postnavnet peker på et annet behov enn direkte støtte til Ukraina. Krig, dyrere mat og sviktende avlinger kan gjøre matsikkerhet mer krevende, men årsserien fordeler ikke økningen mellom disse forklaringene. Den relevante oppfølgingen er hvilke tiltak som ble finansiert, og om de styrket mattilgangen eller produksjonen der pengene skulle virke.",
+          "Risikokapital til Norfunds klimainvesteringsfond har en annen profil. Den oppgitte posten står med {{fact:klimafondFirstRecordedAmount}} i {{fact:klimafondFirstRecordedYear}} og {{fact:klimafondLastAmount}} i {{fact:endYear}}. Mellom de siste to regnskapsårene er økningen {{fact:klimafondGrowthLastYear}}. Dette er risikokapital på den valgte posten, ikke et mål på alle statlige klimainvesteringer.",
+          "Kapital til et investeringsfond og løpende hjelpetiltak bør heller ikke vurderes som helt like utgiftstyper. Begge vises som bokførte beløp i denne avgrensningen, men pengenes formål, risiko og tidshorisont er forskjellige. En høyere utbetaling sier ikke i seg selv hva investeringen eller hjelpen vil gi igjen."
+        ],
+        "factIds": [
+          "matsikkerhetReferenceAmount",
+          "matsikkerhetLastAmount",
+          "matsikkerhetGrowthSinceFirst",
+          "matsikkerhetPeakAmount",
+          "matsikkerhetPeakYear",
+          "klimafondFirstRecordedAmount",
+          "klimafondFirstRecordedYear",
+          "klimafondLastAmount",
+          "endYear",
+          "klimafondGrowthLastYear"
+        ]
+      },
+      {
+        "heading": "Totalvekst betyr ikke at alle andre poster vokste",
+        "paragraphs": [
+          "Posten «Sivilt samfunn» går fra {{fact:sivilsamfunnReferenceAmount}} til {{fact:sivilsamfunnLastAmount}}. På den konkrete næringsutviklingsposten blir {{fact:naringsutviklingReferenceAmount}} til {{fact:naringsutviklingLastAmount}}. Dette er bokførte nedganger på identifiserte poster. Samtidig øker Afrika-posten under regionbevilgningene fra {{fact:afrikaregionReferenceAmount}} til {{fact:afrikaregionLastAmount}}.",
+          "Det gjør fortellingen om «mer utenriks» mindre ensartet. Enkelte prioriteringer fikk større bokførte beløp, andre mindre. Men disse postene er ikke komplette regnskap for henholdsvis sivilt samfunn, næringsutvikling eller all norsk støtte til Afrika. Formål kan finansieres flere steder, og noen kapitler i den normaliserte serien har historiske navn.",
+          "Vi kan derfor beskrive hvor beløpene steg og falt uten å utrope vinnere og tapere for hele bistandspolitikken. Det krever en bredere avstemming av formål på tvers av poster og år. Det ville også være for raskt å hevde at økningen på Ukraina-posten forårsaket alle nedgangene andre steder. Serien viser samtidige bevegelser, ikke den politiske beslutningskjeden mellom dem."
+        ],
+        "factIds": [
+          "sivilsamfunnReferenceAmount",
+          "sivilsamfunnLastAmount",
+          "naringsutviklingReferenceAmount",
+          "naringsutviklingLastAmount",
+          "afrikaregionReferenceAmount",
+          "afrikaregionLastAmount"
+        ]
+      },
+      {
+        "heading": "En større regning trenger flere slags oppfølgingsspørsmål",
+        "paragraphs": [
+          "Ukraina-posten reiser spørsmål om et større og mer vedvarende støttebehov. Flyktningposten i Norge reiser spørsmål om hvordan mottaksutgiftene utviklet seg etter den første toppen. EØS-ordningene krever at vi ser på betalingsplaner og programperioder. Driftsregnskapet krever at vi undersøker om pengene har flyttet mellom poster før vi tolker endringen som flere oppgaver eller dyrere virksomhet.",
+          "Det er forskjellige undersøkelser. Ingen av dem kan erstattes av en totalsum alene. For hjelpetiltak vil vi vite hvilke behov som ble møtt; for investeringskapital vil vi undersøke hva som ble finansiert og hvilken risiko staten tok; for drift trenger vi et sammenlignbart bilde av oppgavene og organiseringen. Tallene her peker på hvor det er mest nyttig å lete videre.",
+          "En kostnadsøkning kan følge av både nye behov og nye prioriteringer. Regnskapet kan vise om beløpene ble brukt, men ikke alene om tiltakene virket godt. Det skillet gjør ikke regningen mindre interessant. Det gjør spørsmålet om hva vi fikk igjen for pengene mer presist."
+        ],
+        "factIds": []
+      },
+      {
+        "heading": "Det var ikke ett milliardhopp",
+        "paragraphs": [
+          "Utenriksregningen ender {{fact:nominalGrowth}} over utgangspunktet. Under totalsummen finner vi en Ukraina-post som fortsetter opp, flyktningutgifter og EØS-utbetalinger som trekker ned fra topper, nye og større beløp til utvalgte formål, og et driftshopp som blir langt mindre når naboposten tas med.",
+          "Dermed er det to spørsmål å holde fra hverandre: Hvilke bokførte beløp gjorde regningen større, og hvilke endringer beskriver faktisk nye aktiviteter eller nye behov? Postene gir et langt bedre svar på det første. For det andre må vi følge både pengene og oppgavene. Det er der den nyttige diskusjonen om offentlig pengebruk begynner."
+        ],
+        "factIds": [
+          "nominalGrowth"
+        ]
+      }
+    ],
+    "graphs": [
+      {
+        "kind": "growth",
+        "afterSection": 0
+      },
+      {
+        "kind": "real-expenditure",
+        "afterSection": 1
+      },
+      {
+        "kind": "series",
+        "afterSection": 2,
+        "title": "Ukraina-posten fortsatte opp. Flyktningposten falt fra toppen.",
+        "description": "Bokførte beløp på de to identifiserte postene. Figuren viser den felles observerte perioden.",
+        "mode": "values",
+        "series": [
+          {
+            "source": "post",
+            "id": "ukraina",
+            "label": "Ukraina og naboland"
+          },
+          {
+            "source": "post",
+            "id": "flyktningnorge",
+            "label": "Flyktningtiltak i Norge"
+          }
+        ]
+      },
+      {
+        "kind": "series",
+        "afterSection": 3,
+        "title": "EØS-regningen fikk en topp og en tilbaketur",
+        "description": "Kapitlets samlede regnskapsførte beløp gjennom perioden. Utbetalinger er ikke det samme som langsiktige forpliktelser.",
+        "mode": "values",
+        "series": [
+          {
+            "source": "post",
+            "id": "eosmidler",
+            "label": "EØS-finansieringsordningene"
+          }
+        ]
+      },
+      {
+        "kind": "series",
+        "afterSection": 4,
+        "title": "En større skuff, en langt jevnere samlet regning",
+        "description": "UD-posten er også en del av den samlede kurven. Kurvene skal derfor ikke legges sammen. Manglende føring på den tidligere posten er ikke bevis på at virksomheten opphørte.",
+        "mode": "values",
+        "series": [
+          {
+            "source": "post",
+            "id": "driftud",
+            "label": "Drift på UD-posten"
+          },
+          {
+            "source": "post",
+            "id": "driftsamlet",
+            "label": "De to identifiserte driftspostene samlet"
+          }
+        ]
+      },
+      {
+        "kind": "series",
+        "afterSection": 6,
+        "title": "Bistandspostene gikk i forskjellige retninger",
+        "description": "Utvalgte poster, uten prisjustering. Hver kurve gjelder den oppgitte posten, ikke hele støtteformålet.",
+        "mode": "values",
+        "series": [
+          {
+            "source": "post",
+            "id": "sivilsamfunn",
+            "label": "Sivilt samfunn, valgt post"
+          },
+          {
+            "source": "post",
+            "id": "naringsutvikling",
+            "label": "Næringsutvikling, valgt post"
+          },
+          {
+            "source": "post",
+            "id": "afrikaregion",
+            "label": "Afrika under regionbevilgningene"
+          }
+        ]
+      }
+    ]
+  },
+  "replaces": {
+    "slug": "utgifter-per-innbygger-u-01-2020-2025-2026-10-05",
+    "contentHash": "82fb4f03b6ec71bdd3f08b829bd5fb81638d4474d76804facb2646196dbde9ba",
+    "detailSelections": [
+      {
+        "id": "ukraina",
+        "nodeIds": [
+          "u-01-0159-73"
+        ]
+      },
+      {
+        "id": "flyktningnorge",
+        "nodeIds": [
+          "u-01-0179-21"
+        ]
+      },
+      {
+        "id": "eosmidler",
+        "nodeIds": [
+          "u-01-0117"
+        ]
+      },
+      {
+        "id": "driftud",
+        "nodeIds": [
+          "u-01-0100-01"
+        ]
+      },
+      {
+        "id": "driftbistand",
+        "nodeIds": [
+          "u-01-0140-01"
+        ]
+      },
+      {
+        "id": "driftsamlet",
+        "nodeIds": [
+          "u-01-0100-01",
+          "u-01-0140-01"
+        ]
+      },
+      {
+        "id": "matsikkerhet",
+        "nodeIds": [
+          "u-01-0162-71"
+        ]
+      },
+      {
+        "id": "klimafond",
+        "nodeIds": [
+          "u-01-0162-76"
+        ]
+      },
+      {
+        "id": "sivilsamfunn",
+        "nodeIds": [
+          "u-01-0160-70"
+        ]
+      },
+      {
+        "id": "naringsutvikling",
+        "nodeIds": [
+          "u-01-0161-70"
+        ]
+      },
+      {
+        "id": "afrikaregion",
+        "nodeIds": [
+          "u-01-0159-75"
+        ]
+      },
+      {
+        "id": "utenrikstotal",
+        "nodeIds": [
+          "u-01"
+        ]
+      }
+    ]
+  }
+}
