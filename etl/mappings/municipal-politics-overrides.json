@@ -1,0 +1,219 @@
+{
+  "municipalities": {
+    "1103": {
+      "name": "Stavanger",
+      "mayor": {
+        "name": "Tormod W. Losnedal",
+        "party": "Høyre",
+        "source": "https://www.stavanger.kommune.no/politikk/ordforer/"
+      },
+      "government": {
+        "label": "Skiftende flertall",
+        "parties": [
+          "Arbeiderpartiet",
+          "Fremskrittspartiet",
+          "Sosialistisk Venstreparti",
+          "Rødt",
+          "Miljøpartiet De Grønne"
+        ],
+        "note": "Samarbeidet fra 2023 er brutt. Ap, FrP, SV, Rødt og MDG har samarbeidet om enkeltsaker; dette dokumenterer ikke en ny fast koalisjon. Budsjettflertall og ordførerens parti kan være forskjellige.",
+        "sources": [
+          {
+            "label": "Politisk samarbeid",
+            "url": "https://www.aftenbladet.no/lokalt/i/0poMzG/vil-bruke-millioner-paa-nye-idrettsanlegg"
+          },
+          {
+            "label": "Endret flertall",
+            "url": "https://www.aftenbladet.no/lokalt/i/5p8x6O/fjernet-som-leder-frp-stemte-paa-sv-er"
+          },
+          {
+            "label": "Kommunens budsjettbehandling 2026",
+            "url": "https://www.stavanger.kommune.no/politikk/den-store-budsjettdebatten/"
+          }
+        ],
+        "kind": "case-cooperation"
+      },
+      "election": {
+        "year": 2023,
+        "totalSeats": 67,
+        "source": "https://www.stavanger.kommune.no/nyheter/endelig-kommunevalgresultat-for-stavanger/",
+        "results": [
+          {
+            "party": "Arbeiderpartiet",
+            "seats": 22
+          },
+          {
+            "party": "Høyre",
+            "seats": 21
+          },
+          {
+            "party": "Fremskrittspartiet",
+            "seats": 6
+          },
+          {
+            "party": "Rødt",
+            "seats": 3
+          },
+          {
+            "party": "Kristelig Folkeparti",
+            "seats": 3
+          },
+          {
+            "party": "Sosialistisk Venstreparti",
+            "seats": 3
+          },
+          {
+            "party": "Venstre",
+            "seats": 3
+          },
+          {
+            "party": "Industri- og Næringspartiet",
+            "seats": 2
+          },
+          {
+            "party": "Miljøpartiet De Grønne",
+            "seats": 2
+          },
+          {
+            "party": "Senterpartiet",
+            "seats": 1
+          },
+          {
+            "party": "Pensjonistpartiet",
+            "seats": 1
+          }
+        ]
+      },
+      "verifiedAt": "2026-10-06",
+      "monitors": [
+        "https://www.stavanger.kommune.no/politikk/ordforer/"
+      ]
+    },
+    "4601": {
+      "name": "Bergen",
+      "verifiedAt": "2026-10-06",
+      "mayor": {
+        "name": "Marit Warncke",
+        "party": "Høyre",
+        "source": "https://www.bergen.kommune.no/politikk/ordforeren"
+      },
+      "executive": {
+        "name": "Chris Jørgen Knudsen Rødland",
+        "party": "Høyre",
+        "source": "https://www.bergen.kommune.no/politikk/byradet/byrader/chris-jorgen-knudsen-rodland-h"
+      },
+      "government": {
+        "kind": "cabinet",
+        "label": "Byråd",
+        "parties": [
+          "Høyre",
+          "Fremskrittspartiet",
+          "Senterpartiet"
+        ],
+        "note": "Byrådet Rødland tiltrådte 25. september 2026. Byrådspartiene har ikke alene flertall i bystyret. Støtte i enkeltsaker er ikke det samme som medlemskap i byrådet.",
+        "sources": [
+          {
+            "label": "Kommunen: nytt byråd 25. september 2026",
+            "url": "https://www.bergen.kommune.no/hvaskjer/byradet-rodland-er-na-konstituert"
+          },
+          {
+            "label": "Byrådets sammensetning",
+            "url": "https://www.bergen.kommune.no/politikk/byradet"
+          }
+        ]
+      },
+      "monitors": [
+        "https://www.bergen.kommune.no/politikk/ordforeren",
+        "https://www.bergen.kommune.no/politikk/byradet/byrader/chris-jorgen-knudsen-rodland-h",
+        "https://www.bergen.kommune.no/politikk/byradet"
+      ],
+      "election": {
+        "year": 2023,
+        "totalSeats": 67,
+        "source": "https://www.bergen.kommune.no/politikk/bystyret/bystyret-2023-2027/bergen-bystyre-2023-2027",
+        "results": [
+          {
+            "party": "Høyre",
+            "seats": 18
+          },
+          {
+            "party": "Arbeiderpartiet",
+            "seats": 13
+          },
+          {
+            "party": "Fremskrittspartiet",
+            "seats": 7
+          },
+          {
+            "party": "Sosialistisk Venstreparti",
+            "seats": 7
+          },
+          {
+            "party": "Miljøpartiet De Grønne",
+            "seats": 4
+          },
+          {
+            "party": "Venstre",
+            "seats": 3
+          },
+          {
+            "party": "Bergenslisten",
+            "seats": 4
+          },
+          {
+            "party": "Industri- og Næringspartiet",
+            "seats": 3
+          },
+          {
+            "party": "Rødt",
+            "seats": 3
+          },
+          {
+            "party": "Kristelig Folkeparti",
+            "seats": 2
+          },
+          {
+            "party": "Senterpartiet",
+            "seats": 2
+          },
+          {
+            "party": "Pensjonistpartiet",
+            "seats": 1
+          }
+        ]
+      }
+    },
+    "5001": {
+      "name": "Trondheim",
+      "verifiedAt": "2026-10-06",
+      "executive": {
+        "name": "Kjetil Reinskou",
+        "party": "Høyre",
+        "source": "https://www.trondheim.kommune.no/tema/politikk-og-planer/styrer-rad-og-utvalg/byradsleders-avdeling/"
+      },
+      "government": {
+        "kind": "cabinet",
+        "label": "Byråd",
+        "parties": [
+          "Høyre",
+          "Venstre",
+          "Miljøpartiet De Grønne"
+        ],
+        "note": "Byrådspartiene er H, V og MDG. KrF, Sp, Pp og FrP deltok også i budsjettforliket for 2026, men er ikke byrådspartier.",
+        "sources": [
+          {
+            "label": "Kommunen: byrådet",
+            "url": "https://www.trondheim.kommune.no/tema/politikk-og-planer/styrer-rad-og-utvalg/byradsleders-avdeling/"
+          },
+          {
+            "label": "Byrådets politiske grunnlag",
+            "url": "https://www.trondheim.kommune.no/aktuelt/nyhetssaker/2024/byradets-politiske-grunnlag/"
+          }
+        ]
+      },
+      "monitors": [
+        "https://www.trondheim.kommune.no/tema/politikk-og-planer/styrer-rad-og-utvalg/byradsleders-avdeling/"
+      ]
+    }
+  }
+}

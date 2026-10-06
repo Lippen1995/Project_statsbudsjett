@@ -1,37 +1,93 @@
 # Politisk ledelse i kommuneoversikten
 
-Toppen av kommunens kartoversikt har ordfører og styrende samarbeid på høyre
-side på store skjermer, under introduksjonen på mobil. Mandatfordelingen fra
-siste kommunevalg kan åpnes her uten å forlate siden. Ved detaljregnskapet
-gjentas bare ordfører med parti og kilde. Politisk ledelse gjelder **nå**, uavhengig av
-regnskapsåret i KOSTRA. Historiske kommuner og fylkeskommuner viser ikke panelet.
+Alle aktive kommuner i KOSTRA-registeret (357 ved innføringen) har ordfører,
+parti og registrerte opplysninger om politisk posisjon i toppen av kartoversikten.
+På detaljregnskapet gjentas ordføreren. Parlamentariske kommuner viser også
+byrådsleder. Historiske kommuner og fylkeskommuner har ikke dette panelet.
+Opplysningene gjelder ledelse og samarbeid uavhengig av regnskapsåret.
 
-## Dekning og vedlikehold
+## Hva opplysningene betyr
 
-Opplysningene er redaksjonelt kontrollert og ligger i
-`web/src/kostra/municipal-politics.json`, med kommunenummer som nøkkel.
-Første kontrollerte kommune er Stavanger, 6. oktober 2026. Andre aktive
-kommuner viser at opplysninger ennå ikke er tilgjengelige. Dette er ikke et
-landsdekkende register, og ingen ukjente samarbeid utledes av valgresultatet.
+Det finnes ikke ett dokumentert, kontinuerlig oppdatert nasjonalt register over
+**dagens koalisjoner**. Landsdekningen kommer fra Avdekks offentlige
+kommunesider, med kommunenummer kontrollert mot vårt KOSTRA-register.
+Avdekk oppgir KS' konstitueringsoversikt etter valget 2023 som en grunnkilde:
+https://avdekk.no/datakilder. Enkelte sider er senere oppdatert, men deres
+«posisjon»/«flertall» er ikke bevis for en gjeldende samarbeidsavtale.
+Vi importerer kun offentlige fakta om verv og partier, ikke redaksjonelle artikler.
 
-Legg til en kommune først når kommunens nettside bekrefter ordfører og parti,
-og en aktuell samarbeidsavtale eller annen dokumentert kilde bekrefter det
-styrende samarbeidet. Registrer `checkedAt`, kildelenker og en kort presisering
-av om samarbeidet er en fast koalisjon, mindretallsstyring eller samarbeid om
-budsjett og enkeltsaker. Oppdater ved ordførerskifte eller endret samarbeid.
-Ordførerens parti trenger ikke inngå i det politiske flertallet.
+Derfor viser panelet **Registrert samarbeid** for disse opplysningene og
+presiserer at dagens avtale ikke er kontrollert mot kommunen. Ordførerens parti,
+valgresultatet eller en budsjettavstemning brukes aldri til å beregne en koalisjon.
+«Hentet» er vår lesedato, ikke kildens egen endringsdato eller en bekreftelse på
+at alle opplysninger fortsatt gjelder. «Ordfører · registrert» markerer en
+sekundærkilde. Et vellykket HTTP-svar fornyer aldri en redaksjonell bekreftelse.
 
-For Stavanger bekrefter kommunens ordførerside Tormod W. Losnedal (Høyre).
-Samarbeidsavtalen fra 2023 mellom H, FrP, KrF, V og Pp er ikke brukt som belegg
-for dagens koalisjon: samarbeidet har brutt sammen. Panelet beskriver flertallet
-Ap, FrP, SV, Rødt og MDG som samarbeid om budsjett og enkeltsaker, med lenker
-til Aftenbladets omtale fra april og juni 2026 og SVs årsberetning om
-budsjettbehandlingen. INP og en uavhengig deltok i budsjettforslaget, men er
-ikke lagt til som medlemmer av et fast styrende samarbeid. Panelet hevder
-ikke at en ny formell koalisjonsavtale er inngått.
+Egne kontrollerte opplysninger ligger i
+`etl/mappings/municipal-politics-overrides.json`. Bergen viser Marit Warncke (H)
+og byrådsleder Chris Jørgen Knudsen Rødland (H), med H, FrP og Sp i byrådet fra
+25. september 2026. Trondheim viser byrådet H, V og MDG; støttepartier i
+budsjettforliket er ikke byrådspartier. Stavanger viser **Skiftende flertall**:
+samarbeidet fra 2023 er brutt, og samarbeid i enkeltsaker dokumenterer ikke en
+ny fast koalisjon. Ordfører Tormod W. Losnedal tilhører Høyre.
 
-Valgoppgjøret for 2023 viser alle 67 mandater fordelt på 11 partier. Det
-beskriver fordelingen ved valget og oppdateres ikke som følge av partibytter.
+Valgoppgjørene for Bergen og Stavanger 2023 kan åpnes i panelet. De viser
+mandater ved valget, før partibytter, og brukes ikke til å beskrive dagens makt.
+
+## Daglig oppdatering og varsling
+
+`.github/workflows/municipal-politics.yml` kjører daglig kl. 06.20 UTC,
+ved endring av importer/kontrollerte opplysninger og manuelt i Actions.
+Løpet krever ingen API-nøkkel og gjør følgende:
+
+1. Tester parseren og henter alle kommunesidene (høyst fire samtidige kall,
+   tidsgrense og tre forsøk per kilde). Det brukes ingen nedlastingscache i CI.
+2. Kontrollerer eksakt dekning, kommunenummer, navn, kildeformat og valgmandater.
+   Ukjent format eller ufullstendig førstegangsimport stopper publiseringen.
+3. Bevarer siste gyldige opplysning og **siste vellykkede hentedato** hvis én
+   kilde feiler. Panelet varsler om feil og dato eldre enn sju dager, også hvis
+   hele oppdateringsløpet har stoppet.
+4. Sammenligner kildefakta med forrige import. Kontrollerte kommuner sammenlignes
+   også med referansen fra siste redaksjonelle bekreftelse, slik at uenighet ikke
+   forsvinner bare fordi importen kjøres igjen.
+5. Overvåker teksten i de kommunale sidene oppgitt i `monitors`. Endret tekst,
+   en utilgjengelig kilde eller en bekreftelse eldre enn 90 dager krever kontroll.
+   Skript, HTML-noncer og navigasjon utenfor `main` ignoreres. Andre tekstrettelser
+   kan gi falske varsler; de skal vurderes, ikke tolkes som politiske endringer.
+6. Oppretter/oppdaterer én GitHub-sak med kontrollbehov og feil. Ingen e-post eller
+   Slack-integrasjon brukes. Repoets vanlige GitHub-varsler gjelder. Saken lukkes
+   når behovene er løst. Jobbsammendraget har også rapporten.
+7. Publiserer kun validerte data med konfliktkontroll via `commit-generated.py`.
+   Kaller Pages-bygg eksplisitt etter datacommit, fordi push med GITHUB_TOKEN
+   ikke automatisk starter en ny push-workflow.
+
+Dette oppdager endringer i de overvåkede kildene, men kan ikke garantere sanntid
+eller oppdage en politisk endring som kildene ikke selv har registrert. Et gammelt
+eller endret bekreftet samarbeid merkes «sist bekreftet» og trenger ny kontroll;
+det presenteres ikke som nylig kontrollert. Nasjonale kildeopplysninger forblir
+merket som registrerte inntil de bekreftes mot egne kilder.
+
+## Slik kontrolleres en kommune
+
+1. Finn kommunens aktuelle ordførerside og samarbeidsavtale/byrådssammensetning.
+   Kontroller kommune, navn, parti, støttepartier og fra hvilken dato endringen gjelder.
+2. Legg inn/endre overstyringen under kommunenummeret. Sett `verifiedAt` til den
+   faktiske kontrolldatoen. Dokumenter separate kilder for ordfører, eventuell
+   byrådsleder og samarbeid. `government.kind` er `cabinet`, `coalition` eller
+   `case-cooperation`; sekundærkilder bruker `source-reported`.
+3. Angi aktuelle, levende kommunale nettsider i `monitors`. Historiske nyhetssaker
+   kan dokumentere endringen, men er alene ikke tilstrekkelige som endringsvakt.
+4. Kjør `python3 etl/municipal_politics.py`. En **ny** bekreftelsesdato erstatter
+   sammenligningsgrunnlaget etter at kildene er hentet. Ikke endre dato automatisk.
+   Manglende kilde eller sammenligningsgrunnlag gir fortsatt kontrollbehov.
+5. Kjør `python3 -m unittest discover -s etl/tests -p test_municipal_politics.py`
+   og `node --test web/tests/municipal-politics.test.mjs`. Gjennomgå diff og kilde-
+   lenker før merge. Ved kildeformatendringer oppdateres parser og test sammen.
+
+Det genererte registeret ligger i `web/src/kostra/municipal-politics.json`.
+Det lastes som en egen JavaScript-del når panelet vises. Feltene `sourceSnapshot`,
+`sourceBaseline` og `monitorBaseline` brukes kun av import/kontroll. `status`
+er den maskinlesbare kontrollrapporten. Bevar disse ved vanlig kildeoppdatering.
 
 ## Partilogoer
 
