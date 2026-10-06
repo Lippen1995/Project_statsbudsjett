@@ -7,6 +7,7 @@ on:
       - 'etl/budget_proposals.py'
       - 'etl/budget_readiness.py'
       - 'etl/readiness_sources.py'
+      - 'etl/budget_sources.py'
       - 'editorial/research/budsjett-2027/readiness-evidence/**'
       - '.github/workflows/budget-readiness.yml'
 permissions:

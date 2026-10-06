@@ -64,7 +64,7 @@ def capture(root=ROOT):
     return result
 
 
-def replay(root=ROOT, now=None):
+def load_capture(root=ROOT, now=None):
     packet = json.loads((root / "index.json").read_text())
     if packet.get("version") != 1 or packet.get("sourceAcquisitionEnvironment") != "native-workspace":
         raise ValueError("Unknown readiness source packet")
@@ -101,6 +101,11 @@ def replay(root=ROOT, now=None):
         response.raise_for_status()
         return response
 
+    return packet, fetch
+
+
+def replay(root=ROOT, now=None):
+    packet, fetch = load_capture(root, now)
     release = fetch(RELEASE_PAGES[2027])
     result = budget_readiness.check(fetch=fetch, diagnostic={"url": release.url, "status": release.status_code,
                                                             "transport": "verified-native-source-capture"})

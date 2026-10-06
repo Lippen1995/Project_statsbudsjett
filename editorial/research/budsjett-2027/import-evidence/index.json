@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "year": 2027,
+  "sourceCheckedAt": "2026-10-06T12:57:58.513105+00:00",
+  "sourceAcquisitionEnvironment": "native-workspace",
+  "responses": {
+    "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/": {
+      "url": "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/",
+      "status": 200,
+      "sha256": "6f4f8b267ba1b61d49dd5d3536c685658b6b8fdb8c15c4ec4c67a2cad046c878",
+      "encoding": "utf-8"
+    }
+  }
+}
