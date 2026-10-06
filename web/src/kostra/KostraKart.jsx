@@ -15,6 +15,7 @@ import {
   summarizeMunicipalities,
 } from './model'
 import KostraDetalj from './KostraDetalj'
+import MunicipalityPolitics from './MunicipalityPolitics'
 import KostraInfoTooltip from './KostraInfoTooltip'
 import KostraIncomeEqualization from './KostraIncomeEqualization'
 import KostraUtforsk from './KostraUtforsk'
@@ -166,20 +167,23 @@ export default function KostraKart({
 
   return (
     <>
-      <header className={`ko-hero ${embedded ? 'ko-hero--integrert' : ''}`}>
-        <div className="ft-kicker">KOSTRA · Kommune- og fylkesregnskap · {index.years[0]}–{index.latestYear}</div>
-        <Heading ref={headingRef} tabIndex={-1}>{municipalityTitle || (county ? `${displayEntityName(county)}, kommune for kommune` : 'Slik bruker kommunene pengene')}</Heading>
-        <p className="ft-ingress">
-          Velg et nøkkeltall og klikk deg fra Norge til fylke og kommune. Regnskapstall er hentet fra SSB,
-          mens inntektsutjevningen kommer fra Kommunal- og distriktsdepartementet. Alt normaliseres lokalt.
-        </p>
-        <div className="ko-smuler" aria-label="Brødsmuler">
-          <a href="#kostra" onClick={prepareRouteNavigation}>Norge</a>
-          {county && <><span>›</span>{selectedMunicipality
-            ? <a href={`#kostra/fylke/${countyCode}`} onClick={prepareRouteNavigation}>{displayEntityName(county)}</a>
-            : <span aria-current="page">{displayEntityName(county)}</span>}</>}
-          {selectedMunicipality && <><span>›</span><span aria-current="page">{municipalityTitle}</span></>}
+      <header className={`ko-hero ${selectedMunicipality ? 'ko-detailhero--politikk' : ''} ${embedded ? 'ko-hero--integrert' : ''}`}>
+        <div className="ko-detailheroidentitet">
+          <div className="ft-kicker">KOSTRA · Kommune- og fylkesregnskap · {index.years[0]}–{index.latestYear}</div>
+          <Heading ref={headingRef} tabIndex={-1}>{municipalityTitle || (county ? `${displayEntityName(county)}, kommune for kommune` : 'Slik bruker kommunene pengene')}</Heading>
+          <p className="ft-ingress">
+            Velg et nøkkeltall og klikk deg fra Norge til fylke og kommune. Regnskapstall er hentet fra SSB,
+            mens inntektsutjevningen kommer fra Kommunal- og distriktsdepartementet. Alt normaliseres lokalt.
+          </p>
+          <div className="ko-smuler" aria-label="Brødsmuler">
+            <a href="#kostra" onClick={prepareRouteNavigation}>Norge</a>
+            {county && <><span>›</span>{selectedMunicipality
+              ? <a href={`#kostra/fylke/${countyCode}`} onClick={prepareRouteNavigation}>{displayEntityName(county)}</a>
+              : <span aria-current="page">{displayEntityName(county)}</span>}</>}
+            {selectedMunicipality && <><span>›</span><span aria-current="page">{municipalityTitle}</span></>}
+          </div>
         </div>
+        {selectedMunicipality && <MunicipalityPolitics key={selectedMunicipality.code} code={selectedMunicipality.code} />}
       </header>
 
       <section className="ft-seksjon ko-kartseksjon">

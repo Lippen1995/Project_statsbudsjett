@@ -27,13 +27,13 @@ function Party({ name, fullName = false }) {
   )
 }
 
-export default function MunicipalityPolitics({ code }) {
+export default function MunicipalityPolitics({ code, mayorOnly = false }) {
   const record = politics.municipalities[code]
   if (!record) {
     return (
       <aside className="ko-politikk ko-politikk--mangler" aria-label="Politisk ledelse">
         <span className="ft-stikkord">Politisk ledelse nå</span>
-        <p>Opplysninger om ordfører og styrende samarbeid er ikke tilgjengelige ennå.</p>
+        <p>{mayorOnly ? 'Opplysninger om ordfører er ikke tilgjengelige ennå.' : 'Opplysninger om ordfører og styrende samarbeid er ikke tilgjengelige ennå.'}</p>
       </aside>
     )
   }
@@ -45,12 +45,12 @@ export default function MunicipalityPolitics({ code }) {
         <div><span className="ko-politikketikett">Ordfører</span><a href={mayor.source} className="ko-ordforernavn">{mayor.name}</a></div>
         <Party name={mayor.party} fullName />
       </div>
-      <div className="ko-styrende">
+      {!mayorOnly && <div className="ko-styrende">
         <span className="ko-politikketikett">{government.label}</span>
         <ul aria-label={government.label}>{government.parties.map((name) => <li key={name}><Party name={name} /></li>)}</ul>
         <p>{government.note}</p>
-      </div>
-      {election && <details className="ko-kommunevalg">
+      </div>}
+      {!mayorOnly && election && <details className="ko-kommunevalg">
         <summary>Kommunevalget {election.year}<span>{election.totalSeats} mandater</span></summary>
         <div className="ko-mandatstripe" aria-hidden="true">{election.results.map((row) => <i key={row.party} style={{ flex: row.seats, background: partiFarge(row.party) }} />)}</div>
         <table>
@@ -64,8 +64,8 @@ export default function MunicipalityPolitics({ code }) {
       </details>}
       <details className="ko-politikkilder">
         <summary>Kilder · kontrollert {dateFormat.format(new Date(`${record.checkedAt}T12:00:00Z`))}</summary>
-        <ul><li><a href={mayor.source}>Ordfører · {record.name} kommune ↗</a></li>{government.sources.map((source) => <li key={source.url}><a href={source.url}>{source.label} ↗</a></li>)}</ul>
-        <p>SV-logo: laget for Sosialistisk Venstreparti, via <a href="https://commons.wikimedia.org/wiki/File:Sosialistisk_Venstreparti_logo.svg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Uendret.</p>
+        <ul><li><a href={mayor.source}>Ordfører · {record.name} kommune ↗</a></li>{!mayorOnly && government.sources.map((source) => <li key={source.url}><a href={source.url}>{source.label} ↗</a></li>)}</ul>
+        {!mayorOnly && <p>SV-logo: laget for Sosialistisk Venstreparti, via <a href="https://commons.wikimedia.org/wiki/File:Sosialistisk_Venstreparti_logo.svg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Uendret.</p>}
       </details>
     </aside>
   )

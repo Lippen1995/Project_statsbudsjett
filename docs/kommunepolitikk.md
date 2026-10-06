@@ -1,8 +1,9 @@
 # Politisk ledelse i kommuneoversikten
 
-Kommuneoverskriften har ordfører og styrende samarbeid på høyre side på store
-skjermer, under kommunenavnet på mobil. Mandatfordelingen fra siste kommunevalg
-kan åpnes uten å forlate siden. Politisk ledelse gjelder **nå**, uavhengig av
+Toppen av kommunens kartoversikt har ordfører og styrende samarbeid på høyre
+side på store skjermer, under introduksjonen på mobil. Mandatfordelingen fra
+siste kommunevalg kan åpnes her uten å forlate siden. Ved detaljregnskapet
+gjentas bare ordfører med parti og kilde. Politisk ledelse gjelder **nå**, uavhengig av
 regnskapsåret i KOSTRA. Historiske kommuner og fylkeskommuner viser ikke panelet.
 
 ## Dekning og vedlikehold

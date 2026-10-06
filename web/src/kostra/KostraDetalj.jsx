@@ -459,7 +459,7 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
             <span aria-current="page">{detail.entity.name}</span>
           </div>
         </div>
-        {kind === 'municipality' && !historicalEntity && <MunicipalityPolitics key={code} code={code} />}
+        {kind === 'municipality' && !historicalEntity && <MunicipalityPolitics key={code} code={code} mayorOnly />}
       </header>
 
       <section className="ft-seksjon ko-detaljseksjon">
