@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-06T11:47:13.772510+00:00",
+  "checkedAt": "2026-10-06T12:12:31.231142+00:00",
   "oldRun": 37310297347,
   "oldFailure": "requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://www.regjeringen.no/no/statsbudsjett/2027/",
   "partyRun": 37458117681,
