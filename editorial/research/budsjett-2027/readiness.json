@@ -1,29 +1,34 @@
 {
-  "checkedAt": "2026-10-06T12:26:22.531004+00:00",
+  "checkedAt": "2026-10-06T12:38:37.363154+00:00",
   "oldRun": 37310297347,
   "oldFailure": "requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://www.regjeringen.no/no/statsbudsjett/2027/",
   "partyRun": 37458117681,
   "partyRunFailure": "requests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://roedt.no/budsjett2026",
   "steps": {
     "verified2026File": {
-      "status": "failed",
-      "reason": "403 Client Error: Forbidden for url: https://www.regjeringen.no/contentassets/bad238c9c4d94a639dbc8104fce42e1c/2026_gulbok_datagrunnlag.xlsx"
+      "status": "passed",
+      "records": 1600,
+      "sha256": "57fb7430a3ccecdbdf5cdb4575400beb8ac4398cdefaf5b2d4ad2be4a53ecfcb"
     },
     "actual2026Import": {
-      "status": "failed",
-      "reason": "403 Client Error: Forbidden for url: https://www.regjeringen.no/no/statsbudsjett/2026/"
+      "status": "passed",
+      "records": 1600,
+      "url": "https://www.regjeringen.no/contentassets/bad238c9c4d94a639dbc8104fce42e1c/2026_gulbok_datagrunnlag.xlsx",
+      "productionDataChanged": false
     },
     "release2027": {
-      "status": "failed",
-      "reason": "403 Client Error: Forbidden for url: https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/"
+      "status": "not-released",
+      "source": null
     }
   },
   "httpDiagnostic": {
     "url": "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/",
-    "status": 403,
-    "server": "cloudflare",
-    "contentType": "text/html; charset=UTF-8",
-    "policyDenied": false
+    "status": 200,
+    "transport": "verified-native-source-capture"
   },
-  "passed": false
+  "passed": true,
+  "sourceCheckedAt": "2026-10-06T12:33:08.055615+00:00",
+  "sourceAcquisitionEnvironment": "native-workspace",
+  "verificationEnvironment": "github-actions",
+  "liveGithubSourceAccess": false
 }
