@@ -94,6 +94,7 @@ def test_party_redirect_cannot_fetch_another_host(monkeypatch):
     seen=[]
     class Redirect:
         is_redirect=True
+        status_code=302
         headers={'Location':'https://example.com/private'}
         def __enter__(self):return self
         def __exit__(self,*args):pass
@@ -115,3 +116,24 @@ def test_separate_party_queue_cannot_change_government_or_adopted_budget_data():
             validate_delivery_scope(ref, changed)
     validate_delivery_scope('refs/heads/analysis/budget-evidence-general',
                             {**packet, 'evidence': [{'kind': 'agreement'}]})
+
+
+def test_party_rate_limit_honors_backoff_once_and_does_not_retry_access_denial(monkeypatch):
+    closed, waits, urls = [], [], []
+    limited = SimpleNamespace(status_code=429, headers={'Retry-After': '12'}, close=lambda: closed.append(True))
+    success = SimpleNamespace(status_code=200)
+    def get(url, **kwargs):
+        urls.append(url)
+        return limited if len(urls) == 1 else success
+    monkeypatch.setattr(parties.requests, 'get', get)
+    monkeypatch.setattr(parties.time, 'sleep', waits.append)
+    assert parties.source_response(priority()['url']) is success
+    assert waits == [12] and closed == [True] and len(urls) == 2
+    denied = SimpleNamespace(status_code=403)
+    monkeypatch.setattr(parties.requests, 'get', lambda url, **kwargs: denied)
+    assert parties.source_response(priority()['url']) is denied
+    assert waits == [12]
+    limited.headers['Retry-After'] = '120'
+    monkeypatch.setattr(parties.requests, 'get', lambda url, **kwargs: limited)
+    assert parties.source_response(priority()['url']) is limited
+    assert waits == [12]

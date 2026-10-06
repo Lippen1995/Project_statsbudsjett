@@ -2,7 +2,9 @@
 import hashlib
 import io
 import re
+import time
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -71,13 +73,34 @@ def verify_priority(item, document):
             "recordKeys": item.get("recordKeys", []), "sourceHash": hashlib.sha256(document.encode()).hexdigest()}
 
 
+def source_response(url):
+    response = requests.get(url, timeout=45, allow_redirects=False, stream=True,
+                            headers={"User-Agent": "Fellestall/1.0 (party source verification)"})
+    if response.status_code != 429:
+        return response
+    # One bounded retry, honoring the source's backoff; never retry access denial.
+    retry_after = response.headers.get("Retry-After", "30")
+    try:
+        wait = float(retry_after)
+    except ValueError:
+        try:
+            wait = (parsedate_to_datetime(retry_after) - datetime.now(timezone.utc)).total_seconds()
+        except (ValueError, TypeError):
+            return response
+    if not 0 <= wait <= 60:
+        return response
+    response.close()
+    time.sleep(wait)
+    return requests.get(url, timeout=45, allow_redirects=False, stream=True,
+                        headers={"User-Agent": "Fellestall/1.0 (party source verification)"})
+
+
 def fetch_document(url, party):
     # Validate every redirect before fetching it, not just the final response.
     from urllib.parse import urljoin
     for _ in range(6):
         source_url(url, party)
-        with requests.get(url, timeout=45, allow_redirects=False, stream=True,
-                          headers={"User-Agent": "Fellestall/1.0 (party source verification)"}) as response:
+        with source_response(url) as response:
             if response.is_redirect:
                 url = urljoin(url, response.headers["Location"])
                 continue
