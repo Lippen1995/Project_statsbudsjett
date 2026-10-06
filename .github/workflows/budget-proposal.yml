@@ -6,9 +6,12 @@ on:
         description: Budsjettår
         default: '2027'
         required: true
-  schedule:
-    # Norwegian release 7 October 2026 at 10:00 CEST. Retry through the day.
-    - cron: '15,45 8-14 7 10 *'
+  push:
+    branches: [main]
+    paths:
+      - 'editorial/research/budsjett-2027/import-evidence/**'
+      - 'etl/budget_sources.py'
+      - '.github/workflows/budget-proposal.yml'
 permissions:
   contents: write
 concurrency:
@@ -21,31 +24,20 @@ jobs:
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
     steps:
-      - name: Begrens særskilt budsjettdagsplan til 2026
-        id: release
-        run: |
-          if [ '${{ github.event_name }}' != 'schedule' ] || [ "$(date -u +%Y)" = '2026' ]; then
-            echo 'active=true' >> "$GITHUB_OUTPUT"
-          fi
       - uses: actions/checkout@v4
-        if: steps.release.outputs.active == 'true'
         with:
           ref: main
       - uses: actions/setup-python@v5
-        if: steps.release.outputs.active == 'true'
         with:
           python-version: '3.11'
       - run: pip install -r etl/requirements.txt
-        if: steps.release.outputs.active == 'true'
-      - name: Finn offisiell fil, valider og arkiver forslaget
-        if: steps.release.outputs.active == 'true'
+      - name: Verifiser native originalkilder, finn filen og importer med samme validering
         env:
           BUDGET_YEAR: ${{ inputs.year }}
         run: |
           budget_year="${BUDGET_YEAR:-2027}"
-          python etl/budget_proposals.py --year "$budget_year"
+          python etl/budget_sources.py --year "$budget_year"
       - name: Lagre nytt forslag og synlige statistikkserier
-        if: steps.release.outputs.active == 'true'
         id: commit
         run: |
           git config user.name 'github-actions[bot]'
