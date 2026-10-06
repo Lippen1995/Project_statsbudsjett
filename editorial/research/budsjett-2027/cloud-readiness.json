@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-10-06T12:08:08.344806+00:00",
+  "oldRun": 37310297347,
+  "oldFailure": "Previous run logs unavailable in this execution context",
+  "partyRun": 37458117681,
+  "partyRunFailure": "Previous run logs unavailable in this execution context",
+  "steps": {
+    "verified2026File": {
+      "status": "passed",
+      "records": 1600,
+      "sha256": "57fb7430a3ccecdbdf5cdb4575400beb8ac4398cdefaf5b2d4ad2be4a53ecfcb"
+    },
+    "actual2026Import": {
+      "status": "passed",
+      "records": 1600,
+      "url": "https://www.regjeringen.no/contentassets/bad238c9c4d94a639dbc8104fce42e1c/2026_gulbok_datagrunnlag.xlsx",
+      "productionDataChanged": false
+    },
+    "release2027": {
+      "status": "not-released",
+      "source": null
+    }
+  },
+  "httpDiagnostic": {
+    "url": "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/",
+    "status": 200,
+    "server": "envoy",
+    "contentType": "text/html; charset=utf-8",
+    "policyDenied": false
+  },
+  "passed": true
+}
