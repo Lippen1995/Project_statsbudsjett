@@ -5,7 +5,7 @@
   "type": "Utvikling over tid",
   "status": "draft",
   "createdAt": "2026-10-06T06:32:29.897Z",
-  "generatedAt": "2026-10-06T06:32:29.897Z",
+  "generatedAt": "2026-10-06T06:37:59.239Z",
   "report": {
     "kind": "real-expenditure-per-capita",
     "factsVersion": 2,
@@ -974,7 +974,7 @@
     "description": "Ferske SSB-uttrekk bekrefter prisvekst og flere innbyggere. Vi følger regningen gjennom begge justeringene og ser hva som fortsatt står igjen.",
     "lead": "Statens utgifter har steget {{fact:nominalGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Dyrere varer og flere innbyggere gjør en større regning forståelig. Men når vi tar høyde for begge deler, har regningen fortsatt vokst {{fact:realPerCapitaGrowth}} per innbygger. Hva er det justeringene rydder bort — og hva står igjen?",
     "conclusion": "Prisvekst og befolkningsvekst demper bildet av utgiftsøkningen betydelig. Likevel står en KPI-justert økning på {{fact:realPerCapitaGrowth}} per innbygger igjen. Regnskapspostene viser at enkelte kriseutgifter falt mens andre oppgaver vokste. Resten kan ikke uten videre kalles hverken koronaregning eller sløsing.",
-    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nStatens regning har vokst {{fact:nominalGrowth}} siden {{fact:startYear}}. Inflasjonen rekker opp hånden: «Jeg kan forklare en del.» Flere innbyggere melder seg også.\n\nVi gir begge ordet. Likevel står {{fact:realPerCapitaGrowth}} økning per innbygger igjen etter KPI-justering. Regningen tok visst ikke hele pandemipausen med seg ut døren.\n\nMen noen kriseutgifter falt faktisk. Så hva tok plassen deres? Sven følger pengene — og sjekker forklaringene mot ferske SSB-uttrekk. Les analysen.",
+    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nStatens regning har vokst {{fact:nominalGrowth}} siden {{fact:startYear}}. Inflasjonen rekker opp hånden: «Jeg kan forklare en del.» Flere innbyggere melder seg også.\n\nVi gir begge ordet. Likevel står {{fact:realPerCapitaGrowth}} økning per innbygger igjen etter KPI-justering. Regningen tok visst ikke hele pandemipausen med seg ut døren.\n\nMen noen kriseutgifter falt faktisk. Så hva tok plassen deres? Sven følger pengene — fra krisestøtte som krympet, til utgifter som ble værende. Les analysen.",
     "sections": [
       {
         "heading": "En stor økning får en mer presis målestokk",
