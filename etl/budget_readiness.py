@@ -14,12 +14,12 @@ import requests
 from budget_proposals import discover, get, parse_gulbok, archive_proposal, reconcile
 
 
-def previous_failure():
+def previous_failure(run_id=37310297347):
     token, repository = os.environ.get("GH_TOKEN"), os.environ.get("GITHUB_REPOSITORY")
     if not token or repository != "Lippen1995/Project_statsbudsjett":
         return "Previous run logs unavailable in this execution context"
     try:
-        response = requests.get(f"https://api.github.com/repos/{repository}/actions/runs/37310297347/logs",
+        response = requests.get(f"https://api.github.com/repos/{repository}/actions/runs/{run_id}/logs",
                                 headers={"Authorization": f"Bearer {token}"}, timeout=45)
     except requests.RequestException:
         return "Previous run logs could not be retrieved; actual source checks still run"
@@ -29,8 +29,6 @@ def previous_failure():
         return "Previous run log archive is unavailable"
     with zipfile.ZipFile(io.BytesIO(response.content)) as logs:
         for name in logs.namelist():
-            if "official" not in name.lower() and "import" not in name.lower():
-                continue
             text = logs.read(name).decode("utf-8", errors="replace")
             matches = re.findall(r"(?:requests\.exceptions\.[A-Za-z]+|ValueError|ModuleNotFoundError|ImportError):[^\r\n]{0,600}", text)
             if matches:
@@ -40,7 +38,29 @@ def previous_failure():
 
 def check():
     result = {"checkedAt": datetime.now(timezone.utc).isoformat(), "oldRun": 37310297347,
-              "oldFailure": previous_failure(), "steps": {}}
+              "oldFailure": previous_failure(), "partyRun": 37456707655,
+              "partyRunFailure": previous_failure(37456707655), "steps": {}}
+    # Check the already-read original 2026 file independently of CMS discovery.
+    reference = json.loads(Path("editorial/research/budsjett-2027/baseline-2026.json").read_text())["nameReference"]
+    try:
+        raw = get(reference["url"]).content
+        import hashlib
+        if hashlib.sha256(raw).hexdigest() != reference["sha256"]:
+            raise ValueError("Previously verified 2026 original has changed")
+        result["steps"]["verified2026File"] = {"status": "passed", "records": len(parse_gulbok(raw)), "sha256": reference["sha256"]}
+    except (requests.RequestException, ValueError) as error:
+        result["steps"]["verified2026File"] = {"status": "failed", "reason": str(error)}
+    # Ordinary browser-compatible HTTP headers can diagnose origin compatibility.
+    # Do not retry this way when the response explicitly denies proxy policy.
+    url = "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/"
+    try:
+        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (compatible; Fellestall/1.0; +https://fellestall.no)",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "Accept-Language": "nb-NO,nb;q=0.9,en;q=0.5"}, timeout=45)
+        result["httpDiagnostic"] = {"url": url, "status": response.status_code,
+            "server": response.headers.get("Server"), "contentType": response.headers.get("Content-Type"),
+            "policyDenied": "domain forbidden" in response.text[:500].lower()}
+    except requests.RequestException:
+        result["httpDiagnostic"] = {"url": url, "status": "connection-failed"}
     try:
         source = discover(2026)
         if not source:
