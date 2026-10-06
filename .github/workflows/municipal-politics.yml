@@ -1,0 +1,89 @@
+name: Kommunepolitikk – daglig oppdatering
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 6 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'etl/municipal_politics.py'
+      - 'etl/mappings/municipal-politics-overrides.json'
+      - 'etl/tests/test_municipal_politics.py'
+      - '.github/workflows/municipal-politics.yml'
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: municipal-politics-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      changed: ${{ steps.publish.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Test kildeparser og kontroll av foreldelse
+        run: python -m unittest discover -s etl/tests -p test_municipal_politics.py
+      - name: Hent alle kommuner og kontroller kommunale kilder
+        id: import
+        run: python etl/municipal_politics.py
+      - name: Kontroller landsdekning og politisk datamodell
+        run: node --test web/tests/municipal-politics.test.mjs
+      - name: Publiser validerte data uten å overskrive andre endringer
+        id: publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -- web/src/kostra/municipal-politics.json
+          python scripts/commit-generated.py --allowed-root web/src/kostra/municipal-politics.json --message "data: oppdater kommunepolitikk"
+      - name: Varsle om kildeendringer, gammel bekreftelse eller feil
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          UPDATE_OUTCOME: ${{ job.status }}
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- municipal-politics-monitor -->';
+            let data;
+            try { data = JSON.parse(fs.readFileSync('web/src/kostra/municipal-politics.json', 'utf8')); } catch {}
+            const failed = process.env.UPDATE_OUTCOME !== 'success';
+            const status = data?.status || {};
+            const review = status.reviewNeeded || [];
+            const failures = status.fetchFailures || [];
+            const changes = status.sourceChanges || [];
+            const actionable = failed || review.length || failures.length || changes.length;
+            const lines = [marker, 'Daglig kontroll av kommunepolitikk.', ''];
+            if (failed) lines.push('Oppdateringen feilet. Tidligere validerte data er bevart. Se Actions-loggen.');
+            for (const row of review) lines.push(`- ${row.name} (${row.code}): ${row.reasons.join(' ')}`);
+            for (const row of failures) lines.push(`- Kilde kunne ikke hentes: ${row.url}`);
+            if (changes.length) lines.push(`- Nye kildeopplysninger er importert for: ${changes.join(', ')}. Registrert posisjon er fortsatt ikke en bekreftet koalisjon.`);
+            lines.push('', 'Kontroll og ny bekreftelse: docs/kommunepolitikk.md.');
+            const body = lines.join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {...context.repo, state: 'open', creator: 'github-actions[bot]', per_page: 100});
+            const issue = issues.find(row => row.body?.includes(marker));
+            if (actionable && !issue) await github.rest.issues.create({...context.repo, title: 'Kommunepolitikk: kilder trenger kontroll', body});
+            else if (actionable && issue && issue.body !== body) await github.rest.issues.update({...context.repo, issue_number: issue.number, body});
+            else if (!actionable && issue) await github.rest.issues.update({...context.repo, issue_number: issue.number, state: 'closed'});
+            await core.summary.addRaw(actionable ? body : `Alle ${data.municipalityCount} kommuner hentet. Ingen nye kontrollbehov.`).write();
+
+  deploy:
+    needs: update
+    if: always() && needs.update.outputs.changed == 'true'
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit

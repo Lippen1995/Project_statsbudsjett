@@ -36,6 +36,7 @@
 .ko-kommunevalg p, .ko-kommunevalg > a { font-size: 10px; line-height: 1.5; }
 .ko-kommunevalg p { margin: 10px 0 5px; color: var(--dempet); }
 .ko-politikkilder { margin-top: 10px; color: var(--dempet); font-size: 10px; }
+.ko-politikkstatus { margin: 12px 0; padding: 8px 10px; border-left: 2px solid var(--aksent, #ba4c20); color: var(--ink); background: var(--papir-mork, #eeeae2); font-size: 11px; line-height: 1.5; }
 .ko-politikkilder summary { cursor: pointer; }
 .ko-politikkilder ul { padding-left: 16px; margin: 8px 0 0; line-height: 1.8; }
 @media (max-width: 760px) {
