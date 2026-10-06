@@ -1,6 +1,6 @@
 # Budsjettforslag, vedtak og analyser
 
-Oppdatert 5. oktober 2026. Brukeren har valgt **«Regjeringens budsjettforslag»** for Gul bok. Dette er forslaget til statsbudsjett 2027, ikke revidert nasjonalbudsjett (RNB). RNB er en egen fase senere. Bruk ingen separat AI-API; teksten skrives av den native AI-oppgaven og publiseres først etter menneskelig godkjenning av den eksakte versjonen.
+Oppdatert 6. oktober 2026. Brukeren har valgt **«Regjeringens budsjettforslag»** for Gul bok. Dette er forslaget til statsbudsjett 2027, ikke revidert nasjonalbudsjett (RNB). RNB er en egen fase senere. Bruk ingen separat AI-API; teksten skrives av den native AI-oppgaven og publiseres først etter menneskelig godkjenning av den eksakte versjonen.
 
 ## Offisiell fremleggelse og automatisk import
 
@@ -10,6 +10,8 @@ https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/
 `budget-proposal.yml` leter etter regjeringens faktiske lenke til «Tallgrunnlag Gul bok», deretter Excel-filen. Den særskilte planen forsøker import hvert halvtime fra **10.15 til 16.45 norsk tid på fremleggelsesdagen i 2026**. GitHub kan forsinke planlagte kjøringer. Før filen finnes, endres ingen data. Ingen konstruert Excel-adresse brukes. Endret kolonnemodell, tvetydig kilde, feil år, duplikate poster eller ugyldige beløp stopper importen.
 
 **Faktisk kildeavslag 6. oktober:** Beredskapsjobben hentet feilloggen fra den tidligere importen og bekreftet HTTP 403 fra regjeringen.no. Nye forsøk fra GitHub får også 403 på den kontrollerte 2027-siden og originalfilen for 2026. Dette er ikke dokumentert løst av endret adresse. Se `editorial/research/budsjett-2027/readiness.json` for siste faktiske resultat.
+
+Partiarkivets kontrollerte levering er heller ikke bekreftet: jobb 37458117681 stoppet på HTTP 429 hos Rødt, og ny prøve 37458968352 feilet også. Det finnes foreløpig ikke et komplett nytt partiarkiv på main. Ikke oppgi at nye partifakta inngår i rapporten før arkiv, sitater og originalfiler faktisk er kontrollert. Les forhåndsresearch og prøv den dokumenterte native partiimportøren i det publiserte miljøet; dette erstatter ikke kontroll av nye krav på budsjettdagen.
 
 Hvis GitHub fortsatt får kildeavslag på budsjettdagen, skal den allerede bestilte native oppgaven prøve **samme validerte importør i det publiserte miljøet**. Start fra ren, oppdatert main og kontroller faktisk HTTPS-tilgang. Kjør `python etl/budget_proposals.py --year 2027`; kontroller originalfil/hash, arkiv og riktig forslagsår før bare importens dataendringer under `web/public/data/` committes og pushes normalt til main. Ingen force, ingen oppdiktede filadresser, ingen endring av importør/kildefilter og ingen artikkelpublisering inngår. En samtidig main-endring må avstemmes før pushing. Hent deretter fersk main og bygg analyserapporten. Dersom også dette miljøet får 403, rapporter kildeavslaget og la data stå uendret; dette kan ikke merkes som en vellykket import.
 
@@ -114,7 +116,7 @@ Velg én til trettiseks konkrete prioriteringer med unike bokstav-ID-er. Ved end
 
 ### Ressurser og utvidet oppdrag vedtatt 5. oktober
 
-Brukeren ønsker en større analyse med vesentlige ressurser og grundig forhåndsresearch om alle stortingspartiene. Les `editorial/research/budsjett-2027/README.md`, `partier.md`, `sources.json` og baseline før arbeidet starter. Partiprofilene og sammenligningsmatrisen er nå kildebelagt, og alle ni partisider samt Stortingets API fungerer. Kontroller resterende fulltekstkilder som er merket utilgjengelige, og oppdater profilene med ferske 2027-krav før publisering. Ikke erstatt kildearbeid med generelle antakelser om partiene.
+Brukeren ønsker en større analyse med vesentlige ressurser og grundig forhåndsresearch om alle stortingspartiene. Les `editorial/research/budsjett-2027/README.md`, `partier.md`, `sources.json` og baseline før arbeidet starter. Partiprofilene og sammenligningsmatrisen er kildebelagt; alle ni partisider samt Stortingets API ble kontrollert 5. oktober. Tilgangen må prøves på nytt i kjøringens faktiske miljø. GitHub-kildejobben 6. oktober møtte HTTP 429 hos Rødt; dette bekrefter ikke et komplett kontrollert arkiv. Importøren respekterer Retry-After med én ny prøve når ventetiden er høyst ett minutt; lengre ventetid eller nytt avslag stopper importen. Kontroller resterende fulltekstkilder som er merket utilgjengelige, og oppdater profilene med ferske 2027-krav før publisering. Ikke erstatt kildearbeid med generelle antakelser om partiene.
 
 Dette er en uttrykkelig ekstra analyse utover den vanlige ukerytmen. Sikt mot **2 500–3 500 ord og åtte til ti seksjoner**, innenfor eksisterende artikkelskjema. Bruk den sterkeste tilgjengelige modellen og høy tilgjengelig resonneringsinnsats i den native oppgaven. Gjennomfør egne gjennomganger av kildegrunnlag, beregninger, politiske konklusjoner og redaksjonell tekst. Instruksen endrer ikke modellinnstillinger eller reserverer faktisk kvote; slike innstillinger må være tilgjengelige i oppgaven. Ingen separat AI-API.
 
