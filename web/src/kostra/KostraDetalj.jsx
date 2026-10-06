@@ -29,6 +29,7 @@ import MunicipalityEqualizationDialog from './MunicipalityEqualizationDialog'
 import MunicipalityFreeIncomeRankingDialog from './MunicipalityFreeIncomeRankingDialog'
 import MunicipalityIncomeRankingDialog from './MunicipalityIncomeRankingDialog'
 import RobekStatusDialog from './RobekStatusDialog'
+import MunicipalityPolitics from './MunicipalityPolitics'
 import { expenseCompositionRows, incomeCompositionRows } from './statements'
 
 const GREEN = '#47735D'
@@ -443,19 +444,22 @@ export default function KostraDetalj({ index, kind, code, embedded = false, onRe
 
   return (
     <>
-      <header className={`ko-hero ko-detailhero ${embedded ? 'ko-hero--integrert' : ''}`}>
-        <div className="ft-kicker">{kind === 'county' ? 'Fylkeskommuneregnskap' : 'Kommuneregnskap'} · KOSTRA {year}</div>
-        <Heading>{detail.entity.name}</Heading>
-        <div className="ko-smuler">
-          <a href="#kostra">Norge</a><span>›</span>
-          {kind === 'municipality' && parentCounty && <>
-            <a href={historicalEntity
-              ? `#kostra/fylke/${parentCountyCode}/detaljer`
-              : `#kostra/fylke/${parentCountyCode}`}
-            >{parentCounty.name}</a><span>›</span>
-          </>}
-          <span aria-current="page">{detail.entity.name}</span>
+      <header className={`ko-hero ko-detailhero ${kind === 'municipality' && !historicalEntity ? 'ko-detailhero--politikk' : ''} ${embedded ? 'ko-hero--integrert' : ''}`}>
+        <div className="ko-detailheroidentitet">
+          <div className="ft-kicker">{kind === 'county' ? 'Fylkeskommuneregnskap' : 'Kommuneregnskap'} · KOSTRA {year}</div>
+          <Heading>{detail.entity.name}</Heading>
+          <div className="ko-smuler">
+            <a href="#kostra">Norge</a><span>›</span>
+            {kind === 'municipality' && parentCounty && <>
+              <a href={historicalEntity
+                ? `#kostra/fylke/${parentCountyCode}/detaljer`
+                : `#kostra/fylke/${parentCountyCode}`}
+              >{parentCounty.name}</a><span>›</span>
+            </>}
+            <span aria-current="page">{detail.entity.name}</span>
+          </div>
         </div>
+        {kind === 'municipality' && !historicalEntity && <MunicipalityPolitics key={code} code={code} />}
       </header>
 
       <section className="ft-seksjon ko-detaljseksjon">

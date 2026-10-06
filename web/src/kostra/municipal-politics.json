@@ -1,0 +1,41 @@
+{
+  "municipalities": {
+    "1103": {
+      "name": "Stavanger",
+      "checkedAt": "2026-10-06",
+      "mayor": {
+        "name": "Tormod W. Losnedal",
+        "party": "Høyre",
+        "source": "https://www.stavanger.kommune.no/politikk/ordforer/"
+      },
+      "government": {
+        "label": "Politisk flertall",
+        "parties": ["Arbeiderpartiet", "Fremskrittspartiet", "Sosialistisk Venstreparti", "Rødt", "Miljøpartiet De Grønne"],
+        "note": "Ap, FrP, SV, Rødt og MDG samarbeider om budsjett og enkeltsaker. Ordføreren tilhører Høyre. Samarbeidet fra 2023 er brutt.",
+        "sources": [
+          { "label": "Politisk samarbeid", "url": "https://www.aftenbladet.no/lokalt/i/0poMzG/vil-bruke-millioner-paa-nye-idrettsanlegg" },
+          { "label": "Endret flertall", "url": "https://www.aftenbladet.no/lokalt/i/5p8x6O/fjernet-som-leder-frp-stemte-paa-sv-er" },
+          { "label": "Budsjettvedtak 2026", "url": "https://stavanger.sv.no/wp-content/uploads/sites/21/2025/01/samlet-dokument.pdf" }
+        ]
+      },
+      "election": {
+        "year": 2023,
+        "totalSeats": 67,
+        "source": "https://www.stavanger.kommune.no/nyheter/endelig-kommunevalgresultat-for-stavanger/",
+        "results": [
+          { "party": "Arbeiderpartiet", "seats": 22 },
+          { "party": "Høyre", "seats": 21 },
+          { "party": "Fremskrittspartiet", "seats": 6 },
+          { "party": "Rødt", "seats": 3 },
+          { "party": "Kristelig Folkeparti", "seats": 3 },
+          { "party": "Sosialistisk Venstreparti", "seats": 3 },
+          { "party": "Venstre", "seats": 3 },
+          { "party": "Industri- og Næringspartiet", "seats": 2 },
+          { "party": "Miljøpartiet De Grønne", "seats": 2 },
+          { "party": "Senterpartiet", "seats": 1 },
+          { "party": "Pensjonistpartiet", "seats": 1 }
+        ]
+      }
+    }
+  }
+}
