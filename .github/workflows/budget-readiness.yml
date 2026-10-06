@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   check:
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -25,6 +25,20 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r etl/requirements.txt
+      - name: Diagnose normal browser source access
+        run: |
+          pip install playwright
+          python - <<'BROWSER'
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as p:
+              browser = p.chromium.launch(executable_path='/usr/bin/google-chrome', args=['--no-sandbox'])
+              page = browser.new_page()
+              response = page.goto('https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/', wait_until='networkidle', timeout=45000)
+              print('Browser HTTP:', response.status)
+              print('Browser title:', page.title())
+              print('Browser text:', page.locator('body').inner_text()[:350])
+              browser.close()
+          BROWSER
       - name: Test kildediscovery, ekte Excel og import i midlertidig katalog
         run: python etl/budget_readiness.py --output editorial/research/budsjett-2027/readiness.json
         env:
