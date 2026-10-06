@@ -33,7 +33,7 @@ Grafene får tekstalternativ, kildemerking, enhets-/basisforklaring og tilgjenge
 
 ## Skriv om saken
 
-SSB er en kilde, ikke en produktnyhet i brødteksten. Ikke skriv at vi nettopp har fått SSB-data, at et nytt uttrekk bekrefter Fellestalls grunnlag, eller at «SSB hjelper oss å få målestokken på plass». Kildekontroll beskrives i metode og kildeliste. Brødteksten skal si hva observasjonene innebærer og føre leseren videre.
+SSB er en kilde, ikke en produktnyhet i brødteksten eller LinkedIn-innlegget. Ikke skriv at vi nettopp har fått SSB-data, at et nytt uttrekk bekrefter Fellestalls grunnlag, eller at «SSB hjelper oss å få målestokken på plass». Kildekontroll beskrives i metode og kildeliste. Brødteksten skal si hva observasjonene innebærer og føre leseren videre.
 
 ## To år mellom samme problemstilling
 
