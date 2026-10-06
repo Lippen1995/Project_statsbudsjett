@@ -75,15 +75,16 @@ def get(url):
     return response
 
 
-def discover(year):
+def discover(year, fetch=None):
+    fetch = fetch or get
     landing = RELEASE_PAGES.get(year, f"https://{SOURCE_HOST}/no/statsbudsjett/{year}/")
     try:
-        page = get(landing)
+        page = fetch(landing)
     except requests.HTTPError as error:
         if error.response is None or error.response.status_code != 404:
             raise
         # The short year route is not necessarily a published CMS page.
-        overview = get(f"https://{SOURCE_HOST}/no/statsbudsjett/")
+        overview = fetch(f"https://{SOURCE_HOST}/no/statsbudsjett/")
         parser = Links()
         parser.feed(overview.text)
         candidates = sorted({urljoin(overview.url, h) for h, _ in parser.links
@@ -92,7 +93,7 @@ def discover(year):
             return None
         if len(candidates) != 1:
             raise ValueError("Ambiguous official budget release page")
-        page = get(source_url(candidates[0]))
+        page = fetch(source_url(candidates[0]))
     parser = Links()
     parser.feed(page.text)
     links = [urljoin(page.url, h) for h, text in parser.links if "tallgrunnlag" in text.lower() and "gul bok" in text.lower()]
@@ -100,7 +101,7 @@ def discover(year):
         return None  # Not yet released; scheduled retries must not invent a URL.
     if len(set(links)) != 1:
         raise ValueError("Ambiguous Gul bok source")
-    workbook_page = get(links[0])
+    workbook_page = fetch(links[0])
     parser = Links()
     parser.feed(workbook_page.text)
     files = [urljoin(workbook_page.url, h) for h, _ in parser.links if re.search(rf"{year}.*gul[-_ ]?bok.*\.xlsx$", urlparse(h).path, re.I)]

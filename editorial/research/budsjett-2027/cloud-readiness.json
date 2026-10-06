@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-06T12:08:08.344806+00:00",
+  "checkedAt": "2026-10-06T12:33:08.055615+00:00",
   "oldRun": 37310297347,
   "oldFailure": "Previous run logs unavailable in this execution context",
   "partyRun": 37458117681,
@@ -28,5 +28,6 @@
     "contentType": "text/html; charset=utf-8",
     "policyDenied": false
   },
-  "passed": true
+  "passed": true,
+  "sourceAcquisitionEnvironment": "native-workspace"
 }

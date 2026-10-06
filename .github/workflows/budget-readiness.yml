@@ -6,6 +6,8 @@ on:
     paths:
       - 'etl/budget_proposals.py'
       - 'etl/budget_readiness.py'
+      - 'etl/readiness_sources.py'
+      - 'editorial/research/budsjett-2027/readiness-evidence/**'
       - '.github/workflows/budget-readiness.yml'
 permissions:
   contents: write
@@ -15,15 +17,18 @@ concurrency:
   cancel-in-progress: false
 jobs:
   check:
-    runs-on: [self-hosted, linux, x64, budget-native-readiness]
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - run: /workspace/venvs/statsbudsjett/bin/python -m pip install -r etl/requirements.txt
-      - name: Test kildediscovery, ekte Excel og import i midlertidig katalog
-        run: /workspace/venvs/statsbudsjett/bin/python etl/budget_readiness.py --output editorial/research/budsjett-2027/readiness.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r etl/requirements.txt
+      - name: Verifiser ferske native kilder, discovery og ekte import i midlertidig katalog
+        run: python etl/readiness_sources.py --output editorial/research/budsjett-2027/readiness.json
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Behold faktisk kontrollresultat også ved feil
@@ -33,7 +38,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add editorial/research/budsjett-2027/readiness.json
-          /workspace/venvs/statsbudsjett/bin/python scripts/commit-generated.py --allowed-root editorial/research/budsjett-2027/readiness.json --message "budget: registrer faktisk kontroll av importberedskap"
+          python scripts/commit-generated.py --allowed-root editorial/research/budsjett-2027/readiness.json --message "budget: registrer faktisk kontroll av importberedskap"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

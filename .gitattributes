@@ -1,2 +1,3 @@
 # Archived originals must retain their exact bytes for SHA-256 verification.
 web/public/data/party-research/raw/** -text -diff
+editorial/research/budsjett-2027/readiness-evidence/originals/** -text -diff
