@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "year": 2027,
+  "phase": "initial",
+  "priorities": [
+    {
+      "id": "arbeidsskatt",
+      "party": "Ap",
+      "kind": "stated-priority",
+      "url": "https://www.arbeiderpartiet.no/aktuelt/mer-av-det-viktigste/",
+      "quote": "Vi kutter skatten på arbeid, slik at du sitter igjen med mer av lønnen.",
+      "sourceDate": null,
+      "recordKeys": []
+    },
+    {
+      "id": "formuesskatt",
+      "party": "H",
+      "kind": "programme",
+      "url": "https://hoyre.no/politikk/partiprogram/",
+      "quote": "Fjerne formuesskatten på arbeidende kapital",
+      "sourceDate": null,
+      "recordKeys": [],
+      "period": [
+        2025,
+        2029
+      ]
+    },
+    {
+      "id": "drivstoff",
+      "party": "FrP",
+      "kind": "stated-priority",
+      "url": "https://www.frp.no/nyheter/frp-vil-gjeninnfore-avgiftskutt-pa-drivstoff",
+      "quote": "Fremskrittspartiet vil fremme forslag om å gjeninnføre kuttene i drivstoffavgiftene.",
+      "sourceDate": null,
+      "recordKeys": []
+    },
+    {
+      "id": "barnehagesfo",
+      "party": "SV",
+      "kind": "alternative-budget",
+      "url": "https://www.sv.no/blog/2025/11/13/svs-alternative-budsjett-redningsaksjon-for-velferd-og-miljo/",
+      "quote": "SV vil gjøre SFO gratis også for 4. klasse, og barnehagen gratis, samtidig som vi styrker bemanninga.",
+      "sourceDate": null,
+      "recordKeys": [],
+      "referenceYear": 2026
+    },
+    {
+      "id": "friekommunemidler",
+      "party": "Sp",
+      "kind": "programme",
+      "url": "https://www.senterpartiet.no/politikk/program-uttaler/Nytt%20prinsipp-%20og%20handlingsprogram%202025-2029/_/attachment/inline/ea7e4063-1374-47bf-8b10-839bf68904c0:3c54bc9ec99b5e017f069f2312b3962bd934c78a/Senterpartiets%20stortingsvalgprogram%202025-2029%20bokm%C3%A5l%20i%20PDF.pdf",
+      "quote": "Sikre at overføringer til kommuner og fylkeskommuner i hovedsak gis som frie midler.",
+      "sourceDate": null,
+      "recordKeys": [],
+      "period": [
+        2025,
+        2029
+      ]
+    },
+    {
+      "id": "minstesatser",
+      "party": "R",
+      "kind": "alternative-budget",
+      "url": "https://roedt.no/budsjett2026",
+      "quote": "Øke minstesatsene for uføre, pensjonister og AAP-mottakere med 15 000 i året.",
+      "sourceDate": null,
+      "recordKeys": [],
+      "referenceYear": 2026
+    },
+    {
+      "id": "formuesskattmdg",
+      "party": "MDG",
+      "kind": "programme",
+      "url": "https://mdg.no/_service/505809/download/id/1506077/name/MDGs+arbeidsprogram+2025-2029.pdf",
+      "quote": "Øke bunnfradraget i formuesskatten kraftig og øke skattesatsen for de aller største formuene.",
+      "sourceDate": null,
+      "recordKeys": [],
+      "period": [
+        2025,
+        2029
+      ]
+    },
+    {
+      "id": "risikokapital",
+      "party": "V",
+      "kind": "stated-priority",
+      "url": "https://www.venstre.no/artikkel/2026/06/15/ny-politikk-vedtatt-venstre-vil-slippe-talentene-fri/",
+      "quote": "500 millioner kroner årlig til å bygge opp mer norsk risikokapital, slik at vekstselskaper finner finansiering her hjemme",
+      "sourceDate": null,
+      "recordKeys": []
+    },
+    {
+      "id": "barnetrygd",
+      "party": "KrF",
+      "kind": "programme",
+      "url": "https://krf.no/content/uploads/2020/09/Partiprogram-2025-2029.pdf",
+      "quote": "Øke barnetrygden til 2500 kr i måneden.",
+      "sourceDate": null,
+      "recordKeys": [],
+      "period": [
+        2025,
+        2029
+      ]
+    }
+  ]
+}
