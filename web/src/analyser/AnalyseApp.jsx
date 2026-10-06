@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import MeetSven from './MeetSven.jsx'
 import { GrowthComparison, RealExpenditureChart, AnnualChangeChart } from './AnalyseCharts'
 import { annualChanges } from './insights'
+import { graphPlan } from './chart-plan.js'
+import SeriesChart from './SeriesChart.jsx'
 import {
   BudgetTotals,
   BudgetChanges,
@@ -182,10 +184,19 @@ function Archive({ articles }) {
     </>
   )
 }
-function Article({ article, preview, review }) {
+function Article({ article, preview, review, successor }) {
   const { report: r, copy: c } = article
   const t = (text) => factText(text, r)
   const budget = r.kind === 'budget-comparison'
+  const graphs = graphPlan(c, r)
+  const components = {
+    growth: GrowthComparison,
+    'real-expenditure': RealExpenditureChart,
+    'annual-change': AnnualChangeChart,
+    'budget-totals': BudgetTotals,
+    'budget-changes': BudgetChanges,
+    'budget-bridge': BudgetBridge,
+  }
   const changes = new Map(annualChanges(budget ? [] : r.rows).map((row) => [row.year, row.change]))
   const words = c.sections
     .flatMap((s) => s.paragraphs)
@@ -209,6 +220,15 @@ function Article({ article, preview, review }) {
           )}
         </aside>
       )}
+      {successor && (
+        <aside className="an-preview" role="note">
+          <strong>En nyere analyse er tilgjengelig</strong>
+          <p>
+            Denne tidligere versjonen er bevart.{' '}
+            <a href={analysisPath(successor.slug)}>Les den oppdaterte analysen →</a>
+          </p>
+        </aside>
+      )}
       <header className="an-article-header">
         <div className="ft-kicker">
           {article.topic} · {article.geography}
@@ -225,7 +245,11 @@ function Article({ article, preview, review }) {
             decoding="async"
           />
           <p className="an-author-credit">
-            Skrevet av <a href="/analyser/mot-sven/"><strong>Sven</strong></a>, vår AI-analytiker
+            Skrevet av{' '}
+            <a href="/analyser/mot-sven/">
+              <strong>Sven</strong>
+            </a>
+            , vår AI-analytiker
           </p>
         </div>
         <div className="an-byline">
@@ -295,9 +319,16 @@ function Article({ article, preview, review }) {
               </p>
             )}
           </section>
-          {i === 0 && (budget ? <BudgetTotals report={r} /> : <GrowthComparison report={r} />)}
-          {i === 1 && (budget ? <BudgetChanges report={r} /> : <RealExpenditureChart report={r} />)}
-          {i === 2 && (budget ? <BudgetBridge report={r} /> : <AnnualChangeChart report={r} />)}
+          {graphs
+            .filter((g) => g.afterSection === i)
+            .map((g, j) => {
+              const Chart = components[g.kind]
+              return g.kind === 'series' ? (
+                <SeriesChart key={j} graph={g} report={r} />
+              ) : (
+                <Chart key={j} report={r} />
+              )
+            })}
         </React.Fragment>
       ))}
       {r.eventEvidence && <EventEvidence report={r} />}
@@ -473,6 +504,7 @@ export default function AnalyseApp({
   review = null,
   notFound = false,
   meetSven = false,
+  successor = null,
 }) {
   useEffect(() => {
     document.body.classList.add('ft-body')
@@ -489,7 +521,7 @@ export default function AnalyseApp({
       ) : meetSven ? (
         <MeetSven />
       ) : article ? (
-        <Article article={article} preview={preview} review={review} />
+        <Article article={article} preview={preview} review={review} successor={successor} />
       ) : (
         <Archive articles={articles} />
       )}

@@ -115,7 +115,7 @@ function siteRecords(dataDir, year, series) {
       }
   return rows
 }
-export function nextBudgetReport(dataDir, published) {
+export function nextBudgetReport(dataDir, published, { eligible = () => true } = {}) {
   if (!existsSync(`${dataDir}/budsjettarkiv/index.json`)) return null
   const index = read(`${dataDir}/budsjettarkiv/index.json`),
     meta = read(`${dataDir}/meta.json`)
@@ -160,7 +160,7 @@ export function nextBudgetReport(dataDir, published) {
       )
         continue
       const facts = budgetFacts(rows, item.year, baseYear, politicalEvidence)
-      return attachSsbEvidence(dataDir, {
+      const report = attachSsbEvidence(dataDir, {
         kind: 'budget-comparison',
         comparison,
         year: item.year,
@@ -231,11 +231,20 @@ export function nextBudgetReport(dataDir, published) {
         ],
         politicalEvidence,
       })
+      if (eligible(report)) return report
     }
   }
   return null
 }
 export function validateBudgetReport(r) {
+  const baseHash = hash({
+    rows: r.rows,
+    proposalHash: r.proposalHash,
+    outcomeHash: r.outcomeHash,
+    comparison: r.comparison,
+    politicalEvidence: r.politicalEvidence ?? [],
+  })
+  const expectedHash = r.ssbEvidence ? hash({ base: baseHash, evidence: r.ssbEvidence }) : baseHash
   if (
     !['previous-budget-to-proposal', 'proposal-to-adopted-budget'].includes(r.comparison) ||
     !['initial', 'revised'].includes(r.phase) ||
@@ -276,14 +285,7 @@ export function validateBudgetReport(r) {
       (r.comparison === 'proposal-to-adopted-budget' || r.phase === 'revised'
         ? r.year
         : r.year - 1) ||
-    r.dataHash !==
-      hash({
-        rows: r.rows,
-        proposalHash: r.proposalHash,
-        outcomeHash: r.outcomeHash,
-        comparison: r.comparison,
-        politicalEvidence: r.politicalEvidence ?? [],
-      })
+    r.dataHash !== expectedHash
   )
     throw Error('Budsjettets periode eller datagrunnlag er endret')
   for (const evidence of r.politicalEvidence ?? []) {

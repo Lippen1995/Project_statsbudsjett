@@ -7,7 +7,7 @@ on:
     inputs:
       mode:
         type: choice
-        options: [weekly, feedback]
+        options: [weekly, feedback, replacement]
         default: weekly
         required: true
       source_commit:

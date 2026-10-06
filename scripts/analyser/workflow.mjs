@@ -12,6 +12,7 @@ import {
 } from './review.mjs'
 import { renderReview } from './render-review.mjs'
 import { factText } from '../../web/src/analyser/model.js'
+import { replacementSource, replacementDraft, assertPublicationTopic } from './replacement.mjs'
 export async function pendingFeedback(g, number, article) {
   // Direct scheduled-task revisions have also stored GitHub issue-comment IDs
   // as numbers. Preserve those acknowledgements without confusing comments
@@ -81,6 +82,7 @@ export async function runWorkflow({
   dataDir = 'web/public/data',
   publicationPath = 'web/src/analyser/publications.json',
   now = () => new Date().toISOString(),
+  replacementFor = null,
 }) {
   const draftPrefix = 'editorial/drafts/'
   const comment = (number, body) =>
@@ -92,7 +94,7 @@ export async function runWorkflow({
     })
   const feedbackFor = (number, article) => pendingFeedback(g, number, article)
   const context = () => readReviewContext(g, event)
-  if (command === 'weekly') {
+  if (command === 'weekly' || command === 'replacement') {
     if (!reviewer || !(await g.permission(reviewer)))
       throw Error('ANALYSIS_REVIEWER må være en bruker med skrivetilgang til repositoryet')
     const open = await g.pages('/pulls?state=open&base=main')
@@ -109,7 +111,8 @@ export async function runWorkflow({
     }
     const published = (await g.content(publicationPath)).value
     published.forEach((a) => validateArticle(a, { published: true }))
-    const report = nextReport(dataDir, published)
+    const source = command === 'replacement' ? replacementSource(published, replacementFor) : null
+    const report = source ? source.report : nextReport(dataDir, published, { at: now() })
     if (!report) {
       console.log(
         'Ingen nye dokumenterte problemstillinger i denne analysetypen. Uken hoppes over.',
@@ -118,7 +121,7 @@ export async function runWorkflow({
     }
     const createdAt = now(),
       date = createdAt.slice(0, 10)
-    const metadata = articleMetadata(report, date)
+    const metadata = source ? replacementDraft(source, createdAt) : articleMetadata(report, date)
     const { slug } = metadata
     let article = validateArticle({
       ...metadata,
@@ -129,7 +132,7 @@ export async function runWorkflow({
       copy: await generateCopy(report),
     })
     const main = await g.api(`${g.root}/git/ref/heads/main`)
-    const branch = `analysis/weekly-${date}-${report.scopeId}-${report.start}-${report.end}`
+    const branch = `analysis/weekly-${date}-${report.scopeId}-${report.start}-${report.end}${source ? '-revision-' + replacementFor.contentHash.slice(0, 8) : report.question ? '-' + report.question : ''}`
     const path = `${draftPrefix}${slug}.json`
     const existingRef = await g.api(`${g.root}/git/ref/heads/${branch}`, { allow404: true })
     if (existingRef) {
@@ -156,6 +159,7 @@ export async function runWorkflow({
           topic: a.topic,
           geography: a.geography,
           type: a.type,
+          ...(a.replaces ? { replaces: a.replaces } : {}),
         })
       if (
         stored.status !== 'draft' ||
@@ -267,6 +271,7 @@ export async function runWorkflow({
     if (published.some((a) => a.slug === approved.slug))
       throw Error('Analyseadressen finnes allerede')
     published.forEach((a) => validateArticle(a, { published: true }))
+    assertPublicationTopic(approved, published)
     published.push(approved)
     if (command === 'stage') {
       writeFileSync(publicationPath, JSON.stringify(published, null, 2) + '\n')

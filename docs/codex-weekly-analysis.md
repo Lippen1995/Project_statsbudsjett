@@ -50,7 +50,7 @@ Kontroller først åpne analysegjennomganger og ubehandlede endringsønsker. Pri
 
 Bruk Fellestall.no sine faktiske data. Kontroller at det lokale uttrekket svarer til offentlige data før det omtales som gjeldende. La scripts/analyser/report.mjs beregne tidsserier og fakta, og bruk scripts/analyser/candidates.mjs til å finne en relevant problemstilling som ikke allerede er dekket. Ikke endre produksjonsdata for å få en vinkling til å passe. Manglende nettverk eller kilder er en begrensning som skal oppgis, ikke erstattes av oppdiktede opplysninger.
 
-Skriv en faglig analyse med fire til åtte seksjoner og omtrent seks hundre til tusen ord. Gi leseren en tydelig grunn til å lese videre. La grafer, observasjoner og spørsmål lede til en begrunnet tolkning. Knytt til virkelige hendelser bare når grunnlaget støtter forbindelsen. Skill historisk kontekst, utvalgte regnskapsposter og dokumenterte årsaksandeler. Skriv alle tall og årstall som eksisterende {{fact:navn}}-referanser; oppgi factIds i hver seksjon. Ikke finn på tall eller lenker. Behold tre grafer, metode, kilder, forbehold og Sven-byline. Ikke endre nettstedets design.
+Skriv en faglig analyse med fire til åtte seksjoner og omtrent seks hundre til tusen ord. Gi leseren en tydelig grunn til å lese videre. La grafer, observasjoner og spørsmål lede til en begrunnet tolkning. Knytt til virkelige hendelser bare når grunnlaget støtter forbindelsen. Skill historisk kontekst, utvalgte regnskapsposter og dokumenterte årsaksandeler. Skriv alle tall og årstall som eksisterende {{fact:navn}}-referanser; oppgi factIds i hver seksjon. Ikke finn på tall eller lenker. Velg én til syv relevante grafer, også fra SSB og kombinerte serier, etter docs/analysis-charts-topics.md. Behold metode, kilder, forbehold og Sven-byline. Ikke endre nettstedets design.
 
 LinkedIn-utkastet skal være kort, informativt og underholdende: en konkret krok, tørr humor om størrelser eller regnestykket, ett relevant åpent spørsmål og en invitasjon som artikkelen innfrir. Ingen politisk slagside, angrep på mennesker, dataoppramsing eller overdrivelser. Artikkel og LinkedIn-tekst skal godkjennes samlet.
 
@@ -86,7 +86,7 @@ Ved revisjon skal processedFeedbackIds bruke de autoritative ID-ene fra pendingF
 
 ### Budsjettforslag og parlamentariske vedtak
 
-Les også `docs/budsjettdagen-2027.md` ved hver kjøring. `prepare.mjs` og `candidates.mjs` prioriterer nye arkiverte budsjettforslag og forslag-mot-vedtak foran historiske regnskapstemaer. Rapporttype `budget-comparison` bruker kapittel/post-beløp og løpende kroner, ikke fremtidige observerte KPI-er eller folketall. Behold beregnet rapport og hash uendret; bruk rapportens egne fakta i teksten. Tre budsjettgrafer bygges automatisk med eksisterende design og Sven-byline.
+Les også `docs/budsjettdagen-2027.md` ved hver kjøring. `prepare.mjs` og `candidates.mjs` prioriterer nye arkiverte budsjettforslag og forslag-mot-vedtak foran historiske regnskapstemaer. Rapporttype `budget-comparison` bruker kapittel/post-beløp og løpende kroner, ikke fremtidige observerte KPI-er eller folketall. Behold beregnet rapport og hash uendret; bruk rapportens egne fakta i teksten. De tre standardgrafene er tilgjengelige valg; AI velger én til syv grafer med eksisterende design og Sven-byline.
 
 Les regjeringens budsjettdokumenter for å forklare konkrete forslag. For partiers gjennomslag skal offisielle sitater og postkoblinger først leveres gjennom `budget-evidence.yml` som beskrevet i budsjettdokumentet. Vent på vellykket kontroll, hent fersk main og lag rapporten etterpå. Tallendringer og stemmegivning alene dokumenterer ikke forhandlingsseier.
 
@@ -103,3 +103,7 @@ Les de kildebelagte profilene og sammenligningsmatrisen for alle ni stortingspar
 ### SSB som forklaringsgrunnlag
 
 Bruk `docs/ssb-analysis-research.md` når relevante bakgrunnsvariabler kan belyse analysen. Søk selv i SSB, les tabellmetadata og gjør eksplisitte årlige utvalg. Lever forespørsler gjennom `ssb-research.yml`, vent på kildekontroll, hent fersk main og lag rapporten på nytt. Bruk bare rapportens kontrollerte SSB-faktareferanser i teksten. Kilde, uttrekk og beregninger følger rapporten og den menneskelig godkjente artikkelversjonen. Skill statistisk sammenheng fra årsak, og historiske observasjoner fra fremtidige budsjettår. Ingen API-nøkkel eller separat AI-API trengs.
+
+### Nye graf- og temaføringer, 6. oktober 2026
+
+Les `docs/analysis-charts-topics.md` før hvert valg. Velg én til syv grafer og lagre valget i copy.graphs. Bruk arkiverte SSB-serier og eventuelt kombinerte indeksgrafer. Ikke omtale innføringen av SSB-data i brødteksten. Samme hovedspørsmål og avgrensning sperres i to kalenderår, uansett tallrettelser, endret periode eller ny tittel. Undersøk den faktiske smale problemstillingen; brede emneord er ikke duplikatnøkler. En oppdatering av en tidligere analyse leveres som eksplisitt erstatning med ny menneskelig godkjenning. Budsjettåret, fasen og sammenligningstypen avgrenser egne budsjettbegivenheter. Disse føringene har forrang foran eldre instrukser om tre faste grafer.

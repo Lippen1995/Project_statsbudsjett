@@ -7,7 +7,8 @@ import { assertReviewBranch } from './review.mjs'
 import { runWorkflow, readReviewContext } from './workflow.mjs'
 
 export async function deliverScheduled({ g, reviewer, actor, input, ...options }) {
-  if (!['weekly', 'feedback'].includes(input.mode)) throw Error('Ugyldig leveringsmodus')
+  if (!['weekly', 'feedback', 'replacement'].includes(input.mode))
+    throw Error('Ugyldig leveringsmodus')
   if (
     !/^[a-f0-9]{40}$/.test(input.sourceCommit ?? '') ||
     !/^editorial\/(?:drafts|handoff)\/[a-z0-9-]+\.json$/.test(input.sourcePath ?? '')
@@ -18,12 +19,13 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
   const source = await g.content(input.sourcePath, input.sourceCommit)
   if (!source) throw Error('Leveringsfilen finnes ikke')
   const packet = source.value
+  const mode = input.mode === 'weekly' && packet.mode === 'replacement' ? 'replacement' : input.mode
   const article = validateArticle(packet.article ?? packet)
   if (article.status !== 'draft' || article.approval || article.publishedAt)
     throw Error('Bare et utkast uten godkjenning kan leveres')
   let event = null,
     previous = null
-  if (input.mode === 'feedback') {
+  if (mode === 'feedback') {
     if (!Number.isSafeInteger(input.number) || input.number < 1)
       throw Error('Mangler gyldig gjennomgangsnummer')
     event = { issue: { number: input.number }, comment: { user: { login: actor, type: 'User' } } }
@@ -35,7 +37,8 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
   }
   await runWorkflow({
     ...options,
-    command: input.mode,
+    command: mode,
+    replacementFor: mode === 'replacement' ? article.replaces : null,
     event,
     g,
     reviewer,

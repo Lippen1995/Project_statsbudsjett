@@ -1,9 +1,10 @@
+import { currentAnalyses } from './topics.js'
 export const analysisPath = (slug) => `/analyser/${slug}/`
 export function factText(text, report) {
   return text.replace(/\{\{fact:([A-Za-z]+)\}\}/g, (_, key) => report.facts[key]?.text ?? '–')
 }
 export function archiveEntries(articles) {
-  return articles.map((a) => ({
+  return currentAnalyses(articles).map((a) => ({
     slug: a.slug,
     topic: a.topic,
     geography: a.geography,

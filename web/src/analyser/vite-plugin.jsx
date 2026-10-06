@@ -6,6 +6,7 @@ import AnalyseApp from './AnalyseApp.jsx'
 import { validateArticle, contentHash } from '../../../scripts/analyser/schema.mjs'
 import { factText, analysisPath, archiveEntries } from './model.js'
 import { previewPath } from '../../../scripts/analyser/previews.mjs'
+import { successorFor } from './topics.js'
 
 const escape = (s) =>
   String(s).replace(
@@ -44,20 +45,20 @@ export function analysesPlugin() {
     if (path === '/analyser/mot-sven/' || path === '/analyser/mot-sven') return { meetSven: true }
     if (draft && path === '/analyser/forhandsvisning/') return { article: draft, preview: true }
     const article = articles.find((a) => analysisPath(a.slug) === path)
-    return article ? { article } : { notFound: true }
+    return article ? { article, successor: successorFor(article, articles) } : { notFound: true }
   }
   const page = (html, path, props) => {
     const article = props.article
     const title = props.meetSven
       ? 'Møt Sven – vår AI-analytiker | Fellestall.no'
       : article
-      ? `${factText(article.copy.title, article.report)} | Fellestall.no`
-      : 'Analyser av offentlig pengebruk | Fellestall.no'
+        ? `${factText(article.copy.title, article.report)} | Fellestall.no`
+        : 'Analyser av offentlig pengebruk | Fellestall.no'
     const description = props.meetSven
       ? 'Møt Sven, Fellestalls AI-analytiker. Skattepengenes Vaktbikkje, Etterforsker og Nøkkeltallsanalytiker gjør offentlig pengebruk lettere å forstå.'
       : article
-      ? factText(article.copy.description, article.report)
-      : 'Les grundige analyser av statens og kommunenes pengebruk. Finn temaer, sammenligninger og utvikling over tid, med grafer, metode og åpne kilder.'
+        ? factText(article.copy.description, article.report)
+        : 'Les grundige analyser av statens og kommunenes pengebruk. Finn temaer, sammenligninger og utvikling over tid, med grafer, metode og åpne kilder.'
     const url = `https://fellestall.no${props.meetSven ? '/analyser/mot-sven/' : path}`
     const structured = article
       ? {
@@ -100,6 +101,8 @@ export function analysesPlugin() {
       .replace(/<meta property="og:updated_time"[^>]*>/g, '')
     if (props.preview || props.notFound)
       html = html.replace(/(<meta name="robots" content=")[^"]*/, '$1noindex, nofollow')
+    else if (props.successor)
+      html = html.replace(/(<meta name="robots" content=")[^"]*/, '$1noindex, follow')
     const bodyScripts =
       html
         .match(/<body>[\s\S]*?<\/body>/)?.[0]
@@ -165,7 +168,10 @@ export function analysesPlugin() {
         this.emitFile({
           type: 'asset',
           fileName: `analyser/${article.slug}/index.html`,
-          source: page(html, analysisPath(article.slug), { article }),
+          source: page(html, analysisPath(article.slug), {
+            article,
+            successor: successorFor(article, articles),
+          }),
         })
         this.emitFile({
           type: 'asset',

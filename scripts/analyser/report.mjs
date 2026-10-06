@@ -3,8 +3,9 @@ import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { calculateFacts } from './facts.mjs'
 import { selectEventEvidence, eventEvidenceFacts } from './event-evidence.mjs'
+import { topicKey } from '../../web/src/analyser/topics.js'
 
-export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
+export function buildReport(dataDir, { start, end, departmentId = null, question } = {}) {
   const names = ['meta', 'utgifter', 'befolkning', 'kpi']
   const raw = Object.fromEntries(
     names.map((n) => [n, readFileSync(`${dataDir}/${n}.json`, 'utf8')]),
@@ -48,6 +49,12 @@ export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
   const first = rows[0],
     last = rows.at(-1)
   const eventEvidence = selectEventEvidence(nodes, rows)
+  topicKey({
+    kind: 'real-expenditure-per-capita',
+    scopeId: departmentId ?? 'state',
+    question,
+    eventEvidence,
+  })
   const facts = {
     ...calculateFacts(first, last, rows),
     ...eventEvidenceFacts(eventEvidence, rows),
@@ -57,6 +64,7 @@ export function buildReport(dataDir, { start, end, departmentId = null } = {}) {
     factsVersion: 2,
     scopeId: departmentId ?? 'state',
     scopeName,
+    ...(question ? { question } : {}),
     start,
     end,
     dataUpdated: data.meta.oppdatert,

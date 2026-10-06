@@ -6,6 +6,7 @@ import { deliverScheduled } from '../../scripts/analyser/handoff.mjs'
 import { analysisSettings } from '../../scripts/analyser/config.mjs'
 import { contentHash } from '../../scripts/analyser/schema.mjs'
 import { githubClient } from '../../scripts/analyser/github.mjs'
+import { replacementDraft } from '../../scripts/analyser/replacement.mjs'
 const root = new URL('../../', import.meta.url).pathname
 const pilot = () => {
   const article = JSON.parse(readFileSync(`${root}editorial/drafts/pilot.json`))
@@ -19,7 +20,7 @@ const input = {
   sourcePath: 'editorial/drafts/pilot.json',
 }
 
-function fixture({ packet = pilot(), comments = [], existing = false } = {}) {
+function fixture({ packet = pilot(), comments = [], existing = false, published = [] } = {}) {
   const changes = [],
     calls = []
   let current = pilot()
@@ -38,7 +39,7 @@ function fixture({ packet = pilot(), comments = [], existing = false } = {}) {
     content: async (file, ref) => {
       if (file === input.sourcePath && ref === input.sourceCommit)
         return { value: structuredClone(packet) }
-      if (file === 'web/src/analyser/publications.json') return { value: [] }
+      if (file === 'web/src/analyser/publications.json') return { value: published }
       if ((file === path || changes.at(-1)?.files[file]) && ref === pr.head.sha)
         return { value: current }
       throw Error(`Uventet fil: ${file}`)
@@ -261,4 +262,35 @@ test('klargjøring kan bruke eksisterende GitHub CLI-binding uten å hente en to
   assert.equal(calls[1].options.input, JSON.stringify(body))
   assert.deepEqual(calls[1].args.slice(-2), ['--input', '-'])
   assert.equal(calls[1].binary, 'gh')
+})
+
+test('replacement handoff creates a new bot draft, binds the old version and never rewrites publication history', async () => {
+  const published = JSON.parse(readFileSync(`${root}web/src/analyser/publications.json`))
+  const source = published.findLast((a) => a.report.scopeId === 'state')
+  const article = replacementDraft(source, '2026-10-06T09:00:00Z')
+  article.copy.graphs = [
+    {
+      kind: 'series',
+      afterSection: 1,
+      mode: 'index',
+      series: [
+        { source: 'ssb', id: 'Priser' },
+        { source: 'fellestall', id: 'expenditure' },
+      ],
+    },
+  ]
+  const f = fixture({ published, packet: { mode: 'replacement', article } })
+  await deliver(f, { now: () => '2026-10-06T09:00:00Z' })
+  assert.equal(f.changes.length, 1)
+  assert.equal(f.current().status, 'draft')
+  assert.equal(f.current().approval, undefined)
+  assert.deepEqual(f.current().replaces, article.replaces)
+  assert.deepEqual(f.current().copy.graphs, article.copy.graphs)
+  assert.equal(f.changes[0].files['web/src/analyser/publications.json'], undefined)
+  assert.ok(f.calls.find((c) => c.route.endsWith('/requested_reviewers')))
+  const bad = structuredClone(article)
+  bad.replaces.contentHash = 'b'.repeat(64)
+  const invalid = fixture({ published, packet: { mode: 'replacement', article: bad } })
+  await assert.rejects(() => deliver(invalid), /Erstatningsgrunnlaget/)
+  assert.equal(invalid.changes.length, 0)
 })

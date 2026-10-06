@@ -1,8 +1,11 @@
 import { readFileSync } from 'node:fs'
 import { buildReport } from './report.mjs'
 import { nextBudgetReport } from './budget-report.mjs'
-export function nextReport(dataDir, published) {
-  const budget = nextBudgetReport(dataDir, published)
+import { topicBlocked, focusedQuestions } from '../../web/src/analyser/topics.js'
+export function nextReport(dataDir, published, { at = new Date().toISOString() } = {}) {
+  const budget = nextBudgetReport(dataDir, published, {
+    eligible: (r) => !topicBlocked(r, published, at),
+  })
   if (budget) return budget
   const meta = JSON.parse(readFileSync(`${dataDir}/meta.json`))
   const nodes = JSON.parse(readFileSync(`${dataDir}/utgifter.json`))
@@ -15,6 +18,7 @@ export function nextReport(dataDir, published) {
     ...departments.map((departmentId) => ({ departmentId, start: recent, end })),
     { start: recent, end },
     ...departments.map((departmentId) => ({ departmentId, start, end })),
+    ...Object.keys(focusedQuestions).map((question) => ({ question, start, end })),
   ]
   for (const option of options) {
     let report
@@ -23,14 +27,10 @@ export function nextReport(dataDir, published) {
     } catch (error) {
       // Newly created departments may not have a complete historical series.
       if (error.message.startsWith('Ingen utgifter for')) continue
+      if (error.message.includes('Problemstillingen mangler')) continue
       throw error
     }
-    const alreadyCovered = published.some(
-      (a) =>
-        a.report.scopeId === report.scopeId &&
-        a.report.kind === report.kind &&
-        JSON.stringify(a.report.rows) === JSON.stringify(report.rows),
-    )
+    const alreadyCovered = topicBlocked(report, published, at)
     if (!alreadyCovered) return report
   }
   return null

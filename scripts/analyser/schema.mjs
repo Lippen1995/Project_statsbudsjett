@@ -3,6 +3,8 @@ import { createHash } from 'node:crypto'
 import { validateBudgetReport } from './budget-report.mjs'
 import { calculateFacts } from './facts.mjs'
 import { validateEventEvidence, eventEvidenceFacts } from './event-evidence.mjs'
+import { graphPlan } from '../../web/src/analyser/chart-plan.js'
+import { topicKey, focusedQuestions } from '../../web/src/analyser/topics.js'
 export const contentHash = (article) =>
   createHash('sha256')
     .update(
@@ -14,6 +16,7 @@ export const contentHash = (article) =>
         type: article.type,
         report: article.report,
         copy: article.copy,
+        ...(article.replaces ? { replaces: article.replaces } : {}),
       }),
     )
     .digest('hex')
@@ -39,6 +42,20 @@ export function validateCopy(copy, report) {
       throw Error('Ukjent faktahenvisning')
     texts.push(s.heading, ...s.paragraphs)
   }
+  if (report.question && focusedQuestions[report.question]) {
+    const prefixes = focusedQuestions[report.question].evidence
+    if (
+      copy.sections.filter((s) => s.factIds.some((id) => prefixes.some((p) => id.startsWith(p))))
+        .length < 2
+    )
+      throw Error('Den smale problemstillingen må faktisk undersøkes i minst to seksjoner')
+  }
+  for (const graph of graphPlan(copy, report)) {
+    texts.push(
+      ...['title', 'description'].filter((k) => graph[k] !== undefined).map((k) => graph[k]),
+    )
+    texts.push(...(graph.series ?? []).filter((s) => s.label !== undefined).map((s) => s.label))
+  }
   for (const text of texts) {
     const stripped = text.replace(/\{\{fact:([A-Za-z]+)\}\}/g, (_, key) => {
       if (!Object.hasOwn(report.facts, key)) throw Error(`Ukjent faktum: ${key}`)
@@ -63,7 +80,16 @@ export function validateArticle(article, { published = false } = {}) {
   )
     throw Error('Mangler tema, geografi eller analysetype')
   const r = article.report
+  if (
+    article.replaces &&
+    (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.replaces.slug ?? '') ||
+      article.replaces.slug === article.slug ||
+      !/^[a-f0-9]{64}$/.test(article.replaces.contentHash ?? '') ||
+      Object.keys(article.replaces).some((k) => !['slug', 'contentHash'].includes(k)))
+  )
+    throw Error('Erstatningen må vise til en fast tidligere godkjent versjon')
   if (!r?.scopeId || !r.scopeName) throw Error('Mangler avgrensning')
+  topicKey(r)
   if (
     !r ||
     !['real-expenditure-per-capita', 'budget-comparison'].includes(r.kind) ||

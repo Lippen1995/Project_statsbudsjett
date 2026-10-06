@@ -1,5 +1,6 @@
 import { factText, number } from '../../web/src/analyser/model.js'
 import { contentHash } from './schema.mjs'
+import { graphPlan, seriesGraph } from '../../web/src/analyser/chart-plan.js'
 export function renderReview(article) {
   const { copy: c, report: r } = article,
     t = (s) => factText(s, r)
@@ -16,6 +17,11 @@ export function renderReview(article) {
     `Versjon: \`${contentHash(article)}\` · Datagrunnlag: ${r.dataUpdated} · ${r.kind === 'budget-comparison' ? 'Budsjett' : 'Regnskap'} ${r.start}–${r.end}`,
     '## LinkedIn-utkast',
     escape(c.linkedin),
+    ...(article.replaces
+      ? [
+          `**Erstatter tidligere analyse etter ny godkjenning:** https://fellestall.no/analyser/${article.replaces.slug}/ · tidligere innholdshash \`${article.replaces.contentHash}\``,
+        ]
+      : []),
     `Lenke etter publisering: https://fellestall.no/analyser/${article.slug}/`,
     '---',
     `# ${escape(c.title)}`,
@@ -23,6 +29,22 @@ export function renderReview(article) {
     '## Hovedfunn',
     escape(c.conclusion),
     ...c.sections.flatMap((s) => [`## ${escape(s.heading)}`, ...s.paragraphs.map(escape)]),
+    '## Grafer i denne versjonen',
+    ...(c.sections.length ? graphPlan(c, r) : []).flatMap((g) => {
+      if (g.kind !== 'series') return [`- ${g.kind}, etter avsnitt ${g.afterSection + 1}`]
+      const data = seriesGraph(g, r)
+      return [
+        escape(g.title ?? 'Utvalgte tidsserier'),
+        `${data.years[0]}–${data.years.at(-1)} · ${data.indexed ? `Indeks, ${data.baseYear} = 100` : data.unit}`,
+        [
+          '| År | ' + data.series.map((s) => escape(s.label)).join(' | ') + ' |',
+          '|---|' + data.series.map(() => '---:|').join(''),
+          ...data.years.map(
+            (y, i) => `| ${y} | ${data.series.map((s) => number(s.values[i], 2)).join(' | ')} |`,
+          ),
+        ].join('\n'),
+      ]
+    }),
     ...(r.eventEvidence
       ? [
           '## Hendelser og konkrete regnskapsposter',

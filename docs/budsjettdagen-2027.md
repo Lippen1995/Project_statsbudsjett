@@ -86,7 +86,7 @@ Partienes originalkilder må kunne dokumenteres i artikkelens kontrollerte kilde
 
 En oppstart rundt klokken 11 er ikke en leveringsfrist. Forsvarsdepartementet presenterer budsjettet klokken 14, ifølge den kontrollerte invitasjonen i researchregisteret. Dersom forsvar er en vesentlig driver, les også denne presentasjonen før hovedkonklusjonen låses. Prioriter et grundig utkast senere samme dag fremfor tidlig, ufullstendig levering. Publisering samme dag avhenger av faktisk datatilgang, særskilt AI-kjøring og menneskelig godkjenning.
 
-Behold de eksisterende tre grafene, designet og Sven-byline. Mer tekst skal gi leseren flere forklarte sammenhenger, ikke flere løsrevne tall. LinkedIn-teksten skal fortsatt være kort, med den avtalte Unicode-innledningen, en konkret krok, tørr vennlig humor og et spørsmål hovedanalysen besvarer. Kontroller teksten mot feltgrensen og publiseringsflyten.
+Velg én til syv relevante grafer etter docs/analysis-charts-topics.md, og behold designet og Sven-byline. Mer tekst skal gi leseren flere forklarte sammenhenger, ikke flere løsrevne tall. LinkedIn-teksten skal fortsatt være kort, med den avtalte Unicode-innledningen, en konkret krok, tørr vennlig humor og et spørsmål hovedanalysen besvarer. Kontroller teksten mot feltgrensen og publiseringsflyten.
 
 GitHub-workflowene importerer og validerer data. De starter ikke den native AI-en. Den eksisterende AI-oppgaven kjører mandager, og denne økten har ikke verktøy for å opprette eller endre oppgaven i den andre samtalen. **En særskilt onsdagskjøring er derfor ikke opprettet her.**
 
@@ -103,3 +103,7 @@ Importen er prøvd mot den offisielle Gul bok-filen for 2026. Tester dekker egen
 ## SSB-bakgrunn til budsjettanalysen
 
 Les `docs/ssb-analysis-research.md`. Undersøk relevante befolknings-, pris-/lønns- og arbeidsmarkedsvariabler før forklaringer på utgiftsveksten låses. Bruk scope `budget:2027` for denne analysen, og noter at siste observerte år kan være tidligere enn budsjettåret. Uttrekk må kontrolleres og arkiveres før rapporten bygges på nytt. Ingen årsaksandel utledes fra samtidige endringer alene.
+
+### Grafvalg og smal temakontroll
+
+Les `docs/analysis-charts-topics.md`. Antallet grafer er én til syv; inkluder SSB-bakgrunn når det styrker forklaringen. Ikke omtale selve innføringen av SSB-data. Årets forslag, samme års vedtak og RNB har egne, tydelig avgrensede hendelser. Et nytt talluttrekk fra samme forslag gir ikke en ny ordinær problemstilling.

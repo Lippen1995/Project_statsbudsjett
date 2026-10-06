@@ -112,3 +112,7 @@ Tilgangen til alle ni partisider og Stortingets API er nå verifisert. `editoria
 ## SSB i analyseflyten
 
 Brukeren har bestilt selvstendig tilgang til SSB-data for forklaringsvariabler og sammenhenger. `etl/ssb_research.py` støtter søk, metadata og eksplisitte årsuttrekk. JSON-forespørsler kontrolleres mot SSB av betrodd workflow før immutable uttrekk knyttes til rapportens fakta, kilde- og godkjenningshash. Prosjektet bruker ingen separat AI-API. Metode og begrensninger står i `docs/ssb-analysis-research.md`; nettverk til data.ssb.no er nødvendig.
+
+## Brukerføringer 6. oktober 2026: grafer og toårsregel
+
+AI skal velge én til syv grafer, inkludert SSB alene eller kombinert med Fellestall når enheter og tidsperioder er sammenlignbare. Grafvalg og kildereferanser inngår i godkjent innhold. Ingen innføringsprat om SSB i artikkelteksten. Samme hovedproblemstilling innen konkret avgrensning skal ikke gjentas før to kalenderår har gått; brede emneord skal ikke blokkere forskjellige spørsmål. En forbedring leveres som eksplisitt erstatning med ny godkjenning og bevart tidligere historikk. Regjeringens ulike budsjettår, faser og forslag/vedtak er egne hendelser. Den nyeste av de to godkjente statlige totalanalysene skal være hovedartikkelen i oversikten; tidligere godkjent tekst beholdes med lenke til nyere versjon. Se docs/analysis-charts-topics.md for kontrollert format, eksempler og avgrensninger.

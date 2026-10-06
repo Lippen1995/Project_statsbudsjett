@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
-import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs'
+import { mkdtempSync, writeFileSync, mkdirSync, rmSync, readFileSync, copyFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import {
   nextBudgetReport,
@@ -12,6 +12,7 @@ import {
 import { kompaktData, verdi } from '../src/fellestall/kompakt.js'
 import { articleMetadata } from '../../scripts/analyser/article-metadata.mjs'
 import { renderReview } from '../../scripts/analyser/render-review.mjs'
+import { seriesGraph } from '../src/analyser/chart-plan.js'
 const record = (key, amount, department = '01') => ({
   key,
   chapter: key.split('-')[0],
@@ -71,6 +72,28 @@ function fixture() {
   ])
   return { dir, put }
 }
+test('budget reports with actual archived SSB series validate their combined hash and support historical charts', () => {
+  const f = fixture()
+  try {
+    const e = JSON.parse(
+      readFileSync(new URL('../public/data/ssb-research/index.json', import.meta.url)),
+    ).extracts[0]
+    f.put('ssb-research/index.json', { version: 1, extracts: [{ ...e, scope: 'budget:2027' }] })
+    copyFileSync(new URL('../public/data/' + e.path, import.meta.url), f.dir + '/' + e.path)
+    const r = nextBudgetReport(f.dir, [])
+    validateBudgetReport(r)
+    const data = seriesGraph(
+      { kind: 'series', mode: 'values', series: [{ source: 'ssb', id: e.id }] },
+      r,
+    )
+    assert.equal(data.years.at(-1), 2025)
+    assert.equal(r.year, 2027)
+    r.ssbEvidence[0].rows[0].value += 1
+    assert.throws(() => validateBudgetReport(r), /samsvarer/)
+  } finally {
+    rmSync(f.dir, { recursive: true, force: true })
+  }
+})
 test('proposal to adoption follows chapter/post across ministries and excludes financing', () => {
   const f = fixture()
   try {
