@@ -74,9 +74,10 @@ export default function MeetSven() {
         <h2>Kunstig intelligens. Et tydelig ansvar.</h2>
         <p>
           Sven er en AI, og portrettet hans er AI-generert. Han kan ta feil. Analysene skal
-          derfor leses med et kritisk blikk, også når han høres overbevisende ut. Fellestall
-          står ansvarlig for innholdet, og kilder og forbehold følger analysene slik at du kan
-          vurdere grunnlaget selv.
+          derfor leses med et kritisk blikk, også når han høres overbevisende ut. Datagrunnlaget
+          til Sven kommer fra Fellestall som igjen henter informasjon fra offentlige kilder som
+          DFØ og SSB. Leseren må ta forbehold om at det kan oppstå mangler eller feil i dataen,
+          enten hos dataleverandørene til Fellestall eller i Fellestall sine egne beregninger.
         </p>
       </section>
       <div className="an-return">
