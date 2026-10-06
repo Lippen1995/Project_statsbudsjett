@@ -9,6 +9,10 @@ https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/
 
 `budget-proposal.yml` leter etter regjeringens faktiske lenke til «Tallgrunnlag Gul bok», deretter Excel-filen. Den særskilte planen forsøker import hvert halvtime fra **10.15 til 16.45 norsk tid på fremleggelsesdagen i 2026**. GitHub kan forsinke planlagte kjøringer. Før filen finnes, endres ingen data. Ingen konstruert Excel-adresse brukes. Endret kolonnemodell, tvetydig kilde, feil år, duplikate poster eller ugyldige beløp stopper importen.
 
+**Faktisk kildeavslag 6. oktober:** Beredskapsjobben hentet feilloggen fra den tidligere importen og bekreftet HTTP 403 fra regjeringen.no. Nye forsøk fra GitHub får også 403 på den kontrollerte 2027-siden og originalfilen for 2026. Dette er ikke dokumentert løst av endret adresse. Se `editorial/research/budsjett-2027/readiness.json` for siste faktiske resultat.
+
+Hvis GitHub fortsatt får kildeavslag på budsjettdagen, skal den allerede bestilte native oppgaven prøve **samme validerte importør i det publiserte miljøet**. Start fra ren, oppdatert main og kontroller faktisk HTTPS-tilgang. Kjør `python etl/budget_proposals.py --year 2027`; kontroller originalfil/hash, arkiv og riktig forslagsår før bare importens dataendringer under `web/public/data/` committes og pushes normalt til main. Ingen force, ingen oppdiktede filadresser, ingen endring av importør/kildefilter og ingen artikkelpublisering inngår. En samtidig main-endring må avstemmes før pushing. Hent deretter fersk main og bygg analyserapporten. Dersom også dette miljøet får 403, rapporter kildeavslaget og la data stå uendret; dette kan ikke merkes som en vellykket import.
+
 Data leses fra arkfanen `Data`, med `fdep_nr` som departementsidentitet og kapittel/post som stabil sammenligningsnøkkel. Kildens kroner normaliseres til mill. kroner. Importen er prøvd mot regjeringens faktiske 2026-fil, med 1 600 poster. Ingen prøvefil eller prøveanalyse skal publiseres som 2027-data.
 
 ```sh
@@ -87,6 +91,10 @@ Pakken har `mode: budget-day`. Den velger bare det faktiske arkiverte 2027-forsl
 ### Kontrollerte partikilder
 
 `budget-evidence.yml` støtter nå et separat `priorities`-felt i den samme JSON-leveringen. Det kan arkiveres før forslaget finnes. Partiprogrammer skal ikke merkes som parlamentariske avtaler. Workflowen verifiserer HTML eller PDF på partiets eget domene, kontrollerer hver redirect, ordrett sitat og opprinnelig år/programperiode, og bevarer originalfil, kildetekst, hash og hentetidspunkt. Ukjent publiseringsdato beholdes som ukjent.
+
+Lever rene partikilder på `analysis/budget-evidence-party-<unik-id>` med bare `editorial/handoff/budget-evidence.json`. Disse har egen kø og kan bare endre partiarkivet; de kan ikke inneholde parlamentarisk dokumentasjon eller RNB-vedtak. Det hindrer at en lang månedlig ETL fortrenger kildeleveringen. Blandede budsjett-/vedtakspakker bruker den opprinnelige køen.
+
+Den samme kildekontrollen kan kjøres av den native oppgaven i det publiserte miljøet: `python etl/party_priorities.py --year 2027 --input editorial/research/budsjett-2027/party-priorities-input.json`. Etter vellykket kontroll, commit bare `web/public/data/party-research/` fra ren, oppdatert main og push normalt. Ingen kildefeil skal erstattes av en ukontrollert manuell arkivfil. Dette er kildeinnhenting; analyse og LinkedIn-utkast trenger fortsatt botgjennomgang og menneskelig godkjenning.
 
 ```json
 {

@@ -6,7 +6,9 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: budget-data-import
+  # Priority-only deliveries write their own archive; they must not be dropped
+  # when a monthly ETL occupies the single pending budget-import slot.
+  group: ${{ startsWith(github.ref, 'refs/heads/analysis/budget-evidence-party-') && 'party-source-archive' || 'budget-data-import' }}
   cancel-in-progress: false
 jobs:
   verify:

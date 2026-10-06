@@ -162,3 +162,20 @@ def archive_priorities(data_dir, year, phase, items):
     index["snapshots"].append(snapshot)
     save(index_path, index)
     return snapshot
+
+
+if __name__ == "__main__":
+    import argparse
+    import json
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--year", type=int, required=True)
+    parser.add_argument("--phase", choices=["initial", "revised"], default="initial")
+    parser.add_argument("--input", type=Path, required=True)
+    parser.add_argument("--data-dir", type=Path, default=Path("web/public/data"))
+    args = parser.parse_args()
+    packet = json.loads(args.input.read_text())
+    if (not isinstance(packet, dict) or set(packet) - {"version", "year", "phase", "priorities"}
+            or packet.get("version") != 1 or packet.get("year") != args.year or packet.get("phase") != args.phase):
+        raise ValueError("Native source check requires a matching priority-only packet")
+    result = archive_priorities(args.data_dir, args.year, args.phase, packet.get("priorities"))
+    print(f"Party sources verified and archived: {result['hash']}. No article published.")

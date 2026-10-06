@@ -9,6 +9,11 @@ on:
     paths:
       - '.github/workflows/etl.yml'
       - 'etl/**'
+      - '!etl/budget_readiness.py'
+      - '!etl/party_priorities.py'
+      - '!etl/budget_evidence.py'
+      - '!etl/budget_evidence_handoff.py'
+      - '!etl/tests/test_budget_readiness_priorities.py'
 
 concurrency:
   group: budget-data-import
@@ -20,6 +25,7 @@ permissions:
 jobs:
   etl:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     # Løftes ut av jobben slik at varsle-jobben kan si hva som mangler
     outputs:
       advarsler: ${{ steps.status.outputs.advarsler }}
