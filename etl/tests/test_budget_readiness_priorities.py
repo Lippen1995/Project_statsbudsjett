@@ -8,7 +8,7 @@ import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import budget_proposals as budget
 import party_priorities as parties
-from budget_evidence_handoff import validate_packet
+from budget_evidence_handoff import validate_packet, validate_delivery_scope
 
 
 def page(url, html):
@@ -102,3 +102,16 @@ def test_party_redirect_cannot_fetch_another_host(monkeypatch):
     with pytest.raises(ValueError,match='official HTTPS'):
         parties.fetch_document(priority()['url'],'H')
     assert seen == [priority()['url']]
+
+
+def test_separate_party_queue_cannot_change_government_or_adopted_budget_data():
+    ref = 'refs/heads/analysis/budget-evidence-party-2026-10-06'
+    packet = {'version': 1, 'year': 2027, 'phase': 'initial', 'priorities': [priority()]}
+    validate_delivery_scope(ref, validate_packet(packet))
+    for changed in [{**packet, 'evidence': [{'kind': 'agreement'}]},
+                    {**packet, 'rnbDecision': {'status': 'adopted'}},
+                    {'evidence': [{'kind': 'agreement'}]}]:
+        with pytest.raises(ValueError, match='Priority-only'):
+            validate_delivery_scope(ref, changed)
+    validate_delivery_scope('refs/heads/analysis/budget-evidence-general',
+                            {**packet, 'evidence': [{'kind': 'agreement'}]})

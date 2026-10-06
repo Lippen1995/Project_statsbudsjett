@@ -38,8 +38,8 @@ def previous_failure(run_id=37310297347):
 
 def check():
     result = {"checkedAt": datetime.now(timezone.utc).isoformat(), "oldRun": 37310297347,
-              "oldFailure": previous_failure(), "partyRun": 37456707655,
-              "partyRunFailure": previous_failure(37456707655), "steps": {}}
+              "oldFailure": previous_failure(), "partyRun": 37458117681,
+              "partyRunFailure": previous_failure(37458117681), "steps": {}}
     # Check the already-read original 2026 file independently of CMS discovery.
     reference = json.loads(Path("editorial/research/budsjett-2027/baseline-2026.json").read_text())["nameReference"]
     try:

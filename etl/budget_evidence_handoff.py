@@ -33,6 +33,12 @@ def validate_packet(packet):
     return packet
 
 
+def validate_delivery_scope(ref, packet):
+    if ref.startswith("refs/heads/analysis/budget-evidence-party-") and (
+            not packet.get("priorities") or packet.get("evidence") or packet.get("rnbDecision")):
+        raise ValueError("Priority-only delivery may not change government or adopted budget data")
+
+
 def main():
     event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
     sha = os.environ["GITHUB_SHA"]
@@ -58,9 +64,7 @@ def main():
     if content.get("size", 0) > 1024 * 1024 or content.get("encoding") != "base64":
         raise ValueError("Unsupported budget packet size or encoding")
     packet = validate_packet(json.loads(base64.b64decode(content["content"], validate=False)))
-    if event["ref"].startswith("refs/heads/analysis/budget-evidence-party-") and (
-            not packet.get("priorities") or packet.get("evidence") or packet.get("rnbDecision")):
-        raise ValueError("Priority-only delivery may not change government or adopted budget data")
+    validate_delivery_scope(event["ref"], packet)
     data_dir = Path("web/public/data")
     if packet.get("evidence"):
         archive_evidence(data_dir, packet["year"], packet["phase"], packet["evidence"])
