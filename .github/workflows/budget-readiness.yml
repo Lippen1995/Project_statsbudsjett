@@ -33,7 +33,7 @@ jobs:
           with sync_playwright() as p:
               browser = p.chromium.launch(executable_path='/usr/bin/google-chrome', args=['--no-sandbox'])
               page = browser.new_page()
-              response = page.goto('https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/', wait_until='networkidle', timeout=45000)
+              response = page.goto('https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/', wait_until='domcontentloaded', timeout=30000)
               print('Browser HTTP:', response.status)
               print('Browser title:', page.title())
               print('Browser text:', page.locator('body').inner_text()[:350])
