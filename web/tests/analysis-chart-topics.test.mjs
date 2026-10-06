@@ -16,7 +16,11 @@ import { nextReport } from '../../scripts/analyser/candidates.mjs'
 const published = JSON.parse(
   readFileSync(new URL('../src/analyser/publications.json', import.meta.url)),
 )
-const source = published.findLast((a) => a.report.scopeId === 'state')
+const source = published.findLast(
+  (a) =>
+    a.report.scopeId === 'state' &&
+    (!a.report.question || a.report.question === 'real-expenditure-growth'),
+)
 const series = {
   kind: 'series',
   afterSection: 1,
@@ -127,15 +131,15 @@ test('separate budget year, phase and proposal/outcome are narrow distinct event
 test('latest article replaces duplicate library entry but immutable originals remain valid', () => {
   published.forEach((a) => validateArticle(a, { published: true }))
   const visible = currentAnalyses(published)
-  assert.equal(visible.filter((a) => a.report.scopeId === 'state').length, 1)
+  assert.ok(visible.length < published.length)
   assert.ok(visible.some((a) => a.slug === source.slug))
   assert.ok(published.filter((a) => a.report.scopeId === 'state').length >= 2)
-  assert.equal(
-    nextReport(new URL('../public/data/', import.meta.url).pathname, published, {
-      at: '2026-10-06T12:00:00Z',
-    }).scopeId,
-    'u-02',
-  )
+  const candidate = nextReport(new URL('../public/data/', import.meta.url).pathname, published, {
+    at: '2026-10-06T12:00:00Z',
+  })
+  assert.ok(candidate)
+  assert.notEqual(topicKey(candidate), topicKey(source.report))
+  assert.equal(topicBlocked(candidate, published, '2026-10-06T12:00:00Z'), false)
 })
 test('explicit replacement binds original hash and still needs a fresh human approval', () => {
   const a = draft()
@@ -233,7 +237,11 @@ test('an approved replacement publishes the tested graph version while preservin
     assert.equal(commits.length, 1)
     assert.deepEqual(commits[0][2][publicationPath].slice(0, published.length), published)
     assert.equal(commits[0][4].mergeParent, review.commit_id)
-    assert.equal(currentAnalyses(staged).filter((a) => a.report.scopeId === 'state').length, 1)
+    assert.ok(currentAnalyses(staged).some((a) => a.slug === staged.at(-1).slug))
+    assert.equal(
+      currentAnalyses(staged).some((a) => a.slug === source.slug),
+      false,
+    )
     const later = new Date(source.publishedAt)
     later.setUTCFullYear(later.getUTCFullYear() + 3)
     const late = { ...staged.at(-1), publishedAt: later.toISOString() }
