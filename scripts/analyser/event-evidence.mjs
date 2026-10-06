@@ -39,12 +39,52 @@ const selections = [
 export const evidenceHash = (items) =>
   createHash('sha256').update(JSON.stringify(items)).digest('hex')
 
-export function selectEventEvidence(nodes, rows) {
+export function observationSuffix(index) {
+  let result = ''
+  do {
+    result = String.fromCharCode(65 + (index % 26)) + result
+    index = Math.floor(index / 26) - 1
+  } while (index >= 0)
+  return result
+}
+
+export function validateDetailSelections(detailSelections) {
+  if (detailSelections === undefined) return
+  if (!Array.isArray(detailSelections) || !detailSelections.length || detailSelections.length > 12)
+    throw Error('Velg én til tolv konkrete postutvalg')
+  const ids = new Set()
+  for (const s of detailSelections) {
+    if (
+      !s ||
+      Object.keys(s).some((k) => !['id', 'nodeIds'].includes(k)) ||
+      !/^[a-z]{1,24}$/.test(s.id ?? '') ||
+      ids.has(s.id) ||
+      selections.some((x) => x.id === s.id) ||
+      !Array.isArray(s.nodeIds) ||
+      !s.nodeIds.length ||
+      s.nodeIds.length > 8 ||
+      s.nodeIds.some(
+        (id) => typeof id !== 'string' || !/^u-\d{2}(?:-\d{4}(?:-\d{2})?)?$/.test(id),
+      ) ||
+      new Set(s.nodeIds).size !== s.nodeIds.length ||
+      s.nodeIds.some((a) => s.nodeIds.some((b) => b !== a && b.startsWith(a + '-')))
+    )
+      throw Error('Ugyldig postutvalg eller overlappende kapittel og post')
+    ids.add(s.id)
+  }
+}
+
+export function selectEventEvidence(nodes, rows, { detailSelections } = {}) {
+  validateDetailSelections(detailSelections)
   const index = new Map()
+  const parents = new Map()
   const visit = (node) => {
     if (node.fin || node.transfer) return
     index.set(node.id, node)
-    node.children?.forEach(visit)
+    node.children?.forEach((child) => {
+      parents.set(child.id, node.navn)
+      visit(child)
+    })
   }
   nodes.forEach(visit)
   const sum = (node, year) => {
@@ -60,7 +100,23 @@ export function selectEventEvidence(nodes, rows) {
     node.children?.length
       ? node.children.some((child) => !child.fin && !child.transfer && reported(child, year))
       : node.serier?.[year]?.regnskap != null
-  const items = selections
+  const details = (detailSelections ?? []).map((s) => {
+    if (s.nodeIds.some((id) => !index.has(id)))
+      throw Error('Postutvalget finnes ikke innenfor analysens avgrensning')
+    return {
+      ...s,
+      title: s.nodeIds
+        .map((id) => {
+          const node = index.get(id)
+          return node.children?.length ? node.navn : `${node.navn} (${parents.get(id)})`
+        })
+        .join(' + '),
+      event: 'Postvis regnskapssammenligning',
+      context:
+        'Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.',
+    }
+  })
+  const items = [...selections, ...details]
     .filter((selection) => selection.nodeIds.every((id) => index.has(id)))
     .map((selection) => ({
       ...selection,
@@ -77,13 +133,17 @@ export function selectEventEvidence(nodes, rows) {
       })),
     }))
     .filter((item) => item.rows.some((row) => row.reported))
-  return items.length ? { version: 1, items, hash: evidenceHash(items) } : undefined
+  if (details.some((s) => !items.some((i) => i.id === s.id)))
+    throw Error('Postutvalget mangler observerte regnskapsverdier')
+  return items.length
+    ? { version: detailSelections ? 2 : 1, items, hash: evidenceHash(items) }
+    : undefined
 }
 
 export function validateEventEvidence(evidence, rows, scopeId) {
   if (evidence === undefined) return
   if (
-    evidence?.version !== 1 ||
+    ![1, 2].includes(evidence?.version) ||
     !Array.isArray(evidence.items) ||
     !evidence.items.length ||
     evidence.hash !== evidenceHash(evidence.items)
@@ -110,7 +170,7 @@ export function validateEventEvidence(evidence, rows, scopeId) {
         (node, i) =>
           node.id !== item.nodeIds[i] ||
           !node.name ||
-          (scopeId !== 'state' && !node.id.startsWith(scopeId + '-')),
+          (scopeId !== 'state' && node.id !== scopeId && !node.id.startsWith(scopeId + '-')),
       )
     )
       throw Error('Hendelsesgrunnlaget har feil avgrensning')
@@ -180,6 +240,85 @@ export function eventEvidenceFacts(evidence, rows) {
         String(firstRecorded.year),
         'første år med regnskapsføring på denne posten i perioden',
       )
+    if (evidence.version === 2) {
+      for (const [i, row] of item.rows.entries()) {
+        const suffix = observationSuffix(i)
+        add('Year' + suffix, row.year, String(row.year), 'regnskapsår')
+        if (row.reported)
+          add(
+            'Amount' + suffix,
+            row.expenditure,
+            amount(row.expenditure),
+            `løpende beløp, ${row.year}`,
+          )
+      }
+      add(
+        'FirstRecordedAmount',
+        firstRecorded.expenditure,
+        amount(firstRecorded.expenditure),
+        'første observerte beløp på postutvalget',
+      )
+      if (last.reported) {
+        const change = last.expenditure - firstRecorded.expenditure
+        add(
+          'ChangeSinceFirst',
+          change,
+          amount(change),
+          'beløpsendring fra første observerte år, ikke en årsaksandel',
+        )
+        if (firstRecorded.expenditure > 0)
+          add(
+            'GrowthSinceFirst',
+            (change / firstRecorded.expenditure) * 100,
+            `${number((change / firstRecorded.expenditure) * 100)} %`,
+            'prosentvis endring fra første observerte år',
+          )
+        const contribution = last.expenditure - item.rows[0].expenditure
+        add(
+          'ContributionAmount',
+          contribution,
+          amount(contribution),
+          'bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen',
+        )
+        const totalChange = rows.at(-1).expenditure - rows[0].expenditure
+        if (totalChange !== 0)
+          add(
+            'NetChangeRatio',
+            (contribution / totalChange) * 100,
+            `${number((contribution / totalChange) * 100)} %`,
+            'postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel',
+          )
+        add(
+          'ChangeFromPeak',
+          last.expenditure - peak.expenditure,
+          amount(last.expenditure - peak.expenditure),
+          'beløpsendring fra høyeste observerte år',
+        )
+        if (peak.expenditure > 0)
+          add(
+            'GrowthFromPeak',
+            (last.expenditure / peak.expenditure - 1) * 100,
+            `${number((last.expenditure / peak.expenditure - 1) * 100)} %`,
+            'prosentvis endring fra høyeste observerte år',
+          )
+        const previous = item.rows.at(-2)
+        if (previous?.reported) {
+          add(
+            'LastAnnualChangeAmount',
+            last.expenditure - previous.expenditure,
+            amount(last.expenditure - previous.expenditure),
+            'beløpsendring mellom de siste to regnskapsårene',
+          )
+          if (previous.expenditure > 0)
+            add(
+              'GrowthLastYear',
+              (last.expenditure / previous.expenditure - 1) * 100,
+              `${number((last.expenditure / previous.expenditure - 1) * 100)} %`,
+              'prosentvis endring mellom de siste to regnskapsårene',
+            )
+        }
+      }
+    }
     if (reference.reported && last.reported && reference.expenditure > 0 && last.expenditure >= 0) {
       const base = rows.find((row) => row.year === reference.year)
       const end = rows.at(-1)

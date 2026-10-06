@@ -2,7 +2,11 @@ import { ssbEvidenceFacts } from './ssb-research.mjs'
 import { createHash } from 'node:crypto'
 import { validateBudgetReport } from './budget-report.mjs'
 import { calculateFacts } from './facts.mjs'
-import { validateEventEvidence, eventEvidenceFacts } from './event-evidence.mjs'
+import {
+  validateEventEvidence,
+  eventEvidenceFacts,
+  validateDetailSelections,
+} from './event-evidence.mjs'
 import { graphPlan } from '../../web/src/analyser/chart-plan.js'
 import { topicKey, focusedQuestions } from '../../web/src/analyser/topics.js'
 export const contentHash = (article) =>
@@ -85,9 +89,12 @@ export function validateArticle(article, { published = false } = {}) {
     (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.replaces.slug ?? '') ||
       article.replaces.slug === article.slug ||
       !/^[a-f0-9]{64}$/.test(article.replaces.contentHash ?? '') ||
-      Object.keys(article.replaces).some((k) => !['slug', 'contentHash'].includes(k)))
+      Object.keys(article.replaces).some(
+        (k) => !['slug', 'contentHash', 'detailSelections'].includes(k),
+      ))
   )
     throw Error('Erstatningen må vise til en fast tidligere godkjent versjon')
+  validateDetailSelections(article.replaces?.detailSelections)
   if (!r?.scopeId || !r.scopeName) throw Error('Mangler avgrensning')
   topicKey(r)
   if (
@@ -145,6 +152,22 @@ export function validateArticle(article, { published = false } = {}) {
     if (r.factsVersion !== undefined && r.factsVersion !== 2)
       throw Error('Ukjent versjon av faktagrunnlaget')
     validateEventEvidence(r.eventEvidence, r.rows, r.scopeId)
+    validateDetailSelections(r.detailSelections)
+    if (
+      r.detailSelections &&
+      (r.eventEvidence?.version !== 2 ||
+        r.detailSelections.some((s) => {
+          const item = r.eventEvidence.items.find((i) => i.id === s.id)
+          return !item || JSON.stringify(item.nodeIds) !== JSON.stringify(s.nodeIds)
+        }))
+    )
+      throw Error('Postutvalg og frosset postgrunnlag samsvarer ikke')
+    if (
+      r.detailSource &&
+      (!/^[a-f0-9]{64}$/.test(r.detailSource.dataHash ?? '') ||
+        !Number.isFinite(Date.parse(r.detailSource.dataUpdated)))
+    )
+      throw Error('Manglende kildeversjon for postutvalget')
     if (
       JSON.stringify(r.facts) !==
       JSON.stringify({

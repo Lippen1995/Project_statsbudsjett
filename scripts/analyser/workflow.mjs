@@ -12,7 +12,13 @@ import {
 } from './review.mjs'
 import { renderReview } from './render-review.mjs'
 import { factText } from '../../web/src/analyser/model.js'
-import { replacementSource, replacementDraft, assertPublicationTopic } from './replacement.mjs'
+import { buildReport } from './report.mjs'
+import {
+  replacementSource,
+  replacementDraft,
+  replacementReport,
+  assertPublicationTopic,
+} from './replacement.mjs'
 export async function pendingFeedback(g, number, article) {
   // Direct scheduled-task revisions have also stored GitHub issue-comment IDs
   // as numbers. Preserve those acknowledgements without confusing comments
@@ -83,6 +89,7 @@ export async function runWorkflow({
   publicationPath = 'web/src/analyser/publications.json',
   now = () => new Date().toISOString(),
   replacementFor = null,
+  detailSelections,
 }) {
   const draftPrefix = 'editorial/drafts/'
   const comment = (number, body) =>
@@ -98,7 +105,19 @@ export async function runWorkflow({
     if (!reviewer || !(await g.permission(reviewer)))
       throw Error('ANALYSIS_REVIEWER må være en bruker med skrivetilgang til repositoryet')
     const open = await g.pages('/pulls?state=open&base=main')
-    const existing = open.find((pr) => /^analysis\/weekly-/.test(pr.head.ref))
+    let existing = open.find((pr) => /^analysis\/weekly-/.test(pr.head.ref))
+    if (command === 'replacement') {
+      // Explicit replacements can be reviewed in parallel for distinct articles.
+      // Never overwrite or create a second replacement for the same source.
+      existing = null
+      for (const pr of open.filter((pr) => /^analysis\/weekly-/.test(pr.head.ref))) {
+        const context = await readReviewContext(g, { pull_request: { number: pr.number } })
+        if (context.article.replaces?.slug === replacementFor?.slug) {
+          existing = pr
+          break
+        }
+      }
+    }
     if (existing) {
       if (
         !(existing.requested_reviewers ?? []).some((person) =>
@@ -112,7 +131,20 @@ export async function runWorkflow({
     const published = (await g.content(publicationPath)).value
     published.forEach((a) => validateArticle(a, { published: true }))
     const source = command === 'replacement' ? replacementSource(published, replacementFor) : null
-    const report = source ? source.report : nextReport(dataDir, published, { at: now() })
+    let report = source
+      ? replacementReport(source, replacementFor, { dataDir })
+      : nextReport(dataDir, published, { at: now() })
+    if (!source && report && detailSelections) {
+      if (report.kind !== 'real-expenditure-per-capita')
+        throw Error('Postutvalg krever en regnskapsanalyse')
+      report = buildReport(dataDir, {
+        departmentId: report.scopeId === 'state' ? null : report.scopeId,
+        start: report.start,
+        end: report.end,
+        question: report.question,
+        detailSelections,
+      })
+    }
     if (!report) {
       console.log(
         'Ingen nye dokumenterte problemstillinger i denne analysetypen. Uken hoppes over.',
@@ -121,7 +153,12 @@ export async function runWorkflow({
     }
     const createdAt = now(),
       date = createdAt.slice(0, 10)
-    const metadata = source ? replacementDraft(source, createdAt) : articleMetadata(report, date)
+    const metadata = source
+      ? replacementDraft(source, createdAt, {
+          detailSelections: replacementFor.detailSelections,
+          dataDir,
+        })
+      : articleMetadata(report, date)
     const { slug } = metadata
     let article = validateArticle({
       ...metadata,

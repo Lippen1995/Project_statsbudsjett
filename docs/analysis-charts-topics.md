@@ -31,6 +31,21 @@ Dette eksemplet krever at Priser og Befolkning faktisk finnes i rapportens frosn
 
 Grafene får tekstalternativ, kildemerking, enhets-/basisforklaring og tilgjengelig talltabell. `title`, `description` og eventuelle serielabels er redaksjonell tekst og følger samme faktumreferanseregler som artikkelen. Forklar grafens implikasjon, ikke bare hva aksene heter.
 
+### Velg konkrete regnskapsposter
+
+AI kan undersøke de faktiske postene som forklarer utviklingen, fremfor å begrense seg til de opprinnelige faste eksemplene. `buildReport(dataDir, {departmentId, start, end, question, detailSelections})` beregner et kontrollert postgrunnlag. `detailSelections` er én til tolv grupper med en unik bokstav-ID og én til åtte faktiske node-ID-er per gruppe, for eksempel:
+
+```json
+[
+  {"id":"ukraina","nodeIds":["u-01-0159-73"]},
+  {"id":"driftsamlet","nodeIds":["u-01-0100-01","u-01-0140-01"]}
+]
+```
+
+Departement, kapittel eller konkret post må finnes innen rapportens scope. Finansposter og interne overføringer utelates som i hovedserien. En gruppe kan ikke inneholde både en node og dens etterkommer. AI velger ID-er; beløp, postnavn og fakta beregnes fra regnskapet. Behold det kanoniske kandidatvalget ved ordinær weekly-levering og beregn rapporten på nytt med det ønskede utvalget. Boten gjentar beregningen før levering.
+
+Postgrunnlag versjon to har årlige `YearA`/`AmountA`, `YearB`/`AmountB` osv. samt kontrollerte fakta for første observerte år, topp, siste års endring og bokført endring mot hovedtotalen. Les rapportens faktaliste, ikke gjett faktanavn. Manglende føring er ikke observert null. Grupper kan overlappe på tvers av grafer, men skal ikke summeres som uavhengige bidrag. En posts endring delt på totalens nettoendring er et regnskapsforhold, ikke en årsaksandel. Historiske postnavn, ompostering og endret innhold må kontrolleres før de tolkes som aktivitetsvekst eller kutt. Grafgrensen er fortsatt én til syv.
+
 ## Skriv om saken
 
 SSB er en kilde, ikke en produktnyhet i brødteksten eller LinkedIn-innlegget. Ikke skriv at vi nettopp har fått SSB-data, at et nytt uttrekk bekrefter Fellestalls grunnlag, eller at «SSB hjelper oss å få målestokken på plass». Kildekontroll beskrives i metode og kildeliste. Brødteksten skal si hva observasjonene innebærer og føre leseren videre.
@@ -59,5 +74,9 @@ node scripts/analyser/prepare-replacement.mjs editorial/handoff/ukens-analyse.js
 ```
 
 Pakken har `mode: replacement` og `article.replaces` med den tidligere analysens slug og innholdshash. Revider `copy` (inkludert grafer), behold rapport og erstatningsreferanse uendret, valider og lever bare JSON gjennom den eksisterende `analysis/input-*`-grenen. Boten henter den tidligere godkjente versjonen på nytt, sjekker den faste referansen og oppretter et nytt utkast. Et foreldet eller allerede erstattet grunnlag stopper. Dette er ingen omvei rundt godkjenning eller botens forfatterskap.
+
+For en fordypning i nye poster, lag en JSON-fil med kontrollerte `detailSelections` og oppgi filen som tredje argument til samme kommando. Den frosne hovedserien og tidligere fakta beholdes; nye poster beregnes fra fersk main bare dersom alle årsrader i hovedserien er identiske med den gamle rapporten. Kildeversjon, oppdateringstidspunkt, post-ID-er og årlige beløp følger den nye rapporten. Hovedgrunnlaget kan ikke skiftes ut gjennom denne postutvidelsen. Boten kontrollerer beregningen på nytt, og hele den utvidede versjonen krever ny godkjenning.
+
+En uttrykkelig bestilt erstatning av en annen artikkel kan ligge til gjennomgang parallelt med et eksisterende utkast. En annen åpen erstatning av samme kildeartikkel gjenbrukes og dupliseres ikke. Ordinære ukeskjøringer prioriterer fortsatt åpne gjennomganger og endringsønsker.
 
 Etter godkjenning blir erstatningen hovedartikkel i bibliotek og sitemap. Tidligere godkjente tekster og datagrunnlag bevares uendret med en synlig lenke til nyere utgave og noindex; tidligere lenker fungerer fortsatt. Toårsregelen bruker også erstatningens nye publiseringsdato. Den samme bibliotekregelen rydder opp i de to allerede godkjente totalanalysene fra 4. og 6. oktober uten å endre deres godkjente innhold.

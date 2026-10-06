@@ -39,6 +39,7 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
     ...options,
     command: mode,
     replacementFor: mode === 'replacement' ? article.replaces : null,
+    detailSelections: mode === 'weekly' ? article.report.detailSelections : undefined,
     event,
     g,
     reviewer,

@@ -106,4 +106,6 @@ Bruk `docs/ssb-analysis-research.md` når relevante bakgrunnsvariabler kan belys
 
 ### Nye graf- og temaføringer, 6. oktober 2026
 
+Brukeren ønsker også fordypning i de konkrete regnskapspostene bak utenriksveksten, med fritt redaksjonelt fokus. AI kan velge kontrollerte postgrupper etter `docs/analysis-charts-topics.md`, lage postgrafer og sammenligne relevante poster. Undersøk toppår, ompostering og grupperte beløp før store enkeltposthopp tolkes. Mer omfattende brukerbestilte fordypninger kan ha flere seksjoner og ord enn det vanlige ukesformatet. En oppdatering av utenriksanalysen er en erstatning med ny godkjenning, ikke et nytt tema.
+
 Les `docs/analysis-charts-topics.md` før hvert valg. Velg én til syv grafer og lagre valget i copy.graphs. Bruk arkiverte SSB-serier og eventuelt kombinerte indeksgrafer. Ikke omtale innføringen av SSB-data i brødteksten eller LinkedIn-innlegget. Samme hovedspørsmål og avgrensning sperres i to kalenderår, uansett tallrettelser, endret periode eller ny tittel. Undersøk den faktiske smale problemstillingen; brede emneord er ikke duplikatnøkler. En oppdatering av en tidligere analyse leveres som eksplisitt erstatning med ny menneskelig godkjenning. Budsjettåret, fasen og sammenligningstypen avgrenser egne budsjettbegivenheter. Disse føringene har forrang foran eldre instrukser om tre faste grafer.

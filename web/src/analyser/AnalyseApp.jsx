@@ -431,16 +431,19 @@ function Article({ article, preview, review, successor }) {
 }
 
 function EventEvidence({ report }) {
-  const years = [
-    ...new Set([
-      report.start <= 2019 && report.end >= 2019 ? 2019 : report.start,
-      2020,
-      2021,
-      report.end,
-    ]),
-  ]
-    .filter((year) => year >= report.start && year <= report.end)
-    .sort((a, b) => a - b)
+  const years =
+    report.eventEvidence.version === 2
+      ? report.rows.map((r) => r.year)
+      : [
+          ...new Set([
+            report.start <= 2019 && report.end >= 2019 ? 2019 : report.start,
+            2020,
+            2021,
+            report.end,
+          ]),
+        ]
+          .filter((year) => year >= report.start && year <= report.end)
+          .sort((a, b) => a - b)
   return (
     <section className="an-evidence an-event-evidence" id="hendelsesgrunnlag">
       <h2>Hva skjedde med de konkrete postene?</h2>
@@ -453,8 +456,9 @@ function EventEvidence({ report }) {
       >
         <table>
           <caption>
-            Dette er et utvalg poster, ikke et fullstendig regnskap for pandemien eller
-            Ukraina-støtten.
+            {report.eventEvidence.version === 2
+              ? 'Utvalgene kan overlappe og skal ikke summeres. Alle observerte regnskapsår i perioden vises.'
+              : 'Dette er et utvalg poster, ikke et fullstendig regnskap for pandemien eller Ukraina-støtten.'}
           </caption>
           <colgroup>
             <col style={{ width: '40%' }} />

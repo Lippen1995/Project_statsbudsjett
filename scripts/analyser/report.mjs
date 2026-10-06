@@ -5,7 +5,10 @@ import { calculateFacts } from './facts.mjs'
 import { selectEventEvidence, eventEvidenceFacts } from './event-evidence.mjs'
 import { topicKey } from '../../web/src/analyser/topics.js'
 
-export function buildReport(dataDir, { start, end, departmentId = null, question } = {}) {
+export function buildReport(
+  dataDir,
+  { start, end, departmentId = null, question, detailSelections } = {},
+) {
   const names = ['meta', 'utgifter', 'befolkning', 'kpi']
   const raw = Object.fromEntries(
     names.map((n) => [n, readFileSync(`${dataDir}/${n}.json`, 'utf8')]),
@@ -48,7 +51,7 @@ export function buildReport(dataDir, { start, end, departmentId = null, question
   if (rows.length !== end - start + 1) throw Error('Brudd i tidsserien')
   const first = rows[0],
     last = rows.at(-1)
-  const eventEvidence = selectEventEvidence(nodes, rows)
+  const eventEvidence = selectEventEvidence(nodes, rows, { detailSelections })
   topicKey({
     kind: 'real-expenditure-per-capita',
     scopeId: departmentId ?? 'state',
@@ -65,6 +68,7 @@ export function buildReport(dataDir, { start, end, departmentId = null, question
     scopeId: departmentId ?? 'state',
     scopeName,
     ...(question ? { question } : {}),
+    ...(detailSelections ? { detailSelections: structuredClone(detailSelections) } : {}),
     start,
     end,
     dataUpdated: data.meta.oppdatert,
