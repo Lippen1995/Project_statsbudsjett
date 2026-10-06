@@ -1,0 +1,2 @@
+# Archived originals must retain their exact bytes for SHA-256 verification.
+web/public/data/party-research/raw/** -text -diff

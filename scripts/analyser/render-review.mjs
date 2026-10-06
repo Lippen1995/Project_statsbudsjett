@@ -1,6 +1,7 @@
 import { factText, number } from '../../web/src/analyser/model.js'
 import { contentHash } from './schema.mjs'
 import { graphPlan, seriesGraph } from '../../web/src/analyser/chart-plan.js'
+import { priorityKinds } from './party-priorities.mjs'
 export function renderReview(article) {
   const { copy: c, report: r } = article,
     t = (s) => factText(s, r)
@@ -70,6 +71,17 @@ export function renderReview(article) {
             `${e.parties.join(', ')} · ${e.kind} · poster ${e.recordKeys.join(', ')}`,
             escape(e.quote),
             `[Offisiell kilde](${e.url})`,
+          ]),
+        ]
+      : []),
+    ...(r.partyPriorities?.length
+      ? [
+          '## Kontrollerte partiprioriteringer',
+          'Programmer og uttalte prioriteringer dokumenterer partiets mål. De dokumenterer ikke forhandlingsgjennomslag i dette budsjettet.',
+          ...r.partyPriorities.flatMap((p) => [
+            `${p.party} · ${priorityKinds[p.kind]}${p.period ? ' · programperiode ' + p.period.join('–') : p.referenceYear ? ' · opprinnelig budsjettår ' + p.referenceYear : ''}${p.recordKeys.length ? ' · poster ' + p.recordKeys.join(', ') : ''}`,
+            escape(p.quote),
+            `[Partiets originalkilde](${p.url}) · ${p.sourceDate ? 'publisert ' + p.sourceDate : 'publiseringsdato ikke bekreftet'} · hentet ${p.retrievedAt}`,
           ]),
         ]
       : []),

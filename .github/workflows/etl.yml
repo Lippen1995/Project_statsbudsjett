@@ -101,13 +101,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Data-mappen er gitignored for lokal utvikling – force-add de genererte filene
           git add -f web/public/data/
-          if git diff --cached --quiet; then
-            echo "Ingen dataendringer – hopper over commit."
-          else
-            git commit -m "chore: oppdater data fra DFØ og SSB (automatisk ETL)"
-            git pull --rebase origin main
-            git push
-          fi
+          python scripts/commit-generated.py --message "chore: oppdater data fra DFØ og SSB (automatisk ETL)"
 
   # Varsling. En månedlig kjøring som feiler i stillhet betyr at nettstedet
   # viser gamle tall uten at noen vet det. Varselet går som en GitHub-sak, fordi

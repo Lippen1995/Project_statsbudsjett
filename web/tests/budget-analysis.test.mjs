@@ -15,6 +15,7 @@ import { renderReview } from '../../scripts/analyser/render-review.mjs'
 import { seriesGraph } from '../src/analyser/chart-plan.js'
 import { deliverScheduled } from '../../scripts/analyser/handoff.mjs'
 import { replacementDraft } from '../../scripts/analyser/replacement.mjs'
+import { contentHash } from '../../scripts/analyser/schema.mjs'
 const record = (key, amount, department = '01') => ({
   key,
   chapter: key.split('-')[0],
@@ -222,6 +223,18 @@ test('verified party priorities preserve original context, freeze citations and 
     assert.equal(report.facts.priorityAPeriod.text, '2025–2029')
     assert.equal(report.partyPriorities[0].sourceDate, null)
     assert.ok(report.sources.some((s) => s.url === priorities[0].url))
+    const article = {
+      report,
+      copy: { title: 'Budsjett', lead: 'Innledning', conclusion: 'Vurdering',
+        linkedin: 'Innlegg', sections: [] },
+      slug: 'test', createdAt: '2026-10-06',
+    }
+    const review = renderReview(article)
+    assert.ok(review.includes('## Kontrollerte partiprioriteringer'))
+    assert.ok(review.includes('H · Partiprogram · programperiode 2025–2029 · poster 0100-01'))
+    assert.ok(review.includes(quote))
+    assert.ok(review.includes('publiseringsdato ikke bekreftet'))
+    assert.notEqual(contentHash(article), contentHash({ ...article, report: before }))
     const changed = structuredClone(report)
     changed.partyPriorities[0].quote = 'En endret lovnad om formuesskatt og norske arbeidsplasser.'
     assert.throws(() => validateBudgetReport(changed), /fakta|datagrunnlag/i)
