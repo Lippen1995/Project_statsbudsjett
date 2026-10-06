@@ -23,6 +23,8 @@ import requests
 SOURCE_HOST = "www.regjeringen.no"
 HEADERS = {"User-Agent": "Fellestall/1.0 (official budget data import)"}
 REQUIRED = {"fdep_nr", "fdep_navn", "kap_nr", "post_nr", "kap_navn", "post_navn", "beløp"}
+# Official release page read during the budget-day preparation; not an invented workbook URL.
+RELEASE_PAGES = {2027: "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/"}
 
 
 def encode(value):
@@ -74,8 +76,23 @@ def get(url):
 
 
 def discover(year):
-    landing = f"https://{SOURCE_HOST}/no/statsbudsjett/{year}/"
-    page = get(landing)
+    landing = RELEASE_PAGES.get(year, f"https://{SOURCE_HOST}/no/statsbudsjett/{year}/")
+    try:
+        page = get(landing)
+    except requests.HTTPError as error:
+        if error.response is None or error.response.status_code != 404:
+            raise
+        # The short year route is not necessarily a published CMS page.
+        overview = get(f"https://{SOURCE_HOST}/no/statsbudsjett/")
+        parser = Links()
+        parser.feed(overview.text)
+        candidates = sorted({urljoin(overview.url, h) for h, _ in parser.links
+                             if re.fullmatch(rf"/no/statsbudsjett/{year}/id\d+/?", urlparse(urljoin(overview.url, h)).path)})
+        if not candidates:
+            return None
+        if len(candidates) != 1:
+            raise ValueError("Ambiguous official budget release page")
+        page = get(source_url(candidates[0]))
     parser = Links()
     parser.feed(page.text)
     links = [urljoin(page.url, h) for h, text in parser.links if "tallgrunnlag" in text.lower() and "gul bok" in text.lower()]

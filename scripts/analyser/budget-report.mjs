@@ -2,6 +2,7 @@ import { attachSsbEvidence, ssbEvidenceFacts } from './ssb-research.mjs'
 import { existsSync, readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { number } from '../../web/src/analyser/model.js'
+import { loadPriorities, validatePriorities, priorityFacts } from './party-priorities.mjs'
 const hash = (value) => createHash('sha256').update(JSON.stringify(value)).digest('hex')
 const read = (path) => JSON.parse(readFileSync(path, 'utf8'))
 const archive = (path, digest) => {
@@ -138,6 +139,7 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true } =
       const after = outcome ? outcome.records : proposal.records
       const rows = compareBudgetRecords(before, after)
       const comparison = outcome ? 'proposal-to-adopted-budget' : 'previous-budget-to-proposal'
+      const partyPriorities = loadPriorities(dataDir, item.year, item.phase, rows)
       const politicalEvidence = item.politicalEvidence
         ? archive(`${dataDir}/${item.politicalEvidence.path}`, item.politicalEvidence.hash)
         : []
@@ -159,7 +161,10 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true } =
         )
       )
         continue
-      const facts = budgetFacts(rows, item.year, baseYear, politicalEvidence)
+      const facts = {
+        ...budgetFacts(rows, item.year, baseYear, politicalEvidence),
+        ...priorityFacts(partyPriorities),
+      }
       const report = attachSsbEvidence(dataDir, {
         kind: 'budget-comparison',
         comparison,
@@ -176,6 +181,7 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true } =
           outcomeHash: outcome ? item.outcome.hash : null,
           comparison,
           politicalEvidence,
+          ...(partyPriorities ? { partyPriorities } : {}),
         }),
         proposalHash: item.hash,
         outcomeHash: outcome ? item.outcome.hash : null,
@@ -218,6 +224,11 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true } =
             description:
               'Arkivert kildetekst og kontrollert sitat knyttet til konkrete budsjettposter.',
           })),
+          ...(partyPriorities ?? []).map((p) => ({
+            name: `Partikilde: ${p.party} – ${p.id}`,
+            url: p.url,
+            description: `Originalkilde og kontrollert sitat. ${p.sourceDate ? 'Publisert ' + p.sourceDate + '. ' : 'Publiseringsdato er ikke bekreftet. '}${p.period ? 'Programperiode ' + p.period.join('–') + '. ' : p.referenceYear ? 'Opprinnelig budsjettår ' + p.referenceYear + '. ' : ''}Hentet ${p.retrievedAt}. Prioritering dokumenterer ikke forhandlingsgjennomslag.`,
+          })),
         ],
         methodology: [
           'Kapittel og post er sammenligningsnøkkelen, uavhengig av hvilket departement posten tilhører.',
@@ -230,6 +241,7 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true } =
           'Partiers gjennomslag krever dokumentert kobling til budsjettavtale, innstilling eller vedtak. En stemme for budsjettet dokumenterer støtte, ikke nødvendigvis eierskap til en endring.',
         ],
         politicalEvidence,
+        ...(partyPriorities ? { partyPriorities } : {}),
       })
       if (eligible(report)) return report
     }
@@ -243,6 +255,7 @@ export function validateBudgetReport(r) {
     outcomeHash: r.outcomeHash,
     comparison: r.comparison,
     politicalEvidence: r.politicalEvidence ?? [],
+    ...(r.partyPriorities ? { partyPriorities: r.partyPriorities } : {}),
   })
   const expectedHash = r.ssbEvidence ? hash({ base: baseHash, evidence: r.ssbEvidence }) : baseHash
   if (
@@ -271,6 +284,7 @@ export function validateBudgetReport(r) {
     JSON.stringify(r.facts) !==
     JSON.stringify({
       ...budgetFacts(r.rows, r.year, r.start, r.politicalEvidence ?? []),
+      ...priorityFacts(r.partyPriorities),
       ...ssbEvidenceFacts(r.ssbEvidence),
     })
   )
@@ -302,5 +316,6 @@ export function validateBudgetReport(r) {
     )
       throw Error('Politisk gjennomslag mangler kontrollert dokumentasjon')
   }
+  validatePriorities(r.partyPriorities, r.rows)
   return r
 }

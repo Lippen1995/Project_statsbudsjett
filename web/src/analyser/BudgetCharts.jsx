@@ -230,3 +230,37 @@ export function PoliticalEvidence({ report }) {
     </section>
   )
 }
+
+export function PartyPriorities({ report }) {
+  if (!report.partyPriorities?.length) return null
+  const kinds = {
+    programme: 'Partiprogram',
+    'budget-request': 'Budsjettkrav',
+    'alternative-budget': 'Alternativt budsjett',
+    'stated-priority': 'Uttalt prioritering',
+  }
+  return (
+    <section className="an-evidence" id="partiprioriteringer">
+      <h2>Partienes dokumenterte prioriteringer</h2>
+      <p>
+        Kildene viser hva partiene har ønsket. Samsvar med et forslag dokumenterer ikke i seg selv
+        gjennomslag i forhandlinger.
+      </p>
+      {report.partyPriorities.map((p) => (
+        <div key={p.id}>
+          <h3>
+            {p.party} · {kinds[p.kind]}
+            {p.period ? ` ${p.period.join('–')}` : p.referenceYear ? ` ${p.referenceYear}` : ''}
+          </h3>
+          <blockquote>{p.quote}</blockquote>
+          <p>
+            <a href={p.url}>Les originalkilden ↗</a> ·{' '}
+            {p.sourceDate ? `Publisert ${p.sourceDate}` : 'Publiseringsdato ikke bekreftet'} ·
+            Hentet {p.retrievedAt.slice(0, 10)}
+          </p>
+          {!!p.recordKeys.length && <p>Koblet til postene: {p.recordKeys.join(', ')}.</p>}
+        </div>
+      ))}
+    </section>
+  )
+}

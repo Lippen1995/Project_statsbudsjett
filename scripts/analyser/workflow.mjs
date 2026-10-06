@@ -13,6 +13,8 @@ import {
 import { renderReview } from './render-review.mjs'
 import { factText } from '../../web/src/analyser/model.js'
 import { buildReport } from './report.mjs'
+import { nextBudgetReport } from './budget-report.mjs'
+import { topicKey, topicBlocked } from '../../web/src/analyser/topics.js'
 import {
   replacementSource,
   replacementDraft,
@@ -90,6 +92,7 @@ export async function runWorkflow({
   now = () => new Date().toISOString(),
   replacementFor = null,
   detailSelections,
+  budgetYear,
 }) {
   const draftPrefix = 'editorial/drafts/'
   const comment = (number, body) =>
@@ -101,18 +104,30 @@ export async function runWorkflow({
     })
   const feedbackFor = (number, article) => pendingFeedback(g, number, article)
   const context = () => readReviewContext(g, event)
-  if (command === 'weekly' || command === 'replacement') {
+  if (command === 'weekly' || command === 'replacement' || command === 'budget-day') {
+    if (
+      command === 'budget-day' &&
+      (!Number.isSafeInteger(budgetYear) || budgetYear < 2000 || budgetYear > 2100)
+    )
+      throw Error('Budsjettdagslevering krever et eksplisitt budsjettår')
     if (!reviewer || !(await g.permission(reviewer)))
       throw Error('ANALYSIS_REVIEWER må være en bruker med skrivetilgang til repositoryet')
     const open = await g.pages('/pulls?state=open&base=main')
     let existing = open.find((pr) => /^analysis\/weekly-/.test(pr.head.ref))
-    if (command === 'replacement') {
+    if (command === 'replacement' || command === 'budget-day') {
       // Explicit replacements can be reviewed in parallel for distinct articles.
       // Never overwrite or create a second replacement for the same source.
       existing = null
       for (const pr of open.filter((pr) => /^analysis\/weekly-/.test(pr.head.ref))) {
         const context = await readReviewContext(g, { pull_request: { number: pr.number } })
-        if (context.article.replaces?.slug === replacementFor?.slug) {
+        if (
+          command === 'replacement'
+            ? context.article.replaces?.slug === replacementFor?.slug
+            : context.article.report.kind === 'budget-comparison' &&
+              context.article.report.year === budgetYear &&
+              context.article.report.phase === 'initial' &&
+              context.article.report.comparison === 'previous-budget-to-proposal'
+        ) {
           existing = pr
           break
         }
@@ -133,7 +148,15 @@ export async function runWorkflow({
     const source = command === 'replacement' ? replacementSource(published, replacementFor) : null
     let report = source
       ? replacementReport(source, replacementFor, { dataDir })
-      : nextReport(dataDir, published, { at: now() })
+      : command === 'budget-day'
+        ? nextBudgetReport(dataDir, published, {
+            eligible: (r) =>
+              r.year === budgetYear &&
+              r.phase === 'initial' &&
+              r.comparison === 'previous-budget-to-proposal' &&
+              !topicBlocked(r, published, now()),
+          })
+        : nextReport(dataDir, published, { at: now() })
     if (!source && report && detailSelections) {
       if (report.kind !== 'real-expenditure-per-capita')
         throw Error('Postutvalg krever en regnskapsanalyse')

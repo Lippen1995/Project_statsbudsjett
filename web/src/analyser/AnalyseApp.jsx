@@ -10,6 +10,7 @@ import {
   BudgetEvidence,
   BudgetBridge,
   PoliticalEvidence,
+  PartyPriorities,
 } from './BudgetCharts.jsx'
 import { analysisPath, displayDate, factText, filterAnalyses, number } from './model'
 
@@ -333,6 +334,7 @@ function Article({ article, preview, review, successor }) {
       ))}
       {r.eventEvidence && <EventEvidence report={r} />}
       {budget && <PoliticalEvidence report={r} />}
+      {budget && <PartyPriorities report={r} />}
       <section id="metode" className="an-method">
         <div className="ft-kicker">Åpent regnestykke</div>
         <h2>Metode og kilder</h2>

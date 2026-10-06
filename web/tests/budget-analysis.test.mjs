@@ -13,6 +13,8 @@ import { kompaktData, verdi } from '../src/fellestall/kompakt.js'
 import { articleMetadata } from '../../scripts/analyser/article-metadata.mjs'
 import { renderReview } from '../../scripts/analyser/render-review.mjs'
 import { seriesGraph } from '../src/analyser/chart-plan.js'
+import { deliverScheduled } from '../../scripts/analyser/handoff.mjs'
+import { replacementDraft } from '../../scripts/analyser/replacement.mjs'
 const record = (key, amount, department = '01') => ({
   key,
   chapter: key.split('-')[0],
@@ -171,4 +173,177 @@ test('website proposal series remains distinct from adopted data', () => {
   assert.equal(verdi(data.utgifter[0], 2027, 3), 15)
   assert.equal(verdi(data.utgifter[0], 2027, 1), 0)
   assert.equal(verdi(data.utgifter[0], 2027, 2), 0)
+})
+
+test('verified party priorities preserve original context, freeze citations and reject source tampering', () => {
+  const f = fixture()
+  try {
+    const before = nextBudgetReport(f.dir, [])
+    const quote = 'Fjerne formuesskatten på arbeidende kapital for å styrke norsk eierskap.'
+    const text = 'Partiprogram 2025–2029. ' + quote
+    const hash = (value) => createHash('sha256').update(value).digest('hex')
+    const sourceHash = hash(text),
+      rawHash = hash(text)
+    const documentPath = `party-research/documents/${sourceHash}.json`,
+      rawPath = `party-research/raw/${rawHash}.html`
+    f.put(documentPath, { url: 'https://hoyre.no/politikk/partiprogram/', text })
+    mkdirSync(`${f.dir}/party-research/raw`, { recursive: true })
+    writeFileSync(`${f.dir}/${rawPath}`, text)
+    const priorities = [
+      {
+        id: 'formuesskatt',
+        party: 'H',
+        kind: 'programme',
+        period: [2025, 2029],
+        quote,
+        url: 'https://hoyre.no/politikk/partiprogram/',
+        sourceDate: null,
+        referenceYear: null,
+        recordKeys: ['0100-01'],
+        sourceHash,
+        rawHash,
+        documentPath,
+        rawPath,
+        retrievedAt: '2026-10-06T10:00:00Z',
+      },
+    ]
+    const path = 'party-research/2027/initial/' + hash('snapshot') + '.json'
+    const digest = f.put(path, priorities)
+    f.put('party-research/index.json', {
+      version: 1,
+      snapshots: [{ year: 2027, phase: 'initial', path, hash: digest }],
+    })
+    const report = nextBudgetReport(f.dir, [])
+    validateBudgetReport(before)
+    validateBudgetReport(report)
+    assert.notEqual(report.dataHash, before.dataHash)
+    assert.deepEqual(report.rows, before.rows)
+    assert.equal(report.facts.priorityAQuote.text, quote)
+    assert.equal(report.facts.priorityAPeriod.text, '2025–2029')
+    assert.equal(report.partyPriorities[0].sourceDate, null)
+    assert.ok(report.sources.some((s) => s.url === priorities[0].url))
+    const changed = structuredClone(report)
+    changed.partyPriorities[0].quote = 'En endret lovnad om formuesskatt og norske arbeidsplasser.'
+    assert.throws(() => validateBudgetReport(changed), /fakta|datagrunnlag/i)
+    f.put(documentPath, { url: priorities[0].url, text: 'En helt annen tekst' })
+    assert.throws(() => nextBudgetReport(f.dir, []), /Partikilden/)
+  } finally {
+    rmSync(f.dir, { recursive: true, force: true })
+  }
+})
+
+test('explicit budget-day delivery can coexist with an older state review but never duplicates its own proposal', async () => {
+  const f = fixture()
+  try {
+    const report = nextBudgetReport(f.dir, [], {
+      eligible: (r) => r.comparison === 'previous-budget-to-proposal',
+    })
+    const state = JSON.parse(
+      readFileSync(new URL('../src/analyser/publications.json', import.meta.url)),
+    ).findLast((a) => a.report.scopeId === 'state')
+    let existing = replacementDraft(state, '2026-10-07T09:00:00Z')
+    const copy = {
+      title: 'Budsjettforslagets prioriteringer',
+      description: 'En kontrollert prøve av leveringsflyten.',
+      lead: 'Forslaget viser {{fact:afterTotal}}.',
+      conclusion: 'Forslaget krever videre vurdering.',
+      linkedin: 'Hva innebærer endringen i forslaget?',
+      sections: Array.from({ length: 4 }, (_, i) => ({
+        heading: ['Bakgrunn', 'Prioriteringer', 'Virkninger', 'Avgrensninger'][i],
+        factIds: ['afterTotal'],
+        paragraphs: [
+          Array(12)
+            .fill(
+              'Regjeringens forslag må vurderes mot et sammenlignbart grunnlag og konkrete tiltak.',
+            )
+            .join(' ') + ' Summen er {{fact:afterTotal}}.',
+        ],
+      })),
+    }
+    const article = {
+      ...articleMetadata(report, '2026-10-07'),
+      report,
+      copy,
+      status: 'draft',
+      createdAt: '2026-10-07T09:00:00Z',
+    }
+    const calls = [],
+      writes = []
+    const pr = {
+      number: 27,
+      state: 'open',
+      head: {
+        ref: 'analysis/weekly-state',
+        sha: 'c'.repeat(40),
+        repo: { full_name: 'owner/repo' },
+      },
+      base: { ref: 'main' },
+      requested_reviewers: [{ login: 'reviewer' }],
+    }
+    const g = {
+      root: '/repos/owner/repo',
+      repository: 'owner/repo',
+      permission: async () => true,
+      content: async (path) => ({
+        value:
+          path === 'editorial/handoff/weekly.json'
+            ? { mode: 'budget-day', article }
+            : path === 'web/src/analyser/publications.json'
+              ? []
+              : existing,
+      }),
+      pages: async (path) =>
+        path.startsWith('/pulls?')
+          ? [pr]
+          : path.endsWith('/files')
+            ? [{ filename: 'editorial/drafts/existing.json', status: 'added' }]
+            : [],
+      api: async (path, options = {}) => {
+        calls.push({ path, ...options })
+        return path.endsWith('/pulls/27')
+          ? pr
+          : path.endsWith('/git/ref/heads/main')
+            ? { object: { sha: 'b'.repeat(40) } }
+            : path.includes('/git/ref/heads/analysis/')
+              ? null
+              : path.endsWith('/pulls')
+                ? { number: 29 }
+                : {}
+      },
+      commit: async (...args) => {
+        writes.push(args)
+        return 'd'.repeat(40)
+      },
+    }
+    const run = () =>
+      deliverScheduled({
+        g,
+        actor: 'agent',
+        reviewer: 'reviewer',
+        dataDir: f.dir,
+        now: () => article.createdAt,
+        input: {
+          mode: 'weekly',
+          sourceCommit: 'a'.repeat(40),
+          sourcePath: 'editorial/handoff/weekly.json',
+        },
+      })
+    await run()
+    assert.equal(writes.length, 1)
+    const delivered = Object.values(writes[0][2])[0]
+    assert.deepEqual(delivered.report, report)
+    assert.equal(delivered.approval, undefined)
+    assert.ok(calls.some((c) => c.path.endsWith('/pulls/29/requested_reviewers')))
+    existing = delivered
+    writes.length = 0
+    calls.length = 0
+    await run()
+    assert.equal(writes.length, 0)
+    assert.equal(
+      calls.some((c) => c.method === 'POST'),
+      false,
+    )
+  } finally {
+    rmSync(f.dir, { recursive: true, force: true })
+  }
 })

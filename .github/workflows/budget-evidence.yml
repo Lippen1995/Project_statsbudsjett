@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r etl/requirements.txt
-      - name: Les bare JSON fra fast SHA; verifiser mot offisielle kilder
+      - name: Les bare JSON fra fast SHA; verifiser budsjett- og partikilder
         run: python etl/budget_evidence_handoff.py
         env:
           GH_TOKEN: ${{ github.token }}
@@ -36,7 +36,7 @@ jobs:
           if git diff --cached --quiet; then
             echo 'changed=false' >> "$GITHUB_OUTPUT"
           else
-            git commit -m 'budget: arkiver kontrollert parlamentarisk dokumentasjon'
+            git commit -m 'budget: arkiver kontrollerte budsjett- og partikilder'
             git pull --rebase origin main
             git push origin main
             echo 'changed=true' >> "$GITHUB_OUTPUT"

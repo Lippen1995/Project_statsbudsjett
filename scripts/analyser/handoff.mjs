@@ -7,7 +7,7 @@ import { assertReviewBranch } from './review.mjs'
 import { runWorkflow, readReviewContext } from './workflow.mjs'
 
 export async function deliverScheduled({ g, reviewer, actor, input, ...options }) {
-  if (!['weekly', 'feedback', 'replacement'].includes(input.mode))
+  if (!['weekly', 'feedback', 'replacement', 'budget-day'].includes(input.mode))
     throw Error('Ugyldig leveringsmodus')
   if (
     !/^[a-f0-9]{40}$/.test(input.sourceCommit ?? '') ||
@@ -19,7 +19,10 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
   const source = await g.content(input.sourcePath, input.sourceCommit)
   if (!source) throw Error('Leveringsfilen finnes ikke')
   const packet = source.value
-  const mode = input.mode === 'weekly' && packet.mode === 'replacement' ? 'replacement' : input.mode
+  const mode =
+    input.mode === 'weekly' && ['replacement', 'budget-day'].includes(packet.mode)
+      ? packet.mode
+      : input.mode
   const article = validateArticle(packet.article ?? packet)
   if (article.status !== 'draft' || article.approval || article.publishedAt)
     throw Error('Bare et utkast uten godkjenning kan leveres')
@@ -40,6 +43,7 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
     command: mode,
     replacementFor: mode === 'replacement' ? article.replaces : null,
     detailSelections: mode === 'weekly' ? article.report.detailSelections : undefined,
+    budgetYear: mode === 'budget-day' ? article.report.year : undefined,
     event,
     g,
     reviewer,

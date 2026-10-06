@@ -1,0 +1,81 @@
+"""Read-only integration check before budget day; never publish trial data."""
+import argparse
+import io
+import json
+import os
+import re
+import shutil
+import tempfile
+import zipfile
+from datetime import datetime, timezone
+from pathlib import Path
+
+import requests
+from budget_proposals import discover, get, parse_gulbok, archive_proposal, reconcile
+
+
+def previous_failure():
+    token, repository = os.environ.get("GH_TOKEN"), os.environ.get("GITHUB_REPOSITORY")
+    if not token or repository != "Lippen1995/Project_statsbudsjett":
+        return "Previous run logs unavailable in this execution context"
+    try:
+        response = requests.get(f"https://api.github.com/repos/{repository}/actions/runs/37310297347/logs",
+                                headers={"Authorization": f"Bearer {token}"}, timeout=45)
+    except requests.RequestException:
+        return "Previous run logs could not be retrieved; actual source checks still run"
+    if response.status_code != 200:
+        return f"Previous run logs: HTTP {response.status_code}"
+    if not zipfile.is_zipfile(io.BytesIO(response.content)):
+        return "Previous run log archive is unavailable"
+    with zipfile.ZipFile(io.BytesIO(response.content)) as logs:
+        for name in logs.namelist():
+            if "official" not in name.lower() and "import" not in name.lower():
+                continue
+            text = logs.read(name).decode("utf-8", errors="replace")
+            matches = re.findall(r"(?:requests\.exceptions\.[A-Za-z]+|ValueError|ModuleNotFoundError|ImportError):[^\r\n]{0,600}", text)
+            if matches:
+                return matches[-1]
+    return "No diagnostic exception found in retained import logs"
+
+
+def check():
+    result = {"checkedAt": datetime.now(timezone.utc).isoformat(), "oldRun": 37310297347,
+              "oldFailure": previous_failure(), "steps": {}}
+    try:
+        source = discover(2026)
+        if not source:
+            raise ValueError("Official 2026 Gul bok not discovered")
+        raw = get(source["url"]).content
+        records = parse_gulbok(raw)
+        if len(records) < 1000:
+            raise ValueError("Unexpectedly incomplete real Gul bok fixture")
+        with tempfile.TemporaryDirectory(prefix="budget-readiness-") as root:
+            data = Path(root) / "data"
+            data.mkdir()
+            for name in ["meta", "utgifter", "inntekter"]:
+                shutil.copyfile(Path("web/public/data") / (name + ".json"), data / (name + ".json"))
+            archive_proposal(data, 2026, "initial", raw, source)
+            reconcile(data)
+            if not (data / "budsjettarkiv/index.json").exists():
+                raise ValueError("Trial archive missing")
+        result["steps"]["actual2026Import"] = {"status": "passed", "records": len(records), "url": source["url"], "productionDataChanged": False}
+    except (requests.RequestException, ValueError, OSError) as error:
+        result["steps"]["actual2026Import"] = {"status": "failed", "reason": str(error)}
+    try:
+        source = discover(2027)
+        result["steps"]["release2027"] = {"status": "available" if source else "not-released", "source": source}
+    except (requests.RequestException, ValueError) as error:
+        result["steps"]["release2027"] = {"status": "failed", "reason": str(error)}
+    result["passed"] = all(s["status"] != "failed" for s in result["steps"].values())
+    return result
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, required=True)
+    output = parser.parse_args().output
+    result = check()
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    raise SystemExit(0 if result["passed"] else 1)

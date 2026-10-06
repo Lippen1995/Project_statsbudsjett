@@ -70,7 +70,39 @@ Tillatte typer er `agreement`, `committee-recommendation`, `vote` og `adopted-am
 
 Vent på vellykket kildekontroll, hent oppdatert main og kontroller deretter rapporten med `prepare.mjs`. Rapporten må inkludere den arkiverte dokumentasjonen før teksten leveres. Uten dokumentasjon: lever en analyse av endringene og avgrens politiske konklusjoner, eller utsett analysen hvis partigjennomslag er hovedproblemstillingen.
 
-## Native AI-kjøring på onsdag: egen forutsetning
+## Native AI-kjøring på onsdag
+
+Brukeren har bekreftet at den ekstra native oppgaven er opprettet for **7. oktober kl. 11.00 Europe/Oslo**, med det publiserte miljøet og mandagsplanen beholdt. Denne samtalen har ikke tilgang til planleggeren for å kontrollere eller endre oppgaven. Kontroller faktisk oppstart i oppgavens chat; ikke opprett en duplikatoppgave.
+
+Start fra fersk main med `node scripts/analyser/preflight.mjs`. Kontrollen prøver regjeringens side, SSB, alle ni partisider, GitHub API og publiseringsregisteret. En gammel kjøring kan fortsatt være bundet til et tidligere nettverksoppsett selv om et nytt miljø er publisert. Ved nettverksavslag: rapporter konkret feil og bruk den publiserte konfigurasjonen i en ny kjøring. Ikke skriv en historisk analyse som reserve for budsjettdagen.
+
+Den uttrykkelig bestilte ekstra analysen bruker:
+
+```sh
+GITHUB_REPOSITORY=Lippen1995/Project_statsbudsjett node scripts/analyser/prepare.mjs editorial/handoff/ukens-analyse.json --budget-year=2027
+```
+
+Pakken har `mode: budget-day`. Den velger bare det faktiske arkiverte 2027-forslaget mot saldert 2026. Et eldre regnskapsutkast blokkerer ikke denne særskilte leveringen. Et åpent utkast om samme forslag gjenbrukes, og toårs-/hendelseskontrollen og eksakt menneskelig godkjenning gjelder fortsatt. Vanlige mandagskjøringer beholder sin køprioritering. Lever bare ferdig JSON på `analysis/input-*` som før.
+
+### Kontrollerte partikilder
+
+`budget-evidence.yml` støtter nå et separat `priorities`-felt i den samme JSON-leveringen. Det kan arkiveres før forslaget finnes. Partiprogrammer skal ikke merkes som parlamentariske avtaler. Workflowen verifiserer HTML eller PDF på partiets eget domene, kontrollerer hver redirect, ordrett sitat og opprinnelig år/programperiode, og bevarer originalfil, kildetekst, hash og hentetidspunkt. Ukjent publiseringsdato beholdes som ukjent.
+
+```json
+{
+  "version": 1, "year": 2027, "phase": "initial",
+  "priorities": [
+    {"id":"formuesskatt", "party":"H", "kind":"programme",
+     "period":[2025,2029], "sourceDate":null,
+     "url":"https://hoyre.no/politikk/partiprogram/",
+     "quote":"<ordrett kontrollert sitat, minst tretti tegn>", "recordKeys":[]}
+  ]
+}
+```
+
+Tillatte typer er `programme`, `budget-request`, `alternative-budget` og `stated-priority`. De to budsjettspesifikke typene krever `referenceYear`, slik at et krav fra 2026 ikke omtales som et nytt 2027-krav. Programmer krever sin dokumenterte `period`; andre uttalte prioriteringer kan ha ukjent opprinnelig år. `sourceDate` er bare tillatt når datoen faktisk kan verifiseres i kildeteksten. `recordKeys` kan være tom ved forhåndsresearch; oppgitte koblinger må finnes i den faktiske budsjettrapporten.
+
+Velg én til trettiseks konkrete prioriteringer med unike bokstav-ID-er. Ved endret utvalg leveres hele det ønskede utvalget som en ny immutable versjon. Hent fersk main etter vellykket kontroll. Rapporten legger til kilder, kontrollerte `priorityAQuote`, `priorityAParty`, `priorityAKind`, eventuelt `priorityAPeriod`/`priorityAReferenceYear`, videre B, C osv. De inngår i datagrunnlaget og godkjenningen. Kildetekst alene beviser ikke nettoeffekt, måloppnåelse eller forhandlingsgjennomslag.
 
 ### Ressurser og utvidet oppdrag vedtatt 5. oktober
 
@@ -82,17 +114,17 @@ Arbeidsrekkefølgen er: verifiser import og dokumentversjon; les nasjonalbudsjet
 
 Skill politisk samsvar på fremleggelsesdagen fra dokumentert forhandlingsgjennomslag etter Stortingets behandling. Vis konkrete oppfylte eller uoppfylte krav med begrunnelse, heller enn en samlet partikarakter. Skatteproveny alene viser ikke skatteendring for husholdninger. Kommunerammen må vurderes etter kostnader, demografi og oppgaver, og med riktig sammenligningsbase. Kontroller historiske postnavn før omtale. Bruk offisielle fremtidige prisanslag som anslag, aldri som observerte KPI-er.
 
-Partienes originalkilder må kunne dokumenteres i artikkelens kontrollerte kildegrunnlag. Dagens parlamentariske `budget-evidence` skal ikke brukes til å kamuflere partiprogrammer som forlik. Nødvendig utvidelse av kildehåndteringen må være kontrollert før slike vurderinger leveres.
+Partienes originalkilder må kunne dokumenteres i artikkelens kontrollerte kildegrunnlag. Dagens parlamentariske `budget-evidence` skal ikke brukes til å kamuflere partiprogrammer som forlik. Partiprioriteringer leveres nå gjennom den separate, kontrollerte priorities-arkiveringen beskrevet nedenfor.
 
 En oppstart rundt klokken 11 er ikke en leveringsfrist. Forsvarsdepartementet presenterer budsjettet klokken 14, ifølge den kontrollerte invitasjonen i researchregisteret. Dersom forsvar er en vesentlig driver, les også denne presentasjonen før hovedkonklusjonen låses. Prioriter et grundig utkast senere samme dag fremfor tidlig, ufullstendig levering. Publisering samme dag avhenger av faktisk datatilgang, særskilt AI-kjøring og menneskelig godkjenning.
 
 Velg én til syv relevante grafer etter docs/analysis-charts-topics.md, og behold designet og Sven-byline. Mer tekst skal gi leseren flere forklarte sammenhenger, ikke flere løsrevne tall. LinkedIn-teksten skal fortsatt være kort, med den avtalte Unicode-innledningen, en konkret krok, tørr vennlig humor og et spørsmål hovedanalysen besvarer. Kontroller teksten mot feltgrensen og publiseringsflyten.
 
-GitHub-workflowene importerer og validerer data. De starter ikke den native AI-en. Den eksisterende AI-oppgaven kjører mandager, og denne økten har ikke verktøy for å opprette eller endre oppgaven i den andre samtalen. **En særskilt onsdagskjøring er derfor ikke opprettet her.**
+GitHub-workflowene importerer og validerer data. De starter ikke den native AI-en. Mandagsplanen beholdes. Brukerens bekreftede onsdagsoppgave er en separat native kjøring; denne økten opprettet den ikke og kan ikke kontrollere planleggeren.
 
 Bruk denne instruksen i den eksisterende oppgavens chat for en særskilt kjøring onsdag 7. oktober 2026, for eksempel klokken **11.00 Europe/Oslo**. Ikke erstatt mandagsplanen:
 
-> Gjør en ekstra Fellestall-analyse på budsjettdagen. Hent oppdatert main i Lippen1995/Project_statsbudsjett og les docs/budsjettdagen-2027.md og docs/codex-weekly-analysis.md. Kontroller at det faktiske 2027-forslaget er importert, og les regjeringens faktiske budsjettdokumenter før du skriver. Hvis filen ikke er tilgjengelig, rapporter dette og avtal nytt forsøk; ikke lever en historisk analyse som om den var budsjettanalysen. Skriv selv uten AI-API. Bruk prepare.mjs, kontrollerte fakta, tre budsjettgrafer og eksisterende botlevering med versjonsbundet forhåndsvisning og menneskelig godkjenning. Bekreft faktisk PR og fungerende forhåndsvisning før du melder ferdig. LinkedIn forblir deaktivert til tilgang er kontrollert.
+> Gjør en ekstra Fellestall-analyse på budsjettdagen. Hent oppdatert main i Lippen1995/Project_statsbudsjett og les docs/budsjettdagen-2027.md og docs/codex-weekly-analysis.md. Kontroller at det faktiske 2027-forslaget er importert, og les regjeringens faktiske budsjettdokumenter før du skriver. Hvis filen ikke er tilgjengelig, rapporter dette og avtal nytt forsøk; ikke lever en historisk analyse som om den var budsjettanalysen. Skriv selv uten AI-API. Bruk prepare.mjs med --budget-year=2027, kontrollerte fakta, én til syv grafer og eksisterende botlevering med versjonsbundet forhåndsvisning og menneskelig godkjenning. Bekreft faktisk PR og fungerende forhåndsvisning før du melder ferdig. LinkedIn forblir deaktivert til tilgang er kontrollert.
 
 Når vedtak senere blir tilgjengelig, vil neste native kjøring kunne velge forslag-mot-vedtak-analysen. Daglig dataimport innebærer ikke daglig AI-produksjon. Publisering samme dag krever også at godkjenneren rekker å godkjenne utkastet.
 

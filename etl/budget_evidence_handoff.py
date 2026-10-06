@@ -12,6 +12,7 @@ from pathlib import Path
 import requests
 from budget_evidence import archive_evidence, archive_rnb_decision
 from budget_proposals import sync_dfobudgets
+from party_priorities import archive_priorities, validate_priority
 
 INPUT_PATH = "editorial/handoff/budget-evidence.json"
 
@@ -20,10 +21,13 @@ def validate_packet(packet):
     if (not isinstance(packet, dict) or packet.get("version") != 1
             or type(packet.get("year")) is not int or not 2000 <= packet["year"] <= 2100
             or packet.get("phase") not in ["initial", "revised"]
-            or not isinstance(packet.get("evidence"), list) or len(packet["evidence"]) > 30
-            or any(not isinstance(item, dict) for item in packet["evidence"])
-            or (not packet["evidence"] and not packet.get("rnbDecision"))):
+            or not isinstance(packet.get("evidence", []), list) or len(packet.get("evidence", [])) > 30
+            or any(not isinstance(item, dict) for item in packet.get("evidence", []))
+            or not isinstance(packet.get("priorities", []), list) or len(packet.get("priorities", [])) > 36
+            or (not packet.get("evidence") and not packet.get("priorities") and not packet.get("rnbDecision"))):
         raise ValueError("Invalid budget documentation packet")
+    for item in packet.get("priorities", []):
+        validate_priority(item)
     if packet.get("rnbDecision") and (packet["phase"] != "revised" or not isinstance(packet["rnbDecision"], dict)):
         raise ValueError("RNB decision requires the revised phase")
     return packet
@@ -55,12 +59,14 @@ def main():
         raise ValueError("Unsupported budget packet size or encoding")
     packet = validate_packet(json.loads(base64.b64decode(content["content"], validate=False)))
     data_dir = Path("web/public/data")
-    if packet["evidence"]:
+    if packet.get("evidence"):
         archive_evidence(data_dir, packet["year"], packet["phase"], packet["evidence"])
+    if packet.get("priorities"):
+        archive_priorities(data_dir, packet["year"], packet["phase"], packet["priorities"])
     if packet.get("rnbDecision"):
         archive_rnb_decision(data_dir, packet["year"], packet["rnbDecision"])
         sync_dfobudgets(data_dir)
-    print("Official budget citations verified and archived; no article published")
+    print("Budget citations and party priorities verified and archived; no article published")
 
 
 if __name__ == "__main__":

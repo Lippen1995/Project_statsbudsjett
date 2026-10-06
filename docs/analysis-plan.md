@@ -120,3 +120,14 @@ AI skal velge én til syv grafer, inkludert SSB alene eller kombinert med Felles
 ### Fordypning i utenriksanalysen
 
 Brukeren ber samme dag om en vesentlig forbedret utenriksanalyse som går inn i hvilke konkrete poster som har steget, med fritt redaksjonelt fokus. Bruk kontrollert postutvalg, ikke bare departementets total. Skill bokførte endringer fra faktiske endringer i aktivitet, særlig når en post forsvinner samtidig som en tilgrensende post vokser. Forklar både oppgang og tilbakegang fra toppår, og la leseren følge undersøkelsen. Lever som erstatning av den tidligere godkjente utenriksanalysen, med nye grafer, LinkedIn-utkast og ny eksakt menneskelig godkjenning. Tidligere tekst og datagrunnlag bevares. Fremgangsmåten for valgbare postgrupper er dokumentert i docs/analysis-charts-topics.md.
+
+
+## Budsjettdagsberedskap, 6. oktober 2026
+
+Brukeren har uttrykkelig godkjent PR #27 i denne chatten og bedt om alle beredskapstiltak. Chatbeskjeden oppretter ikke et GitHub-review-event; registrering og faktisk publisering må kontrolleres gjennom den eksisterende eksakte godkjenningsflyten. Ingen egen godkjenning eller manuelt publiseringsregister brukes som omvei.
+
+Den ekstra native oppgaven 7. oktober kl. 11.00 Europe/Oslo er bekreftet opprettet av brukeren. Planleggeren er ikke tilgjengelig her. Budsjettdagslevering får eksplisitt mode budget-day og --budget-year=2027; et eldre regnskapsutkast blokkerer ikke denne særskilt bestilte hendelsen. Vanlige ukeskjøringer beholder køprioritet og alle utkast krever menneskelig godkjenning.
+
+Partikilder støttes nå separat fra parlamentarisk gjennomslag: offisiell HTML/PDF, kontrollert sitat, originalperiode eller opprinnelig budsjettår, originalfil og immutable arkiv. Nye 2027-krav må fortsatt leses på fremleggelsesdagen. Kildeoppdagelsen støtter regjeringens faktisk kontrollerte 2027-lanseringsside og kan finne kanoniske årssider fra offisiell oversikt. budget-readiness.yml prøver ekte 2026-import i midlertidig katalog, undersøker tilgjengelig 2027-kilde og beholder faktisk status.
+
+Miljøverktøyet meldte stale_base ved lagring av oppstartsinstruksen: brukeren har publisert en nyere versjon, mens denne kjøringen er bundet til det gamle nettverket. Ikke les/lagre samme gamle utkast på nytt. Forslaget til komplett oppstartsinstruks overføres som docs/cloud-budget-start-proposal.json på main. Ny setup-chat må lese gjeldende konfigurasjon, bevare dens innstillinger og innarbeide bare nødvendig oppstartsendring. Preflight.mjs skal kjøres i det publiserte miljøet før budsjettdagsarbeidet.
