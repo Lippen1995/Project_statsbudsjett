@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { collectPreviews, notifyPreviews, previewPath } from '../../scripts/analyser/previews.mjs'
+import { contentHash } from '../../scripts/analyser/schema.mjs'
 const article = () =>
   JSON.parse(readFileSync(new URL('../../editorial/drafts/pilot.json', import.meta.url)))
 function fixture() {
@@ -9,7 +10,7 @@ function fixture() {
     number: 14,
     state: 'open',
     user: { login: 'github-actions[bot]' },
-    body: 'Original review',
+    body: `Original review\nVersjon: \`${contentHash(article())}\``,
     head: { sha: 'a'.repeat(40), ref: 'analysis/weekly-test', repo: { full_name: 'owner/repo' } },
     base: { ref: 'main' },
   }
@@ -38,6 +39,22 @@ test('preview uses validated JSON at exact bot review head, not branch code', as
   assert.equal(p.hash.length, 64)
   pr.user.login = 'someone'
   assert.deepEqual(await collectPreviews(g), [])
+})
+
+test('a stale review description is regenerated from the exact preview without approving it', async () => {
+  const { g, pr, writes } = fixture()
+  const revised = article()
+  revised.copy.linkedin = 'Regningen har vokst. Hva fikk vi igjen for pengene? Les analysen.'
+  g.content = async () => ({ value: revised })
+  const [preview] = await collectPreviews(g)
+  await notifyPreviews(g, [preview])
+  assert.ok(writes[0].body.includes(revised.copy.linkedin))
+  assert.ok(writes[0].body.includes(`Versjon: \`${preview.hash}\``))
+  assert.equal(writes[0].body.includes('Original review'), false)
+  assert.equal(revised.approval, undefined)
+  preview.article.copy.linkedin = 'A changed artifact'
+  await assert.rejects(notifyPreviews(g, [preview]), /versjon er endret/)
+  assert.equal(writes.length, 1)
 })
 test('preview rejects unexpected changed files and invalid paths', async () => {
   const { g } = fixture()

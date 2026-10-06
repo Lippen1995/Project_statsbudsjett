@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { githubClient } from './github.mjs'
 import { readReviewContext } from './workflow.mjs'
 import { contentHash } from './schema.mjs'
+import { renderReview } from './render-review.mjs'
 
 export function previewPath(number, head) {
   if (!Number.isSafeInteger(number) || number < 1 || !/^[a-f0-9]{40}$/.test(head))
@@ -38,7 +39,14 @@ export async function notifyPreviews(g, previews) {
     const current = await g.api(`${g.root}/pulls/${preview.number}`)
     // Never present an old preview as the current version after a revision.
     if (current.state !== 'open' || current.head.sha !== preview.head) continue
-    const body = (current.body ?? '').replace(
+    if (contentHash(preview.article) !== preview.hash)
+      throw Error('Forhåndsvisningens gjennomgangsversjon er endret')
+    // Direct native-task edits can leave the PR description at the old hash.
+    // Preserve an up-to-date body; regenerate a stale one from the exact built draft.
+    const reviewBody = current.body?.includes(`Versjon: \`${preview.hash}\``)
+      ? current.body
+      : renderReview(preview.article)
+    const body = reviewBody.replace(
       /<!-- analysis-preview:start -->[\s\S]*?<!-- analysis-preview:end -->\s*/g,
       '',
     )
