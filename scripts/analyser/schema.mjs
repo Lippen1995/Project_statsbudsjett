@@ -91,10 +91,11 @@ export function validateArticle(article, { published = false } = {}) {
       article.replaces.slug === article.slug ||
       !/^[a-f0-9]{64}$/.test(article.replaces.contentHash ?? '') ||
       Object.keys(article.replaces).some(
-        (k) => !['slug', 'contentHash', 'detailSelections'].includes(k),
+        (k) => !['slug', 'contentHash', 'detailSelections', 'oilRefresh'].includes(k),
       ))
   )
     throw Error('Erstatningen må vise til en fast tidligere godkjent versjon')
+  if (article.replaces?.oilRefresh !== undefined && (article.replaces.oilRefresh !== true || article.replaces.detailSelections || r.kind !== 'oil-funds')) throw Error('Ugyldig oljepengeoppdatering')
   validateDetailSelections(article.replaces?.detailSelections)
   if (!r?.scopeId || !r.scopeName) throw Error('Mangler avgrensning')
   topicKey(r)
