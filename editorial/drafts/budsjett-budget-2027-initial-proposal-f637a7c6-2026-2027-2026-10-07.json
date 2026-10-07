@@ -5,7 +5,7 @@
   "type": "Budsjettforslag",
   "status": "draft",
   "createdAt": "2026-10-07T08:42:44.467Z",
-  "generatedAt": "2026-10-07T08:42:44.467Z",
+  "generatedAt": "2026-10-07T09:17:18.941808Z",
   "report": {
     "kind": "budget-comparison",
     "comparison": "previous-budget-to-proposal",
@@ -16717,106 +16717,74 @@
     ]
   },
   "copy": {
-    "title": "{{fact:absoluteChange}} mer: Her vokser regningen – og her strammes det inn",
-    "description": "Sven følger pengene fra revidert budsjett til neste års forslag: pensjon, sykehus, forsvar, kommuner, strøm og klima. Store utslag skjuler både nye prioriteringer og flytting av penger.",
-    "lead": "Statens regning øker med {{fact:absoluteChange}}. Pensjon, helse og forsvar tar det meste av nettoøkningen. Men bak milliardene finnes sykehuspenger som skifter lomme, tilskudd som utløper og mindre ny kapital til klimafondet. Sven følger endringene – og skiller større regninger fra bedre tilbud.",
-    "conclusion": "Utgiftene øker {{fact:nominalGrowth}} i løpende kroner. Pensjon, helse og forsvar står for {{fact:mainChangeShare}} av nettoøkningen. Mange av milliardene møter eksisterende behov eller flyttes mellom poster. Det avgjørende er hva endringene kjøper, hvem de berører og hvor mye handlingsrom som står igjen.",
-    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nStatens regning øker med {{fact:absoluteChange}} fra revidert budsjett til neste års forslag. Men milliardene har allerede mye å gjøre.\n\nPensjon, helse og forsvar står for {{fact:mainChangeShare}} av nettoøkningen. Samtidig skifter store sykehusbeløp postadresse, et flyktningkull går ut av tilskuddsperioden og Enova får mindre ny kapital. En plusskolonne er tydeligvis ingen garanti for flere ledige penger.\n\nHva er nye prioriteringer, og hva er større regninger eller penger som bare bytter lomme? Sven følger postene og forklarer forskjellen. Les analysen.",
+    "layout": "bridge-led",
+    "title": "{{fact:absoluteChange}} mer: Her havner milliardene",
+    "description": "Broer fra hele statsbudsjettet ned til enkeltposter viser hva som øker, hva som kuttes, og hvor store beløp bare flyttes.",
+    "lead": "Trygd, helse og forsvar tar mesteparten av veksten. Men under de store overskriftene skjuler det seg milliardflyttinger, færre nye fondsmidler og dyrere Norgespris.",
+    "conclusion": "Store nominelle økninger gir begrenset rom for mer aktivitet. Broene viser både vekst, kutt og flytting mellom poster.",
+    "linkedin": "Statsbudsjettet øker med {{fact:absoluteChange}} fra revidert {{fact:baseYear}} til forslaget for {{fact:budgetYear}}. Hvor havner pengene? Fellestalls nye analyse lar deg følge milliardene gjennom broer, helt ned til budsjettpostene. Vi undersøker trygd, sykehus, Ukraina-støtte, kommuner og strøm. De store tallene skjuler både reelle prioriteringer og flytting mellom poster.",
     "sections": [
       {
-        "heading": "Regningen vokser. Handlefriheten gjør ikke nødvendigvis det.",
+        "heading": "Tre områder sluker mesteparten av veksten",
         "paragraphs": [
-          "Statens regning øker med {{fact:absoluteChange}} fra revidert budsjett {{fact:baseYear}} til regjeringens forslag for {{fact:budgetYear}}. I Fellestalls avgrensning går utgiftene fra {{fact:beforeTotal}} til {{fact:afterTotal}}. Det er en nominell økning på {{fact:nominalGrowth}}. En anselig regning, også før noen har begynt å forhandle om den. Men beløpet forteller foreløpig bare hvor mye mer staten foreslår å bevilge.",
-          "Hvor pengene flytter seg, er mer avslørende. Arbeid og trygd, helse og forsvar står samlet for {{fact:mainChange}} av nettoøkningen, tilsvarende {{fact:mainChangeShare}}. Det er en beregnet fordeling av endringen mellom departementene, ikke en påstand om hva som har forårsaket den. Store utgifter til pensjon, helse og sikkerhet legger beslag på mye av den nominelle veksten, mens andre områder må klare seg med mindre.",
-          "Finansdepartementet beskriver samtidig budsjettet slik: «{{fact:documentAQuote}}» Det er en annen målestokk enn vår nominelle sammenligning. Departementets underliggende realvekst bygger på prisjusteringer, særskilte korreksjoner og oppdaterte anslag. Fellestall følger bevilgninger på kapittel og post. Begge tall kan derfor være riktige. Å omtale vår samlede økning som like mye ny aktivitet ville være å gi kronene en arbeidsevne de ikke har.",
-          "Vi bruker «Revidert budsjett» slik serien er definert i Fellestall: saldert budsjett pluss registrerte endringsvedtak hos DFØ. Serien kan også inkludere vedtak etter vårens reviderte nasjonalbudsjett. Dette er dermed ikke en særskilt frosset juniversjon. Regjeringens oppdaterte anslag for inneværende år er igjen en annen referanse. Når en pressemelding bruker saldert budsjett eller et nyere anslag, sier vi fra. Sammenligningsgrunnlaget skal være synlig, også når det gjør overskriften mindre dramatisk."
+          "Trygd og arbeid, helse og forsvar står for {{fact:mainChange}} av nettoøkningen: {{fact:mainChangeShare}}. Resten av budsjettet deler det som er igjen. Hovedbroen viser hvordan økningene og kuttene til sammen blir {{fact:absoluteChange}}. Trykk på et område for å følge endringen videre til kapitler og poster.",
+          "Den samlede veksten er {{fact:nominalGrowth}} i løpende kroner. Finansdepartementets vurdering av kjøpekraften er langt mer nøktern: «{{fact:documentAQuote}}» Dette er departementets korrigerte mål, ikke en prisjustering av broen. Budsjettet blir større uten at rommet for ny aktivitet vokser tilsvarende."
         ],
         "factIds": [
-          "absoluteChange",
-          "baseYear",
-          "budgetYear",
-          "beforeTotal",
-          "afterTotal",
-          "nominalGrowth",
           "mainChange",
           "mainChangeShare",
+          "absoluteChange",
+          "nominalGrowth",
           "documentAQuote"
         ]
       },
       {
-        "heading": "Pensjonen tar mest plass ved bordet",
+        "heading": "Trygden trekker fra – integrering går motsatt vei",
         "paragraphs": [
-          "Arbeids- og inkluderingsdepartementets utgifter øker med {{fact:departmentFChange}} til {{fact:departmentFAfter}}. Det er den største departementsøkningen i denne sammenligningen. Den mest oppsiktsvekkende enkeltposten er {{fact:increaseAName}}, som øker med {{fact:increaseAAmount}}. Det er fristende å lese hele beløpet som en ny gave til pensjonistene. Pensjonssystemets oppbygning gjør den tolkningen for enkel.",
-          "Alderspensjon samlet øker fra {{fact:pensionBefore}} til {{fact:pensionAfter}}, en endring på {{fact:pensionChange}}. Inntektspensjon er en del av denne summen og skal ikke legges til en gang til. Arbeids- og inkluderingsdepartementet forklarer overgangen mellom gamle og nye opptjeningsregler: «{{fact:documentHQuote}}» Når nye kull får større deler av pensjonen etter nye regler, vokser denne posten også av den grunn.",
-          "Samtidig reguleres løpende pensjoner etter lønns- og prisutviklingen, og antallet mottakere påvirker totalen. Veksten i en bestemt pensjonspost er derfor verken et mål på den enkelte pensjonistens inntektsøkning eller en prosentvis forbedring av pensjonsordningen. En pensjonist kan ha fått en regulering, mens statens utgifter øker mer fordi flere mottar ytelsen og flere omfattes av den nye beregningsmodellen.",
-          "Andre store velferdsposter trekker også opp. Uføretrygd øker med {{fact:disabilityChange}}, sykepenger til arbeidstakere med {{fact:sicknessChange}} og arbeidsavklaringspenger med {{fact:workAssessmentChange}}. Dette er avgrensede poster, ikke komplette regnskap for hvert formål. Utgiftsanslagene påvirkes av mottakertall, opptjening, regulering og regelverk. Mer penger på en overslagsbevilgning kan bety høyere forventet behov. Det kan ikke uten videre markedsføres som et nytt tilbud.",
-          "Den politisk nøytrale konklusjonen er likevel tydelig: pensjon og inntektssikring binder en stor del av veksten. Skal man forklare hvorfor den samlede regningen stiger, må disse ordningene med. Skal man vurdere om folk får bedre råd, må man videre til satser, skatt, priser og den enkeltes rettigheter. Departementets totalsum kan ikke gjøre den jobben alene."
+          "Arbeids- og inkluderingsdepartementet øker med {{fact:departmentFChange}}. Alderspensjonen alene står for {{fact:pensionChange}}. Innenfor pensjonen vokser inntektspensjonen mest; grunnpensjon, tilleggspensjon og særtillegg øker også. Overgangen mellom gamle og nye pensjonsregler påvirker fordelingen. En økning på én pensjonspost er derfor ikke det samme som en tilsvarende forbedring for hver pensjonist.",
+          "Uføretrygd øker med {{fact:disabilityChange}}, sykepenger med {{fact:sicknessChange}} og arbeidsavklaringspenger med {{fact:workAssessmentChange}}. Dette er anslag for utgifter til ordningene; mottakerantall, regulering og varighet påvirker regningen. På motsatt side er endringen i integreringstilskuddet {{fact:integrationChange}}. Departementet forklarer reduksjonen mot saldert budsjett med færre flyktninger i målgruppen: Et stort kull fra Ukraina går ut av tilskuddsperioden. Broen gjør den motgående bevegelsen synlig."
         ],
         "factIds": [
           "departmentFChange",
-          "departmentFAfter",
-          "increaseAName",
-          "increaseAAmount",
-          "pensionBefore",
-          "pensionAfter",
           "pensionChange",
-          "documentHQuote",
           "disabilityChange",
           "sicknessChange",
-          "workAssessmentChange"
+          "workAssessmentChange",
+          "integrationChange"
         ]
       },
       {
-        "heading": "Sykehusenes milliardhopp har en hemmelighet: pengene bytter lomme",
+        "heading": "Sykehus: Den største økningen er delvis en flytting",
         "paragraphs": [
-          "Helse- og omsorgsdepartementets ramme øker med {{fact:departmentGChange}}. Enkeltposten for innsatsstyrt finansiering øker med {{fact:hospitalActivityChange}}. Dette er finansiering som følger behandlingsaktiviteten. På samme tid er endringen i de samlede basisbevilgningene til de regionale helseforetakene {{fact:hospitalBaseChange}}. Leser man bare økningslisten, kan sykehusene se ut som store vinnere. Leser man bare kuttlisten, kan det se ut som en innstramming. Begge lesemåter mister sammenhengen.",
-          "Helseproposisjonen sier det rett ut: «{{fact:documentCQuote}}» En stor del av spranget i aktivitetsfinansieringen er altså penger som tidligere lå i basisbevilgningene. De blir ikke nye penger fordi de får en ny postadresse. Regjeringen flytter også finansiering av enkelte legemidler inn i den aktivitetsbaserte ordningen. Endringen er først og fremst viktig fordi den påvirker hvordan inntektene følger behandlingen.",
-          "Det er et reelt styringsvalg. Mer betaling knyttet til aktivitet skal gi sterkere økonomiske insentiver til å behandle pasienter. Om det gir kortere køer, avhenger blant annet av bemanning, kapasitet, hvilke behandlinger som utføres og hvordan ordningen praktiseres. Budsjettposten viser hva staten foreslår å finansiere. Den viser ikke at pasientene allerede har fått raskere hjelp.",
-          "Også særskilte tilskudd til helseforetakene øker kraftig, med {{fact:hospitalSpecialChange}}. Blant de vesentlige endringene på denne posten oppgir proposisjonen: «{{fact:documentDQuote}}» Håndtering av opparbeidet driftskreditt er en konkret forklaring på mye av økningen. Det er økonomisk opprydding som må skilles fra penger til nye undersøkelser, operasjoner eller flere ansatte.",
-          "Det mest talende regnestykket står et annet sted i samme dokument: «{{fact:documentKQuote}}» Her er sammenligningen med saldert budsjett, ikke vår reviderte referanse. Innenfor dette opplegget ligger den foreslåtte økningen etter innsparinger svært nær anslåtte demografiske merkostnader. Det betyr at en stor del av styrkingen skal holde tritt med behovene når vi blir flere og eldre. Det utelukker ikke forbedringer gjennom bedre organisering, men gir langt mindre grunnlag for å love et bredt løft ut fra milliardoverskriften alene."
+          "Helse øker samlet med {{fact:departmentGChange}}. Men se på broen for regionale helseforetak: Aktivitetsfinansieringen vokser med {{fact:hospitalActivityChange}}, samtidig som basisbevilgningene reduseres ({{fact:hospitalBaseChange}}). Budsjettproposisjonen forklarer det meste av aktivitetsøkningen med en budsjettnøytral flytting fra basis til aktivitet når satsene for innsatsstyrt finansiering heves. Å lese den største plussposten alene ville overvurdert tilførselen av nye penger.",
+          "Særskilte tilskudd øker også kraftig. Her inngår, ifølge proposisjonen, «{{fact:documentDQuote}}» Dermed er heller ikke denne posten en ren økning til pasientbehandling. Det strammeste bildet kommer fra departementets egen sammenligning med saldert budsjett: «{{fact:documentKQuote}}» Flere og eldre innbyggere spiser opp nesten hele den oppgitte driftsveksten. Broen nedenfor viser alle endringene i helseforetakskapitlet, også lån og kreditt."
         ],
         "factIds": [
           "departmentGChange",
           "hospitalActivityChange",
           "hospitalBaseChange",
-          "documentCQuote",
-          "hospitalSpecialChange",
           "documentDQuote",
           "documentKQuote"
         ]
       },
       {
-        "heading": "Forsvaret vokser. Ukraina-tallene krever begge øyne åpne.",
+        "heading": "Ukraina: Milliardene skifter post",
         "paragraphs": [
-          "Forsvarsdepartementets ramme øker fra {{fact:departmentOBefore}} til {{fact:departmentOAfter}}. Differansen er {{fact:departmentOChange}} mot revidert budsjett. Økningen er stor, men den må deles i oppbygging av det norske forsvaret, lønns- og prisutvikling, investeringer og Ukraina-støtte. En samlet sum forteller ikke hvor mange nye soldater, operative fartøy eller leverte våpen den representerer.",
-          "Den tydeligste tallfellen finnes i Ukraina-kapitlet. {{fact:increaseCName}} øker med {{fact:increaseCAmount}}, mens {{fact:cutAName}} endres med {{fact:cutAAmount}}. Dette er to deler av samme militære støttekapittel. Når de inkluderte postene summeres, går kapitlet fra {{fact:ukraineMilitaryBefore}} til {{fact:ukraineMilitaryAfter}}, en nettoøkning på {{fact:ukraineMilitaryChange}}. Det store positive utslaget på tilskuddsposten er derfor langt større enn kapitlets nettoøkning.",
-          "Forsvarsdepartementet beskriver programrammen slik: «{{fact:documentEQuote}}» Programrammen, de årlige kontantbevilgningene og verdien av donert materiell må holdes fra hverandre. At programrammen videreføres, betyr ikke at hver budsjettpost står stille. Betalingsplaner, donasjoner og fordelingen mellom støtteformer kan endre postene uten at hele støtteprogrammet øker tilsvarende. Den militære rammen skal heller ikke legges oppå den samlede sivile og militære rammen.",
-          "Den innenlandske oppbyggingen har også konkret innhold. Departementet oppgir: «{{fact:documentMQuote}}» Formuleringen skiller styrket driftsramme fra pris- og lønnskompensasjon. Budsjettdokumentene peker dessuten på personell, materiell, bygg, beredskap og produksjonskapasitet. Pengene skal dermed både holde eksisterende aktivitet i gang og bygge ny kapasitet. Utbetalinger for store anskaffelser kan svinge mellom år, mens leveransene kommer senere.",
-          "Det er rimelig å beskrive forsvar som et prioritert område. Det er mindre presist å tilskrive hele økningen ett nytt politisk grep eller ett partis gjennomslag. Langtidsplaner og brede forlik ligger bak deler av oppbyggingen. På fremleggelsesdagen analyserer vi regjeringens forslag. Eventuelle forhandlingsseire må dokumenteres etter at forhandlingene faktisk har funnet sted."
+          "Tilskuddsposten for militær støtte til Ukraina øker med {{fact:increaseCAmount}}. Spesielle driftsutgifter på samme kapittel går motsatt vei: {{fact:cutAAmount}}. Etter at bevegelsene er summert, er kapitlets nettoøkning {{fact:ukraineMilitaryChange}}. Det er stor forskjell på den største plussposten og økningen i hele kapitlet.",
+          "Regjeringen opplyser at den samlede rammen for sivil og militær Ukraina-støtte videreføres. Kapitlet i broen dekker militær støtte; det er ikke hele Nansen-programmet. Forsvarsdepartementets samlede vekst er {{fact:departmentOChange}}, med økninger også til drift, bygg og materiell. Gå inn i «Forsvar» i hovedbroen for å se hvordan disse delene bidrar. Det gir et mer presist bilde enn å omtale all forsvarsvekst som økt Ukraina-støtte."
         ],
         "factIds": [
-          "departmentOBefore",
-          "departmentOAfter",
-          "departmentOChange",
-          "increaseCName",
           "increaseCAmount",
-          "cutAName",
           "cutAAmount",
-          "ukraineMilitaryBefore",
-          "ukraineMilitaryAfter",
           "ukraineMilitaryChange",
-          "documentEQuote",
-          "documentMQuote"
+          "departmentOChange"
         ]
       },
       {
-        "heading": "Kommunene får mer. Mye er brukt før det kommer.",
+        "heading": "Kommunene får mer – men lite står igjen",
         "paragraphs": [
-          "Kommunal- og distriktsdepartementets utgifter øker med {{fact:departmentEChange}}. Innbyggertilskuddet til kommunene er blant de største enkeltøkningene: {{fact:increaseDAmount}}. Det er et viktig beløp, men kommunenes frie inntekter består av mer enn statlige rammetilskudd. Kommunale skatteinntekter må også med. Departementets samlede budsjett og kommunesektorens samlede handlingsrom er derfor forskjellige størrelser.",
-          "Kommunaldepartementets egne ord er mer opplysende enn økningslisten: «{{fact:documentBQuote}}» Realveksten som regjeringen beskriver, tar hensyn til kostnadsutviklingen og regnes fra inntektsnivået etter Stortingets behandling av revidert nasjonalbudsjett. Etter demografiske merkostnader er det langt mindre igjen til andre formål enn den nominelle overføringsveksten kan gi inntrykk av.",
-          "Det betyr at mer penger kan være nødvendig for å levere omtrent samme tjenestestandard til en befolkning med større omsorgsbehov. Det betyr samtidig ikke at hver kommune får identisk økonomisk utvikling. Fordeling, skatteinngang, alderssammensetning, gjeld, lokale kostnader og tidligere underskudd påvirker hva den enkelte kommune kan gjøre. Et nasjonalt gjennomsnitt kan ikke avgjøre om en bestemt skole må kutte eller et bestemt sykehjem får flere ansatte.",
-          "Også midlertidige midler må med i forklaringen. Departementet opplyser: «{{fact:documentNQuote}}» Bare en del av denne økningen videreføres. Når en midlertidig bevilgning faller bort, blir sammenligningen mot revidert budsjett strammere enn mot det opprinnelige budsjettet. Det kan ha reelle konsekvenser for planleggingen, men må beskrives som bortfall av midlertidige midler, ikke automatisk som en ny reduksjon i en varig ordning.",
-          "Kommunenes budsjettøkning er derfor en god illustrasjon av hele forslaget: mer penger på papiret, men mye av økningen skal møte utgifter som allerede kommer. Spørsmålet for innbyggerne er hva som står igjen etter at behov, kostnader og oppgaveendringer er dekket. Det er dette beløpet som sier mest om muligheten til å forbedre tjenestene."
+          "Kommunal- og distriktsdepartementet øker med {{fact:departmentEChange}}. Innbyggertilskuddet til kommunene står for {{fact:increaseDAmount}}, og tilskuddet til fylkeskommunene øker også. Dette er store nominelle beløp. Departementets beregning av rommet etter demografikostnader er mindre: «{{fact:documentBQuote}}» Den beregningen gjelder frie inntekter, med et annet sammenligningsgrunnlag enn hele departementsbroen.",
+          "Revidert budsjett er dessuten en høyere startstrek på enkelte områder. Om fylkene skriver departementet: «{{fact:documentNQuote}}» En midlertidig styrking som faller bort kan derfor gjøre veksten mot revidert svakere enn veksten mot saldert. Broen viser hva som faktisk endres mellom Fellestalls valgte budsjetter; pressemeldingen forklarer hvorfor referansepunktet betyr noe."
         ],
         "factIds": [
           "departmentEChange",
@@ -16826,102 +16794,115 @@
         ]
       },
       {
-        "heading": "Strøm og klima: mindre fra staten, men ulike grunner",
+        "heading": "Klima og strøm: Mindre inn, høyere Norgespris",
         "paragraphs": [
-          "Energidepartementets ramme endres med {{fact:departmentPChange}}, mens endringen i Klima- og miljødepartementets ramme er {{fact:departmentLChange}}. Dette er de tydeligste departementsnedgangene. Men energistøtte og klimainvesteringer følger ulike mekanismer. Det ville være misvisende å putte begge i samme sekk og kalle hele nedgangen en lik innstramming for alle mottakere.",
-          "De utvalgte postene for strømstøtte og Norgespris går samlet fra {{fact:electricityBefore}} til {{fact:electricityAfter}}, en endring på {{fact:electricityChange}}. Slike bevilgninger avhenger av forventede markedspriser, forbruk og hvor mange som bruker ordningene. Lavere anslått statlig utgift er derfor ikke i seg selv bevis på at en husholdning mister like mye støtte. Staten budsjetterer forskjellen mellom ordningenes vilkår og et marked som kan utvikle seg annerledes enn ventet.",
-          "Her finnes også en konkret vilkårsendring. Finansdepartementet opplyser: «{{fact:documentFQuote}}» Norgespris videreføres, men videreføring er ikke det samme som uendret pris. Den enkelte husholdnings regning påvirkes av forbruk, avgifter, nettleie og alternativet i markedet. En nasjonal nedgang i støttebevilgningen kan derfor ikke fordeles likt på strømregningene rundt om i landet.",
-          "Enova er en annen historie. Overføringen på den utvalgte posten til Klima- og energifondet går fra {{fact:enovaBefore}} til {{fact:enovaAfter}}. Endringen er {{fact:enovaChange}}. Dette er en faktisk reduksjon i den nye bevilgningen på posten. Samtidig beskriver regjeringen fondssituasjonen slik: «{{fact:documentGQuote}}» Fondets eksisterende midler gjør at årets tilførsel og muligheten til å støtte prosjekter ikke er samme størrelse.",
-          "Vårt postavvik og regjeringens oppgitte reduksjon skal heller ikke leses som identiske regnestykker. Vi sammenligner én post mot løpende revidert budsjett. Gul bok omtaler samlet bevilgning fra flere departementsområder og bruker sitt eget sammenligningsopplegg. Det relevante funnet er at nye tilførsler reduseres, mens et stort fond står igjen. Hvor stramt det blir for nye søkere, må vurderes mot tidligere tilsagn, fremtidige forpliktelser og hvilke prosjekter Enova prioriterer. Fondsbeholdningen alene avgjør ikke det.",
-          "Klimaområdet omfatter dessuten avgifter, reguleringer og andre virkemidler enn departementets utgiftsramme. Lavere ramme dokumenterer en budsjettendring. Den dokumenterer ikke alene hvordan de samlede utslippene utvikler seg, eller om klimamålene blir nådd. Her må både støtten som reduseres og de øvrige virkemidlene vurderes."
+          "Klima- og miljødepartementet går i minus: {{fact:departmentLChange}}. Den store driveren er overføringen til Klima- og energifondet på Enova-posten: {{fact:enovaChange}}. Dette er færre nye kroner inn i fondet. Enova kan også bruke midler som allerede ligger der. Kuttet i årets overføring kan derfor ikke leses som et like stort fall i årets utbetalinger til prosjekter. Klimabroen viser hvordan Enova trekker ned totalen mens andre kapitler går motsatt vei.",
+          "Endringen for Energidepartementet er {{fact:departmentPChange}}. Strømstøtte og Norgespris står samlet for {{fact:electricityChange}}. Samtidig opplyser regjeringen: «{{fact:documentFQuote}}» Lavere statsutgifter til ordningene betyr dermed ikke automatisk billigere strøm for kunden. Statens bevilgning avhenger også av forventede markedspriser og forbruk. Den egne strømbroen viser hvilke poster som står bak fallet."
         ],
         "factIds": [
-          "departmentPChange",
           "departmentLChange",
-          "electricityBefore",
-          "electricityAfter",
-          "electricityChange",
-          "documentFQuote",
-          "enovaBefore",
-          "enovaAfter",
           "enovaChange",
-          "documentGQuote"
+          "departmentPChange",
+          "electricityChange",
+          "documentFQuote"
         ]
       },
       {
-        "heading": "Flyktningtilskuddet faller når et stort kull går ut",
+        "heading": "Dette merker du utenfor de største broene",
         "paragraphs": [
-          "Integreringstilskuddet faller fra {{fact:integrationBefore}} til {{fact:integrationAfter}}, en endring på {{fact:integrationChange}}. Det er blant de største negative postutslagene. Pengene går til kommunenes bosettings- og integreringsarbeid, så en slik nedgang er viktig å undersøke. Men lavere totalsum betyr ikke nødvendigvis at satsen per person er kuttet tilsvarende.",
-          "Arbeids- og inkluderingsdepartementet forklarer hovedårsaken slik: «{{fact:documentIQuote}}» Kilden sammenligner med saldert budsjett. Vår differanse bruker revidert budsjett, men dokumentet forklarer en relevant mekanisme: tilskuddet gis over en avgrenset periode, og et stort kull går ut. At folk fortsatt bor i en kommune, betyr ikke at kommunen fortsatt mottar samme tilskudd for dem.",
-          "Nedgangen skal derfor ikke uten videre omtales som lavere støtte til hver nybosatt flyktning. Samtidig forsvinner ikke alle lokale kostnader når statens tilskuddsperiode er over. Kommunenes videre behov avhenger blant annet av arbeid, utdanning, helse og sosialhjelp. Det kan oppstå en overgang fra en særskilt statlig tilskuddsordning til ordinære kommunale tjenester og inntektsrammer.",
-          "Dette er en konkret budsjettutfordring som verken bør skjules eller blåses opp. Mindre penger på posten kan følge av færre personer i målgruppen. Om den enkelte kommune likevel kommer dårligere ut, krever et regnestykke over både inntektene og behovene som står igjen. Posten alene kan ikke avgjøre det."
-        ],
-        "factIds": [
-          "integrationBefore",
-          "integrationAfter",
-          "integrationChange",
-          "documentIQuote"
-        ]
-      },
-      {
-        "heading": "Veier, tog og bygg: vekst noen steder, en brems andre steder",
-        "paragraphs": [
-          "Samferdselsdepartementets samlede ramme øker med {{fact:departmentKChange}} til {{fact:departmentKAfter}}. Det er liten nominell vekst sammenlignet med flere av de store velferdsområdene. Innenfor rammen er bevegelsene langt større: jernbanens investeringspost øker med {{fact:railInvestmentChange}}, mens posten for fornying og mindre investeringer endres med {{fact:railRenewalChange}}. Samferdsel står dermed ikke stille selv om totalen beveger seg lite.",
-          "Dette er separate poster med ulikt innhold. Endringen viser en annen fordeling av bevilgninger, men er ikke i seg selv et komplett mål på samlet vedlikeholdsinnsats. Budsjettdokumentene fremhever fremdrift i prosjekter som allerede er satt i gang. Utbetalingsplaner kan løfte en investeringspost i ett år uten at det er vedtatt et tilsvarende nytt prosjekt. For den reisende er det ferdigstillelse, stabilitet og kapasitet som til slutt teller.",
-          "På postområdet er det også et konkret forslag til endrede tjenester. Samferdselsdepartementet skriver: «{{fact:documentJQuote}}» Her handler omstillingen både om lavere bevilgning og om leveringsmåten. Departementet foreslår at ordinære brev som hovedregel leveres til postkassen ukentlig i overgangsordningen, med andre løsninger for hyppigere levering. Det er en endring som kan merkes i hverdagen, særlig av mennesker som fortsatt er avhengige av brev.",
-          "Digitaliserings- og forvaltningsdepartementets ramme endres med {{fact:departmentMChange}}. Flere store byggeposter faller samtidig som enkelte nye prosjektposter kommer til. En lavere årlig byggebevilgning kan følge av prosjektfaser og ferdigstilling; det er ikke uten videre et tilsvarende kutt i permanente tjenester. Det samme kontrollspørsmålet gjelder på tvers av sektorer: er oppgaven redusert, finansieringen flyttet, eller er utbetalingen bare skjøvet mellom år?"
+          "Samferdsel øker bare med {{fact:departmentKChange}}. Bak den beskjedne nettoøkningen øker jernbaneinvesteringene med {{fact:railInvestmentChange}}, mens tilskuddet til Avinor går motsatt vei ({{fact:avinorChange}}). Regjeringen foreslår også sjeldnere brevlevering. Her er det konkrete tjenesteendringer bak bevilgningene, ikke bare nye totalsummer.",
+          "På skattesiden foreslår regjeringen lavere inntektsskatt, men også en lavere grense for momsfritak på elbiler. Skatter ligger utenfor utgiftsbroene. De må leses sammen med utgiftene når man vurderer virkningen for husholdningene. Staten bruker mer, men plusstegnene betyr ikke at alle får mer. Broene viser hvor økningen blir igjen, hvor penger flyttes, og hvor bevilgningene faktisk faller."
         ],
         "factIds": [
           "departmentKChange",
-          "departmentKAfter",
           "railInvestmentChange",
-          "railRenewalChange",
-          "documentJQuote",
-          "departmentMChange"
-        ]
-      },
-      {
-        "heading": "Familier og skattebetalere: totalsummen forteller ikke hvem som vinner",
-        "paragraphs": [
-          "Barne- og familiedepartementets utgifter øker med {{fact:departmentHChange}}. Foreldrepenger ved fødsel øker på den utvalgte posten med {{fact:parentalChange}}. Den samlede bevilgningen følger blant annet antall mottakere, opptjening og utbetalingsnivå. En større post er derfor ikke i seg selv en ny eller bedre rettighet for hver familie. Satser og vilkår må leses ved siden av beløpet.",
-          "Det samme gjelder tiltak regjeringen har innført tidligere og foreslår å videreføre. En lav barnehagepris eller høyere barnetrygd kan ha stor betydning for hverdagsøkonomien. Men når ordningen allerede ligger i årets budsjett, kan ikke hele ordningens verdi bokføres som en ny gevinst i neste års forslag. For en analyse av endringer er skillet mellom nytt tiltak, helårsvirkning og videreføring helt avgjørende.",
-          "Skattesiden har en tydelig ny prioritering. Finansdepartementet skriver: «{{fact:documentLQuote}}» Samtidig foreslår regjeringen endringer på forbrukssiden. Et konkret eksempel er dette: «{{fact:documentOQuote}}» Lettelsen i inntektsskatt er altså ikke en fullstendig beskrivelse av hvordan husholdningenes samlede skatt og avgifter endres.",
-          "En person som får lavere inntektsskatt, kan samtidig møte endrede avgifter ved et kjøp. En husholdning som ikke foretar dette kjøpet, møter ikke den samme direkte endringen. Inntekt, arbeidssituasjon, forbruk og bruk av støtteordninger avgjør nettoeffekten. Uten et kontrollert husholdningsregnestykke er det ikke grunnlag for å utrope «vanlige folk», alle pensjonister eller alle barnefamilier til vinnere eller tapere.",
-          "Statsgjeldens rentepost øker også, med {{fact:interestChange}}. Dette gir ingen ny tjeneste til innbyggerne, men tar plass i budsjettet. Sammen med regulering av ytelser, større behov og endrede prosjektutbetalinger viser det hvorfor en stigende totalsum kan gi begrenset rom for nye løfter. Staten kan bruke mer uten at hvert departement, hver kommune eller hver familie får mer å rutte med."
-        ],
-        "factIds": [
-          "departmentHChange",
-          "parentalChange",
-          "documentLQuote",
-          "documentOQuote",
-          "interestChange"
-        ]
-      },
-      {
-        "heading": "Dommen over tallene: mer penger, hardere prioriteringer",
-        "paragraphs": [
-          "Forslaget er større enn revidert budsjett med {{fact:absoluteChange}}, men innholdet er mer sammensatt enn en lang liste med pluss og minus. Pensjon og inntektssikring vokser kraftig. Forsvaret bygges opp. Helse og kommuner får større nominelle rammer, samtidig som kostnader og demografi bruker mye av økningen. Nye tilførsler til Enova reduseres, og enkelte tjenesteordninger legges om.",
-          "Noen av de største tallutslagene er flyttinger mellom finansieringsposter. Andre følger mottakertall, avsluttede tilskuddsperioder eller utbetalingsplaner. At slike endringer har en teknisk forklaring, gjør dem ikke uviktige: en ny finansieringsmodell kan påvirke prioriteringene på sykehus, og bortfall av integreringstilskudd kan påvirke kommuneøkonomien. Men forklaringen avgjør hva tallene faktisk gir dekning for å si.",
-          "Den mest presise tabloidoverskriften er derfor at regningen vokser mens kampen om handlingsrommet fortsetter. Skal et område kalles styrket, må vi undersøke hva som er igjen etter priser, behov, tidligere vedtak og omflyttinger. Skal det kalles kuttet, må vi undersøke om en oppgave forsvinner, får mindre finansiering eller flyttes til en annen post. Den samme målestokken må brukes på regjeringens favorittområder og på områdene som får mindre.",
-          "Dette er regjeringens forslag, ikke Stortingets ferdige budsjett. Rapporten tilskriver derfor ingen partier udokumenterte forhandlingsseire. Når budsjettet er behandlet, kan vi måle vedtakene mot dette forslaget og følge de faktiske endringene. Foreløpig viser tallene først og fremst hvor de store forpliktelsene vokser, og hvor regjeringen foreslår å hente rom til dem."
-        ],
-        "factIds": [
-          "absoluteChange"
+          "avinorChange"
         ]
       }
     ],
     "graphs": [
       {
-        "kind": "budget-totals",
-        "afterSection": 0
-      },
-      {
-        "kind": "budget-changes",
-        "afterSection": 2
+        "kind": "budget-bridge",
+        "afterSection": 0,
+        "title": "Hvor havner nettoøkningen?",
+        "description": "Alle departementer. Revidert {{fact:baseYear}} → forslag {{fact:budgetYear}}. Klikk på en søyle for å gå dypere."
       },
       {
         "kind": "budget-bridge",
-        "afterSection": 9
+        "afterSection": 1,
+        "title": "Trygd: Veksten og motkreftene",
+        "description": "Arbeids- og inkluderingsdepartementet, fordelt på kapitler.",
+        "department": "06"
+      },
+      {
+        "kind": "budget-bridge",
+        "afterSection": 2,
+        "title": "Sykehus: Følg pengene mellom postene",
+        "description": "Regionale helseforetak. Postene er gruppert etter finansieringsform.",
+        "chapter": "0732",
+        "groups": [
+          {
+            "label": "Basisbevilgninger",
+            "recordKeys": [
+              "0732-72",
+              "0732-73",
+              "0732-74",
+              "0732-75"
+            ]
+          },
+          {
+            "label": "Aktivitetsfinansiering",
+            "recordKeys": [
+              "0732-76"
+            ]
+          },
+          {
+            "label": "Særskilte tilskudd",
+            "recordKeys": [
+              "0732-70"
+            ]
+          },
+          {
+            "label": "Investeringslån",
+            "recordKeys": [
+              "0732-82"
+            ]
+          },
+          {
+            "label": "Driftskreditt",
+            "recordKeys": [
+              "0732-86"
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "budget-bridge",
+        "afterSection": 3,
+        "title": "Ukraina: Store utslag, mindre nettoøkning",
+        "description": "Militær støtte til Ukraina. Alle poster i kapitlet.",
+        "chapter": "1750"
+      },
+      {
+        "kind": "budget-bridge",
+        "afterSection": 4,
+        "title": "Kommuner: Hvor vokser overføringene?",
+        "description": "Kommunal- og distriktsdepartementet, fordelt på kapitler.",
+        "department": "05"
+      },
+      {
+        "kind": "budget-bridge",
+        "afterSection": 5,
+        "title": "Klima: Enova trekker ned",
+        "description": "Klima- og miljødepartementet, fordelt på kapitler.",
+        "department": "14"
+      },
+      {
+        "kind": "budget-bridge",
+        "afterSection": 5,
+        "title": "Strøm: Hvilke poster faller?",
+        "description": "Norges vassdrags- og energidirektorat. Omfatter strømstøtte, Norgespris og øvrige poster.",
+        "chapter": "1820"
       }
     ]
   }
