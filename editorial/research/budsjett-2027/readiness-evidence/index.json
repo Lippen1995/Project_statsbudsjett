@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceCheckedAt": "2026-10-06T12:33:08.055615+00:00",
+  "sourceCheckedAt": "2026-10-07T08:44:32.821437+00:00",
   "sourceAcquisitionEnvironment": "native-workspace",
   "responses": {
     "https://www.regjeringen.no/contentassets/bad238c9c4d94a639dbc8104fce42e1c/2026_gulbok_datagrunnlag.xlsx": {
@@ -12,19 +12,25 @@
     "https://www.regjeringen.no/no/statsbudsjett/2026/": {
       "url": "https://www.regjeringen.no/no/statsbudsjett/2026/id3118616/",
       "status": 200,
-      "sha256": "341950d747e19653ee1161366f2256f5800814372d3eff40c8e8ca6dbd217fd4",
+      "sha256": "ce77ff570cd31e0557d9255683e9bae8aff2d80ccaeff0a2608cf2ce80949c3f",
       "encoding": "utf-8"
     },
     "https://www.regjeringen.no/no/statsbudsjett/2026/statsbudsjettet-2026-tallgrunnlag-gul-bok/id3120937/": {
       "url": "https://www.regjeringen.no/no/statsbudsjett/2026/statsbudsjettet-2026-tallgrunnlag-gul-bok/id3120937/",
       "status": 200,
-      "sha256": "fecb6766009294f8784590d8804c4c717698f19a8dc23d81a07c6ada204c7f8d",
+      "sha256": "a5e269e38302313b5e17128f548048324ed86a34a52d36dd152a4b1ed1ecfb07",
       "encoding": "utf-8"
     },
     "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/": {
       "url": "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/",
       "status": 200,
-      "sha256": "f99db3aec56d584273b5a43e58ce3272cc921196458e1ba81973df2306d3bf56",
+      "sha256": "4ff4d04f06a7714c0d727e41bedb68898bd7be047132b9896b28cb8357d0f48d",
+      "encoding": "utf-8"
+    },
+    "https://www.regjeringen.no/no/statsbudsjett/2027/statsbudsjettet-2027-tallgrunnlag-gul-bok/id3173280/": {
+      "url": "https://www.regjeringen.no/no/statsbudsjett/2027/statsbudsjettet-2027-tallgrunnlag-gul-bok/id3173280/",
+      "status": 200,
+      "sha256": "accb252a774a304b9a8459309a19544c7c2489b57571d70393edaa266e8a1b70",
       "encoding": "utf-8"
     }
   }
