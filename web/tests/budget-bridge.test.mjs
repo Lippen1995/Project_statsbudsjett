@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { bridgeRows, bridgeSteps } from '../src/analyser/budget-bridge.js'
+import { bridgeRows, bridgeSteps, bridgePercent } from '../src/analyser/budget-bridge.js'
 import { graphPlan } from '../src/analyser/chart-plan.js'
 import { nextBudgetReport } from '../../scripts/analyser/budget-report.mjs'
 const row = (id, department, before, after, name = 'Kapittel – Post') => ({ id, department, before, after, change: after - before, name, departmentName: department })
@@ -46,4 +46,18 @@ test('actual 2027 bridges reconcile at department and chapter level to the froze
       near(bridgeSteps(scoped.entries, scoped.total).at(-1)?.end ?? 0, scoped.total)
     }
   }
+})
+
+test('percent changes use the selected baseline, including the aggregated remainder', () => {
+  assert.equal(bridgePercent({before: 100, change: 5}), 5)
+  assert.equal(bridgePercent({before: 80, change: -20}), -25)
+  assert.equal(bridgePercent({before: 0, change: 5}), null)
+  assert.equal(bridgePercent({before: -1, change: 5}), null)
+  const entries = Array.from({length: 8}, (_, i) => ({id: String(i), label: 'Post', before: (i + 1) * 100, after: (i + 1) * 100 + 10, change: 10}))
+  const rest = bridgeSteps(entries, 80).find(r => r.id === 'rest')
+  assert.equal(rest.before, 2100)
+  near(bridgePercent(rest), 30 / 2100 * 100)
+  const withUnchanged = bridgeSteps([...entries, {id: 'unchanged', label: 'Uendret', before: 900, after: 900, change: 0}], 80).find(r => r.id === 'rest')
+  assert.equal(withUnchanged.before, 3000)
+  assert.equal(bridgePercent(withUnchanged), 1)
 })

@@ -59,9 +59,9 @@ export function bridgeSteps(entries, total) {
   const top = changing.filter((r) => r.change > 0).slice(0, 5)
   const cuts = changing.filter((r) => r.change < 0).slice(-3)
   const shown = new Set([...top, ...cuts].map((r) => r.id))
-  const other = changing.filter((r) => !shown.has(r.id))
+  const other = entries.filter((r) => !shown.has(r.id))
   const ordered = [...top, ...cuts]
-  if (other.length) ordered.push({ id: 'rest', label: 'Øvrige', change: other.reduce((s, r) => s + r.change, 0) })
+  if (other.length) ordered.push({ id: 'rest', label: 'Øvrige', change: other.reduce((s, r) => s + r.change, 0), before: other.reduce((s, r) => s + (r.before ?? 0), 0), after: other.reduce((s, r) => s + (r.after ?? 0), 0) })
   let current = 0
   const steps = ordered.map((r) => {
     const start = current
@@ -71,4 +71,8 @@ export function bridgeSteps(entries, total) {
   if (Math.abs(current - total) > Math.max(1, Math.abs(total)) * 1e-10)
     throw Error('Broen avstemmer ikke til totalen')
   return steps
+}
+
+export function bridgePercent({ before, change }) {
+  return before > 0 ? change / before * 100 : null
 }
