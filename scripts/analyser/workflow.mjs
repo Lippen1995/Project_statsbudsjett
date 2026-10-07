@@ -94,6 +94,7 @@ export async function runWorkflow({
   replacementFor = null,
   detailSelections,
   budgetYear,
+  budgetBaseline = 'saldert',
   oilYear,
 }) {
   const draftPrefix = 'editorial/drafts/'
@@ -158,6 +159,7 @@ export async function runWorkflow({
         ? buildOilReport(dataDir, oilYear)
         : command === 'budget-day'
         ? nextBudgetReport(dataDir, published, {
+            baselineSeries: budgetBaseline,
             eligible: (r) =>
               r.year === budgetYear &&
               r.phase === 'initial' &&

@@ -4,7 +4,7 @@ import { nextBudgetReport } from './budget-report.mjs'
 import { topicBlocked, focusedQuestions } from '../../web/src/analyser/topics.js'
 export function nextReport(dataDir, published, { at = new Date().toISOString() } = {}) {
   const budget = nextBudgetReport(dataDir, published, {
-    eligible: (r) => !topicBlocked(r, published, at),
+    eligible: (r) => Date.parse(r.dataUpdated) <= Date.parse(at) && !topicBlocked(r, published, at),
   })
   if (budget) return budget
   const meta = JSON.parse(readFileSync(`${dataDir}/meta.json`))

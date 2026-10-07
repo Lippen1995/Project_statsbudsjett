@@ -159,3 +159,15 @@ Les `docs/ssb-analysis-research.md`. Undersøk relevante befolknings-, pris-/lø
 ### Grafvalg og smal temakontroll
 
 Les `docs/analysis-charts-topics.md`. Antallet grafer er én til syv; inkluder SSB-bakgrunn når det styrker forklaringen. Ikke omtale selve innføringen av SSB-data. Årets forslag, samme års vedtak og RNB har egne, tydelig avgrensede hendelser. Et nytt talluttrekk fra samme forslag gir ikke en ny ordinær problemstilling.
+
+### Uttrykkelig analyse mot revidert foregående år
+
+Ved bestilling av sammenligningen i Fellestalls «Endringer»-visning brukes:
+
+```sh
+GITHUB_REPOSITORY=Lippen1995/Project_statsbudsjett node scripts/analyser/prepare.mjs editorial/handoff/ukens-analyse.json --budget-year=2027 --baseline=revidert
+```
+
+Dette velger DFØs løpende reviderte serie for 2026, uten å falle tilbake til saldert dersom serien mangler. Den er ikke et særskilt frosset parlamentarisk juni-RNB. Rapporten merker basen, fryser oppdateringstidspunktet og binder valget til datahashen. Nasjonalbudsjettets oppdaterte anslag og pressemeldingenes salderte sammenligninger må forklares separat. Standardkjøringen uten parameteren bruker fortsatt saldert. Samme budsjettforslag er fortsatt én redaksjonell problemstilling.
+
+Det kontrollerte grunnlaget inkluderer departementssummer, navngitte postgrupper og kildeutdrag fra leste primærkilder i `web/public/data/budget-research/2027/`. PDF-linjebryting og delte ord er normalisert. Boten regenererer rapporten fra main med den oppgitte basen og avviser avvik. Artikkel og LinkedIn-utkast følger den eksisterende versjonsbundne gjennomgangen og publiseres etter godkjenning av akkurat den versjonen.

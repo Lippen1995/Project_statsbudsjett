@@ -19,6 +19,8 @@ const g = githubClient({ transport: 'gh' })
 const number = Number(process.argv[3])
 const budgetDay = /^--budget-year=(\d{4})$/.exec(process.argv[3] ?? '')
 const budgetYear = budgetDay ? Number(budgetDay[1]) : null
+const budgetBaseline = process.argv[4] === '--baseline=revidert' ? 'revidert' : 'saldert'
+if (process.argv[4] && process.argv[4] !== '--baseline=revidert') throw Error('Ukjent sammenligningsgrunnlag')
 const oil = /^--oil-year=(\d{4})$/.exec(process.argv[3] ?? '')
 const oilYear = oil ? Number(oil[1]) : null
 let packet
@@ -63,6 +65,7 @@ if (process.argv[3] && !budgetDay && !oil) {
   }
   const report = oil ? buildOilReport('web/public/data', oilYear) : budgetDay
     ? nextBudgetReport('web/public/data', published, {
+        baselineSeries: budgetBaseline,
         eligible: (r) =>
           r.year === budgetYear &&
           r.phase === 'initial' &&
