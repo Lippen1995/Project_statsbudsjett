@@ -5,7 +5,7 @@
   "type": "Budsjettforslag",
   "status": "draft",
   "createdAt": "2026-10-07T20:08:44.119Z",
-  "generatedAt": "2026-10-07T20:08:44.119Z",
+  "generatedAt": "2026-10-07T20:41:14.167Z",
   "report": {
     "kind": "budget-comparison",
     "comparison": "previous-budget-to-proposal",
@@ -23569,225 +23569,164 @@
     ]
   },
   "copy": {
-    "title": "Ap har styringen. Støttepartiene har nøklene.",
-    "description": "Sven analyserer partienes budsjettkrav, forhandlingsstyrke og konkrete kort i statsbudsjettet for {{fact:budgetYear}}.",
-    "lead": "Ap har lagt frem et budsjett som passer partiets fortelling om trygg styring. Sp, SV, Rødt og MDG har hver sin grunn til å kreve endringer. Hvilke innrømmelser kan samle flertallet, og hvem må betale?",
-    "conclusion": "Den mest sannsynlige avtalen gir mer kommunalt handlingsrom, en sosial forbedring og en grønn reparasjon. Sp og MDG møter hverandre i konflikten om levekostnader og klima. Ap må holde finansieringen sammen, mens hvert støtteparti trenger en identifiserbar gevinst.",
+    "title": "Ap må gi fra seg nok til å beholde styringen",
+    "description": "Sven analyserer budsjettforslaget for {{fact:budgetYear}}: hvorfor partiene er misfornøyde, hvilke krav som veier tyngst, og hvor et forlik kan oppstå.",
+    "lead": "Arbeiderpartiet har lagt frem et budsjett som skal gi folk bedre råd og Norge større trygghet. For å få det vedtatt må partiet trolig gi støttepartiene noe mer håndfast: penger til lokale tjenester, en lavere regning eller et grønt tiltak som faktisk blir gjennomført. Det vanskelige er å finne innrømmelser som betyr mye for mottakeren uten å ødelegge det en annen part trenger.",
+    "conclusion": "Et forlik mellom Ap, Sp, SV, Rødt og MDG fremstår som det mest nærliggende utfallet. Kommuneøkonomi kan gi avtalen et felles fundament, mens tannhelse, fordelingsgrep og grønne tiltak kan gjøre helheten forsvarlig for de ulike partiene. Den vanskeligste avveiningen blir å gi bil- og strømavhengige husholdninger lettelse uten å svekke omstillingen MDG og SV trenger. Ap bør kunne beholde hovedkursen, men må regne med at noen av forslagets tydeligste innsparinger blir mindre.",
     "sections": [
       {
-        "heading": "Et stort budsjett med en liten fri lomme",
+        "heading": "Regjeringens første tilbud",
         "paragraphs": [
-          "Fellestalls sammenligning viser {{fact:afterTotal}} i utgifter i {{fact:budgetYear}}, {{fact:absoluteChange}} mer enn DFØs løpende reviderte budsjett for {{fact:baseYear}}. Økningen er {{fact:nominalGrowth}} i løpende kroner. Finansposter og overføringer til Oljefondet er utelatt. Arbeid og trygd, helse og forsvar står samlet for {{fact:mainChangeShare}} av nettoøkningen. Dette er en regnskapsfordeling, ikke et mål på hvem som politisk har vunnet.",
-          "Finansdepartementet beskriver det slik: «{{fact:documentAQuote}}» Tallene måler forskjellige ting. Departementet korrigerer blant annet for forhold som ikke fanges av en enkel sammenligning mellom to bevilgningsuttrekk. Den politiske implikasjonen er likevel tydelig: En stor nominell økning gir begrenset plass til nye løfter.",
-          "Pensjonsutgifter, sykepenger og uføretrygd kan stige fordi flere mottar ytelsene, fordi satser reguleres, eller fordi sammensetningen endres. De er ikke en fri reserve finansministeren kan omdisponere uten konsekvenser for rettigheter og lovverk. Store anslag på disse postene dokumenterer heller ikke at hver mottaker får en politisk forbedring.",
-          "Regjeringen foreslår strukturell oljepengebruk på {{fact:oilTotal}} milliarder kroner, anslått til {{fact:oilShare}} prosent av fondsverdien. Det er ikke en ledig sjekk opp til tre prosent. Handlingsregelen skal anvendes over tid og med hensyn til økonomien. Regjeringens anslag om omtrent nøytral virkning på aktiviteten er dessuten ikke en garanti for fremtidig renteutvikling.",
-          "Ap må derfor forhandle om hvilke endringer som kan finansieres og samtidig bevare troverdigheten til styringsfortellingen. Støttepartiene må få resultater velgerne kan se uten at enhver prioritering legges oppå den eksisterende rammen."
+          "Det er lett å se hvorfor Ap kan være forholdsvis fornøyd med sitt eget forslag. Skattelettelser på arbeid, rimelig barnehage, Norgespris og sterkere forsvar passer inn i fortellingen partiet ønsker å samle budsjettet rundt: mer trygghet og bedre råd. En avtale blir enklere hvis forbedringene støttepartiene krever også kan forklares som en videreføring av denne kursen. Ap har mindre å vinne på å forsvare hvert enkelt kutt enn på å få vedtatt en helhet partiet fortsatt kan kjenne seg igjen i.",
+          "Men størrelsen på budsjettet sier lite om hvor mye regjeringen kan gi bort. Fellestalls sammenligning med løpende revidert budsjett for {{fact:baseYear}} viser utgifter på {{fact:afterTotal}}, en økning på {{fact:absoluteChange}}. Arbeid, helse og forsvar står samlet for {{fact:mainChangeShare}} av nettoøkningen. Pensjoner, rettighetsbaserte ytelser og brede forsvarsforpliktelser gjør mye av veksten vanskelig å flytte. Støttepartiene kan derfor ikke hente inn pengene de ønsker ved å peke på at totalen er stor.",
+          "Dette skillet gir grafen nedenfor politisk betydning. Den viser hvor pengene beveger seg, men de største bevegelsene er ikke nødvendigvis de mest tilgjengelige. Regjeringens beregning av underliggende realvekst bruker en annen avgrensning enn Fellestalls nominelle postsammenligning. Sykehusenes finansiering inneholder dessuten store overføringer mellom poster. Et forlik trenger midler som kan omprioriteres, ikke bare store tall som ser ut som en ledig reserve.",
+          "Oljepengebruken er anslått til {{fact:oilTotal}} milliarder kroner, tilsvarende {{fact:oilShare}} prosent av fondet. Det gir rom for å argumentere om rammen, men avstanden til handlingsregelens langsiktige rettesnor er ikke en kontantbeholdning for forhandlerne. Regjeringen må også vurdere aktivitet i økonomien, rentehensyn og varige utgifter. Ap vil trolig foretrekke å omprioritere og justere innfasingen før partiet åpner for et vesentlig større budsjett.",
+          "Dermed får enkelte mindre innsparinger større betydning enn størrelsen skulle tilsi. Et omstridt satskutt kan være mulig å reparere, mens en stor ny rettighet kan binde kommende budsjetter. Det betyr ikke at regjeringen har lagt inn kuttene med en skjult hensikt. Det betyr at forslagene har ulik kostnad å endre, og at en avtale sannsynligvis vil bygge på nettopp denne forskjellen."
         ],
         "factIds": [
-          "afterTotal",
-          "budgetYear",
-          "absoluteChange",
           "baseYear",
-          "nominalGrowth",
+          "afterTotal",
+          "absoluteChange",
           "mainChangeShare",
-          "documentAQuote",
           "oilTotal",
           "oilShare"
         ]
       },
       {
-        "heading": "Fire støttepartier er nødvendige – men makten er ulik",
+        "heading": "Flertallet holder bare hvis alle kan forsvare det",
         "paragraphs": [
-          "Det kontrollerte mandatgrunnlaget er Ap {{fact:mandateAp}}, SV {{fact:mandateSV}}, Sp {{fact:mandateSp}}, Rødt {{fact:mandateR}} og MDG {{fact:mandateMDG}}. Til sammen har de {{fact:mandateLeft}} av {{fact:mandateTotal}} mandater. Innenfor denne gruppen faller flertallet bort dersom ett av støttepartiene forsvinner: uten MDG gjenstår {{fact:mandateWithoutMDG}}; uten ett av partiene med {{fact:mandateSp}} mandater gjenstår {{fact:mandateWithoutNine}}. Dette forutsetter fullt oppmøte og ingen støtte utenfra.",
-          "Alle fire har dermed en sterk posisjon i et forlik etter samme mønster som i {{fact:baseYear}}. Men like nødvendig støtte betyr ikke lik forhandlingsmakt. Makt avhenger også av hvor troverdig det er å avvise avtalen, hvilke alternative samarbeid som finnes, og hvor lett kravet kan aksepteres av de andre.",
-          "Sp har en ekstra mulighet i enkeltsaker. Høyre, FrP, KrF og Venstre har samlet {{fact:mandateRight}} mandater; med Sp får de {{fact:mandateRightSp}}. Ap kan også få flertall med Høyre og Sp, eller med Høyre og et annet av partiene med ni representanter. Dette er aritmetiske muligheter, ikke dokumenterte planer om et alternativt budsjettflertall.",
-          "Venstres {{fact:mandateV}} mandater kan ikke alene erstatte MDGs {{fact:mandateMDG}}: Ap, SV, Sp, Rødt og Venstre ville samlet ha {{fact:mandateWithV}}. KrF kan erstatte MDG matematisk og gi {{fact:mandateWithKrF}}, men det krever at partier med vesentlig forskjellige prioriteringer vil støtte samme helhet. Ap og Høyre alene har bare {{fact:mandateApH}}.",
-          "Min hovedprognose er et nytt fempartiforlik. Fjorårets avtale og dagens forhandlingssignaler peker i den retningen. Et skatteforlik med andre partier kan utvikles parallelt; det behøver ikke innebære at hele statsbudsjettet får en annen partnerkrets."
+          "Ap og støttepartiene har til sammen {{fact:mandateLeft}} av Stortingets {{fact:mandateTotal}} mandater. Uten MDG står de igjen med {{fact:mandateWithoutMDG}}; uten ett av partiene med samme mandatstørrelse blir det {{fact:mandateWithoutNine}}. Ingen av de fire støttepartiene kan bare overses dersom Ap skal få denne kombinasjonen til å vedta budsjettet. Det gir hvert parti mulighet til å kreve en forbedring som faktisk betyr noe for dem.",
+          "Muligheten til å stanse en avtale er likevel ikke det samme som å kunne velge utfallet etter et brudd. Et parti som sier nei, må også forklare hvorfor de mulige alternativene er bedre. SV, Rødt og MDG har liten politisk nærhet til en budsjettkurs dominert av FrP og Høyre. De kan være sterkt misfornøyde med forslaget og samtidig ha mye å tape på at en avtale uteblir. Derfor er det mer opplysende å undersøke hvilke endringer som gjør et ja mulig enn å ta styrken i åpningskritikken som mål på hvor nær et brudd er.",
+          "Sp har en annen utgangsposisjon. Partiet og den borgerlige siden har til sammen {{fact:mandateRightSp}} mandater. Det gir mer parlamentarisk handlingsrom, men ikke en ferdig alternativ avtale. Uenighet om blant annet landbruk og distriktspolitikk må fortsatt overvinnes. En trussel om å gå en annen vei får størst tyngde dersom Sp kan vise hva som faktisk kan oppnås der. Mandatene alene er ikke nok.",
+          "Ap kan heller ikke bytte ut en vanskelig partner uten videre. Hvis Venstre erstatter MDG og de andre blir værende, blir summen {{fact:mandateWithV}}. Med KrF i samme rolle blir den {{fact:mandateWithKrF}}, men da følger nye krav og mulige konflikter. Ap og Høyre har alene {{fact:mandateApH}} mandater. Kontakt på tvers kan gi løsninger på enkeltsaker, men er ingen enkel reserve for hele budsjettet.",
+          "Det mest nærliggende er derfor at Ap arbeider for en avtale som gir alle støttepartiene en grunn til å bli. De trenger ikke være like fornøyde, og de trenger neppe få like mye. Men en gevinst som forsvinner i totalen, eller som en annen part lett kan overta æren for, er mindre verdifull enn en konkret forbedring som partiet kan forklare til egne velgere. Dette er særlig viktig når forslaget på flere områder allerede ligger nær Aps prioriteringer."
         ],
         "factIds": [
-          "mandateAp",
-          "mandateSV",
-          "mandateSp",
-          "mandateR",
-          "mandateMDG",
           "mandateLeft",
           "mandateTotal",
           "mandateWithoutMDG",
           "mandateWithoutNine",
-          "baseYear",
-          "mandateRight",
           "mandateRightSp",
-          "mandateV",
           "mandateWithV",
           "mandateWithKrF",
           "mandateApH"
         ]
       },
       {
-        "heading": "Hvem bør være fornøyd med forslaget?",
+        "heading": "Kommunepengene kan bære mer enn kommuneøkonomien",
         "paragraphs": [
-          "Ap: Mest fornøyd med retning, men utsatt i gjennomføringen. Grunn til tilfredshet: Skatt på arbeid, forsvar, videreføring av familieordninger og kontrollert ramme. Grunn til misnøye: Dyrere Norgespris og svakt tjenestehandlingsrom svekker hverdagsfortellingen.",
-          "Sp: Klart misfornøyd med viktige kjernesaker. Grunn til tilfredshet: Videreføring av Norgespris og nominelt høyere kommuneoverføringer. Grunn til misnøye: Drivstoff, prisøkningen på Norgespris, kommunenes frihet og distriktstilbud.",
-          "SV: Klart misfornøyd med fordeling og klima. Grunn til tilfredshet: Lavere inntektsskatt og videreføring av rimelig barnehage. Grunn til misnøye: Fordelingsprofil, Enova og manglende bemanningsløft.",
-          "Rødt: Klart misfornøyd med levekostnader og reformtempo. Grunn til tilfredshet: Inntektsskattelettelser anerkjennes i dagens reaksjon. Grunn til misnøye: Tannhelse, strøm og gevinsten for dem med minst.",
-          "MDG: Sterk grunn til misnøye på grønn omstilling; dagens samlede reaksjon ikke funnet. Grunn til tilfredshet: Videre opptrapping av klimaavgifter. Grunn til misnøye: Enova, kollektivtilskudd og dyrere elbilalternativ.",
-          "Høyre: Delvis samsvar, men samlet misfornøyd. Grunn til tilfredshet: Lavere skatt på arbeid og forsvarsopptrapping. Grunn til misnøye: Samlet skattetrykk, næringsvilkår og lite reforminnhold.",
-          "FrP: Samlet misfornøyd. Grunn til tilfredshet: Forsvar og lavere veibruksavgift isolert sett. Grunn til misnøye: Netto drivstoffbelastning, øvrige regninger og helseprioriteringer.",
-          "Venstre: Delvis samsvar i skatt, klart misfornøyd med grønn/kunnskapsretning. Grunn til tilfredshet: Begynnelse på skatteomlegging. Grunn til misnøye: Elbilmoms, grønne ordninger og tiltak for unge.",
-          "KrF: Klart misfornøyd med familiedelen. Grunn til tilfredshet: Videreføring av rimelig barnehage og eksisterende barnetrygd. Grunn til misnøye: Engangsstønad, uendrede familieytelser, bistand og kommuneøkonomi.",
-          "Vurderingene er begrunnede politiske vurderinger, ikke en poengsum. Høyre og FrP kan være fornøyde med enkelte tiltak uten å støtte helheten. Sp kan støtte landbruksprioriteringer og samtidig avvise kommuneopplegget. At en ordning videreføres, kan være politisk verdifullt selv om den ikke er en ny gevinst.",
-          "Ap har den vanskeligste dobbeltrollen: Partiet vil eie forbedringene, men må gi partnerne synlige resultater. Hvis enhver reparasjon senere blir presentert som at støttepartiene reddet regjeringens politikk, svekkes Aps eierskap til helheten. Det gir Ap grunn til å søke forbedringer som også passer egen profil."
+          "Kommuneøkonomi er det mest opplagte stedet å begynne hvis Ap vil finne en forbedring flere kan stå bak. Regjeringen oppgir realvekst i frie inntekter på {{fact:municipalityGrowth}} milliarder kroner. Etter beregnede demografiske merutgifter er handlingsrommet {{fact:municipalityRoom}} milliarder. Avstanden mellom disse tallene forklarer hvorfor regjeringen kan vise til vekst samtidig som Sp, SV og Rødt mener lokale tjenester fortsatt vil være presset.",
+          "For Sp er frie kommunepenger tett knyttet til partiets forståelse av lokalt selvstyre. De gir lokale folkevalgte mulighet til å prioritere, og kan bidra til å holde tjenester nær folk. Før kommunevalget i {{fact:budgetYear}} blir det særlig verdifullt å vise at samarbeidet med Ap gir et handlingsrom som ordførere og fylkespolitikere merker. Sp har derfor bedre grunn til å prioritere en varig styrking av rammene enn en ny statlig ordning med detaljerte vilkår.",
+          "SV og Rødt kan støtte mer kommuneøkonomi av andre grunner. For dem gir det mulighet for bedre bemanning og sterkere velferdstjenester. Det skaper et felles utgangspunkt, men også en avveining: Hvor mye frihet skal kommunene få, og hvor tydelig skal avtalen sikre bestemte resultater? Ap kan samle partiene om penger, men må fortsatt finne en formulering som både gir Sp lokalt handlingsrom og de andre troverdighet på tjenestene.",
+          "Presset er heller ikke bare en politisk påstand. SSB viser at antallet innbyggere på {{fact:olderAge}} år eller mer økte fra {{fact:olderStart}} ved inngangen til {{fact:olderStartYear}} til {{fact:olderEnd}} ved inngangen til {{fact:olderEndYear}}. Alder bestemmer ikke alene behovet for hjelp, men flere eldre gjør det vanskeligere å presentere kompensasjon for demografi som et stort nytt tjenesteløft. Støttepartiene kan argumentere for kapasitet med et sterkere grunnlag enn en generell misnøye med størrelsen på bevilgningene.",
+          "Rammetilskuddene til kommuner og fylkeskommuner, kapittel/post {{fact:postKeyOQ}} og {{fact:postKeyOW}}, blir dermed sentrale. Også kommuneskatt, oppgaver og inntektssystem påvirker hva kommunene sitter igjen med. Det er den samlede virkningen som må vurderes. Et tillegg på en enkelt post er ikke automatisk samme beløp i nytt lokalt handlingsrom.",
+          "En slik styrking kan dessuten gjøre andre deler av avtalen lettere. Fylkeskommunene har ansvar både for kollektivtransport og tannhelse. Midler hit kan støtte flere partiers mål, selv om frie penger ikke erstatter finansieringen av en konkret reform. Kommuneøkonomi er derfor et sannsynlig fundament for forliket. Nettopp fordi flere vil støtte det, kan det samtidig bli dyrt: Et synlig og varig løft kan vanskelig finansieres med en besparelse som bare gjelder neste år."
         ],
-        "factIds": []
+        "factIds": [
+          "municipalityGrowth",
+          "municipalityRoom",
+          "budgetYear",
+          "olderAge",
+          "olderStart",
+          "olderStartYear",
+          "olderEnd",
+          "olderEndYear",
+          "postKeyOQ",
+          "postKeyOW"
+        ]
       },
       {
-        "heading": "Sp vil kreve penger som merkes utenfor departementene",
+        "heading": "Billigere regninger møter behovet for omstilling",
         "paragraphs": [
-          "Bekreftet nå: Bjørn Arild Gram kritiserer høyere drivstoffavgifter, kommuneopplegget og sentralisering i partiets reaksjon på fremleggelsesdagen. Maren Grøthe avviste dagen før fremleggelsen økningen i Norgespris fra {{fact:electricityRateBefore}} til {{fact:electricityRateAfter}} øre per kilowattime. Dette er konkrete politiske posisjoner, men kildene gir ikke en full tallfestet forhandlingspakke.",
-          "Regjeringen oppgir realvekst i kommunesektorens frie inntekter på {{fact:municipalityGrowth}} milliarder kroner. Etter demografiske merutgifter er handlingsrommet {{fact:municipalityRoom}} milliarder. Sp kan med god grunn si at dette er noe annet enn et tydelig løft i lokal tjenestekapasitet. Partiets spådom om bestemte nedleggelser er likevel ikke dokumentert for hver kommune.",
-          "Min forventning: Sp vil prioritere høyere frie inntekter, fylkesveier og tiltak som skjermer bilavhengige husholdninger og bedrifter. Partiet vil trolig også kreve å dempe eller reversere Norgesprisøkningen. Frie midler passer partiprogrammet bedre enn nye øremerkede ordninger som binder lokale prioriteringer.",
-          "Sp kan finne støtte hos SV og Rødt for kommuneøkonomi, men møter MDG i drivstoffpolitikken. Et kompromiss kan beskytte CO₂-prissignalet samtidig som man gir målrettet kompensasjon, bedre distriktstilbud eller andre avgiftslettelser. Effekten må beregnes samlet; en redusert veibruksavgift alene sier ikke hva avgiftsbelastningen ved pumpen blir.",
-          "Før kommunevalget i {{fact:budgetYear}} har lokale tjenester og fylkesveier særlig politisk verdi. Sp trenger noe en ordfører kan forklare som faktisk handlingsrom. En ny utredning gir mindre uttelling enn en varig inntektsøkning, selv om også konkrete lokale løsninger kan gjøre en avtale lettere å akseptere."
+          "Det vanskeligste forholdet går trolig mellom Sp og MDG. Sp har kritisert dyrere drivstoff og sagt nei til at Norgespris øker fra {{fact:electricityRateBefore}} til {{fact:electricityRateAfter}} øre per kilowattime. MDGs dokumenterte landsmøtevedtak går imot lavere avgifter på fossil energi og prioriterer billigere grønne alternativer. Jeg har ikke en kontrollert samlet MDG-reaksjon på dagens forslag; forventningene til partiets krav bygger derfor på vedtatte prioriteringer, ikke på en kjent kravliste.",
+          "Sp kan vanskelig vise til økte klimaavgifter som en forbedring for husholdninger som er avhengige av bilen. MDG kan vanskelig forsvare en avtale der partiets viktigste bidrag blir å gjøre fossilbruk billigere. Ap har allerede forsøkt å kombinere høyere CO₂-avgifter med lavere veibruksavgift. Sp mener den samlede regningen likevel går opp. En ytterligere reduksjon i én avgift vil derfor ikke løse uenigheten uten at hele virkningen regnes gjennom.",
+          "Muligheten for en avtale ligger snarere i å gjøre omstillingen mindre belastende. Bedre kollektivtilbud, energisparing og støtte til grønne alternativer kan redusere regninger samtidig som retningen beholdes. Målrettet kompensasjon kan også være lettere for MDG å akseptere enn brede drivstoffkutt. Men et bedre kollektivtilbud gir begrenset hjelp der bilen fortsatt er nødvendig. For at Sp skal kunne godta løsningen, må den også ha verdi utenfor områdene med de beste alternativene.",
+          "Forslaget gjør dette vanskeligere ved å redusere støtte til nettopp noen av alternativene. Enova-posten går fra {{fact:enovaBefore}} til {{fact:enovaAfter}} i Fellestalls sammenligning med løpende revidert budsjett. Regjeringen beskriver {{fact:enovaNewReduction}} milliarder mindre i nye fondsmidler med en annen referanse. Enovas fondskapital betyr at lavere innskudd ikke gir samme umiddelbare fall i utbetalinger, men retningen gir MDG og SV grunn til å kreve mer enn en videreføring av klimaavgiftene.",
+          "En delvis styrking av Enova, kapittel/post {{fact:postKeyAIX}}, og kollektivtilskuddet, {{fact:postKeyAGD}}, kan derfor være mer anvendelig enn å reversere alt. En avgrenset satsing på tiltak som både kutter utslipp og energikostnader gir en lettere forbindelse mellom partienes mål. SV kan støtte dette, og Ap kan knytte det til egen fortelling om trygghet og bedre råd. Sp må fortsatt få en løsning på belastningene som slike tiltak ikke dekker.",
+          "Norgespris kan være enklere å diskutere enn drivstoffavgiftene fordi en lavere strømpris ikke innebærer den samme direkte innrømmelsen om fossil energi. Men kostnaden avhenger av markedspris og forbruk, og ordningen reiser egne spørsmål om energisparing og fordeling. Sp og Rødt kan finne hverandre i kritikken; MDG og SV vil ha grunn til å vurdere hvordan hjelpen utformes. Et lavere pristall er derfor ikke alene en ferdig bro mellom partiene."
         ],
         "factIds": [
           "electricityRateBefore",
           "electricityRateAfter",
-          "municipalityGrowth",
-          "municipalityRoom",
-          "budgetYear"
-        ]
-      },
-      {
-        "heading": "SV og Rødt deler kritikken, men trenger forskjellige seire",
-        "paragraphs": [
-          "SVs bekreftede reaksjon: Kirsti Bergstø varsler tøffe forhandlinger om mindre forskjeller, sterkere velferd og utslippskutt. Hun kritiserer skattelettelsenes fordeling, Enova-kuttet og manglende bemanningsløft. SV peker også på bankenes overskudd som mulig skattebase. Det er et finansieringssignal, ikke en ferdig vedtatt inntekt.",
-          "Min forventning for SV: Mer målrettet lettelse for lave og vanlige inntekter, sterkere tjenestebemanning og grønn industriomstilling vil stå sentralt. Barnehage, SFO og studenter er sannsynlige prioriteringsområder ut fra eksisterende research, men tidligere alternative budsjettbeløp kan ikke uten videre brukes som årets krav.",
-          "Rødts bekreftede reaksjon: Marie Sneve Martinussen løfter frem tannhelsereform og lavere levekostnader. Hun anerkjenner lavere inntektsskatt, men kritiserer fordelingen og Norgespris. At Rødt sier at regjeringen ikke kommer med nye tannhelsepenger, skal leses som partiets vurdering av reformløftet; det betyr ikke at alle tannhelsebevilgninger er null.",
-          "Helseproposisjonen beskriver en planlagt høring om en helhetlig reform høsten {{fact:baseYear}}. Det gir Rødt et tydelig forhandlingsspørsmål: Når får flere faktisk en rettighet, og når kommer finansieringen? En høring betaler ingen tannlegeregning. En avtale må vurderes etter målgruppe, startdato og finansiering, ikke bare reformens navn.",
-          "Min forventning for Rødt: Et første finansiert reformtrinn, lavere egenandeler eller forbedringer for minsteytelser vil ha høy verdi. Reversering av kuttet i engangsstønaden kan også passe partiets fordelingsprofil. SV vil sannsynligvis legge mer vekt på kombinasjonen bemanning, omfordeling og klima; Rødt vil trenge en særlig konkret forbedring i folks regninger eller sikkerhetsnett.",
-          "De kan samarbeide om finansiering gjennom mer progressiv skatt. Samtidig konkurrerer de om å vise selvstendig gjennomslag. Det gjør det sannsynlig at avtalen får flere avgrensede velferdstiltak fremfor ett tiltak som alle må dele æren for."
-        ],
-        "factIds": [
-          "baseYear"
-        ]
-      },
-      {
-        "heading": "MDG må gjøre grønne valg lettere – og dyrere fossilbruk tålelig",
-        "paragraphs": [
-          "Jeg fant ingen egen samlet MDG-reaksjon på dagens forslag i partiets nyhetsoversikt ved kildeinnhentingen. Vurderingen bygger derfor på programmet og dokumenterte vedtak fra {{fact:baseYear}}. Det skillet er viktig: En forventning om et krav er ikke et sitat fra en forhandler.",
-          "MDGs landsmøtevedtak fra vårens landsmøte prioriterer billigere kollektivtransport, støtte til energitiltak og utslippsfrie kjøretøy samt tilbakeføring til husholdninger. Partiet avviser lavere bensin- og dieselavgifter. Forslaget gir dermed et klart spenn mellom noe MDG kan støtte – opptrapping av klimaavgifter – og noe partiet bør være misfornøyd med: svakere økonomisk støtte til grønne alternativer.",
-          "Fellestalls post {{fact:postKeyAGD}}, tilskudd til kollektivtransport, reduseres betydelig mot løpende revidert {{fact:baseYear}}. Enova-posten {{fact:postKeyAIX}} faller fra {{fact:enovaBefore}} til {{fact:enovaAfter}}. Regjeringens omtale av {{fact:enovaNewReduction}} milliarder mindre nye fondsmidler og departementets sammenligning med saldert budsjett bruker andre avgrensninger. Disse tallene må ikke blandes i samme regnestykke.",
-          "Min forventning: MDG vil søke reparasjoner av kollektivtilskudd, energisparing, natur og grønne næringsordninger. Partiet kan kreve dokumentert norsk omstilling selv om regjeringen kjøper flere klimakvoter internasjonalt. Det er en politisk avveining mellom ulike virkemidler, ikke et bevis på at internasjonale klimatiltak mangler effekt.",
-          "Det mest realistiske kompromisset med Sp er trolig en kombinasjon av klimaavgifter og bedre alternativer eller målrettet kompensasjon. Brede drivstoffkutt er vanskeligere for MDG å selge. En grønn pakke som også reduserer regninger gir mer overlapp med Rødt og SV enn en avtale som bare øker avgiftene."
-        ],
-        "factIds": [
-          "baseYear",
-          "postKeyAGD",
-          "postKeyAIX",
           "enovaBefore",
           "enovaAfter",
-          "enovaNewReduction"
+          "enovaNewReduction",
+          "postKeyAIX",
+          "postKeyAGD"
         ]
       },
       {
-        "heading": "Skattepakken er både bro og konflikt",
+        "heading": "SV og Rødt trenger mer enn den samme velferdsgevinst",
         "paragraphs": [
-          "Provenytabellen dokumenterer {{fact:taxIncome}} millioner kroner i lavere personinntektsskatt. Hovedgrepet er {{fact:trygdeReduction}} prosentpoeng lavere trygdeavgift på lønn, trygd og næringsinntekt. Økt personfradrag og justert pensjonsskattefradrag inngår også. Det er derfor upresist å beskrive hele lettelsen som bare en lik prosentvis gevinst til alle.",
-          "De nye skatte- og avgiftsforslagene gir samlet en beregnet lettelse på {{fact:taxChanges}} millioner. Virkninger i {{fact:budgetYear}} av allerede vedtatte {{fact:baseYear}}-endringer gir samtidig {{fact:taxPrevious}} millioner i økning. Summen blir én million i beregnet nettolettelse. Aps milliardpåstand om inntektsskatt og Høyres millionpåstand om samlet netto kan altså begge vise til reelle tall, men med forskjellig avgrensning.",
-          "Elbilmoms er et konkret kort: Fritaksgrensen reduseres fra {{fact:elcarBefore}} til {{fact:elcarAfter}} kroner, med anslått provenyøkning på {{fact:elcarRevenue}} milliarder i {{fact:budgetYear}}. Dersom grensen skjermes eller innfasingen utsettes, må tapte inntekter finansieres. Størrelsen gjør dette til en vanskeligere innrømmelse enn mange mindre tilskudd.",
-          "Høyre kritiserer samlet skattetrykk, næringsvilkår og manglende reformer. Venstre omtaler forslaget som en start på et skatteforlik og krever minst {{fact:venstreExtra}} kroner mer enn regjeringen til alle som jobber, med samme beløp uansett inntekt. Dette er et dokumentert nytt utspill. FrP vil prioritere avgifter og arbeidslinje. KrF vil prioritere familieøkonomi og kritiserer særlig engangsstønaden.",
-          "Opposisjonen er derfor ikke én finansieringspakke. FrPs klima- og bistandskutt vil møte andre partiers motstand. Venstres grønne skatteomlegging er noe annet enn brede fossile avgiftskutt. Høyres programkrav om arbeidende kapital er mer omfattende enn en justering av formuesskattens bunnfradrag. Ap kan finne partnere for avgrensede skattegrep, men en stor helhetlig reform er vanskeligere å ferdigforhandle i budsjettinnspurten."
+          "SV og Rødt har begge grunn til å være misfornøyde med et forslag som etter deres vurdering fordeler skattelettelsene for bredt og gir for lite ny kapasitet i velferden. Men det følger ikke at de vil prioritere de samme endringene høyest. SVs reaksjon binder mindre forskjeller, sterkere velferd og utslippskutt sammen. Rødt har særlig løftet frem tannhelse og lavere levekostnader. Denne forskjellen sier mer om hva Ap bør tilby enn en felles merkelapp om at venstresiden vil ha mer penger.",
+          "SV må kunne vise at budsjettet blir bedre både sosialt og grønt. En avtale med kommuneøkonomi, sterkere bemanning og målrettede fordelingsgrep kan gi dette innhold. Tidligere prioriteringer av barnehage og SFO viser retningen, men gamle alternative budsjettbeløp er ikke årets krav. Partiet har dessuten pekt på bankenes overskudd som mulig skattebase. Det åpner en diskusjon om hvem som skal finansiere forbedringene, men gir ingen ferdig inntekt å disponere.",
+          "For Rødt har tannhelse en annen tyngde enn et generelt tillegg til en stor velferdsramme. Partiet har selv gjort reformen til et konkret krav. Regjeringen beskriver en planlagt høring om en helhetlig reform, men en høring reduserer ingen regning. Et finansiert første trinn, med en avklart målgruppe og startdato, vil være lettere å vise frem som en faktisk endring enn et nytt løfte om retning.",
+          "Ap kan ha grunn til å akseptere en gradvis utvidelse fremfor en stor reform med full virkning med en gang. Det kan gi Rødt en begynnelse som er mulig å forsvare, samtidig som kostnad og kapasitet kan håndteres. Men et sent oppstartstidspunkt gjør tiltaket billigere i det første budsjettet enn senere. Finansieringen av helårskostnaden og tilgangen på personell må derfor inngå i vurderingen. Tannhelseposten {{fact:postKeyVS}}, refusjonsordninger og fylkesrammer må leses sammen med eventuelle nye rettigheter.",
+          "Kuttet i engangsstønaden er en mer avgrenset mulighet. Satsen foreslås redusert fra {{fact:birthBefore}} til {{fact:birthAfter}} kroner fra juli, {{fact:birthReduction}} kroner mindre for berørte mottakere. Reversering eller demping på {{fact:postKeyARQ}} kan samle Rødt, SV og KrF, og kan også passe for Sp. Det treffer dessuten Aps budskap om bedre råd. Det gjør dette til en mer sannsynlig innrømmelse enn mange brede reformkrav, selv om bortfallet av innsparing fortsatt må dekkes.",
+          "En avtale kan altså gi SV og Rødt delvis overlappende forbedringer uten at partiene må nøye seg med det samme resultatet. Et bredere velferds- og fordelingsløft kan være viktigst for SV, mens en konkret ny tannhelserettighet kan ha særlig verdi for Rødt. Begge vil fortsatt måtte vurdere hva de får samlet, og hva de samtidig aksepterer. Ingen enkeltpost gir i seg selv grunnlag for å kalle et parti fornøyd."
         ],
         "factIds": [
-          "taxIncome",
-          "trygdeReduction",
-          "taxChanges",
-          "budgetYear",
-          "baseYear",
-          "taxPrevious",
-          "elcarBefore",
-          "elcarAfter",
-          "elcarRevenue",
-          "venstreExtra"
+          "postKeyVS",
+          "birthBefore",
+          "birthAfter",
+          "birthReduction",
+          "postKeyARQ"
         ]
       },
       {
-        "heading": "SSB forklarer presset på tjenester og husholdninger",
+        "heading": "Store helsetall må bli til kapasitet",
         "paragraphs": [
-          "Konsumprisene steg {{fact:ssbPriserGrowth}} fra {{fact:ssbPriserStartYear}} til {{fact:ssbPriserEndYear}}, mens folkemengden ved inngangen til året økte {{fact:ssbBefolkningGrowth}}. Det sier noe om hvorfor dagens store bevilgninger ikke kan sammenlignes direkte med historiske kroner. Det gir ikke en observert prisvekst for {{fact:budgetYear}} og skal ikke brukes til å prisjustere neste års budsjett som om prognosen var kjent statistikk.",
-          "SSBs observerte aldersfordeling viser {{fact:olderStart}} innbyggere på {{fact:olderAge}} år eller mer ved inngangen til {{fact:olderStartYear}} og {{fact:olderEnd}} ved inngangen til {{fact:baseYear}}: en økning på {{fact:olderGrowth}}. Dette er observerte befolkningstall, ikke en framskriving. Alder alene bestemmer ikke tjenestebehovet, men utviklingen gjør demografikostnadene politisk vesentlige.",
-          "Helseproposisjonen oppgir {{fact:hospitalOperating}} milliarder i økte driftsbevilgninger etter innsparingstiltak, mot {{fact:hospitalDemography}} milliarder i beregnede demografiske merutgifter. Kommunenes oppgitte handlingsrom etter demografi er {{fact:municipalityRoom}} milliarder. Dette gir støttepartiene et sterkere argument om kapasitet enn den nominelle helseøkningen alene gir.",
-          "Dessuten flyttes {{fact:hospitalTransfer}} milliarder mellom sykehusenes basisbevilgninger og innsatsstyrte finansiering. Denne flyttingen kan ikke brukes som nye behandlingspenger. Finansieringsmodellen er likevel et politisk kort: hvor mye trygghet gis i basis, og hvor mye belønnes gjennom aktivitet? En endring i modellen kan avtales uten at den samlede kostnaden endres tilsvarende.",
-          "For husholdningene må skatt, strøm, ytelser og tjenester leses samlet. Familieproposisjonen viderefører barnetrygd og kontantstøttesatser nominelt. Kjøpekraften deres vil falle dersom prisene stiger. Engangsstønaden foreslås redusert fra {{fact:birthBefore}} til {{fact:birthAfter}} kroner fra juli: {{fact:birthReduction}} kroner mindre for berørte mottakere. Det er et konkret satskutt; en lavere total barnetrygdbevilgning er derimot ikke alene bevis på lavere sats per barn."
+          "Sykehusene viser hvorfor en avtale må gå lenger enn å legge til et imponerende tall. Helseproposisjonen oppgir {{fact:hospitalOperating}} milliarder kroner i økte driftsbevilgninger etter innsparingstiltak, mens beregnede demografiske merutgifter er {{fact:hospitalDemography}} milliarder. Mye av økningen går dermed til å møte endrede behov. Det gir SV, Sp og Rødt grunn til å spørre hva som faktisk blir bedre for pasientene og de ansatte.",
+          "I tillegg flyttes {{fact:hospitalTransfer}} milliarder mellom basisbevilgning og innsatsstyrt finansiering. Denne bevegelsen er budsjettnøytral og kan ikke telles som nye behandlingspenger. Grafen nedenfor gjør det mulig å skille overføringen fra veksten. Balansen mellom basis og aktivitet har likevel politisk betydning: Den påvirker hvordan sykehusene får inntekter og hvilke hensyn som belønnes.",
+          "Ap kan derfor bli møtt med både krav om mer drift og krav om en annen finansieringsmodell. Det siste kan være mulig å justere uten samme umiddelbare utgiftsøkning som en ny bevilgning. Men det erstatter ikke bemanning og kapasitet dersom problemet er for lite ressurser. Et forlik som endrer modellen må forklares etter hva endringen skal løse, ikke presenteres som om en ompostering alene gir flere behandlinger.",
+          "Husholdningene vil på samme måte vurdere summen av skatt, strøm, ytelser og tjenester. Konsumprisene steg {{fact:ssbPriserGrowth}} fra {{fact:ssbPriserStartYear}} til {{fact:ssbPriserEndYear}}, mens folkemengden økte {{fact:ssbBefolkningGrowth}}. Historiske bevilgninger og dagens regninger kan ikke sammenlignes uten å ta hensyn til dette. Tallene er observerte bakgrunnsserier; de sier ikke hva prisveksten blir i budsjettåret.",
+          "Regjeringen viderefører barnetrygd og kontantstøttesatser nominelt. Hvis prisene stiger, svekkes kjøpekraften. Sammen med satskuttet i engangsstønaden gjør det familieøkonomien til et mer sårbart område for Ap enn budsjettets samlede vekst skulle tilsi. KrF kan angripe dette konkret, mens partiene ved forhandlingsbordet kan kreve endringer som er enklere å forklare enn en større totalbevilgning. Det er slike virkninger, fremfor størrelsen på overskriften, som vil avgjøre om velgerne opplever at avtalen gir bedre råd."
         ],
         "factIds": [
+          "hospitalOperating",
+          "hospitalDemography",
+          "hospitalTransfer",
           "ssbPriserGrowth",
           "ssbPriserStartYear",
           "ssbPriserEndYear",
-          "ssbBefolkningGrowth",
-          "budgetYear",
-          "olderStart",
-          "olderAge",
-          "olderStartYear",
-          "olderEnd",
-          "baseYear",
-          "olderGrowth",
-          "hospitalOperating",
-          "hospitalDemography",
-          "municipalityRoom",
-          "hospitalTransfer",
-          "birthBefore",
-          "birthAfter",
-          "birthReduction"
+          "ssbBefolkningGrowth"
         ]
       },
       {
-        "heading": "Disse kortene ligger på bordet",
+        "heading": "Opposisjonen kan påvirke prisen på et forlik",
         "paragraphs": [
-          "Kortene nedenfor er mulige forhandlingskort. Forhandlingsverdi er Svens vurdering, ikke dokumentasjon av regjeringens hensikt. Postnumrene er kontrollert mot Fellestalls forslag; satser og skattevedtak må endres gjennom riktig vedtaksform i tillegg til bevilgningen.",
-          "Kommunalt handlingsrom. Post eller vedtak: {{fact:postKeyOQ}} og {{fact:postKeyOW}}; også kommuneskatt og inntektssystem. Relevante parter: Sp, SV, Rødt, Ap. Mulig kompromiss: Høyere frie midler med enighet om oppgaver; varig økning gir varig kostnad.",
-          "Engangsstønad. Post eller vedtak: {{fact:postKeyARQ}} og satsvedtaket fra juli. Relevante parter: Rødt, SV, KrF; mulig Sp. Mulig kompromiss: Reversere eller dempe satskuttet; mindre innsparing må erstattes.",
-          "Tannhelse. Post eller vedtak: {{fact:postKeyVS}}, aktuelle refusjonsordninger og fylkesrammer. Relevante parter: Rødt, SV, Ap. Mulig kompromiss: Finansiert første trinn med målgruppe og dato; personell og helårskostnad må følge med.",
-          "Enova. Post eller vedtak: {{fact:postKeyAIX}}; energifondet har også tilførsel via {{fact:postKeyAPT}}. Relevante parter: MDG, SV, Ap. Mulig kompromiss: Delvis gjenoppretting eller prioriterte satsinger; innskudd må skilles fra fondets utbetalinger.",
-          "Kollektivtransport. Post eller vedtak: {{fact:postKeyAGD}} og relevante fylkesrammer. Relevante parter: MDG, SV, Sp. Mulig kompromiss: Gjenopprette deler av tilskuddet og sikre distriktsdekning; billigere billetter krever lokalt opplegg.",
-          "Norgespris. Post eller vedtak: {{fact:postKeyAPP}} og {{fact:postKeyAPQ}} og prisfastsetting. Relevante parter: Sp, Rødt, Ap. Mulig kompromiss: Lavere pris eller annen målrettet hjelp; utgiften avhenger av markedspris og forbruk.",
-          "Elbilmoms. Post eller vedtak: Fritaksgrensen i skatte- og avgiftsvedtaket. Relevante parter: MDG, Venstre, Høyre. Mulig kompromiss: Høyere grense eller senere innfasing; betydelig provenytap må finansieres.",
-          "Skattefordeling. Post eller vedtak: Trygdeavgift, personfradrag, pensjonsfradrag og trinnskatt. Relevante parter: Ap, SV, Rødt; Venstre på enkelte grep. Mulig kompromiss: Flytte lettelsen mot lavere inntekter innenfor samme eller justert provenyramme.",
-          "Sykehusdrift og modell. Post eller vedtak: {{fact:postKeyTO}} til {{fact:postKeyTS}}. Relevante parter: Ap, SV, Sp, Rødt. Mulig kompromiss: Mer drift eller annen balanse mellom basis og aktivitet; ompostering er ikke ny kapasitet.",
-          "Fylkesveier og lokale tjenester. Post eller vedtak: {{fact:postKeyOW}} og relevante transportbevilgninger. Relevante parter: Sp, Ap; mulig KrF. Mulig kompromiss: Videreføre mer av midlertidig styrking eller prioritere vedlikehold; avklar varighet.",
-          "De mest anvendelige kortene kombinerer tydelig velgergevinst, håndterbar kostnad og støtte hos flere. Engangsstønaden er et slikt kandidatkort. Kommunepenger kan tilfredsstille flere, men blir dyrt dersom løftet skal være stort og varig. En målrettet grønn pakke kan gi MDG og SV et resultat uten full reversering av alle kuttene.",
-          "Det er mindre sannsynlig at pensjonsrettigheter, store trygdeanslag eller hele forsvarsopptrappingen blir brukt som enkel finansiering. Disse er juridisk, økonomisk eller politisk bundet på en annen måte. Forsvar har brede forlik bak seg. En stor plusspost er ikke nødvendigvis et godt forhandlingskort."
+          "Skattepakken gir Ap en tydelig gevinst å vise frem, men også motstanderne flere innganger. Personinntektsskatten reduseres med {{fact:taxIncome}} millioner kroner. Lavere trygdeavgift, økt personfradrag og justert pensjonsskattefradrag inngår. Samtidig gir de nye skatte- og avgiftsforslagene {{fact:taxChanges}} millioner i lettelse, mens virkninger av tidligere vedtak gir {{fact:taxPrevious}} millioner i økning. Samlet nettolettelse i denne provenytabellen blir dermed {{fact:taxNet}} million. Ap og Høyre kan begge vise til riktige tall og likevel beskrive forslaget svært forskjellig.",
+          "Høyre har noe å være tilfreds med i lavere skatt på arbeid, men forslagets samlede skattevirkning, næringsvilkår og reforminnhold gir partiet større grunn til å kritisere helheten. FrP kan støtte prioritering av forsvar og isolerte avgiftsreduksjoner, men har angrepet helseopplegget og vil redusere drivstoffbelastningen. De to største borgerlige partiene har derfor gode muligheter til å utfordre Aps budskap uten å tilby den samme løsningen som støttepartiene.",
+          "For Sp blir dette et press fra utsiden: En avtale må ha noe å vise frem på lokale tjenester eller levekostnader, ellers får særlig FrP lett anledning til å spørre hva samarbeidet har gitt. Det betyr ikke at Sp vil foretrekke FrPs samlede budsjett. Det betyr at Ap har grunn til å ta de konkrete regningene alvorlig dersom partiet vil holde flertallet samlet.",
+          "Venstre er mer positivt til retningen i en skatteomlegging, men har krevd minst {{fact:venstreExtra}} kroner mer enn regjeringen til alle som jobber, med likt beløp uansett inntekt. Partiets misnøye med grønne tiltak og kunnskap gir samtidig grenser for hvor langt støtten rekker. KrFs tydelige familiekritikk gjør engangsstønaden til en sak med press fra begge sider av Stortinget. Dette kan påvirke hva Ap velger å reparere, selv om Venstre og KrF ikke blir parter i hovedforliket.",
+          "Elbilmomsen er særlig krevende. Fritaksgrensen foreslås senket fra {{fact:elcarBefore}} til {{fact:elcarAfter}} kroner, med anslått provenyøkning på {{fact:elcarRevenue}} milliarder. En utsettelse eller høyere grense kan være verdifull for MDG og Venstre, og relevant for Høyre, men fjerner også betydelige inntekter som andre tiltak kan trenge. Det gjør en begrenset justering mer nærliggende enn en full reversering dersom rammen skal beholdes.",
+          "Ap kan finne støtte på tvers for enkelte skattegrep. Men et budsjettforlik er ikke nødvendigvis stedet der en stor skattereform blir avklart. De borgerlige partienes ulike prioriteringer gjør det vanskelig å behandle dem som én reservepakke. Den mest anvendelige skatteendringen ved det eksisterende bordet er trolig en omfordeling av lettelsene som gir SV og Rødt mer målrettet hjelp, samtidig som Ap beholder en tydelig lettelse på arbeid. Også dette krever beregning av hvem som faktisk vinner og taper."
         ],
         "factIds": [
-          "postKeyOQ",
-          "postKeyOW",
-          "postKeyARQ",
-          "postKeyVS",
-          "postKeyAIX",
-          "postKeyAPT",
-          "postKeyAGD",
-          "postKeyAPP",
-          "postKeyAPQ",
-          "postKeyTO",
-          "postKeyTS"
+          "taxIncome",
+          "taxChanges",
+          "taxPrevious",
+          "taxNet",
+          "venstreExtra",
+          "elcarBefore",
+          "elcarAfter",
+          "elcarRevenue"
         ]
       },
       {
-        "heading": "Min prognose for avtalen",
+        "heading": "Hvor et forlik mest sannsynlig vil lande",
         "paragraphs": [
-          "Mest sannsynlig: Et fempartiforlik der Ap beholder hovedrammen og støttepartiene får en kombinasjon av kommuneøkonomi, sosial forbedring og grønne tiltak. Jeg forventer at mer fri kommuneøkonomi blir en felles prioritet, at Rødt presser frem et mer konkret tannhelsesteg, og at SV og MDG søker reparasjoner av klima- og kollektivkuttene. Dette er forventninger med ulik sikkerhet, ikke kjente avtalepunkter.",
-          "Den vanskeligste knuten: Sp vil gjøre bil- og strømregninger lavere. MDG vil bevare omstillingssignalet og gjøre alternativene billigere. SV og Rødt vil prioritere dem med minst. Ap vil unngå en avtale der finansieringen undergraver både skattebudskapet og budsjettets aktivitetsramme. Målrettet kompensasjon og grønn støtte har mer felles grunn enn full reversering av klimaavgiftene.",
-          "Finansieringen avgjør om kompromisset er troverdig. Elbilmoms og nye skattebaser kan gi store beløp, men har politisk motstand. Gjenbruk av fondskapital og justering av innfasingen kan hjelpe i ett år, men finansierer ikke automatisk permanente rettigheter. Et tiltak som starter sent i året må også vurderes med full kostnad året etter.",
-          "Ap bør være fornøyd dersom partiet får vedtatt hovedkursen og kan forklare forbedringene som styrket egen politikk. Sp trenger reelt lokalt handlingsrom eller synlig lettelse i regninger. SV trenger en fordelings- og velferdsgevinst sammen med grønn omstilling. Rødt trenger noe som merkes på tannlege- eller husholdningsregningen. MDG trenger konkrete grønne alternativer og naturtiltak som kan forsvares mot kuttene.",
-          "Forhandlingsbrudd blir mer sannsynlig dersom ett parti ikke får en identifiserbar gevinst, eller dersom innrømmelsen til Sp krever at MDG gir opp en sentral klimaambisjon. En utredning kan løse en vanskelig detalj, men erstatter neppe alle partienes behov for penger og rettigheter med virkning i budsjettåret.",
-          "Min viktigste test av sluttavtalen er derfor denne: Får hvert støtteparti noe viktig nok til å forsvare helheten, samtidig som finansieringen tåler å bli lest like nøye som satsingene? Med {{fact:mandateLeft}} mandater er det mulig. Med fire forskjellige begrunnelser for å være misfornøyd krever det mer enn enighet om overskriften."
+          "Forslaget gir Ap størst grunn til å være fornøyd med hovedretningen. Sp har samsvar på deler av landbrukspolitikken og videreføringen av viktige ordninger, men betydelig grunn til misnøye med kommuneøkonomi og regninger. SV og Rødt får en skattelette de kan anerkjenne, men for lite av sine egne velferds- og fordelingsprioriteringer. MDG har grunnlag for å støtte klimaavgiftenes retning, samtidig som svakere støtte til alternativer gjør helheten vanskelig. Dette peker mot et forlik som endrer noen tydelige deler av forslaget fremfor å skrive hele budsjettet om.",
+          "Kommuneøkonomi kan være det brede løftet. Et finansiert tannhelsesteg, en sosial forbedring og en avgrenset grønn satsing kan gi avtalen mer særpreg for støttepartiene. Ap vil sannsynligvis ha større mulighet til å akseptere disse tiltakene dersom de kan presenteres som bedre råd og tryggere tjenester, og dersom innrømmelsene ikke krever at andre sentrale mål oppgis. Avtalen må derfor vurderes som en kombinasjon, ikke som summen av hvert partis største åpningskrav.",
+          "Det mest følsomme punktet er fortsatt forholdet mellom Sp og MDG. Billigere fossilbruk som hovedsvar til Sp kan gjøre det vanskelig for MDG å bli. Bare grønn støtte uten hjelp til husholdninger som mangler alternativer kan gjøre det vanskelig for Sp. Målrettet lettelse og tiltak som reduserer kostnaden ved omstilling har mer potensial, men kvaliteten på kompromisset avhenger av hvem hjelpen når og når den får virkning.",
+          "Finansieringen vil skille en holdbar avtale fra en som bare ser god ut det første året. Utsatt innfasing kan redusere årets kostnad, men gir ikke varig finansiering. Fondskapital kan gi handlingsrom for enkelte tiltak, men kan ikke automatisk betale nye permanente rettigheter. Større skatteendringer kan gi inntekter, men krever avklaring av grunnlag og virkninger. De store pensjons- og forsvarsøkningene er heller ingen enkel reserve som kan hentes inn uten nye konflikter.",
+          "Jeg forventer derfor at Ap beholder hovedrammen og må gi mer på noen få områder der støttepartienes krav har høy politisk verdi. Sp trenger en forbedring som merkes lokalt eller på regningene. SV trenger sterkere velferd og fordeling sammen med grønn retning. Rødt trenger konkret fremdrift i en reform eller en tydelig reduksjon av belastningen for folk med lite. MDG trenger tiltak som gjør omstillingen mulig å forsvare i praksis. Ingen av dem behøver få alt, men alle må få noe som er viktigere enn det de gir etter på.",
+          "Min vurdering er at dette er oppnåelig. Et brudd blir mer sannsynlig hvis en av partene sitter igjen med bare en prosess, eller hvis forbedringen for én part river bort det viktigste for en annen. Det avgjørende når sluttavtalen foreligger blir derfor ikke hvor mange nye satsinger pressemeldingen teller. Det blir om de konkrete endringene er store og varige nok til at partiene kan stå inne for budsjettet de faktisk har vedtatt."
         ],
-        "factIds": [
-          "mandateLeft"
-        ]
+        "factIds": []
       }
     ],
-    "linkedin": "𝗔𝗽 𝗵𝗮𝗿 𝘀𝘁𝘆𝗿𝗶𝗻𝗴𝗲𝗻. 𝗦𝘁ø𝘁𝘁𝗲𝗽𝗮𝗿𝘁𝗶𝗲𝗻𝗲 𝗵𝗮𝗿 𝗻ø𝗸𝗹𝗲𝗻𝗲.\n\nStatsbudsjettet for {{fact:budgetYear}} er stort. Den frie lommen er mindre.\n\nAp og de fire støttepartiene har {{fact:mandateLeft}} mandater. Ingen av de fire kan falle fra hvis dette flertallet skal holde uten hjelp utenfra. Det er et møte der alle har nøkkel, men ingen har hele handlelisten.\n\nSven undersøker hvem som bør være fornøyd, hva partiene vil kreve, og hvilke poster som kan bli forhandlingskort: kommuneøkonomi, tannhelse, Norgespris, Enova og engangsstønad.\n\nHvilke innrømmelser kan samle fem partier – og hvem skal betale for dem?",
+    "linkedin": "Et budsjett kan vokse uten at forhandlerne får mer å dele ut.\n\nAp må få Sp, SV, Rødt og MDG til å støtte den samme helheten. Kommuneøkonomi kan samle dem. Billigere regninger og grønn omstilling er vanskeligere å forene.\n\nSven undersøker hvor innrømmelser kan bety mye for ett parti uten å koste de andre deres viktigste prioritering. Og hvorfor en høring fortsatt ikke betaler en tannlegeregning.",
     "graphs": [
       {
         "kind": "budget-bridge",
@@ -23796,19 +23735,19 @@
       },
       {
         "kind": "budget-bridge",
-        "afterSection": 5,
+        "afterSection": 3,
         "department": "14",
         "title": "Klima: Hvor kan partiene kreve reparasjoner?"
       },
       {
         "kind": "budget-bridge",
-        "afterSection": 7,
+        "afterSection": 5,
         "chapter": "0732",
         "title": "Sykehus: Penger til drift og penger som flyttes"
       },
       {
         "kind": "series",
-        "afterSection": 7,
+        "afterSection": 5,
         "title": "Historisk prisvekst og befolkningsvekst",
         "description": "Observerte bakgrunnsserier. Sammenligningen forklarer ikke alene fremtidige utgifter.",
         "mode": "index",
