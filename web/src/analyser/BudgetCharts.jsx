@@ -140,7 +140,7 @@ export function BudgetEvidence({ report }) {
 const bridgeMoney = (v) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${number(Math.abs(v) / 1000, Math.abs(v) < 10 ? 3 : Math.abs(v) < 1000 ? 2 : 1)}`
 const bridgeLabel = (label) => ({
   'Rammetilskudd til kommuner': 'Kommuner',
-  'Rammetilskudd til fylkeskommuner': 'Fylkeskommuner',
+  'Rammetilskudd til fylkeskommuner': 'Fylker',
   'Husbanken - Bolig- og bygningsdirektoratet': 'Husbanken og bolig',
   'Kommunestruktur': 'Kommune- struktur',
   'Regional- og distriktsutvikling': 'Distrikts- utvikling',
