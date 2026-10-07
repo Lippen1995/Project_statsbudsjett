@@ -75,6 +75,58 @@ function fixture() {
   ])
   return { dir, put }
 }
+test('explicit revised baseline uses revised amounts, never falls back, and is hash-bound', () => {
+  const f = fixture()
+  try {
+    const tree = JSON.parse(readFileSync(`${f.dir}/utgifter.json`))
+    tree[0].children[0].children[0].serier[2026].revidert = 12
+    f.put('utgifter.json', tree)
+    const r = nextBudgetReport(f.dir, [], {
+      baselineSeries: 'revidert', eligible: (r) => r.comparison === 'previous-budget-to-proposal',
+    })
+    validateBudgetReport(r)
+    assert.equal(r.beforeLabel, 'Revidert budsjett 2026')
+    assert.equal(r.facts.beforeTotal.value, 12)
+    assert.equal(r.facts.absoluteChange.value, 3)
+    assert.equal(r.facts.departmentAChange.value, 3)
+    assert.equal(r.factsVersion, 2)
+    const tampered = structuredClone(r)
+    delete tampered.baselineSeries
+    assert.throws(() => validateBudgetReport(tampered), /avgrensning/)
+    delete tree[0].children[0].children[0].serier[2026].revidert
+    f.put('utgifter.json', tree)
+    assert.equal(nextBudgetReport(f.dir, [], {
+      baselineSeries: 'revidert', eligible: (r) => r.comparison === 'previous-budget-to-proposal',
+    }), null)
+    assert.equal(nextBudgetReport(f.dir, [], {
+      eligible: (r) => r.comparison === 'previous-budget-to-proposal',
+    }).facts.beforeTotal.value, 10)
+  } finally { rmSync(f.dir, { recursive: true, force: true }) }
+})
+test('budget document quotes and source text are verified and included in report hash', () => {
+  const f = fixture()
+  try {
+    const tree = JSON.parse(readFileSync(`${f.dir}/utgifter.json`))
+    tree[0].children[0].children[0].serier[2026].revidert = 12
+    f.put('utgifter.json', tree)
+    const text = 'Dette er et kildeutdrag om finansieringen av sykehusene.'
+    const sha256 = createHash('sha256').update(text).digest('hex')
+    mkdirSync(`${f.dir}/budget-research/2027`, { recursive: true })
+    writeFileSync(`${f.dir}/budget-research/2027/${sha256}.txt`, text)
+    f.put('budget-research/2027/index.json', { version: 1, year: 2027, documents: [{
+      path: `${sha256}.txt`, sha256, text: undefined, quote: text,
+      url: 'https://www.regjeringen.no/no/dokumenter/sykehus/', name: 'Helseproposisjonen',
+      retrievedAt: '2026-10-07T08:00:00Z',
+    }] })
+    const r = nextBudgetReport(f.dir, [], {
+      baselineSeries: 'revidert', eligible: (r) => r.comparison === 'previous-budget-to-proposal',
+    })
+    validateBudgetReport(r)
+    assert.equal(r.facts.documentAQuote.text, text)
+    r.budgetDocuments[0].text += ' Endret.'
+    assert.throws(() => validateBudgetReport(r), /kontrolleres/)
+  } finally { rmSync(f.dir, { recursive: true, force: true }) }
+})
 test('budget reports with actual archived SSB series validate their combined hash and support historical charts', () => {
   const f = fixture()
   try {
@@ -245,10 +297,14 @@ test('verified party priorities preserve original context, freeze citations and 
   }
 })
 
-test('explicit budget-day delivery can coexist with an older state review but never duplicates its own proposal', async () => {
+test('revised-baseline handoff rebuilds the same report and coexists with an older state review without duplicates', async () => {
   const f = fixture()
   try {
+    const tree = JSON.parse(readFileSync(`${f.dir}/utgifter.json`))
+    tree[0].children[0].children[0].serier[2026].revidert = 12
+    f.put('utgifter.json', tree)
     const report = nextBudgetReport(f.dir, [], {
+      baselineSeries: 'revidert',
       eligible: (r) => r.comparison === 'previous-budget-to-proposal',
     })
     const state = JSON.parse(

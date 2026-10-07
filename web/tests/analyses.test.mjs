@@ -421,9 +421,10 @@ test('publiseringscommit tar med review-hodet og kan aldri force-pushe', async (
 
 test('ukentlig kø finner en annen dokumentert analyse selv uten nye data', async () => {
   const { nextReport } = await import('../../scripts/analyser/candidates.mjs')
-  const first = nextReport(join(root, 'web/public/data'), [])
+  const at = '2026-10-04T10:00:00Z'
+  const first = nextReport(join(root, 'web/public/data'), [], { at })
   assert.equal(first.scopeId, 'state')
-  const second = nextReport(join(root, 'web/public/data'), [{ report: first }])
+  const second = nextReport(join(root, 'web/public/data'), [{ report: first }], { at })
   assert.ok(second.scopeId !== 'state')
   assert.ok(second.limitations.some((s) => s.includes('ansvarsområder')))
   const unknown = () => buildReport(join(root, 'web/public/data'), { departmentId: 'missing' })
