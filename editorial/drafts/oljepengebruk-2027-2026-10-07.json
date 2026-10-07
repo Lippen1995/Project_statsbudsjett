@@ -1,0 +1,268 @@
+{
+  "slug": "oljepengebruk-2027-2026-10-07",
+  "topic": "Statsfinanser",
+  "geography": "Staten",
+  "type": "Budsjettforslag",
+  "status": "draft",
+  "createdAt": "2026-10-07T07:23:57.289Z",
+  "generatedAt": "2026-10-07T07:23:57.289Z",
+  "report": {
+    "kind": "oil-funds",
+    "scopeId": "oil-funds",
+    "scopeName": "Strukturell oljepengebruk",
+    "year": 2027,
+    "start": 2025,
+    "end": 2027,
+    "forecastFrom": 2026,
+    "dataUpdated": "2026-10-07T07:17:14Z",
+    "sourceArchive": {
+      "url": "https://www.regjeringen.no/no/aktuelt/nokkeltall-i-nasjonalbudsjettet-2027/id3174610/",
+      "checkedAt": "2026-10-07T07:17:14Z",
+      "sha256": "a157efedb452631537c1c833081fa623abe36b7da8baf130cdb3d44a45fa1c8c"
+    },
+    "rows": [
+      {
+        "year": 2025,
+        "nominal": 507.4,
+        "real": 545.7,
+        "fundPercent": 2.6
+      },
+      {
+        "year": 2026,
+        "nominal": 583.4,
+        "real": 603.5,
+        "fundPercent": 2.7
+      },
+      {
+        "year": 2027,
+        "nominal": 608.4,
+        "real": 608.4,
+        "fundPercent": 2.7
+      }
+    ],
+    "ukraine": 85,
+    "fundValue": 22400,
+    "trendGdpPercent": 12.6,
+    "incomeShare": null,
+    "facts": {
+      "startYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Første sammenligningsår"
+      },
+      "endYear": {
+        "value": 2027,
+        "text": "2027",
+        "label": "Forslagsår"
+      },
+      "previousYear": {
+        "value": 2026,
+        "text": "2026",
+        "label": "Året før forslaget"
+      },
+      "total": {
+        "value": 608.4,
+        "text": "608,4 mrd. kr",
+        "label": "Strukturell oljepengebruk"
+      },
+      "previousTotal": {
+        "value": 583.4,
+        "text": "583,4 mrd. kr",
+        "label": "Oppdatert anslag året før"
+      },
+      "nominalChange": {
+        "value": 101,
+        "text": "101,0 mrd. kr",
+        "label": "Nominell økning fra første år"
+      },
+      "nominalGrowth": {
+        "value": 19.905400078833257,
+        "text": "19,9 %",
+        "label": "Nominell vekst gjennom perioden"
+      },
+      "realChange": {
+        "value": 62.69999999999993,
+        "text": "62,7 mrd. kr",
+        "label": "Reell økning fra første år"
+      },
+      "realGrowth": {
+        "value": 11.489829576690468,
+        "text": "11,5 %",
+        "label": "Realvekst gjennom perioden"
+      },
+      "annualNominalChange": {
+        "value": 25,
+        "text": "25,0 mrd. kr",
+        "label": "Nominell årsøkning"
+      },
+      "annualNominalGrowth": {
+        "value": 4.285224545766209,
+        "text": "4,3 %",
+        "label": "Nominell årsvekst"
+      },
+      "annualRealChange": {
+        "value": 4.899999999999977,
+        "text": "4,9 mrd. kr",
+        "label": "Reell årsøkning"
+      },
+      "annualRealGrowth": {
+        "value": 0.8119304059651888,
+        "text": "0,8 %",
+        "label": "Reell årsvekst"
+      },
+      "fundPercent": {
+        "value": 2.7,
+        "text": "2,7 %",
+        "label": "Andel av fondskapital ved årets inngang"
+      },
+      "fundValue": {
+        "value": 22400,
+        "text": "22 400 mrd. kr",
+        "label": "Anslått fondskapital ved årets inngang"
+      },
+      "ukraine": {
+        "value": 85,
+        "text": "85 mrd. kr",
+        "label": "Støtte til Ukraina"
+      },
+      "ukraineShare": {
+        "value": 13.971071663379355,
+        "text": "14,0 %",
+        "label": "Ukraina-beløp i forhold til strukturell bruk"
+      },
+      "trendGdpPercent": {
+        "value": 12.6,
+        "text": "12,6 %",
+        "label": "Andel av trend-BNP for Fastlands-Norge"
+      },
+      "rulePercent": {
+        "value": 3,
+        "text": "3 %",
+        "label": "Handlingsregelens langsiktige rettesnor"
+      }
+    },
+    "sources": [
+      {
+        "name": "Finansdepartementets nøkkeltall for 2027",
+        "url": "https://www.regjeringen.no/no/aktuelt/nokkeltall-i-nasjonalbudsjettet-2027/id3174610/",
+        "description": "Offisiell tabell og forklarende tekst. Original HTML og SHA-256 er arkivert; forrige år er anslag på regnskap."
+      }
+    ],
+    "methodology": [
+      "Oljepengebruk er strukturelt oljekorrigert budsjettunderskudd, ikke faktisk fondsoverføring. Nominelle endringer beregnes fra løpende kroner; realendringer bruker departementets faste priser i forslagsåret.",
+      "Fondets uttaksandel følger den publiserte tabellen og gjelder kapitalen ved inngangen til året. Grafene skiller løpende kroner, faste priser og prosent."
+    ],
+    "limitations": [
+      "Dette er et budsjettforslag og oppdaterte anslag, ikke en sammenhengende regnskapsserie eller en verifisering av historisk rekord.",
+      "Faktisk fondsoverføring og samlede budsjettinntekter er ikke oppgitt i nøkkeltallskilden. Inntektsandelen er derfor uavklart; trend-BNP-andelen er et annet mål.",
+      "Ukraina-beløpet dokumenterer nivået, ikke et bidrag til årsøkningen. Andre finansieringsbehov omtales som mulige mekanismer, ikke dokumenterte årsaksandeler."
+    ],
+    "dataHash": "014febee9ef743de48f5710974409943416e337dc30a7b542fdf2f05ed7d3663"
+  },
+  "copy": {
+    "title": "Oljepengebruken når {{fact:total}}. Hvor varig er regningen?",
+    "description": "Liten realøkning neste år, stort løft siden {{fact:startYear}}. Sven undersøker fondsandelen, finansieringsbehovene og forskjellen mellom oljepengebruk og fondsoverføring.",
+    "lead": "Regjeringen foreslår oljepengebruk på {{fact:total}} i {{fact:endYear}}. Det store beløpet skjuler en liten årsøkning i kjøpekraft: {{fact:annualRealGrowth}}. Spørsmålet er hvor mye av det høye nivået kommende budsjetter også må bære.",
+    "conclusion": "Forslaget viderefører i stor grad nivået fra {{fact:previousYear}}. Siden {{fact:startYear}} er oljepengebruken likevel økt med {{fact:realGrowth}} reelt. Uttaket er {{fact:fundPercent}} av fondet, men et høyt finansieringsnivå gjør prioriteringene følsomme for både nye behov og svakere fondsverdi.",
+    "sections": [
+      {
+        "heading": "Den store opptrappingen ligger allerede i budsjettet",
+        "factIds": [
+          "startYear",
+          "previousYear",
+          "endYear",
+          "previousTotal",
+          "total",
+          "annualNominalChange",
+          "annualNominalGrowth",
+          "annualRealChange",
+          "annualRealGrowth",
+          "nominalChange",
+          "realGrowth"
+        ],
+        "paragraphs": [
+          "Fra {{fact:previousYear}} til {{fact:endYear}} øker oljepengebruken fra {{fact:previousTotal}} til {{fact:total}}. Forskjellen er {{fact:annualNominalChange}}, eller {{fact:annualNominalGrowth}} i løpende kroner. Etter Finansdepartementets prisjustering gjenstår {{fact:annualRealChange}} og en realvekst på {{fact:annualRealGrowth}}. Flere kroner betyr dermed først og fremst at pengebruken følger et høyere prisnivå.",
+          "Fra {{fact:startYear}} er økningen større: {{fact:nominalChange}} nominelt og {{fact:realGrowth}} reelt. Den største opptrappingen i denne korte perioden ligger mellom det første året og årets oppdaterte anslag. Neste års forslag viderefører i stor grad nivået. Sammenligningen bruker dagens anslag for året før forslaget. Den viser verken hele fondets historie eller en sammenhengende serie av endelige regnskapstall."
+        ]
+      },
+      {
+        "heading": "En moderat prosent kan finansiere en stor regning",
+        "factIds": [
+          "fundPercent",
+          "fundValue",
+          "endYear",
+          "rulePercent",
+          "trendGdpPercent"
+        ],
+        "paragraphs": [
+          "Bruken utgjør {{fact:fundPercent}} av en fondskapital anslått til {{fact:fundValue}} ved inngangen til {{fact:endYear}}. Det er under handlingsregelens langsiktige rettesnor på {{fact:rulePercent}}. Når fondet blir større, kan samme uttaksprosent finansiere flere kroner. Oljepengebruken tilsvarer samtidig {{fact:trendGdpPercent}} av fastlandsøkonomiens trend-BNP. Fondets betydning for finansieringen er stor selv om prosentandelen av fondet ser moderat ut.",
+          "Handlingsrommet avhenger av en verdi som kan svinge kraftig. Et børsfall eller en sterkere krone kan redusere fondsverdien uten at pensjoner, sykehus og andre løpende forpliktelser blir billigere. Derfor bør en diskusjon om uttaksprosenten også handle om hva som skjer med utgiftene dersom finansieringsgrunnlaget krymper. Lav uttaksprosent alene avgjør ikke hvilke prioriteringer som tåler å bli permanente."
+        ]
+      },
+      {
+        "heading": "Hvor mye av statens inntekter kommer fra fondet?",
+        "factIds": [
+          "total",
+          "endYear",
+          "trendGdpPercent"
+        ],
+        "paragraphs": [
+          "Oljepengebruk måles her som strukturelt oljekorrigert underskudd. Det er justert blant annet for konjunkturenes virkninger på skatter og utgifter. Selve fondsoverføringen er beløpet som dekker budsjettets oljekorrigerte underskudd. Derfor kan Fellestalls inntektsoversikt vise en annen sum enn regjeringens mål på oljepengebruk uten at et av tallene er feil.",
+          "For å måle hvor stor del av budsjettinntektene fondet finansierer, bør faktisk fondsoverføring deles på inntekter uten petroleum, men inkludert fondsoverføringen. Nøkkeltallskilden oppgir ikke disse størrelsene for {{fact:endYear}}. Inntektsandelen kan derfor ikke beregnes fra denne kilden. De {{fact:trendGdpPercent}} som gjelder trend-BNP, er ikke en inntektsandel. Å bruke {{fact:total}} som bokført inntekt ville også blande to forskjellige mål."
+        ]
+      },
+      {
+        "heading": "Ukraina og behovene som kan vare",
+        "factIds": [
+          "ukraine",
+          "ukraineShare"
+        ],
+        "paragraphs": [
+          "Forslaget inkluderer {{fact:ukraine}} til Ukraina. Det tilsvarer {{fact:ukraineShare}} av den strukturelle oljepengebruken. Dette dokumenterer en stor prioritering, men er ikke et regnestykke som fordeler årsøkningen. Uten sammenlignbare beløp for året før kan vi ikke si hvor mye av løftet Ukraina forklarer.",
+          "Forsvar og beredskap kan kreve mer personell, materiell og langsiktige driftsmidler. Flere eldre kan øke behovet for pensjoner og helsetjenester. Pris- og lønnsvekst gjør dessuten videreføring av eksisterende tjenester dyrere. Dette er mulige finansieringsbehov som detaljbudsjettet må belyse. Store anskaffelser kan flytte penger mellom år; permanente bemanningsbehov følger budsjettene videre. Forskjellen mellom slike behov er viktig når et høyt utgangspunkt vurderes mot en liten ny realøkning."
+        ]
+      },
+      {
+        "heading": "Hva bør vi diskutere før regningen blir varig?",
+        "factIds": [],
+        "paragraphs": [
+          "Det første spørsmålet er hvor mye som er midlertidig, og hvor mye som skaper forpliktelser for kommende budsjetter. Det neste er hva pengene gir tilbake: investeringer og reformer kan styrke produktiviteten eller redusere fremtidige kostnader, mens løpende drift krever fortsatt finansiering. Mer penger alene dokumenterer ikke bedre tjenester.",
+          "Sammensetningen betyr også noe for renter og inflasjon. Etterspørsel etter knappe norske ressurser kan virke annerledes enn støtte brukt utenlands. Til slutt kommer prioriteringen dersom nye behov vokser raskere enn handlingsrommet: høyere skatt, omdisponeringer, mer effektiv tjenesteproduksjon eller større fondsuttak. Den lille årsveksten bør derfor diskuteres sammen med de store forpliktelsene som allerede ligger i nivået."
+        ]
+      }
+    ],
+    "graphs": [
+      {
+        "kind": "series",
+        "afterSection": 0,
+        "mode": "values",
+        "title": "Flere kroner, mindre realøkning",
+        "description": "Strukturell oljepengebruk. Faste priser er oppgitt i {{fact:endYear}}-kroner.",
+        "series": [
+          {
+            "source": "oil-funds",
+            "id": "nominal"
+          },
+          {
+            "source": "oil-funds",
+            "id": "real"
+          }
+        ]
+      },
+      {
+        "kind": "series",
+        "afterSection": 1,
+        "mode": "values",
+        "title": "Oljepengebruken som andel av fondet",
+        "description": "Andel av fondskapitalen ved inngangen til hvert år.",
+        "series": [
+          {
+            "source": "oil-funds",
+            "id": "fundPercent"
+          }
+        ]
+      }
+    ],
+    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\n{{fact:total}} i oljepengebruk. Et stort tall, med en årsvekst på bare {{fact:annualRealGrowth}} når prisene tas med.\n\nKalkulatoren skiller fortsatt mellom flere kroner og mer kjøpekraft. Heldigvis.\n\nSven ser på løftet siden {{fact:startYear}}, uttaket på {{fact:fundPercent}} av fondet og behovene kommende budsjetter kan måtte bære.\n\nHvor mye av dagens finansieringsbehov er midlertidig – og hvor mye blir en fast regning?\n\nLes den korte analysen på Fellestall."
+  }
+}
