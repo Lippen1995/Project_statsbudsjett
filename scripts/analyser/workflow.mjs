@@ -14,6 +14,7 @@ import { renderReview } from './render-review.mjs'
 import { factText } from '../../web/src/analyser/model.js'
 import { buildReport } from './report.mjs'
 import { nextBudgetReport } from './budget-report.mjs'
+import { buildOilReport } from './oil-report.mjs'
 import { topicKey, topicBlocked } from '../../web/src/analyser/topics.js'
 import {
   replacementSource,
@@ -93,6 +94,7 @@ export async function runWorkflow({
   replacementFor = null,
   detailSelections,
   budgetYear,
+  oilYear,
 }) {
   const draftPrefix = 'editorial/drafts/'
   const comment = (number, body) =>
@@ -104,7 +106,9 @@ export async function runWorkflow({
     })
   const feedbackFor = (number, article) => pendingFeedback(g, number, article)
   const context = () => readReviewContext(g, event)
-  if (command === 'weekly' || command === 'replacement' || command === 'budget-day') {
+  if (['weekly', 'replacement', 'budget-day', 'oil-funds'].includes(command)) {
+    if (command === 'oil-funds' && (!Number.isSafeInteger(oilYear) || oilYear < 2000 || oilYear > 2100))
+      throw Error('Oljepengelevering krever et eksplisitt budsjettår')
     if (
       command === 'budget-day' &&
       (!Number.isSafeInteger(budgetYear) || budgetYear < 2000 || budgetYear > 2100)
@@ -114,14 +118,16 @@ export async function runWorkflow({
       throw Error('ANALYSIS_REVIEWER må være en bruker med skrivetilgang til repositoryet')
     const open = await g.pages('/pulls?state=open&base=main')
     let existing = open.find((pr) => /^analysis\/weekly-/.test(pr.head.ref))
-    if (command === 'replacement' || command === 'budget-day') {
+    if (['replacement', 'budget-day', 'oil-funds'].includes(command)) {
       // Explicit replacements can be reviewed in parallel for distinct articles.
       // Never overwrite or create a second replacement for the same source.
       existing = null
       for (const pr of open.filter((pr) => /^analysis\/weekly-/.test(pr.head.ref))) {
         const context = await readReviewContext(g, { pull_request: { number: pr.number } })
         if (
-          command === 'replacement'
+          command === 'oil-funds'
+            ? context.article.report.kind === 'oil-funds' && context.article.report.year === oilYear
+            : command === 'replacement'
             ? context.article.replaces?.slug === replacementFor?.slug
             : context.article.report.kind === 'budget-comparison' &&
               context.article.report.year === budgetYear &&
@@ -148,7 +154,9 @@ export async function runWorkflow({
     const source = command === 'replacement' ? replacementSource(published, replacementFor) : null
     let report = source
       ? replacementReport(source, replacementFor, { dataDir })
-      : command === 'budget-day'
+      : command === 'oil-funds'
+        ? buildOilReport(dataDir, oilYear)
+        : command === 'budget-day'
         ? nextBudgetReport(dataDir, published, {
             eligible: (r) =>
               r.year === budgetYear &&
@@ -174,6 +182,8 @@ export async function runWorkflow({
       )
       return
     }
+    if (command === 'oil-funds' && topicBlocked(report, published, now()))
+      throw Error('Oljepengeanalysen er allerede dekket')
     const createdAt = now(),
       date = createdAt.slice(0, 10)
     const metadata = source

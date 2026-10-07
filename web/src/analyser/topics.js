@@ -8,6 +8,11 @@ export const focusedQuestions = {
   'military-support': { evidence: ['ukrainastotte'], label: 'Militær støtte til Ukraina' },
 }
 export function topicKey(report) {
+  if (report.kind === 'oil-funds') {
+    if (!Number.isSafeInteger(report.year) || report.scopeId !== 'oil-funds')
+      throw Error('Ukjent oljepengeproblemstilling')
+    return `oil-funds:${report.year}:proposal`
+  }
   if (report.kind === 'budget-comparison') {
     if (
       !Number.isInteger(report.year) ||

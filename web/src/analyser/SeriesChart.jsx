@@ -8,6 +8,9 @@ export default function SeriesChart({ graph, report }) {
   const title = factText(graph.title ?? 'Utviklingen i de valgte seriene', report)
   const props = {
     aar: data.years,
+    ...(report.kind === 'oil-funds' && Number.isInteger(report.forecastFrom)
+      ? { anslagFra: data.years.findIndex((year) => year >= report.forecastFrom) }
+      : {}),
     fraNull: true,
     aksefmt: (v) => number(v, 1),
     akseFont: 12,
@@ -48,7 +51,10 @@ export default function SeriesChart({ graph, report }) {
         {data.indexed
           ? 'Seriene er satt til samme startverdi i det første felles året. Kurvene sammenligner vekst, ikke beløp eller størrelser.'
           : `Y-aksen viser ${data.unit} og inkluderer null.`}{' '}
-        Bare felles observerte år vises. Samtidig utvikling dokumenterer ikke årsak.
+        {report.kind === 'oil-funds'
+          ? 'Nøkkeltallene inkluderer anslag og budsjettforslag. Skravert område og stiplede kurver viser anslagsårene. Faste priser følger Finansdepartementets prisjustering.'
+          : 'Bare felles observerte år vises.'}{' '}
+        Samtidig utvikling dokumenterer ikke årsak.
       </p>
       <p className="an-chart-note">
         {data.series.map((s) => `${factText(s.label, report)}: ${s.source}, ${s.unit}`).join(' · ')}

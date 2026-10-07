@@ -1,6 +1,7 @@
 import { ssbEvidenceFacts } from './ssb-research.mjs'
 import { createHash } from 'node:crypto'
 import { validateBudgetReport } from './budget-report.mjs'
+import { validateOilReport } from './oil-report.mjs'
 import { calculateFacts } from './facts.mjs'
 import {
   validateEventEvidence,
@@ -99,12 +100,13 @@ export function validateArticle(article, { published = false } = {}) {
   topicKey(r)
   if (
     !r ||
-    !['real-expenditure-per-capita', 'budget-comparison'].includes(r.kind) ||
+    !['real-expenditure-per-capita', 'budget-comparison', 'oil-funds'].includes(r.kind) ||
     !/^[a-f0-9]{64}$/.test(r.dataHash) ||
     !Number.isFinite(Date.parse(r.dataUpdated))
   )
     throw Error('Mangler datagrunnlag')
   if (r.kind === 'budget-comparison') validateBudgetReport(r)
+  else if (r.kind === 'oil-funds') validateOilReport(r)
   else {
     if (
       !Array.isArray(r.rows) ||

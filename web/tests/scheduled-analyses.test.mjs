@@ -7,6 +7,8 @@ import { analysisSettings } from '../../scripts/analyser/config.mjs'
 import { contentHash } from '../../scripts/analyser/schema.mjs'
 import { githubClient } from '../../scripts/analyser/github.mjs'
 import { replacementDraft } from '../../scripts/analyser/replacement.mjs'
+import { buildOilReport } from '../../scripts/analyser/oil-report.mjs'
+import { createHash } from 'node:crypto'
 const root = new URL('../../', import.meta.url).pathname
 const pilot = () => {
   const article = JSON.parse(readFileSync(`${root}editorial/drafts/pilot.json`))
@@ -86,6 +88,39 @@ const deliver = (f, overrides = {}) =>
     now: () => '2026-10-04T10:00:00Z',
     ...overrides,
   })
+
+const oilPacket = () => ({
+  mode: 'oil-funds',
+  article: {
+    slug: 'oljepengebruk-test', status: 'draft', createdAt: '2026-10-07T07:00:00Z',
+    topic: 'Statsfinanser', geography: 'Staten', type: 'Budsjettforslag',
+    report: buildOilReport(`${root}web/public/data`, 2027),
+    copy: {
+      title: 'Oljepengebruk', description: 'Kontrollert forslag', lead: 'Forslag og anslag',
+      conclusion: 'Kontrollert grunnlag', linkedin: 'Les analysen.',
+      graphs: [{ kind: 'series', afterSection: 0, mode: 'values', series: [{ source: 'oil-funds', id: 'nominal' }] }],
+      sections: Array.from({ length: 4 }, () => ({ heading: 'Vurdering', factIds: [], paragraphs: [Array(120).fill('Budsjett').join(' ')] })),
+    },
+  },
+})
+test('oil packet uses authoritative archived macro report and requests review without publishing', async () => {
+  const f = fixture({ packet: oilPacket() })
+  await deliver(f)
+  assert.equal(f.changes.length, 1)
+  assert.equal(f.current().report.kind, 'oil-funds')
+  assert.equal(f.current().status, 'draft')
+  assert.equal(f.current().approval, undefined)
+  assert.ok(f.calls.some((c) => c.route.endsWith('/requested_reviewers')))
+})
+test('even a rehashed macro report cannot replace trusted main source provenance', async () => {
+  const packet = oilPacket(), r = packet.article.report
+  r.sources[0].url = 'https://example.com/fake'
+  const { dataHash, ...base } = r
+  r.dataHash = createHash('sha256').update(JSON.stringify(base)).digest('hex')
+  const f = fixture({ packet })
+  await assert.rejects(() => deliver(f), /kontrollerte rapporten/)
+  assert.equal(f.changes.length, 0)
+})
 
 test('planlagt tekst leveres til botgjennomgang uten AI-kall eller publisering', async (t) => {
   t.mock.method(globalThis, 'fetch', () => {

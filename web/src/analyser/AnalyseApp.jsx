@@ -189,6 +189,7 @@ function Article({ article, preview, review, successor }) {
   const { report: r, copy: c } = article
   const t = (text) => factText(text, r)
   const budget = r.kind === 'budget-comparison'
+  const oil = r.kind === 'oil-funds'
   const graphs = graphPlan(c, r)
   const components = {
     growth: GrowthComparison,
@@ -198,7 +199,7 @@ function Article({ article, preview, review, successor }) {
     'budget-changes': BudgetChanges,
     'budget-bridge': BudgetBridge,
   }
-  const changes = new Map(annualChanges(budget ? [] : r.rows).map((row) => [row.year, row.change]))
+  const changes = new Map(annualChanges(budget || oil ? [] : r.rows).map((row) => [row.year, row.change]))
   const words = c.sections
     .flatMap((s) => s.paragraphs)
     .join(' ')
@@ -265,7 +266,7 @@ function Article({ article, preview, review, successor }) {
           <span>{Math.ceil(words / 180)} min lesetid</span>
         </div>
         <p className="an-data-date">
-          {budget ? `${r.beforeLabel} → ${r.afterLabel}` : `Regnskap ${r.start}–${r.end}`} ·
+          {budget ? `${r.beforeLabel} → ${r.afterLabel}` : oil ? `Nøkkeltall ${r.start}–${r.end}, inkludert anslag og forslag` : `Regnskap ${r.start}–${r.end}`} ·
           Datagrunnlag oppdatert {displayDate(r.dataUpdated)}
         </p>
       </header>
@@ -275,7 +276,9 @@ function Article({ article, preview, review, successor }) {
         <p>{t(c.conclusion)}</p>
       </section>
       <div className="an-stat-grid">
-        {(budget
+        {(oil
+          ? ['annualNominalChange', 'annualRealGrowth', 'fundPercent']
+          : budget
           ? ['beforeTotal', 'afterTotal', 'absoluteChange']
           : ['nominalGrowth', 'priceGrowth', 'realPerCapitaGrowth']
         ).map((key) => (
@@ -283,7 +286,7 @@ function Article({ article, preview, review, successor }) {
             <span>{r.facts[key].label}</span>
             <strong className="num">{r.facts[key].text}</strong>
             <small>
-              {r.start}–{r.end}
+              {oil ? key === 'fundPercent' ? r.end : `${r.end - 1}–${r.end}` : `${r.start}–${r.end}`}
             </small>
           </div>
         ))}
@@ -363,7 +366,9 @@ function Article({ article, preview, review, successor }) {
           Beregningene er gjort i kode.
         </p>
       </section>
-      {budget ? (
+      {oil ? (
+        <OilEvidence report={r} />
+      ) : budget ? (
         <BudgetEvidence report={r} />
       ) : (
         <section id="faktagrunnlag" className="an-evidence">
@@ -413,7 +418,7 @@ function Article({ article, preview, review, successor }) {
           )}
         </section>
       )}
-      {budget && !preview && (
+      {(budget || oil) && !preview && (
         <a href="./datagrunnlag.json" download>
           Last ned analysens frosne datagrunnlag (JSON) ↓
         </a>
@@ -429,6 +434,42 @@ function Article({ article, preview, review, successor }) {
         <a href="/#prisvekst">Undersøk utviklingen selv i Fellestall →</a>
       </div>
     </article>
+  )
+}
+
+function OilEvidence({ report: r }) {
+  return (
+    <section id="faktagrunnlag" className="an-evidence">
+      <h2>Tallene bak analysen</h2>
+      <p>
+        Strukturelt oljekorrigert budsjettunderskudd, i milliarder kroner.
+        Dette er et justert mål på oljepengebruk. Selve fondsoverføringen er en annen størrelse.
+        Serien inkluderer anslag og budsjettforslag; faste priser er oppgitt i {r.end}-kroner.
+      </p>
+      <div className="an-table-scroll" tabIndex={0} role="region" aria-label="Oljepengebruk og fondsandel per år">
+        <table>
+          <caption>Finansdepartementets nøkkeltall {r.start}–{r.end}</caption>
+          <thead>
+            <tr>
+              <th scope="col">År</th>
+              <th scope="col">Løpende priser, mrd. kr</th>
+              <th scope="col">Faste priser, mrd. kr</th>
+              <th scope="col">Andel av fondet ved årets inngang</th>
+            </tr>
+          </thead>
+          <tbody>
+            {r.rows.map((row) => (
+              <tr key={row.year}>
+                <th scope="row">{row.year}</th>
+                <td className="num">{number(row.nominal, 1)}</td>
+                <td className="num">{number(row.real, 1)}</td>
+                <td className="num">{number(row.fundPercent, 1)} %</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   )
 }
 
