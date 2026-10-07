@@ -171,3 +171,23 @@ GITHUB_REPOSITORY=Lippen1995/Project_statsbudsjett node scripts/analyser/prepare
 Dette velger DFØs løpende reviderte serie for 2026, uten å falle tilbake til saldert dersom serien mangler. Den er ikke et særskilt frosset parlamentarisk juni-RNB. Rapporten merker basen, fryser oppdateringstidspunktet og binder valget til datahashen. Nasjonalbudsjettets oppdaterte anslag og pressemeldingenes salderte sammenligninger må forklares separat. Standardkjøringen uten parameteren bruker fortsatt saldert. Samme budsjettforslag er fortsatt én redaksjonell problemstilling.
 
 Det kontrollerte grunnlaget inkluderer departementssummer, navngitte postgrupper og kildeutdrag fra leste primærkilder i `web/public/data/budget-research/2027/`. PDF-linjebryting og delte ord er normalisert. Boten regenererer rapporten fra main med den oppgitte basen og avviser avvik. Artikkel og LinkedIn-utkast følger den eksisterende versjonsbundne gjennomgangen og publiseres etter godkjenning av akkurat den versjonen.
+
+### Separat politisk analyse og GitHub-godkjenning
+
+En uttrykkelig bestilt analyse av partienes prioriteringer og budsjettforhandlingene
+kan leveres separat fra den publiserte analysen av pengeflyttingene:
+
+```sh
+GITHUB_REPOSITORY=Lippen1995/Project_statsbudsjett node scripts/analyser/prepare.mjs editorial/handoff/ukens-analyse.json --budget-year=2027 --baseline=revidert --question=budget-negotiations
+```
+
+Dette er ett avgrenset politisk hovedspørsmål, ikke en ny tallanalyse med endret tittel.
+Det krever kontrollerte partikilder og `negotiation-research/2027.json` med frosne
+originalsvar fra Stortinget og SSB og kontrollerte offisielle kildeutdrag. Mandater,
+alderssummer og regnestykker beregnes av betrodd kode og binder rapportens hash.
+Samme politiske spørsmål har fortsatt duplikatkontroll og to års sperre.
+
+Lever den ferdige JSON-filen på `analysis/input-*`, som i den øvrige flyten. Boten
+regenererer rapporten fra main, oppretter PR og ber om review. Eksakt menneskelig
+godkjenning, forhåndsvisning og publiseringsvern beholdes. Lokale Markdown-filer er
+arbeidsutkast og erstatter aldri denne leveringen.

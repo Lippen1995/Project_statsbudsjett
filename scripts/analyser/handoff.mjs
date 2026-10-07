@@ -44,6 +44,7 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
     replacementFor: mode === 'replacement' ? article.replaces : null,
     detailSelections: mode === 'weekly' ? article.report.detailSelections : undefined,
     budgetYear: mode === 'budget-day' ? article.report.year : undefined,
+    budgetQuestion: mode === 'budget-day' ? article.report.question : undefined,
     budgetBaseline: mode === 'budget-day' ? article.report.baselineSeries ?? 'saldert' : undefined,
     oilYear: mode === 'oil-funds' ? article.report.year : undefined,
     event,

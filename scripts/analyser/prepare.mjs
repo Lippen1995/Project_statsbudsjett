@@ -20,6 +20,8 @@ const number = Number(process.argv[3])
 const budgetDay = /^--budget-year=(\d{4})$/.exec(process.argv[3] ?? '')
 const budgetYear = budgetDay ? Number(budgetDay[1]) : null
 const budgetBaseline = process.argv[4] === '--baseline=revidert' ? 'revidert' : 'saldert'
+const budgetQuestion = process.argv[5] === '--question=budget-negotiations' ? 'budget-negotiations' : undefined
+if (process.argv[5] && !budgetQuestion) throw Error('Ukjent budsjettspørsmål')
 if (process.argv[4] && process.argv[4] !== '--baseline=revidert') throw Error('Ukjent sammenligningsgrunnlag')
 const oil = /^--oil-year=(\d{4})$/.exec(process.argv[3] ?? '')
 const oilYear = oil ? Number(oil[1]) : null
@@ -49,6 +51,7 @@ if (process.argv[3] && !budgetDay && !oil) {
         r.kind === 'budget-comparison' &&
         r.year === budgetYear &&
         r.phase === 'initial' &&
+        r.question === budgetQuestion &&
         r.comparison === 'previous-budget-to-proposal'
       )
         throw Error('Dette budsjettforslaget har allerede et utkast til gjennomgang')
@@ -66,9 +69,11 @@ if (process.argv[3] && !budgetDay && !oil) {
   const report = oil ? buildOilReport('web/public/data', oilYear) : budgetDay
     ? nextBudgetReport('web/public/data', published, {
         baselineSeries: budgetBaseline,
+        question: budgetQuestion,
         eligible: (r) =>
           r.year === budgetYear &&
           r.phase === 'initial' &&
+          r.question === budgetQuestion &&
           r.comparison === 'previous-budget-to-proposal' &&
           !topicBlocked(r, published, new Date().toISOString()),
       })

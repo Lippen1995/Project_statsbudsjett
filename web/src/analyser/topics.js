@@ -20,6 +20,11 @@ export function topicKey(report) {
       !['previous-budget-to-proposal', 'proposal-to-adopted-budget'].includes(report.comparison)
     )
       throw Error('Ukjent budsjettproblemstilling')
+    if (report.question !== undefined && report.question !== 'budget-negotiations') throw Error('Ukjent budsjettspørsmål')
+    if (report.question === 'budget-negotiations') {
+      if (!report.negotiationEvidence || !report.partyPriorities?.length || report.phase !== 'initial' || report.comparison !== 'previous-budget-to-proposal') throw Error('Forhandlingsspørsmålet mangler kildegrunnlag')
+      return `budget:${report.year}:${report.phase}:${report.comparison}:negotiations`
+    }
     // A new budget event is a different object, not a renamed historical topic.
     return `budget:${report.year}:${report.phase}:${report.comparison}`
   }

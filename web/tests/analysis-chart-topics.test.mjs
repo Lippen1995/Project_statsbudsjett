@@ -253,3 +253,13 @@ test('an approved replacement publishes the tested graph version while preservin
     rmSync(dir, { recursive: true, force: true })
   }
 })
+
+test('political negotiation question has its own cooldown and cannot be used without sources', () => {
+  const ordinary = { kind: 'budget-comparison', year: 2027, phase: 'initial', comparison: 'previous-budget-to-proposal' }
+  const political = { ...ordinary, question: 'budget-negotiations', negotiationEvidence: {}, partyPriorities: [{}] }
+  assert.notEqual(topicKey(ordinary), topicKey(political))
+  assert.equal(topicBlocked(political, [{ report: ordinary, publishedAt: '2026-10-07T10:00:00Z' }], '2026-10-07T11:00:00Z'), false)
+  assert.equal(topicBlocked(political, [{ report: political, publishedAt: '2026-10-07T10:00:00Z' }], '2026-10-07T11:00:00Z'), true)
+  assert.throws(() => topicKey({ ...ordinary, question: 'new-title' }), /Ukjent/)
+  assert.throws(() => topicKey({ ...ordinary, question: 'budget-negotiations' }), /kildegrunnlag/)
+})

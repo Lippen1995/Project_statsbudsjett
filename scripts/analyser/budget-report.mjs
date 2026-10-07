@@ -1,3 +1,4 @@
+import { loadNegotiations, negotiationFacts, negotiationSources } from './negotiations.mjs'
 import { attachSsbEvidence, ssbEvidenceFacts } from './ssb-research.mjs'
 import { existsSync, readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
@@ -159,7 +160,8 @@ function siteRecords(dataDir, year, series) {
       }
   return rows
 }
-export function nextBudgetReport(dataDir, published, { eligible = () => true, baselineSeries = 'saldert' } = {}) {
+export function nextBudgetReport(dataDir, published, { eligible = () => true, baselineSeries = 'saldert', question } = {}) {
+  if (question !== undefined && question !== 'budget-negotiations') throw Error('Ukjent budsjettspørsmål')
   if (!['saldert', 'revidert'].includes(baselineSeries)) throw Error('Ukjent budsjettgrunnlag')
   if (!existsSync(`${dataDir}/budsjettarkiv/index.json`)) return null
   const index = read(`${dataDir}/budsjettarkiv/index.json`),
@@ -169,6 +171,7 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true, ba
     const proposal = archive(`${dataDir}/${item.path}`, item.hash)
     const modes = item.outcome ? ['outcome', 'proposal'] : ['proposal']
     for (const mode of modes) {
+      if (question && (mode === 'outcome' || item.phase !== 'initial')) continue
       const outcome =
         mode === 'outcome' ? archive(`${dataDir}/${item.outcome.path}`, item.outcome.hash) : null
       const baseYear = outcome || item.phase === 'revised' ? item.year : item.year - 1
@@ -202,6 +205,7 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true, ba
           (a) =>
             a.report.kind === 'budget-comparison' &&
             a.report.comparison === comparison &&
+            a.report.question === question &&
             a.report.phase === item.phase &&
             a.report.year === item.year &&
             JSON.stringify(a.report.rows) === JSON.stringify(rows) &&
@@ -209,14 +213,19 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true, ba
         )
       )
         continue
+      const negotiationEvidence = question ? loadNegotiations(dataDir, item.year) : undefined
+      if (question && (item.phase !== 'initial' || outcome || !partyPriorities?.length)) throw Error('Forhandlingsanalyse krever forslag og partikilder')
+      const negotiationContext = question ? { question, negotiationEvidence } : {}
       const facts = {
         ...budgetFacts(rows, item.year, baseYear, politicalEvidence, revisedComparison ? 2 : 1),
         ...priorityFacts(partyPriorities),
         ...budgetDocumentFacts(budgetDocuments),
+        ...negotiationFacts(negotiationEvidence, rows, partyPriorities),
       }
       const report = attachSsbEvidence(dataDir, {
         kind: 'budget-comparison',
         comparison,
+        ...negotiationContext,
         ...baseline,
         year: item.year,
         phase: item.phase,
@@ -230,6 +239,7 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true, ba
           proposalHash: item.hash,
           outcomeHash: outcome ? item.outcome.hash : null,
           comparison,
+          ...negotiationContext,
           ...baseline,
           politicalEvidence,
           ...(partyPriorities ? { partyPriorities } : {}),
@@ -252,6 +262,7 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true, ba
             ? 'Forslag til revidert nasjonalbudsjett'
             : 'Regjeringens budsjettforslag',
         sources: [
+          ...(negotiationEvidence ? negotiationSources(negotiationEvidence) : []),
           {
             name: 'Regjeringens tallgrunnlag (Gul bok)',
             url: proposal.source.url,
@@ -289,6 +300,7 @@ export function nextBudgetReport(dataDir, published, { eligible = () => true, ba
         methodology: [
           'Kapittel og post er sammenligningsnøkkelen, uavhengig av hvilket departement posten tilhører.',
           'Utgiftsposter uten finansposter og overføringer til Statens pensjonsfond utland; beløp i løpende mill. kroner.',
+          ...(question ? ['Mandater beregnes fra Stortingets faste representanter. SSB-aldersuttrekket summerer gjensidig utelukkende aldre fra åtti år og oppover, begge kjønn, ved inngangen til året. Forventede forhandlingskrav er politiske vurderinger, ikke dokumenterte utfall.'] : []),
           'Forslag, saldert budsjett og revidert budsjett holdes atskilt. Ingen fremtidige KPI-er eller folketall er fremstilt som faktiske verdier.',
         ],
         limitations: [
@@ -312,6 +324,7 @@ export function validateBudgetReport(r) {
     proposalHash: r.proposalHash,
     outcomeHash: r.outcomeHash,
     comparison: r.comparison,
+    ...(r.question ? { question: r.question, negotiationEvidence: r.negotiationEvidence } : {}),
     ...(r.baselineSeries ? { baselineSeries: r.baselineSeries, factsVersion: r.factsVersion, baselineUpdated: r.baselineUpdated } : {}),
     politicalEvidence: r.politicalEvidence ?? [],
     ...(r.partyPriorities ? { partyPriorities: r.partyPriorities } : {}),
@@ -319,6 +332,8 @@ export function validateBudgetReport(r) {
   })
   const expectedHash = r.ssbEvidence ? hash({ base: baseHash, evidence: r.ssbEvidence }) : baseHash
   if (
+    (r.question !== undefined && (r.question !== 'budget-negotiations' || r.phase !== 'initial' || r.comparison !== 'previous-budget-to-proposal' || !r.partyPriorities?.length || !r.negotiationEvidence)) ||
+    (!r.question && r.negotiationEvidence !== undefined) ||
     (r.baselineSeries !== undefined && (r.baselineSeries !== 'revidert' || r.factsVersion !== 2 || r.phase !== 'initial' || r.comparison !== 'previous-budget-to-proposal')) ||
     (r.factsVersion !== undefined && r.factsVersion !== 2) ||
     (r.factsVersion === 2 && r.baselineSeries !== 'revidert') ||
@@ -350,6 +365,7 @@ export function validateBudgetReport(r) {
       ...budgetFacts(r.rows, r.year, r.start, r.politicalEvidence ?? [], r.factsVersion ?? 1),
       ...priorityFacts(r.partyPriorities),
       ...budgetDocumentFacts(r.budgetDocuments),
+      ...negotiationFacts(r.negotiationEvidence, r.rows, r.partyPriorities),
       ...ssbEvidenceFacts(r.ssbEvidence),
     })
   )

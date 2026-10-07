@@ -416,3 +416,44 @@ test('revised-baseline handoff rebuilds the same report and coexists with an old
     rmSync(f.dir, { recursive: true, force: true })
   }
 })
+
+test('negotiation focus is distinct, source-bound and cannot turn outcome analysis into a second proposal', () => {
+  const f = fixture()
+  const digest = (text) => createHash('sha256').update(text).digest('hex')
+  try {
+    const evidence = JSON.parse(readFileSync(new URL('../public/data/negotiation-research/2027.json', import.meta.url)))
+    f.put('negotiation-research/2027.json', evidence)
+    const priorities = [
+      { id: 'spnorgespris', party: 'Sp', quote: 'Senterpartiet sier klart nei til regjeringens forslag om å øke norgesprisen på strøm fra 40 til 45 øre per kilowattime.', url: 'https://www.senterpartiet.no/aktuelt/norgespris' },
+      { id: 'venstreskatt', party: 'V', quote: 'Venstre vil gi minst 5 000 kroner mer enn regjeringen foreslår til alle som jobber', url: 'https://www.venstre.no/artikkel/skatt' },
+    ].map((p) => {
+      const sourceHash = digest(p.quote), raw = JSON.stringify({ text: p.quote }), rawHash = digest(raw)
+      const documentPath = `party-research/documents/${sourceHash}.json`, rawPath = `party-research/raw/${rawHash}.html`
+      f.put(documentPath, { url: p.url, text: p.quote })
+      mkdirSync(`${f.dir}/party-research/raw`, { recursive: true })
+      writeFileSync(`${f.dir}/${rawPath}`, raw)
+      return { ...p, kind: 'stated-priority', sourceHash, rawHash, documentPath, rawPath, recordKeys: [], retrievedAt: '2026-10-07T10:00:00Z' }
+    })
+    const raw = JSON.stringify(priorities), path = `party-research/2027/initial/${digest(raw)}.json`
+    f.put(path, priorities)
+    f.put('party-research/index.json', { version: 1, snapshots: [{ year: 2027, phase: 'initial', hash: digest(raw), path }] })
+    const ordinary = nextBudgetReport(f.dir, [], { eligible: (r) => r.comparison === 'previous-budget-to-proposal' })
+    const options = { question: 'budget-negotiations' }
+    const political = nextBudgetReport(f.dir, [{ report: ordinary }], options)
+    assert.equal(political.comparison, 'previous-budget-to-proposal')
+    assert.equal(political.question, 'budget-negotiations')
+    assert.notEqual(political.dataHash, ordinary.dataHash)
+    assert.equal(political.facts.mandateLeft.value, 88)
+    assert.equal(political.facts.birthReduction.value, 25548)
+    assert.equal(political.facts.taxNet.value, 1)
+    validateBudgetReport(political)
+    assert.equal(nextBudgetReport(f.dir, [{ report: political }], options), null)
+    assert.throws(() => nextBudgetReport(f.dir, [], { question: 'renamed-budget' }), /Ukjent/)
+    const tampered = structuredClone(political)
+    tampered.negotiationEvidence.parliament.raw += ' '
+    assert.throws(() => validateBudgetReport(tampered), /original|datagrunnlag/)
+    const changed = structuredClone(political)
+    changed.facts.mandateLeft.value++
+    assert.throws(() => validateBudgetReport(changed), /fakta/)
+  } finally { rmSync(f.dir, { recursive: true, force: true }) }
+})

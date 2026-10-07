@@ -94,6 +94,7 @@ export async function runWorkflow({
   replacementFor = null,
   detailSelections,
   budgetYear,
+  budgetQuestion,
   budgetBaseline = 'saldert',
   oilYear,
 }) {
@@ -133,6 +134,7 @@ export async function runWorkflow({
             : context.article.report.kind === 'budget-comparison' &&
               context.article.report.year === budgetYear &&
               context.article.report.phase === 'initial' &&
+              context.article.report.question === budgetQuestion &&
               context.article.report.comparison === 'previous-budget-to-proposal'
         ) {
           existing = pr
@@ -160,6 +162,7 @@ export async function runWorkflow({
         : command === 'budget-day'
         ? nextBudgetReport(dataDir, published, {
             baselineSeries: budgetBaseline,
+            question: budgetQuestion,
             eligible: (r) =>
               r.year === budgetYear &&
               r.phase === 'initial' &&
