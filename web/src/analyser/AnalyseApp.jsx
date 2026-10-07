@@ -311,7 +311,9 @@ function Article({ article, preview, review, successor }) {
               <p className="an-reference">
                 <a
                   href={
-                    r.eventEvidence?.items.some((item) =>
+                    r.ukraineEvidence && s.factIds.some((id) => id.startsWith('ukraine'))
+                      ? '#ukrainagrunnlag'
+                      : r.eventEvidence?.items.some((item) =>
                       s.factIds.some((id) => id.startsWith(item.id)),
                     )
                       ? '#hendelsesgrunnlag'
@@ -423,6 +425,7 @@ function Article({ article, preview, review, successor }) {
           Last ned analysens frosne datagrunnlag (JSON) ↓
         </a>
       )}
+      {oil && r.ukraineEvidence && <UkraineEvidence evidence={r.ukraineEvidence} />}
       {preview && (
         <section className="an-method">
           <h2>LinkedIn-utkast</h2>
@@ -469,6 +472,88 @@ function OilEvidence({ report: r }) {
           </tbody>
         </table>
       </div>
+    </section>
+  )
+}
+
+function UkraineEvidence({ evidence }) {
+  const stages = { regnskap: 'Regnskap', revidert: 'Løpende revidert budsjett' }
+  const postLabel = (id) => id.split('-').slice(-2).join('/')
+  return (
+    <section className="an-evidence" id="ukrainagrunnlag">
+      <h2>Ukraina: støtterammer og konkrete poster</h2>
+      <p>Støtterammer og bokførte eller budsjetterte utgifter er ulike størrelser.</p>
+      <div className="an-table-scroll" tabIndex={0} role="region" aria-label="Nansen-programmets støtterammer">
+        <table>
+          <caption>Nansen-programmet, milliarder kroner</caption>
+          <thead>
+            <tr>
+              <th scope="col">År og status</th>
+              <th scope="col">Samlet ramme</th>
+              <th scope="col">Militær støtte</th>
+              <th scope="col">Sivil støtte</th>
+            </tr>
+          </thead>
+          <tbody>
+            {evidence.programmeRows.map((row) => (
+              <tr key={row.year}>
+                <th scope="row">{row.year} · {row.status}</th>
+                {[row.total, row.military, row.civil].map((value, i) => (
+                  <td key={i} className="num">{value === null ? 'Ikke avklart' : number(value, 1)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="an-table-scroll" tabIndex={0} role="region" aria-label="Utvalgte Ukraina-relaterte regnskaps- og budsjettposter">
+        <table>
+          <caption>Utvalgte poster, millioner kroner. Dette er ikke et fullstendig Ukraina-regnskap.</caption>
+          <thead>
+            <tr>
+              <th scope="col">År og serie</th>
+              <th scope="col">Departement og post</th>
+              <th scope="col">Beløp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {evidence.postRows.map((row) => (
+              <tr key={`${row.year}-${row.stage}-${row.id}`}>
+                <th scope="row">{row.year} · {stages[row.stage] ?? row.stage}</th>
+                <td>{row.department}: {row.name} ({postLabel(row.id)})</td>
+                <td className="num">{number(row.amountMillion, 1)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {evidence.rnbReconciliation?.length > 0 && (
+        <details className="an-table-scroll">
+          <summary>Se avstemmingen mot RNB-forslaget for 2026</summary>
+          <table>
+            <caption>Saldert budsjett pluss foreslått RNB-endring, millioner kroner. Dette dokumenterer forslaget, ikke Stortingets vedtak.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Kapittel/post</th>
+                <th scope="col">Saldert</th>
+                <th scope="col">RNB-endring</th>
+                <th scope="col">RNB-forslag</th>
+              </tr>
+            </thead>
+            <tbody>
+              {evidence.rnbReconciliation.map((row) => (
+                <tr key={row.id}>
+                  <th scope="row">{postLabel(row.id)}</th>
+                  <td className="num">{number(row.baselineMillion, 1)}</td>
+                  <td className="num">{number(row.changeMillion, 1)}</td>
+                  <td className="num">{number(row.proposedMillion, 1)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </details>
+      )}
+      {evidence.notes.map((note, i) => <p key={i}>{note}</p>)}
     </section>
   )
 }

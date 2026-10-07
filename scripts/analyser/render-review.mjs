@@ -64,6 +64,32 @@ export function renderReview(article) {
           ]),
         ]
       : []),
+    ...(r.ukraineEvidence
+      ? [
+          '## Ukraina: støtterammer og utvalgte poster',
+          'Nansen-programmets rammer, mrd. kroner. Disse er ikke bokførte utgifter.',
+          [
+            '| År | Status | Samlet ramme | Militær | Sivil |',
+            '|---|---|---:|---:|---:|',
+            ...r.ukraineEvidence.programmeRows.map((row) => `| ${row.year} | ${row.status} | ${number(row.total, 1)} | ${row.military === null ? 'Ikke avklart' : number(row.military, 1)} | ${row.civil === null ? 'Ikke avklart' : number(row.civil, 1)} |`),
+          ].join('\n'),
+          'Utvalgte poster, mill. kroner. Ikke et fullstendig Ukraina-regnskap.',
+          [
+            '| År | Serie | Departement | Post | Navn | Beløp |',
+            '|---|---|---|---|---|---:|',
+            ...r.ukraineEvidence.postRows.map((row) => `| ${row.year} | ${row.stage} | ${row.department} | ${row.id} | ${row.name} | ${number(row.amountMillion, 1)} |`),
+          ].join('\n'),
+          ...(r.ukraineEvidence.rnbReconciliation?.length ? [
+            'Avstemming mot RNB-forslaget for 2026, mill. kroner. Ikke et frosset parlamentarisk vedtak.',
+            [
+              '| Post | Saldert | RNB-endring | RNB-forslag |',
+              '|---|---:|---:|---:|',
+              ...r.ukraineEvidence.rnbReconciliation.map((row) => `| ${row.id} | ${number(row.baselineMillion, 1)} | ${number(row.changeMillion, 1)} | ${number(row.proposedMillion, 1)} |`),
+            ].join('\n'),
+          ] : []),
+          ...r.ukraineEvidence.notes,
+        ]
+      : []),
     ...(r.politicalEvidence?.length
       ? [
           '## Dokumentert parlamentarisk behandling',

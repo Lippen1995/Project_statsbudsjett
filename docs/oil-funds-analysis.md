@@ -2,6 +2,8 @@
 
 Denne rapporttypen dekker Finansdepartementets publiserte nøkkeltall når detaljbudsjettets kapittel/post-arkiv ennå ikke finnes. Den erstatter ikke Gul bok-importen eller den større budsjettdagsanalysen.
 
+Ukraina-rammer og utvalgte militære, sivile og kapitalposter er kontrollert separat i [Ukraina-grunnlaget](ukraine-history-oil-2027.md). Historiske støttebeløp finnes; programrammer og bokførte utbetalinger må skilles. Tillegget følger rapportens hash og menneskelige godkjenning.
+
 Original HTML ligger i `web/public/data/oil-funds/<år>.html`. Companion JSON inneholder den faktiske offisielle URL-en, kontrolltidspunkt og SHA-256. Kildetabellen må ha tre sammenhengende år, løpende kroner, faste forslagsårspriser og fondets uttaksandel. Parseren kontrollerer også fotnoten om anslag året før, Ukraina-beløpet og fondskapitalen. Ukjent format stopper beregningen.
 
 Kode og kildearkiv skal være kontrollert på main før innholdsleveringen. Fra oppdatert main:

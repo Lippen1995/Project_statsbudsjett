@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
+import { buildUkraineEvidence, ukraineFacts } from './ukraine-evidence.mjs'
 
 const hash = (value) => createHash('sha256').update(value).digest('hex')
 const clean = (text) => text.replace(/<[^>]*>/g, ' ').replace(/&nbsp;|&#160;/g, ' ').replace(/\s+/g, ' ').trim()
@@ -65,7 +66,7 @@ export function oilFacts(data) {
   add('ukraineShare', data.ukraine / last.nominal * 100, 'Ukraina-beløp i forhold til strukturell bruk', ' %')
   add('trendGdpPercent', data.trendGdpPercent, 'Andel av trend-BNP for Fastlands-Norge', ' %')
   add('rulePercent', 3, 'Handlingsregelens langsiktige rettesnor', ' %', 0)
-  return facts
+  return { ...facts, ...ukraineFacts(data.ukraineEvidence) }
 }
 
 export function buildOilReport(dataDir, year) {
@@ -74,13 +75,15 @@ export function buildOilReport(dataDir, year) {
   if (source.sha256 !== hash(html) || !new RegExp(`^https://www\\.regjeringen\\.no/no/aktuelt/nokkeltall-i-nasjonalbudsjettet-${year}/id\\d+/$`).test(source.url) || !Number.isFinite(Date.parse(source.checkedAt)))
     throw Error('Nøkkeltallenes kildearkiv er ugyldig')
   const data = parseOilSource(html, year)
+  const ukraineEvidence = buildUkraineEvidence(dataDir, year, data.ukraine)
+  if (ukraineEvidence) data.ukraineEvidence = ukraineEvidence
   const report = {
     kind: 'oil-funds', scopeId: 'oil-funds', scopeName: 'Strukturell oljepengebruk', year,
     start: data.rows[0].year, end: year, forecastFrom: year - 1, dataUpdated: source.checkedAt,
     sourceArchive: source, ...data, incomeShare: null, facts: oilFacts(data),
-    sources: [{ name: `Finansdepartementets nøkkeltall for ${year}`, url: source.url, description: 'Offisiell tabell og forklarende tekst. Original HTML og SHA-256 er arkivert; forrige år er anslag på regnskap.' }],
-    methodology: ['Oljepengebruk er strukturelt oljekorrigert budsjettunderskudd, ikke faktisk fondsoverføring. Nominelle endringer beregnes fra løpende kroner; realendringer bruker departementets faste priser i forslagsåret.', 'Fondets uttaksandel følger den publiserte tabellen og gjelder kapitalen ved inngangen til året. Grafene skiller løpende kroner, faste priser og prosent.'],
-    limitations: ['Dette er et budsjettforslag og oppdaterte anslag, ikke en sammenhengende regnskapsserie eller en verifisering av historisk rekord.', 'Faktisk fondsoverføring og samlede budsjettinntekter er ikke oppgitt i nøkkeltallskilden. Inntektsandelen er derfor uavklart; trend-BNP-andelen er et annet mål.', 'Ukraina-beløpet dokumenterer nivået, ikke et bidrag til årsøkningen. Andre finansieringsbehov omtales som mulige mekanismer, ikke dokumenterte årsaksandeler.'],
+    sources: [{ name: `Finansdepartementets nøkkeltall for ${year}`, url: source.url, description: 'Offisiell tabell og forklarende tekst. Original HTML og SHA-256 er arkivert; forrige år er anslag på regnskap.' }, ...(ukraineEvidence ? [...ukraineEvidence.provenance.sources.map((s) => ({ name: `Ukraina-kilde: ${s.id}`, url: s.url, description: 'Arkivert original med kontrollert SHA-256. Programrammer, kontantutbetalinger og tekniske omposteringer skilles.' })), { name: 'Fellestalls frosne DFØ-poster', url: ukraineEvidence.provenance.postSource.frozenUrl, description: 'Eksakte kildeposter fra fast data-commit, ikke en lenke som endres ved neste dataoppdatering.' }] : [])],
+    methodology: ['Oljepengebruk er strukturelt oljekorrigert budsjettunderskudd, ikke faktisk fondsoverføring. Nominelle endringer beregnes fra løpende kroner; realendringer bruker departementets faste priser i forslagsåret.', 'Fondets uttaksandel følger den publiserte tabellen og gjelder kapitalen ved inngangen til året. Grafene skiller løpende kroner, faste priser og prosent.', ...(ukraineEvidence ? ['Nansen-rammene leses fra Riksrevisjonen og regjeringens publiserte programomtale, med RNB kontrollert særskilt. Utvalgte eksplisitte Ukraina-poster er frosset fra Fellestalls DFØ-uttrekk, med kildehash og ulike regnskaps-/budsjettfaser. Rammene summeres ikke med postene.'] : [])],
+    limitations: ['Dette er et budsjettforslag og oppdaterte anslag, ikke en sammenhengende regnskapsserie eller en verifisering av historisk rekord.', 'Faktisk fondsoverføring og samlede budsjettinntekter er ikke oppgitt i nøkkeltallskilden. Inntektsandelen er derfor uavklart; trend-BNP-andelen er et annet mål.', 'Uendret Nansen-programramme dokumenterer ikke uendret kontantutbetaling eller et nullbidrag til strukturell oljepengebruk. Betalingstidspunkt, donert materiell og gjenanskaffelser påvirker kontantregnskapet. Andre finansieringsbehov omtales som mulige mekanismer, ikke dokumenterte årsaksandeler.'],
   }
   report.dataHash = hash(JSON.stringify(report))
   return report
