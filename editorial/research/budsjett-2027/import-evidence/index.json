@@ -1,19 +1,19 @@
 {
   "version": 1,
   "year": 2027,
-  "sourceCheckedAt": "2026-10-07T10:12:04.301194+00:00",
+  "sourceCheckedAt": "2026-10-07T14:10:49.989800+00:00",
   "sourceAcquisitionEnvironment": "native-workspace",
   "responses": {
     "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/": {
       "url": "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/",
       "status": 200,
-      "sha256": "0ffea4a3398ef4916816790d22b6e3b68a473e3530ebf32215d5b0516610c008",
+      "sha256": "09ba532c15b36d73e2be7ceecf5887244e749ba3d6b1f69c9cca3e22356f30cd",
       "encoding": "utf-8"
     },
     "https://www.regjeringen.no/no/statsbudsjett/2027/statsbudsjettet-2027-tallgrunnlag-gul-bok/id3173280/": {
       "url": "https://www.regjeringen.no/no/statsbudsjett/2027/statsbudsjettet-2027-tallgrunnlag-gul-bok/id3173280/",
       "status": 200,
-      "sha256": "2dd158f30396659b781eb6291d27ffb0c7d5a2d5fcdc17cdf45a58516df56c9e",
+      "sha256": "9417b748bf9746a0939f27829bb16374e92a0d30f5cdabd5a631230b15d8e4e8",
       "encoding": "utf-8"
     },
     "https://www.regjeringen.no/contentassets/43fd6566af3a4791ba826821d71468a1/2027_gulbok_datagrunnlag.xlsx": {
