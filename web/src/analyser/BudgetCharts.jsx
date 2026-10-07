@@ -138,7 +138,28 @@ export function BudgetEvidence({ report }) {
 }
 
 const bridgeMoney = (v) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${number(Math.abs(v) / 1000, Math.abs(v) < 10 ? 3 : Math.abs(v) < 1000 ? 2 : 1)}`
-const labelLines = (label) => {
+const bridgeLabel = (label) => ({
+  'Rammetilskudd til kommuner': 'Kommuner',
+  'Rammetilskudd til fylkeskommuner': 'Fylkeskommuner',
+  'Husbanken - Bolig- og bygningsdirektoratet': 'Husbanken og bolig',
+  'Kommunestruktur': 'Kommune- struktur',
+  'Regional- og distriktsutvikling': 'Distrikts- utvikling',
+  'Direktoratet for byggkvalitet': 'Byggkvalitet',
+  'Tilskudd til Statens pensjonskasse': 'Statens pensjonskasse',
+  'Bosetting av flyktninger og tiltak for innvandrere': 'Bosetting og integrering',
+  'Klima- og miljødepartementet': 'Departementet',
+  'Internasjonale klima- og utviklingstiltak': 'Internasjonale klimatiltak',
+  'Norsk kulturminnefond': 'Kulturminne- fondet',
+  'Miljødirektoratet': 'Miljø- direktoratet',
+  'Fordeling av inntekt fra avgift på vindkraft': 'Vindkraft- avgift',
+  'Flom- og skredforebygging': 'Flom og skred',
+  'Reguleringsmyndigheten for energi': 'Energi- regulering',
+  'Strømstønadsordning': 'Strømstøtte',
+  'Norgespris for strøm': 'Norgespris strøm',
+  'Norgespris for fjernvarme': 'Norgespris fjernvarme',
+}[label] ?? label)
+const labelLines = (fullLabel) => {
+  const label = bridgeLabel(fullLabel)
   const lines = ['']
   const readable = label.replace(/Aktivitetsfinansiering/g, 'Aktivitets- finansiering').replace(/Investeringslån/g, 'Investerings- lån').replace(/Basisbevilgninger/g, 'Basis- bevilgninger').replace(/Innbyggertilskudd/g, 'Innbygger- tilskudd').replace(/Arbeidsavklaringspenger/g, 'Arbeids- avklarings- penger')
   const words = readable.split(' ').flatMap((word) => {
@@ -148,7 +169,7 @@ const labelLines = (label) => {
   })
   for (const word of words) {
     const last = lines.length - 1
-    if (lines[last] && (lines[last] + ' ' + word).length > 14) lines.push(word)
+    if (lines[last] && (lines[last] + ' ' + word).length > 12) lines.push(word)
     else lines[last] += (lines[last] ? ' ' : '') + word
   }
   return lines
