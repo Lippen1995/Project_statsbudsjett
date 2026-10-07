@@ -446,6 +446,16 @@ test('negotiation focus is distinct, source-bound and cannot turn outcome analys
     assert.equal(political.facts.mandateLeft.value, 88)
     assert.equal(political.facts.birthReduction.value, 25548)
     assert.equal(political.facts.taxNet.value, 1)
+    const reviewArticle = {
+      report: political, slug: 'political-review',
+      copy: { title: 'Mandater {{fact:mandateLeft}}', lead: 'Innledning', conclusion: 'Vurdering',
+        linkedin: 'Innlegg', sections: [] },
+    }
+    const review = renderReview(reviewArticle)
+    assert.ok(review.includes(`- ${political.facts.mandateLeft.label}: **88**`))
+    assert.ok(!review.includes(`- ${political.facts.birthReduction.label}: **`))
+    assert.ok(review.includes('Files changed'))
+    assert.ok(review.length < 65536, 'GitHub PR body must fit its character limit')
     validateBudgetReport(political)
     assert.equal(nextBudgetReport(f.dir, [{ report: political }], options), null)
     assert.throws(() => nextBudgetReport(f.dir, [], { question: 'renamed-budget' }), /Ukjent/)

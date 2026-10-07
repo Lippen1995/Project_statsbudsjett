@@ -5,6 +5,15 @@ import { priorityKinds } from './party-priorities.mjs'
 export function renderReview(article) {
   const { copy: c, report: r } = article,
     t = (s) => factText(s, r)
+  // Political reports contain facts for every budget post. Show the facts used
+  // by this article; the complete frozen report remains in the reviewed file.
+  const usedFacts = new Set([
+    ...JSON.stringify(c).matchAll(/\{\{fact:([A-Za-z]+)\}\}/g),
+  ].map((match) => match[1]))
+  for (const section of c.sections) for (const id of section.factIds ?? []) usedFacts.add(id)
+  const reviewFacts = Object.entries(r.facts).filter(([id]) =>
+    r.question !== 'budget-negotiations' || usedFacts.has(id),
+  )
   // Plain AI text is escaped so markdown cannot introduce disguised links or tags.
   const escape = (s) =>
     t(s)
@@ -118,7 +127,10 @@ export function renderReview(article) {
     '## Kilder',
     ...r.sources.map((s) => `- [${s.name}](${s.url}) — ${s.description}`),
     '## Kontrollgrunnlag',
-    ...Object.values(r.facts).map((f) => `- ${f.label}: **${f.text}**`),
+    ...(r.question === 'budget-negotiations'
+      ? ['Tall brukt i teksten vises her. Hele det frosne datagrunnlaget ligger i JSON-filen under «Files changed».']
+      : []),
+    ...reviewFacts.map(([, f]) => `- ${f.label}: **${f.text}**`),
     r.kind === 'oil-funds'
       ? [
           `| År | Løpende priser, mrd. kr | Faste ${r.end}-priser, mrd. kr | Andel av fondet ved årets inngang |`,
