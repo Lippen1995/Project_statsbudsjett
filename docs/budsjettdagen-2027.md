@@ -191,3 +191,7 @@ Lever den ferdige JSON-filen på `analysis/input-*`, som i den øvrige flyten. B
 regenererer rapporten fra main, oppretter PR og ber om review. Eksakt menneskelig
 godkjenning, forhåndsvisning og publiseringsvern beholdes. Lokale Markdown-filer er
 arbeidsutkast og erstatter aldri denne leveringen.
+
+### Redaksjonell føring fra brukeren, 7. oktober 2026
+
+Politiske analyser skal ha sammenhengende fortelling og bedre flyt enn en oppramsing av partier, krav og poster. Sven skal vurdere hvilke prioriteringer som betyr mest for hvert parti, hvilke innrømmelser det kan akseptere, verdien av alternative flertall, og hvordan kravene påvirker muligheten for et samlet forlik. La denne strategiske forståelsen prege forklaringen av konkrete avveininger; ikke skriv gjentatte eksplisitte beskrivelser av «det politiske spillet». Organiser teksten rundt avgjørende spenninger og mulige løsninger, ikke en ønskeliste per parti. Skill dokumenterte posisjoner fra begrunnede forventninger og unngå å tillegge aktørene kjente private hensikter. Ren tekstrevisjon beholder det frosne tallgrunnlaget og oppdaterer samme gjennomgang med ny godkjenning av den eksakte versjonen.
