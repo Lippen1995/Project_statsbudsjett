@@ -484,11 +484,11 @@ function UkraineEvidence({ evidence }) {
       <h2>Ukraina: støtterammer og konkrete poster</h2>
       <p>Støtterammer og bokførte eller budsjetterte utgifter er ulike størrelser.</p>
       <div className="an-table-scroll" tabIndex={0} role="region" aria-label="Nansen-programmets støtterammer">
-        <table>
-          <caption>Nansen-programmet, milliarder kroner</caption>
+        <table style={{ whiteSpace: 'normal' }}>
+          <caption>Nansen-programmet, milliarder kroner. Status for hvert år står under tabellen.</caption>
           <thead>
             <tr>
-              <th scope="col">År og status</th>
+              <th scope="col">År</th>
               <th scope="col">Samlet ramme</th>
               <th scope="col">Militær støtte</th>
               <th scope="col">Sivil støtte</th>
@@ -497,7 +497,7 @@ function UkraineEvidence({ evidence }) {
           <tbody>
             {evidence.programmeRows.map((row) => (
               <tr key={row.year}>
-                <th scope="row">{row.year} · {row.status}</th>
+                <th scope="row">{row.year}</th>
                 {[row.total, row.military, row.civil].map((value, i) => (
                   <td key={i} className="num">{value === null ? 'Ikke avklart' : number(value, 1)}</td>
                 ))}
@@ -506,8 +506,11 @@ function UkraineEvidence({ evidence }) {
           </tbody>
         </table>
       </div>
+      {evidence.programmeRows.map((row) => (
+        <p key={row.year}><strong>{row.year}:</strong> {row.status}.</p>
+      ))}
       <div className="an-table-scroll" tabIndex={0} role="region" aria-label="Utvalgte Ukraina-relaterte regnskaps- og budsjettposter">
-        <table>
+        <table style={{ whiteSpace: 'normal' }}>
           <caption>Utvalgte poster, millioner kroner. Dette er ikke et fullstendig Ukraina-regnskap.</caption>
           <thead>
             <tr>
@@ -521,7 +524,7 @@ function UkraineEvidence({ evidence }) {
               <tr key={`${row.year}-${row.stage}-${row.id}`}>
                 <th scope="row">{row.year} · {stages[row.stage] ?? row.stage}</th>
                 <td>{row.department}: {row.name} ({postLabel(row.id)})</td>
-                <td className="num">{number(row.amountMillion, 1)}</td>
+                <td className="num" style={{ whiteSpace: 'nowrap' }}>{number(row.amountMillion, 1)}</td>
               </tr>
             ))}
           </tbody>
