@@ -4,7 +4,7 @@ import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'nod
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { buildOilReport, parseOilSource, validateOilReport } from '../../scripts/analyser/oil-report.mjs'
-import { topicKey, topicBlocked } from '../src/analyser/topics.js'
+import { currentAnalyses, topicKey, topicBlocked } from '../src/analyser/topics.js'
 
 const root = new URL('../../web/public/data', import.meta.url).pathname
 const html = readFileSync(`${root}/oil-funds/2027.html`, 'utf8')
@@ -55,7 +55,7 @@ test('full budget reconciles transfers, revenue share and donations without addi
 test('oil replacement rebuilds from trusted full budget and rejects edited facts', async () => {
   const {replacementDraft,assertPublicationTopic}=await import('../../scripts/analyser/replacement.mjs')
   const published=JSON.parse(readFileSync(new URL('../src/analyser/publications.json',import.meta.url),'utf8'))
-  const source=published.find(a=>a.report.kind==='oil-funds')
+  const source=currentAnalyses(published).find(a=>a.report.kind==='oil-funds')
   const a=replacementDraft(source,'2026-10-07T09:00:00Z',{oilRefresh:true,dataDir:root})
   assert.equal(a.replaces.contentHash,source.approval.contentHash)
   assert.equal(a.status,'draft')
