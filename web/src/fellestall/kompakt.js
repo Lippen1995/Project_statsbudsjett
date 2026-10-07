@@ -43,6 +43,7 @@ export function kompaktData(raa) {
     meta: raa.meta,
     befolkning: raa.befolkning ?? {},
     fondsverdi: raa.fondsverdi ?? {},
+    oljepengebruk: raa.oljepengebruk ?? null,
     kpi: raa.kpi ?? {},
     bnp: raa.bnp ?? {},
     bnpPrognose: raa.bnpPrognose ?? {},

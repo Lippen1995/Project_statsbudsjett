@@ -300,10 +300,6 @@ export default function Fellestall() {
           <Oljefondet
             data={data}
             aar={aar}
-            aarListe={aarListe}
-            petro={avledet.petro}
-            fondUt={avledet.fondUt}
-            folk={avledet.folk}
           />
 
           <DinAndel

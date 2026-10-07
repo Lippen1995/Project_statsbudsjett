@@ -21,7 +21,7 @@ async function loadJSON(path, { optional = false } = {}) {
 }
 
 export async function loadAll() {
-  const [meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, fondsverdi] =
+  const [meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, fondsverdi, oljepengebruk] =
     await Promise.all([
       loadJSON('./data/meta.json'),
       loadJSON('./data/utgifter.json'),
@@ -32,8 +32,9 @@ export async function loadAll() {
       // SSBs BNP-anslag for årene etter nasjonalregnskapet (tabell 12880)
       loadJSON('./data/bnp_prognose.json', { optional: true }),
       loadJSON('./data/fondsverdi.json', { optional: true }),
+      loadJSON('./data/oljepengebruk.json', { optional: true }),
     ])
-  return { meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, fondsverdi }
+  return { meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, fondsverdi, oljepengebruk }
 }
 
 /**

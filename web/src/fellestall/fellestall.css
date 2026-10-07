@@ -643,10 +643,32 @@ body.ft-body { background: #F7F5F0; }
 .ft-fondbelop { font-family: var(--serif); font-size: 36px; font-weight: 700; margin-top: 10px; color: var(--gull); }
 .ft-fondunder { font-size: 13px; color: #A8A49B; margin-top: 4px; }
 .ft-fondgrafer { grid-template-columns: 1fr 1fr; }
+.ft-fondlegend { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.ft-fondlegend span { display: inline-flex; align-items: center; gap: 8px; }
+.ft-fondlegend i { display: inline-block; width: 18px; height: 3px; }
 .ft-fondgraf { background: #1B1D22; padding: 22px 20px 16px; }
 .ft-fondgraf-topp { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
 .ft-fondgraf-flate { margin-top: 14px; }
 .ft-fondcagr { font-size: 12px; font-weight: 700; color: var(--gull); white-space: nowrap; }
+.ft-fondaar { display: flex; align-items: center; gap: 12px; margin-top: 24px; color: #D8D4CC; font-size: 14px; }
+.ft-fondaar select { background: #22242A; color: var(--papir); border: 1px solid #8C8A84; border-radius: 4px; padding: 6px 12px; font: inherit; }
+.ft-fondaar select:focus-visible { outline: 2px solid var(--gull); outline-offset: 3px; }
+.ft-fondforklaring { padding: 18px 20px; background: #1B1D22; color: #D8D4CC; min-width: 0; }
+.ft-fondforklaring h3 { margin: 0 0 12px; color: var(--papir); }
+.ft-fondforklaring p { font-size: 13px; line-height: 1.45; margin: 8px 0; }
+.ft-fondforklaring a { color: #D8D4CC; text-decoration: underline; text-underline-offset: 3px; }
+.ft-fondbegreper { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 12px 0; font-size: 13px; }
+.ft-fondbegreper dt { font-weight: 700; color: var(--papir); }
+.ft-fondbegreper dd { margin: 2px 0 0; font-size: 13px; line-height: 1.45; }
+.ft-fonddetaljer { margin: 8px 0; font-size: 13px; line-height: 1.45; }
+.ft-fonddetaljer summary { cursor: pointer; color: var(--papir); }
+.ft-fondtabell-wrap { overflow-x: auto; }
+.ft-fondtabell { border-collapse: collapse; width: 100%; font-size: 13px; }
+.ft-fondtabell caption { text-align: left; font-weight: 700; padding: 8px 0; }
+.ft-fondtabell th, .ft-fondtabell td { padding: 6px 0; border-bottom: 1px solid var(--strek-mork); text-align: left; }
+.ft-fondtabell td, .ft-fondtabell th:last-child { text-align: right; white-space: nowrap; padding-left: 16px; }
+.ft-fondtabell tbody th { font-weight: 400; }
+@media (max-width: 700px) { .ft-fondbegreper { grid-template-columns: 1fr; gap: 18px; } }
 .ft-fondnote { font-size: 12px; color: var(--blek); margin: 10px 0 0; line-height: 1.5; }
 .ft-seksjon--mork .ft-fotnote { color: var(--blek); }
 
