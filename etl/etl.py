@@ -12,6 +12,7 @@ import sys
 import json
 import logging
 import argparse
+import requests
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -23,6 +24,8 @@ from parse_regnskap import parse_regnskap
 from parse_bevilgning import parse_bevilgning
 from parse_befolkning import parse_befolkning, parse_ssb_aarsserie
 from build_hierarchy import build_hierarchies, _save_json
+from fondsverdi import hent_fondsverdi
+from oljepengebruk import update as oppdater_oljepengebruk
 import stortinget
 import kostra
 
@@ -158,10 +161,9 @@ def _skriv_fondsverdi():
     """
     Skriv Oljefondets markedsverdi (år -> mill. kr) til frontend.
 
-    Kilden er en manuelt vedlikeholdt referansetabell (etl/mappings/
-    fondsverdi.json) med tall fra NBIMs årsrapporter — samme kategori som de
-    øvrige mapping-filene. TILLEGGSDATA: mangler filen, hopper vi over den
-    (frontend skjuler uttaksprosenten). Vi fabrikkerer aldri erstatningstall.
+    Henter avsluttede år fra NBIM, med tidligere publiserte tall og
+    etl/mappings/fondsverdi.json som reserve ved kildefeil.
+    Vi fabrikkerer aldri erstatningstall eller framtidige årsverdier.
     """
     kilde = MAPPINGS_DIR / "fondsverdi.json"
     if not kilde.exists():
@@ -171,6 +173,14 @@ def _skriv_fondsverdi():
     enhet = ref.get("_enhet", "mrd_kr")
     faktor = 1000 if enhet == "mrd_kr" else 1   # normaliser til mill_kr
     ut = {str(a): round(float(v) * faktor) for a, v in ref.get("verdier", {}).items()}
+    # Behold sist publiserte verdier ved kildefeil; mappingen er reservegrunnlag.
+    tidligere = OUTPUT_DIR / "fondsverdi.json"
+    if tidligere.exists():
+        ut.update(json.loads(tidligere.read_text(encoding="utf-8")))
+    try:
+        ut.update(hent_fondsverdi())
+    except (requests.RequestException, ValueError) as error:
+        logger.warning("  [ADVARSEL] NBIM fondsverdi kunne ikke oppdateres: %s", error)
     if not ut:
         logger.warning("  [ADVARSEL] mappings/fondsverdi.json har ingen verdier — hopper over")
         return
@@ -292,6 +302,7 @@ def run(years=None, force=False):
     logger.info("\nSTEG 7: Skriver støttefiler")
     _save_json(befolkning, OUTPUT_DIR / "befolkning.json")
     _skriv_fondsverdi()
+    olje_data = _valgfri(lambda: oppdater_oljepengebruk(OUTPUT_DIR), 'Oljepengebruk', kilde='Finansdepartementet')
     if politikk:
         _save_json(politikk, OUTPUT_DIR / "politikk.json")
     else:
@@ -352,7 +363,7 @@ def run(years=None, force=False):
     skriv_status(
         vellykket=True,
         serier={"kpi": bool(kpi), "bnp": bool(bnp), "bnp_prognose": bool(bnp_prognose),
-                "politikk": bool(politikk), "kostra": bool(kostra_data)},
+                "politikk": bool(politikk), "kostra": bool(kostra_data), "oljepengebruk": bool(olje_data)},
         aar=actual_years,
     )
 

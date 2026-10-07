@@ -24,6 +24,10 @@ jobs:
       - run: pip install -r etl/requirements.txt
       - name: Kontroller bare budsjettene som venter på vedtak
         run: python etl/budget_proposals.py --sync-dfo
+      - name: Hent siste underskuddsanslag fra Finansdepartementet
+        # En kildefeil skal ikke hindre publisering av ferske DFØ-vedtak.
+        continue-on-error: true
+        run: python etl/oljepengebruk.py
       - name: Lagre vedtatte tall og behold forslagsarkivet
         id: commit
         run: |

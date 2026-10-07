@@ -281,25 +281,55 @@ publiseres uten partifordeling (aldri gjettet).
 
 For å vise oljepengebruken som andel av fondet (handlingsregelen) trengs
 Oljefondets (SPU) markedsverdi. Denne finnes ikke i regnskapsdataene — den
-avhenger av avkastning og valuta — og hentes fra en manuelt vedlikeholdt
-referansetabell: `etl/mappings/fondsverdi.json` (samme kategori som de øvrige
-mapping-filene). Tallene er årssluttverdier fra NBIMs årsrapporter.
+avhenger av avkastning og valuta — og hentes automatisk fra NBIMs publiserte
+årsserie i `etl/fondsverdi.py`. Bare avsluttede år tas med; inneværende års
+løpende verdi brukes aldri som en framtidig årssluttverdi. Tidligere publiserte
+verdier og `etl/mappings/fondsverdi.json` beholdes som reserve ved kildefeil.
 
 ETL (`_skriv_fondsverdi`) skriver `web/public/data/fondsverdi.json`
 (`år -> mill. kr`). Filen er valgfri: mangler den, skjules uttaksprosenten i
 frontend (aldri gjettet).
 
-**Metodikk:** uttaksprosenten for et budsjettår regnes som
-`overføring fra fondet (Kap. 5800) / fondets verdi ved INNGANGEN til året`,
-der inngangsverdien er verdien ved utgangen av året før. Dette er *faktisk*
-uttak som andel av fondsverdien. Merk at regjeringens offisielle uttaksprosent
-bruker det *strukturelle* oljekorrigerte underskuddet (glattet), ikke det
-faktiske uttaket, så tallene kan avvike noe. 3 %-rettesnoren gjelder over tid,
-ikke det enkelte år (jf. 2020: ~4 % under pandemien).
+**Metodikk:** grafen mot handlingsregelen bruker
+`strukturelt oljekorrigert underskudd / fondets verdi ved INNGANGEN til året`.
+Inngangsverdien er verdien ved utgangen av året før. For et framtidig budsjettår
+med ukjent inngangsverdi brukes Finansdepartementets offisielle prosentanslag,
+merket med anslått fondsverdi. Uten noen av kildene vises ikke prosentpunktet.
+3 %-rettesnoren gjelder over tid, ikke det enkelte år.
+
+`etl/oljepengebruk.py` finner publiserte NB- og RNB-dokumenter og salderte
+nøkkeltall via regjeringen.no sine årssider, for inneværende og neste år.
+CMS-ID og vedleggsnummer oppdages fra lenkene. Historiske tabeller i mill. kr
+gir oljekorrigert underskudd, strukturelt underskudd og tre korreksjoner; summen
+valideres. Rå originaler arkiveres i `etl/raw/oljepengebruk/`, og hver verdi
+har kilde-URL, SHA-256, budsjettår og dokumentfase. Revidert prioriteres foran
+saldert og forslag. Når regnskap for et år finnes, brukes siste historiske
+anslag fra Finansdepartementet. Strukturelle tall er anslag også for regnskapsår.
+Kilde- eller skjemaendringer logges; forrige publiserte verdier beholdes.
+
+Overføringen fra fondet hentes fortsatt fra DFØ (kap. 5800), separat fra
+underskuddsanslaget. **Lik saldert og revidert overføring er ikke i seg selv
+en feil.** Prop. 96 S (2025–2026), kap. 1, oppdaterer underskuddsanslaget til
+466 447 mill. kr, men sier uttrykkelig at endret bevilgning for fondsoverføringen
+fremmes ved nysalderingen. Fersk DFØ-historikk har derfor fortsatt 456 823,934
+mill. kr som både saldert og revidert bevilgning i 2026. Disse seriene skal ikke
+overskrives med underskuddsanslaget eller ommerkes.
+
+I regnskapsår kan overføringen også avvike fra oljekorrigert underskudd fordi
+overføringen ble fastsatt ut fra anslag ved nysalderingen. For 2025 ble 480 196,5
+mill. kr overført, mens det endelige underskuddet var 475 709 mill. kr. Avviket
+gir et overskudd etter overføring. Netting mot årets petroleumsinntekter er
+et tredje spørsmål og er ikke det samme som brutto overføring fra fondet.
+
+Underskuddsanslagene er Finansdepartementets publiserte NB/RNB-anslag;
+Stortingets senere bevilgningsendringer skal ikke kamufleres som en del av disse
+anslagene. Kilden vises ved sammenligningen. Automatisk oppdatering kjører i
+både hoved-ETL og den daglige budsjettkontrollen.
 
 | Fil | Innhold |
 |-----|---------|
 | `fondsverdi.json` | Oljefondets markedsverdi ved årsslutt (`år -> mill. kr`) |
+| `oljepengebruk.json` | Separate underskuddsanslag per år og budsjettversjon, med korreksjoner og kilder |
 
 ---
 

@@ -13,6 +13,7 @@ import json
 import logging
 import time
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
@@ -76,7 +77,7 @@ HEADERS = {
     "Accept": "*/*",
 }
 
-YEARS = list(range(2014, 2026))  # 2014–2025
+YEARS = list(range(2014, datetime.now(timezone.utc).year))  # Avsluttede kalenderår
 
 
 class KildeFeil(SystemExit):
