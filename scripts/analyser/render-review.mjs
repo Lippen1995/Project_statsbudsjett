@@ -15,7 +15,7 @@ export function renderReview(article) {
     'Les begge tekstene under. **Vil du endre noe? Skriv ønsket i en vanlig kommentar. AI reviderer og ber om ny godkjenning.** Bruk GitHubs «Review changes → Approve» når denne versjonen er klar. Å slå sammen manuelt publiserer ikke et utkast.',
     '**Varsler:** Følg denne gjennomgangen i GitHub-appen og aktiver pushvarsler for review requests. Innsyn følger repositoryets tilgang; dette er ikke en separat privat kanal.',
     '**Endringsønsker:** Behandles ved neste kjøring av den planlagte AI-oppgaven. Du kan også be om revisjon tidligere i oppgavens chat. GitHub-kommentaren starter ikke i seg selv en ny AI-kjøring. Ubehandlede ønsker stopper publisering.',
-    `Versjon: \`${contentHash(article)}\` · Datagrunnlag: ${r.dataUpdated} · ${r.kind === 'budget-comparison' ? 'Budsjett' : 'Regnskap'} ${r.start}–${r.end}`,
+    `Versjon: \`${contentHash(article)}\` · Datagrunnlag: ${r.dataUpdated} · ${r.kind === 'oil-funds' ? 'Nøkkeltall, inkludert anslag og budsjettforslag' : r.kind === 'budget-comparison' ? 'Budsjett' : 'Regnskap'} ${r.start}–${r.end}`,
     '## LinkedIn-utkast',
     escape(c.linkedin),
     ...(article.replaces
@@ -93,7 +93,13 @@ export function renderReview(article) {
     ...r.sources.map((s) => `- [${s.name}](${s.url}) — ${s.description}`),
     '## Kontrollgrunnlag',
     ...Object.values(r.facts).map((f) => `- ${f.label}: **${f.text}**`),
-    r.kind === 'budget-comparison'
+    r.kind === 'oil-funds'
+      ? [
+          `| År | Løpende priser, mrd. kr | Faste ${r.end}-priser, mrd. kr | Andel av fondet ved årets inngang |`,
+          '|---|---:|---:|---:|',
+          ...r.rows.map((row) => `| ${row.year} | ${number(row.nominal, 1)} | ${number(row.real, 1)} | ${number(row.fundPercent, 1)} % |`),
+        ].join('\n')
+      : r.kind === 'budget-comparison'
       ? [
           `| Post | ${r.beforeLabel} | ${r.afterLabel} | Endring, mill. kr |`,
           '|---|---:|---:|---:|',

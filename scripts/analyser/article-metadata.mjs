@@ -1,4 +1,8 @@
 export function articleMetadata(report, date) {
+  if (report.kind === 'oil-funds') return {
+    slug: `oljepengebruk-${report.year}-${date}`, topic: 'Statsfinanser',
+    geography: 'Staten', type: 'Budsjettforslag',
+  }
   const budget = report.kind === 'budget-comparison'
   return {
     slug: `${budget ? 'budsjett' : 'utgifter-per-innbygger'}-${report.scopeId}-${report.start}-${report.end}${report.question ? '-' + report.question : ''}-${date}`,

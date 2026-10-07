@@ -1,5 +1,10 @@
 const stateKinds = ['growth', 'real-expenditure', 'annual-change']
 const budgetKinds = ['budget-totals', 'budget-changes', 'budget-bridge']
+const oilFields = {
+  nominal: ['Strukturell oljepengebruk, løpende priser', 'mrd. kr'],
+  real: ['Strukturell oljepengebruk, faste priser', 'mrd. kr'],
+  fundPercent: ['Andel av fondskapitalen ved årets inngang', '%'],
+}
 const fields = {
   expenditure: ['Statens regnskapsførte utgifter', 'mill. kr'],
   perCapita: ['Utgifter per innbygger', 'kr per innbygger'],
@@ -8,9 +13,17 @@ const fields = {
   cpi: ['Konsumprisindeks', 'indeks'],
 }
 export function graphPlan(copy, report) {
-  const allowed = report.kind === 'budget-comparison' ? budgetKinds : stateKinds
+  const oil = report.kind === 'oil-funds'
+  const allowed = oil ? [] : report.kind === 'budget-comparison' ? budgetKinds : stateKinds
   const plan =
-    copy.graphs === undefined ? allowed.map((kind, i) => ({ kind, afterSection: i })) : copy.graphs
+    copy.graphs === undefined
+      ? oil
+        ? [{ kind: 'series', afterSection: 0, mode: 'values', series: [
+            { source: 'oil-funds', id: 'nominal' },
+            { source: 'oil-funds', id: 'real' },
+          ] }]
+        : allowed.map((kind, i) => ({ kind, afterSection: i }))
+      : copy.graphs
   if (!Array.isArray(plan) || plan.length < 1 || plan.length > 7)
     throw Error('Velg én til syv grafer')
   for (const graph of plan) {
@@ -58,6 +71,15 @@ export function seriesGraph(graph, report) {
     const identity = `${ref.source}:${ref.id}`
     if (identities.has(identity)) throw Error('Duplisert seriehenvisning')
     identities.add(identity)
+    if (ref.source === 'oil-funds' && report.kind === 'oil-funds' && oilFields[ref.id]) {
+      const [label, unit] = oilFields[ref.id]
+      return {
+        label: ref.label ?? (ref.id === 'real' ? `${label}, ${report.end}-kroner` : label),
+        unit,
+        rows: report.rows.map((r) => ({ year: r.year, value: r[ref.id] })),
+        source: 'Finansdepartementet, analysens frosne nøkkeltall',
+      }
+    }
     if (ref.source === 'ssb') {
       const evidence = report.ssbEvidence?.find((e) => e.id === ref.id)
       if (!evidence) throw Error('SSB-serien finnes ikke i det frosne datagrunnlaget')
