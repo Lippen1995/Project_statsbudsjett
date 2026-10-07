@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-06T13:02:31.733138+00:00",
+  "checkedAt": "2026-10-07T08:54:23.821336+00:00",
   "oldRun": 37310297347,
   "oldFailure": "requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://www.regjeringen.no/no/statsbudsjett/2027/",
   "partyRun": 37458117681,
@@ -17,8 +17,12 @@
       "productionDataChanged": false
     },
     "release2027": {
-      "status": "not-released",
-      "source": null
+      "status": "available",
+      "source": {
+        "landing": "https://www.regjeringen.no/no/statsbudsjett/2027/id3172975/",
+        "page": "https://www.regjeringen.no/no/statsbudsjett/2027/statsbudsjettet-2027-tallgrunnlag-gul-bok/id3173280/",
+        "url": "https://www.regjeringen.no/contentassets/43fd6566af3a4791ba826821d71468a1/2027_gulbok_datagrunnlag.xlsx"
+      }
     }
   },
   "httpDiagnostic": {
@@ -27,7 +31,7 @@
     "transport": "verified-native-source-capture"
   },
   "passed": true,
-  "sourceCheckedAt": "2026-10-06T12:33:08.055615+00:00",
+  "sourceCheckedAt": "2026-10-07T08:44:32.821437+00:00",
   "sourceAcquisitionEnvironment": "native-workspace",
   "verificationEnvironment": "github-actions",
   "liveGithubSourceAccess": false
