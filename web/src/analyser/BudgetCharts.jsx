@@ -1,5 +1,7 @@
-import React from 'react'
-import { number } from './model'
+import React, { useState } from 'react'
+import { bridgeRows, bridgeSteps } from './budget-bridge.js'
+import { RUST, GRONN, INK, GRID, BLEK } from '../fellestall/design.js'
+import { factText, number } from './model'
 const money = (n) => `${number(n, 1)} mill. kr`
 export function BudgetTotals({ report }) {
   const before = report.rows.reduce((s, r) => s + r.before, 0),
@@ -135,71 +137,88 @@ export function BudgetEvidence({ report }) {
   )
 }
 
-export function BudgetBridge({ report }) {
-  const sorted = [...report.rows].sort((a, b) => Math.abs(b.change) - Math.abs(a.change)),
-    top = sorted.slice(0, 4)
-  const rest = sorted.slice(4).reduce((s, r) => s + r.change, 0)
-  let current = 0
-  const points = [
-    ...top.map((r) => ({ label: r.id, value: r.change, name: r.name })),
-    { label: 'Øvrige', value: rest, name: 'Øvrige poster' },
-  ].map((r) => {
-    const start = current
-    current += r.value
-    return { ...r, start, end: current }
+const bridgeMoney = (v) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${number(Math.abs(v) / 1000, Math.abs(v) < 10 ? 3 : Math.abs(v) < 1000 ? 2 : 1)}`
+const labelLines = (label) => {
+  const lines = ['']
+  const readable = label.replace(/Aktivitetsfinansiering/g, 'Aktivitets- finansiering').replace(/Investeringslån/g, 'Investerings- lån').replace(/Basisbevilgninger/g, 'Basis- bevilgninger').replace(/Innbyggertilskudd/g, 'Innbygger- tilskudd').replace(/Arbeidsavklaringspenger/g, 'Arbeids- avklarings- penger')
+  const words = readable.split(' ').flatMap((word) => {
+    const parts = []
+    while (word.length > 14) { parts.push(word.slice(0, 13) + '-'); word = word.slice(13) }
+    return [...parts, word]
   })
-  const max = Math.max(1, ...points.flatMap((r) => [r.start, r.end])),
-    min = Math.min(0, ...points.flatMap((r) => [r.start, r.end]))
-  const y = (value) => 30 + (180 * (max - value)) / (max - min),
-    scale = 350 / (points.length + 1)
+  for (const word of words) {
+    const last = lines.length - 1
+    if (lines[last] && (lines[last] + ' ' + word).length > 14) lines.push(word)
+    else lines[last] += (lines[last] ? ' ' : '') + word
+  }
+  return lines
+}
+
+export function BudgetBridge({ report, graph = {} }) {
+  const [path, setPath] = useState([])
+  const scope = path.at(-1) ?? graph
+  const { entries, total } = bridgeRows(report, scope)
+  const steps = bridgeSteps(entries, total)
+  const bars = [...steps, { id: 'total', label: 'Samlet endring', change: total, start: 0, end: total, total: true }]
+  const W = Math.max(600, bars.length * 90 + 60), H = 360
+  const left = 52, right = 10, top = 38, bottom = 248
+  const values = bars.flatMap((b) => [b.start, b.end])
+  const low = Math.min(0, ...values), high = Math.max(0, ...values)
+  const span = high - low || 1
+  const y = (v) => top + (bottom - top) * (high - v) / span
+  const step = (W - left - right) / bars.length, width = step * 0.58
+  const x = (i) => left + (i + 0.5) * step
+  const drill = (entry) => {
+    if (entry.drill) setPath([...path, entry.drill])
+  }
+  const scopeName = scope.chapter
+    ? report.rows.find((r) => r.id.startsWith(scope.chapter + '-')).name.split(' – ')[0]
+    : scope.department ? entries[0]?.rows[0]?.departmentName : 'Alle områder'
+  const title = path.length ? scopeName : factText(graph.title ?? 'Hvor flytter pengene seg?', report)
   return (
-    <figure className="an-figure an-budget-figure">
+    <figure className="an-figure an-budget-figure an-bridge">
       <figcaption>
-        <h3>Slik blir endringene til én sum</h3>
-        <p>
-          De største postene og resten av budsjettet summeres til nettoendringen. Dette viser
-          endringen, ikke størrelsen på hele budsjettet.
-        </p>
+        <div className="an-bridge-heading"><h3>{title}</h3><strong className="num">{bridgeMoney(total)}<small>mrd. kr netto</small></strong></div>
+        <p>{factText((!path.length && graph.description) || `${report.beforeLabel} → ${report.afterLabel}. Løpende kroner.`, report)}</p>
       </figcaption>
-      <svg
-        viewBox="0 0 400 310"
-        style={{ width: '100%', height: 'auto' }}
-        role="img"
-        aria-label="Vannfall som avstemmer postendringene til samlet budsjettendring"
-      >
-        <title>{`Nettoendring: ${money(current)}. ${points.map((r) => `${r.name}: ${money(r.value)}`).join('. ')}`}</title>
-        <line x1="10" x2="390" y1={y(0)} y2={y(0)} stroke="#8c8577" />
-        {points.map((r, i) => (
-          <g key={r.label}>
-            <rect
-              x={20 + i * scale}
-              y={y(Math.max(r.start, r.end))}
-              width={scale * 0.65}
-              height={Math.max(1, Math.abs(y(r.start) - y(r.end)))}
-              fill={r.value < 0 ? '#546952' : '#a84b35'}
-            />
-            <text x={20 + i * scale} y="240" fontSize="12">
-              {r.label}
-            </text>
-            <text x={20 + i * scale} y="260" fontSize="12">
-              {number(r.value, 0)}
-            </text>
-          </g>
-        ))}
-        <rect
-          x={20 + points.length * scale}
-          y={y(Math.max(0, current))}
-          width={scale * 0.65}
-          height={Math.max(1, Math.abs(y(current) - y(0)))}
-          fill="#8c8577"
-        />
-        <text x={20 + points.length * scale} y="240" fontSize="12">
-          Sum
-        </text>
-        <text x={20 + points.length * scale} y="260" fontSize="12">
-          {number(current, 0)}
-        </text>
-      </svg>
+      <div className="an-bridge-key"><span><i style={{ background: RUST }} />Økning</span><span><i style={{ background: GRONN }} />Reduksjon</span><span><i style={{ background: INK }} />Nettoendring</span><span>Milliarder kroner</span></div>
+      {path.length > 0 && <button type="button" className="an-bridge-back" onClick={() => setPath(path.slice(0, -1))}>← Tilbake ett nivå</button>}
+      <div className="an-bridge-scroll" tabIndex={0} role="region" aria-label={`${title}. Vannrett rulling ved behov.`}>
+        <svg viewBox={`0 0 ${W} ${H}`} style={{ width: W, minWidth: W, display: 'block', margin: '0 auto' }} role="group" aria-label={`${title}. Samlet ${bridgeMoney(total)} milliarder kroner.`}>
+          <title>{bars.map((r) => `${r.label}: ${bridgeMoney(r.change)} mrd. kr`).join('. ')}</title>
+          {[0, 1, 2, 3, 4].map((i) => {
+            const v = low + span * i / 4
+            return <g key={i}><line x1={left} x2={W - right} y1={y(v)} y2={y(v)} stroke={GRID} strokeDasharray="2 4" /><text x={left - 8} y={y(v) + 4} textAnchor="end" fontSize="12" fill={BLEK}>{number(v / 1000, Math.abs(span) < 1000 ? 2 : 1)}</text></g>
+          })}
+          <line x1={left} x2={W - right} y1={y(0)} y2={y(0)} stroke={BLEK} />
+          {bars.map((b, i) => {
+            const yy = y(Math.max(b.start, b.end)), color = b.total ? INK : b.change >= 0 ? RUST : GRONN
+            const lines = labelLines(b.label)
+            const clickable = !!b.drill
+            return (
+              <g key={b.id} className={clickable ? 'an-bridge-bar' : undefined}
+                tabIndex={clickable ? 0 : undefined} role={clickable ? 'button' : undefined}
+                aria-label={clickable ? `${b.label}: ${bridgeMoney(b.change)} mrd. kr. Åpne detaljert bro.` : undefined}
+                onClick={clickable ? () => drill(b) : undefined}
+                onKeyDown={clickable ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); drill(b) } } : undefined}>
+                <title>{`${b.label}: ${bridgeMoney(b.change)} mrd. kr`}</title>
+                {i > 0 && <line x1={x(i - 1) + width / 2} x2={x(i) - width / 2} y1={y(b.total ? total : b.start)} y2={y(b.total ? total : b.start)} stroke={BLEK} strokeDasharray="3 3" />}
+                {clickable && <rect className="an-bridge-hit" x={x(i) - step / 2} y="12" width={step} height={H - 18} fill="transparent" />}
+                <rect x={x(i) - width / 2} y={yy} width={width} height={Math.abs(y(b.start) - y(b.end))} fill={color} style={{ pointerEvents: 'none' }} />
+                <text x={x(i)} y={yy - 10} textAnchor="middle" fontSize="14" fontWeight="700" fill={color} style={{ pointerEvents: 'none' }}>{bridgeMoney(b.change)}</text>
+                <text x={x(i)} y={bottom + 24} textAnchor="middle" fontSize="12" fill={b.total ? INK : BLEK} fontWeight={b.total ? 700 : 500} style={{ pointerEvents: 'none' }}>
+                  {lines.slice(0, 5).map((line, j) => <tspan key={j} x={x(i)} dy={j ? 15 : 0}>{j === 4 && lines.length > 5 ? line + '…' : line}</tspan>)}
+                </text>
+              </g>
+            )
+          })}
+        </svg>
+      </div>
+      <p className="an-bridge-hint">Sveip eller rull for å se hele broen. {entries.some((r) => r.drill) && 'Velg et område for å se postene bak.'}</p>
+      <details className="an-bridge-data"><summary>Se beløpene bak broen</summary><div className="an-table-scroll"><table>
+        <thead><tr><th scope="col">Område</th><th scope="col">{report.start}</th><th scope="col">{report.end}</th><th scope="col">Endring</th></tr></thead>
+        <tbody>{entries.map((e) => <tr key={e.id}><th scope="row">{e.drill ? <button type="button" onClick={() => drill(e)}>{e.label} →</button> : e.label}</th><td>{money(e.before)}</td><td>{money(e.after)}</td><td>{money(e.change)}</td></tr>)}<tr className="an-bridge-total"><th scope="row">Samlet endring</th><td colSpan="2" /><td>{money(total)}</td></tr></tbody>
+      </table></div></details>
     </figure>
   )
 }

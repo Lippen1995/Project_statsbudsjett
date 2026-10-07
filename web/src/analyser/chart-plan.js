@@ -1,3 +1,4 @@
+import { bridgeRows } from './budget-bridge.js'
 const stateKinds = ['growth', 'real-expenditure', 'annual-change']
 const budgetKinds = ['budget-totals', 'budget-changes', 'budget-bridge']
 const oilFields = {
@@ -35,11 +36,14 @@ export function graphPlan(copy, report) {
     )
       throw Error('Grafen må plasseres etter en faktisk seksjon')
     if (graph.kind === 'series') seriesGraph(graph, report)
+    else if (graph.kind === 'budget-bridge') bridgeRows(report, graph)
     else if (!allowed.includes(graph.kind)) throw Error('Ukjent graf for denne rapporttypen')
     const keys =
       graph.kind === 'series'
         ? ['kind', 'afterSection', 'title', 'description', 'mode', 'series']
-        : ['kind', 'afterSection']
+        : graph.kind === 'budget-bridge'
+          ? ['kind', 'afterSection', 'title', 'description', 'department', 'chapter', 'groupBy', 'groups']
+          : ['kind', 'afterSection']
     if (Object.keys(graph).some((k) => !keys.includes(k)))
       throw Error('Grafen kan bare inneholde kontrollerte seriehenvisninger, ikke egne verdier')
     for (const key of ['title', 'description'])

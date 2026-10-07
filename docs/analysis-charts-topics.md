@@ -6,7 +6,7 @@ Brukerføringer 6. oktober 2026. Disse erstatter eldre instrukser om et fast ant
 
 AI velger **én til syv grafer** etter hva som hjelper leseren. Verken tre grafer eller flest mulig grafer er et mål. Valget lagres i `article.copy.graphs` og inngår i innholdshashen og den menneskelige godkjenningen. En eldre artikkel uten feltet beholder sine tre opprinnelige grafer og sin gamle hash.
 
-`afterSection` er en nullbasert seksjonsindeks. Regnskapsrapporter støtter `growth`, `real-expenditure`, `annual-change`. Budsjettanalyser støtter `budget-totals`, `budget-changes`, `budget-bridge`. Disse standardgrafene tar bare `kind` og `afterSection`. Alle rapporter kan vise en `series`-graf med arkiverte SSB-serier. Regnskapsrapporter kan blande SSB, Fellestall og konkrete poster.
+`afterSection` er en nullbasert seksjonsindeks. Regnskapsrapporter støtter `growth`, `real-expenditure`, `annual-change`. Budsjettanalyser støtter `budget-totals`, `budget-changes`, `budget-bridge`. Standardgrafene tar bare `kind` og `afterSection`, med unntak av broene nedenfor. Alle rapporter kan vise en `series`-graf med arkiverte SSB-serier. Regnskapsrapporter kan blande SSB, Fellestall og konkrete poster.
 
 ```json
 [
@@ -30,6 +30,22 @@ Dette eksemplet krever at Priser og Befolkning faktisk finnes i rapportens frosn
 `mode: values` krever samme enhet for alle serier. `mode: index` setter alle seriene til hundre i det første felles året; første verdi må være positiv. Grafen viser bare felles sammenhengende observerte år. Koden beregner verdiene; AI leverer ingen punkter, egne beløp, vilkårlige felt eller JavaScript. Indekskurver sammenligner vekst, ikke størrelser. Ingen doble akser eller umerkede anslag. Kontroller også geografi, definisjoner, bestand/strøm og faktisk sammenlignbarhet selv om enheten er lik. Samvariasjon gir ikke en årsaksforklaring.
 
 Grafene får tekstalternativ, kildemerking, enhets-/basisforklaring og tilgjengelig talltabell. `title`, `description` og eventuelle serielabels er redaksjonell tekst og følger samme faktumreferanseregler som artikkelen. Forklar grafens implikasjon, ikke bare hva aksene heter.
+
+### Budsjettbroer fra total til post
+
+Ved sammenligning av budsjetter viser `budget-bridge` økninger, reduksjoner og en svart nettoendring, med Fellestalls farger. Alle beløp beregnes fra rapportens frosne poster. Hovedbroen grupperer etter departement; søylene åpner kapittelbroer og deretter postbroer. Små bevegelser samles i «Øvrige», slik at alle poster fortsatt inngår nøyaktig én gang. Hele fordelingen finnes i en tilgjengelig talltabell.
+
+En redaksjonell fordypning kan velge `department` eller `chapter`, samt `title` og `description`. `groupBy` kan være `department`, `chapter` eller `post`; uten feltet velges neste naturlige nivå. Egne finansieringsgrupper kan angis som `groups: [{label, recordKeys}]`, der hver ID må finnes i valgt område. Overlapp avvises, og resterende poster tas automatisk med. AI skal aldri levere egne beløp.
+
+```json
+[
+  {"kind":"budget-bridge","afterSection":0,"title":"Hvor flytter pengene seg?"},
+  {"kind":"budget-bridge","afterSection":1,"department":"06"},
+  {"kind":"budget-bridge","afterSection":2,"chapter":"0732"}
+]
+```
+
+Kontroller at ID-ene finnes i rapporten. Graftekst og gruppelabels følger de vanlige faktumreferansereglene. `copy.layout: "bridge-led"` gir en kortere artikkelvisning uten gjentatte nøkkeltall og konklusjonskort. Metode, kilder og kontrolltabell er fortsatt tilgjengelige, men kan åpnes ved behov. På mobil rulles broene vannrett for å bevare lesbare etiketter. Kontroller hele broen, også nettoenden, på mobil og desktop før levering.
 
 ### Velg konkrete regnskapsposter
 
