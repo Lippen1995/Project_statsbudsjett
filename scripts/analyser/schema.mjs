@@ -27,6 +27,8 @@ export const contentHash = (article) =>
     .digest('hex')
 const fields = ['title', 'description', 'lead', 'conclusion', 'linkedin']
 export function validateCopy(copy, report) {
+  if (copy?.layout !== undefined && (copy.layout !== 'bridge-led' || report.kind !== 'budget-comparison'))
+    throw Error('Ukjent artikkeloppsett')
   if (!copy || fields.some((k) => typeof copy[k] !== 'string' || !copy[k].trim()))
     throw Error('Ufullstendig artikkeltekst')
   if (!Array.isArray(copy.sections) || copy.sections.length < 4 || copy.sections.length > 10)
@@ -60,6 +62,7 @@ export function validateCopy(copy, report) {
       ...['title', 'description'].filter((k) => graph[k] !== undefined).map((k) => graph[k]),
     )
     texts.push(...(graph.series ?? []).filter((s) => s.label !== undefined).map((s) => s.label))
+    texts.push(...(graph.groups ?? []).map((g) => g.label))
   }
   for (const text of texts) {
     const stripped = text.replace(/\{\{fact:([A-Za-z]+)\}\}/g, (_, key) => {

@@ -189,6 +189,8 @@ function Article({ article, preview, review, successor }) {
   const { report: r, copy: c } = article
   const t = (text) => factText(text, r)
   const budget = r.kind === 'budget-comparison'
+  const bridgeLed = c.layout === 'bridge-led'
+  const MethodContainer = bridgeLed ? 'details' : React.Fragment
   const oil = r.kind === 'oil-funds'
   const graphs = graphPlan(c, r)
   const components = {
@@ -269,13 +271,14 @@ function Article({ article, preview, review, successor }) {
           {budget ? `${r.beforeLabel} → ${r.afterLabel}` : oil ? `Nøkkeltall ${r.start}–${r.end}, inkludert anslag og forslag` : `Regnskap ${r.start}–${r.end}`} ·
           Datagrunnlag oppdatert {displayDate(r.dataUpdated)}
         </p>
+        {bridgeLed && <p className="an-data-date">Revidert følger Fellestalls løpende serie: saldert budsjett pluss registrerte endringsvedtak hos DFØ.</p>}
       </header>
-      <section className="an-conclusion" aria-labelledby="konklusjon">
+      {!bridgeLed && <section className="an-conclusion" aria-labelledby="konklusjon">
         <div className="ft-stikkord">Hovedfunn</div>
         <h2 id="konklusjon">Vår vurdering</h2>
         <p>{t(c.conclusion)}</p>
-      </section>
-      <div className="an-stat-grid">
+      </section>}
+      {!bridgeLed && <div className="an-stat-grid">
         {(oil
           ? ['annualNominalChange', 'annualRealGrowth', 'fundPercent']
           : budget
@@ -290,8 +293,8 @@ function Article({ article, preview, review, successor }) {
             </small>
           </div>
         ))}
-      </div>
-      <nav className="an-contents" aria-label="I denne analysen">
+      </div>}
+      {!bridgeLed && <nav className="an-contents" aria-label="I denne analysen">
         <span className="ft-stikkord">I analysen</span>
         {c.sections.map((s, i) => (
           <a key={i} href={`#avsnitt-${i + 1}`}>
@@ -299,7 +302,7 @@ function Article({ article, preview, review, successor }) {
           </a>
         ))}
         <a href="#metode">Metode og kilder</a>
-      </nav>
+      </nav>}
       {c.sections.map((s, i) => (
         <React.Fragment key={i}>
           <section className="an-prose" id={`avsnitt-${i + 1}`}>
@@ -307,7 +310,7 @@ function Article({ article, preview, review, successor }) {
             {s.paragraphs.map((p, j) => (
               <p key={j}>{t(p)}</p>
             ))}
-            {s.factIds.length > 0 && (
+            {!bridgeLed && s.factIds.length > 0 && (
               <p className="an-reference">
                 <a
                   href={
@@ -332,17 +335,17 @@ function Article({ article, preview, review, successor }) {
               return g.kind === 'series' ? (
                 <SeriesChart key={j} graph={g} report={r} />
               ) : (
-                <Chart key={j} report={r} />
+                <Chart key={j} report={r} graph={g} />
               )
             })}
         </React.Fragment>
       ))}
       {r.eventEvidence && <EventEvidence report={r} />}
       {budget && <PoliticalEvidence report={r} />}
-      {budget && <PartyPriorities report={r} />}
+      {budget && !bridgeLed && <PartyPriorities report={r} />}
       <section id="metode" className="an-method">
-        <div className="ft-kicker">Åpent regnestykke</div>
-        <h2>Metode og kilder</h2>
+        <MethodContainer>
+        {bridgeLed ? <summary>Metode og kilder</summary> : <><div className="ft-kicker">Åpent regnestykke</div><h2>Metode og kilder</h2></>}
         {r.methodology.map((p, i) => (
           <p key={i}>{p}</p>
         ))}
@@ -367,11 +370,12 @@ function Article({ article, preview, review, successor }) {
             ' Artikkelen og delingsteksten er gjennomgått av et menneske før publisering.'}{' '}
           Beregningene er gjort i kode.
         </p>
+        </MethodContainer>
       </section>
       {oil ? (
         <OilEvidence report={r} />
       ) : budget ? (
-        <BudgetEvidence report={r} />
+        bridgeLed ? <details className="an-supplement"><summary>Kontrolltabell: de største postendringene</summary><BudgetEvidence report={r} /></details> : <BudgetEvidence report={r} />
       ) : (
         <section id="faktagrunnlag" className="an-evidence">
           <h2>Tallene bak analysen</h2>
