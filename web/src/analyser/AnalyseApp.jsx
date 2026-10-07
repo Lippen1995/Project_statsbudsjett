@@ -312,7 +312,7 @@ function Article({ article, preview, review, successor }) {
                 <a
                   href={
                     r.ukraineEvidence && s.factIds.some((id) => id.startsWith('ukraine'))
-                      ? '#ukrainagrunnlag'
+                      ? r.fullBudget ? '#fulltbudsjett' : '#ukrainagrunnlag'
                       : r.eventEvidence?.items.some((item) =>
                       s.factIds.some((id) => id.startsWith(item.id)),
                     )
@@ -425,7 +425,10 @@ function Article({ article, preview, review, successor }) {
           Last ned analysens frosne datagrunnlag (JSON) ↓
         </a>
       )}
-      {oil && r.ukraineEvidence && <UkraineEvidence evidence={r.ukraineEvidence} />}
+      {oil && r.fullBudget && <FullOilBudget evidence={r.fullBudget} />}
+      {oil && r.ukraineEvidence && (r.fullBudget
+        ? <details><summary>Historisk postkontroll og tidligere programomtale</summary><UkraineEvidence evidence={r.ukraineEvidence} /></details>
+        : <UkraineEvidence evidence={r.ukraineEvidence} />)}
       {preview && (
         <section className="an-method">
           <h2>LinkedIn-utkast</h2>
@@ -438,6 +441,29 @@ function Article({ article, preview, review, successor }) {
       </div>
     </article>
   )
+}
+
+function FullOilBudget({ evidence }) {
+  return <section className="an-evidence" id="fulltbudsjett">
+    <h2>Fondsoverføring og samlet Ukraina-støtte</h2>
+    <p>Nasjonalbudsjettets samlede tabeller. Milliarder kroner; siste år er forslag og året før er oppdatert anslag.</p>
+    <div className="an-table-scroll" tabIndex={0} role="region" aria-label="Fondsoverføring og inntekter">
+      <table style={{ whiteSpace: 'normal' }}>
+        <caption>Fondsoverføring og inntekter utenom petroleum. Overføringen for første år avviker fra underskuddet fordi regnskapet viste et overskudd.</caption>
+        <thead><tr><th scope="col">År</th><th scope="col">Fondsoverføring</th><th scope="col">Inntekter utenom petroleum</th></tr></thead>
+        <tbody>{evidence.rows.map(row => <tr key={row.year}><th scope="row">{row.year}</th><td className="num">{number(row.transfer, 1)}</td><td className="num">{number(row.nonOilIncome, 1)}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <div className="an-table-scroll" tabIndex={0} role="region" aria-label="Samlet Ukraina-støtte og bevilgninger">
+      <table style={{ whiteSpace: 'normal' }}>
+        <caption>Samlet støtte fordelt på bevilgninger og materielldonasjoner, tabell 3.7. Bevilgninger er ikke bokførte utbetalinger.</caption>
+        <thead><tr><th scope="col">År</th><th scope="col">Samlet støtte</th><th scope="col">Bevilgning</th><th scope="col">Donert materiell</th></tr></thead>
+        <tbody>{evidence.ukraineRows.map(row => <tr key={row.year}><th scope="row">{row.year}</th>{[row.total,row.appropriation,row.donated].map((n,i)=><td key={i} className="num">{number(n,1)}</td>)}</tr>)}</tbody>
+      </table>
+    </div>
+    <p>Det foreslås i tillegg {number(evidence.reacquisition,1)} mrd. kroner til gjenanskaffelser av donert materiell. Disse inngår ikke i årets Nansen-bevilgning. Fordelingen mellom militær og sivil støtte videreføres fra året før.</p>
+    <p>Den nye tabellen oppgir samlet støtte til 85,0 mrd. i 2025. Den eldre kontrollen nedenfor oppgir en programramme på 84,9 mrd. og et begrenset postutvalg. Det nye samlede budsjettgrunnlaget brukes i analysen.</p>
+  </section>
 }
 
 function OilEvidence({ report: r }) {

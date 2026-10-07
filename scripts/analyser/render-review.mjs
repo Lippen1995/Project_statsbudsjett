@@ -145,6 +145,16 @@ export function renderReview(article) {
               `| ${row.year} | ${number(row.perCapita)} | ${number(row.realPerCapita)} | ${number(row.cpi, 1)} |`,
           ),
         ].join('\n'),
+    ...(r.fullBudget ? [
+      '## Fullt nasjonalbudsjett: fondsoverføring og Ukraina',
+      '| År | Fondsoverføring, mrd. kr | Inntekter utenom petroleum, mrd. kr |',
+      '|---|---:|---:|',
+      ...r.fullBudget.rows.map(row => `| ${row.year} | ${number(row.transfer,1)} | ${number(row.nonOilIncome,1)} |`),
+      '| År | Samlet Ukraina-støtte | Bevilgning | Donert materiell |',
+      '|---|---:|---:|---:|',
+      ...r.fullBudget.ukraineRows.map(row => `| ${row.year} | ${number(row.total,1)} | ${number(row.appropriation,1)} | ${number(row.donated,1)} |`),
+      'Bevilgninger er ikke utbetalinger. Gjenanskaffelser ligger utenfor årets Nansen-bevilgning. Inntektsandelen bruker fondsoverføring / (inntekter utenom petroleum + fondsoverføring).',
+    ] : []),
     '\nAI-støttet utkast. Beregningene er gjort i kode. Ingen publisering uten godkjenning av denne versjonen.',
   ].join('\n\n')
 }

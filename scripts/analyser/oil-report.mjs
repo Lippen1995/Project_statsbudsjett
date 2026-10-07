@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
+import { buildOilBudget, oilBudgetFacts } from './oil-budget.mjs'
 import { buildUkraineEvidence, ukraineFacts } from './ukraine-evidence.mjs'
 
 const hash = (value) => createHash('sha256').update(value).digest('hex')
@@ -66,7 +67,7 @@ export function oilFacts(data) {
   add('ukraineShare', data.ukraine / last.nominal * 100, 'Ukraina-beløp i forhold til strukturell bruk', ' %')
   add('trendGdpPercent', data.trendGdpPercent, 'Andel av trend-BNP for Fastlands-Norge', ' %')
   add('rulePercent', 3, 'Handlingsregelens langsiktige rettesnor', ' %', 0)
-  return { ...facts, ...ukraineFacts(data.ukraineEvidence) }
+  return { ...facts, ...ukraineFacts(data.ukraineEvidence), ...oilBudgetFacts(data.fullBudget) }
 }
 
 export function buildOilReport(dataDir, year) {
@@ -77,6 +78,11 @@ export function buildOilReport(dataDir, year) {
   const data = parseOilSource(html, year)
   const ukraineEvidence = buildUkraineEvidence(dataDir, year, data.ukraine)
   if (ukraineEvidence) data.ukraineEvidence = ukraineEvidence
+  const fullBudget = buildOilBudget(dataDir, year)
+  if (fullBudget) {
+    if (fullBudget.rows.some((r,i) => r.structural !== data.rows[i].nominal)) throw Error('Fullt budsjett avviker fra nøkkeltall')
+    data.fullBudget = fullBudget
+  }
   const report = {
     kind: 'oil-funds', scopeId: 'oil-funds', scopeName: 'Strukturell oljepengebruk', year,
     start: data.rows[0].year, end: year, forecastFrom: year - 1, dataUpdated: source.checkedAt,
@@ -85,13 +91,21 @@ export function buildOilReport(dataDir, year) {
     methodology: ['Oljepengebruk er strukturelt oljekorrigert budsjettunderskudd, ikke faktisk fondsoverføring. Nominelle endringer beregnes fra løpende kroner; realendringer bruker departementets faste priser i forslagsåret.', 'Fondets uttaksandel følger den publiserte tabellen og gjelder kapitalen ved inngangen til året. Grafene skiller løpende kroner, faste priser og prosent.', ...(ukraineEvidence ? ['Nansen-rammene leses fra Riksrevisjonen og regjeringens publiserte programomtale, med RNB kontrollert særskilt. Utvalgte eksplisitte Ukraina-poster er frosset fra Fellestalls DFØ-uttrekk, med kildehash og ulike regnskaps-/budsjettfaser. Rammene summeres ikke med postene.'] : [])],
     limitations: ['Dette er et budsjettforslag og oppdaterte anslag, ikke en sammenhengende regnskapsserie eller en verifisering av historisk rekord.', 'Faktisk fondsoverføring og samlede budsjettinntekter er ikke oppgitt i nøkkeltallskilden. Inntektsandelen er derfor uavklart; trend-BNP-andelen er et annet mål.', 'Uendret Nansen-programramme dokumenterer ikke uendret kontantutbetaling eller et nullbidrag til strukturell oljepengebruk. Betalingstidspunkt, donert materiell og gjenanskaffelser påvirker kontantregnskapet. Andre finansieringsbehov omtales som mulige mekanismer, ikke dokumenterte årsaksandeler.'],
   }
+  if (fullBudget) {
+    report.dataUpdated = fullBudget.source.checkedAt
+    report.incomeShare = oilBudgetFacts(fullBudget).incomeShare.value
+    report.sources.push({name: `Nasjonalbudsjettet ${year}, kapittel 3`, url: fullBudget.source.url, description: 'Fullt budsjett fremlagt etter nøkkeltallene. Tabell 3.3, 3.5 og 3.7; original HTML og kildehash er arkivert.'})
+    report.methodology.push('Inntektsandelen er foreslått fondsoverføring dividert med inntekter utenom petroleum pluss fondsoverføring. Petroleumsinntekter som overføres til fondet, finansposter og lånetransaksjoner inngår ikke i denne nevneren. Dette er ikke strukturelt underskudd som andel av alle bruttoinntekter.')
+    report.limitations[1] = 'Fondsoverføringen og inntektsandelen er budsjettanslag, ikke faktisk regnskapsført uttak. Samlet Ukraina-støtte inkluderer verdien av materielldonasjoner; bevilgningene er ikke utbetalinger.'
+    report.limitations[2] = 'Den fulle budsjettabellen oppgir samlet Ukraina-støtte til 85,0 mrd. i 2025; det eldre revisjonsgrunnlaget oppgir Nansen-rammen til 84,9 mrd. Grunnlagene skal ikke blandes. Historiske utvalgte poster er bevart med opprinnelig fase. Finansieringsmekanismer er ikke dokumenterte årsaksandeler.'
+  }
   report.dataHash = hash(JSON.stringify(report))
   return report
 }
 
 export function validateOilReport(report) {
   const { dataHash, ...base } = report
-  if (report.kind !== 'oil-funds' || report.scopeId !== 'oil-funds' || !Number.isSafeInteger(report.year) || report.end !== report.year || report.forecastFrom !== report.year - 1 || report.start !== report.year - 2 || report.rows?.length !== 3 || report.incomeShare !== null || !/^[a-f0-9]{64}$/.test(report.sourceArchive?.sha256 ?? '') || dataHash !== hash(JSON.stringify(base)))
+  if (report.kind !== 'oil-funds' || report.scopeId !== 'oil-funds' || !Number.isSafeInteger(report.year) || report.end !== report.year || report.forecastFrom !== report.year - 1 || report.start !== report.year - 2 || report.rows?.length !== 3 || report.incomeShare !== (report.fullBudget ? oilBudgetFacts(report.fullBudget).incomeShare.value : null) || !/^[a-f0-9]{64}$/.test(report.sourceArchive?.sha256 ?? '') || dataHash !== hash(JSON.stringify(base)))
     throw Error('Ugyldig eller endret oljepengegrunnlag')
   for (const [i, row] of report.rows.entries())
     if (row.year !== report.start + i || !['nominal', 'real', 'fundPercent'].every((k) => Number.isFinite(row[k]) && row[k] > 0)) throw Error('Ugyldig oljepengeserie')

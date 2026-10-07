@@ -1,6 +1,7 @@
 import { validateArticle, contentHash } from './schema.mjs'
 import { currentAnalyses, topicKey, topicBlocked } from '../../web/src/analyser/topics.js'
 import { articleMetadata } from './article-metadata.mjs'
+import { buildOilReport } from './oil-report.mjs'
 import { buildReport } from './report.mjs'
 import { evidenceHash, eventEvidenceFacts, validateDetailSelections } from './event-evidence.mjs'
 
@@ -17,6 +18,12 @@ function combinedSelections(source, extra) {
 }
 
 export function replacementReport(source, reference, { dataDir = 'web/public/data' } = {}) {
+  if (reference.oilRefresh) {
+    if (reference.oilRefresh !== true || reference.detailSelections || source.report.kind !== 'oil-funds') throw Error('Ugyldig oljepengeoppdatering')
+    const report = buildOilReport(dataDir, source.report.year)
+    if (!report.fullBudget) throw Error('Fullt budsjett mangler')
+    return report
+  }
   if (!reference.detailSelections) return structuredClone(source.report)
   validateDetailSelections(reference.detailSelections)
   const old = source.report
@@ -77,7 +84,7 @@ export function replacementSource(published, reference) {
     throw Error('Erstatningsgrunnlaget er endret eller allerede erstattet')
   return validateArticle(source, { published: true })
 }
-export function replacementDraft(source, createdAt, { detailSelections, dataDir } = {}) {
+export function replacementDraft(source, createdAt, { detailSelections, dataDir, oilRefresh } = {}) {
   validateArticle(source, { published: true })
   const digest = contentHash(source)
   return {
@@ -92,21 +99,24 @@ export function replacementDraft(source, createdAt, { detailSelections, dataDir 
     status: 'draft',
     createdAt,
     generatedAt: createdAt,
-    report: replacementReport(source, { detailSelections }, { dataDir }),
+    report: replacementReport(source, { detailSelections, oilRefresh }, { dataDir }),
     copy: structuredClone(source.copy),
     replaces: {
       slug: source.slug,
       contentHash: digest,
       ...(detailSelections ? { detailSelections: structuredClone(detailSelections) } : {}),
+      ...(oilRefresh ? {oilRefresh: true} : {}),
     },
   }
 }
-export function assertPublicationTopic(article, published) {
+export function assertPublicationTopic(article, published, { dataDir } = {}) {
   if (article.replaces) {
     const source = replacementSource(published, article.replaces)
     if (topicKey(source.report) !== topicKey(article.report))
       throw Error('Erstatningen må gjelde samme problemstilling')
-    if (article.replaces.detailSelections) {
+    if (article.replaces.oilRefresh) {
+      if (JSON.stringify(article.report) !== JSON.stringify(replacementReport(source, article.replaces, { dataDir }))) throw Error('Oljepengeoppdateringen avviker fra betrodd kildearkiv')
+    } else if (article.replaces.detailSelections) {
       const r = article.report
       const extended = [
         'eventEvidence',

@@ -189,6 +189,7 @@ export async function runWorkflow({
     const metadata = source
       ? replacementDraft(source, createdAt, {
           detailSelections: replacementFor.detailSelections,
+          oilRefresh: replacementFor.oilRefresh,
           dataDir,
         })
       : articleMetadata(report, date)
