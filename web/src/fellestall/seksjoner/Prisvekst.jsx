@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import LinjeGraf from '../grafer/LinjeGraf'
 import { RUST, BLAA } from '../design'
-import { sumRot } from '../kompakt'
+import { prisvekstRader } from '../prisvekst'
 import { kr, pct, n0 } from '../tall'
 
 /**
@@ -44,12 +44,14 @@ function ManglerPrisindeks() {
   )
 }
 
-export default function Prisvekst({ data, uRot, aarListe }) {
+export default function Prisvekst({ data, uRot }) {
   const [fra, setFra] = useState(null)
   const [til, setTil] = useState(null)
 
-  const kpi = data.kpi ?? {}
-  const mulige = aarListe.filter((y) => kpi[y] && data.befolkning?.[y])
+  const rader = prisvekstRader(data, uRot)
+  const perAar = Object.fromEntries(rader.map((r) => [r.aar, r]))
+  const kpi = Object.fromEntries(rader.map((r) => [r.aar, r.kpi]))
+  const mulige = rader.map((r) => r.aar)
   if (mulige.length < 2) return <ManglerPrisindeks />
 
   const iFra = mulige.includes(fra) ? fra : mulige[0]
@@ -59,7 +61,9 @@ export default function Prisvekst({ data, uRot, aarListe }) {
 
   const basis = aar[0]
   const siste = aar[aar.length - 1]
-  const perInnbFor = (y) => (sumRot(uRot, y) * 1e6) / data.befolkning[y]
+  const perInnbFor = (y) => perAar[y].perInnbygger
+  const anslagFra = aar.findIndex((y) => perAar[y].budsjett || perAar[y].anslag)
+  const harAnslag = anslagFra >= 0
   const b0 = perInnbFor(basis)
   const k0 = kpi[basis]
 
@@ -109,6 +113,7 @@ export default function Prisvekst({ data, uRot, aarListe }) {
           ]}
           beskrivelse={`Utgift per innbygger mot konsumprisindeksen, begge indeksert til ${basis} = 100`}
           aar={aar}
+          anslagFra={harAnslag ? anslagFra : null}
           W={1080}
           H={260}
           fraNull={false}
@@ -117,7 +122,7 @@ export default function Prisvekst({ data, uRot, aarListe }) {
           tips={(i) => {
             const y = aar[i]
             return {
-              tittel: String(y),
+              tittel: `${y} · ${perAar[y].type}${perAar[y].anslag ? ' · SSB-anslag' : ''}`,
               linjer: [
                 { farge: RUST, tekst: `Utgift per innbygger: ${kr(Math.round(perInnbFor(y) / 100) * 100)} (indeks ${n0.format(utgIdx[i].v)})` },
                 { farge: BLAA, tekst: `Konsumpriser: indeks ${n0.format(kpiIdx[i].v)}` },
@@ -133,8 +138,15 @@ export default function Prisvekst({ data, uRot, aarListe }) {
         <span><span className="ft-strek" style={{ background: BLAA }} />Konsumprisindeks ({basis} = 100) · {pct(prisVekst)}</span>
       </div>
 
+      {harAnslag && <p className="ft-brodtekst">
+        Stiplet linje viser budsjettår og anslag. Hvert år bruker siste tilgjengelige tall:
+        regnskap, deretter revidert budsjett, saldert budsjett eller regjeringens budsjettforslag.
+        Prisvekstanslag fra <a href="https://www.ssb.no/statbank/table/12880/">SSB</a> forlenger
+        siste observerte KPI. Folketallet bruker observerte tall der de finnes, ellers
+        <a href="https://www.ssb.no/statbank/table/14282/"> SSBs hovedalternativ</a> for folkemengde 1. januar.
+      </p>}
       <p className="ft-brodtekst">
-        Fra {basis} til {siste} økte statens utgifter per innbygger med {pct(utgVekst)}, mens
+        {harAnslag ? 'Med budsjetter og anslag: ' : ''}Fra {basis} til {siste} økte statens utgifter per innbygger med {pct(utgVekst)}, mens
         konsumprisene steg {pct(prisVekst)}. Målt i faste kroner bruker staten {pct(Math.abs(real))}{' '}
         {real >= 0 ? 'mer' : 'mindre'} per innbygger enn ved starten av perioden.
       </p>

@@ -11,8 +11,9 @@ export function oljeTidsserie(data) {
     const [si, type] = valgt
     const belop = aktive.reduce((sum, k) => sum + k.s[y][si], 0)
     const fond = data.fondsverdi?.[y - 1]
-    const folk = data.befolkning?.[y]
-    return [{ aar: y, type, budsjett: si !== 0, belop, prosent: fond > 0 ? belop / fond * 100 : null, perPerson: folk > 0 ? belop * 1e6 / folk : null }]
+    const folk = data.befolkning?.[y] ?? data.prisvekstAnslag?.befolkning?.[y]
+    const befolkningsanslag = !(data.befolkning?.[y] > 0) && folk > 0
+    return [{ aar: y, type, budsjett: si !== 0, befolkningsanslag, belop, prosent: fond > 0 ? belop / fond * 100 : null, perPerson: folk > 0 ? belop * 1e6 / folk : null }]
   })
 }
 

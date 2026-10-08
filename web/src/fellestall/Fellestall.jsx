@@ -272,14 +272,11 @@ export default function Fellestall() {
           <Budsjettkart
             data={data}
             aar={aar}
-            aarListe={aarListe}
             uRot={avledet.uRot}
-            totalUtg={avledet.totalUtg}
             skjulFin={skjulFin}
-            folk={avledet.folk}
           />
 
-          <Flyten inntektsbilde={avledet.inntektsbilde} uRot={avledet.uRot} aar={aar} />
+          <Flyten data={data} aar={aar} skjulFin={skjulFin} />
 
           <HvorPengeneGaar
             utg={avledet.utg}

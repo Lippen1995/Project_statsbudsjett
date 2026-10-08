@@ -80,6 +80,7 @@ function FondGraf({ tittel, rader, felt, farge, prosent = false, historiskAnslag
             linjer: [
               { farge, tekst: `${vis[i].type}: ${formater(vis[i][felt])}` },
               prosent && { farge: '#8C8A84', tekst: 'Rettesnor: 3,0 %' },
+              felt === 'perPerson' && vis[i].befolkningsanslag && { farge: 'transparent', tekst: 'SSBs anslag for folkemengde 1. januar' },
               vis[i].fondsanslag && { farge: 'transparent', tekst: 'Finansdepartementets anslag på fondsverdi' },
               historiskAnslag && { farge: 'transparent', tekst: 'Strukturelt oljekorrigert underskudd' },
             ],
@@ -89,6 +90,7 @@ function FondGraf({ tittel, rader, felt, farge, prosent = false, historiskAnslag
       <p className="ft-fondnote">
         {historiskAnslag ? 'Heltrukket linje: siste anslag for regnskapsår. Stiplet linje: siste budsjettanslag.' : LINJENOTE}
         {prosent && ' Grå stiplet linje: rettesnoren på 3 prosent.'}
+        {felt === 'perPerson' && vis.some((r) => r.befolkningsanslag) && <> For {vis.filter((r) => r.befolkningsanslag).map((r) => r.aar).join(', ')} brukes <a href="https://www.ssb.no/statbank/table/14282/">SSBs befolkningsanslag (hovedalternativet)</a>.</>}
       </p>
     </div>
   )
@@ -143,7 +145,7 @@ export default function Oljefondet({ data, aar }) {
             <div className="ft-stikkord">Overføring fra fondet</div>
             <div className="ft-fondbelop">{overforing ? `${belopMill(overforing.belop)} kr` : '–'}</div>
             <div className="ft-fondunder">{overforing?.type ?? 'Overføring mangler'} · {visAar}</div>
-            {overforing?.perPerson != null && <div className="ft-fondunder">{kr(Math.round(overforing.perPerson / 100) * 100)} per innbygger</div>}
+            {overforing?.perPerson != null && <div className="ft-fondunder">{kr(Math.round(overforing.perPerson / 100) * 100)} per innbygger{overforing.befolkningsanslag ? ' (SSBs befolkningsanslag)' : ''}</div>}
           </div>
         </div>
 

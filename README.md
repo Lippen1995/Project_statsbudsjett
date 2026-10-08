@@ -13,10 +13,10 @@ posten. Alle seksjonene leser samme datagrunnlag:
    konsumprisindeksen, begge indeksert til startåret. Dra over grafen for å
    snevre inn perioden. Krever `kpi.json` fra ETL-en; mangler serien, sier
    seksjonen det i stedet for å skjule seg.
-2. **Hele budsjettet på ett kart** – squarified treemap, klikkbar nedover
+2. **Statens utgifter på ett kart** – velg år og regnskap, saldert budsjett, revidert budsjett eller tilgjengelig budsjettforslag. Squarified treemap, klikkbar nedover
    departement → kapittel → post.
-3. **Fra inntekt til utgift** – sankeydiagram fra inntektskildene, gjennom
-   statsbudsjettet, ut til departementene.
+3. **Fra inntekt til utgift** – sankeydiagram med valg av år og regnskap eller budsjettform.
+   Klikk på en utgift for å vise tilhørende områdeinntekter og beregnet felles finansiering på begge sider. Folketrygdavgifter og kapittelinntekter på postnivå fordeles eksplisitt som anslag, ikke som bokført øremerking.
 4. **Hvor pengene går** – utgiftene rangert i kroner per innbygger.
 5. **Hva økte, hva ble kuttet** – vannfallsdiagram mellom to valgfrie tall
    (to regnskapsår, eller regnskap mot budsjett), med nedbryting nivå for nivå.
@@ -177,3 +177,5 @@ område med stiplet linje i grafen, og «(anslag)» i tooltipen.
 ## Analyser og redaksjonell automatisering
 
 Analysebiblioteket ligger på `/analyser/`. Se [oppsett, mobilgodkjenning og publiseringsvern](docs/analyses.md) og [avtalt plan](docs/analysis-plan.md). Pilotanalysen er et utkast og blir ikke publisert før menneskelig godkjenning.
+
+**Prisvekstgrafens budsjettår.** `prisvekst_anslag.json` inneholder separate SSB-anslag: årlig KPI-vekst fra tabell 12880 kjedes fra siste observerte KPI, og folkemengde 1. januar fra hovedalternativet i 14282 brukes etter siste observerte folketall. ETL oppdaterer filen sammen med øvrige støttefiler. Grafen velger regnskap før revidert, saldert og foreslått budsjett for hvert år. Budsjettår og anslag vises stiplet, også ved zoom. Manglende nevnere utelates.

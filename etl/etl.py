@@ -298,6 +298,13 @@ def run(years=None, force=False):
         "KOSTRA", kilde="SSB/Kartverket",
     )
 
+    from prisvekst import hent_prisvekst_anslag
+    prisvekst_anslag = _valgfri_ssb(
+        lambda: hent_prisvekst_anslag(kpi, befolkning, force=force), 'Prisvekst-anslag'
+    ) if kpi else None
+    if prisvekst_anslag:
+        _save_json(prisvekst_anslag, OUTPUT_DIR / 'prisvekst_anslag.json')
+
     # 7. Skriv befolkning og meta
     logger.info("\nSTEG 7: Skriver støttefiler")
     _save_json(befolkning, OUTPUT_DIR / "befolkning.json")

@@ -21,7 +21,7 @@ async function loadJSON(path, { optional = false } = {}) {
 }
 
 export async function loadAll() {
-  const [meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, fondsverdi, oljepengebruk] =
+  const [meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, fondsverdi, oljepengebruk, prisvekstAnslag] =
     await Promise.all([
       loadJSON('./data/meta.json'),
       loadJSON('./data/utgifter.json'),
@@ -33,8 +33,9 @@ export async function loadAll() {
       loadJSON('./data/bnp_prognose.json', { optional: true }),
       loadJSON('./data/fondsverdi.json', { optional: true }),
       loadJSON('./data/oljepengebruk.json', { optional: true }),
+      loadJSON('./data/prisvekst_anslag.json', { optional: true }),
     ])
-  return { meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, fondsverdi, oljepengebruk }
+  return { meta, utgifter, inntekter, befolkning, kpi, bnp, bnpPrognose, fondsverdi, oljepengebruk, prisvekstAnslag }
 }
 
 /**

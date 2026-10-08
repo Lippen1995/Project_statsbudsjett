@@ -526,7 +526,7 @@ body.ft-body { background: #F7F5F0; }
 
 /* --- Flyten ------------------------------------------------------------- */
 
-.ft-sankey { margin-top: 24px; padding: 24px 20px; overflow-x: auto; }
+.ft-sankey { margin-top: 24px; padding: 24px 0; overflow-x: auto; background: transparent; }
 
 /* --- Søylerader (utgifter, mottakere, andeler) -------------------------- */
 
@@ -1056,3 +1056,33 @@ body.ft-body { background: #F7F5F0; }
 .ft-stromtips { background: #22242A; border: 1px solid #8C8A84; padding: 12px; color: var(--papir); font-size: 13px; }
 .ft-stromtips p { margin: 6px 0 0; }
 @media (max-width: 700px) { .ft-stromgraf { padding: 20px 8px; } .ft-stromgraf-flate { height: 300px; } }
+.ft-kart-valg {
+  margin-bottom: 24px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+}
+.ft-kart-valg .ft-velger { padding: 8px 0; flex: 0 1 auto; }
+.ft-kart-valg .ft-velger:hover { background: transparent; }
+.ft-kart-valg .ft-select:focus-visible { outline: 2px solid var(--rust); outline-offset: 4px; }
+
+.ft-flyt-smuler { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.ft-flyt-sti:last-child { text-align: right; }
+.ft-flyt-sti:last-child .ft-smuler { justify-content: flex-end; }
+.ft-flyt-sti .ft-smuler { margin-top: 8px; flex-wrap: wrap; }
+.ft-sankey-node { cursor: pointer; }
+.ft-sankey-node:hover path { opacity: .55; }
+.ft-sankey-node:focus-visible { outline: 2px solid var(--rust); outline-offset: 2px; }
+@media (max-width: 600px) {
+  .ft-flyt-smuler { grid-template-columns: 1fr; }
+  .ft-flyt-sti:last-child { text-align: left; }
+  .ft-flyt-sti:last-child .ft-smuler { justify-content: flex-start; }
+  .ft-sankey svg { min-width: 780px; }
+}
+
+.ft-flyt-nav { flex-wrap: wrap; justify-content: flex-start; margin-bottom: 18px; }
+.ft-flyt-oppsummering { margin: 12px 0 20px; font-size: 14px; line-height: 1.7; color: var(--tekst); }

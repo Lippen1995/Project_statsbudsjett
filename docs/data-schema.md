@@ -501,3 +501,9 @@ interface KostraPublicFlow {
 
 Manglende SSB-verdier publiseres som `null`/utelates; de konverteres aldri til
 null kroner.
+
+### Flytens områdevisning
+
+Ved valg av et utgiftsområde viser Flyten begge sider for samme utvalg. Departementsvisningen inkluderer inntektskapitler under samme departement, uten generelle skatter, petroleum, lån og fondsoverføringer. På kapittelnivå sammenstilles utgiftskapittel med inntektskapittel nummer +3000 når det finnes. Dette er en kapittelsammenstilling, ikke dokumentasjon av øremerking. På postnivå fordeles disse kapittelinntektene etter postens andel av kapittelutgiftene; like postnumre brukes aldri som direkte kobling.
+
+Folketrygdens trygde- og arbeidsgiveravgift (inntektskapittel 5700) fordeles som et tydelig merket anslag etter utvalgets andel av utgifter i kapittel 2500–2799, på tvers av departementer. Resterende finansieringsbehov vises samlet som «Felles finansiering: skatter og Oljefondet», uten oppdiktet fordeling mellom disse kildene. Dersom sammenstilte inntekter overstiger utgiftene vises «Netto til felles finansiering» på høyre side. Begge sider bruker samme beløpsskala i områdevisningen. Modellen viser finansieringsbehov og beregnede fordelinger, ikke bokførte sektorunderskudd eller øremerkede inntekter.
