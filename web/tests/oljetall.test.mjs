@@ -25,7 +25,7 @@ test('samme år går fra forslag til saldert, revidert og regnskap', () => {
 test('manglende regnskap blir ikke nulluttak, og manglende referanser gir ikke anslag', () => {
   const d = data({ forslag: 10 })
   d.fondsverdi = {}; d.befolkning = {}
-  assert.deepEqual(oljeTidsserie(d)[0], { aar: 2032, type: 'Foreslått budsjett', budsjett: true, belop: 10, prosent: null, perPerson: null })
+  assert.deepEqual(oljeTidsserie(d)[0], { aar: 2032, type: 'Foreslått budsjett', budsjett: true, befolkningsanslag: false, belop: 10, prosent: null, perPerson: null })
 })
 
 test('stiplet linje kobles til regnskap og forsvinner når budsjettet blir regnskap', () => {
@@ -94,4 +94,22 @@ test('netto pengestrøm bruker felles versjon og bevarer negative beløp og null
   assert.equal(oljeStromTidsserie(d)[0].budsjett, false)
   d.utgifter = []
   assert.deepEqual(oljeStromTidsserie(d), [])
+})
+
+
+test('overføring per innbygger bruker SSB-anslag når observert folketall mangler', () => {
+  const d = data({ forslag: 600000 }, [2031])
+  d.befolkning = {}
+  d.prisvekstAnslag = { befolkning: { 2032: 6000000 } }
+  let rad = oljeTidsserie(d)[0]
+  assert.equal(rad.perPerson, 100000)
+  assert.equal(rad.befolkningsanslag, true)
+  assert.equal(rad.budsjett, true)
+  d.befolkning[2032] = 6250000
+  rad = oljeTidsserie(d)[0]
+  assert.equal(rad.perPerson, 96000)
+  assert.equal(rad.befolkningsanslag, false)
+  delete d.befolkning[2032]
+  delete d.prisvekstAnslag.befolkning[2032]
+  assert.equal(oljeTidsserie(d)[0].perPerson, null)
 })

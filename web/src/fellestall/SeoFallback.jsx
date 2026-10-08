@@ -15,8 +15,8 @@ const SEKSJONER = [
   {
     id: 'kartet',
     kortnavn: 'Kartet',
-    tittel: 'Hele budsjettet på ett kart',
-    tekst: 'Se hvordan statsbudsjettet fordeler seg mellom departementer, kapitler og poster, med areal etter størrelsen på beløpet.',
+    tittel: 'Statens utgifter på ett kart',
+    tekst: 'Velg år og regnskap eller budsjettform. Se hvordan statens utgifter fordeler seg mellom departementer, kapitler og poster, med areal etter størrelsen på beløpet.',
   },
   {
     id: 'flyten',
