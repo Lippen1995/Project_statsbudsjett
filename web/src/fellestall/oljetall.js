@@ -55,3 +55,23 @@ export function oljeDifferanser(overforing, makro) {
     overforing: overforing ? overforing.belop - makro.oljekorrigert : null,
   }
 }
+
+/** Begge pengestrømmer bruker samme budsjettversjon før netto beregnes. */
+export function oljeStromTidsserie(data) {
+  const inn = data.utgifter.flatMap((d) => (d.c ?? []).filter((k) => k.x))
+  const ut = data.inntekter.flatMap((d) => (d.c ?? []).filter((k) => k.x))
+  const regnskap = new Set(data.meta.regnskap_aar.map(Number))
+  const aar = [...new Set([...inn, ...ut].flatMap((k) => Object.keys(k.s ?? {}).map(Number)))].sort((a, b) => a - b)
+  const typer = [[0, 'Regnskap'], [2, 'Revidert budsjett'], [1, 'Saldert budsjett'], [3, 'Foreslått budsjett']]
+  return aar.flatMap((y) => {
+    const til = inn.filter((k) => k.s?.[y])
+    const fra = ut.filter((k) => k.s?.[y])
+    if (!til.length || !fra.length) return []
+    const valgt = typer.find(([si]) => (si !== 0 || regnskap.has(y)) && [...til, ...fra].every((k) => Number.isFinite(k.s[y][si])))
+    if (!valgt) return []
+    const [si, type] = valgt
+    const innskudd = til.reduce((sum, k) => sum + k.s[y][si], 0)
+    const overforing = fra.reduce((sum, k) => sum + k.s[y][si], 0)
+    return [{ aar: y, type, budsjett: si !== 0, innskudd, overforing, netto: innskudd - overforing }]
+  })
+}

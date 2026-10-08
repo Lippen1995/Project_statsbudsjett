@@ -1048,3 +1048,11 @@ body.ft-body { background: #F7F5F0; }
   .ft-komponent { grid-template-columns: 1fr 90px; }
   .ft-komponenttil { display: none; }
 }
+
+.ft-stromgraf { margin-top: 28px; min-width: 0; }
+.ft-stromgraf h3 { margin: 0; color: var(--papir); }
+.ft-stromgraf-flate { height: 340px; margin-top: 20px; }
+.ft-fondlegend .ft-stromlegend-stolpe { height: 12px; width: 12px; }
+.ft-stromtips { background: #22242A; border: 1px solid #8C8A84; padding: 12px; color: var(--papir); font-size: 13px; }
+.ft-stromtips p { margin: 6px 0 0; }
+@media (max-width: 700px) { .ft-stromgraf { padding: 20px 8px; } .ft-stromgraf-flate { height: 300px; } }
