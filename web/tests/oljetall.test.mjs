@@ -82,3 +82,16 @@ test('nye budsjettversjoner erstatter forslag og regnskapsår bruker siste histo
   assert.equal(oljeMakroTidsserie(d)[0].type, 'Historisk anslag')
   assert.equal(oljeMakroTidsserie(d)[0].belop, 15)
 })
+
+test('netto pengestrøm bruker felles versjon og bevarer negative beløp og null', async () => {
+  const { oljeStromTidsserie } = await import('../src/fellestall/oljetall.js')
+  const d = data({ saldert: 20, revidert: 40 }, [2032])
+  d.utgifter = [{ c: [{ x: 1, s: { 2032: [null, 10, null, null] } }] }]
+  assert.deepEqual(oljeStromTidsserie(d)[0], { aar: 2032, type: 'Saldert budsjett', budsjett: true, innskudd: 10, overforing: 20, netto: -10 })
+  d.utgifter[0].c[0].s[2032][0] = 0
+  d.inntekter[0].c[0].s[2032][0] = 0
+  assert.equal(oljeStromTidsserie(d)[0].netto, 0)
+  assert.equal(oljeStromTidsserie(d)[0].budsjett, false)
+  d.utgifter = []
+  assert.deepEqual(oljeStromTidsserie(d), [])
+})

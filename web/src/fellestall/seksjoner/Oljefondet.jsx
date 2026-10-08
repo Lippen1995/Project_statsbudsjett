@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import FondStromGraf from '../grafer/FondStromGraf'
 import LinjeGraf from '../grafer/LinjeGraf'
-import { oljeTidsserie, oljeMakroTidsserie, oljeGrafSerier, oljeDifferanser } from '../oljetall'
+import { oljeTidsserie, oljeMakroTidsserie, oljeGrafSerier, oljeDifferanser, oljeStromTidsserie } from '../oljetall'
 import { GULL } from '../design'
 import { belopMill, kr, pct, n0, n1 } from '../tall'
 
@@ -145,6 +146,8 @@ export default function Oljefondet({ data, aar }) {
             {overforing?.perPerson != null && <div className="ft-fondunder">{kr(Math.round(overforing.perPerson / 100) * 100)} per innbygger</div>}
           </div>
         </div>
+
+        <FondStromGraf rader={oljeStromTidsserie(data)} />
 
         <div className="ft-fondgrafer">
           <FondSammenligning overforinger={overforinger} makro={makro} />
