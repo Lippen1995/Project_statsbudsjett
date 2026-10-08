@@ -5,7 +5,7 @@
   "type": "Budsjettforslag",
   "status": "draft",
   "createdAt": "2026-10-07T20:08:44.119Z",
-  "generatedAt": "2026-10-08T06:32:56.096Z",
+  "generatedAt": "2026-10-08T06:51:33.052Z",
   "report": {
     "kind": "budget-comparison",
     "comparison": "previous-budget-to-proposal",
@@ -23569,7 +23569,7 @@
     ]
   },
   "copy": {
-    "title": "Ap må gi fra seg nok til å beholde styringen",
+    "title": "Ap må betale for flertallet",
     "description": "Sven analyserer budsjettforslaget for {{fact:budgetYear}}: hvorfor partiene er misfornøyde, hvilke krav som veier tyngst, og hvor et forlik kan oppstå.",
     "lead": "Arbeiderpartiet lover bedre råd og større trygghet. For å få budsjettet vedtatt må partiet trolig gi støttepartiene noe mer håndfast: penger til lokale tjenester, lavere regninger eller grønne tiltak som blir gjennomført. Utfordringen er å gi innrømmelser som betyr mye for mottakeren uten å ødelegge det en annen part trenger.",
     "conclusion": "Et forlik mellom Ap, Sp, SV, Rødt og MDG fremstår som mest nærliggende. Kommuneøkonomi kan gi et felles fundament, mens tannhelse, fordelingsgrep og grønne tiltak kan gjøre helheten forsvarlig for partiene. Vanskeligst blir det å lette bil- og strømregningene uten å svekke omstillingen MDG og SV trenger. Ap bør kunne beholde hovedkursen, men må trolig redusere noen av forslagets tydeligste innsparinger.",
