@@ -182,7 +182,7 @@ export default function Endringer({ data, aar, uRot, skjulFin, onAapneUtforsk })
       <div className="ft-endrkolonner">
         <div>
           <div className="ft-kolonnetittel opp">Økte mest</div>
-          {endr.slice(0, 5).map((r) => rad(r, true))}
+          {endr.filter((r) => r.delta > 0).slice(0, 5).map((r) => rad(r, true))}
         </div>
         <div>
           <div className="ft-kolonnetittel ned">Ble kuttet mest</div>

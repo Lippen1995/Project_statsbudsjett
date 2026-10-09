@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import SvgTekst, { kutt } from './SvgTekst'
 import { RUST, GRONN, INK, BLEK } from '../design'
 import { belopMill, medFortegn } from '../tall'
+import { vannfallStolper } from './vannfall-data'
 
 const W = 1080, H = 300, MT = 28, MB = 62
 
@@ -14,14 +15,7 @@ const W = 1080, H = 300, MT = 28, MB = 62
  */
 export default function Vannfall({ endr, onDrill }) {
   const [fokus, setFokus] = useState(null)
-  const topp = endr.slice(0, 6).concat(endr.filter((r) => r.delta < 0).slice(-4))
-  const sett = new Set(topp.map((r) => r.node.i))
-  const restRader = endr.filter((r) => !sett.has(r.node.i))
-  const rest = restRader.reduce((s, r) => s + r.delta, 0)
-
-  const stolper = topp
-    .map((r) => ({ navn: r.navn, v: r.delta, node: r.node }))
-    .concat(rest ? [{ navn: 'Øvrige', v: rest, rest: restRader.map((r) => r.node) }] : [])
+  const stolper = vannfallStolper(endr)
 
   if (!stolper.length) return <div className="ft-graf-tom">Ingen endringer å vise</div>
 
