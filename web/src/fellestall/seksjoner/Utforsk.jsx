@@ -62,7 +62,9 @@ export default function Utforsk({
     : 0
   const aar = data.meta.budsjett_aar.includes(u.aar) ? u.aar : globalAar
   const erUtg = u.side === 'utgifter'
-  const folk = data.befolkning?.[aar]
+  const folkFor = (y) => data.befolkning?.[y] ?? data.prisvekstAnslag?.befolkning?.[y]
+  const folk = folkFor(aar)
+  const folkAnslag = data.befolkning?.[aar] == null && folk > 0
   const perPerson = u.modus === 'person' && !!folk
 
   const skaler = (v) => (perPerson ? (v * 1e6) / folk : v)
@@ -175,7 +177,11 @@ export default function Utforsk({
       return { v: v === 0 && budsjettGraf ? null : v }
     })
   const tilVisning = (punkter) =>
-    punkter.map((p) => ({ v: p.v == null ? null : perPerson ? skaler(p.v) : p.v }))
+    punkter.map((p, i) => ({
+      v: p.v == null ? null : perPerson
+        ? folkFor(grafAar[i]) > 0 ? p.v * 1e6 / folkFor(grafAar[i]) : null
+        : p.v,
+    }))
 
   const graf = [
     { farge: RUST, navn: SERIER[0], punkter: tilVisning(serieFor(fokus, 0)) },
@@ -491,6 +497,12 @@ export default function Utforsk({
               </button>
             )
           })}
+
+          {perPerson && folkAnslag && rader.length > 0 && (
+            <p className="ft-anslagsnote">
+              Per innbygger for {aar} er beregnet med SSBs befolkningsanslag (tabell 14282, hovedalternativet).
+            </p>
+          )}
 
           {harBnp && erAnslag(aar) && rader.length > 0 && (
             <p className="ft-anslagsnote">
