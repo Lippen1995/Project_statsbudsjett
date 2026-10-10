@@ -1,0 +1,95 @@
+{
+  "sourceUrl": "https://fellestall.no/data/utgifter.json",
+  "sourceDataHash": "dc071d77c43e8fd742c78bd7c113746d2524aea5ed407a20ccedce2b829ef78e",
+  "sourceUpdated": "2026-10-07T07:39:02.805153+00:00",
+  "rows": [
+    {
+      "year": 2025,
+      "stage": "regnskap",
+      "id": "u-01-0159-73",
+      "name": "Ukraina og naboland",
+      "department": "Utenriksdepartementet",
+      "amountMillion": 12153.9,
+      "category": "civil"
+    },
+    {
+      "year": 2025,
+      "stage": "regnskap",
+      "id": "u-01-0162-77",
+      "name": "Norfund - Ukraina risikokapital",
+      "department": "Utenriksdepartementet",
+      "amountMillion": 125,
+      "category": "capital"
+    },
+    {
+      "year": 2025,
+      "stage": "regnskap",
+      "id": "u-01-0162-97",
+      "name": "Norfund - Ukraina kapitalinnskudd",
+      "department": "Utenriksdepartementet",
+      "amountMillion": 125,
+      "category": "capital"
+    },
+    {
+      "year": 2025,
+      "stage": "regnskap",
+      "id": "u-17-1700-79",
+      "name": "Militær støtte til Ukraina",
+      "department": "Forsvarsdepartementet",
+      "amountMillion": 41227.3,
+      "category": "military"
+    },
+    {
+      "year": 2026,
+      "stage": "revidert",
+      "id": "u-01-0159-73",
+      "name": "Ukraina og naboland",
+      "department": "Utenriksdepartementet",
+      "amountMillion": 14382.6,
+      "category": "civil",
+      "baselineMillion": 14413.1
+    },
+    {
+      "year": 2026,
+      "stage": "revidert",
+      "id": "u-01-0165-72",
+      "name": "Risikokapital Ukraina-fondet",
+      "department": "Utenriksdepartementet",
+      "amountMillion": 250,
+      "category": "capital",
+      "baselineMillion": 250
+    },
+    {
+      "year": 2026,
+      "stage": "revidert",
+      "id": "u-01-0165-92",
+      "name": "Kapitalpåfylling Ukraina-fondet",
+      "department": "Utenriksdepartementet",
+      "amountMillion": 250,
+      "category": "capital",
+      "baselineMillion": 250
+    },
+    {
+      "year": 2026,
+      "stage": "revidert",
+      "id": "u-17-1750-21",
+      "name": "Spesielle driftsutgifter",
+      "department": "Forsvarsdepartementet",
+      "amountMillion": 48462.2,
+      "category": "military",
+      "baselineMillion": 28610
+    },
+    {
+      "year": 2026,
+      "stage": "revidert",
+      "id": "u-17-1750-79",
+      "name": "Tilskudd til militær støtte for Ukraina",
+      "department": "Forsvarsdepartementet",
+      "amountMillion": 18776.6,
+      "category": "military",
+      "baselineMillion": 38596
+    }
+  ],
+  "sourceCommit": "dd0aea50715160014256844e4b4429d99cf02dff",
+  "frozenSourceUrl": "https://raw.githubusercontent.com/Lippen1995/Project_statsbudsjett/dd0aea50715160014256844e4b4429d99cf02dff/web/public/data/utgifter.json"
+}
