@@ -4,6 +4,8 @@ web/public/data/*
 !web/public/data/kostra/**
 web/node_modules/
 web/dist/
+.vercel/
+published-site/
 __pycache__/
 *.pyc
 .pytest_cache/
