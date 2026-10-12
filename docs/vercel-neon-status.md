@@ -107,3 +107,17 @@ for databasebehovet.
 
 Neon-skjema, import/eksport, parallell tallkontroll og gjenoppretting er fortsatt
 gjenstående arbeid. Dagens statiske dataflyt fortsetter gjennom dette steget.
+
+## Kontroller utført på endringen
+
+- 177 frontend-/analysetester passerer.
+- Produksjonsbygg og SEO-kontroll passerer.
+- `actionlint` 1.7.7 passerer for endrede workflows; `git diff --check` passerer.
+- Alle 1191 filer pakket til Build Output API har samme SHA-256 som arkivet.
+- Nettleserkontrollen mot lokalt produksjonsbygg fant tre rapporterte feil:
+  én av 14 grafer mangler tekstalternativ, og lenken til SSBs befolkningsanslag
+  har kontrast 3,42:1 mot kravet 4,5:1 i begge bevegelsesinnstillinger.
+  Frontendkoden er ikke endret av migreringsarbeidet. Disse funnene må avklares
+  før kriteriet om bestått publiseringssjekk er oppfylt.
+- Automatisert Vercel-utrulling med den nye jobben er ikke kjørt: den krever
+  engangsoppsettet ovenfor. Referanseutrullingen ble gjort via Vercel-integrasjonen.
