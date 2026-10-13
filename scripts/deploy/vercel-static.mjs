@@ -1,9 +1,27 @@
-import { cp, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { cp, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { resolve, relative } from 'node:path'
+import { tmpdir } from 'node:os'
 import { createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex')
+
+// Les selve HTTP-svaret fra curl-filer. CLI-meldinger på stdout er ikke sideinnhold.
+async function response(endpoint, deployment) {
+  const temporary = await mkdtemp(resolve(tmpdir(), 'fellestall-verify-'))
+  try {
+    execFileSync('vercel', ['curl', endpoint, '--deployment', deployment, '--',
+      '--silent', '--show-error', '--location', '--max-redirs', '3', '--compressed',
+      '--max-time', '60', '--output', resolve(temporary, 'body'),
+      '--dump-header', resolve(temporary, 'headers')], { stdio: ['ignore', 'ignore', 'inherit'] })
+    const headers = await readFile(resolve(temporary, 'headers'), 'utf8')
+    const statuses = [...headers.matchAll(/^HTTP\/\S+\s+(\d{3})/gm)]
+    if (!statuses.length) throw new Error(`Ingen HTTP-status for ${endpoint}`)
+    return { status: Number(statuses.at(-1)[1]), body: await readFile(resolve(temporary, 'body')) }
+  } finally {
+    await rm(temporary, { recursive: true, force: true })
+  }
+}
 
 async function files(dir, root = dir) {
   const result = []
@@ -70,12 +88,14 @@ if (command === 'pack') {
   if (kostra.length) selected.push(kostra[0], kostra[Math.floor(kostra.length / 2)], kostra.at(-1))
   for (const path of new Set(selected)) {
     const endpoint = path === 'index.html' ? '/' : path.endsWith('/index.html') ? '/' + path.slice(0, -'index.html'.length) : '/' + path
-    const body = execFileSync('vercel', ['curl', endpoint, '--deployment', url.origin, '--', '--fail', '--silent', '--show-error', '--max-time', '60'], { maxBuffer: 64 * 1024 * 1024 })
-    if (hash(body) !== hash(await readFile(resolve(source, path)))) throw new Error(`Ulikt innhold: ${path}`)
+    const { status, body } = await response(endpoint, url.origin)
+    if (status !== 200) throw new Error(`${endpoint} svarte ${status}, forventet 200`)
+    const expected = await readFile(resolve(source, path))
+    if (hash(body) !== hash(expected)) throw new Error(`Ulikt innhold: ${path} (${body.length} byte mottatt, ${expected.length} forventet)`)
     console.log(`Identisk: ${path}`)
   }
-  const status = execFileSync('vercel', ['curl', '/migration-missing-file.json', '--deployment', url.origin, '--', '--silent', '--output', '/dev/null', '--write-out', '%{http_code}', '--max-time', '30'], { encoding: 'utf8' }).trim()
-  if (status !== '404') throw new Error(`Manglende JSON svarte ${status}, forventet 404`)
+  const { status } = await response('/migration-missing-file.json', url.origin)
+  if (status !== 404) throw new Error(`Manglende JSON svarte ${status}, forventet 404`)
   console.log('Manglende JSON gir 404. Utrullingen er kontrollert; domener er ikke flyttet.')
 } else {
   throw new Error('Bruk: node scripts/deploy/vercel-static.mjs pack|verify <kildemappe> [deployment-url]')
