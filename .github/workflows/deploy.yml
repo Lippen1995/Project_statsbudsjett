@@ -78,6 +78,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           ANALYSIS_REVIEW_PREVIEWS_FILE: ${{ runner.temp }}/analysis-previews.json
 
+  vercel-mirror:
+    needs: build-deploy
+    if: github.ref_name == 'main' && vars.VERCEL_MIRROR_ENABLED == 'true'
+    uses: ./.github/workflows/vercel-mirror.yml
+    secrets: inherit
+    permissions:
+      contents: read
+
   distribute-analyses:
     needs: build-deploy
     if: github.ref_name == 'main' && vars.ANALYSIS_AUTOMATION_ENABLED == 'true' && vars.LINKEDIN_ENABLED == 'true'
