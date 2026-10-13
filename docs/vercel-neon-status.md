@@ -57,9 +57,10 @@ settes i leverandørenes grensesnitt, uten å dele hemmeligheter i chat:
 2. Opprett en Vercel-token avgrenset til Fjord Insight med nødvendig prosjekt-
    tilgang og utløpsdato. Lagre som miljøsecret `VERCEL_TOKEN` i
    `vercel-migration`; tokenen skal aldri legges i kode eller meldinger.
-3. Etter at PR-en er gjennomgått og flettet: sett repositoryvariabelen
-   `VERCEL_MIRROR_ENABLED` til `true` og kjør «Vercel – parallell publisering».
-   Første kjøring må passere både utrulling og innholdskontroll.
+3. Etter at PR-en er gjennomgått og flettet: kjør «Vercel – parallell
+   publisering» manuelt fra `main`. Første kjøring må passere både utrulling
+   og innholdskontroll. Sett deretter repositoryvariabelen
+   `VERCEL_MIRROR_ENABLED` til `true` for automatisk parallell publisering.
 
 Lenker:
 
