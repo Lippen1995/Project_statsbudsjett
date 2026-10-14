@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-13",
+  "generatedAt": "2026-10-14",
   "municipalityCount": 357,
   "reviewAfterDays": 90,
   "status": {
@@ -25,7 +25,7 @@
   },
   "municipalities": {
     "0301": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anne Lindboe",
         "party": "Høyre",
@@ -83,7 +83,7 @@
       }
     },
     "1101": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anja Hovland",
         "party": "Høyre",
@@ -137,7 +137,7 @@
       }
     },
     "1103": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tormod W. Losnedal",
         "party": "Høyre",
@@ -283,7 +283,7 @@
       "reviewReasons": []
     },
     "1106": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Nils Konrad Bua",
         "party": "Høyre",
@@ -337,7 +337,7 @@
       }
     },
     "1108": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kenny Rettore",
         "party": "Høyre",
@@ -387,7 +387,7 @@
       }
     },
     "1111": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bjørn-Inge Mydland",
         "party": "Senterpartiet",
@@ -441,7 +441,7 @@
       }
     },
     "1112": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Gro Helleland",
         "party": "Kristelig Folkeparti",
@@ -491,7 +491,7 @@
       }
     },
     "1114": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tone Vaule",
         "party": "Arbeiderpartiet",
@@ -545,7 +545,7 @@
       }
     },
     "1119": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Andreas Bjorland",
         "party": "Kristelig Folkeparti",
@@ -601,7 +601,7 @@
       }
     },
     "1120": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjetil Maudal",
         "party": "Fremskrittspartiet",
@@ -653,7 +653,7 @@
       }
     },
     "1121": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Andreas Vollsund",
         "party": "Høyre",
@@ -707,7 +707,7 @@
       }
     },
     "1122": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Frode Fjeldsbø",
         "party": "Arbeiderpartiet",
@@ -759,7 +759,7 @@
       }
     },
     "1124": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Janne Stangeland Rege",
         "party": "Høyre",
@@ -813,7 +813,7 @@
       }
     },
     "1127": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jarle Bø",
         "party": "Senterpartiet",
@@ -867,7 +867,7 @@
       }
     },
     "1130": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Irene Heng Lauvsnes",
         "party": "Høyre",
@@ -921,7 +921,7 @@
       }
     },
     "1133": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anita Husøy Riskedal",
         "party": "Senterpartiet",
@@ -971,7 +971,7 @@
       }
     },
     "1134": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Mads Drange",
         "party": "Arbeiderpartiet",
@@ -1025,7 +1025,7 @@
       }
     },
     "1135": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Håvard Handeland",
         "party": "Arbeiderpartiet",
@@ -1075,7 +1075,7 @@
       }
     },
     "1144": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjell Andre Nordbø",
         "party": "Bygdeliste",
@@ -1125,7 +1125,7 @@
       }
     },
     "1145": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Egil Våge",
         "party": "Senterpartiet",
@@ -1175,7 +1175,7 @@
       }
     },
     "1146": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Monika Lindanger",
         "party": "Høyre",
@@ -1229,7 +1229,7 @@
       }
     },
     "1149": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Leiv Arne Marhaug",
         "party": "Høyre",
@@ -1287,7 +1287,7 @@
       }
     },
     "1151": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Marte Eide Klovning",
         "party": "Utsiralista",
@@ -1335,7 +1335,7 @@
       }
     },
     "1160": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ole Johan Vierdal",
         "party": "Senterpartiet",
@@ -1387,7 +1387,7 @@
       }
     },
     "1505": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjell Neergaard",
         "party": "Arbeiderpartiet",
@@ -1445,7 +1445,7 @@
       }
     },
     "1506": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Trygve Grydeland",
         "party": "Høyre",
@@ -1499,7 +1499,7 @@
       }
     },
     "1508": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Håkon Lykkebø Strand",
         "party": "Fremskrittspartiet",
@@ -1551,7 +1551,7 @@
       }
     },
     "1511": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Paul Sindre Vedeld",
         "party": "Senterpartiet",
@@ -1603,7 +1603,7 @@
       }
     },
     "1514": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Dag Arne Vaagen",
         "party": "Høyre",
@@ -1653,7 +1653,7 @@
       }
     },
     "1515": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ann-Kathrin Storøy",
         "party": "Høyre",
@@ -1705,7 +1705,7 @@
       }
     },
     "1516": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Stian SKorgen Scheide",
         "party": "Høyre",
@@ -1761,7 +1761,7 @@
       }
     },
     "1517": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bernt Brandal",
         "party": "Folkelista",
@@ -1809,7 +1809,7 @@
       }
     },
     "1520": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Per Are Sørheim",
         "party": "Høyre",
@@ -1865,7 +1865,7 @@
       }
     },
     "1525": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Einar Arve Nordang",
         "party": "Høyre",
@@ -1915,7 +1915,7 @@
       }
     },
     "1528": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Olav Harald Ulstein",
         "party": "Fremskrittspartiet",
@@ -1965,7 +1965,7 @@
       }
     },
     "1531": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Turid Humlen",
         "party": "Høyre",
@@ -2019,7 +2019,7 @@
       }
     },
     "1532": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kenneth Langvatn",
         "party": "Høyre",
@@ -2079,7 +2079,7 @@
       }
     },
     "1535": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Randi Bergundhaugen",
         "party": "Høyre",
@@ -2135,7 +2135,7 @@
       }
     },
     "1539": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Yvonne Wold",
         "party": "Sosialistisk Venstreparti",
@@ -2187,7 +2187,7 @@
       }
     },
     "1547": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Helge Kjøll",
         "party": "Kristelig Folkeparti",
@@ -2237,7 +2237,7 @@
       }
     },
     "1554": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ingrid Ovidie Rangønes",
         "party": "Arbeiderpartiet",
@@ -2291,7 +2291,7 @@
       }
     },
     "1557": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Knut Sjømæling",
         "party": "Senterpartiet",
@@ -2343,7 +2343,7 @@
       }
     },
     "1560": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ingrid Waagen",
         "party": "Senterpartiet",
@@ -2393,7 +2393,7 @@
       }
     },
     "1563": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ståle Refstie",
         "party": "Arbeiderpartiet",
@@ -2447,7 +2447,7 @@
       }
     },
     "1566": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hugo Pedersen",
         "party": "Senterpartiet",
@@ -2497,7 +2497,7 @@
       }
     },
     "1573": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Svein Roksvåg",
         "party": "Senterpartiet",
@@ -2547,7 +2547,7 @@
       }
     },
     "1576": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hanne-Berit Brekken",
         "party": "Arbeiderpartiet",
@@ -2597,7 +2597,7 @@
       }
     },
     "1577": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Sølvi Dimmen",
         "party": "Senterpartiet",
@@ -2653,7 +2653,7 @@
       }
     },
     "1578": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Terese Jemtegård Moen",
         "party": "Senterpartiet",
@@ -2705,7 +2705,7 @@
       }
     },
     "1579": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Nils Christian Harnes",
         "party": "Kristelig Folkeparti",
@@ -2757,7 +2757,7 @@
       }
     },
     "1580": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Vebjørn Krogsæter",
         "party": "Senterpartiet",
@@ -2811,7 +2811,7 @@
       }
     },
     "1804": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Odd Emil Ingebrigtsen",
         "party": "Høyre",
@@ -2863,7 +2863,7 @@
       }
     },
     "1806": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Rune Edvardsen",
         "party": "Arbeiderpartiet",
@@ -2917,7 +2917,7 @@
       }
     },
     "1811": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Frode Næsvold",
         "party": "Arbeiderpartiet",
@@ -2965,7 +2965,7 @@
       }
     },
     "1812": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Gunder Strømberg",
         "party": "Tverpolitisk liste",
@@ -3013,7 +3013,7 @@
       }
     },
     "1813": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Siv Aglen",
         "party": "Arbeiderpartiet",
@@ -3063,7 +3063,7 @@
       }
     },
     "1815": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jon Floa",
         "party": "Senterpartiet",
@@ -3113,7 +3113,7 @@
       }
     },
     "1816": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bjørg Ireen Fønnebø",
         "party": "Arbeiderpartiet",
@@ -3161,7 +3161,7 @@
       }
     },
     "1818": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Elbjørg Larsen",
         "party": "Arbeiderpartiet",
@@ -3209,7 +3209,7 @@
       }
     },
     "1820": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Peter Talseth",
         "party": "Senterpartiet",
@@ -3263,7 +3263,7 @@
       }
     },
     "1822": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Sten Rino Bonsaksen",
         "party": "Arbeiderpartiet",
@@ -3313,7 +3313,7 @@
       }
     },
     "1824": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Rune Krutå",
         "party": "Arbeiderpartiet",
@@ -3367,7 +3367,7 @@
       }
     },
     "1825": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Raymond Fagerli",
         "party": "Senterpartiet",
@@ -3415,7 +3415,7 @@
       }
     },
     "1826": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Sølvi Andersen",
         "party": "Arbeiderpartiet",
@@ -3463,7 +3463,7 @@
       }
     },
     "1827": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "John Erik Skjellnes Johansen",
         "party": "Arbeiderpartiet",
@@ -3515,7 +3515,7 @@
       }
     },
     "1828": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hanne Davidsen",
         "party": "Arbeiderpartiet",
@@ -3565,7 +3565,7 @@
       }
     },
     "1832": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Paul Asphaug",
         "party": "Senterpartiet",
@@ -3613,7 +3613,7 @@
       }
     },
     "1833": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Geir Waage",
         "party": "Arbeiderpartiet",
@@ -3663,7 +3663,7 @@
       }
     },
     "1834": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Håkon Lund",
         "party": "Høyre",
@@ -3717,7 +3717,7 @@
       }
     },
     "1835": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Trond Vegard Sletten",
         "party": "Arbeiderpartiet",
@@ -3767,7 +3767,7 @@
       }
     },
     "1836": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Inger Dagmar Monsen",
         "party": "Fellesliste Ap/KrF",
@@ -3815,7 +3815,7 @@
       }
     },
     "1837": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Grethe Anita Andersen",
         "party": "Fremskrittspartiet",
@@ -3869,7 +3869,7 @@
       }
     },
     "1838": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bjørn Magne Pedersen",
         "party": "Høyre",
@@ -3923,7 +3923,7 @@
       }
     },
     "1839": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "André Kristoffersen",
         "party": "Senterpartiet",
@@ -3971,7 +3971,7 @@
       }
     },
     "1840": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Runar Løvdahl Jensen",
         "party": "Arbeiderpartiet",
@@ -4025,7 +4025,7 @@
       }
     },
     "1841": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Marlen Rendall Berg",
         "party": "Senterpartiet",
@@ -4077,7 +4077,7 @@
       }
     },
     "1845": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kolbjørn Mathisen",
         "party": "Arbeiderpartiet",
@@ -4129,7 +4129,7 @@
       }
     },
     "1848": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Aase Refsnes",
         "party": "Sosialistisk Venstreparti",
@@ -4179,7 +4179,7 @@
       }
     },
     "1851": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hugo Jacobsen",
         "party": "Arbeiderpartiet",
@@ -4229,7 +4229,7 @@
       }
     },
     "1853": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Terje Bartholsen",
         "party": "Arbeiderpartiet",
@@ -4283,7 +4283,7 @@
       }
     },
     "1856": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Elisabeth Mikalsen",
         "party": "Samarbeidslista",
@@ -4331,7 +4331,7 @@
       }
     },
     "1857": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Susan Berg Kristiansen",
         "party": "Værøylista",
@@ -4379,7 +4379,7 @@
       }
     },
     "1859": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Einar Benjaminsen",
         "party": "Flakstad",
@@ -4429,7 +4429,7 @@
       }
     },
     "1860": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jonny Finstad",
         "party": "Høyre",
@@ -4481,7 +4481,7 @@
       }
     },
     "1865": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Thom Benjaminsen",
         "party": "Høyre",
@@ -4533,7 +4533,7 @@
       }
     },
     "1866": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjell Børge Freiberg",
         "party": "Høyre",
@@ -4585,7 +4585,7 @@
       }
     },
     "1867": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Sture Pedersen",
         "party": "Høyre",
@@ -4635,7 +4635,7 @@
       }
     },
     "1868": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Elisabeth Sørdahl",
         "party": "Høyre",
@@ -4687,7 +4687,7 @@
       }
     },
     "1870": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Grete Ellingsen",
         "party": "Høyre",
@@ -4737,7 +4737,7 @@
       }
     },
     "1871": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjell-Are Johansen",
         "party": "Arbeiderpartiet",
@@ -4789,7 +4789,7 @@
       }
     },
     "1874": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hanna Sverdrup",
         "party": "Moskenes Fellesliste",
@@ -4837,7 +4837,7 @@
       }
     },
     "1875": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Britt Kristoffersen Løksa",
         "party": "Senterpartiet",
@@ -4889,7 +4889,7 @@
       }
     },
     "3101": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Fredrik Holm",
         "party": "Høyre",
@@ -4941,7 +4941,7 @@
       }
     },
     "3103": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Simen Nord",
         "party": "Høyre",
@@ -4995,7 +4995,7 @@
       }
     },
     "3105": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Magnus Arnesen",
         "party": "Høyre",
@@ -5053,7 +5053,7 @@
       }
     },
     "3107": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Arne Sekkelsten",
         "party": "Høyre",
@@ -5109,7 +5109,7 @@
       }
     },
     "3110": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Mona Vauger",
         "party": "Arbeiderpartiet",
@@ -5163,7 +5163,7 @@
       }
     },
     "3112": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "René Rafshol",
         "party": "Høyre",
@@ -5215,7 +5215,7 @@
       }
     },
     "3114": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Reidar Kaabbel",
         "party": "Senterpartiet",
@@ -5267,7 +5267,7 @@
       }
     },
     "3116": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Cecilie Agnalt",
         "party": "Arbeiderpartiet",
@@ -5319,7 +5319,7 @@
       }
     },
     "3118": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Saxe Frøshaug",
         "party": "Senterpartiet",
@@ -5373,7 +5373,7 @@
       }
     },
     "3120": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Karoline Fjeldstad",
         "party": "Senterpartiet",
@@ -5425,7 +5425,7 @@
       }
     },
     "3122": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjersti Nythe Nilsen",
         "party": "Arbeiderpartiet",
@@ -5475,7 +5475,7 @@
       }
     },
     "3124": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Håkon Tolsby",
         "party": "Senterpartiet",
@@ -5527,7 +5527,7 @@
       }
     },
     "3201": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Lisbeth Hammer Krog",
         "party": "Høyre",
@@ -5581,7 +5581,7 @@
       }
     },
     "3203": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Lene Conradi",
         "party": "Høyre",
@@ -5635,7 +5635,7 @@
       }
     },
     "3205": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjartan Berland",
         "party": "Høyre",
@@ -5691,7 +5691,7 @@
       }
     },
     "3207": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Cecilie Dahl-Jørgensen Pind",
         "party": "Høyre",
@@ -5745,7 +5745,7 @@
       }
     },
     "3209": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ståle Lien Hansen",
         "party": "Fremskrittspartiet",
@@ -5797,7 +5797,7 @@
       }
     },
     "3212": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Cathrine Kjenne Forsland",
         "party": "Arbeiderpartiet",
@@ -5849,7 +5849,7 @@
       }
     },
     "3214": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Sigbjørn Odden",
         "party": "Høyre",
@@ -5901,7 +5901,7 @@
       }
     },
     "3216": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tom Anders Ludvigsen",
         "party": "Arbeiderpartiet",
@@ -5957,7 +5957,7 @@
       }
     },
     "3218": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bengt Nøst-Klemmetsen",
         "party": "Høyre",
@@ -6011,7 +6011,7 @@
       }
     },
     "3220": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Christopher Leiknes",
         "party": "Arbeiderpartiet",
@@ -6063,7 +6063,7 @@
       }
     },
     "3222": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Amine Mabel Andresen",
         "party": "Høyre",
@@ -6119,7 +6119,7 @@
       }
     },
     "3224": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Gro Langdalen",
         "party": "Høyre",
@@ -6179,7 +6179,7 @@
       }
     },
     "3226": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Roger Evjen",
         "party": "Arbeiderpartiet",
@@ -6231,7 +6231,7 @@
       }
     },
     "3228": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tove Nyhus",
         "party": "Fremskrittspartiet",
@@ -6287,7 +6287,7 @@
       }
     },
     "3230": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Karl Arne Johannessen",
         "party": "Høyre",
@@ -6341,7 +6341,7 @@
       }
     },
     "3232": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Rune Winum",
         "party": "Høyre",
@@ -6395,7 +6395,7 @@
       }
     },
     "3234": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Harald Tyrdal",
         "party": "Arbeiderpartiet",
@@ -6445,7 +6445,7 @@
       }
     },
     "3236": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Morten Lafton",
         "party": "Arbeiderpartiet",
@@ -6493,7 +6493,7 @@
       }
     },
     "3238": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Christian Bendz",
         "party": "Høyre",
@@ -6551,7 +6551,7 @@
       }
     },
     "3240": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Nina Kristengård",
         "party": "Høyre",
@@ -6607,7 +6607,7 @@
       }
     },
     "3242": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Paul Johan Moltzau",
         "party": "Senterpartiet",
@@ -6661,7 +6661,7 @@
       }
     },
     "3301": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjell Arne Hermansen",
         "party": "Høyre",
@@ -6715,7 +6715,7 @@
       }
     },
     "3303": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Line Spiten",
         "party": "Høyre",
@@ -6769,7 +6769,7 @@
       }
     },
     "3305": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hilde Karin Vollmerhaus",
         "party": "Arbeiderpartiet",
@@ -6827,7 +6827,7 @@
       }
     },
     "3310": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Syver Leivestad",
         "party": "Høyre",
@@ -6875,7 +6875,7 @@
       }
     },
     "3312": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjetil Kivle",
         "party": "Høyre",
@@ -6929,7 +6929,7 @@
       }
     },
     "3314": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Adrian Kjølø Tollefsen",
         "party": "Høyre",
@@ -6983,7 +6983,7 @@
       }
     },
     "3316": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Sunni G. Aamodt",
         "party": "Senterpartiet",
@@ -7039,7 +7039,7 @@
       }
     },
     "3318": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Andreas Kagiavas Torp",
         "party": "Høyre",
@@ -7089,7 +7089,7 @@
       }
     },
     "3320": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Merete Høntorp Gandrud",
         "party": "Arbeiderpartiet",
@@ -7139,7 +7139,7 @@
       }
     },
     "3322": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anne Kari Eriksen",
         "party": "Senterpartiet",
@@ -7189,7 +7189,7 @@
       }
     },
     "3324": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Heidi Granli",
         "party": "Arbeiderpartiet",
@@ -7243,7 +7243,7 @@
       }
     },
     "3326": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Pål Rørby",
         "party": "Senterpartiet",
@@ -7295,7 +7295,7 @@
       }
     },
     "3328": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jørund Li",
         "party": "Høyre",
@@ -7345,7 +7345,7 @@
       }
     },
     "3330": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Sigrid Simensen Ilsøy",
         "party": "Senterpartiet",
@@ -7399,7 +7399,7 @@
       }
     },
     "3332": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Vebjørn Aasand Seljord",
         "party": "Senterpartiet",
@@ -7451,7 +7451,7 @@
       }
     },
     "3334": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Oda Bakke Fosen",
         "party": "Høyre",
@@ -7503,7 +7503,7 @@
       }
     },
     "3336": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Øystein Morten",
         "party": "Arbeiderpartiet",
@@ -7553,7 +7553,7 @@
       }
     },
     "3338": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Oddvar Svendsen",
         "party": "Fremskrittspartiet",
@@ -7605,7 +7605,7 @@
       }
     },
     "3401": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Elin Såheim Bjørkli",
         "party": "Arbeiderpartiet",
@@ -7655,7 +7655,7 @@
       }
     },
     "3403": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Vigdis Stensby",
         "party": "BBL",
@@ -7705,7 +7705,7 @@
       }
     },
     "3405": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hans Olav Sundfør",
         "party": "Høyre",
@@ -7763,7 +7763,7 @@
       }
     },
     "3407": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anne Bjertnæs",
         "party": "Høyre",
@@ -7821,7 +7821,7 @@
       }
     },
     "3411": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kai Ove Berg",
         "party": "Høyre",
@@ -7875,7 +7875,7 @@
       }
     },
     "3412": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Marte Larsen Tønseth",
         "party": "Senterpartiet",
@@ -7931,7 +7931,7 @@
       }
     },
     "3413": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bjarne Christiansen",
         "party": "Arbeiderpartiet",
@@ -7981,7 +7981,7 @@
       }
     },
     "3414": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Odd Kjetil Østvand Sløtte",
         "party": "Arbeiderpartiet",
@@ -8031,7 +8031,7 @@
       }
     },
     "3415": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Knut Hvithammer",
         "party": "Arbeiderpartiet",
@@ -8087,7 +8087,7 @@
       }
     },
     "3416": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kamilla Thue",
         "party": "Arbeiderpartiet",
@@ -8137,7 +8137,7 @@
       }
     },
     "3417": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Rune Grenberg",
         "party": "Arbeiderpartiet",
@@ -8185,7 +8185,7 @@
       }
     },
     "3418": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Einar Toverud",
         "party": "Senterpartiet",
@@ -8237,7 +8237,7 @@
       }
     },
     "3419": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Harry Vinje",
         "party": "Høyre",
@@ -8293,7 +8293,7 @@
       }
     },
     "3420": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Lillian Skjærvik",
         "party": "Arbeiderpartiet",
@@ -8343,7 +8343,7 @@
       }
     },
     "3421": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Turid Backe-Viken",
         "party": "Arbeiderpartiet",
@@ -8395,7 +8395,7 @@
       }
     },
     "3422": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ole Henrik Hørstad",
         "party": "Høyre",
@@ -8445,7 +8445,7 @@
       }
     },
     "3423": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Linda Otnes Henriksen",
         "party": "Arbeiderpartiet",
@@ -8499,7 +8499,7 @@
       }
     },
     "3424": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Linda Døsen",
         "party": "Arbeiderpartiet",
@@ -8549,7 +8549,7 @@
       }
     },
     "3425": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tor Erik Skramstad",
         "party": "Høyre",
@@ -8599,7 +8599,7 @@
       }
     },
     "3426": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bjørnar Tollan Jordet",
         "party": "Sosialistisk Venstreparti",
@@ -8649,7 +8649,7 @@
       }
     },
     "3427": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Merete Myhre Moen",
         "party": "Senterpartiet",
@@ -8705,7 +8705,7 @@
       }
     },
     "3428": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Mona Murud",
         "party": "Senterpartiet",
@@ -8755,7 +8755,7 @@
       }
     },
     "3429": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kristin Langtjernet",
         "party": "Arbeiderpartiet",
@@ -8803,7 +8803,7 @@
       }
     },
     "3430": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ivar Torvidsson Midtdal",
         "party": "Senterpartiet",
@@ -8853,7 +8853,7 @@
       }
     },
     "3431": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Magne Vorkinn",
         "party": "Senterpartiet",
@@ -8903,7 +8903,7 @@
       }
     },
     "3432": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Mariann Skotte",
         "party": "Senterpartiet",
@@ -8953,7 +8953,7 @@
       }
     },
     "3433": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Edel Kveen",
         "party": "Senterpartiet",
@@ -9001,7 +9001,7 @@
       }
     },
     "3434": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kristian Frisvold",
         "party": "Bygdeliste",
@@ -9053,7 +9053,7 @@
       }
     },
     "3435": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Harald Sve Bjørndal",
         "party": "Bygdeliste",
@@ -9103,7 +9103,7 @@
       }
     },
     "3436": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anne Marie Olstad",
         "party": "Arbeiderpartiet",
@@ -9153,7 +9153,7 @@
       }
     },
     "3437": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Eldri Siem",
         "party": "Senterpartiet",
@@ -9201,7 +9201,7 @@
       }
     },
     "3438": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ole Tvete Muriteigen",
         "party": "Senterpartiet",
@@ -9251,7 +9251,7 @@
       }
     },
     "3439": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Arne Fossmo",
         "party": "Arbeiderpartiet",
@@ -9301,7 +9301,7 @@
       }
     },
     "3440": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anne Marie Sveipe",
         "party": "Høyre",
@@ -9351,7 +9351,7 @@
       }
     },
     "3441": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Stig Audun Melbø",
         "party": "Fellesliste FrP/ Høyre",
@@ -9405,7 +9405,7 @@
       }
     },
     "3442": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bror Helgestad",
         "party": "Senterpartiet",
@@ -9461,7 +9461,7 @@
       }
     },
     "3443": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tonje Bergum Jahr",
         "party": "Arbeiderpartiet",
@@ -9515,7 +9515,7 @@
       }
     },
     "3446": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Gunn Elisabeth Alm Thoresen",
         "party": "Arbeiderpartiet",
@@ -9571,7 +9571,7 @@
       }
     },
     "3447": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Roger Fløttum",
         "party": "Arbeiderpartiet",
@@ -9621,7 +9621,7 @@
       }
     },
     "3448": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ola Tore Dokken",
         "party": "Senterpartiet",
@@ -9677,7 +9677,7 @@
       }
     },
     "3449": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Marit Hougsrud",
         "party": "Senterpartiet",
@@ -9727,7 +9727,7 @@
       }
     },
     "3450": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Linda M Robøle",
         "party": "Senterpartiet",
@@ -9777,7 +9777,7 @@
       }
     },
     "3451": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Knut Arne Fjelltun",
         "party": "Senterpartiet",
@@ -9827,7 +9827,7 @@
       }
     },
     "3452": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Haldor Ødegård",
         "party": "Senterpartiet",
@@ -9875,7 +9875,7 @@
       }
     },
     "3453": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bjarne Budal",
         "party": "Arbeiderpartiet",
@@ -9927,7 +9927,7 @@
       }
     },
     "3454": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jørand Ødegård Lunde",
         "party": "Bygdelista i Vang",
@@ -9975,7 +9975,7 @@
       }
     },
     "3901": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Christina Bratli",
         "party": "Arbeiderpartiet",
@@ -10033,7 +10033,7 @@
       }
     },
     "3903": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Alf Johan Svele",
         "party": "Høyre",
@@ -10089,7 +10089,7 @@
       }
     },
     "3905": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Frank Pedersen",
         "party": "Høyre",
@@ -10143,7 +10143,7 @@
       }
     },
     "3907": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bjørn Ole Gleditsch",
         "party": "Høyre",
@@ -10199,7 +10199,7 @@
       }
     },
     "3909": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Gulla Løken",
         "party": "Høyre",
@@ -10251,7 +10251,7 @@
       }
     },
     "3911": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tom Mello",
         "party": "Høyre",
@@ -10307,7 +10307,7 @@
       }
     },
     "4001": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Janicke Andreassen",
         "party": "Arbeiderpartiet",
@@ -10363,7 +10363,7 @@
       }
     },
     "4003": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Marius Roheim Aarvold",
         "party": "Høyre",
@@ -10417,7 +10417,7 @@
       }
     },
     "4005": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Gry Fuglestveit",
         "party": "Arbeiderpartiet",
@@ -10471,7 +10471,7 @@
       }
     },
     "4010": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Elisabeth Hammer",
         "party": "Kristelig Folkeparti",
@@ -10523,7 +10523,7 @@
       }
     },
     "4012": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Petter Jørgensen",
         "party": "Fremskrittspartiet",
@@ -10575,7 +10575,7 @@
       }
     },
     "4014": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Charlotte Therkelsen",
         "party": "Rødt",
@@ -10633,7 +10633,7 @@
       }
     },
     "4016": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Stina Anlaug Sætre",
         "party": "Senterpartiet",
@@ -10687,7 +10687,7 @@
       }
     },
     "4018": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Linda Thorstensen",
         "party": "Arbeiderpartiet",
@@ -10739,7 +10739,7 @@
       }
     },
     "4020": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Siri B Dyrland",
         "party": "Senterpartiet",
@@ -10793,7 +10793,7 @@
       }
     },
     "4022": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Solveig Abrahamsen",
         "party": "Høyre",
@@ -10845,7 +10845,7 @@
       }
     },
     "4024": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bengt Halvard Odden",
         "party": "Arbeiderpartiet",
@@ -10893,7 +10893,7 @@
       }
     },
     "4026": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kathrine Haatvedt",
         "party": "Arbeiderpartiet",
@@ -10943,7 +10943,7 @@
       }
     },
     "4028": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tarjei Draugedal",
         "party": "Kristelig Folkeparti",
@@ -10993,7 +10993,7 @@
       }
     },
     "4030": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ian Parry Jones",
         "party": "Senterpartiet",
@@ -11047,7 +11047,7 @@
       }
     },
     "4032": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Erik Skjervagen",
         "party": "Arbeiderpartiet",
@@ -11095,7 +11095,7 @@
       }
     },
     "4034": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jarand Felland",
         "party": "Senterpartiet",
@@ -11147,7 +11147,7 @@
       }
     },
     "4036": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jon Rikard Kleven",
         "party": "Senterpartiet",
@@ -11199,7 +11199,7 @@
       }
     },
     "4201": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kai Strat",
         "party": "Høyre",
@@ -11251,7 +11251,7 @@
       }
     },
     "4202": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Beate Skretting",
         "party": "Høyre",
@@ -11307,7 +11307,7 @@
       }
     },
     "4203": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Robert Cornels Nordli",
         "party": "Arbeiderpartiet",
@@ -11363,7 +11363,7 @@
       }
     },
     "4204": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Mathias Bernander",
         "party": "Høyre",
@@ -11419,7 +11419,7 @@
       }
     },
     "4205": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Paal Pedersen",
         "party": "Høyre",
@@ -11475,7 +11475,7 @@
       }
     },
     "4206": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ingrid Merethe Williamsen",
         "party": "Fremskrittspartiet",
@@ -11527,7 +11527,7 @@
       }
     },
     "4207": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Torbjørn Klungland",
         "party": "Fremskrittspartiet",
@@ -11579,7 +11579,7 @@
       }
     },
     "4211": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Steinar Pedersen",
         "party": "Høyre",
@@ -11631,7 +11631,7 @@
       }
     },
     "4212": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjetil Torp",
         "party": "Kristelig Folkeparti",
@@ -11681,7 +11681,7 @@
       }
     },
     "4213": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Marianne Landaas",
         "party": "Høyre",
@@ -11733,7 +11733,7 @@
       }
     },
     "4214": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Inger-Lene Håland",
         "party": "Arbeiderpartiet",
@@ -11785,7 +11785,7 @@
       }
     },
     "4215": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Einar Holmer Hoven",
         "party": "Høyre",
@@ -11843,7 +11843,7 @@
       }
     },
     "4216": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Arild Windsland",
         "party": "Høyre",
@@ -11895,7 +11895,7 @@
       }
     },
     "4217": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hans Fredrik Tangen",
         "party": "Arbeiderpartiet",
@@ -11945,7 +11945,7 @@
       }
     },
     "4218": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jan Andre Myhren",
         "party": "Høyre",
@@ -11997,7 +11997,7 @@
       }
     },
     "4219": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Morten Haraldstad",
         "party": "Kristelig Folkeparti",
@@ -12049,7 +12049,7 @@
       }
     },
     "4220": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Runar Granheim",
         "party": "Arbeiderpartiet",
@@ -12099,7 +12099,7 @@
       }
     },
     "4221": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Lars Tarald Myrum",
         "party": "Senterpartiet",
@@ -12149,7 +12149,7 @@
       }
     },
     "4222": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hans Blattmann",
         "party": "Arbeiderpartiet",
@@ -12201,7 +12201,7 @@
       }
     },
     "4223": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Nils Olav Larsen",
         "party": "Kristelig Folkeparti",
@@ -12253,7 +12253,7 @@
       }
     },
     "4224": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Inger Lise Stulien",
         "party": "Arbeiderpartiet",
@@ -12303,7 +12303,7 @@
       }
     },
     "4225": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Unni Nilsen Husøy",
         "party": "Fremskrittspartiet",
@@ -12357,7 +12357,7 @@
       }
     },
     "4226": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jan Petter Gysland",
         "party": "Høyre",
@@ -12407,7 +12407,7 @@
       }
     },
     "4227": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Per Sverre Kvinlaug",
         "party": "Kristelig Folkeparti",
@@ -12459,7 +12459,7 @@
       }
     },
     "4228": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jonny Liland",
         "party": "Arbeiderpartiet",
@@ -12513,7 +12513,7 @@
       }
     },
     "4601": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Marit Warncke",
         "party": "Høyre",
@@ -12670,7 +12670,7 @@
       ]
     },
     "4602": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bengt Solheim-Olsen",
         "party": "Høyre",
@@ -12724,7 +12724,7 @@
       }
     },
     "4611": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Mette Heidi Bergsvig Ekrheim",
         "party": "Senterpartiet",
@@ -12778,7 +12778,7 @@
       }
     },
     "4612": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "André Mundal Haukås",
         "party": "Høyre",
@@ -12832,7 +12832,7 @@
       }
     },
     "4613": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Morten Helland",
         "party": "Kristelig Folkeparti",
@@ -12884,7 +12884,7 @@
       }
     },
     "4614": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Sigbjørn Framnes",
         "party": "Fremskrittspartiet",
@@ -12938,7 +12938,7 @@
       }
     },
     "4615": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Wenche Tislevoll",
         "party": "Høyre",
@@ -12990,7 +12990,7 @@
       }
     },
     "4616": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Synnøve Bakke",
         "party": "Arbeiderpartiet",
@@ -13044,7 +13044,7 @@
       }
     },
     "4617": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Vegard Bjørnevik",
         "party": "Høyre",
@@ -13098,7 +13098,7 @@
       }
     },
     "4618": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tor Helge Haara Tjemsland",
         "party": "Arbeiderpartiet",
@@ -13154,7 +13154,7 @@
       }
     },
     "4619": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Timo Knoch",
         "party": "Arbeiderpartiet",
@@ -13204,7 +13204,7 @@
       }
     },
     "4620": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jens Olav Holven",
         "party": "Senterpartiet",
@@ -13256,7 +13256,7 @@
       }
     },
     "4621": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tonje Såkvitne",
         "party": "Senterpartiet",
@@ -13308,7 +13308,7 @@
       }
     },
     "4622": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Torgeir Næss",
         "party": "Arbeiderpartiet",
@@ -13360,7 +13360,7 @@
       }
     },
     "4623": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Karl Kollbotn",
         "party": "Fremskrittspartiet",
@@ -13410,7 +13410,7 @@
       }
     },
     "4624": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Terje Søviknes",
         "party": "Fremskrittspartiet",
@@ -13460,7 +13460,7 @@
       }
     },
     "4625": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bente Kari Sletten Taranger",
         "party": "Høyre",
@@ -13510,7 +13510,7 @@
       }
     },
     "4626": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tom Georg Indrevik",
         "party": "Høyre",
@@ -13560,7 +13560,7 @@
       }
     },
     "4627": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Yngve Fosse",
         "party": "Høyre",
@@ -13616,7 +13616,7 @@
       }
     },
     "4628": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hege Eide Vik",
         "party": "Senterpartiet",
@@ -13668,7 +13668,7 @@
       }
     },
     "4629": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Linda Neset",
         "party": "Solrenningslista",
@@ -13718,7 +13718,7 @@
       }
     },
     "4630": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Lars Fjeldstad",
         "party": "Senterpartiet",
@@ -13772,7 +13772,7 @@
       }
     },
     "4631": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Sara Hamre Sekkingstad",
         "party": "Senterpartiet",
@@ -13832,7 +13832,7 @@
       }
     },
     "4632": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Morten Sognnes",
         "party": "Høyre",
@@ -13882,7 +13882,7 @@
       }
     },
     "4633": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Stian Herøy",
         "party": "Høyre",
@@ -13932,7 +13932,7 @@
       }
     },
     "4634": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Erlend Kvamsdal",
         "party": "Høyre",
@@ -13982,7 +13982,7 @@
       }
     },
     "4635": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "May-Lynn Osland",
         "party": "Arbeiderpartiet",
@@ -14032,7 +14032,7 @@
       }
     },
     "4636": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Gunn Åmdal Mongstad",
         "party": "Senterpartiet",
@@ -14080,7 +14080,7 @@
       }
     },
     "4637": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjell Eide",
         "party": "Arbeiderpartiet",
@@ -14128,7 +14128,7 @@
       }
     },
     "4638": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Petter Sortland",
         "party": "Arbeiderpartiet",
@@ -14178,7 +14178,7 @@
       }
     },
     "4639": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Roy Egil Stadheim",
         "party": "Arbeiderpartiet",
@@ -14228,7 +14228,7 @@
       }
     },
     "4640": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Stig Ove Ølmheim",
         "party": "Arbeiderpartiet",
@@ -14282,7 +14282,7 @@
       }
     },
     "4641": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjell Bøe Bjørgum",
         "party": "Arbeiderpartiet",
@@ -14332,7 +14332,7 @@
       }
     },
     "4642": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Audun Mo",
         "party": "Arbeiderpartiet",
@@ -14380,7 +14380,7 @@
       }
     },
     "4643": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Christian Sønstlien",
         "party": "Arbeiderpartiet",
@@ -14428,7 +14428,7 @@
       }
     },
     "4644": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Andreas Wiese",
         "party": "Senterpartiet",
@@ -14484,7 +14484,7 @@
       }
     },
     "4645": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ole Andre Klausen",
         "party": "Høyre",
@@ -14534,7 +14534,7 @@
       }
     },
     "4646": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Leif Jarle Espedal",
         "party": "Arbeiderpartiet",
@@ -14588,7 +14588,7 @@
       }
     },
     "4647": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jenny Følling",
         "party": "Senterpartiet",
@@ -14640,7 +14640,7 @@
       }
     },
     "4648": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anne Kristin Førde",
         "party": "Arbeiderpartiet",
@@ -14692,7 +14692,7 @@
       }
     },
     "4649": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Judith Kvåle",
         "party": "Arbeiderpartiet",
@@ -14744,7 +14744,7 @@
       }
     },
     "4650": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Arnar Kvernevik",
         "party": "Arbeiderpartiet",
@@ -14796,7 +14796,7 @@
       }
     },
     "4651": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Per Atle Kjøllesdal",
         "party": "Senterpartiet",
@@ -14846,7 +14846,7 @@
       }
     },
     "5001": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kent Ranum",
         "party": "Høyre",
@@ -14954,7 +14954,7 @@
       ]
     },
     "5006": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Gunnar Thorsen",
         "party": "Arbeiderpartiet",
@@ -15006,7 +15006,7 @@
       }
     },
     "5007": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Amund Lein",
         "party": "Høyre",
@@ -15062,7 +15062,7 @@
       }
     },
     "5014": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kristin Furunes Strømskag",
         "party": "Høyre",
@@ -15110,7 +15110,7 @@
       }
     },
     "5020": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Håvard Strand",
         "party": "Bygdeliste",
@@ -15160,7 +15160,7 @@
       }
     },
     "5021": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Elisabeth Hals",
         "party": "Venstre",
@@ -15218,7 +15218,7 @@
       }
     },
     "5022": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Per Arne Lium",
         "party": "Senterpartiet",
@@ -15268,7 +15268,7 @@
       }
     },
     "5025": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Sadmira Buljubasic",
         "party": "Arbeiderpartiet",
@@ -15318,7 +15318,7 @@
       }
     },
     "5026": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Dag Knudsen",
         "party": "Arbeiderpartiet",
@@ -15368,7 +15368,7 @@
       }
     },
     "5027": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Trude Heggdal",
         "party": "Arbeiderpartiet",
@@ -15418,7 +15418,7 @@
       }
     },
     "5028": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Einar Gimse-Syrstad",
         "party": "Arbeiderpartiet",
@@ -15472,7 +15472,7 @@
       }
     },
     "5029": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Per Gunnar Lofgren",
         "party": "Senterpartiet",
@@ -15526,7 +15526,7 @@
       }
     },
     "5031": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Eugen Gravningen Sørmo",
         "party": "Høyre",
@@ -15582,7 +15582,7 @@
       }
     },
     "5032": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Lars Sletne",
         "party": "Arbeiderpartiet",
@@ -15632,7 +15632,7 @@
       }
     },
     "5033": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jens Einar Kvello",
         "party": "Senterpartiet",
@@ -15680,7 +15680,7 @@
       }
     },
     "5034": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Gjøran Sandvik",
         "party": "Senterpartiet",
@@ -15730,7 +15730,7 @@
       }
     },
     "5035": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Eli Arnstad",
         "party": "Senterpartiet",
@@ -15786,7 +15786,7 @@
       }
     },
     "5036": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Frode Revhaug",
         "party": "Høyre",
@@ -15838,7 +15838,7 @@
       }
     },
     "5037": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anita Ravlo Sand",
         "party": "Senterpartiet",
@@ -15894,7 +15894,7 @@
       }
     },
     "5038": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Knut Snorre Sandnes",
         "party": "Høyre",
@@ -15948,7 +15948,7 @@
       }
     },
     "5041": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Arnt Einar Bardal",
         "party": "Senterpartiet",
@@ -16000,7 +16000,7 @@
       }
     },
     "5042": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tor Erling Inderdal",
         "party": "Senterpartiet",
@@ -16050,7 +16050,7 @@
       }
     },
     "5043": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kennet Tømmermo Reitan",
         "party": "Samarbeidslista",
@@ -16098,7 +16098,7 @@
       }
     },
     "5044": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Elisabeth Vollmo Bjørhusdal",
         "party": "Bygdeliste",
@@ -16148,7 +16148,7 @@
       }
     },
     "5045": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ann Jeanett Klinkenberg",
         "party": "Arbeiderpartiet",
@@ -16200,7 +16200,7 @@
       }
     },
     "5046": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ole Joar Flaat",
         "party": "Senterpartiet",
@@ -16248,7 +16248,7 @@
       }
     },
     "5047": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hege Kristin Kværnø Saugen",
         "party": "Senterpartiet",
@@ -16298,7 +16298,7 @@
       }
     },
     "5049": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Olav Jørgen Bjørkås",
         "party": "Senterpartiet",
@@ -16350,7 +16350,7 @@
       }
     },
     "5052": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ole Annfinn Helmersen",
         "party": "Senterpartiet",
@@ -16398,7 +16398,7 @@
       }
     },
     "5053": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Unn-Elisabeth Tronstad",
         "party": "Arbeiderpartiet",
@@ -16448,7 +16448,7 @@
       }
     },
     "5054": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Oskar Småvik",
         "party": "Høyre",
@@ -16502,7 +16502,7 @@
       }
     },
     "5055": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Marit Liabø Sandvik",
         "party": "Arbeiderpartiet",
@@ -16552,7 +16552,7 @@
       }
     },
     "5056": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "John Lernes",
         "party": "Arbeiderpartiet",
@@ -16606,7 +16606,7 @@
       }
     },
     "5057": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hallgeir Grøntvedt",
         "party": "Senterpartiet",
@@ -16660,7 +16660,7 @@
       }
     },
     "5058": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Erling Iversen",
         "party": "Senterpartiet",
@@ -16710,7 +16710,7 @@
       }
     },
     "5059": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hanne Nyhus",
         "party": "Arbeiderpartiet",
@@ -16766,7 +16766,7 @@
       }
     },
     "5060": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Amund Hellesø",
         "party": "Arbeiderpartiet",
@@ -16818,7 +16818,7 @@
       }
     },
     "5061": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Mildrid Kattem Aune",
         "party": "Senterpartiet",
@@ -16866,7 +16866,7 @@
       }
     },
     "5501": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Gunnar Wilhelmsen",
         "party": "Arbeiderpartiet",
@@ -16922,7 +16922,7 @@
       }
     },
     "5503": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Else Marie Stenhaug",
         "party": "Arbeiderpartiet",
@@ -16980,7 +16980,7 @@
       }
     },
     "5510": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Birger Holand",
         "party": "Senterpartiet",
@@ -17030,7 +17030,7 @@
       }
     },
     "5512": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Robin Ridderseth",
         "party": "Tjeldsund Tverrpolitiske Liste",
@@ -17082,7 +17082,7 @@
       }
     },
     "5514": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jim Kristiansen",
         "party": "Høyre",
@@ -17130,7 +17130,7 @@
       }
     },
     "5516": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anita Karlsen",
         "party": "Senterpartiet",
@@ -17178,7 +17178,7 @@
       }
     },
     "5518": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hege Beate Rollmoen",
         "party": "Arbeiderpartiet",
@@ -17226,7 +17226,7 @@
       }
     },
     "5520": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Toralf Heimdal",
         "party": "Senterpartiet",
@@ -17276,7 +17276,7 @@
       }
     },
     "5522": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Simon Løvhaug",
         "party": "Senterpartiet",
@@ -17326,7 +17326,7 @@
       }
     },
     "5524": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Martin Nymo",
         "party": "Høyre",
@@ -17378,7 +17378,7 @@
       }
     },
     "5526": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jan-Eirik Nordahl",
         "party": "Arbeiderpartiet",
@@ -17430,7 +17430,7 @@
       }
     },
     "5528": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Marit Alvig Espenes",
         "party": "Arbeiderpartiet",
@@ -17482,7 +17482,7 @@
       }
     },
     "5530": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Geir Inge Sivertsen",
         "party": "Høyre",
@@ -17534,7 +17534,7 @@
       }
     },
     "5532": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Laila Monica Johannessen",
         "party": "Senterpartiet",
@@ -17588,7 +17588,7 @@
       }
     },
     "5534": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Mona Benjaminsen",
         "party": "Arbeiderpartiet",
@@ -17644,7 +17644,7 @@
       }
     },
     "5536": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Eirik Larsen",
         "party": "Folkelista",
@@ -17700,7 +17700,7 @@
       }
     },
     "5538": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Geir Varvik",
         "party": "Høyre",
@@ -17750,7 +17750,7 @@
       }
     },
     "5540": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Bernt Eirik Isaksen Lyngstad",
         "party": "Arbeiderpartiet",
@@ -17802,7 +17802,7 @@
       }
     },
     "5542": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ørjan Albrigtsen",
         "party": "Kristelig Folkeparti",
@@ -17854,7 +17854,7 @@
       }
     },
     "5544": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Hilde Nyvoll",
         "party": "Arbeiderpartiet",
@@ -17906,7 +17906,7 @@
       }
     },
     "5546": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kai Petter Johansen",
         "party": "Sosialistisk Venstreparti",
@@ -17960,7 +17960,7 @@
       }
     },
     "5601": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jan Martin Rishaug",
         "party": "Senterpartiet",
@@ -18020,7 +18020,7 @@
       }
     },
     "5603": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Terje Rogde",
         "party": "Høyre",
@@ -18074,7 +18074,7 @@
       }
     },
     "5605": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Magnus Mæland",
         "party": "Høyre",
@@ -18126,7 +18126,7 @@
       }
     },
     "5607": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Wenche Pedersen",
         "party": "Arbeiderpartiet",
@@ -18180,7 +18180,7 @@
       }
     },
     "5610": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kjell Olav Guttorm",
         "party": "Arbeiderpartiet",
@@ -18232,7 +18232,7 @@
       }
     },
     "5612": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Anders S. Buljo",
         "party": "Flyttsamelista",
@@ -18284,7 +18284,7 @@
       }
     },
     "5614": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Cato Kristiansen",
         "party": "Sosialistisk Venstreparti",
@@ -18336,7 +18336,7 @@
       }
     },
     "5616": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Lars Hustad",
         "party": "Sammen for Sørøya",
@@ -18384,7 +18384,7 @@
       }
     },
     "5618": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ingrid Majala",
         "party": "Bygdelista Måsøy",
@@ -18434,7 +18434,7 @@
       }
     },
     "5620": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jan Morten Hansen",
         "party": "Arbeiderpartiet",
@@ -18484,7 +18484,7 @@
       }
     },
     "5622": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jo Inge Hesjevik",
         "party": "Høyre",
@@ -18534,7 +18534,7 @@
       }
     },
     "5624": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Kristin Johnsen",
         "party": "Arbeiderpartiet",
@@ -18588,7 +18588,7 @@
       }
     },
     "5626": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Ragnhild Vassvik",
         "party": "Arbeiderpartiet",
@@ -18640,7 +18640,7 @@
       }
     },
     "5628": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Jon Erland Balto",
         "party": "Senterpartiet",
@@ -18694,7 +18694,7 @@
       }
     },
     "5630": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Rolf Laupstad",
         "party": "Arbeiderpartiet",
@@ -18742,7 +18742,7 @@
       }
     },
     "5632": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Øyvind Hauken",
         "party": "Båtsfjordlista",
@@ -18792,7 +18792,7 @@
       }
     },
     "5634": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Tor Erik Labahå",
         "party": "Senterpartiet",
@@ -18846,7 +18846,7 @@
       }
     },
     "5636": {
-      "sourceFetchedAt": "2026-10-13",
+      "sourceFetchedAt": "2026-10-14",
       "mayor": {
         "name": "Berit Ranveig Nilssen",
         "party": "Felleslista Nesseby",
