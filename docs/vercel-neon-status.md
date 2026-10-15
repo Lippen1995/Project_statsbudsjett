@@ -1,7 +1,8 @@
 # Migrering til Vercel og Neon: status
 
-Oppdatert 15. oktober 2026. DNS-overgangen gjenstår; offentlig trafikk går
-fortsatt til GitHub Pages. Gammel hosting beholdes gjennom overgangen.
+Oppdatert 15. oktober 2026 kl. 12:05 UTC. DNS-overgangen er gjennomført og
+offentlig trafikk er bekreftet på Vercel. GitHub Pages beholdes som reserve
+i stabiliseringsperioden.
 
 ## Gjennomført og verifisert
 
@@ -32,13 +33,23 @@ fortsatt til GitHub Pages. Gammel hosting beholdes gjennom overgangen.
   Produksjonsbygg og SEO-kontroll passerer. Reservebygg fra repositoryet
   er kontrollert uten publisering eller varsling.
 
-## Gjenstår
+## DNS-overgangen er bekreftet
 
-Følg [DNS-overgangen og tilbakeføringsplanen](vercel-dns.md). Ta kopi av hele
-DNS-sonen hos Domeneshop før webpostene endres. Behold NS, MX og TXT.
-Etter endringen må offentlige DNS-svar, HTTPS og sentrale brukerflyter
-kontrolleres. Behold GitHub Pages minst 48–72 timer med stabil drift og gjennom
-én verifisert dataoppdatering.
+- Google og Cloudflare returnerer begge A-postene `216.150.1.1` og
+  `216.150.16.1`, ingen AAAA på hoveddomenet og riktig Vercel-CNAME på `www`.
+- Vercels domeneoppslag godkjenner begge domenene (`misconfigured: false`).
+- Offentlige HTTPS-svar har Vercel-identifikator; `www` gir 308 til hoveddomenet.
+  Forside, metadata og analyseoversikt er identiske med gjeldende `gh-pages`
+  (`57aef9d`, bygget fra `866b033`). Ukjent JSON gir 404.
+- Nettleseren laster forsiden, Oslo kommunes detaljvisning og analyseoversikten
+  uten JavaScript-feil eller mislykkede forespørsler i kontrollen.
+
+## Stabiliseringsperioden
+
+Behold GitHub Pages minst 48–72 timer med stabil drift og gjennom én
+verifisert dataoppdatering. Tidligste avvikling er derfor 17.–18. oktober,
+forutsatt stabil drift og bestått dataoppdatering. Ikke fjern gammel hosting
+eller sikkerhetskopier før dette. Se [tilbakeføringsplanen](vercel-dns.md).
 
 Arkiv, SHA-256-manifest og offentlige DNS-oppslag fra den opprinnelige
 produksjonen ligger i `/workspace/migration-fellestall/reference/`.
