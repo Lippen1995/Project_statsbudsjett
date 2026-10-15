@@ -1,0 +1,136 @@
+name: Neon – migrer og verifiser datagrunnlaget
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Test isolert, eller importer også til production etter bestått test
+        type: choice
+        options: [verify, migrate]
+        default: verify
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neon-data-production
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: vercel-migration
+    env:
+      NEON_PROJECT_ID: bitter-firefly-21339346
+      TEST_BRANCH: migration-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Hent dagens publiserte grunnlag som én fast commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: gh-pages
+          path: published-site
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+
+      - name: Installer og test migreringsverktøy
+        run: |
+          npm ci
+          npm --prefix web ci
+          npm install --global neon@8.4.5
+          npm test
+          npm --prefix web test
+
+      - name: Opprett isolert testgren med utløp etter ett døgn
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: |
+          test -n "$NEON_API_KEY" || { echo 'NEON_API_KEY mangler'; exit 1; }
+          log_file="$RUNNER_TEMP/neon-data-setup.log"
+          expiry="$(date -u -d '+1 day' +%Y-%m-%dT%H:%M:%SZ)"
+          if ! neon branch create --project-id "$NEON_PROJECT_ID" --parent production --name "$TEST_BRANCH" --expires-at "$expiry" --no-secrets > "$log_file" 2>&1; then
+            echo 'Opprettelse av testgren feilet; ingen production-migrering er kjørt.'
+            exit 1
+          fi
+          if ! neon env pull --project-id "$NEON_PROJECT_ID" --branch "$TEST_BRANCH" --service postgres --file .env.local >> "$log_file" 2>&1; then
+            echo 'Henting av testgrenens miljø feilet.'
+            exit 1
+          fi
+          chmod 600 .env.local
+
+      - name: Migrer skjema og kontroller hele datagrunnlaget på testgrenen
+        run: |
+          mkdir -p reports
+          source_commit="$(git -C published-site rev-parse HEAD)"
+          npm run data:roundtrip -- --source published-site/data --output "$RUNNER_TEMP/neon-staging-export" --source-commit "$source_commit" --report reports/staging.json
+
+      - name: Hent production-miljø etter bestått isolert test
+        if: inputs.mode == 'migrate'
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: |
+          if ! neon env pull --project-id "$NEON_PROJECT_ID" --branch production --service postgres --file .env.local >> "$RUNNER_TEMP/neon-data-setup.log" 2>&1; then
+            echo 'Henting av production-miljø feilet.'
+            exit 1
+          fi
+          chmod 600 .env.local
+
+      - name: Importer det verifiserte Neon-grunnlaget til production og kontroller eksporten
+        if: inputs.mode == 'migrate'
+        run: |
+          source_commit="$(git -C published-site rev-parse HEAD)"
+          npm run data:roundtrip -- --source "$RUNNER_TEMP/neon-staging-export" --output "$RUNNER_TEMP/neon-production-export" --source-commit "$source_commit" --report reports/production.json
+          node --input-type=module <<'JS'
+          import { readFileSync } from 'node:fs'
+          import assert from 'node:assert/strict'
+          const stage = JSON.parse(readFileSync('reports/staging.json'))
+          const production = JSON.parse(readFileSync('reports/production.json'))
+          assert.equal(stage.snapshot, production.snapshot)
+          assert.equal(stage.files, production.files)
+          assert.equal(stage.bytes, production.bytes)
+          console.log('Testgren og production har identisk dataversjon')
+          JS
+
+      - name: Bygg og test frontenden med filer eksportert fra Neon
+        env:
+          MODE: ${{ inputs.mode }}
+        run: |
+          export_dir="$RUNNER_TEMP/neon-staging-export"
+          if [ "$MODE" = migrate ]; then export_dir="$RUNNER_TEMP/neon-production-export"; fi
+          test -f "$export_dir/meta.json"
+          rm -rf web/public/data
+          cp -a "$export_dir" web/public/data
+          npm --prefix web test
+          npm run build
+
+      - name: Aktiver production-versjonen først etter full kontroll og frontendbygg
+        if: inputs.mode == 'migrate'
+        run: node --use-env-proxy --env-file=.env.local scripts/neon/data-cli.mjs activate --report reports/production.json
+
+      - name: Lagre integritetsrapport uten databasehemmeligheter
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: neon-data-verification-${{ github.run_id }}
+          path: reports/*.json
+          retention-days: 30
+
+      - name: Oppsummer
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync, appendFileSync, existsSync } from 'node:fs'
+          const file = existsSync('reports/production.json') ? 'reports/production.json' : 'reports/staging.json'
+          const report = JSON.parse(readFileSync(file))
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, `Dataversjon: ${report.snapshot}\n\n${report.files} filer, ${report.bytes} byte. Alle filhash er kontrollert etter eksport.\n\nProduction aktivert: ${report.activated}. Ingen nettstedspublisering eller DNS-endring.\n`)
+          JS
+
+      - name: Slett lokale hemmeligheter
+        if: always()
+        run: rm -f .env.local .neon "$RUNNER_TEMP/neon-data-setup.log"
