@@ -34,6 +34,26 @@ Claimable-prosjekt som erstatning for manglende innlogging til dette prosjektet.
 
 ## Datatilgang og verifikasjon
 
+### Kjøring via GitHub Actions fra denne chatten
+
+Den globale MCP-innloggingen på brukerens PC gjelder lokale Codex-klienter.
+Skyarbeidsmiljøet får ikke denne innloggingen automatisk. Det praktiske
+alternativet her er workflowen «Neon – oppsett og databasekontroll»:
+
+1. Lagre den prosjektavgrensede Neon API-nøkkelen som environment secret
+   `NEON_API_KEY` i GitHub-miljøet `vercel-migration`, ved siden av
+   `VERCEL_TOKEN`. Nøkkelen skal ikke sendes i chat eller legges i koden.
+2. Start `neon-check.yml` manuelt fra `main`.
+3. Jobben kobler til det eksplisitte prosjektet/grenen, kjører `neon deploy`,
+   henter en midlertidig miljøfil, tester Postgres og bygger/starter appen.
+   Hemmelige filer og CLI-råloggen slettes; de publiseres ikke som artefakter.
+
+Jobben endrer ikke nettstedets dataflyt, publiserer ikke appen og flytter ikke
+DNS. Den kan brukes fra flere chatter med repository-/Actions-tilgang uten
+at selve API-nøkkelen deles med chattene.
+
+### Lokal kjøring
+
 Dataklienten i `scripts/neon/postgres.mjs` initialiseres først ved faktisk
 bruk. Den bruker `@neondatabase/serverless` over HTTPS; dette fungerer også
 når arbeidsmiljøet har HTTP-proxy og ikke har direkte TCP-tilgang til Postgres.
