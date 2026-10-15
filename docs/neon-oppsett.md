@@ -77,7 +77,7 @@ Neste migreringssteg er et versjonert dataskjema, test på separat databasegren,
 parallell import/eksport og sammenligning mot dagens godkjente JSON-grunnlag.
 Ikke flytt datapubliseringen til Neon før denne sammenligningen passerer.
 
-## Status 15. oktober 2026
+## Historisk oppsettsstatus ved start 15. oktober 2026
 
 CLI 8.4.5, lokal kobling og `neon.ts` er klargjort. `neon init` rapporterte
 `linked, not verified` og `Written offline (--no-checks): nothing was verified`.
@@ -90,3 +90,8 @@ Lokalt er `npm run build` og SEO-kontrollen bestått. Appen er startet med
 390 px bredde: 14 SVG-grafer og ingen JavaScript-sidefeil. `npm run db:check`
 stopper korrekt med `Mangler DATABASE_URL` inntil deploy kan hente miljøfilen.
 Dette er ikke en bestått databasekontroll eller en ferdig datamigrering.
+
+Senere samme dag bestod [GitHub-jobb 38717050471](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/38717050471)
+med den prosjektavgrensede nøkkelen i GitHub. Både tilkobling, midlertidig
+skriving/lesing, bygg/SEO og appstart ble verifisert. Produksjonsdata ble deretter
+migrert og eksportert med identiske filhash. Se [gjeldende dataflyt](neon-data.md).

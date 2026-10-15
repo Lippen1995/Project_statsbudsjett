@@ -91,3 +91,33 @@ vanlige publiseringer feiler tydelig dersom Neon ikke kan verifiseres.
 Den felles concurrency-gruppen serialiserer databaseoperasjoner med manuell
 migrering. Ved en pågående feilende migrering må den avsluttes før nødbygget
 kan overta gruppen.
+
+## Vercel og overgang av domene
+
+Tidligere hash-navngitte filer under `assets/` beholdes i nye bygg. Dermed kan
+åpne faner og bufret HTML hente eldre JS/CSS også etter en utrulling eller
+DNS-overgang. Gamle ressurser kan ryddes etter en avtalt kompatibilitetsperiode.
+
+Den ordinære Vercel-jobben utruller uten domenetilknytning, sammenligner
+innholdet og promoterer deretter det kontrollerte bygget. Først da kontrolleres
+`fellestall.no` og `www.fellestall.no` direkte mot Vercel-IP-ene med korrekt
+Host/SNI og vanlig sertifikatvalidering. Forside og metadata må matche bygget,
+`www` må svare med 308 til hoveddomenet, og hoveddomenet skal være indekserbart.
+Dette kan kontrolleres uten å endre DNS hos Domeneshop.
+
+Ved en separat manuell kjøring av `vercel-mirror.yml` er promotering avslått
+som standard; velg `promote=true` for også å aktivere en kontrollert utrulling.
+Vanlige kall fra publiseringsworkflowen promoterer automatisk etter kontroll.
+
+Vercels domeneoppslag 15. oktober 2026 anbefalte A-adressene `216.150.1.1` og
+`216.150.16.1`, og CNAME `4181bd34fd5d90bd.vercel-dns-016.com.`. Slå opp disse
+på nytt ved en senere overgang. DNS-endringen gjøres først etter bestått
+domene-/HTTPS-kontroll; GitHub Pages beholdes gjennom cache- og stabiliseringstiden.
+
+## Verifisert migrering 15. oktober 2026
+
+Den isolerte kontrollen bestod i [Actions 38720388398](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/38720388398).
+Produksjonsimport og aktivering bestod i [Actions 38720617926](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/38720617926).
+Begge rekonstruerte identisk versjon
+`569da60cc361c2d32202f097fd311122c4eea6989fca1023369f489c86eb17b2`:
+1142 filer og 421387831 rå byte, med beståtte frontendtester, bygg og SEO.
