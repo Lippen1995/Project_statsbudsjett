@@ -1,124 +1,64 @@
-# Migrering: gjennomført og nødvendig engangsoppsett
+# Migrering til Vercel og Neon: status
 
-Oppdatert 12. oktober 2026.
+Oppdatert 15. oktober 2026. DNS-overgangen gjenstår; offentlig trafikk går
+fortsatt til GitHub Pages. Gammel hosting beholdes gjennom overgangen.
 
-## Gjennomført
+## Gjennomført og verifisert
 
-- Gjeldende `main` er `6590236b583d65acce7437d3e0eb14cd16b3c24d`.
-- Publisert bygg er `gh-pages`-commit
-  `2fb4561e13ab6f0138d79464b912440769fea199`, bygget fra
-  `0d6f016a7e7f36486a005029debf4b0f779a4f00`.
-- Arkiv, SHA-256-manifest og offentlige DNS-oppslag er lagret i
-  `/workspace/migration-fellestall/reference/`. Arkivet har 1191 filer,
-  til sammen 426 920 629 byte. Dette er en arbeidskopi; kopier arkiv og manifest
-  til varig lagring før gammel hosting avvikles.
-- DNS administreres hos Domeneshop. A/AAAA peker fortsatt på GitHub Pages
-  med observert TTL 300. Offentlige oppslag er ikke en komplett DNS-sonekopi;
-  hele sonen må også tas vare på hos Domeneshop før trafikkovergang.
-- Eget Vercel-prosjekt `fellestall` er opprettet under `fjord-insight`:
-  prosjekt `prj_UCZp0PnkkoWMO6EJsLHW3y787ALp`,
-  team `team_zBf9uUPGwDQKfB9fElKD876W`.
-- Samme ferdigbygde nettsted er utrullet på Vercel:
-  `https://fellestall-celt6snju-fjord-insight.vercel.app`.
-  Utrulling `dpl_6nNiVeGhnMJiBifwVsVzLoPgwaTU` har status READY.
-  Vercel-adressen har innloggingsbeskyttelse og `X-Robots-Tag: noindex`.
-- HTTP-kontroll via autentisert Vercel-verktøy bekrefter identisk forside,
-  analyseoversikt og `data/meta.json` mot produksjonsarkivet. Ukjent JSON
-  gir 404. Forside, metadata, analyser, robots og sitemap er også kontrollert
-  identiske mellom GitHub Pages og arkivet.
-- Domenene er registrert i Vercel-prosjektet, med `www` → hoveddomene (308).
-  DNS og produksjonstrafikk er ikke flyttet.
+- Eksisterende Neon-abonnement brukes direkte, uten ny Vercel Marketplace-
+  database. Prosjekt `bitter-firefly-21339346`, branch `production`, Frankfurt.
+- PostgreSQL-tilkobling, midlertidig skriving/lesing, produksjonsbygg og lokal
+  HTTP-kontroll passerte i [Neon-oppsettkontrollen](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/38717050471).
+- Datagrunnlaget ble først prøvd i en isolert Neon-branch, deretter importert
+  til produksjon. [Produksjonskontrollen](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/38720617926)
+  verifiserte **1142 filer / 421387831 byte** med identiske SHA-256 før aktivering.
+  JSON, kilde-HTML, PDF og XLSX bevares som komprimerte, uforanderlige snapshots.
+  Normalisert SQL-analysemodell er et separat senere arbeid.
+- Ordinær publisering verifiserer innhold via Neon før Vite bygger statiske
+  sider. Et Neon-avbrudd påvirker derfor ikke et allerede publisert nettsted.
+  GitHub Pages og Vercel får samme ferdigbygde nettsted.
+- Vercel ligger i team `fjord-insight`, prosjekt `fellestall`
+  (`prj_UCZp0PnkkoWMO6EJsLHW3y787ALp`). Tokenene er prosjektavgrensede
+  miljøsecrets i GitHub-miljøet `vercel-migration`, begrenset til `main`.
+- Vercel-kandidater kontrolleres mot publiserte filer før produksjonsaktivering.
+  Alle HTML-sider, JS/CSS, sentrale datasett, analysegrunnlag og representative
+  KOSTRA-filer sammenlignes; manglende JSON må gi 404.
+- Gyldig sertifikat er forhåndsutstedt for hoveddomene og wildcard.
+  [Direkte domene-/HTTPS-kontroll](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/38723922795)
+  passerte mot begge Vercel-IP-er med produksjonsnavn som SNI/Host, korrekt
+  filhash, ingen `noindex` og `www` → hoveddomene (308).
+- Gamle JS/CSS-filer beholdes i nye bygg for allerede åpne faner.
+- 177 frontendtester og 7 database-/publiseringstester passerer.
+  Produksjonsbygg og SEO-kontroll passerer. Reservebygg fra repositoryet
+  er kontrollert uten publisering eller varsling.
 
-## Parallell publiseringsjobb
+## Gjenstår
 
-`vercel-mirror.yml` henter ferdigbygde filer fra `gh-pages`, pakker Build Output
-API v3 og utruller med `--prod --skip-domain`. Dermed beholdes eksisterende
-byggeprosess, forhåndsvisninger og analyseflyt. Jobben sjekker alle HTML-sider,
-JS/CSS, sentrale datasett, analysegrunnlag og representative KOSTRA-filer mot
-den nye Vercel-utrullingen, samt at manglende JSON gir 404.
+Følg [DNS-overgangen og tilbakeføringsplanen](vercel-dns.md). Ta kopi av hele
+DNS-sonen hos Domeneshop før webpostene endres. Behold NS, MX og TXT.
+Etter endringen må offentlige DNS-svar, HTTPS og sentrale brukerflyter
+kontrolleres. Behold GitHub Pages minst 48–72 timer med stabil drift og gjennom
+én verifisert dataoppdatering.
 
-`deploy.yml` kaller jobben etter eksisterende Pages-publisering når
-`VERCEL_MIRROR_ENABLED=true`. En separat manuell kjøring er også tilgjengelig.
-Jobben aktiverer aldri domener. Dagens analyse-distribusjon beholdes som én jobb.
+Arkiv, SHA-256-manifest og offentlige DNS-oppslag fra den opprinnelige
+produksjonen ligger i `/workspace/migration-fellestall/reference/`.
+Dette er en arbeidskopi; kopier arkiv og manifest til varig lagring før gammel
+hosting avvikles. Offentlige DNS-oppslag erstatter ikke en komplett sonekopi.
 
-Ved parallelle utrullinger leses siste komplette `gh-pages`-commit; SHA skrives
-i loggen. Det kan være et nyere komplett bygg enn workflowens utløsende commit.
-Ved selve DNS-overgangen må publiseringskøen tømmes og samme SHA være bekreftet
-på begge verter før trafikk skiftes.
+En tidligere nettleserkontroll rapporterte eksisterende tilgjengelighetsfunn:
+én av 14 grafer mangler tekstalternativ, og en SSB-lenke har kontrast 3,42:1.
+Disse er ikke endret av migreringen og må håndteres separat; migreringstestene
+utgjør ikke en full tilgjengelighetsgodkjenning.
 
-## Engangsoppsett i GitHub og Vercel
+## Drift og tilbakeføring
 
-Integrasjonen kan lese repositoryet og endre kode, men Actions-variabler gir
-HTTP 403. Miljøet har heller ingen Vercel CLI-legitimasjon. Følgende må derfor
-settes i leverandørenes grensesnitt, uten å dele hemmeligheter i chat:
+Publisering og analyseflyt beholdes i `deploy.yml`; Vercel-speiling er aktivert
+med `VERCEL_MIRROR_ENABLED=true`. Produksjonsaktivering bruker Vercels API med
+kjent team/prosjekt, fordi CLI-kommandoen krevde et brukeroppslag som feilet
+med den prosjektavgrensede tokenen. Domene-preflight venter på at aliaset får
+riktig bygg før den godkjenner. Den kan også kjøres separat med
+`vercel-domain-check.yml`, uten ny publisering.
 
-1. Opprett GitHub-miljøet `vercel-migration`, begrens deployment branches til
-   `main`, og aktiver required reviewers der repositoryets abonnement støtter det.
-2. Opprett en Vercel-token avgrenset til Fjord Insight med nødvendig prosjekt-
-   tilgang og utløpsdato. Lagre som miljøsecret `VERCEL_TOKEN` i
-   `vercel-migration`; tokenen skal aldri legges i kode eller meldinger.
-3. Etter at PR-en er gjennomgått og flettet: kjør «Vercel – parallell
-   publisering» manuelt fra `main`. Første kjøring må passere både utrulling
-   og innholdskontroll. Sett deretter repositoryvariabelen
-   `VERCEL_MIRROR_ENABLED` til `true` for automatisk parallell publisering.
-
-Lenker:
-
-- [GitHub-miljøer](https://github.com/Lippen1995/Project_statsbudsjett/settings/environments)
-- [Actions-variabler](https://github.com/Lippen1995/Project_statsbudsjett/settings/variables/actions)
-- [Vercel-tokens](https://vercel.com/account/tokens)
-- [Fellestall-prosjektet](https://vercel.com/fjord-insight/fellestall)
-
-## HTTPS før DNS-overgangen
-
-Et vanlig utstedelsesforsøk ble avvist med
-`http_pretest_domain_not_resolving_to_vercel_error` (449), fordi DNS fortsatt
-peker på GitHub Pages. Dette løses med forhåndsutstedelse via DNS-validering:
-
-1. Åpne teamets Domains i Vercel og konfigurasjonen for `fellestall.no`.
-2. Velg «Pre-generate SSL Certificates» og inkluder både `fellestall.no` og
-   `www.fellestall.no`.
-3. Legg de oppgitte TXT-verdiene for `_acme-challenge` og
-   `_acme-challenge.www` i Domeneshop. Behold webpostene som de er.
-4. Verifiser i Vercel og kontroller ferdig sertifikat før web-DNS endres.
-
-Den tilkoblede Vercel-verktøypakken eksponerer ikke start/finalize for denne
-DNS-valideringen. Dashboardet kan brukes; CLI-alternativet for en autentisert
-bruker er `vercel certs issue www.fellestall.no fellestall.no --challenge-only`.
-
-[Vercels veiledning for overgang uten nedetid](https://vercel.com/kb/guide/zero-downtime-migration)
-
-Neste kontroller er sertifikat, korrekt domenealias/ruting mot Vercel før
-DNS-endring, alle viktige brukerflyter på den nye verten og strategi for gamle
-JS/CSS-filer i allerede åpne faner. Eksisterende GitHub Pages beholdes gjennom
-DNS-cacheperioden og stabiliseringsperioden.
-
-## Neon
-
-Det finnes ingen Neon-integrasjon i teamets installasjoner. Tilgjengelige
-verktøy kan lese integrasjoner og priser, men kan ikke installere Neon.
-Opprett en Neon-database fra Storage i Fellestall-prosjektet, velg europeisk
-region og et egnet testabonnement. Ikke koble denne til frontend som offentlig
-databaseadresse. Hemmeligheter oppbevares i leverandørens miljøinnstillinger.
-
-Free-planen som ble slått opp oppgir 1 GB per prosjekt og 100 CU-timer.
-Dette er et utgangspunkt for utprøving; kapasitet, indekser og restore-vindu
-må vurderes før produksjonsbruk. Nettstedets filstørrelse er ikke et estimat
-for databasebehovet.
-
-Neon-skjema, import/eksport, parallell tallkontroll og gjenoppretting er fortsatt
-gjenstående arbeid. Dagens statiske dataflyt fortsetter gjennom dette steget.
-
-## Kontroller utført på endringen
-
-- 177 frontend-/analysetester passerer.
-- Produksjonsbygg og SEO-kontroll passerer.
-- `actionlint` 1.7.7 passerer for endrede workflows; `git diff --check` passerer.
-- Alle 1191 filer pakket til Build Output API har samme SHA-256 som arkivet.
-- Nettleserkontrollen mot lokalt produksjonsbygg fant tre rapporterte feil:
-  én av 14 grafer mangler tekstalternativ, og lenken til SSBs befolkningsanslag
-  har kontrast 3,42:1 mot kravet 4,5:1 i begge bevegelsesinnstillinger.
-  Frontendkoden er ikke endret av migreringsarbeidet. Disse funnene må avklares
-  før kriteriet om bestått publiseringssjekk er oppfylt.
-- Automatisert Vercel-utrulling med den nye jobben er ikke kjørt: den krever
-  engangsoppsettet ovenfor. Referanseutrullingen ble gjort via Vercel-integrasjonen.
+[Neon-dataflyt og snapshots](neon-data.md) beskriver import, eksport,
+aktivering og reservebygg. [DNS-veiledningen](vercel-dns.md) inneholder gamle
+og nye poster og tidspunkt for avvikling av gammel vert.
