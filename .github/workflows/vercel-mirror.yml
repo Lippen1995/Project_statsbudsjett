@@ -2,7 +2,16 @@ name: Vercel – parallell publisering
 
 on:
   workflow_dispatch:
+    inputs:
+      promote:
+        description: Aktiver utrullingen etter bestått innholdskontroll
+        type: boolean
+        default: false
   workflow_call:
+    inputs:
+      promote:
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -64,9 +73,20 @@ jobs:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
         run: node scripts/deploy/vercel-static.mjs verify published-site "$DEPLOYMENT_URL"
 
+      - name: Aktiver kontrollert utrulling på Vercel
+        if: inputs.promote == true
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+        run: vercel promote "$DEPLOYMENT_URL" --yes
+
+      - name: Kontroller HTTPS og domener direkte mot Vercel før DNS flyttes
+        if: inputs.promote == true
+        run: node scripts/deploy/domain-preflight.mjs published-site 216.150.1.1,216.150.16.1
+
       - name: Lagre kontrollert adresse
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
         run: |
-          printf 'Kontrollert parallell utrulling: %s\n\nIngen domener er flyttet.\n' "$DEPLOYMENT_URL" >> "$GITHUB_STEP_SUMMARY"
+          printf 'Kontrollert utrulling: %s\n\nDNS er ikke endret av denne jobben.\n' "$DEPLOYMENT_URL" >> "$GITHUB_STEP_SUMMARY"
 
