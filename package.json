@@ -6,7 +6,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test scripts/neon/*.test.mjs",
+    "test": "node --test scripts/neon/*.test.mjs scripts/deploy/*.test.mjs",
     "data:roundtrip": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon/data-cli.mjs roundtrip",
     "build": "npm --prefix web run build",
     "dev": "npm --prefix web run dev --",
