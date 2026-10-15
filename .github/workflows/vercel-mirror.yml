@@ -78,7 +78,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
-        run: vercel promote "$DEPLOYMENT_URL" --yes
+        run: node scripts/deploy/promote.mjs
 
       - name: Kontroller HTTPS og domener direkte mot Vercel før DNS flyttes
         if: inputs.promote == true
