@@ -5,6 +5,12 @@ web/public/data/*
 web/node_modules/
 web/dist/
 .vercel/
+.env
+.env.*
+!.env.example
+!.env.*.example
+.neon
+node_modules/
 published-site/
 __pycache__/
 *.pyc
@@ -16,3 +22,4 @@ etl/status.json
 # uhell fordi skriptet skrev til en relativ sti mens det sto i web/.
 skudd-*.png
 web/skudd-*.png
+node_modules/
