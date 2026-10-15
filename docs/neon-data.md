@@ -56,3 +56,38 @@ npm run data:roundtrip -- --source web/public/data --output /tmp/fellestall-neon
 Bruk `scripts/neon/data-cli.mjs export --snapshot <id> --output <ny-mappe>`
 med samme Node-/miljøfilflagg som `data:roundtrip` for å gjenopprette en eldre
 versjon. Nettstedet kan også settes tilbake til et tidligere komplett bygg.
+
+## Publisering fra Neon
+
+Den ordinære `deploy.yml` bruker `neon` som datakilde. ETL fortsetter å lage
+filene og arkivere dem i repositoryet. Før hvert bygg importeres det komplette
+grunnlaget til Neon og eksporteres til en ny mappe med full hashkontroll.
+Først denne eksporten brukes av frontendbygget. Det er dermed Neon som leverer
+byggets datagrunnlag, mens repositoryet fortsatt er en kontrollert reserve.
+
+Versjonens ID registreres i Actions-oppsummeringen. Databasens aktive ID betyr
+siste godkjente dataversjon; om selve hosting-publiseringen etterpå feiler,
+kan nettstedet fremdeles vise forrige bygg. Bruk derfor både Actions-status
+og versjonsrapport ved tilbakeføring. En Vercel-rollback endrer ikke databasen.
+
+API-nøkkelen brukes bare til å hente en privat miljøfil i GitHub-miljøet
+`vercel-migration`. Databaseverdier legges aldri i frontendens `VITE_*`-miljø.
+Feil i Neon, eksport, hashkontroll eller bygg stopper ny publisering; allerede
+publiserte statiske sider fortsetter å fungere.
+
+Tilbakeføring uten databaseavhengighet:
+
+```sh
+gh workflow run deploy.yml --ref main -f data_source=repository
+```
+
+Legg til `-f verify_only=true` for å prøve reservebygget uten å publisere,
+aktivere data eller sende publiseringsvarsler. Den samme tørrkjøringen støttes
+med `data_source=neon`.
+
+Dette bygger fra reservegrunnlaget i `main` og bruker fortsatt eksisterende
+analyseforhåndsvisning og Vercel-speiling. Det er en egen manuell nødvei;
+vanlige publiseringer feiler tydelig dersom Neon ikke kan verifiseres.
+Den felles concurrency-gruppen serialiserer databaseoperasjoner med manuell
+migrering. Ved en pågående feilende migrering må den avsluttes før nødbygget
+kan overta gruppen.

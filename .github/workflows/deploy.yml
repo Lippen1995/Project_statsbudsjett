@@ -2,11 +2,31 @@ name: Deploy til GitHub Pages
 
 on:
   workflow_dispatch:
+    inputs:
+      data_source:
+        description: Datakilde for bygg (repository brukes ved tilbakeføring)
+        type: choice
+        options: [neon, repository]
+        default: neon
+      verify_only:
+        description: Bygg og kontroller uten å publisere, aktivere data eller sende varsler
+        type: boolean
+        default: false
   workflow_call:        # kjedes fra ETL-workflowen
+    inputs:
+      data_source:
+        type: string
+        default: neon
+      verify_only:
+        type: boolean
+        default: false
   push:
     paths:
       - 'web/**'
       - '.github/workflows/deploy.yml'
+      - 'scripts/neon/**'
+      - 'package.json'
+      - 'package-lock.json'
 
 permissions:
   contents: write
@@ -28,6 +48,13 @@ jobs:
     # og livesiden viser noe som aldri er slått sammen.
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: vercel-migration
+    concurrency:
+      group: neon-data-production
+      cancel-in-progress: false
+    env:
+      DATA_SOURCE: ${{ inputs.data_source || 'neon' }}
     steps:
       - name: Sjekk ut siste versjon av branchen (inkl. ev. ETL-datacommit)
         uses: actions/checkout@v4
@@ -37,9 +64,40 @@ jobs:
       - name: Sett opp Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
           cache-dependency-path: web/package-lock.json
+
+      - name: Kontroller valg av datakilde
+        run: |
+          case "$DATA_SOURCE" in neon|repository) ;; *) echo 'Ugyldig datakilde'; exit 1 ;; esac
+
+      - name: Installer Neon-verktøy for datagrunnlaget
+        if: env.DATA_SOURCE == 'neon'
+        run: |
+          npm ci --omit=dev
+          npm install --global neon@8.4.5
+
+      - name: Hent production-forbindelsen til Neon
+        if: env.DATA_SOURCE == 'neon'
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: |
+          test -n "$NEON_API_KEY" || { echo 'NEON_API_KEY mangler i vercel-migration'; exit 1; }
+          if ! neon env pull --project-id bitter-firefly-21339346 --branch production --service postgres --file .env.local > "$RUNNER_TEMP/neon-publish.log" 2>&1; then
+            echo 'Neon-forbindelsen kunne ikke hentes. Siste publiserte nettsted beholdes.'
+            exit 1
+          fi
+          chmod 600 .env.local
+
+      - name: Importer ETL-grunnlaget til Neon og kontroller full eksport før bygg
+        if: env.DATA_SOURCE == 'neon'
+        run: |
+          source_commit="$(git rev-parse HEAD)"
+          npm run data:roundtrip -- --source web/public/data --output "$RUNNER_TEMP/neon-publish-data" --source-commit "$source_commit" --report "$RUNNER_TEMP/neon-publish-report.json"
+          # Bygget skal bare lese eksporten som nettopp er verifisert fra Neon.
+          mv web/public/data "$RUNNER_TEMP/repository-data"
+          cp -a "$RUNNER_TEMP/neon-publish-data" web/public/data
 
       - name: Hent validerte utkast for forhåndsvisning
         run: node scripts/analyser/previews.mjs collect
@@ -58,7 +116,18 @@ jobs:
           fi
           npm run build
 
+      - name: Registrer godkjent dataversjon etter bestått bygg
+        if: env.DATA_SOURCE == 'neon' && inputs.verify_only != true
+        run: |
+          node --use-env-proxy --env-file=.env.local scripts/neon/data-cli.mjs activate --report "$RUNNER_TEMP/neon-publish-report.json"
+          node --input-type=module <<'JS'
+          import { readFileSync, appendFileSync } from 'node:fs'
+          const report = JSON.parse(readFileSync(`${process.env.RUNNER_TEMP}/neon-publish-report.json`))
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, `Verifisert Neon-dataversjon: ${report.snapshot}\n\n${report.files} filer / ${report.bytes} byte. Bygget bruker eksporten fra Neon.\n`)
+          JS
+
       - name: Publiser til gh-pages-branchen
+        if: inputs.verify_only != true
         working-directory: web/dist
         run: |
           git init -b gh-pages
@@ -73,14 +142,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Legg forhåndsvisningslenker i gjennomgangene
+        if: inputs.verify_only != true
         run: node scripts/analyser/previews.mjs notify
         env:
           GH_TOKEN: ${{ github.token }}
           ANALYSIS_REVIEW_PREVIEWS_FILE: ${{ runner.temp }}/analysis-previews.json
 
+      - name: Slett lokale databasehemmeligheter
+        if: always()
+        run: rm -f .env.local .neon "$RUNNER_TEMP/neon-publish.log"
+
   vercel-mirror:
     needs: build-deploy
-    if: github.ref_name == 'main' && vars.VERCEL_MIRROR_ENABLED == 'true'
+    if: github.ref_name == 'main' && vars.VERCEL_MIRROR_ENABLED == 'true' && inputs.verify_only != true
     uses: ./.github/workflows/vercel-mirror.yml
     secrets: inherit
     permissions:
@@ -88,7 +162,7 @@ jobs:
 
   distribute-analyses:
     needs: build-deploy
-    if: github.ref_name == 'main' && vars.ANALYSIS_AUTOMATION_ENABLED == 'true' && vars.LINKEDIN_ENABLED == 'true'
+    if: github.ref_name == 'main' && vars.ANALYSIS_AUTOMATION_ENABLED == 'true' && vars.LINKEDIN_ENABLED == 'true' && inputs.verify_only != true
     uses: ./.github/workflows/analysis-distribute.yml
     secrets: inherit
     permissions:
