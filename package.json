@@ -1,0 +1,21 @@
+{
+  "name": "fellestall",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "npm --prefix web run build",
+    "dev": "npm --prefix web run dev --",
+    "preview": "npm --prefix web run preview --",
+    "neon:init": "neon init -y --org-id org-icy-violet-87182384 --project-id bitter-firefly-21339346 --branch production --services postgres",
+    "neon:deploy": "neon deploy --project-id bitter-firefly-21339346 --branch production",
+    "db:check": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon/check.mjs"
+  },
+  "dependencies": {
+    "@neon/config": "^1.9.1",
+    "@neon/env": "^1.6.2",
+    "@neondatabase/serverless": "1.2.0"
+  }
+}

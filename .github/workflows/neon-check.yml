@@ -1,0 +1,96 @@
+name: Neon – oppsett og databasekontroll
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neon-setup-check
+  cancel-in-progress: false
+
+jobs:
+  postgres:
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: vercel-migration
+    steps:
+      - name: Hent godkjent kode fra main
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Sett opp Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+
+      - name: Installer verktøy og frontend
+        run: |
+          npm ci
+          npm --prefix web ci
+          npm install --global neon@8.4.5
+
+      - name: Koble til eksisterende prosjekt og klargjør Postgres
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: |
+          test -n "$NEON_API_KEY" || { echo 'NEON_API_KEY mangler i GitHub-miljøet vercel-migration'; exit 1; }
+          log_file="$RUNNER_TEMP/neon-setup.log"
+          # CLI-utdata kan inneholde forbindelsesdetaljer. Ingen rålogg lastes opp.
+          if ! neon link --org-id org-icy-violet-87182384 --project-id bitter-firefly-21339346 --branch production --no-env-pull --yes > "$log_file" 2>&1; then
+            echo 'Neon-kobling feilet. Kontroller nøkkelens prosjekttilgang og production-grenen.'
+            exit 1
+          fi
+          if ! neon deploy --project-id bitter-firefly-21339346 --branch production --no-env-pull >> "$log_file" 2>&1; then
+            echo 'Neon deploy feilet. Kontroller prosjektets tjeneste- og greninnstillinger.'
+            exit 1
+          fi
+          if ! neon env pull --file .env.local >> "$log_file" 2>&1; then
+            echo 'Henting av Neon-miljøvariabler feilet.'
+            exit 1
+          fi
+          chmod 600 .env.local
+          echo 'Neon-prosjektet er koblet til og miljøfilen er hentet.'
+
+      - name: Kontroller PostgreSQL-tilkobling, skriving og lesing
+        run: npm run db:check
+
+      - name: Bygg appen
+        run: npm run build
+
+      - name: Start appen og kontroller HTTP-svar
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 > "$RUNNER_TEMP/neon-preview.log" 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict'
+          let ready = false
+          for (let i = 0; i < 30; i++) {
+            try {
+              const response = await fetch('http://127.0.0.1:4173/')
+              assert.equal(response.status, 200)
+              assert.match(await response.text(), /Fellestall/)
+              ready = true
+              break
+            } catch {
+              await new Promise(resolve => setTimeout(resolve, 1000))
+            }
+          }
+          assert.ok(ready, 'Appen svarte ikke innen 30 sekunder')
+          const metadata = await fetch('http://127.0.0.1:4173/data/meta.json')
+          assert.equal(metadata.status, 200)
+          assert.ok(Array.isArray((await metadata.json()).regnskap_aar))
+          console.log('Lokal app: forside og datagrunnlag svarer korrekt')
+          JS
+
+      - name: Slett lokale hemmeligheter
+        if: always()
+        run: rm -f .env.local .neon "$RUNNER_TEMP/neon-setup.log"
+
+      - name: Oppsummer kontrollen
+        run: |
+          printf 'Postgres-tilkobling og midlertidig skriving/lesing er kontrollert.\nProduksjonsbygg og lokal app passerer.\nIngen datamigrering, publisering eller DNS-endring er utført.\n' >> "$GITHUB_STEP_SUMMARY"
