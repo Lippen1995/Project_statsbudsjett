@@ -297,14 +297,7 @@ async function preflight() {
 async function pull() {
   target();
   assertLink();
-  cli([
-    "pull",
-    "--yes",
-    "--environment=production",
-    "--git-branch",
-    BRANCH,
-    "--non-interactive",
-  ]);
+  cli(["pull", "--yes", "--environment=production", "--non-interactive"]);
   const link = assertLink();
   assert(link.settings, "Vercel project settings were not pulled");
   for (const [key, allowed] of Object.entries({

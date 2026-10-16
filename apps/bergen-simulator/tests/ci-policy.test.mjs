@@ -47,6 +47,14 @@ test("CLI diagnostics classify identity failures without reproducing captured cr
     cliFailureSummary({ stderr: "fetch failed: ECONNREFUSED" }),
     "CLI network request failed",
   );
+  assert.equal(
+    cliFailureSummary({
+      stdout: JSON.stringify({
+        error: { code: "PROJECT_UNAUTHORIZED", message: privateValue },
+      }),
+    }),
+    "CLI project settings permission denied",
+  );
 });
 
 test("pinned CLI non-interactive deployment JSON yields only a READY Bergen production URL", () => {

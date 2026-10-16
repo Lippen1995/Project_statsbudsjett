@@ -13,6 +13,26 @@ export function cliFailureSummary(result) {
   const text = `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
   const categories = [
     [
+      /PROJECT_UNAUTHORIZED|could not retrieve project settings/i,
+      "CLI project settings permission denied",
+    ],
+    [
+      /challenge_required|user_auth_required|fresh authentication/i,
+      "CLI requires fresh environment authentication",
+    ],
+    [
+      /git.?branch.*(?:preview|production)|(?:preview|production).*git.?branch/i,
+      "CLI environment and branch options rejected",
+    ],
+    [
+      /unknown (?:or unexpected )?option|unknown argument|invalid number of arguments/i,
+      "CLI arguments rejected",
+    ],
+    [
+      /confirmation_required|action_required|requires confirmation/i,
+      "CLI requires an interactive action",
+    ],
+    [
       /scope-not-accessible|do not have access to the specified account|not able to load user/i,
       "account identity lookup denied",
     ],
