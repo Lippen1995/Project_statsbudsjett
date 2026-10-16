@@ -1,4 +1,10 @@
 import {
+  validatePhysical,
+  emptyPhysical,
+  type PhysicalPlan,
+  type PlacementContext,
+} from "../physical/model";
+import {
   exactKeys,
   object,
   validatePlan,
@@ -8,7 +14,8 @@ import type { Network } from "../simulation/network";
 export const STORAGE_KEY = "bergen.reimagined.plans.v1";
 export interface ScenarioFile {
   kind: "bergen-reimagined-plan";
-  version: 1;
+  version: 1 | 2;
+  physical?: PhysicalPlan;
   name: string;
   plan: Plan;
 }
@@ -37,36 +44,69 @@ export function planName(input: unknown): string {
 export function validateScenario(
   value: unknown,
   network: Network,
+  context?: PlacementContext | null,
 ): ScenarioFile {
   const s = object(value);
-  exactKeys(s, ["kind", "version", "name", "plan"]);
-  if (s.kind !== "bergen-reimagined-plan" || s.version !== 1)
+  exactKeys(
+    s,
+    s.version === 2
+      ? ["kind", "version", "name", "plan", "physical"]
+      : ["kind", "version", "name", "plan"],
+  );
+  if (
+    s.kind !== "bergen-reimagined-plan" ||
+    (s.version !== 1 && s.version !== 2)
+  )
     throw new Error(
       "Unsupported scenario version. No automatic migration is available for this format.",
     );
+  if (s.version === 2 && !context)
+    throw new Error(
+      "Physical plans require the matching geographic snapshot before import.",
+    );
   return {
     kind: "bergen-reimagined-plan",
-    version: 1,
+    version: s.version as 1 | 2,
+    ...(s.version === 2
+      ? { physical: validatePhysical(s.physical, context!) }
+      : {}),
     name: planName(s.name),
     plan: validatePlan(s.plan, network),
   };
 }
-export function parseScenario(text: string, network: Network): ScenarioFile {
+export function parseScenario(
+  text: string,
+  network: Network,
+  context?: PlacementContext | null,
+): ScenarioFile {
   if (text.length > 32768)
     throw new Error("Scenario exceeds the 32,768-character limit.");
-  return validateScenario(JSON.parse(text), network);
+  return validateScenario(JSON.parse(text), network, context);
 }
 export function scenarioFile(
   name: string,
   plan: Plan,
   network: Network,
+  context?: PlacementContext | null,
+  physical?: PhysicalPlan | null,
 ): ScenarioFile {
   return validateScenario(
-    { kind: "bergen-reimagined-plan", version: 1, name, plan },
+    {
+      kind: "bergen-reimagined-plan",
+      version: context ? 2 : 1,
+      name,
+      plan,
+      ...(context ? { physical: physical ?? emptyPhysical(context) } : {}),
+    },
     network,
+    context,
   );
 }
-export function validateLibrary(input: unknown, network: Network): Library {
+export function validateLibrary(
+  input: unknown,
+  network: Network,
+  context?: PlacementContext | null,
+): Library {
   const l = object(input);
   exactKeys(l, ["version", "plans"]);
   if (l.version !== 1 || !Array.isArray(l.plans) || l.plans.length > 20)
@@ -87,26 +127,31 @@ export function validateLibrary(input: unknown, network: Network): Library {
     return {
       id: p.id,
       savedAt: p.savedAt,
-      scenario: validateScenario(p.scenario, network),
+      scenario: validateScenario(p.scenario, network, context),
     };
   });
   return { version: 1, plans };
 }
-export function readLibrary(storage: PlanStorage, network: Network): Library {
+export function readLibrary(
+  storage: PlanStorage,
+  network: Network,
+  context?: PlacementContext | null,
+): Library {
   const raw = storage.getItem(STORAGE_KEY);
   if (raw === null) return { version: 1, plans: [] };
   if (raw.length > 200000)
     throw new Error(
       "Local plan library is too large. Existing storage was preserved.",
     );
-  return validateLibrary(JSON.parse(raw), network);
+  return validateLibrary(JSON.parse(raw), network, context);
 }
 export function writeLibrary(
   storage: PlanStorage,
   input: Library,
   network: Network,
+  context?: PlacementContext | null,
 ): Library {
-  const library = validateLibrary(input, network),
+  const library = validateLibrary(input, network, context),
     raw = JSON.stringify(library);
   if (raw.length > 200000)
     throw new Error("Local plan library exceeds its size limit.");

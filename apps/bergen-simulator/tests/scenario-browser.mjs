@@ -51,12 +51,14 @@ async function setup(viewport, mobile = false) {
       headers: { ...response.headers(), ...deploymentHeaders },
     });
   });
+  const loadStart = performance.now();
   await page.goto(base + "/?capture=1");
   await page.waitForFunction(
     () => document.querySelector("canvas")?.dataset.capture,
     null,
     { timeout: 60000 },
   );
+  report[mobile ? "mobile" : "desktop"].loadMs = performance.now() - loadStart;
   return page;
 }
 const metrics = (page) =>
@@ -240,6 +242,19 @@ async function importFile(page, text) {
     mimeType: "application/json",
     buffer: Buffer.from(text),
   });
+  // File.text() resolves asynchronously; the upload event is not import completion.
+  const file = JSON.parse(text);
+  if (file.version === 99)
+    await page
+      .getByRole("alert")
+      .filter({ hasText: "Import rejected" })
+      .waitFor();
+  else
+    await page.waitForFunction(
+      (name) =>
+        document.querySelector(".plan-heading strong")?.textContent === name,
+      file.name,
+    );
 }
 try {
   const page = await setup({ width: 1440, height: 1000 });

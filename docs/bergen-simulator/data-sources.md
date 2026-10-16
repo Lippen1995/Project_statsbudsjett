@@ -170,3 +170,18 @@ financial data or traffic forecasts. The published example is an authored synthe
 model experiment, not a municipal proposal. A displayed capacity increase does not
 assert that a real road could physically accommodate it. Mapped directions remain
 fixed; real-world legal access and feasibility are not certified.
+
+## Milestone 4A — unchanged sources, proposed surfaces
+
+No source refresh or new geographic dataset. Public-space checks read the same
+ODbL OSM footprints, coast, lakes and original road IDs, plus the existing CC BY 4.0
+Kartverket DTM display TIN (NN2000, laser projects 2022/2023). Existing snapshot
+hashes, acquisition/provenance metadata and attribution remain unchanged.
+
+Player polygons are hypothetical authoring coordinates in the existing local metre
+grid, not surveyed parcels or verified public land. Their colours, 0.22 m display
+lift and dashed boundaries are presentation choices. A 4 m centreline conflict band
+and 8 m proximity connection are explicit game assumptions, not measured road widths
+or proof of pedestrian/vehicle access. The 16 m display terrain cannot resolve kerbs,
+quay structures or detailed accessible grades. Missing ownership, heritage, utilities,
+engineering feasibility, construction costs and pedestrian demand remain unknown.

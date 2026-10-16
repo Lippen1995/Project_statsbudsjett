@@ -7,11 +7,11 @@ interface CityState {
   selected: Feature | null;
   selectedSegmentId: string | null;
   quality: "balanced" | "low";
-  camera: { revision: number; point: [number, number] | null };
+  camera: { revision: number; point: [number, number] | null; close?: boolean };
   select: (feature: Feature | null, segmentId?: string | null) => void;
   toggleLayer: (layer: Layer) => void;
   setQuality: (quality: "balanced" | "low") => void;
-  focus: (point: [number, number] | null) => void;
+  focus: (point: [number, number] | null, close?: boolean) => void;
 }
 
 export const useCity = create<CityState>((set) => ({
@@ -30,6 +30,12 @@ export const useCity = create<CityState>((set) => ({
         s.selected?.kind === layer.slice(0, -1) ? null : s.selectedSegmentId,
     })),
   setQuality: (quality) => set({ quality }),
-  focus: (point) =>
-    set((s) => ({ camera: { revision: s.camera.revision + 1, point } })),
+  focus: (point, close = false) =>
+    set((s) => ({
+      camera: {
+        revision: s.camera.revision + 1,
+        point,
+        ...(close ? { close: true } : {}),
+      },
+    })),
 }));

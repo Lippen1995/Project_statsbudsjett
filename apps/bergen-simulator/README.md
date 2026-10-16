@@ -108,3 +108,30 @@ the existing Vercel CSP. Evidence goes to `artifacts/milestone-3b/`.
 `npm run test:sandbox-baseline` reconstructs clean `54c6531` in a disposable archive
 on port 4181, using the same fixed cameras and visible-canvas profiling correction.
 It never switches a branch. See [3B model and evidence](../../docs/bergen-simulator/milestone-3b.md).
+
+## Milestone 4A — physical public spaces
+
+Enter Planning Mode → **Physical public spaces** → **New public-space footprint**.
+Tap 3–8 corners on the waterfront terrain. Preview validity/area, use **Move corners**
+or the keyboard-friendly coordinate tools, choose paving/landscaping and apply.
+Select the resulting surface to reshape/remove it. Undo/redo supports both the draft
+and the combined street/physical plan. **Navigate camera** temporarily restores orbit.
+
+Placement validates the entire footprint against the unchanged TIN, slope, buildings,
+coast, inland water and other proposals. Passing means geometric eligibility only:
+ownership, heritage, utilities, structural capacity and permission are unknown.
+Road conflicts identify original model section IDs; only an explicit player action
+changes traffic rules. Removing a surface retains separately chosen street edits;
+**Reset city** clears both. Traffic remains synthetic, not a Bergen forecast.
+
+Version-2 combined JSON files and version-1 3B plans are supported together in the
+existing local library. Reads do not rewrite legacy records. Try importing
+[`public/plans/waterfront-example.json`](public/plans/waterfront-example.json) for an
+independently validated 315 m² study and an achievable optional challenge solution.
+It demonstrates trade-offs, not a transport recommendation or legal feasibility.
+
+With the preview running, `npm run test:physical` exercises the entire desktop/touch
+physical-design/save/reload/legacy-import journey under the existing CSP. Evidence
+is written to ignored `artifacts/milestone-4a/`. `npm run test:physical-baseline`
+reconstructs exact 3B commit e047904 on port 4181 without switching branches.
+Run captures sequentially. See [geometry limits, evidence and performance](../../docs/bergen-simulator/milestone-4a.md).

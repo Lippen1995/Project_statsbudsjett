@@ -1,0 +1,16 @@
+{
+  "kind": "bergen-reimagined-plan",
+  "version": 1,
+  "name": "Harbour access trial",
+  "plan": {
+    "version": 1,
+    "networkId": "bryggen-transport-model-1-4ea4ffed",
+    "interventions": [
+      {
+        "segmentId": "way/9649862:645523:75457133",
+        "access": "local",
+        "capacityFactor": 1
+      }
+    ]
+  }
+}

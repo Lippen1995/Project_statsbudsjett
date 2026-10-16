@@ -171,3 +171,52 @@ with an explicit inspect-only readout. Teal outlines show editable sections; das
 proposal colours encode hypothetical edits. Selection and traffic intensity share
 these batches, without per-road React meshes. The main terrain sampler, demand
 rendering, DPR caps and independent release architecture remain intact.
+
+## Milestone 4A — hypothetical physical public spaces
+
+`physical/polygon.ts` is a small, pure TypeScript geometry kernel: finite simple
+rings, bounded ear clipping, ring/segment tests (including courtyard holes), and
+convex clipping. `physical/model.ts` builds a read-only placement context from the
+unchanged city snapshot. It clips every proposed triangle against overlapping
+rendered TIN triangles. Coverage area and maximum intersected TIN grade establish
+placement eligibility; barycentric lifting produces the exact surface geometry.
+Corner-only sampling cannot approve a footprint over an interior water/terrain gap.
+
+The context filters TIN/building candidates to a small authoring window. Placement
+also checks mapped coast, inland water, observed building rings, proposal overlap
+and proximity to verified transport sections. A compatibility checksum covers all
+placement-relevant records. It is not a security signature: schema and geometric
+revalidation against the loaded snapshot are required regardless of the checksum.
+Numeric limits and their meaning are documented in [the 4A specification](milestone-4a.md).
+No parcel ownership, heritage, utility, permission or engineering data is inferred.
+
+`state/physical.ts` owns an unapplied, bounded authoring draft. Terrain raycasts
+translate pointer/touch taps into proposed coordinates; handles can be dragged on
+the TIN. The same coordinates can be edited with keyboard-friendly numeric inputs
+and metre-step buttons. Camera navigation is explicitly available while drawing.
+An invalid preview never replaces a confirmed surface. Application commits both
+street and physical data into one bounded scenario history; results are invalidated
+and the transport worker stopped. Drafts are excluded from saves and simulations.
+
+`PublicSpaces` renders clipped surfaces and dashed boundaries in two merged passes,
+plus one instanced handle pass while editing (maximum eight handles). Replaced
+geometries/materials are disposed. No source triangle, building or road is edited;
+no shadow, animation loop, excavation or demolition is added. The transport worker,
+fixed ticks, routing engine and all existing synthetic parameters are unchanged.
+
+Version-2 scenario exports add a version-1 `physical` object alongside the unchanged
+version-1 transport `plan`. Version-1 3B exports remain valid. The library keeps its
+original version/key and can contain both file versions. Legacy records are read
+without rewriting them; opening a legacy record creates an empty physical layer in
+memory. Only an explicit save writes a version-2 record. The existing whole-library
+validation, bounds, atomic write, quota handling and other-tab conflict checks remain.
+Physical imports and library records require the matching geographic context and
+pass every placement constraint before replacing any current state.
+
+Road proximity is a conflict warning, not a traffic effect. The player may explicitly
+apply the existing `local` model rule to a conflicted **whole verified section**,
+preserving assumed local/servicing categories, the current capacity multiplier and
+original mapped directions.
+This is an ordinary, separately undoable street edit; removing a surface retains
+that explicit traffic decision until the player restores it. No partial-section
+capacity, pedestrian-demand or economic effect is invented.

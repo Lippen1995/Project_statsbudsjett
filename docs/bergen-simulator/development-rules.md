@@ -59,3 +59,15 @@ static requests and checks missing-data failure, navigation and selection.
   changing thresholds. Keep game scoring separate from geographic/transport metrics.
 - Profile a visible canvas with fixed cameras, viewport, DPR and renderer settings;
   label software-renderer measurements and keep physical-device performance unverified.
+
+## Physical proposals
+
+Keep physical edits in the versioned proposal layer; never modify the pinned source
+snapshot. Imported geometry must pass the same finite/bounded schema, TIN coverage,
+slope, building, water/coast and overlap checks as interactive placement. A saved
+validity flag, supplied elevation or imported transport result is never trusted.
+Existing valid 3B records remain readable without automatic writes or deletion.
+Source IDs and original road directions are immutable. Surface placement alone
+must not silently change access, capacity or any synthetic simulation parameter.
+Only explicit street edits enter the existing transport worker. State the difference
+between geometric eligibility, synthetic outcomes and unmodelled real-world feasibility.

@@ -84,3 +84,29 @@ transport metrics; any lost trip penalizes the score below every fully routed pl
 Physical construction, land-use edits, parcel ownership, costs, population, political
 simulation, cloud saves and accounts remain outside this milestone. Geography and
 all existing traffic assumptions stay traceable and explicitly uncalibrated.
+
+## Active milestone 4A — physical public-space authoring
+
+Planning Mode now has two tools: street operations and physical public spaces.
+Players place a bounded footprint on real terrain near Bryggen, reshape corners,
+choose artistic pedestrian paving or landscaped treatment, inspect road conflicts,
+and explicitly decide whether to change modelled access. An eligible shape becomes
+a visible terrain-following proposed surface. It can be selected, removed, undone,
+redone, compared to the observed city or a saved design, and saved with traffic edits.
+
+Passing placement checks establishes geometric eligibility in this prototype only.
+It says nothing about ownership, heritage restrictions, utilities, structural
+capacity, construction permission or technical feasibility. Area is a measurable
+horizontal design footprint. Traffic outcomes remain synthetic. Construction costs,
+legal feasibility, pedestrian activity and economic benefits are unmodelled.
+
+The optional **Transforming the Bryggen Waterfront** challenge uses a modest area
+band, supported proximity to real modelled roads, explicit treatment of road
+conflicts, complete synthetic access and bounded detours/congestion. A tested plan
+proves the objectives achievable; closing roads and losing demand cannot win.
+There is no reward for maximizing polygon size.
+
+Local save/export version 2 supports combined designs; valid 3B version-1 plans
+remain usable. No database, account, new geographic snapshot or deployment project
+is introduced. Building placement, demolition, zoning and terrain modification are
+future milestones, with separate safeguards and source requirements.

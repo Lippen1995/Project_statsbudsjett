@@ -1,0 +1,25 @@
+{
+  "baselineCommit": "e04790448595e12c7936c6a86c0bfe1a9971555f",
+  "files": {
+    "README.md": "22519670bc86bce5c48123b3bd7b75d05044d71d81172f059db8a57e047dfc6e",
+    "after/01-before-waterfront.jpg": "884f7a51024cb66771910cbda46f9ccdb6e3d89bdc9e83df673bb36b5af8d142",
+    "after/02-live-placement.jpg": "d3847794e361d8a660f8995c52efd8c28c7e298e75e49a30e1ad89088cf9d151",
+    "after/03-proposed-waterfront.jpg": "bed1f4287b33ad050aa92ede427dc2aaceb1111e777caadc495723b9b1758a55",
+    "after/04-invalid-placement.jpg": "ed3b154a7a2728b92d28ef598e36d423e0fb234b64fef8620a4baf8c17e0ec56",
+    "after/05-combined-plan-results.jpg": "b9ddda31e16356236c282840010545abde5089ed815c148f7245b893926115fa",
+    "after/06-challenge.jpg": "1fb28f35287160584bf0570a776308e27f2767c2583493191fc78fc2d86c32d0",
+    "after/06-saved-design-comparison.jpg": "5a1d5b9c30dd10162e6c3dbe89436cdd4afb734660e2379b2f3987a9f2dbe136",
+    "after/07-mobile-landscaped.jpg": "855c78da980e8cc3951a126fc3c7d1eb82d82933460ea9d213a88b9d7ddc1de8",
+    "after/bergenhus.jpg": "ee3149c3fb99794a25dcd3521cf3d7147cc26703e5f5dcd881be7de063f933e3",
+    "after/nordnes.jpg": "64090f329851527ec3385c243cabb4da9aea71a06dea4c805171ca2a2c6ff9c9",
+    "after/overview.jpg": "404e5ac019b9ea2a11b85f9af06bfbcf992be018d6f97901aaca36dde9ecc9f1",
+    "before/02-waterfront.jpg": "a69a0d12c2896f0f9e69a9f66aaad65dcb6e8409bf68a7365cf1a8420faeb578",
+    "before/browser-report.json": "2c3cf8eea7fca9dd1a81eabff2efd87e8b2a7da267f2d4a931ec15426399e4e0",
+    "before/legacy-3b-plan.json": "4fc3673e2257fcb1ca5eaeebb3153c5d3a0b15332679f73871117250260c7ed4",
+    "browser-report.json": "f10d720e4d0f3c1f9676625fd74673c7e3f6d6b7b704fa3bfc7177cceb436771",
+    "combined-waterfront-plan.json": "8f84f5605d789e1fa6f543548b4c3e3b2f036b7003672ab82c385cd2dc5e242a",
+    "explorer-regression.json": "a8599eab488a13bf887dae37c437b6f454e218bc97f79bf21fab30ecfd97b8cd",
+    "geographic-views.json": "997dc040b025b72d156bd9ea4c50bb150f0fc78800e39287c96b554cdf3bc67e",
+    "street-regression.json": "0ddf3e1c1ab782b71eccb3647333c497e577396dc56725e395a149e1c97314bd"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "kind": "bergen-reimagined-plan",
+  "version": 2,
+  "physical": {
+    "version": 1,
+    "geographyId": "bergen-physical-1-05c9a48e",
+    "proposals": [
+      {
+        "id": "25e200b0-f927-4087-84c1-c710a2c08e7e",
+        "name": "Bryggen public-space trial",
+        "kind": "pedestrian",
+        "vertices": [
+          [
+            -53,
+            -255
+          ],
+          [
+            -23,
+            -228
+          ],
+          [
+            -28,
+            -222
+          ],
+          [
+            -58,
+            -249
+          ]
+        ]
+      }
+    ]
+  },
+  "name": "Combined waterfront trial",
+  "plan": {
+    "version": 1,
+    "networkId": "bryggen-transport-model-1-4ea4ffed",
+    "interventions": [
+      {
+        "segmentId": "way/9649862:645523:75457133",
+        "access": "local",
+        "capacityFactor": 1.25
+      }
+    ]
+  }
+}

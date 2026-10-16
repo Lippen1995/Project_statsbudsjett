@@ -1,9 +1,12 @@
+import { usePhysical } from "../state/physical";
 import { useState } from "react";
 import { useScenario } from "../state/scenario";
 import { scenarioFile } from "../planning/scenarios";
 export default function PlanLibrary() {
+  const draft = usePhysical((p) => p.draft);
   const s = useScenario(),
-    [selectedId, setSelectedId] = useState("");
+    [selectedId, setSelectedId] = useState(""),
+    [importing, setImporting] = useState(false);
   function save(duplicate = false) {
     try {
       s.save(window.localStorage, duplicate);
@@ -16,7 +19,13 @@ export default function PlanLibrary() {
   function exportFile() {
     if (!s.network || !s.plan) return;
     try {
-      const file = scenarioFile(s.name, s.plan, s.network);
+      const file = scenarioFile(
+        s.name,
+        s.plan,
+        s.network,
+        s.context,
+        s.physical,
+      );
       const url = URL.createObjectURL(
         new Blob([JSON.stringify(file, null, 2) + "\n"], {
           type: "application/json",
@@ -46,10 +55,13 @@ export default function PlanLibrary() {
         />
       </label>
       <div className="planning-actions">
-        <button onClick={() => save()} disabled={s.storageBlocked}>
+        <button onClick={() => save()} disabled={s.storageBlocked || !!draft}>
           Save plan
         </button>
-        <button onClick={() => save(true)} disabled={s.storageBlocked}>
+        <button
+          onClick={() => save(true)}
+          disabled={s.storageBlocked || !!draft}
+        >
           Duplicate plan
         </button>
       </div>
@@ -70,8 +82,11 @@ export default function PlanLibrary() {
       </label>
       <button
         className="compare-button"
-        disabled={!s.library.some((p) => p.id === selectedId)}
-        onClick={() => s.reopen(selectedId)}
+        disabled={!!draft || !s.library.some((p) => p.id === selectedId)}
+        onClick={() => {
+          usePhysical.getState().cancel();
+          s.reopen(selectedId);
+        }}
       >
         Open saved plan
       </button>
@@ -96,29 +111,37 @@ export default function PlanLibrary() {
         demand.
       </p>
       <div className="planning-actions">
-        <button onClick={exportFile}>Export JSON</button>
+        <button onClick={exportFile} disabled={!!draft}>
+          Export JSON
+        </button>
         <label className="import-plan">
-          Import JSON
+          {importing ? "Validating…" : "Import JSON"}
           <input
             aria-label="Import scenario JSON"
             type="file"
             accept=".json,application/json"
+            aria-busy={importing}
+            disabled={importing || !!draft}
             onChange={async (event) => {
               const file = event.target.files?.[0];
               event.target.value = "";
-              if (!file) return;
+              if (!file || importing || draft) return;
               if (file.size > 131072) {
                 s.report(
                   "Import rejected: file exceeds 128 KiB. Your plan was preserved.",
                 );
                 return;
               }
+              setImporting(true);
               try {
-                s.importPlan(await file.text());
+                if (s.importPlan(await file.text()))
+                  usePhysical.getState().cancel();
               } catch {
                 s.report(
                   "The selected file could not be read. Your plan was preserved.",
                 );
+              } finally {
+                setImporting(false);
               }
             }}
           />

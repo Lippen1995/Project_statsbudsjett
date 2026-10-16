@@ -31,17 +31,25 @@ See [3A evidence and assumptions](milestone-3a.md).
 versioned local plans, JSON interchange and saved-plan comparison. A tested
 Rethinking Bryggen challenge evaluates player plans and penalizes lost access.
 
-Next: a small **physical planning** slice using verified footprints/parcels and
-terrain constraints. Begin with a reversible proposed land-use designation or
-pedestrian-space footprint, distinct from observed buildings. Validate coast,
-water, slope and existing access before introducing construction geometry. Never
-invent source heights, ownership or financial costs. Physical feasibility and
-capacity consequences need a separately reviewed model and data sources.
+## 4A — Physical public spaces (complete)
+
+Bounded terrain-following proposed polygons, direct vertex editing and accessible
+coordinate tools, strict placement validation, explicit traffic conflict decisions,
+shared undo/redo, combined local saves and safe legacy import. The city is observed;
+the surface is hypothetical. See [4A evidence and limits](milestone-4a.md).
+
+Next: a small **conceptual building-placement** slice with a separate proposal layer,
+known footprint/height assumptions, terrain/building/water collision checks, reversible
+construction visibility and the existing combined saves. Begin on player-authored
+eligible polygons. Do not imply ownership or permission. Treat removal of observed
+buildings as a later, explicit hypothetical-demolition layer preserving source IDs,
+never deleting geography. Land-use categories can follow as scenario assumptions;
+validated physical, economic or pedestrian consequences need additional evidence.
 
 Keep widening the audited road/access boundary and profile on actual desktop/mobile
 hardware before animated agents or broader simulation scope.
 
-## 4 — Scenarios and independent persistence
+## 4B and beyond — Construction, land-use and independent persistence
 
 Scenario saves, undo, version migrations and comparison views. Provision a dedicated
 simulator database and identity boundary only when needed. Never reuse production

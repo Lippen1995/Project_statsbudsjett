@@ -18,11 +18,16 @@ import {
   roadGeometry,
 } from "../geo/geometry";
 import TrafficOverlay from "./TrafficOverlay";
+import PublicSpaces from "./PublicSpaces";
+import { usePhysical } from "../state/physical";
 import { terrainSampler } from "../geo/surface";
 
 function CameraControls({ data }: { data: CityData }) {
   const { camera, gl, invalidate } = useThree();
   const command = useCity((s) => s.camera);
+  const editing = usePhysical(
+    (s) => s.mode === "spaces" && s.action !== "navigate",
+  );
   const controls = useRef<OrbitControls | null>(null);
   useEffect(() => {
     const orbit = new OrbitControls(camera, gl.domElement);
@@ -52,6 +57,9 @@ function CameraControls({ data }: { data: CityData }) {
     };
   }, [camera, gl, invalidate, data.extent]);
   useEffect(() => {
+    if (controls.current) controls.current.enabled = !editing;
+  }, [editing]);
+  useEffect(() => {
     const orbit = controls.current;
     if (!orbit) return;
     const [x, z] = command.point ?? [0, 0];
@@ -63,9 +71,9 @@ function CameraControls({ data }: { data: CityData }) {
     const y = feature?.elevation ?? 0;
     orbit.target.set(x, y, z);
     camera.position.set(
-      x + (command.point ? 230 : 1050),
-      y + (command.point ? 310 : 1950),
-      z + (command.point ? 450 : 2150),
+      x + (command.close ? 45 : command.point ? 230 : 1050),
+      y + (command.close ? 105 : command.point ? 310 : 1950),
+      z + (command.close ? 110 : command.point ? 450 : 2150),
     );
     orbit.update();
     invalidate();
@@ -156,11 +164,19 @@ function CityGeometry({ data }: { data: CityData }) {
     [highlight],
   );
   const pick = (event: ThreeEvent<MouseEvent>, group: typeof buildings) => {
-    if (event.delta > 4 || event.faceIndex == null) return;
+    if (
+      usePhysical.getState().draft ||
+      event.delta > 4 ||
+      event.faceIndex == null
+    )
+      return;
     event.stopPropagation();
     const feature = featureAtFace(group.ranges, event.faceIndex);
     const network = useScenario.getState().network;
-    const section = network && feature?.kind === "road" ? nearestSegment(network, feature.id, [event.point.x, event.point.z]) : null;
+    const section =
+      network && feature?.kind === "road"
+        ? nearestSegment(network, feature.id, [event.point.x, event.point.z])
+        : null;
     select(feature, section);
   };
   return (
@@ -196,6 +212,7 @@ function CityGeometry({ data }: { data: CityData }) {
         <meshLambertMaterial vertexColors side={THREE.DoubleSide} />
       </mesh>
       <TrafficOverlay data={data} surface={surface} />
+      <PublicSpaces terrain={terrain} surface={surface} />
       {highlight ? (
         <mesh geometry={highlight} renderOrder={3}>
           <meshBasicMaterial

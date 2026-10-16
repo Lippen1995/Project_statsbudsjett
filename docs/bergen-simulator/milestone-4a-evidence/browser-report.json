@@ -1,0 +1,45 @@
+{
+  "browserVersion": "151.0.7922.173",
+  "renderer": "ANGLE SwiftShader software renderer; physical-device GPU performance unverified",
+  "checks": [
+    "Mouse polygon draw, terrain-following mesh, direct corner drag, accessible coordinate edit and invalid-placement rejection",
+    "Explicit road rule changes synthetic routes; baseline comparison and cross-type undo/redo rerun reproducibly",
+    "Duplicated physical designs compare independently in 3D without overwriting the original",
+    "Save/reload, real JSON download/import and malformed geometry rejection preserve the active combined plan",
+    "Legacy 3B import succeeds and a real-network combined plan achieves the optional challenge",
+    "Direct surface inspection/removal and reset return the city to the original five rendering passes",
+    "Touch polygon placement, landscaped treatment, mobile save/reload and zero idle rendering"
+  ],
+  "desktop": {
+    "loadMs": 3589.2439639999993,
+    "computeMs": 42.899999998509884,
+    "activeProfile": {
+      "calls": 9,
+      "triangles": 289358,
+      "lines": 34,
+      "geometries": 9,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 376.3999999985099,
+      "p95CameraLatencyMs": 482.19999999552965,
+      "medianCpuFrameMs": 0.4000000059604645,
+      "idleFrames": 0
+    }
+  },
+  "mobile": {
+    "loadMs": 2043.0048839999945,
+    "computeMs": 46.10000001639128,
+    "activeProfile": {
+      "calls": 9,
+      "triangles": 289358,
+      "lines": 34,
+      "geometries": 9,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 191.29999999701977,
+      "p95CameraLatencyMs": 226.19999999552965,
+      "medianCpuFrameMs": 0.6000000014901161,
+      "idleFrames": 0
+    }
+  },
+  "passed": true,
+  "errors": []
+}

@@ -1,3 +1,4 @@
+import { usePhysical } from "../state/physical";
 import { useEffect, useMemo } from "react";
 import { DoubleSide } from "three";
 import type { ThreeEvent } from "@react-three/fiber";
@@ -31,6 +32,7 @@ export default function TrafficOverlay({
     intervention,
     reference,
   } = useScenario();
+  const physicalMode = usePhysical((p) => p.mode === "spaces");
   const selectedId = useCity((s) => s.selectedSegmentId);
   const displayPlan =
     mapView === "plan"
@@ -55,7 +57,17 @@ export default function TrafficOverlay({
         edit = edits.get(id),
         selected = id === selectedId;
       styles[id] = {
-        width: selected ? 15 : edit ? 12 : 8,
+        width: physicalMode
+          ? selected
+            ? 8
+            : edit
+              ? 6
+              : 4
+          : selected
+            ? 15
+            : edit
+              ? 12
+              : 8,
         color: selected
           ? "#fff8df"
           : edit
@@ -65,7 +77,7 @@ export default function TrafficOverlay({
       };
     }
     return trafficGeometry(network, null, surface, false, false, styles);
-  }, [network, displayPlan, surface, selectedId]);
+  }, [network, displayPlan, surface, selectedId, physicalMode]);
   const traffic = useMemo(
     () =>
       network && heatmap && result && result.tick > 0

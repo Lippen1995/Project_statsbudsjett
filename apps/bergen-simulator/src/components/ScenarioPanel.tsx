@@ -1,3 +1,5 @@
+import { usePhysical } from "../state/physical";
+import PublicSpaceEditor, { PhysicalMapTools } from "./PublicSpaceEditor";
 import { useEffect, useRef, useState } from "react";
 import { useScenario } from "../state/scenario";
 import { useCity } from "../state/store";
@@ -8,6 +10,7 @@ import StreetEditor from "./StreetEditor";
 import PlanLibrary from "./PlanLibrary";
 import PlanningResults, { ChallengeReadout, number } from "./PlanningResults";
 export default function ScenarioPanel({ data }: { data: CityData }) {
+  const p = usePhysical();
   const s = useScenario(),
     [loading, setLoading] = useState(false),
     [loadError, setLoadError] = useState("");
@@ -16,6 +19,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
     () => () => {
       abort.current?.abort();
       useScenario.getState().close();
+      usePhysical.getState().clear();
     },
     [],
   );
@@ -50,7 +54,8 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
       if (!source.ways.every((w) => ids.has(w.id)))
         throw new Error("Transport ways do not match the geographic snapshot.");
       if (controller.signal.aborted) return;
-      s.open(source);
+      p.clear();
+      s.open(source, data);
       useCity.getState().select(null);
       useCity.getState().focus([20, -220]);
       try {
@@ -97,6 +102,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
           className="icon-button"
           aria-label="Leave Planning Mode"
           onClick={() => {
+            p.clear();
             s.close();
             useCity.getState().select(null);
           }}
@@ -110,17 +116,35 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
       </p>
       <div className="plan-heading">
         <strong>{s.name}</strong>
-        <span>{s.plan?.interventions.length ?? 0} proposed section edits</span>
+        <span>
+          {s.plan?.interventions.length ?? 0} proposed section edits ·{" "}
+          {s.physical?.proposals.length ?? 0} proposed spaces
+        </span>
       </div>
       <div className="planning-actions history-controls">
-        <button disabled={s.cursor < 1} onClick={s.undo}>
+        <button
+          disabled={p.draft ? p.past.length === 0 : s.cursor < 1}
+          onClick={() => {
+            if (p.draft) p.undoDraft();
+            else s.undo();
+          }}
+        >
           ↶ Undo
         </button>
-        <button disabled={s.cursor >= s.history.length - 1} onClick={s.redo}>
+        <button
+          disabled={
+            p.draft ? p.future.length === 0 : s.cursor >= s.history.length - 1
+          }
+          onClick={() => {
+            if (p.draft) p.redoDraft();
+            else s.redo();
+          }}
+        >
           ↷ Redo
         </button>
         <button
           onClick={() => {
+            p.clear();
             s.reset();
             useCity.getState().select(null);
             useCity.getState().focus(null);
@@ -129,14 +153,38 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
           Reset city
         </button>
       </div>
-      <StreetEditor data={data} />
+      <div className="planning-mode-tabs" aria-label="Planning tools">
+        <button
+          aria-pressed={p.mode === "streets"}
+          onClick={() => p.setMode("streets")}
+        >
+          Street operations
+        </button>
+        <button
+          aria-pressed={p.mode === "spaces"}
+          onClick={() => p.setMode("spaces")}
+        >
+          Physical public spaces
+        </button>
+      </div>
+      {p.mode === "spaces" ? (
+        <PublicSpaceEditor />
+      ) : (
+        <StreetEditor data={data} />
+      )}
+      {p.draft && (
+        <p className="data-note">
+          Apply or discard your shape before running or saving the combined
+          plan.
+        </p>
+      )}
       <div className="simulation-controls">
         {s.phase === "running" || s.phase === "paused" ? (
           <button className="plan-button" onClick={s.pauseResume}>
             {s.phase === "running" ? "Pause simulation" : "Resume simulation"}
           </button>
         ) : (
-          <button className="plan-button" onClick={s.run}>
+          <button className="plan-button" onClick={s.run} disabled={!!p.draft}>
             ▶ Run plan
           </button>
         )}
@@ -223,10 +271,12 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
   );
 }
 export function ScenarioLegend() {
+  const p = usePhysical();
   const s = useScenario(),
     selectedId = useCity((v) => v.selectedSegmentId),
     selected = useCity((v) => v.selected);
   if (s.phase === "closed") return null;
+  if (p.mode === "spaces") return <PhysicalMapTools />;
   const reference = s.library.find((p) => p.id === s.referenceId);
   const label =
     s.mapView === "baseline"

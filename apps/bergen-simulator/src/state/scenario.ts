@@ -1,3 +1,12 @@
+import type { CityData } from "../geo/types";
+import {
+  placementContext,
+  emptyPhysical,
+  validatePhysical,
+  type PhysicalPlan,
+  type PlacementContext,
+  type PublicSpace,
+} from "../physical/model";
 import { create } from "zustand";
 import {
   buildNetwork,
@@ -29,7 +38,15 @@ export type Phase =
   | "complete"
   | "error";
 export type MapView = "plan" | "baseline" | "reference";
+interface Draft {
+  plan: Plan;
+  physical: PhysicalPlan | null;
+}
 interface ScenarioState {
+  context: PlacementContext | null;
+  physical: PhysicalPlan | null;
+  putSpace: (space: PublicSpace) => boolean;
+  removeSpace: (id: string) => void;
   source: TransportSource | null;
   network: Network | null;
   plan: Plan | null;
@@ -42,7 +59,7 @@ interface ScenarioState {
   error: string;
   notice: string;
   computeMs: number;
-  history: Plan[];
+  history: Draft[];
   cursor: number;
   name: string;
   currentId: string | null;
@@ -50,7 +67,7 @@ interface ScenarioState {
   storageBlocked: boolean;
   referenceId: string | null;
   challenge: boolean;
-  open: (source: TransportSource) => void;
+  open: (source: TransportSource, data?: CityData) => void;
   edit: (edit: Intervention | { segmentId: string }) => void;
   undo: () => void;
   redo: () => void;
@@ -85,7 +102,7 @@ const resultReset = {
 const clean = {
   ...resultReset,
   heatmap: true,
-  history: [] as Plan[],
+  history: [] as Draft[],
   cursor: 0,
   name: "Untitled Bergen plan",
   currentId: null,
@@ -97,23 +114,29 @@ const message = (e: unknown) =>
   e instanceof Error ? e.message : "The plan could not be processed.";
 export const useScenario = create<ScenarioState>((set, get) => ({
   ...clean,
+  context: null,
+  physical: null,
   source: null,
   network: null,
   plan: null,
   phase: "closed",
   library: [],
   storageBlocked: false,
-  open: (source) => {
+  open: (source, data) => {
     const owned = structuredClone(source),
       network = buildNetwork(owned),
-      plan = emptyPlan(network);
+      plan = emptyPlan(network),
+      context = data ? placementContext(data, network) : null,
+      physical = context ? emptyPhysical(context) : null;
     stop();
     set({
       ...clean,
+      context,
+      physical,
       source: owned,
       network,
       plan,
-      history: [plan],
+      history: [{ plan, physical }],
       phase: "ready",
       library: [],
       storageBlocked: false,
@@ -125,7 +148,10 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     try {
       const next = editPlan(plan, edit, network);
       if (JSON.stringify(next) === JSON.stringify(plan)) return;
-      const updated = [...history.slice(0, cursor + 1), next].slice(-51);
+      const updated = [
+        ...history.slice(0, cursor + 1),
+        { plan: next, physical: get().physical },
+      ].slice(-51);
       stop();
       set({
         ...resultReset,
@@ -139,6 +165,68 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       set({ error: message(e) });
     }
   },
+  putSpace: (space) => {
+    const s = get();
+    if (!s.context || !s.physical || !s.plan) return false;
+    try {
+      const physical = validatePhysical(
+        {
+          ...s.physical,
+          proposals: [
+            ...s.physical.proposals.filter((p) => p.id !== space.id),
+            space,
+          ],
+        },
+        s.context,
+      );
+      if (JSON.stringify(physical) === JSON.stringify(s.physical)) return true;
+      const history = [
+        ...s.history.slice(0, s.cursor + 1),
+        { plan: s.plan, physical },
+      ].slice(-51);
+      stop();
+      set({
+        ...resultReset,
+        physical,
+        history,
+        cursor: history.length - 1,
+        phase: "ready",
+        notice:
+          "Hypothetical surface applied. Traffic rules are unchanged until you explicitly edit them.",
+      });
+      return true;
+    } catch (e) {
+      set({ error: message(e) });
+      return false;
+    }
+  },
+  removeSpace: (id) => {
+    const s = get();
+    if (
+      !s.physical ||
+      !s.plan ||
+      !s.physical.proposals.some((p) => p.id === id)
+    )
+      return;
+    const physical = {
+      ...s.physical,
+      proposals: s.physical.proposals.filter((p) => p.id !== id),
+    };
+    const history = [
+      ...s.history.slice(0, s.cursor + 1),
+      { plan: s.plan, physical },
+    ].slice(-51);
+    stop();
+    set({
+      ...resultReset,
+      physical,
+      history,
+      cursor: history.length - 1,
+      phase: "ready",
+      notice:
+        "Surface removed. Explicit street edits remain in your plan; undo or restore them separately.",
+    });
+  },
   undo: () => {
     const s = get();
     if (s.cursor < 1) return;
@@ -146,9 +234,9 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     set({
       ...resultReset,
       cursor: s.cursor - 1,
-      plan: structuredClone(s.history[s.cursor - 1]),
+      ...structuredClone(s.history[s.cursor - 1]),
       phase: "ready",
-      notice: "Street edit undone. Results cleared.",
+      notice: "Plan edit undone. Results cleared.",
     });
   },
   redo: () => {
@@ -158,9 +246,9 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     set({
       ...resultReset,
       cursor: s.cursor + 1,
-      plan: structuredClone(s.history[s.cursor + 1]),
+      ...structuredClone(s.history[s.cursor + 1]),
       phase: "ready",
-      notice: "Street edit restored. Results cleared.",
+      notice: "Plan edit restored. Results cleared.",
     });
   },
   run: () => {
@@ -174,6 +262,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       if (referenceId && !referencePlan)
         throw new Error("Saved reference is unavailable.");
       validatePlan(plan, network);
+      if (get().physical && get().context)
+        validatePhysical(get().physical, get().context!);
       if (referencePlan) validatePlan(referencePlan, network);
       const current = new Worker(
         new URL("../simulation/worker.ts", import.meta.url),
@@ -238,11 +328,13 @@ export const useScenario = create<ScenarioState>((set, get) => ({
   reset: () => {
     const network = get().network;
     stop();
-    const plan = network ? emptyPlan(network) : null;
+    const plan = network ? emptyPlan(network) : null,
+      physical = get().context ? emptyPhysical(get().context!) : null;
     set({
       ...clean,
       plan,
-      history: plan ? [plan] : [],
+      physical,
+      history: plan ? [{ plan, physical }] : [],
       phase: network ? "ready" : "closed",
       notice: "City restored to the original model. Saved plans are retained.",
     });
@@ -251,6 +343,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     stop();
     set({
       ...clean,
+      context: null,
+      physical: null,
       source: null,
       network: null,
       plan: null,
@@ -261,7 +355,11 @@ export const useScenario = create<ScenarioState>((set, get) => ({
   },
   setMapView: (mapView) => {
     const s = get();
-    if (mapView === "reference" && !s.reference) return;
+    if (
+      mapView === "reference" &&
+      !s.library.some((p) => p.id === s.referenceId)
+    )
+      return;
     set({ mapView });
   },
   toggleHeatmap: () => set((s) => ({ heatmap: !s.heatmap })),
@@ -284,7 +382,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     if (!n) return;
     try {
       set({
-        library: readLibrary(storage, n).plans,
+        library: readLibrary(storage, n, get().context).plans,
         storageBlocked: false,
         error: "",
       });
@@ -304,10 +402,16 @@ export const useScenario = create<ScenarioState>((set, get) => ({
           "The existing local library is incompatible. It will not be overwritten. Export your draft instead.",
         );
       const name = duplicate ? s.name.slice(0, 53) + " (copy)" : s.name;
-      const scenario = scenarioFile(name, s.plan, s.network);
+      const scenario = scenarioFile(
+        name,
+        s.plan,
+        s.network,
+        s.context,
+        s.physical,
+      );
       const id = duplicate || !s.currentId ? crypto.randomUUID() : s.currentId;
       const record = { id, savedAt: new Date().toISOString(), scenario };
-      const latest = readLibrary(storage, s.network);
+      const latest = readLibrary(storage, s.network, s.context);
       const known = s.library.find((p) => p.id === id),
         existing = latest.plans.find((p) => p.id === id);
       if (
@@ -325,6 +429,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
           plans: [...latest.plans.filter((p) => p.id !== id), record],
         },
         s.network,
+        s.context,
       ).plans;
       const replacedReference = id === s.referenceId;
       if (replacedReference) stop();
@@ -354,14 +459,20 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       return;
     }
     try {
-      const plan = validatePlan(record.scenario.plan, s.network);
+      const plan = validatePlan(record.scenario.plan, s.network),
+        physical = record.scenario.physical
+          ? validatePhysical(record.scenario.physical, s.context!)
+          : s.context
+            ? emptyPhysical(s.context)
+            : null;
       stop();
       set({
         ...resultReset,
         name: record.scenario.name,
         currentId: id,
         plan,
-        history: [plan],
+        physical,
+        history: [{ plan, physical }],
         cursor: 0,
         referenceId: null,
         phase: "ready",
@@ -375,15 +486,18 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     const n = get().network;
     if (!n) return false;
     try {
-      const file = parseScenario(text, n);
+      const file = parseScenario(text, n, get().context);
+      const physical =
+        file.physical ?? (get().context ? emptyPhysical(get().context!) : null);
       stop();
       set({
         ...resultReset,
+        physical,
         plan: file.plan,
         name: file.name,
         currentId: null,
         referenceId: null,
-        history: [file.plan],
+        history: [{ plan: file.plan, physical }],
         cursor: 0,
         phase: "ready",
         notice:
