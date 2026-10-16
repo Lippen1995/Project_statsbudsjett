@@ -8,6 +8,7 @@ import {
   assertEnvironment,
   assertProject,
   assertTarget,
+  cliFailureSummary,
   parseStageOutput,
   BRANCH,
   ENVIRONMENT,
@@ -19,6 +20,34 @@ import {
 } from "../scripts/ci-policy.mjs";
 
 const sha = "a".repeat(40);
+
+test("CLI diagnostics classify identity failures without reproducing captured credentials or URLs", () => {
+  const privateValue = "do-not-publish-this-test-credential";
+  assert.equal(
+    cliFailureSummary({
+      stderr: `Error: You do not have access to the specified account ${privateValue}`,
+    }),
+    "account identity lookup denied",
+  );
+  assert.equal(
+    cliFailureSummary({
+      stdout: JSON.stringify({
+        reason: privateValue,
+        url: `https://example.invalid/${privateValue}`,
+      }),
+    }),
+    "unclassified CLI failure",
+  );
+  assert(
+    !cliFailureSummary({ stderr: `HTTP 403 ${privateValue}` }).includes(
+      privateValue,
+    ),
+  );
+  assert.equal(
+    cliFailureSummary({ stderr: "fetch failed: ECONNREFUSED" }),
+    "CLI network request failed",
+  );
+});
 
 test("pinned CLI non-interactive deployment JSON yields only a READY Bergen production URL", () => {
   const url = "https://bergen-reimagined-example-fjord-insight.vercel.app";

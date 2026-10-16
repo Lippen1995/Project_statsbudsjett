@@ -8,6 +8,40 @@ export const PROJECT_NAME = "bergen-reimagined";
 export const STABLE_HOST = "bergen-reimagined.vercel.app";
 export const ENVIRONMENT = "bergen-simulator";
 
+export function cliFailureSummary(result) {
+  // Return only authored categories, never captured CLI text, URLs or credentials.
+  const text = `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
+  const categories = [
+    [
+      /scope-not-accessible|do not have access to the specified account|not able to load user/i,
+      "account identity lookup denied",
+    ],
+    [
+      /scope-not-existent|specified scope does not exist/i,
+      "scope lookup failed",
+    ],
+    [
+      /invalid.token|token.*not valid|authentication.required|auth_required/i,
+      "CLI authentication rejected",
+    ],
+    [/project.not.found|project_not_found/i, "CLI project lookup failed"],
+    [/\b403\b|forbidden/i, "CLI request forbidden"],
+    [/\b401\b|unauthorized/i, "CLI request unauthorized"],
+    [
+      /ERR_MODULE_NOT_FOUND|cannot find module|cannot find package/i,
+      "CLI dependency unavailable",
+    ],
+    [
+      /ENOTFOUND|ECONNREFUSED|ETIMEDOUT|fetch failed/i,
+      "CLI network request failed",
+    ],
+  ];
+  return (
+    categories.find(([pattern]) => pattern.test(text))?.[1] ??
+    "unclassified CLI failure"
+  );
+}
+
 export function parseStageOutput(output) {
   let result;
   try {

@@ -19,6 +19,7 @@ import {
   assertEnvironment,
   assertProject,
   assertTarget,
+  cliFailureSummary,
   parseStageOutput,
   BRANCH,
   ENVIRONMENT,
@@ -125,7 +126,7 @@ function cli(args, authenticated = true) {
   assert.equal(
     result.status,
     0,
-    `Vercel ${args[0]} failed (exit ${result.status ?? "unavailable"}). Raw CLI output withheld to protect credentials.`,
+    `Vercel ${args[0]} failed (exit ${result.status ?? "unavailable"}): ${cliFailureSummary(result)}. Raw CLI output withheld to protect credentials.`,
   );
   return result.stdout.trim();
 }
@@ -302,8 +303,6 @@ async function pull() {
     "--environment=production",
     "--git-branch",
     BRANCH,
-    "--scope",
-    TEAM,
     "--non-interactive",
   ]);
   const link = assertLink();
@@ -375,8 +374,6 @@ async function stage() {
       "--prod",
       "--skip-domain",
       "--yes",
-      "--scope",
-      TEAM,
       "--non-interactive",
       "--format",
       "json",
