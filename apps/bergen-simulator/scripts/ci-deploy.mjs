@@ -19,6 +19,7 @@ import {
   assertEnvironment,
   assertProject,
   assertTarget,
+  parseStageOutput,
   BRANCH,
   ENVIRONMENT,
   PROJECT,
@@ -367,24 +368,28 @@ async function stage() {
   target();
   assertLink();
   await protectedProject(read("bergen-release.json").domains);
-  const url = cli([
-    "deploy",
-    "--prebuilt",
-    "--prod",
-    "--skip-domain",
-    "--yes",
-    "--scope",
-    TEAM,
-    "--non-interactive",
-    "--meta",
-    `githubCommitSha=${sha()}`,
-    "--meta",
-    `githubCommitRef=${BRANCH}`,
-    "--meta",
-    "githubCommitOrg=Lippen1995",
-    "--meta",
-    "githubCommitRepo=Project_statsbudsjett",
-  ]);
+  const url = parseStageOutput(
+    cli([
+      "deploy",
+      "--prebuilt",
+      "--prod",
+      "--skip-domain",
+      "--yes",
+      "--scope",
+      TEAM,
+      "--non-interactive",
+      "--format",
+      "json",
+      "--meta",
+      `githubCommitSha=${sha()}`,
+      "--meta",
+      `githubCommitRef=${BRANCH}`,
+      "--meta",
+      "githubCommitOrg=Lippen1995",
+      "--meta",
+      "githubCommitRepo=Project_statsbudsjett",
+    ]),
+  );
   deploymentUrl(url);
   const deployment = await inspectDeployment(url);
   await anonymousCheck(url);

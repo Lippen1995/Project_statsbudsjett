@@ -8,6 +8,7 @@ import {
   assertEnvironment,
   assertProject,
   assertTarget,
+  parseStageOutput,
   BRANCH,
   ENVIRONMENT,
   PROJECT,
@@ -18,6 +19,35 @@ import {
 } from "../scripts/ci-policy.mjs";
 
 const sha = "a".repeat(40);
+
+test("pinned CLI non-interactive deployment JSON yields only a READY Bergen production URL", () => {
+  const url = "https://bergen-reimagined-example-fjord-insight.vercel.app";
+  const output = {
+    status: "ok",
+    deployment: { url, readyState: "READY", target: "production" },
+  };
+  assert.equal(parseStageOutput(JSON.stringify(output)), url);
+  assert.throws(() => parseStageOutput(url));
+  assert.throws(() =>
+    parseStageOutput(JSON.stringify({ ...output, status: "error" })),
+  );
+  for (const patch of [
+    { readyState: "BUILDING" },
+    { target: null },
+    { url: "https://unrelated.vercel.app" },
+    { url: url + "/path" },
+    { url: url.replace("https:", "http:") },
+  ]) {
+    assert.throws(() =>
+      parseStageOutput(
+        JSON.stringify({
+          ...output,
+          deployment: { ...output.deployment, ...patch },
+        }),
+      ),
+    );
+  }
+});
 const env = {
   GITHUB_ACTIONS: "true",
   GITHUB_REPOSITORY: REPOSITORY,

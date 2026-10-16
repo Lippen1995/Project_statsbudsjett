@@ -8,6 +8,40 @@ export const PROJECT_NAME = "bergen-reimagined";
 export const STABLE_HOST = "bergen-reimagined.vercel.app";
 export const ENVIRONMENT = "bergen-simulator";
 
+export function parseStageOutput(output) {
+  let result;
+  try {
+    result = JSON.parse(output);
+  } catch {
+    assert.fail("Pinned Vercel CLI did not return deployment JSON");
+  }
+  assert.equal(result.status, "ok", "Vercel CLI did not report success");
+  assert.equal(
+    result.deployment?.readyState,
+    "READY",
+    "Staged CLI deployment is not READY",
+  );
+  assert.equal(
+    result.deployment?.target,
+    "production",
+    "Staged CLI deployment is not production",
+  );
+  assert.equal(
+    typeof result.deployment.url,
+    "string",
+    "Missing deployment URL",
+  );
+  const url = new URL(result.deployment.url);
+  assert.equal(url.origin, result.deployment.url, "Invalid deployment URL");
+  assert.equal(url.protocol, "https:");
+  assert.match(
+    url.hostname,
+    /^bergen-reimagined-[a-z0-9-]+\.vercel\.app$/,
+    "Unexpected deployment hostname",
+  );
+  return url.origin;
+}
+
 export function assertContext(env, head) {
   assert.equal(
     env.GITHUB_ACTIONS,

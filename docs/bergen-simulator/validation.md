@@ -90,7 +90,7 @@ release-policy/orchestration scripts. Native Git deployment is disabled; only th
 explicit Actions production release path targets the existing Bergen project.
 
 Local follow-up checks pass: actionlint 1.7.11, YAML/branch/job/permission/secret
-boundary inspection, 11 existing Vitest tests plus 7 release-policy tests, ESLint,
+boundary inspection, 11 existing Vitest tests plus 8 release-policy tests, ESLint,
 isolation and the unchanged Vite build. CLI 63.1.2 also produced valid production
 Build Output API v3 output in a disposable copy without credentials or deployment.
 All 1,362 inspected existing production workflow/deploy/frontend/ETL/root files
@@ -103,3 +103,8 @@ metadata reads with HTTP 403. No token was accessed. Initial CI must validate an
 skip deployment until the environment, its scoped secret and the repository arming
 variable in `deployment.md` are configured. No changes to main are required for
 branch-push testing; manual-dispatch discovery may require the default branch.
+
+The initial branch-push run [38901997614](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/38901997614)
+completed validation successfully and skipped the deployment job, confirming that
+push discovery works without a main change. A follow-up regression test verifies
+CLI 63.1.2's non-interactive deployment JSON format before configuration is armed.
