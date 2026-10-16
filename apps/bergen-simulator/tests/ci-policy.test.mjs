@@ -1,6 +1,18 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { resolve } from "node:path";
+import { prepareStageWorkspace } from "../scripts/ci-workspace.mjs";
+import {
   assertAnonymousDenied,
   assertContext,
   assertDeployment,
@@ -20,6 +32,60 @@ import {
 } from "../scripts/ci-policy.mjs";
 
 const sha = "a".repeat(40);
+
+test("prebuilt staging mirrors the remote app root without copying repository source or environment files", () => {
+  const app = mkdtempSync(resolve(tmpdir(), "bergen-stage-test-"));
+  try {
+    mkdirSync(resolve(app, ".vercel/output/static"), { recursive: true });
+    writeFileSync(
+      resolve(app, ".vercel/output/static/index.html"),
+      "verified build",
+    );
+    writeFileSync(
+      resolve(app, ".vercel/.env.production.local"),
+      "private fixture",
+    );
+    writeFileSync(resolve(app, "vercel.json"), "{}");
+    writeFileSync(resolve(app, "package.json"), "{}");
+    writeFileSync(resolve(app, "unrelated-source.txt"), "do not package");
+    for (const rootDirectory of [null, "apps/bergen-simulator"]) {
+      const link = {
+        orgId: TEAM,
+        projectId: PROJECT,
+        settings: { rootDirectory },
+      };
+      const workspace = prepareStageWorkspace(app, link);
+      assert.deepEqual(
+        JSON.parse(readFileSync(resolve(workspace, ".vercel/project.json"))),
+        link,
+      );
+      assert(
+        existsSync(resolve(workspace, rootDirectory ?? "", "vercel.json")),
+      );
+      assert.equal(
+        readFileSync(
+          resolve(workspace, ".vercel/output/static/index.html"),
+          "utf8",
+        ),
+        "verified build",
+      );
+      assert.deepEqual(readdirSync(resolve(workspace, ".vercel")).sort(), [
+        "output",
+        "project.json",
+      ]);
+      assert(!existsSync(resolve(workspace, "unrelated-source.txt")));
+    }
+    assert.throws(() =>
+      prepareStageWorkspace(app, {
+        orgId: TEAM,
+        projectId: PROJECT,
+        settings: { rootDirectory: "../other-app" },
+      }),
+    );
+  } finally {
+    rmSync(app, { recursive: true, force: true });
+  }
+});
 
 test("CLI diagnostics classify identity failures without reproducing captured credentials or URLs", () => {
   const privateValue = "do-not-publish-this-test-credential";

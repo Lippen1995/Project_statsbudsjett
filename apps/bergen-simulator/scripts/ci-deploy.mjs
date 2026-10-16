@@ -11,6 +11,7 @@ import {
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
+import { prepareStageWorkspace } from "./ci-workspace.mjs";
 import {
   assertAnonymousDenied,
   assertContext,
@@ -95,8 +96,10 @@ async function protectedProject(before) {
   return { project, domains };
 }
 
-function assertLink() {
-  const link = read("project.json");
+function assertLink(cwd = app) {
+  const link = JSON.parse(
+    readFileSync(resolve(cwd, ".vercel/project.json"), "utf8"),
+  );
   assert.equal(
     link.projectId,
     PROJECT,
@@ -106,9 +109,10 @@ function assertLink() {
   return link;
 }
 
-function cli(args, authenticated = true) {
+function cli(args, authenticated = true, cwd = app) {
   assertTarget(process.env);
-  assertLink();
+  assert([app, local("bergen-stage")].includes(cwd), "Unsafe CLI directory");
+  assertLink(cwd);
   const env = { ...process.env, VERCEL_TELEMETRY_DISABLED: "1", NO_COLOR: "1" };
   if (!authenticated) {
     delete env.VERCEL_TOKEN;
@@ -116,7 +120,7 @@ function cli(args, authenticated = true) {
     delete env.GITHUB_TOKEN;
   }
   const result = spawnSync("vercel", args, {
-    cwd: app,
+    cwd,
     env,
     encoding: "utf8",
     maxBuffer: 16 * 1024 * 1024,
@@ -358,27 +362,31 @@ function build() {
 
 async function stage() {
   target();
-  assertLink();
+  const workspace = prepareStageWorkspace(app, assertLink());
   await protectedProject(read("bergen-release.json").domains);
   const url = parseStageOutput(
-    cli([
-      "deploy",
-      "--prebuilt",
-      "--prod",
-      "--skip-domain",
-      "--yes",
-      "--non-interactive",
-      "--format",
-      "json",
-      "--meta",
-      `githubCommitSha=${sha()}`,
-      "--meta",
-      `githubCommitRef=${BRANCH}`,
-      "--meta",
-      "githubCommitOrg=Lippen1995",
-      "--meta",
-      "githubCommitRepo=Project_statsbudsjett",
-    ]),
+    cli(
+      [
+        "deploy",
+        "--prebuilt",
+        "--prod",
+        "--skip-domain",
+        "--yes",
+        "--non-interactive",
+        "--format",
+        "json",
+        "--meta",
+        `githubCommitSha=${sha()}`,
+        "--meta",
+        `githubCommitRef=${BRANCH}`,
+        "--meta",
+        "githubCommitOrg=Lippen1995",
+        "--meta",
+        "githubCommitRepo=Project_statsbudsjett",
+      ],
+      true,
+      workspace,
+    ),
   );
   deploymentUrl(url);
   const deployment = await inspectDeployment(url);

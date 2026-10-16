@@ -13,6 +13,10 @@ export function cliFailureSummary(result) {
   const text = `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
   const categories = [
     [
+      /the provided path.*(?:does not exist|outside of the project|expected a directory)/i,
+      "CLI root directory does not match the local layout",
+    ],
+    [
       /PROJECT_UNAUTHORIZED|could not retrieve project settings/i,
       "CLI project settings permission denied",
     ],
