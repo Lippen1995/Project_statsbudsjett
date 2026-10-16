@@ -99,3 +99,35 @@ failure boundaries and independent release/rollback paths.
 ## Milestone 2A geographic processing
 
 `refine-geography.py` reads the fixed pre-2A snapshot from Git history, verifies cached source hashes, imports an explicitly restricted Kartverket project DTM crop, and retains the original OSM land mask and feature identities. `terrain-source.json` records licensing, dates, coordinate systems and NN2000. OSM landcover comes from the existing pinned inputs. Rendering helpers separate conservative roof interpretation (`roofs.ts`), barycentric TIN sampling (`surface.ts`) and batched geometry. A localhost-only capture probe supplies reproducible cameras and diagnostics without affecting hosted authentication or adding an idle render loop. See [milestone evidence](milestone-2a.md).
+
+## Milestone 3A — bounded traffic simulation
+
+The active application additionally fetches its own static
+`/data/bryggen-transport.json` when the player enters the planning scenario.
+`simulation/network.ts` validates a 27-way ODbL extract and builds a directed graph
+using shared original OSM node IDs and observed one-way tags. Display geometry is
+never used for topological snapping. `scripts/import-transport.py` requires the
+complete, unchanged 30-tile source cache and refuses relevant turn restrictions
+that would need additional handling. Terrain/feature snapshots remain unchanged.
+
+`simulation/engine.ts` contains deterministic 30-second assignment ticks, bounded
+Dijkstra routing, common congestion costs, policy permissions and conservation
+accounting. It imports no UI, rendering, database or network libraries. There is
+no stochastic input and therefore no seed to configure. All demand, capacity,
+speed and policy access settings are explicitly assumed. It is a small planning
+game model, not a traffic forecast or a microscopic simulation.
+
+`simulation/worker.ts` owns baseline and intervention engines, advanced in lockstep
+against identical synthetic OD inputs. Wall-clock scheduling controls playback
+only; it never enters model calculations. Progress is sent every five ticks and
+at pause/completion. A fresh worker starts each run; reset, policy change and exit
+terminate it. Identity checks discard stale messages. State copies prevent workers
+or result inspection from mutating source geography.
+
+`state/scenario.ts` separates transient scenario state from geographic selections.
+`ScenarioPanel` supplies policy/play/pause/reset/comparison and accessible results;
+`TrafficOverlay` merges the corridor and intensity ribbons into two bounded draw
+passes. Both reuse the rendered terrain sampler. Opposing directions share one
+strip coloured by their worse period-average V/C; full source IDs remain selectable.
+No continuously animated vehicles, lights or render loops are introduced. See
+[the exact assumptions and acceptance evidence](milestone-3a.md).

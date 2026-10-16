@@ -1,0 +1,210 @@
+{
+  "browserVersion": "151.0.7922.173",
+  "renderer": "Chromium / ANGLE SwiftShader; software only, not physical-device performance",
+  "checks": [
+    "enter verified scenario",
+    "select policy",
+    "worker run/pause/resume",
+    "policy controls locked while running",
+    "30-minute completion",
+    "computed road colours visibly differ at identical camera",
+    "baseline comparison",
+    "traffic-batch source pointer inspection",
+    "pedestrian access trade-off",
+    "reset restores baseline",
+    "repeat worker results",
+    "heatmap toggle",
+    "overlay disposal",
+    "paused/complete zero idle frames",
+    "390px mobile run and reset",
+    "missing transport fails explicitly",
+    "local static assets only",
+    "module worker under unchanged Vercel CSP"
+  ],
+  "desktop": {
+    "explorer": {
+      "frames": 1,
+      "cpuFrameMs": 84.29999999701977,
+      "cameraLatencyMs": null,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 5,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        1049.9999999999998,
+        1950,
+        2149.9999999999995
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    "explorerProfile": {
+      "calls": 5,
+      "triangles": 288140,
+      "geometries": 5,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 400.6000000014901,
+      "p95CameraLatencyMs": 692,
+      "medianCpuFrameMs": 0.6999999992549419,
+      "idleFrames": 0
+    },
+    "ready": {
+      "frames": 17,
+      "cpuFrameMs": 1.800000000745058,
+      "cameraLatencyMs": 2.699999999254942,
+      "calls": 6,
+      "triangles": 288248,
+      "lines": 0,
+      "geometries": 6,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -450.00000000000006,
+        620.0000000000001,
+        600
+      ],
+      "target": [
+        30.000000000000004,
+        0,
+        -200.00000000000003
+      ]
+    },
+    "paused": {
+      "frames": 22,
+      "cpuFrameMs": 1.199999999254942,
+      "cameraLatencyMs": 3931.89999999851,
+      "calls": 7,
+      "triangles": 288846,
+      "lines": 0,
+      "geometries": 7,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -450.00000000000006,
+        620.0000000000001,
+        600
+      ],
+      "target": [
+        30.000000000000004,
+        0,
+        -200.00000000000003
+      ]
+    },
+    "restrictedProfile": {
+      "calls": 7,
+      "triangles": 288846,
+      "geometries": 7,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 442.5,
+      "p95CameraLatencyMs": 497.19999999925494,
+      "medianCpuFrameMs": 0.5,
+      "idleFrames": 0
+    },
+    "restricted": {
+      "table": "Model outcome\tBaseline\tPolicy\nVehicle travel time\t1,938 veh·min\t10,532 veh·min\n+443.4%\n\nThrough-trip distance\t337 m/trip\t932 m/trip\n+176.8%\n\nEmissions proxy\t100 index\t276 index\n+176.4%\n\nBryggen trips\t940 veh\t320 veh\n-66.0%\n\nHighest road V/C¹\t1.53\t3.68\nratio\n\nUnrouted in model\t0 / 960\t0 / 960\ntrips",
+      "workerComputeMs": 53.400000002235174,
+      "metrics": {
+        "frames": 48,
+        "cpuFrameMs": 0.3999999985098839,
+        "cameraLatencyMs": 445.8999999985099,
+        "calls": 7,
+        "triangles": 288846,
+        "lines": 0,
+        "geometries": 7,
+        "textures": 1,
+        "pixelRatio": 1,
+        "position": [
+          -420,
+          620,
+          600
+        ],
+        "target": [
+          30.000000000000004,
+          0,
+          -200.00000000000003
+        ]
+      }
+    },
+    "pedestrian": {
+      "wallMs": 8941,
+      "workerComputeMs": 52.399999998509884,
+      "table": "Model outcome\tBaseline\tPolicy\nVehicle travel time\t1,938 veh·min\t15,811 veh·min\n+715.7%\n\nThrough-trip distance\t337 m/trip\t932 m/trip\n+176.8%\n\nEmissions proxy\t100 index\t320 index\n+219.8%\n\nBryggen trips\t940 veh\t160 veh\n-83.0%\n\nHighest road V/C¹\t1.53\t3.68\nratio\n\nUnrouted in model\t0 / 960\t80 / 960\ntrips",
+      "metrics": {
+        "frames": 66,
+        "cpuFrameMs": 1.4000000022351742,
+        "cameraLatencyMs": 13061.300000000745,
+        "calls": 7,
+        "triangles": 288846,
+        "lines": 0,
+        "geometries": 7,
+        "textures": 1,
+        "pixelRatio": 1,
+        "position": [
+          -420,
+          620,
+          600
+        ],
+        "target": [
+          30.000000000000004,
+          0,
+          -200.00000000000003
+        ]
+      }
+    }
+  },
+  "mobile": {
+    "explorerProfile": {
+      "calls": 5,
+      "triangles": 288140,
+      "geometries": 5,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 159.10000000149012,
+      "p95CameraLatencyMs": 190,
+      "medianCpuFrameMs": 0.5,
+      "idleFrames": 0
+    },
+    "restricted": {
+      "wallMs": 8418,
+      "workerComputeMs": 47.099999975413084,
+      "table": "Model outcome\tBaseline\tPolicy\nVehicle travel time\t1,938 veh·min\t10,532 veh·min\n+443.4%\n\nThrough-trip distance\t337 m/trip\t932 m/trip\n+176.8%\n\nEmissions proxy\t100 index\t276 index\n+176.4%\n\nBryggen trips\t940 veh\t320 veh\n-66.0%\n\nHighest road V/C¹\t1.53\t3.68\nratio\n\nUnrouted in model\t0 / 960\t0 / 960\ntrips",
+      "metrics": {
+        "frames": 33,
+        "cpuFrameMs": 0.5,
+        "cameraLatencyMs": 8489.89999999851,
+        "calls": 7,
+        "triangles": 288846,
+        "lines": 0,
+        "geometries": 7,
+        "textures": 1,
+        "pixelRatio": 1,
+        "position": [
+          250,
+          310,
+          230
+        ],
+        "target": [
+          20,
+          0,
+          -220
+        ]
+      }
+    },
+    "restrictedProfile": {
+      "calls": 7,
+      "triangles": 288846,
+      "geometries": 7,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 137.80000000074506,
+      "p95CameraLatencyMs": 179.40000000223517,
+      "medianCpuFrameMs": 0.5,
+      "idleFrames": 0
+    }
+  },
+  "passed": true,
+  "errors": []
+}

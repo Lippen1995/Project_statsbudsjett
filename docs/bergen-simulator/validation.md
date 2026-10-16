@@ -108,3 +108,12 @@ The initial branch-push run [38901997614](https://github.com/Lippen1995/Project_
 completed validation successfully and skipped the deployment job, confirming that
 push discovery works without a main change. A follow-up regression test verifies
 CLI 63.1.2's non-interactive deployment JSON format before configuration is armed.
+
+## Milestone 3A
+
+The new 27-way traffic scenario passes 30 Vitest + 10 release-policy tests, the
+3 offline geographic tests, lint, build and isolation checks. The existing browser
+suite and a new complete scenario desktop/mobile sequence pass; archived baseline
+and after screenshots use fixed cameras. [Model assumptions, performance and
+acceptance evidence](milestone-3a.md) include limits and reproducible commands.
+No workflow, Fellestall file, existing geographic snapshot or lockfile was changed.

@@ -47,3 +47,20 @@ with source attribution and a defined API/schema. Historical observed facts and
 simulated outcomes must remain distinct. Simulator state, authentication and storage
 must have independent ownership and operational lifecycles. Bergen remains the
 only supported geography until its data and simulation contracts are proven.
+
+## Active milestone 3A — first playable city planning
+
+The historical exclusions and setup notes above describe earlier milestones.
+The protected Bergen deployment is now operational. The current vertical slice
+adds traffic planning around Bryggen/Vågen: enter a scenario, choose baseline,
+restricted through-traffic or pedestrian priority, run/pause, compare map and
+outcomes, reset and experiment. The map remains dominant and source inspection
+continues to expose the unchanged geography.
+
+The game uses synthetic travel demand and explicit model assumptions. A decision
+changes permitted routes in one common deterministic worker engine. Detours,
+congestion, travel time, emissions proxy and unrouted trips are calculated rather
+than drawn from outcome tables. No traffic forecast, real car counts or validated
+CO₂ reductions are claimed. Gameplay remains entirely local and ephemeral.
+Budgets, population, politics, construction, accounts and persistence remain outside
+this milestone. See [3A acceptance, evidence and limitations](milestone-3a.md).

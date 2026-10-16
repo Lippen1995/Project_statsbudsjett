@@ -1,0 +1,109 @@
+{
+  "label": "before",
+  "quality": "balanced",
+  "baselineCommit": "e06870440770a5212d804be9e75ad285b5333031",
+  "viewport": [
+    1440,
+    1000
+  ],
+  "renderer": "Chromium / ANGLE SwiftShader (software, not a hardware FPS benchmark)",
+  "browserVersion": "151.0.7922.173",
+  "readyMs": 3419,
+  "medianCpuFrameMs": 0.5,
+  "p95CpuFrameMs": 1.6000000014901161,
+  "medianCameraLatencyMs": 509.20000000298023,
+  "p95CameraLatencyMs": 811.6000000014901,
+  "idleFrames": 0,
+  "views": [
+    {
+      "name": "overview",
+      "frames": 2,
+      "cpuFrameMs": 0.8000000007450581,
+      "cameraLatencyMs": 734.3999999985099,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 5,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        1049.9999999999998,
+        1950,
+        2149.9999999999995
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "vagen",
+      "frames": 3,
+      "cpuFrameMs": 5.699999999254942,
+      "cameraLatencyMs": 6.899999998509884,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 5,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -428.02,
+        301.42,
+        229.23999999999995
+      ],
+      "target": [
+        1.98,
+        1.42,
+        -270.76
+      ]
+    },
+    {
+      "name": "bergenhus",
+      "frames": 4,
+      "cpuFrameMs": 0.6000000014901161,
+      "cameraLatencyMs": 7.300000000745058,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 5,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -663.46,
+        305.2,
+        -80.35999999999996
+      ],
+      "target": [
+        -333.46,
+        5.2,
+        -520.36
+      ]
+    },
+    {
+      "name": "nordnes",
+      "frames": 5,
+      "cpuFrameMs": 0.6000000014901161,
+      "cameraLatencyMs": 0.9000000022351742,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 5,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -372.0199999999998,
+        600,
+        -6.079999999999927
+      ],
+      "target": [
+        -822.0199999999999,
+        0,
+        -766.08
+      ]
+    }
+  ],
+  "errors": [],
+  "captureCommand": "node tests/visual.mjs http://127.0.0.1:4180 before (clean e068704; existing fixed cameras)"
+}

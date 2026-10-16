@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import Inspector from "./components/Inspector";
+import ScenarioPanel, { ScenarioLegend } from "./components/ScenarioPanel";
 import { useCity, type Layer } from "./state/store";
 import { parseCityData, type CityData } from "./geo/types";
 
@@ -75,6 +76,7 @@ function Sidebar({ data }: { data: CityData }) {
   }, [data, search]);
   return (
     <aside className="sidebar">
+      <ScenarioPanel data={data} />
       <div className="sidebar-intro">
         <span className="eyebrow">A CITY IN PERSPECTIVE</span>
         <h1>
@@ -219,7 +221,7 @@ export default function App() {
           </span>
         </a>
         <div className="header-center">
-          GEOGRAPHIC EXPLORER <span>02A / BERGEN</span>
+          CITY PLANNING PROTOTYPE <span>03A / BERGEN</span>
         </div>
         <span className="prototype-badge">
           <span />
@@ -264,6 +266,7 @@ export default function App() {
             <h2>Central Bergen</h2>
             <p>60°23′ N · 5°19′ E</p>
           </div>
+          <ScenarioLegend />
           <div className="map-status">
             <span className="status-dot" />
             {selected ? selected.name : "Explore mode"}
@@ -346,8 +349,9 @@ export default function App() {
                 water and atmosphere are an illustrative backdrop.
               </p>
               <p>
-                This is a geographic prototype. Simulation and policy controls
-                are planned.
+                Traffic planning uses synthetic demand and assumed capacities.
+                Results are a demonstration, not forecasts for actual Bergen
+                traffic.
               </p>
               <a
                 href="https://www.openstreetmap.org/copyright"

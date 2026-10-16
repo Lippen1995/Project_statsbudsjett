@@ -13,6 +13,7 @@ npm run build
 npm run check:isolation
 npm run preview             # http://localhost:4180
 npm run test:browser        # separate terminal, preview running; system Chromium
+npm run test:scenario       # full traffic-policy acceptance + performance captures
 ```
 
 Node 24+ is required. Dependencies and the lockfile belong to this application only.
@@ -33,7 +34,7 @@ is a separate reviewed dataset revision, never part of application build/install
 The initial snapshot covers 5.298–5.349 E, 60.382–60.408 N, including Vågen,
 Bryggen, Nordnes, Bergenhus, the city centre, Lille Lungegårdsvannet and Fløyen.
 OSM storey-based height estimates are labelled. Buildings without height or storey data remain draped footprints. This is not a surveyed
-digital twin or a simulation engine yet.
+digital twin. Traffic results are synthetic model outputs, not Bergen forecasts.
 
 Start with [architecture](../../docs/bergen-simulator/architecture.md),
 [data sources](../../docs/bergen-simulator/data-sources.md),
@@ -60,3 +61,28 @@ commit `ab92713` in a disposable archive, adds the same localhost-only capture
 probe and captures identical cameras on port 4181; it never switches branches.
 Node dependencies must already be installed. All evidence goes to ignored
 `artifacts/milestone-2a/`. Hardware FPS is not inferred from software-renderer timing.
+
+## Milestone 3A — the first playable planning scenario
+
+Choose **Plan Bryggen traffic**, select a traffic policy and run the 30-minute
+synthetic period. Pause/resume, compare baseline/policy on the map, inspect the
+source roads, reset and try another decision. The compact planning desk labels
+assumptions and access trade-offs; the road colours show directional V/C using
+assumed capacities. No traffic counts, municipal costs or CO₂ forecasts are claimed.
+
+The pure TypeScript engine runs in a disposable Web Worker, uses fixed 30-second
+ticks and no randomness, and never modifies geography. The bounded network is
+extracted from original OSM shared node IDs, not snapped display coordinates.
+`python scripts/import-transport.py` reproduces it **only** from the complete pinned
+30-tile XML cache created by the original import; changed or missing sources fail.
+The checked-in 27-way derived extract contains original node IDs, WGS84 coordinates,
+source tags and hashes, licensed ODbL. Builds do not fetch geographic services.
+
+`npm run test:scenario-baseline` reconstructs clean `e068704` in a disposable
+archive on port 4181 and captures the same four geographic cameras without changing
+any branch or baseline source.
+
+`npm run test:scenario` checks desktop and 390px mobile flows, worker pause/reset,
+repeatability, visible comparison at a fixed camera, resource disposal and idle
+rendering. It records screenshots and software-renderer metrics in ignored
+`artifacts/milestone-3a/`. See [model, evidence and limits](../../docs/bergen-simulator/milestone-3a.md).

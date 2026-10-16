@@ -56,3 +56,17 @@ water ripples are artistic; they are not a material or water survey.
 
 Additional derived OSM green-area polygons: bergen-context-osm.json.gz, ODbL 1.0,
 © OpenStreetMap contributors. Existing source mapping and source IDs are retained.
+
+## Derived traffic network — milestone 3A
+
+`bryggen-transport.json`: © OpenStreetMap contributors, ODbL 1.0.
+https://www.openstreetmap.org/copyright
+Original WGS84 node coordinates, node/way identifiers and tags extracted from the
+same hash-pinned 30-tile OSM cache. No new geographic acquisition or vertical datum
+is introduced. Display elevations use the existing Kartverket-derived terrain.
+The extract includes source hashes, snapshot retrieval time and a restriction
+relation audit. Shared node IDs alone establish connectivity; no inferred links.
+
+Demand, speeds, capacities, permitted policy categories, congestion costs and
+emissions proxy are **synthetic scenario assumptions**, not OSM observations or
+forecasts for actual Bergen traffic. Traffic colours are a model visualization.

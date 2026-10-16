@@ -15,7 +15,9 @@
     "test:browser": "node tests/browser.mjs",
     "test:visual": "node tests/visual.mjs",
     "test:baseline": "node tests/capture-baseline.mjs",
-    "check:isolation": "node scripts/check-isolation.mjs"
+    "check:isolation": "node scripts/check-isolation.mjs",
+    "test:scenario": "node tests/scenario-browser.mjs",
+    "test:scenario-baseline": "node tests/capture-scenario-baseline.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.4.0",

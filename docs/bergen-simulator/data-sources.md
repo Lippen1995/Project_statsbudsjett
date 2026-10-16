@@ -128,3 +128,31 @@ local delivery, redistribution rights and feature-height completeness have not
 been verified for this app. Next: obtain an appropriately licensed Bergen building
 height/roof extract and bridge deck levels, validate datum and dates, then improve
 Bergenhus and the still-unknown building stock. No production services are involved.
+
+## Traffic scenario extract — milestone 3A
+
+No new external geographic dataset was acquired. `bryggen-transport.json` derives
+27 motor-road ways and their original WGS84 OSM nodes from the same pinned snapshot
+(© OpenStreetMap contributors, ODbL 1.0). It records source tile hashes, the source
+manifest hash and retrieval time. There is no vertical datum in these 2D nodes;
+the existing NN2000-derived display terrain supplies ribbon elevations only.
+
+Reproduce with `python scripts/import-transport.py` after the original pinned XML
+cache is present. All 30 tiles must match `source-manifest.json`; incomplete inputs,
+changed hashes, absent selected ways or relevant restriction relations abort the
+extract. Redistributed coordinates, tags and node/way IDs retain ODbL attribution.
+No production data service or geographic API is accessed by build or gameplay.
+
+Bryggen policy edges are OSM `way/9649862` and `way/488690111`. The detour uses
+Slottsgaten, Sandbrogaten, Øvre Dreggsallmenningen, Dreggsallmenningen, Øvregaten,
+Finnegårdsgaten, Rosenkrantzgaten, Vetrlidsallmenningen, Bryggesporden and Torget.
+Lodin Lepps gate and Nikolaikirkeallmenningen provide a mapped one-way local
+access branch. Graph junctions require shared original node identities; a crossing
+or nearby endpoint is insufficient. One-way tags are retained. No selected-way
+restriction relations were found in the pinned cache; absent tagging is not proof
+of real-world turn legality or access. This extract deliberately omits other roads,
+bridges and tunnels. See [model boundaries](milestone-3a.md).
+
+Synthetic demand, speed, capacity, permitted trip categories and congestion and
+emissions functions are model parameters, **not geographic observations**. They
+are documented separately and must never be exported as municipal traffic facts.

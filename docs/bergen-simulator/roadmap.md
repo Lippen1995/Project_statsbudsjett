@@ -20,13 +20,18 @@ repeatable updates. Tile the scene spatially, move mesh preparation to a worker,
 add frustum culling and a geometry budget. Measure frame time/memory on representative
 mobile hardware. Exit when recognition and source fidelity pass a documented review.
 
-## 3 — First deterministic simulation
+## 3 — First deterministic simulation (3A complete)
 
-One small Bergen-only transport or land-use scenario. Define time, units, source
-facts, initial conditions and validation bounds. A pure TypeScript engine produces
-repeatable ticks from a scenario seed. Every policy impact is an explicit model
-assumption, separate from observed geography and municipal facts. No black-box
-claims of real-world predictive accuracy.
+Bryggen/Vågen now has a playable, deterministic worker-based transport scenario
+with three policies, source-node topology, visible road intensities, pause/reset
+and baseline comparisons. Demand and every transport parameter remain synthetic.
+See [3A evidence and assumptions](milestone-3a.md).
+
+Next gameplay milestone (3B): expand the reviewed transport boundary and turn/access
+rules, add scenario save/replay as versioned local files, and a demand/capacity
+sensitivity challenge. Preserve the distinction between game objectives and
+real-world forecast validation. Separately, test mesh preparation/culling on
+physical desktop and mobile hardware before adding moving traffic or more effects.
 
 ## 4 — Scenarios and independent persistence
 

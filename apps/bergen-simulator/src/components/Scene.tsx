@@ -15,6 +15,7 @@ import {
   makeCoastalEdge,
   roadGeometry,
 } from "../geo/geometry";
+import TrafficOverlay from "./TrafficOverlay";
 import { terrainSampler } from "../geo/surface";
 
 function CameraControls({ data }: { data: CityData }) {
@@ -188,6 +189,7 @@ function CityGeometry({ data }: { data: CityData }) {
       >
         <meshLambertMaterial vertexColors side={THREE.DoubleSide} />
       </mesh>
+      <TrafficOverlay data={data} surface={surface} />
       {highlight ? (
         <mesh geometry={highlight} renderOrder={3}>
           <meshBasicMaterial

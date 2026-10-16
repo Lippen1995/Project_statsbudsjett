@@ -860,3 +860,53 @@ a {
     transition: none !important;
   }
 }
+
+/* The planning desk stays in the existing sidebar; the city remains the stage. */
+.scenario-entry, .scenario-panel { padding: 24px 22px; border-bottom: 1px solid #cbd6c9; background: #e9ede1; }
+.scenario-entry h2, .scenario-panel h2 { font: 25px/1.15 Georgia, serif; margin: 10px 0; color: #244d44; }
+.scenario-entry p, .scenario-question { font-size: 11px; line-height: 1.6; }
+.plan-button { background: #254f47; border: 1px solid #254f47; color: #faf7e9; padding: 11px 12px; font-size: 11px; text-align: left; }
+.plan-button:hover { background: #376b60; }
+.plan-button:disabled { opacity: .6; cursor: wait; }
+.scenario-entry .plan-button { width: 100%; }
+.synthetic-label { font-size: 8px; letter-spacing: .8px; color: #7c5429; font-weight: 700; line-height: 1.5; }
+.scenario-panel fieldset { border: 0; padding: 0; margin: 20px 0 10px; }
+.scenario-panel legend { font-size: 10px; font-weight: 700; margin-bottom: 7px; }
+.policy-option { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #d1dbcc; font-size: 11px; cursor: pointer; }
+.policy-option input, .traffic-toggle input { accent-color: #285e50; margin: 0; width: 16px; height: 16px; flex-shrink: 0; }
+.policy-description { font-size: 10px; line-height: 1.6; color: #556950; min-height: 62px; }
+.simulation-controls { display: flex; gap: 7px; }
+.simulation-controls .plan-button { flex: 1; }
+.reset-scenario, .compare-button { border: 1px solid #aabca7; background: #f6f6ec; padding: 10px; font-size: 10px; }
+.simulation-progress { margin: 14px 0; font-size: 10px; line-height: 1.7; }
+.simulation-progress progress { width: 100%; height: 4px; display: block; accent-color: #456b50; margin-bottom: 5px; }
+.scenario-results { width: 100%; border-collapse: collapse; font-size: 9px; font-variant-numeric: tabular-nums; }
+.scenario-results td, .scenario-results th { text-align: right; border-bottom: 1px solid #ccd7c6; padding: 9px 3px; vertical-align: top; }
+.scenario-results th:first-child { text-align: left; width: 40%; font-weight: 500; }
+.scenario-results thead th { font-size: 8px; color: #586f58; }
+.scenario-results small { display: block; margin-top: 4px; color: #725427; }
+.scenario-panel .data-note { font-size: 9px; line-height: 1.65; }
+.compare-button { width: 100%; text-align: left; }
+.compare-button[aria-pressed="true"] { background: #d7e8e4; }
+.traffic-toggle { display: flex; gap: 8px; align-items: center; font-size: 10px; margin: 15px 0; }
+.scenario-assumptions { font-size: 10px; line-height: 1.7; }
+.scenario-assumptions summary { cursor: pointer; padding: 7px 0; }
+.scenario-legend { position: absolute; top: 88px; right: 28px; width: 220px; padding: 13px; background: #173e46ee; color: #edf1df; font-size: 10px; line-height: 1.7; border-left: 2px solid #e3c17b; }
+.scenario-legend strong { display: block; font-size: 9px; letter-spacing: .7px; }
+.scenario-legend > span { display: block; font-size: 9px; color: #c8dbd4; }
+.traffic-key { margin-top: 7px; }
+.traffic-key i { display: inline-block; width: 20px; height: 3px; background: #ffd179; margin-right: 8px; vertical-align: middle; }
+.scenario-legend[data-map-state="baseline"] .traffic-key i { background: #a5e5ed; }
+.traffic-scale { height: 4px; margin: 8px 0 3px; background: linear-gradient(90deg, #458ca0, #58b59b, #edc167, #df684d); }
+.scenario-legend button { margin: 9px 7px 0 0; padding: 6px 8px; border: 1px solid #8da99d; background: #254f47; color: #f2f3df; font-size: 10px; }
+@media (max-width: 1050px) { .scenario-legend { top: 24px; right: 15px; width: 190px; } .viewport:has(.scenario-legend) .map-title { display: none; } }
+@media (max-width: 700px) {
+  .scenario-entry, .scenario-panel { grid-column: 1/-1; padding: 22px 20px; }
+  .scenario-panel fieldset { display: grid; grid-template-columns: 1fr; }
+  .scenario-legend { width: 180px; top: 16px; right: 16px; padding: 10px; }
+  .scenario-panel .policy-description { min-height: 0; }
+  .scenario-results { font-size: 11px; }
+  .scenario-results thead th { font-size: 10px; }
+}
+
+.decision-outcome { border-left: 2px solid #af8544; padding-left: 10px; font-size: 11px; line-height: 1.65; }
