@@ -1,5 +1,6 @@
 import { useCity } from "../state/store";
 import type { Building } from "../geo/types";
+import { gableProfile } from "../geo/roofs";
 
 export default function Inspector() {
   const selected = useCity((s) => s.selected);
@@ -7,6 +8,7 @@ export default function Inspector() {
   const focus = useCity((s) => s.focus);
   const building =
     selected?.kind === "building" ? (selected as Building) : null;
+  const roof = building ? gableProfile(building) : null;
   return (
     <section
       className="inspector"
@@ -56,23 +58,32 @@ export default function Inspector() {
             ) : null}
           </dl>
           {building ? (
-            <p className="data-note">
-              <span
-                className={
-                  "data-dot " +
-                  (building.heightStatus === "osm-height" ? "observed" : "")
-                }
-              />
-              {building.heightStatus === "osm-height"
-                ? "Height reported in OSM; not survey verified."
-                : building.heightStatus === "levels-estimate"
-                  ? "Estimated height: OSM storeys × 3 m."
-                  : "Footprint only. No height or storey count is available; no height has been assigned."}
-            </p>
+            <>
+              <p className="data-note">
+                <span
+                  className={
+                    "data-dot " +
+                    (building.heightStatus === "osm-height" ? "observed" : "")
+                  }
+                />
+                {building.heightStatus === "osm-height"
+                  ? "Height reported in OSM; not survey verified."
+                  : building.heightStatus === "levels-estimate"
+                    ? "Estimated height: OSM storeys × 3 m."
+                    : "Footprint only. No height or storey count is available; no height has been assigned."}
+              </p>
+              <p className="data-note">
+                {roof
+                  ? `Gabled roof: ${roof.height} m from OSM roof:height; included in total height. ${roof.orientation === "osm-direction" ? "Direction reported in OSM." : "Ridge direction inferred from the footprint; not survey verified."}`
+                  : "Roof form unresolved; simplified geometry retained."}{" "}
+                Ground contact follows the 16 m terrain mesh; foundations and
+                material tints are schematic.
+              </p>
+            </>
           ) : (
             <p className="data-note">
               {selected.kind === "road"
-                ? "Observed centreline. Width is schematic; elevation is sampled from the terrain model."
+                ? "Observed centreline. Width uses a valid OSM width tag where present, otherwise a schematic road-class width. Surface edges follow the rendered terrain mesh. Bridge decks and subsurface roads are omitted until their elevations are verified."
                 : "Location from OpenStreetMap. Terrain elevation from a regional DEM."}
             </p>
           )}

@@ -219,7 +219,7 @@ export default function App() {
           </span>
         </a>
         <div className="header-center">
-          GEOGRAPHIC EXPLORER <span>01 / BERGEN</span>
+          GEOGRAPHIC EXPLORER <span>02A / BERGEN</span>
         </div>
         <span className="prototype-badge">
           <span />
@@ -319,15 +319,31 @@ export default function App() {
                 {data.provenance.osmTimestamp.slice(0, 10)}.
               </p>
               <p>
-                Terrain: Norway data © Kartverket, via Mapzen / AWS Terrain
-                Tiles (published 2017). Sampled at approximately{" "}
-                {data.provenance.terrainResolution} m. No vertical exaggeration.
+                Terrain: © Kartverket, CC BY 4.0. Bergen laser projects 2022 /
+                2023, NN2000 heights. A 2 m DTM crop sampled to a{" "}
+                {data.provenance.terrainResolution} m display mesh. No vertical
+                exaggeration.
               </p>
               <p>
                 Building heights use OSM height tags where available. Storeys ×
                 3 m is explicitly estimated; buildings with no height or storey
-                data remain flat footprints. Roofs, road widths and terrain
-                draping are schematic.
+                data remain draped footprints. Gables require explicit total and
+                roof heights plus a compatible mapped footprint; inferred ridge
+                directions are labelled. Foundations are schematic
+                ground-contact skirts. Colours, lighting and water ripples are
+                artistic.
+              </p>
+              <p>
+                Coast and lake outlines retain the original OSM mapping. Water
+                levels are schematic, not tides. Green areas sample mapped OSM
+                landcover. Unresolved bridge decks and subsurface roads are
+                omitted from the surface view; their source records are
+                retained.
+              </p>
+              <p>
+                Mapped crop: {data.bounds[0]}–{data.bounds[2]}° E,{" "}
+                {data.bounds[1]}–{data.bounds[3]}° N. Outside this crop, distant
+                water and atmosphere are an illustrative backdrop.
               </p>
               <p>
                 This is a geographic prototype. Simulation and policy controls
@@ -347,7 +363,7 @@ export default function App() {
             </section>
           ) : null}
           <div className="map-attribution">
-            © OpenStreetMap contributors · Terrain: © Kartverket / Mapzen
+            © OpenStreetMap contributors · Terrain: © Kartverket · CC BY 4.0
           </div>
         </section>
       </main>

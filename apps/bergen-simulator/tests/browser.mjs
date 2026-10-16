@@ -164,6 +164,28 @@ try {
   await failurePage.getByRole("alert").waitFor();
   assert.equal(await failurePage.locator("canvas").count(), 0);
   await failurePage.close();
+  const highDpi = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 3,
+  });
+  highDpi.on("pageerror", (e) => errors.push(e.message));
+  await highDpi.goto(base);
+  await highDpi.locator("canvas").waitFor({ timeout: 60000 });
+  await highDpi.waitForFunction(() => {
+    const c = document.querySelector("canvas");
+    return c?.width > 0;
+  });
+  const ratio = await highDpi
+    .locator("canvas")
+    .evaluate((c) => c.width / c.getBoundingClientRect().width);
+  assert(ratio <= 1.51, "Balanced rendering must cap a 3× display at DPR 1.5");
+  await highDpi.getByLabel("Rendering", { exact: true }).selectOption("low");
+  await highDpi.waitForFunction(() => {
+    const c = document.querySelector("canvas");
+    return Math.abs(c.width / c.getBoundingClientRect().width - 1) < 0.01;
+  });
+  await highDpi.close();
+  assert.deepEqual(errors, [], "High-DPI runtime errors");
   const report = {
     passed: true,
     checkedAt: new Date().toISOString(),
@@ -182,6 +204,7 @@ try {
       "camera focus/reset",
       "accuracy panel",
       "390px responsive layout",
+      "3× display bounded to DPR 1.5; low power DPR 1",
       "no external runtime services",
       "missing snapshot failure",
     ],

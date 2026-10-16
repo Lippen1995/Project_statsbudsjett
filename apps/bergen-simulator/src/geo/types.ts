@@ -15,11 +15,13 @@ export interface Building extends Feature {
   rings: Point[][];
   height: number | null;
   heightStatus: HeightStatus;
+  ground?: number[][];
 }
 export interface Road extends Feature {
   kind: "road";
   points: Point3[];
   roadClass: string;
+  renderStatus?: "surface" | "unresolved-bridge" | "subsurface";
 }
 export interface CityData {
   version: 1;
@@ -40,9 +42,18 @@ export interface CityData {
       lastModified?: string;
     }[];
     notes: string[];
+    refinement?: {
+      baselineCommit: string;
+      terrainSource: string;
+      rasterSha256: string;
+      contextSha256: string;
+      landcoverFeatures: number;
+      importer: string;
+    };
   };
-  terrain: { positions: number[]; indices: number[] };
+  terrain: { positions: number[]; indices: number[]; cover?: number[] };
   coastline: Point[][];
+  coastElevation?: number[][];
   water: { rings: Point[][]; elevation: number }[];
   buildings: Building[];
   roads: Road[];
@@ -66,6 +77,19 @@ export function parseCityData(value: unknown): CityData {
     !data.coastline?.length ||
     !data.provenance?.osmSha256 ||
     data.terrain.positions.some((v) => !Number.isFinite(v)) ||
+    (data.terrain.cover &&
+      (data.terrain.cover.length !== data.terrain.positions.length / 3 ||
+        data.terrain.cover.some((v) => ![0, 1, 2].includes(v)))) ||
+    data.buildings.some(
+      (b) =>
+        b.ground &&
+        (b.ground.length !== b.rings.length ||
+          b.ground.some(
+            (ring, i) =>
+              ring.length !== b.rings[i].length ||
+              ring.some((v) => !Number.isFinite(v)),
+          )),
+    ) ||
     data.terrain.indices.some(
       (v) =>
         !Number.isInteger(v) || v < 0 || v >= data.terrain.positions.length / 3,

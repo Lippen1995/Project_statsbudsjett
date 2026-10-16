@@ -1,95 +1,130 @@
 # Geographic sources and uncertainty
 
-## Included snapshot
+## Milestone 2A snapshot
 
-Imported 16 October 2026, using WGS84 bounds **5.298, 60.382, 5.349, 60.408**
-(west, south, east, north). Retrieval time is not a survey date. OSM's tiled map
-responses are not a transactional historical snapshot.
+The view retains the original WGS84 crop **5.298, 60.382, 5.349, 60.408**
+(west, south, east, north), local equirectangular metre coordinates, and 1:1 vertical
+scale. Original OSM acquisition was 16 October 2026, using 30 non-transactional map
+API responses. Retrieval time is not a survey date.
 
-| Content | Source | Treatment |
-| --- | --- | --- |
-| 6,502 building polygons | OpenStreetMap map API | Polygon extrusion; holes and complete multipolygons retained |
-| 6,542 street/path segments | OpenStreetMap map API | Observed centrelines; terrain-draped strips |
-| Coastline, inland waters | OpenStreetMap map API | Coast direction identifies land; lakes cut terrain holes |
-| 46 named places | OSM attraction/museum/viewpoint nodes and named historic buildings | Pins and searchable source records |
-| 14,300 terrain triangles | Four AWS Terrain Tiles, Terrarium z13 | RGB decoded, bilinear sampled, 32 m mesh clipped to mapped land |
+| Content | Source and treatment |
+| --- | --- |
+| 6,502 building footprints | Original OSM IDs, tags, coordinates and heights unchanged |
+| 6,542 road/path source records | Original centrelines unchanged; 88 unresolved bridge records omitted from the surface view |
+| Coastline and 43 inland water outlines | Original OSM mask unchanged; terrain clipped to its land/lake boundaries |
+| 46 named places | Original source-derived landmarks retained |
+| 619 green-area records | Park/garden/grass/meadow/cemetery/wood/scrub/forest polygons from the **same pinned OSM XML inputs**; clipped to land, holes retained, sampled into terrain vertex colours |
+| 49,313 terrain triangles | Project-specific Kartverket DTM, exported at 2 m, resampled to a 16 m display mesh |
 
-Terrain spans approximately 0–395.58 m in this crop. One world unit is one metre;
-no vertical exaggeration. The origin is the bounding-box centre, not a claimed landmark.
+`tests/geography-baseline.json` records geometry/height/source fingerprints from
+commit `ab92713a99588dbf2458135e1bf7b41d892088a5`. Tests compare every building,
+road centreline, coastline and water outline against those fingerprints and check
+land-mask area. The original `bergen-osm.json.gz` and its SHA-256 remain unchanged.
+New derived green-area mapping is redistributed as `bergen-context-osm.json.gz`
+with OSM IDs, tags and polygons; its hash is embedded in the snapshot.
 
-## Observed mapping versus estimated geometry
+## Active terrain: verified acquisition and rights
 
-- **69 buildings:** OSM `height` tags interpreted as metres. These are mapper-reported,
-  not independently surveyed or guaranteed current.
-- **3,555 buildings:** height estimated as `building:levels × 3 m`; the source
-  supplies storeys, while the metre conversion is our explicit assumption.
-- **2,878 buildings:** actual height unknown; stored as `null` / `unknown` and
-  rendered as flat footprints. No arbitrary building height is assigned.
-- Flat roofs and maximum-sampled flat building bases are rendering simplifications.
-  Materials/colours are a shared visual style, not observations of facade materials.
-- Road width is schematic by class: 7 m major roads, 4 m other roads, 1.8 m paths.
-  Widths are not surveyed and no transport capacity can be inferred from them.
-- Roads sample terrain at intervals of at most 16 m. Tunnels are excluded; bridge
-  deck elevations are unresolved. Steps and grades are schematic.
-- Water levels are schematic. Negative coastal DEM samples are clamped to zero.
-  Lake surface elevation is sampled at a representative point, not a measured level.
-- DEM values are a historical regional composite with interpolation and shoreline
-  artifacts. Mesh spacing is not a claim of measurement accuracy or native DTM resolution.
-- Incomplete multipolygon relations are skipped; the outer view is cropped to the
-  stated bounds. OSM completeness, building dates and overlaps are not certified.
+The public [Høydedata DTM ImageServer](https://hoydedata.no/arcgis/rest/services/DTM/ImageServer)
+was queried for the Bergen envelope. These two project records were checked:
 
-The UI describes these limits. Inspector coordinates for polygons and streets are source-derived representative
-points. No invented street positions or unlabelled building-height estimates are used.
+| Project | ID | Last flight date | Published | Native CRS | Vertical datum | Native project grid |
+| --- | --- | --- | --- | --- | --- | --- |
+| Bergen 10pkt 2022 | 6266 | 2022-04-18 | 2024-11-22 | EUREF89 / UTM32, EPSG:25832 | NN2000, EPSG:5941 | 0.25 m |
+| Bergen 10pkt 2023 | 6282 | 2023-06-02 | 2024-12-16 | EUREF89 / UTM32, EPSG:25832 | NN2000, EPSG:5941 | 0.25 m |
 
-## Acquisition and provenance
+Dates describe the projects' **last flights**, not individual pixels. Metadata
+reports `TILGANG=1` and `BEST_OPEN=1` for both. The official Høydedata export help
+states that exports available without login are free and follow Kartverket's free
+product terms. [Kartverket's terms](https://www.kartverket.no/api-og-data/vilkar-for-bruk)
+license those products **CC BY 4.0**, permitting redistribution and adaptation with
+attribution. The app credits Kartverket; this licence does not replace ODbL for OSM.
 
-The Overpass endpoints tried during implementation did not provide reliable responses
-(HTTP 406/500). The official [OSM map API](https://wiki.openstreetmap.org/wiki/API_v0.6#Retrieving_map_data_by_bounding_box:_GET_/api/0.6/map)
-worked using 30 small tiles, with two requests at a time to respect response limits.
-This is a one-time authoring workflow, not a scalable production data source.
+The export explicitly restricts the mosaic to `LAS_PROJECT_ID IN (6266,6282)`.
+An independent public Identify response at Bryggen reports project 6266. The
+GeoTIFF header verifies EPSG:25833 (server reprojection to EUREF89 / UTM33), 2 m
+pixels, complete finite coverage, and an appropriate elevation range. Metadata
+and input checksums, exact export URL, CRS, datum, dates and transformations are
+in `public/data/terrain-source.json` and `source-manifest.json`. SHA-256 provides
+local input integrity, not a publisher signature or a claim of survey accuracy.
 
-`scripts/import-geography.py` records every input URL, byte length and SHA-256 in
-`public/data/source-manifest.json`. Ignored `data-cache/` preserves raw XML/PNG
-inputs locally. `public/data/bergen-osm.json.gz` redistributes the extracted OSM
-records and relation definitions. Its uncompressed SHA-256 is embedded in
-`bergen.json` and checked in Vitest. OSM and terrain snapshot artifacts are
-checked in so application builds and browsers make no source API requests.
-Exact reprocessing uses the same cached inputs and pinned Python dependencies;
-a fresh cache fetches a new source state and needs review.
+The authoring importer bilinearly samples **pixel centres**, transforms WGS84/local
+coordinates using `always_xy`, and triangulates a 16 m grid clipped to the retained
+OSM land mask. Display terrain spans 0–398.14 m. Mesh spacing is not measurement
+accuracy. Negative display ground heights are clamped to zero for the schematic
+sea surface. A pixel-centre, CRS axis-order and checksum-drift regression suite
+runs offline with the pinned Python GIS dependencies.
 
-## Licences and attribution
+## Observed versus estimated geometry
 
-OSM mapping and the redistributed extracted mapping are **ODbL 1.0**:
-© [OpenStreetMap contributors](https://www.openstreetmap.org/copyright).
-Preserve attribution, source IDs and the source extract when distributing this
-database or derived geographic data. Source map responses and relation data are
-retained locally with per-input hashes. This app's code licence is not asserted
-to replace source-data licences.
+- **69 buildings:** mapper-reported OSM metre heights; not independently surveyed.
+- **3,555 buildings:** the existing `building:levels × 3 m` estimate, unchanged.
+- **2,878 buildings:** unknown heights remain `null`; footprints drape over terrain
+  and never acquire an invented height.
+- **15 gables:** explicit OSM `height`, `roof:height` and `roof:shape=gabled`, with
+  near-rectangular footprints and no courtyard. Roof height stays **inside** the
+  reported total height. An explicit roof direction is used where present;
+  otherwise ridge orientation follows the longest footprint edge and is labelled
+  an inference. Unsupported/uncertain roof shapes retain simplified flat geometry.
+  No roof height is inferred from storeys or assigned to an unknown building.
+- Known volumes use a flat height reference at the highest sampled footprint ground point.
+  Existing bottom wall vertices extend to the rendered terrain as schematic ground contact. This removes visible
+  floating edges but does not establish surveyed floor levels, basements or walls.
+- Road edges sample barycentric heights from the **rendered TIN**, rather than a
+  different elevation interpolation. Valid OSM metre width tags are used when
+  available (bounded to 30 m); other widths remain schematic: 7 m major roads,
+  4 m other streets, 1.8 m paths. There is no transport capacity inference.
+- Unresolved bridge decks are retained as source records but not ground-draped.
+  Tunnels stay excluded; building passages remain surface paths beneath buildings.
+  Missing bridge elevations are a visible gap, not an invented structure.
+- Coastal edge skirts follow observed coast coordinates and DTM ground elevations.
+  Their vertical cross-section/finish is artistic, **not surveyed quay geometry**.
+  Water levels use the median sampled boundary elevation, sea level is schematic,
+  and static tonal ripples are artistic. The sea outside the mapped crop is an illustrative backdrop, not verified coverage. No tides, bathymetry or measured lake levels.
+- Green-area colours sample observed OSM polygons at display-mesh vertices;
+  interpolated boundaries are approximate. No fictional trees, vegetation points,
+  buildings or streets were inserted. Material tints interpret mapped colour names
+  where available and otherwise use a deterministic artistic palette. No facade
+  or material survey is implied.
 
-Elevation is from [AWS Terrain Tiles](https://registry.opendata.aws/terrain-tiles/),
-generated by the Mapzen/Tilezen terrain workflow. All four tile response headers
-identify `kartverket/Terrengdata_67m1_2_UTM33_10m_DEM.tif`. Their S3 Last-Modified
-headers are 15 November 2017; this is tile publication metadata, not a survey date.
-The exact tile URLs, hashes, source-header values and publication headers are in
-the manifest. Source lineage and licensing are described in
-[Tilezen data sources](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md)
-and [attribution](https://github.com/tilezen/joerd/blob/master/docs/attribution.md).
-The applicable **Norway terrain data © Kartverket** attribution (CC BY 4.0) is
-reproduced in the shipped `public/data/NOTICE.md`. Source metadata is retained per
-tile rather than repeated at every vertex. Do not claim these derived historical
-tiles are a direct current Kartverket survey. Attribution and transformation notes
-are available in the app's accuracy panel.
+## Reproduction and provenance
 
-## Next sources to evaluate
+Application builds and browsers use checked-in static artifacts, with no GIS,
+database or map-service connection at runtime. From `apps/bergen-simulator`:
 
-- [Kartverket Høydedata](https://hoydedata.no/): authoritative DTM/point-cloud
-  workflows, source acquisition dates, coverage, licence and vertical datum.
-- [Geonorge](https://www.geonorge.no/): municipal boundaries, openly licensed
-  building and transport datasets; inspect each dataset's actual access terms.
-- Bergen municipality open datasets: footprints, plans and local reference data
-  after confirming availability, redistribution rights and metadata.
-- Later simulation only: SSB/KOSTRA municipal facts through a separately versioned
-  export, with no runtime connection to Fellestall production.
+```sh
+python -m venv /tmp/bergen-geo
+/tmp/bergen-geo/bin/pip install -r scripts/requirements-geo.txt
+/tmp/bergen-geo/bin/python tests/importer.py
+/tmp/bergen-geo/bin/python scripts/refine-geography.py
+```
 
-Authoritative building heights, bridge elevations, source completeness and a current
-DTM remain data-quality work. They do not block this real-geography prototype.
+Refinement reads the fixed baseline from local Git history. Cached XML and raster
+inputs must match the recorded hashes. Cache misses download the recorded inputs;
+any upstream drift aborts before replacing the snapshot. Raw GIS inputs remain in
+ignored `data-cache/`; the raster is not shipped to browsers. Reproduction requires
+the baseline commit and the pinned dependencies, or the retained cache if an
+upstream historical response changes. A second refinement produces identical
+static outputs. `import-geography.py` remains the historical initial importer and
+refuses to overwrite a refined snapshot. A fresh OSM acquisition is a separate,
+reviewed dataset revision rather than an implicit refresh.
+
+## Retained historical source
+
+The original terrain lineage remains in provenance: four AWS/Mapzen Terrarium z13
+tiles derived from `kartverket/Terrengdata_67m1_2_UTM33_10m_DEM.tif`, published
+15 November 2017 (not survey date). Tile URLs, source headers and hashes remain in
+the manifest; their output surface has been superseded. [Tilezen attribution](https://github.com/tilezen/joerd/blob/master/docs/attribution.md)
+identifies Norway terrain © Kartverket, CC BY 4.0. Historical credits are retained
+in `public/data/NOTICE.md`.
+
+## Evaluated but not imported / next iteration
+
+Kartverket/Geonorge NHM WCS metadata was inspected, but the adopted import uses
+project-specific DTM with traceable acquisition dates rather than an unidentified
+nationwide mosaic. [FKB building specifications](https://register.geonorge.no/register/versjoner/produktspesifikasjoner/geovekst/fkb-bygning)
+support richer roof/ground lines; no FKB building geometry was incorporated because
+local delivery, redistribution rights and feature-height completeness have not
+been verified for this app. Next: obtain an appropriately licensed Bergen building
+height/roof extract and bridge deck levels, validate datum and dates, then improve
+Bergenhus and the still-unknown building stock. No production services are involved.

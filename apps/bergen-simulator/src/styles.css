@@ -452,10 +452,12 @@ a {
   top: 31px;
   left: 31px;
   pointer-events: none;
-  text-shadow: 0 1px 12px #e5ebe4;
+  padding: 11px 16px 12px;
+  border-left: 2px solid #c6b486;
+  background: #173e46dc;
 }
 .map-tag {
-  color: #49675c;
+  color: #c9dbd5;
   font-size: 8px;
 }
 .map-title h2 {
@@ -464,11 +466,11 @@ a {
   font-weight: 400;
   letter-spacing: -0.5px;
   margin: 7px 0;
-  color: #264c43;
+  color: #faf5e8;
 }
 .map-title p {
   font-size: 9px;
-  color: #577365;
+  color: #c9dbd5;
   letter-spacing: 1px;
   margin: 0;
 }

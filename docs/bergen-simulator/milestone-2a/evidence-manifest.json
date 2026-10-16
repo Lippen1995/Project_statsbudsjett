@@ -1,0 +1,39 @@
+{
+  "baselineCommit": "ab92713a99588dbf2458135e1bf7b41d892088a5",
+  "capturedFrom": "Historical baseline archive with identical localhost-only capture probe; current source is committed alongside this evidence.",
+  "sameViewportAndCameras": true,
+  "snapshotBytes": {
+    "before": 6187888,
+    "after": 7864054
+  },
+  "snapshotGzipBytes": {
+    "before": 1400567,
+    "after": 1812349
+  },
+  "geographySha256": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812",
+  "imageSha256": {
+    "before/overview.jpg": "8b30752163a6a7fa9b471ad328f048f81e77fe48856adf766f095b32654aab8a",
+    "before/bergenhus.jpg": "5830056aaeb2db99587b7bfcf9d246d114ce1067c723ae51d5eee962ee9ec304",
+    "before/nordnes.jpg": "4a83f9d8fe4361aa4cba2c432f6e831c311e3c328da40e425f18689b10722ad6",
+    "before/vagen.jpg": "d8fb9dc2e7bd37c48031ec329f39bf393996625f606a459256753ba52ee0fbd2",
+    "after/overview.jpg": "d0ddfdac918257df6c3d15c922cb01212da1e94c57301bd959f04345fa109380",
+    "after/bergenhus.jpg": "44588543c1fe889260c739bb2d6e5e61e8d9106e25005c27f6a9d6d28aa6e45e",
+    "after/nordnes.jpg": "316c4c79d3aed0f08661cdecc4176b6d1cf27555194718d568465546344b0892",
+    "after/vagen.jpg": "5562d8b2b63bc2f69a169946c5bf23b5b3d8f914dd845ff33d46cda4f96f8dfb"
+  },
+  "browserVersion": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)",
+  "renderSourceSha256": {
+    "src/main.tsx": "05b4005286642cf48b12fc75495e9e78598ed0c609116b7eeb2baf9b491e5123",
+    "src/App.tsx": "be682d6410afeb85c1fb549b84e30d6549560bfa3f8622b1a587c82b4ccc4a41",
+    "src/styles.css": "90ef2e3ec9a663baea40010ad195df61afc2ab764eae5e3877f5a4cc783785ae",
+    "src/geo/geometry.ts": "624b0d8dcaa3d948fd0aa9fbff3e4aaf9c0722c3f5b290f579dc5fba8486810d",
+    "src/geo/capture.ts": "b7388e5165fe274265b9ad05a0d94501f982eb521ee043e2238e704686136973",
+    "src/geo/types.ts": "c859d8f0e68d0bfbe6e986248a1ab8f7ae62c21ee6d32aea9f91ff8e505e868d",
+    "src/geo/projection.ts": "c8712addd638f24e4bf5704952aea6bf29b289d363eb75b4037a8ceca042af27",
+    "src/geo/surface.ts": "e28a4e215601459e89fecb590484171921ce86559b7f60ea2f9000b003ab9fbd",
+    "src/geo/roofs.ts": "4270018b8d17bdfc10b8b9cafbbdcbe5bd3db8db995959d779e62baecfd00c54",
+    "src/state/store.ts": "01848fad8a3b7d6a6d8a320e10be9d5c072588c0c1df48019362f156e0b09e69",
+    "src/components/Scene.tsx": "335fc7c90c8f8b6a636475c1e3fe9bab24f5a0d83adcb77e65af32830200a1bf",
+    "src/components/Inspector.tsx": "12a404d88dd661dd5227e20687bf44cd2091f89e7fd5193be2b47b727cbe0e4e"
+  }
+}

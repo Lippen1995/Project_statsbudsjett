@@ -8,8 +8,11 @@ No public deployment is part of this milestone.
 
 ## 2 — Bergen data quality and spatial streaming (recommended next)
 
-Replace the regional DEM with a verified Kartverket DTM workflow and vertical datum.
-Confirm dataset access and redistribution rights. Import authoritative building
+Milestone 2A completed the dated Kartverket DTM workflow, NN2000 verification,
+source-supported gables, mapped green areas and batched visual improvements.
+See [acceptance evidence and limits](milestone-2a.md).
+
+Next confirm access and redistribution rights for authoritative building
 heights where openly licensed, compare mapped samples at Bryggen/Bergenhus/Nordnes,
 and resolve bridges, tunnels, quays and terrain/base alignment. Establish automated
 source completeness and topology checks, stable snapshot versions, attribution and

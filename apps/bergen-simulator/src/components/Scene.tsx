@@ -3,6 +3,7 @@ import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { useCity } from "../state/store";
+import { installCapture } from "../geo/capture";
 import type { Building, CityData, Road } from "../geo/types";
 import {
   buildingGeometry,
@@ -10,9 +11,11 @@ import {
   makeBuildings,
   makeRoads,
   makeTerrain,
-  polygonShape,
+  makeWater,
+  makeCoastalEdge,
   roadGeometry,
 } from "../geo/geometry";
+import { terrainSampler } from "../geo/surface";
 
 function CameraControls({ data }: { data: CityData }) {
   const { camera, gl, invalidate } = useThree();
@@ -38,7 +41,9 @@ function CameraControls({ data }: { data: CityData }) {
       invalidate();
     };
     orbit.addEventListener("change", onChange);
+    const stopCapture = installCapture(camera, gl, orbit, invalidate);
     return () => {
+      stopCapture();
       orbit.dispose();
       controls.current = null;
     };
@@ -111,38 +116,23 @@ function CityGeometry({ data }: { data: CityData }) {
   const layers = useCity((s) => s.layers);
   const select = useCity((s) => s.select);
   const selected = useCity((s) => s.selected);
-  const buildings = useMemo(() => makeBuildings(data), [data]);
-  const roads = useMemo(() => makeRoads(data), [data]);
-  const terrain = useMemo(() => makeTerrain(data), [data]);
-  const coast = useMemo(() => {
-    const positions = data.coastline.flatMap((line) =>
-      line
-        .slice(1)
-        .flatMap((p, i) => [line[i][0], 1, line[i][1], p[0], 1, p[1]]),
-    );
-    return new THREE.BufferGeometry().setAttribute(
-      "position",
-      new THREE.Float32BufferAttribute(positions, 3),
-    );
-  }, [data]);
-  const water = useMemo(
-    () =>
-      data.water.map((w) => {
-        const geometry = new THREE.ShapeGeometry(polygonShape(w.rings));
-        geometry.rotateX(-Math.PI / 2);
-        geometry.translate(0, w.elevation + 0.5, 0);
-        return geometry;
-      }),
-    [data],
+  const surface = useMemo(() => terrainSampler(data.terrain), [data]);
+  const buildings = useMemo(
+    () => makeBuildings(data, surface),
+    [data, surface],
   );
+  const roads = useMemo(() => makeRoads(data, surface), [data, surface]);
+  const terrain = useMemo(() => makeTerrain(data), [data]);
+  const coast = useMemo(() => makeCoastalEdge(data), [data]);
+  const water = useMemo(() => makeWater(data), [data]);
   const highlight = useMemo(
     () =>
       selected?.kind === "building"
-        ? buildingGeometry(selected as Building)
+        ? buildingGeometry(selected as Building, surface)
         : selected?.kind === "road"
-          ? roadGeometry(selected as Road)
+          ? roadGeometry(selected as Road, surface)
           : null,
-    [selected],
+    [selected, surface],
   );
   // Merged geometry keeps draw calls bounded; face ranges retain selection IDs.
   useEffect(
@@ -151,7 +141,7 @@ function CityGeometry({ data }: { data: CityData }) {
       roads.geometry.dispose();
       terrain.dispose();
       coast.dispose();
-      water.forEach((g) => g.dispose());
+      water.dispose();
     },
     [buildings, roads, terrain, coast, water],
   );
@@ -166,59 +156,37 @@ function CityGeometry({ data }: { data: CityData }) {
     event.stopPropagation();
     select(featureAtFace(group.ranges, event.faceIndex));
   };
-  const [west, north, east, south] = data.extent;
   return (
     <>
       <mesh
         geometry={terrain}
+        receiveShadow
         onClick={(e) => {
           if (e.delta < 4) select(null);
         }}
       >
-        <meshStandardMaterial
-          vertexColors
-          roughness={0.95}
-          side={THREE.DoubleSide}
-        />
+        <meshLambertMaterial vertexColors side={THREE.DoubleSide} />
       </mesh>
-      <group visible={layers.water}>
-        <mesh
-          rotation={[-Math.PI / 2, 0, 0]}
-          position={[(west + east) / 2, -0.6, (north + south) / 2]}
-        >
-          <planeGeometry args={[east - west, south - north]} />
-          <meshStandardMaterial
-            color="#6c9fab"
-            roughness={0.55}
-            metalness={0.12}
-          />
-        </mesh>
-        {water.map((geometry, i) => (
-          <mesh key={i} geometry={geometry}>
-            <meshStandardMaterial
-              color="#6c9fab"
-              roughness={0.55}
-              side={THREE.DoubleSide}
-            />
-          </mesh>
-        ))}
-      </group>
-      <lineSegments geometry={coast}>
-        <lineBasicMaterial color="#d8e4d1" />
-      </lineSegments>
+      <mesh geometry={water} visible={layers.water}>
+        <WaterMaterial />
+      </mesh>
+      <mesh geometry={coast} receiveShadow>
+        <meshLambertMaterial vertexColors side={THREE.DoubleSide} />
+      </mesh>
       <mesh
         visible={layers.buildings}
         geometry={buildings.geometry}
+        castShadow
         onClick={(e) => pick(e, buildings)}
       >
-        <meshStandardMaterial vertexColors roughness={0.9} />
+        <meshLambertMaterial vertexColors />
       </mesh>
       <mesh
         visible={layers.roads}
         geometry={roads.geometry}
         onClick={(e) => pick(e, roads)}
       >
-        <meshBasicMaterial color="#e7e4d5" side={THREE.DoubleSide} />
+        <meshLambertMaterial vertexColors side={THREE.DoubleSide} />
       </mesh>
       {highlight ? (
         <mesh geometry={highlight} renderOrder={3}>
@@ -251,17 +219,67 @@ function CityGeometry({ data }: { data: CityData }) {
   );
 }
 
+function WaterMaterial() {
+  const material = useMemo(() => {
+    const m = new THREE.MeshBasicMaterial({ vertexColors: true });
+    // Static, world-space tonal ripples. Cheap triangle waves, no texture, PBR,
+    // animated loop, reflection pass or bathymetry claim.
+    m.onBeforeCompile = (shader) => {
+      shader.vertexShader = shader.vertexShader
+        .replace(
+          "#include <common>",
+          "#include <common>\nvarying vec2 waterWorld;",
+        )
+        .replace(
+          "#include <begin_vertex>",
+          "#include <begin_vertex>\nwaterWorld = (modelMatrix * vec4(transformed, 1.0)).xz;",
+        );
+      shader.fragmentShader = shader.fragmentShader
+        .replace(
+          "#include <common>",
+          "#include <common>\nvarying vec2 waterWorld;",
+        )
+        .replace(
+          "#include <color_fragment>",
+          "#include <color_fragment>\nfloat broad = abs(fract(dot(waterWorld, vec2(0.012, 0.021))) * 2.0 - 1.0);\nfloat fine = abs(fract(dot(waterWorld, vec2(0.18, -0.11))) * 2.0 - 1.0);\ndiffuseColor.rgb *= 0.97 + 0.035 * broad + 0.015 * fine;",
+        );
+    };
+    m.customProgramCacheKey = () => "bergen-static-water-v2";
+    return m;
+  }, []);
+  useEffect(() => () => material.dispose(), [material]);
+  return <primitive object={material} attach="material" />;
+}
+
+function StaticShadows() {
+  const { gl, invalidate } = useThree();
+  const layers = useCity((s) => s.layers);
+  const quality = useCity((s) => s.quality);
+  useEffect(() => {
+    gl.shadowMap.autoUpdate = false;
+    gl.shadowMap.needsUpdate = true;
+    invalidate();
+    return () => {
+      gl.shadowMap.autoUpdate = true;
+    };
+  }, [gl, invalidate, layers, quality]);
+  return null;
+}
+
 export default function Scene({ data }: { data: CityData }) {
   const quality = useCity((s) => s.quality);
   return (
     <Canvas
       frameloop="demand"
+      shadows={quality === "balanced" ? "basic" : false}
       dpr={quality === "low" ? 1 : [1, 1.5]}
       camera={{ position: [1050, 1950, 2150], fov: 43, near: 2, far: 14000 }}
       gl={{
         antialias: quality !== "low",
         powerPreference: "low-power",
         alpha: false,
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 0.95,
       }}
       onPointerMissed={() => useCity.getState().select(null)}
       fallback={
@@ -271,15 +289,27 @@ export default function Scene({ data }: { data: CityData }) {
         </div>
       }
     >
-      <color attach="background" args={["#dbe4df"]} />
-      <hemisphereLight args={["#fbf5e3", "#859d8e", 2.1]} />
+      <color attach="background" args={["#c2d3d6"]} />
+      <fog attach="fog" args={["#c2d3d6", 2300, 7200]} />
+      <hemisphereLight args={["#e3eff5", "#66756b", 1.25]} />
       <directionalLight
-        position={[-1500, 3000, 1200]}
-        intensity={2.5}
+        position={[-1200, 2500, 1000]}
+        intensity={2.1}
         color="#fff3dc"
+        castShadow={quality === "balanced"}
+        shadow-mapSize={[1024, 1024]}
+        shadow-camera-left={-1900}
+        shadow-camera-right={1900}
+        shadow-camera-top={1900}
+        shadow-camera-bottom={-1900}
+        shadow-camera-near={10}
+        shadow-camera-far={6500}
+        shadow-bias={-0.0003}
+        shadow-normalBias={1.5}
       />
       <CityGeometry data={data} />
       <CameraControls data={data} />
+      <StaticShadows />
     </Canvas>
   );
 }

@@ -1,0 +1,60 @@
+{
+  "dataset": "Kartverket / Høydedata project DTM",
+  "licence": "CC-BY-4.0",
+  "licenceUrl": "https://www.kartverket.no/api-og-data/vilkar-for-bruk",
+  "redistribution": "Gratis product; CC BY 4.0 permits redistribution and adaptation with attribution. Both project metadata records explicitly enable open export (BEST_OPEN=1).",
+  "retrievedAt": "2026-10-16T14:59:52.632553+00:00",
+  "acquisitionDateMeaning": "Last flight date for each source project, not per-pixel acquisition date.",
+  "projects": [
+    {
+      "id": 6266,
+      "name": "Bergen 10pkt 2022",
+      "lastFlightDate": "2022-04-18",
+      "publishedDate": "2024-11-22",
+      "nativeHorizontalCrs": "EPSG:25832",
+      "verticalDatum": "NN2000 (EPSG:5941)",
+      "nativeGridMetres": 0.25,
+      "openExport": true,
+      "metadataUrl": "https://hoydedata.no/laserservices/rest/projectMetadata.ashx?request=%7BProjects%3A%27Bergen%2010pkt%202022%27%2CReturnMetadata%3Atrue%7D",
+      "metadataSha256": "8ab0652e2297db9d32c58c7bf6b7eb3fa2606d4dc47afb9c38ec8b40c679935b"
+    },
+    {
+      "id": 6282,
+      "name": "Bergen 10pkt 2023",
+      "lastFlightDate": "2023-06-02",
+      "publishedDate": "2024-12-16",
+      "nativeHorizontalCrs": "EPSG:25832",
+      "verticalDatum": "NN2000 (EPSG:5941)",
+      "nativeGridMetres": 0.25,
+      "openExport": true,
+      "metadataUrl": "https://hoydedata.no/laserservices/rest/projectMetadata.ashx?request=%7BProjects%3A%27Bergen%2010pkt%202023%27%2CReturnMetadata%3Atrue%7D",
+      "metadataSha256": "3eac76f8e27186160b0869171905aa0f7e325a5d97be7b4be5d6f1da3f017d3f"
+    }
+  ],
+  "raster": {
+    "url": "https://hoydedata.no/arcgis/rest/services/DTM/ImageServer/exportImage?f=image&bbox=-33610%2C6732934%2C-30352%2C6736264&bboxSR=25833&imageSR=25833&size=1629%2C1665&format=tiff&pixelType=F32&interpolation=RSP_BilinearInterpolation&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicAttribute%22%2C+%22where%22%3A+%22LAS_PROJECT_ID+IN+%286266%2C6282%29%22%2C+%22sortField%22%3A+%22AARSTALL%22%2C+%22sortValue%22%3A+2026%2C+%22ascending%22%3A+false%2C+%22mosaicOperation%22%3A+%22MT_FIRST%22%7D",
+    "sha256": "23793ed2a48032ed427f833a6a448df99f49d8d961564345e7cce4be08e214e1",
+    "bytes": 10029599,
+    "horizontalCrs": "EPSG:25833",
+    "verticalDatum": "NN2000 (EPSG:5941)",
+    "gridMetres": 2,
+    "interpolation": "server bilinear, restricted to LAS_PROJECT_ID IN (6266,6282)",
+    "bounds": [
+      -33610,
+      6732934,
+      -30352,
+      6736264
+    ]
+  },
+  "verification": {
+    "service": "https://hoydedata.no/arcgis/rest/services/DTM/ImageServer",
+    "catalogueQuery": "Bergen footprint envelope; LAS_PROJECT_ID and survey/datum metadata verified",
+    "bryggenIdentifySha256": "43e3d94ae17e4a7a281b7e004f272aaaebae566d59de08d039640d520b4fa90b",
+    "termsSha256": "d53646f5f17a8ada320bac4e001f0e34d2da163a442b2e40470d2dba8009599b"
+  },
+  "transformations": [
+    "Project source grids (EUREF89 / UTM32, NN2000) served as a 2 m EUREF89 / UTM33 crop.",
+    "Bilinear sampling into local metre coordinates; 16 m display mesh clipped to the unchanged OSM land mask.",
+    "Negative display ground heights clamped to zero for a schematic sea surface; not a tidal or bathymetric model."
+  ]
+}

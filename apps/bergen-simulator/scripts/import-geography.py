@@ -72,6 +72,9 @@ def parts(geometry):
 
 
 def main():
+    current = OUTPUT / 'bergen.json'
+    if current.exists() and json.loads(current.read_text()).get('provenance', {}).get('refinement'):
+        raise RuntimeError('Refined snapshot present. Use scripts/refine-geography.py; a fresh OSM refresh requires a separate reviewed data revision.')
     CACHE.mkdir(exist_ok=True)
     OUTPUT.mkdir(exist_ok=True)
     w, s, e, n = BOUNDS

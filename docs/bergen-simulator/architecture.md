@@ -62,19 +62,17 @@ centre, 5.3235 E / 60.395 N. X=east, Y=up, Z=south. This approximation is suitab
 for a ~3 km view; it is not the future national GIS coordinate system. Elevation
 uses decoded Terrarium tiles at native metre scale. No vertical exaggeration.
 
-OSM coastline orientation identifies land. A 32 m grid is clipped to the land
+OSM coastline orientation identifies land. A 16 m display grid is clipped to the land
 polygon, preserving the actual coastal boundary, then triangulated. Mapped inland
-water polygons cut holes in the terrain. Roads are terrain-draped strips along
-observed centrelines, with schematic class widths. Buildings extrude mapped
-polygons, preserve courtyard holes and flatten their base to a sampled footprint
-elevation. Storey-derived heights are explicit estimates; absent height/storey data stays null and renders as a footprint. Relations with incomplete
+water polygons cut holes in the terrain. Roads fit both strip edges to the rendered TIN along observed centrelines. Widths use valid source tags or explicit class assumptions; unresolved bridge decks are omitted while source records remain. Buildings extrude mapped
+polygons, preserve courtyard holes and connect a flat sampled height reference to terrain with schematic skirts. Explicit total/roof heights permit conservative gables; unknown roof geometry stays simplified. Storey-derived heights are explicit estimates; absent height/storey data stays null and renders as a footprint. Relations with incomplete
 geometry are excluded rather than invented.
 
 ## Rendering and state
 
 React Three Fiber owns Three.js resource lifetime. Terrain, buildings and streets
 are batched; triangle ranges map pointer selection back to original OSM IDs. No
-per-building React components or animation loop. Demand rendering, no shadows,
+per-building React components or animation loop. All water surfaces share one batch. Balanced mode uses a fixed 1024px directional shadow map, updated only for scene/layer/quality changes; low power disables shadows. Water tonal detail is static, without an animation loop. Demand rendering,
 bounded camera travel and a 1–1.5 device pixel ratio limit work. Low power mode
 uses DPR 1. Camera controls are Three.js OrbitControls, with keyboard alternatives.
 GPU buffers are disposed on replacement/unmount.
@@ -97,3 +95,7 @@ Later Fellestall integration should begin as a link to this separately hosted ap
 Sharing authentication, embedding it or moving it under a common domain requires
 a separate reviewed integration milestone, with versioned read-only fact exports,
 failure boundaries and independent release/rollback paths.
+
+## Milestone 2A geographic processing
+
+`refine-geography.py` reads the fixed pre-2A snapshot from Git history, verifies cached source hashes, imports an explicitly restricted Kartverket project DTM crop, and retains the original OSM land mask and feature identities. `terrain-source.json` records licensing, dates, coordinate systems and NN2000. OSM landcover comes from the existing pinned inputs. Rendering helpers separate conservative roof interpretation (`roofs.ts`), barycentric TIN sampling (`surface.ts`) and batched geometry. A localhost-only capture probe supplies reproducible cameras and diagnostics without affecting hosted authentication or adding an idle render loop. See [milestone evidence](milestone-2a.md).

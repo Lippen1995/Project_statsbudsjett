@@ -1,0 +1,107 @@
+{
+  "label": "before",
+  "baselineCommit": "ab92713a99588dbf2458135e1bf7b41d892088a5",
+  "viewport": [
+    1440,
+    1000
+  ],
+  "renderer": "Chromium / ANGLE SwiftShader (software, not a hardware FPS benchmark)",
+  "readyMs": 2571,
+  "medianCpuFrameMs": 1.099999999627471,
+  "p95CpuFrameMs": 4,
+  "medianCameraLatencyMs": 349.19999999925494,
+  "p95CameraLatencyMs": 488.30000000074506,
+  "idleFrames": 0,
+  "views": [
+    {
+      "name": "overview",
+      "frames": 2,
+      "cpuFrameMs": 1.700000001117587,
+      "cameraLatencyMs": 3.300000000745058,
+      "calls": 39,
+      "triangles": 251706,
+      "lines": 956,
+      "geometries": 39,
+      "textures": 0,
+      "pixelRatio": 1,
+      "position": [
+        1049.9999999999998,
+        1950,
+        2149.9999999999995
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "vagen",
+      "frames": 3,
+      "cpuFrameMs": 1.800000000745058,
+      "cameraLatencyMs": 2.400000000372529,
+      "calls": 11,
+      "triangles": 250900,
+      "lines": 956,
+      "geometries": 39,
+      "textures": 0,
+      "pixelRatio": 1,
+      "position": [
+        -428.02,
+        301.42,
+        229.23999999999995
+      ],
+      "target": [
+        1.98,
+        1.42,
+        -270.76
+      ]
+    },
+    {
+      "name": "bergenhus",
+      "frames": 4,
+      "cpuFrameMs": 1.599999999627471,
+      "cameraLatencyMs": 2,
+      "calls": 6,
+      "triangles": 250864,
+      "lines": 956,
+      "geometries": 39,
+      "textures": 0,
+      "pixelRatio": 1,
+      "position": [
+        -663.46,
+        305.2,
+        -80.35999999999996
+      ],
+      "target": [
+        -333.46,
+        5.2,
+        -520.36
+      ]
+    },
+    {
+      "name": "nordnes",
+      "frames": 5,
+      "cpuFrameMs": 0.599999999627471,
+      "cameraLatencyMs": 2.300000000745058,
+      "calls": 8,
+      "triangles": 250894,
+      "lines": 956,
+      "geometries": 39,
+      "textures": 0,
+      "pixelRatio": 1,
+      "position": [
+        -372.0199999999998,
+        600,
+        -6.079999999999927
+      ],
+      "target": [
+        -822.0199999999999,
+        0,
+        -766.08
+      ]
+    }
+  ],
+  "errors": [],
+  "browserVersion": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)"
+}
