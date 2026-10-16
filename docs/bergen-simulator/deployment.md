@@ -1,73 +1,117 @@
-# Separate Vercel project — readiness and manual configuration
+# Bergen simulator — isolated Actions deployment
 
-## Current state
+## Existing target
 
-No deployment, remote push, PR, project creation, project linking, DNS change or
-environment change has been performed. Vercel's read-only project listing showed
-the existing `fellestall` and `project-financials` projects, with no simulator project.
-The production project was not edited. `apps/bergen-simulator/vercel.json` disables
-automatic Git deployments and contains the independent static build configuration.
-
-The feature branch currently exists locally. Pushing it or importing a connected
-Git project may trigger a public build, especially if done through the existing
-Fellestall project. Therefore live linking/import is deferred until explicit approval
-for the separate public deployment. This document is the exact manual setup path.
-
-## Settings for the new project
-
-| Setting | Value |
+| Setting | Required value |
 | --- | --- |
-| Team | The intended owner team, confirmed before project creation |
-| Project name | `bergen-reimagined` (or an available distinct simulator name) |
-| Git repository | `Lippen1995/Project_statsbudsjett` |
-| Root Directory | `apps/bergen-simulator` |
-| Include source files outside Root Directory | Off |
-| Framework Preset | Vite |
-| Node.js | 24.x |
-| Install Command | `npm ci` |
-| Build Command | `npm run build` |
-| Output Directory | `dist` |
-| Development Command | `npm run dev` |
-| Production Branch | `feature/bergen-simulator` |
-| Environment variables | None; do not import or share any |
-| Storage / integrations | None |
-| Domain | Only the new project's independent `*.vercel.app` domain |
-| Existing production project | Do not select, link, edit or reuse |
+| Repository / branch | `Lippen1995/Project_statsbudsjett` / `feature/bergen-simulator` |
+| App / Root Directory | `apps/bergen-simulator` |
+| Framework / Node.js | Vite / 24 |
+| Install / build / output | `npm ci` / `npm run build` / `dist` |
+| Team | `team_zBf9uUPGwDQKfB9fElKD876W` |
+| Project | `bergen-reimagined` / `prj_s9Bugj93zirfeEvLLwJvygz9syny` |
+| Stable URL | https://bergen-reimagined.vercel.app |
+| Protection | Vercel Authentication, **All Deployments** |
+| Database / app variables | None |
 
-## After explicit approval
+The user authorized protected production releases to this existing Bergen project.
+Do not create another project or change Fellestall's project, domains, workflows,
+credentials, ETL, Neon or account authentication.
 
-1. Review the feature branch and run all checks. Confirm only the two simulator
-   directories are added. Check that the existing Fellestall project's Git settings
-   cannot publish this branch. Do not change that project's settings to make this work.
-2. Push **only** `feature/bergen-simulator`; do not merge, dispatch workflows or
-   create a main-targeting PR. If existing hosting would publish a preview and that
-   is outside the approval, stop before pushing and resolve the risk.
-3. In the correct Vercel team create a **new** project with the settings above.
-   Do not click an import/deploy action until public deployment is approved. Some
-   import screens immediately create a deployment, so stop at that screen if needed.
-4. Verify Settings → Git → Production Branch is exactly
-   `feature/bergen-simulator` **before** any production deployment. If the import
-   screen cannot set it before the first build, create an empty project without
-   Git integration, configure root/build settings first, then connect the repository
-   and set the production branch before enabling deployment.
-5. For manual approved releases, retain `git.deploymentEnabled: false`. Trigger
-   the first release explicitly from this branch using the new project's dashboard
-   after checking the actual source ref, or a CLI explicitly linked **inside this
-   app directory to the new project**. Never use inherited `VERCEL_PROJECT_ID`,
-   production tokens or root `.vercel/` state. Do not run CLI `--prod` while linked
-   to any existing project.
-6. If automatic Git releases are separately approved, change only this app's
-   `vercel.json` Git switch to
-   `"deploymentEnabled": { "feature/bergen-simulator": true, "*": false }`.
-   Review the project production branch again before pushing that change. All other
-   branch deployments should remain disabled for this simulator project.
-7. Leave custom domains empty. Use only the new project's generated `vercel.app`
-   hostname. Leave Fellestall DNS, Neon, shared secrets and project settings untouched.
-8. Validate the isolated deployment: geography 200, unknown assets 404, scene loads,
-   navigation/selection work, no external runtime requests, desktop/mobile layouts,
-   attribution and noindex headers. No production database is involved.
+## Required GitHub setup
 
-The checked-in config intentionally has no SPA catch-all rewrite: this prototype
-has one route, and missing geographic assets must remain genuine 404 responses.
-Each future deployment and promotion still needs explicit authorization until the
-user establishes a different release policy.
+The current integration receives HTTP 403 when creating environments or reading
+secret/variable metadata. Environment creation was rejected; no token was read or
+copied. An authorized repository administrator must configure:
+
+1. **Settings → Environments → New environment → `bergen-simulator`**. Do not edit
+   `vercel-migration` or another existing environment.
+2. **Deployment branches and tags → Selected branches and tags**: add exactly one
+   **branch** rule, `feature/bergen-simulator`. No wildcard, tags, main or gh-pages.
+   The workflow verifies the policy before scheduling the deployment job. No new
+   approval/wait timer is needed for fully automatic releases; retain any required
+   review policy. Only trusted maintainers should push this branch.
+3. Add **environment-scoped secret `VERCEL_TOKEN`**, authorized for the stated Bergen
+   project/team. Use least privilege for configuration pull, prebuilt deployment,
+   project/protection/domain/deployment reads and promotion. Do not copy Fellestall's
+   token, create a repository/organization token secret, or put it in source/logs/chat.
+4. **Only after the environment and its token are ready**, add repository Actions
+   variable **`BERGEN_SIMULATOR_DEPLOY_ENABLED` = `true`** under Settings → Secrets
+   and variables → Actions → Variables. This arming flag avoids GitHub automatically
+   creating an unrestricted environment or using a same-named repository secret
+   while setup is incomplete. The validation job has no environment or token.
+5. Push a reviewed simulator/workflow change, or re-run all jobs of the initial
+   branch workflow. Setting the variable alone does not start a run.
+
+The deployment token is injected only into authenticated deployment-job steps.
+The GitHub token has only `contents: read`. No secret-read/write permission or
+Fellestall production environment is requested.
+
+## Triggers and default-branch limitation
+
+`.github/workflows/bergen-simulator.yml` runs on pushes to the exact simulator branch
+that affect `apps/bergen-simulator/**` or that workflow file. Both jobs additionally
+check repository, exact ref, push/manual event and non-deletion. Unique concurrency
+is `bergen-simulator-release-${github.ref}`, cancellation disabled. No Fellestall
+concurrency group is shared; obsolete commits refuse promotion.
+
+A new push workflow can run from this feature branch without existing on main.
+Manual `workflow_dispatch` discovery normally requires it on the default branch,
+so the Run workflow button/API may be unavailable. Use branch pushes or re-run an
+existing branch run. Do not change main to enable manual dispatch.
+
+## Validation and staged release
+
+1. Check out `github.sha` without persisted credentials. Full history supplies the
+   isolation baseline. Verify repository, branch/event and exact HEAD; detached
+   checkouts require matching CI metadata.
+2. Run Node 24, `npm ci`, lint, application/release-policy tests, isolation and Vite
+   build in the app. Any failure stops deployment.
+3. If unarmed, report validation success and skip deployment without a Vercel request.
+   If armed, verify the environment's exact branch policy. Missing token fails before
+   deployment tooling or any Vercel operation.
+4. Use pinned CLI **63.1.2** and SHA-pinned checkout/setup-node Actions. Require exact
+   team/project IDs and API ownership, Authentication scope `all`, only known Bergen
+   domains, and no custom app variables. Create an app-local explicit link.
+5. Pull only Bergen production configuration. Run `vercel build --prod` **without
+   the deployment token**. Normalize a repository-relative root only in runner-local
+   settings because commands execute inside the app; restore the pulled link afterward.
+   No remote build settings are changed.
+6. Stage with `vercel deploy --prebuilt --prod --skip-domain`. Require READY, exact
+   repository/branch/SHA metadata and project/team, then anonymous denial on `/` and
+   `/data/bergen.json`. Stable domains have not moved.
+7. Before promotion re-read protection/domains/deployment and verify the latest
+   GitHub branch SHA. Promote through the established project-scoped API pattern,
+   only for Bergen. Unverifiable protection aborts. No alias, DNS or protection
+   mutation API is called.
+8. Poll the stable alias for the intended deployment; recheck READY, commit,
+   unchanged project domains, protection and anonymous denial. Save non-secret
+   evidence in the Actions summary. Always remove runner-local `.vercel/`, pulled
+   environment files and prebuilt output; never upload them or raw authenticated logs.
+
+`vercel.json` keeps **`git.deploymentEnabled: false`**. Native Git is disabled while
+this explicit CLI workflow can deploy. Do not enable both routes if Git access returns.
+
+## Authenticated verification without permanent bypass secrets
+
+CLI 63.1.2's `vercel curl` can create a persistent automation bypass secret; this
+pipeline does not use it or mutate protection. If pulled configuration contains an
+existing short-lived `VERCEL_OIDC_TOKEN` belonging to Bergen, send it only to the
+exact app origin as a Trusted Sources authentication header and compare HTML/data
+to the prebuilt output. Never print/export the token.
+
+If unavailable, expired or denied by existing Trusted Sources rules, explicitly
+report authenticated verification unavailable. READY, commit, stable alias,
+All Deployments protection and anonymous denial remain mandatory. Do not broaden
+access rules to make checks pass. An authorized Vercel member can verify the UI in
+a signed-in browser. A login page never counts as application content.
+
+## Local checks
+
+From the app: `npm ci`, `npm run lint`, `npm test`, `npm run check:isolation`,
+`npm run build`. From the repository root: `actionlint .github/workflows/bergen-simulator.yml`.
+
+Release-policy tests reject wrong repositories/branches/commits/IDs, partial or
+missing protection, unready deployments, unrelated/changed domains, wildcard/tag
+environment rules and false-positive anonymous checks. No tests deploy or connect
+to databases. Game functionality and visual design are unchanged.

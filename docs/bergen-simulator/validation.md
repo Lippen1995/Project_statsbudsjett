@@ -82,3 +82,24 @@ warning. The 3D bundle is loaded separately from the UI; demand rendering and
 merged geometry bound recurring work. Spatial tiling, worker preparation, geometry
 budgets and measurements on physical mobile hardware are the next performance work.
 The automated responsive check is not a device lab or a full accessibility audit.
+
+## Automated-release follow-up
+
+The simulator now owns `.github/workflows/bergen-simulator.yml` and isolated
+release-policy/orchestration scripts. Native Git deployment is disabled; only the
+explicit Actions production release path targets the existing Bergen project.
+
+Local follow-up checks pass: actionlint 1.7.11, YAML/branch/job/permission/secret
+boundary inspection, 11 existing Vitest tests plus 7 release-policy tests, ESLint,
+isolation and the unchanged Vite build. CLI 63.1.2 also produced valid production
+Build Output API v3 output in a disposable copy without credentials or deployment.
+All 1,362 inspected existing production workflow/deploy/frontend/ETL/root files
+match their pre-task hashes. The game bundle hashes are unchanged.
+
+Bergen's existing project was observed READY with Authentication covering All
+Deployments; an anonymous request redirected to Vercel Authentication. The GitHub
+integration rejected creation of the dedicated environment and secret/variable
+metadata reads with HTTP 403. No token was accessed. Initial CI must validate and
+skip deployment until the environment, its scoped secret and the repository arming
+variable in `deployment.md` are configured. No changes to main are required for
+branch-push testing; manual-dispatch discovery may require the default branch.

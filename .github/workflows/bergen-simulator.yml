@@ -1,0 +1,126 @@
+name: Bergen simulator — validate and deploy
+
+on:
+  push:
+    branches: [feature/bergen-simulator]
+    paths:
+      - 'apps/bergen-simulator/**'
+      - '.github/workflows/bergen-simulator.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Separate from pages-deploy, vercel-static-mirror and neon-data-production.
+# Do not interrupt a promotion already in progress.
+concurrency:
+  group: bergen-simulator-release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  VERCEL_ORG_ID: team_zBf9uUPGwDQKfB9fElKD876W
+  VERCEL_PROJECT_ID: prj_s9Bugj93zirfeEvLLwJvygz9syny
+  VERCEL_TELEMETRY_DISABLED: '1'
+
+defaults:
+  run:
+    shell: bash
+    working-directory: apps/bergen-simulator
+
+jobs:
+  validate:
+    if: >-
+      github.repository == 'Lippen1995/Project_statsbudsjett' &&
+      github.ref == 'refs/heads/feature/bergen-simulator' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      github.event.deleted != true
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      deploy: ${{ steps.gate.outputs.deploy }}
+    steps:
+      - name: Check out the exact triggering commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/bergen-simulator/package-lock.json
+      - name: Verify repository, branch and commit
+        run: node scripts/ci-deploy.mjs guard
+      - name: Install isolated dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Test application and release safety
+        run: npm test
+      - name: Check production isolation
+        run: npm run check:isolation
+      - name: Build standalone application
+        run: npm run build
+      - name: Check deployment setup after successful validation
+        id: gate
+        env:
+          BERGEN_SIMULATOR_DEPLOY_ENABLED: ${{ vars.BERGEN_SIMULATOR_DEPLOY_ENABLED }}
+        run: node scripts/ci-deploy.mjs gate
+
+  deploy:
+    needs: validate
+    if: >-
+      needs.validate.result == 'success' && needs.validate.outputs.deploy == 'true' &&
+      github.repository == 'Lippen1995/Project_statsbudsjett' &&
+      github.ref == 'refs/heads/feature/bergen-simulator' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      github.event.deleted != true
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: bergen-simulator
+      url: https://bergen-reimagined.vercel.app
+    steps:
+      - name: Check out the same validated commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+      - name: Verify repository, branch and commit again
+        run: node scripts/ci-deploy.mjs guard
+      - name: Verify token availability before installing deployment tools
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          test -n "$VERCEL_TOKEN" || { echo 'Missing environment-scoped VERCEL_TOKEN in bergen-simulator. No deployment attempted.'; exit 1; }
+      - name: Install the established pinned Vercel CLI
+        run: npm install --global vercel@63.1.2
+      - name: Verify target, Authentication and domain isolation; link the app
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node scripts/ci-deploy.mjs preflight
+      - name: Pull only Bergen production configuration
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node scripts/ci-deploy.mjs pull
+      - name: Build with Vercel without the deployment token
+        run: node scripts/ci-deploy.mjs build
+      - name: Stage and verify prebuilt production output without assigning domains
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node scripts/ci-deploy.mjs stage
+      - name: Recheck Authentication and commit, then promote only Bergen
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/ci-deploy.mjs promote
+      - name: Remove runner-local environment and deployment files
+        if: always()
+        run: node scripts/ci-deploy.mjs cleanup

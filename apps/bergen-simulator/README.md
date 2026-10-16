@@ -40,6 +40,8 @@ Start with [architecture](../../docs/bergen-simulator/architecture.md),
 [development rules](../../docs/bergen-simulator/development-rules.md) and
 [Vercel setup](../../docs/bergen-simulator/deployment.md).
 
-Work only on `feature/bergen-simulator`. Automatic Vercel Git deployments are
-disabled. Do not push or deploy until the separate hosting setup and public release
-have been explicitly approved. Never link this application to Fellestall's Vercel project.
+Work only on `feature/bergen-simulator`. Native Vercel Git deployments remain
+disabled. The dedicated GitHub Actions workflow validates simulator pushes and,
+after the isolated environment/secret setup, releases only the existing protected
+Bergen project. See [deployment setup](../../docs/bergen-simulator/deployment.md).
+Never link this application to Fellestall's Vercel project or production services.
