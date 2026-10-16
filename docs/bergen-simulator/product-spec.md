@@ -64,3 +64,23 @@ than drawn from outcome tables. No traffic forecast, real car counts or validate
 CO₂ reductions are claimed. Gameplay remains entirely local and ephemeral.
 Budgets, population, politics, construction, accounts and persistence remain outside
 this milestone. See [3A acceptance, evidence and limitations](milestone-3a.md).
+
+## Active milestone 3B — player-designed street plans
+
+Planning Mode replaces the three predefined traffic buttons with direct selection
+of real modelled street sections. A player changes access rules and assumed capacity,
+edits connected sections, undoes/redoes, runs a deterministic trial, compares to the
+initial baseline or a saved configuration, and restores the city. Unsupported streets
+are explicitly inspect-only. Teal outlines identify editable sections; dashed colours
+identify proposals rather than completed construction or observed access rules.
+
+Named plans save locally, reopen after reload, duplicate, and export/import validated
+JSON. Results are recalculated, never trusted from a file. The self-contained
+**Rethinking Bryggen** challenge asks for fewer modelled through-trips without lost
+access or excessive detours/congestion. Its thresholds are verified against a valid
+five-edit configuration. Scoring is a synthetic game rule, kept separate from raw
+transport metrics; any lost trip penalizes the score below every fully routed plan.
+
+Physical construction, land-use edits, parcel ownership, costs, population, political
+simulation, cloud saves and accounts remain outside this milestone. Geography and
+all existing traffic assumptions stay traceable and explicitly uncalibrated.

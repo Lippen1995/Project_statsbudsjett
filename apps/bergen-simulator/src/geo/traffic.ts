@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { segmentId } from "../simulation/interventions";
 import type { Network } from "../simulation/network";
 import type { Result } from "../simulation/engine";
 import type { SurfaceSampler } from "./surface";
@@ -13,27 +14,37 @@ export function trafficColor(vc: number): THREE.Color {
 }
 /** One merged pass. Undirected strips use the worse directional V/C; source
  * vertices are subdivided solely to drape the original line on the existing TIN. */
+export interface StreetStyle {
+  width: number;
+  color: string;
+  alternate?: string;
+}
 export function trafficGeometry(
   network: Network,
   result: Result | null,
   sample: SurfaceSampler,
   corridor: boolean,
   baseline: boolean,
+  styles?: Record<string, StreetStyle>,
 ) {
   const vertices: number[] = [],
     colors: number[] = [],
-    ranges: { end: number; wayId: string }[] = [];
+    ranges: { end: number; wayId: string; segmentId: string }[] = [];
   const groups = new Map<string, number[]>();
   network.edges.forEach((e, i) => {
-    const key = [e.wayId, ...[e.from, e.to].sort()].join(":");
+    const key = segmentId(e);
     groups.set(key, [...(groups.get(key) ?? []), i]);
   });
   for (const indices of groups.values()) {
     const edge = network.edges[indices[0]];
     if (corridor && !edge.corridor) continue;
-    const color = corridor
-      ? new THREE.Color(baseline ? "#a5e5ed" : "#ffd179")
-      : trafficColor(Math.max(...indices.map((i) => result?.edgeVc[i] ?? 0)));
+    const style = styles?.[segmentId(edge)];
+    if (styles && !style) continue;
+    const color = style
+      ? new THREE.Color(style.color)
+      : corridor
+        ? new THREE.Color(baseline ? "#a5e5ed" : "#ffd179")
+        : trafficColor(Math.max(...indices.map((i) => result?.edgeVc[i] ?? 0)));
     const points: [number, number][] = [];
     edge.points.slice(1).forEach((b, i) => {
       const a = edge.points[i],
@@ -53,7 +64,7 @@ export function trafficGeometry(
         b = points[i],
         length = Math.hypot(b[0] - a[0], b[1] - a[1]);
       if (!length) continue;
-      const width = corridor ? 12 : 6,
+      const width = style?.width ?? (corridor ? 12 : 5),
         ox = ((-(b[1] - a[1]) / length) * width) / 2,
         oz = (((b[0] - a[0]) / length) * width) / 2;
       const p = (point: [number, number], sign: number) => {
@@ -69,9 +80,15 @@ export function trafficGeometry(
         p3 = p(b, 1),
         p4 = p(b, -1);
       vertices.push(...p1, ...p3, ...p2, ...p2, ...p3, ...p4);
-      for (let v = 0; v < 6; v++) colors.push(color.r, color.g, color.b);
+      const stripe =
+        style?.alternate && i % 2 ? new THREE.Color(style.alternate) : color;
+      for (let v = 0; v < 6; v++) colors.push(stripe.r, stripe.g, stripe.b);
     }
-    ranges.push({ end: vertices.length / 9, wayId: edge.wayId });
+    ranges.push({
+      end: vertices.length / 9,
+      wayId: edge.wayId,
+      segmentId: segmentId(edge),
+    });
   }
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute(

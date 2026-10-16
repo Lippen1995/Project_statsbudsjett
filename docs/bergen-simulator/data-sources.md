@@ -156,3 +156,17 @@ bridges and tunnels. See [model boundaries](milestone-3a.md).
 Synthetic demand, speed, capacity, permitted trip categories and congestion and
 emissions functions are model parameters, **not geographic observations**. They
 are documented separately and must never be exported as municipal traffic facts.
+
+## Player plans — milestone 3B
+
+No new geographic dataset is imported. The original `bergen.json`, 27-way transport
+extract, OSM/terrain manifests and source archives remain byte-identical to 3A.
+Road-section keys derive solely from existing OSM way IDs and shared endpoint node
+IDs; pointer proximity disambiguates a click and never establishes graph topology.
+
+Plan files reference those keys and hold hypothetical access categories and capacity
+multipliers. They contain no edited geographic geometry, vehicle observations,
+financial data or traffic forecasts. The published example is an authored synthetic
+model experiment, not a municipal proposal. A displayed capacity increase does not
+assert that a real road could physically accommodate it. Mapped directions remain
+fixed; real-world legal access and feasibility are not certified.

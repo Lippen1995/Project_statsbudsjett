@@ -20,18 +20,26 @@ repeatable updates. Tile the scene spatially, move mesh preparation to a worker,
 add frustum culling and a geometry budget. Measure frame time/memory on representative
 mobile hardware. Exit when recognition and source fidelity pass a documented review.
 
-## 3 — First deterministic simulation (3A complete)
+## 3 — First deterministic simulation and street sandbox (3A / 3B complete)
 
 Bryggen/Vågen now has a playable, deterministic worker-based transport scenario
 with three policies, source-node topology, visible road intensities, pause/reset
 and baseline comparisons. Demand and every transport parameter remain synthetic.
 See [3A evidence and assumptions](milestone-3a.md).
 
-Next gameplay milestone (3B): expand the reviewed transport boundary and turn/access
-rules, add scenario save/replay as versioned local files, and a demand/capacity
-sensitivity challenge. Preserve the distinction between game objectives and
-real-world forecast validation. Separately, test mesh preparation/culling on
-physical desktop and mobile hardware before adding moving traffic or more effects.
+3B adds direct real-street section edits, bounded access/capacity proposals, undo/redo,
+versioned local plans, JSON interchange and saved-plan comparison. A tested
+Rethinking Bryggen challenge evaluates player plans and penalizes lost access.
+
+Next: a small **physical planning** slice using verified footprints/parcels and
+terrain constraints. Begin with a reversible proposed land-use designation or
+pedestrian-space footprint, distinct from observed buildings. Validate coast,
+water, slope and existing access before introducing construction geometry. Never
+invent source heights, ownership or financial costs. Physical feasibility and
+capacity consequences need a separately reviewed model and data sources.
+
+Keep widening the audited road/access boundary and profile on actual desktop/mobile
+hardware before animated agents or broader simulation scope.
 
 ## 4 — Scenarios and independent persistence
 

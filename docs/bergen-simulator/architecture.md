@@ -131,3 +131,43 @@ passes. Both reuse the rendered terrain sampler. Opposing directions share one
 strip coloured by their worse period-average V/C; full source IDs remain selectable.
 No continuously animated vehicles, lights or render loops are introduced. See
 [the exact assumptions and acceptance evidence](milestone-3a.md).
+
+## Milestone 3B — planning sandbox
+
+The transport engine now accepts a versioned `Plan`, not global policy choices.
+`simulation/interventions.ts` identifies 31 physical road sections from the 54
+original directed edges. A section key consists of its OSM way and sorted endpoint
+node IDs. Access/capacity edits affect existing mapped directions only; they cannot
+create a junction, reverse a one-way street or change coordinates. Plans normalize
+no-op edits and reject duplicate, unknown or contradictory settings. `applyPlan`
+clones the model graph; the observed snapshot and original source tags are immutable.
+
+The plan has its own schema version and baseline-network compatibility checksum.
+The checksum includes original edge identities, node references, rounded geometry
+and assumed capacities; it is not a cryptographic signature. Strict validation of
+IDs, fields, access enums and discrete capacity multipliers is the trust boundary.
+Model assumption or topology revisions require a reviewed compatibility-version
+change and explicit migration; there were no persisted scenarios in 3A to migrate.
+
+The worker evaluates the original baseline, working plan and optional saved
+reference against the same fixed demand in lockstep. Outcomes are never loaded
+from saved files. History changes and imports stop the worker, clear derived results
+and discard late replies. The bounded 51-frame history stores plan data only.
+`corridorThroughTrips` distinguishes through travel from all Bryggen passages.
+Challenge scoring is derived separately from raw results, with accessibility loss
+always scoring below any fully routed plan.
+
+`planning/scenarios.ts` validates named JSON exports and the versioned local library.
+Only `bergen.reimagined.plans.v1` is read/written; up to 20 plans fit a bounded key.
+Writes validate the entire library, reread other-tab additions, reject conflicting
+updates, then atomically replace that key. Broken, future-version, quota-blocked or
+incompatible storage is preserved. Export remains a recovery path. Names/timestamps
+and random local record IDs are metadata, excluded from deterministic model inputs.
+No authentication, database or remote save service is introduced.
+
+The scene's merged road meshes and a two-pass model overlay resolve pointer hits
+to source way/section identities. Unsupported roads remain geographic selections
+with an explicit inspect-only readout. Teal outlines show editable sections; dashed
+proposal colours encode hypothetical edits. Selection and traffic intensity share
+these batches, without per-road React meshes. The main terrain sampler, demand
+rendering, DPR caps and independent release architecture remain intact.

@@ -14,6 +14,7 @@ const building: Feature = {
 beforeEach(() =>
   useCity.setState({
     selected: null,
+    selectedSegmentId: null,
     layers: { buildings: true, roads: true, water: true },
     camera: { revision: 0, point: null },
     quality: "balanced",
@@ -39,4 +40,12 @@ it("can repeat focus commands and reset the city overview", () => {
   expect(useCity.getState().camera).toEqual({ revision: 2, point: [12, 34] });
   useCity.getState().focus(null);
   expect(useCity.getState().camera).toEqual({ revision: 3, point: null });
+});
+
+it("clears a planned street section when its geographic road selection is hidden", () => {
+  const road: Feature = { ...building, id: "way/9649862", kind: "road" };
+  useCity.getState().select(road, "source-section");
+  useCity.getState().toggleLayer("roads");
+  expect(useCity.getState().selected).toBeNull();
+  expect(useCity.getState().selectedSegmentId).toBeNull();
 });

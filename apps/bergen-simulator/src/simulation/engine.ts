@@ -1,6 +1,6 @@
+import { applyPlan, emptyPlan, type Plan } from "./interventions";
 import type { Edge, Network } from "./network";
 
-export type Policy = "baseline" | "restricted" | "pedestrian";
 export type Access = "through" | "local" | "service";
 export interface Demand {
   from: string;
@@ -29,6 +29,8 @@ export interface Result {
   throughMetres: number;
   throughServed: number;
   corridorTrips: number;
+  corridorThroughTrips: number;
+  unroutedByAccess: Record<Access, number>;
   edgeVehicles: number[];
   edgeVc: number[]; // Period-average directional volume / assumed hourly capacity.
   nodeBalance: Record<string, number>; // Inflow minus outflow, for conservation audit.
@@ -46,18 +48,20 @@ export function initialResult(network: Network): Result {
     throughMetres: 0,
     throughServed: 0,
     corridorTrips: 0,
+    corridorThroughTrips: 0,
+    unroutedByAccess: { through: 0, local: 0, service: 0 },
     edgeVehicles: network.edges.map(() => 0),
     edgeVc: network.edges.map(() => 0),
     nodeBalance: {},
     endpointBalance: {},
   };
 }
-export function permitted(edge: Edge, policy: Policy, access: Access): boolean {
+export function permitted(edge: Edge, access: Access): boolean {
+  const rule = edge.modelAccess ?? "all";
   return (
-    !edge.corridor ||
-    policy === "baseline" ||
-    access === "service" ||
-    (policy === "restricted" && access === "local")
+    rule === "all" ||
+    (rule === "local" && access !== "through") ||
+    (rule === "service" && access === "service")
   );
 }
 export function travelSeconds(edge: Edge, vehicles: number): number {
@@ -73,7 +77,6 @@ export function route(
   network: Network,
   from: string,
   to: string,
-  policy: Policy,
   access: Access,
   loads: readonly number[],
 ): number[] | null {
@@ -104,7 +107,7 @@ export function route(
     }
     visited.add(current);
     network.edges.forEach((edge, i) => {
-      if (edge.from !== current || !permitted(edge, policy, access)) return;
+      if (edge.from !== current || !permitted(edge, access)) return;
       const next = best + travelSeconds(edge, (loads[i] ?? 0) + 1);
       if (next < (distance.get(edge.to) ?? Infinity)) {
         distance.set(edge.to, next);
@@ -117,15 +120,13 @@ export function route(
 export class TrafficSimulation {
   private readonly network: Network;
   private readonly demand: Demand[];
-  private readonly policy: Policy;
   private result: Result;
   constructor(
     network: Network,
-    policy: Policy,
+    plan: Plan = emptyPlan(network),
     demand: readonly Demand[] = DEMAND,
   ) {
     if (
-      !["baseline", "restricted", "pedestrian"].includes(policy) ||
       network.edges.length > 500 ||
       network.nodeIds.length > 300 ||
       new Set(network.nodeIds).size !== network.nodeIds.length ||
@@ -151,9 +152,8 @@ export class TrafficSimulation {
     )
       throw new Error("Invalid or unbounded scenario inputs.");
     // Own copies: running/resetting cannot mutate either source or callers.
-    this.network = structuredClone(network);
+    this.network = applyPlan(network, plan);
     this.demand = structuredClone(demand) as Demand[];
-    this.policy = policy;
     this.result = initialResult(this.network);
   }
   reset(): Result {
@@ -181,22 +181,19 @@ export class TrafficSimulation {
     for (const od of this.demand)
       for (let trip = 0; trip < od.vehiclesPerTick * multiplier; trip++) {
         r.requested++;
-        const path = route(
-          this.network,
-          od.from,
-          od.to,
-          this.policy,
-          od.access,
-          loads,
-        );
+        const path = route(this.network, od.from, od.to, od.access, loads);
         if (!path) {
           r.unrouted++;
+          r.unroutedByAccess[od.access]++;
           continue;
         }
         r.served++;
         delta(r.endpointBalance, od.from, -1);
         delta(r.endpointBalance, od.to, 1);
-        if (path.some((i) => this.network.edges[i].corridor)) r.corridorTrips++;
+        if (path.some((i) => this.network.edges[i].corridor)) {
+          r.corridorTrips++;
+          if (od.access === "through") r.corridorThroughTrips++;
+        }
         let distanceM = 0;
         for (const i of path) {
           loads[i]++;

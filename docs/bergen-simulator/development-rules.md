@@ -40,3 +40,22 @@ disabled native Git deployment switch. Exact-SHA detached Actions checkouts are
 accepted only with matching repository, branch, event and SHA metadata. It supplements
 review; it cannot prove remote hosting state or inspect credentials. Browser verification records only local
 static requests and checks missing-data failure, navigation and selection.
+
+## Planning contracts (3B)
+
+- Source geography is immutable. Interventions reference verified physical sections;
+  they cannot contain geometry, add links or override mapped one-way directions.
+- Keep plan/model/library versions explicit. Reject unknown fields and future or
+  incompatible formats atomically; do not silently migrate changed meanings.
+- Never accept cached outcomes, scores or demand from imported plans. Recalculate
+  original baseline, current draft and saved references through the same worker.
+- Any unrouted trip must remain prominent and disqualify challenge success. A lower
+  routed-only travel or emissions total cannot compensate for lost access in scoring.
+- Treat capacity and access rules as assumptions. Colours are proposed interventions,
+  not observed materials, legal traffic orders or completed construction.
+- Use only the simulator's local-storage namespace; never clear unrelated storage.
+  Preserve invalid libraries and current drafts on read, parse, conflict or quota failure.
+- Verify challenge feasibility with an actual valid plan and the common engine before
+  changing thresholds. Keep game scoring separate from geographic/transport metrics.
+- Profile a visible canvas with fixed cameras, viewport, DPR and renderer settings;
+  label software-renderer measurements and keep physical-device performance unverified.

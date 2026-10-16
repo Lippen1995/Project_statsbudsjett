@@ -2,7 +2,8 @@ import { TrafficSimulation, TOTAL_TICKS } from "./engine";
 import { buildNetwork } from "./network";
 import type { Command, Reply } from "./protocol";
 let baseline: TrafficSimulation | undefined,
-  intervention: TrafficSimulation | undefined;
+  intervention: TrafficSimulation | undefined,
+  reference: TrafficSimulation | undefined;
 let timer: ReturnType<typeof setTimeout> | undefined;
 let paused = true,
   computeMs = 0;
@@ -12,6 +13,7 @@ const send = () => {
       type: "progress",
       baseline: baseline.snapshot(),
       intervention: intervention.snapshot(),
+      reference: reference?.snapshot() ?? null,
       computeMs,
       paused,
     } satisfies Reply);
@@ -21,6 +23,7 @@ function tick() {
   const start = performance.now();
   baseline.step();
   const r = intervention.step();
+  reference?.step();
   computeMs += performance.now() - start;
   if (r.tick >= TOTAL_TICKS) paused = true;
   if (r.tick % 5 === 0 || paused) send();
@@ -31,8 +34,11 @@ self.onmessage = ({ data }: MessageEvent<Command>) => {
     clearTimeout(timer);
     if (data.type === "start") {
       const network = buildNetwork(data.source);
-      baseline = new TrafficSimulation(network, "baseline");
-      intervention = new TrafficSimulation(network, data.policy);
+      baseline = new TrafficSimulation(network);
+      intervention = new TrafficSimulation(network, data.plan);
+      reference = data.reference
+        ? new TrafficSimulation(network, data.reference)
+        : undefined;
       computeMs = 0;
       paused = false;
       send();

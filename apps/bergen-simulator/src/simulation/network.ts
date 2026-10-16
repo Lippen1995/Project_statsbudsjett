@@ -1,3 +1,4 @@
+import type { AccessRule } from "./interventions";
 import { project } from "../geo/projection";
 
 export interface TransportSource {
@@ -21,6 +22,7 @@ export interface Edge {
   points: [number, number][];
   lengthM: number;
   corridor: boolean;
+  modelAccess?: AccessRule;
   capacityVph: number; // Model assumption, never an OSM observation.
 }
 export interface Network {

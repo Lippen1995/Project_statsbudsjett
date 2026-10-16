@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-16T21:54:06.790Z",
+  "errors": [],
+  "failures": [],
+  "localRequests": 5,
+  "checks": [
+    "WebGL scene",
+    "zoom",
+    "orbit",
+    "pan",
+    "layer visibility",
+    "low power rendering",
+    "merged-mesh pointer selection",
+    "source inspection",
+    "camera focus/reset",
+    "accuracy panel",
+    "390px responsive layout",
+    "3× display bounded to DPR 1.5; low power DPR 1",
+    "no external runtime services",
+    "missing snapshot failure"
+  ]
+}

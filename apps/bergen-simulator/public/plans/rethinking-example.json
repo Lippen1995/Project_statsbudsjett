@@ -1,0 +1,36 @@
+{
+  "kind": "bergen-reimagined-plan",
+  "version": 1,
+  "name": "Rethinking Bryggen \u2014 capacity experiment",
+  "plan": {
+    "version": 1,
+    "networkId": "bryggen-transport-model-1-4ea4ffed",
+    "interventions": [
+      {
+        "segmentId": "way/10573529:21540818:645519",
+        "access": "all",
+        "capacityFactor": 2
+      },
+      {
+        "segmentId": "way/4072239:21540816:21540818",
+        "access": "all",
+        "capacityFactor": 2
+      },
+      {
+        "segmentId": "way/4269919:21540816:3944889944",
+        "access": "all",
+        "capacityFactor": 2
+      },
+      {
+        "segmentId": "way/488690111:645523:645599",
+        "access": "all",
+        "capacityFactor": 0.25
+      },
+      {
+        "segmentId": "way/719637467:3945414777:6755477129",
+        "access": "all",
+        "capacityFactor": 2
+      }
+    ]
+  }
+}

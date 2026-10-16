@@ -117,3 +117,12 @@ suite and a new complete scenario desktop/mobile sequence pass; archived baselin
 and after screenshots use fixed cameras. [Model assumptions, performance and
 acceptance evidence](milestone-3a.md) include limits and reproducible commands.
 No workflow, Fellestall file, existing geographic snapshot or lockfile was changed.
+
+## Milestone 3B
+
+51 Vitest + 10 release-policy tests and three offline geographic tests pass alongside
+lint, build, isolation, existing explorer and the complete direct-edit desktop/mobile
+sandbox journey. Versioned plans, history, storage recovery, baseline/saved comparisons
+and accessibility-dominant challenge objectives are verified. [3B evidence and model
+limits](milestone-3b.md) include visible-canvas performance measurements, actual JSON
+export/reload evidence and the unchanged production boundary.

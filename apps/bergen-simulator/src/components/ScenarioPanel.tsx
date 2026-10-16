@@ -1,33 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useScenario } from "../state/scenario";
 import { useCity } from "../state/store";
-import { TICK_SECONDS, TOTAL_TICKS, type Policy } from "../simulation/engine";
-import type { CityData } from "../geo/types";
+import { TICK_SECONDS, TOTAL_TICKS } from "../simulation/engine";
 import type { TransportSource } from "../simulation/network";
-export const POLICY_NAMES: Record<Policy, string> = {
-  baseline: "Baseline",
-  restricted: "Restricted through-traffic",
-  pedestrian: "Pedestrian-priority corridor",
-};
-const description: Record<Policy, string> = {
-  baseline:
-    "Mapped road directions. All three synthetic trip categories may use Bryggen.",
-  restricted:
-    "Through-trips must detour. Local access and servicing may use Bryggen.",
-  pedestrian:
-    "Only modelled servicing may use Bryggen. Other cars must find a mapped detour.",
-};
-const number = (n: number, digits = 0) =>
-  n.toLocaleString("en-GB", {
-    maximumFractionDigits: digits,
-    minimumFractionDigits: digits,
-  });
-const difference = (a: number, b: number) =>
-  b > 0 ? `${a >= b ? "+" : ""}${number((a / b - 1) * 100, 1)}%` : "—";
-
+import type { CityData } from "../geo/types";
+import StreetEditor from "./StreetEditor";
+import PlanLibrary from "./PlanLibrary";
+import PlanningResults, { ChallengeReadout, number } from "./PlanningResults";
 export default function ScenarioPanel({ data }: { data: CityData }) {
-  const s = useScenario();
-  const [loading, setLoading] = useState(false),
+  const s = useScenario(),
+    [loading, setLoading] = useState(false),
     [loadError, setLoadError] = useState("");
   const abort = useRef<AbortController | null>(null);
   useEffect(
@@ -37,6 +19,16 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
     },
     [],
   );
+  useEffect(() => {
+    if (
+      s.phase === "complete" &&
+      window.matchMedia("(min-width: 701px)").matches
+    ) {
+      document
+        .querySelector('[aria-label="Plan consequences"]')
+        ?.scrollIntoView({ block: "nearest" });
+    }
+  }, [s.phase]);
   async function enter() {
     abort.current?.abort();
     const controller = new AbortController();
@@ -61,6 +53,13 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
       s.open(source);
       useCity.getState().select(null);
       useCity.getState().focus([20, -220]);
+      try {
+        s.loadLibrary(window.localStorage);
+      } catch {
+        s.report(
+          "Local browser storage is unavailable. Planning and JSON export remain available.",
+        );
+      }
     } catch (e) {
       if (!controller.signal.aborted)
         setLoadError(
@@ -73,104 +72,64 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
   if (s.phase === "closed")
     return (
       <section className="scenario-entry" aria-label="Planning scenario">
-        <span className="eyebrow">FIRST PLAYABLE SCENARIO</span>
-        <h2>Whose streets, whose city?</h2>
+        <span className="eyebrow">URBAN PLANNING SANDBOX</span>
+        <h2>Your streets. Your proposal.</h2>
         <p>
-          Plan traffic around Bryggen & Vågen. Choose a policy, test the
-          trade-offs, then try again.
+          Redesign how real streets around Bryggen operate. The city stays real;
+          your interventions are hypothetical.
         </p>
         <button className="plan-button" onClick={enter} disabled={loading}>
-          {loading ? "Checking mapped network…" : "Plan Bryggen traffic →"}
+          {loading ? "Checking mapped network…" : "Enter Planning Mode →"}
         </button>
         {loadError && (
           <p role="alert">{loadError} No substitute network was loaded.</p>
         )}
       </section>
     );
-  const r = s.intervention,
-    b = s.baseline;
-  const rows =
-    r && b && r.tick > 0
-      ? [
-          [
-            "Vehicle travel time",
-            `${number(b.vehicleMinutes)} veh·min`,
-            `${number(r.vehicleMinutes)} veh·min`,
-            difference(r.vehicleMinutes, b.vehicleMinutes),
-          ],
-          [
-            "Through-trip distance",
-            `${number(b.throughMetres / Math.max(1, b.throughServed))} m/trip`,
-            `${number(r.throughMetres / Math.max(1, r.throughServed))} m/trip`,
-            difference(
-              r.throughMetres / Math.max(1, r.throughServed),
-              b.throughMetres / Math.max(1, b.throughServed),
-            ),
-          ],
-          [
-            "Emissions proxy",
-            "100 index",
-            `${number((r.emissionBurden / Math.max(0.001, b.emissionBurden)) * 100)} index`,
-            difference(r.emissionBurden, b.emissionBurden),
-          ],
-          [
-            "Bryggen trips",
-            `${number(b.corridorTrips)} veh`,
-            `${number(r.corridorTrips)} veh`,
-            difference(r.corridorTrips, b.corridorTrips),
-          ],
-          [
-            "Highest road V/C¹",
-            number(Math.max(...b.edgeVc), 2),
-            number(Math.max(...r.edgeVc), 2),
-            "ratio",
-          ],
-          [
-            "Unrouted in model",
-            `${b.unrouted} / ${b.requested}`,
-            `${r.unrouted} / ${r.requested}`,
-            "trips",
-          ],
-        ]
-      : [];
   return (
-    <section className="scenario-panel" aria-label="Bryggen planning scenario">
+    <section
+      className="scenario-panel planning-mode"
+      aria-label="Urban planning sandbox"
+    >
       <div className="section-heading">
-        <span className="eyebrow">PLANNING DESK / 01</span>
+        <span className="eyebrow">PLANNING MODE / BRYGGEN</span>
         <button
           className="icon-button"
-          onClick={s.close}
-          aria-label="Leave scenario"
+          aria-label="Leave Planning Mode"
+          onClick={() => {
+            s.close();
+            useCity.getState().select(null);
+          }}
         >
           ×
         </button>
       </div>
-      <h2>Bryggen & Vågen</h2>
-      <p className="scenario-question">
-        Reclaim the waterfront. Where does the traffic go?
-      </p>
+      <h2>Draw a different future.</h2>
       <p className="synthetic-label">
-        SYNTHETIC DEMONSTRATION · NOT A FORECAST
+        HYPOTHETICAL PLAN · SYNTHETIC TRAFFIC · NOT A FORECAST
       </p>
-      <fieldset disabled={s.phase === "running" || s.phase === "paused"}>
-        <legend>Choose a traffic policy</legend>
-        {(Object.keys(POLICY_NAMES) as Policy[]).map((policy) => (
-          <label key={policy} className="policy-option">
-            <input
-              type="radio"
-              name="policy"
-              value={policy}
-              checked={s.policy === policy}
-              onChange={() => s.choose(policy)}
-            />
-            <span>{POLICY_NAMES[policy]}</span>
-          </label>
-        ))}
-      </fieldset>
-      <p className="policy-description">
-        {description[s.policy]} These are scenario access rules, not verified
-        existing restrictions.
-      </p>
+      <div className="plan-heading">
+        <strong>{s.name}</strong>
+        <span>{s.plan?.interventions.length ?? 0} proposed section edits</span>
+      </div>
+      <div className="planning-actions history-controls">
+        <button disabled={s.cursor < 1} onClick={s.undo}>
+          ↶ Undo
+        </button>
+        <button disabled={s.cursor >= s.history.length - 1} onClick={s.redo}>
+          ↷ Redo
+        </button>
+        <button
+          onClick={() => {
+            s.reset();
+            useCity.getState().select(null);
+            useCity.getState().focus(null);
+          }}
+        >
+          Reset city
+        </button>
+      </div>
+      <StreetEditor data={data} />
       <div className="simulation-controls">
         {s.phase === "running" || s.phase === "paused" ? (
           <button className="plan-button" onClick={s.pauseResume}>
@@ -178,17 +137,14 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
           </button>
         ) : (
           <button className="plan-button" onClick={s.run}>
-            ▶ Run simulation
+            ▶ Run plan
           </button>
         )}
-        <button className="reset-scenario" onClick={s.reset}>
-          Reset
-        </button>
       </div>
       <div className="simulation-progress" data-compute-ms={s.computeMs}>
         <progress
           aria-label="Simulation progress"
-          value={r?.tick ?? 0}
+          value={s.intervention?.tick ?? 0}
           max={TOTAL_TICKS}
         />
         <span role="status">
@@ -198,92 +154,59 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
               ? "Simulation paused"
               : s.phase === "running"
                 ? "Simulating"
-                : "Ready to plan"}{" "}
-          · {number(((r?.tick ?? 0) * TICK_SECONDS) / 60, 1)} / 30 min
+                : "Ready to test your plan"}{" "}
+          · {number(((s.intervention?.tick ?? 0) * TICK_SECONDS) / 60, 1)} / 30
+          min
         </span>
       </div>
-      {s.error && <p role="alert">{s.error}</p>}
-      {!!rows.length && (
-        <>
-          {s.phase === "complete" && r && b && (
-            <p className="decision-outcome">
-              {s.policy === "baseline"
-                ? "Your reference run is ready. Test a restriction to see where the traffic goes."
-                : `${number((1 - r.corridorTrips / Math.max(1, b.corridorTrips)) * 100)}% fewer modelled trips used Bryggen. ${r.unrouted ? `${r.unrouted} trips found no permitted route in this model.` : "All trips found a route."} Through-trip distance changed ${difference(r.throughMetres / Math.max(1, r.throughServed), b.throughMetres / Math.max(1, b.throughServed))}.`}
-            </p>
-          )}
-          <table
-            className="scenario-results"
-            aria-label="Baseline versus selected policy"
-          >
-            <thead>
-              <tr>
-                <th scope="col">Model outcome</th>
-                <th scope="col">Baseline</th>
-                <th scope="col">Policy</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map(([title, baseline, policy, delta]) => (
-                <tr key={title}>
-                  <th scope="row">{title}</th>
-                  <td>{baseline}</td>
-                  <td>
-                    {policy}
-                    <small>{delta}</small>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <p className="data-note">
-            Cumulative over elapsed model time. ¹Highest period-average
-            directional volume / assumed capacity. Travel time and emissions
-            proxy cover routed trips only; fewer routed trips is not an
-            efficiency gain.
-          </p>
-          <button
-            className="compare-button"
-            aria-pressed={s.compare}
-            onClick={s.toggleCompare}
-          >
-            {s.compare
-              ? "Showing baseline · show policy"
-              : "Compare on map · show baseline"}
-          </button>
-        </>
+      {s.error && (
+        <p className="planning-error" role="alert">
+          {s.error}
+        </p>
       )}
+      {s.notice && (
+        <p className="planning-notice" role="note">
+          {s.notice}
+        </p>
+      )}
+      <PlanningResults />
       <label className="traffic-toggle">
         <input type="checkbox" checked={s.heatmap} onChange={s.toggleHeatmap} />
         Traffic intensity on map
       </label>
+      {!s.challenge && (
+        <button className="compare-button" onClick={() => s.setChallenge(true)}>
+          Take the challenge · Rethinking Bryggen
+        </button>
+      )}
+      <ChallengeReadout />
+      <PlanLibrary />
       <details className="scenario-assumptions">
-        <summary>Model assumptions & mapped sources</summary>
+        <summary>Observed geography & model assumptions</summary>
         <p>
-          27 OSM ways, shared original node IDs and mapped one-way directions.
-          No invented junctions, bridges or tunnels. This is a bounded network,
-          not all Bergen routes. No turn restrictions involving these ways were
-          present in the pinned snapshot; missing mapping and traffic signs are
-          not ruled out.
+          27 OSM ways, 31 editable sections and shared original node IDs. Mapped
+          directions are retained. No invented connections, bridge decks or
+          tunnels. No relevant restriction relations were present in the pinned
+          cache; this does not certify real-world access rules.
         </p>
         <p>
-          30-second ticks, 30-minute period. 12 synthetic vehicles/tick, doubled
-          during minutes 10–20: 960 trips. Through (two directions): 8; local
-          access: 2; servicing: 2. Servicing is an assumed permitted category,
-          not observed vehicle activity. No randomness.
+          30-second ticks, 30 minutes, 960 synthetic trips. Through: 8
+          vehicles/tick, local: 2, servicing: 2; demand doubles in minutes
+          10–20. No randomness. Speed 20 km/h; baseline directional capacities
+          600/420/300/250 veh/h by primary/secondary/tertiary/other road class.
+          All are assumptions.
         </p>
         <p>
-          Assumed speed 20 km/h; directional capacity 600/420/300/250
-          vehicles/hour for primary/secondary/tertiary/other roads. Incremental
-          shortest-path assignment with a bounded BPR congestion curve, not
-          moving vehicles or a queue model. Omitted signals, parking, transit,
-          pedestrians and behavioural response.
+          Incremental shortest-path assignment with bounded BPR-style costs. Not
+          a vehicle movement, queue or equilibrium model. Emissions proxy =
+          vehicle-km × [1 + 0.2 × max(0, V/C − 0.6)²], initial baseline = 100.
+          It is not measured CO₂. Pedestrian flows, building works and real
+          current restrictions are not simulated.
         </p>
         <p>
-          Emissions proxy = vehicle-km × [1 + 0.2 × max(0, V/C − 0.6)²], indexed
-          to baseline 100. No CO₂ or validated environmental benefit is claimed.
-          Unrouted means no permitted path inside this limited model, not
-          real-world inaccessibility.
+          Unrouted means no permitted route within this limited network, not
+          proof of real-world inaccessibility. Lost access is penalized in the
+          challenge regardless of lower routed-only totals.
         </p>
         <p>
           © OpenStreetMap contributors · ODbL.{" "}
@@ -292,37 +215,40 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
             target="_blank"
             rel="noreferrer"
           >
-            Node IDs, source tags & pinned hashes ↗
+            Original source IDs, tags & pinned hashes ↗
           </a>
         </p>
       </details>
     </section>
   );
 }
-
 export function ScenarioLegend() {
-  const s = useScenario();
+  const s = useScenario(),
+    selectedId = useCity((v) => v.selectedSegmentId),
+    selected = useCity((v) => v.selected);
   if (s.phase === "closed") return null;
+  const reference = s.library.find((p) => p.id === s.referenceId);
+  const label =
+    s.mapView === "baseline"
+      ? "INITIAL BASELINE"
+      : s.mapView === "reference"
+        ? `SAVED: ${reference?.scenario.name}`
+        : "YOUR PROPOSED PLAN";
   return (
     <div
       className="scenario-legend"
       aria-label="Traffic map legend"
-      data-map-state={s.compare ? "baseline" : s.policy}
+      data-map-state={s.mapView}
     >
-      <strong>
-        {s.compare
-          ? "BASELINE COMPARISON"
-          : POLICY_NAMES[s.policy].toUpperCase()}
-      </strong>
+      <strong>{label}</strong>
       <span>
-        Synthetic traffic ·{" "}
-        {s.intervention
-          ? `${s.intervention.tick / 2} model min`
-          : "corridor preview"}
+        Synthetic model ·{" "}
+        {s.intervention ? `${s.intervention.tick / 2} min` : "edit preview"}
       </span>
-      <div className="traffic-key">
+      <span>Teal outline · editable model section</span>
+      <div className="proposal-key">
         <i />
-        Bryggen corridor
+        Dashed colour · hypothetical edit
       </div>
       {s.heatmap && s.intervention && s.intervention.tick > 0 && (
         <>
@@ -331,8 +257,26 @@ export function ScenarioLegend() {
         </>
       )}
       {s.intervention && s.intervention.tick > 0 && (
-        <button onClick={s.toggleCompare} aria-pressed={s.compare}>
-          {s.compare ? "Show policy" : "Show baseline"}
+        <button
+          onClick={() =>
+            s.setMapView(s.mapView === "baseline" ? "plan" : "baseline")
+          }
+        >
+          {s.mapView === "baseline" ? "Show your plan" : "Show baseline"}
+        </button>
+      )}
+      {selectedId && (
+        <button
+          onClick={() => {
+            document
+              .getElementById("street-editor")
+              ?.scrollIntoView({ block: "center" });
+            document
+              .getElementById("street-editor")
+              ?.focus({ preventScroll: true });
+          }}
+        >
+          Edit {selected?.name ?? "selected section"} ↓
         </button>
       )}
       {(s.phase === "running" || s.phase === "paused") && (

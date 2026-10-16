@@ -221,7 +221,7 @@ export default function App() {
           </span>
         </a>
         <div className="header-center">
-          CITY PLANNING PROTOTYPE <span>03A / BERGEN</span>
+          CITY PLANNING PROTOTYPE <span>03B / BERGEN</span>
         </div>
         <span className="prototype-badge">
           <span />

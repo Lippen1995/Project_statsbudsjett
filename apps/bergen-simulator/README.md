@@ -86,3 +86,25 @@ any branch or baseline source.
 repeatability, visible comparison at a fixed camera, resource disposal and idle
 rendering. It records screenshots and software-renderer metrics in ignored
 `artifacts/milestone-3a/`. See [model, evidence and limits](../../docs/bergen-simulator/milestone-3a.md).
+
+## Milestone 3B — interactive planning sandbox
+
+**Enter Planning Mode**, click a teal outlined road section, change its proposed
+access or assumed capacity, select a second section and run your plan. Dashed
+colours mark hypothetical edits; source geometry never changes. Undo/redo, inspect
+unmodelled streets, compare baseline and saved configurations, or take **Rethinking
+Bryggen**. Unrouted trips are prominent and penalized in game objectives.
+
+Expand **Save, open & compare plans** to name/save locally, duplicate, reopen,
+export JSON or import a compatible file. Saved plans contain interventions only;
+outcomes are recalculated. No data leaves the browser. The storage namespace is
+`bergen.reimagined.plans.v1`, limited to 20 plans. Keep JSON exports before clearing
+browser storage. An example accepted by the same importer lives at
+[`public/plans/rethinking-example.json`](public/plans/rethinking-example.json).
+
+`npm run test:scenario` now covers the complete direct-edit/save/reload/import flow,
+worker comparisons, challenge/accessibility, desktop and touch/mobile layouts under
+the existing Vercel CSP. Evidence goes to `artifacts/milestone-3b/`.
+`npm run test:sandbox-baseline` reconstructs clean `54c6531` in a disposable archive
+on port 4181, using the same fixed cameras and visible-canvas profiling correction.
+It never switches a branch. See [3B model and evidence](../../docs/bergen-simulator/milestone-3b.md).

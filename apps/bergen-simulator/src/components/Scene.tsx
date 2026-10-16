@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { useScenario } from "../state/scenario";
+import { nearestSegment } from "../simulation/interventions";
 import { useCity } from "../state/store";
 import { installCapture } from "../geo/capture";
 import type { Building, CityData, Road } from "../geo/types";
@@ -117,6 +119,7 @@ function CityGeometry({ data }: { data: CityData }) {
   const layers = useCity((s) => s.layers);
   const select = useCity((s) => s.select);
   const selected = useCity((s) => s.selected);
+  const selectedSegmentId = useCity((s) => s.selectedSegmentId);
   const surface = useMemo(() => terrainSampler(data.terrain), [data]);
   const buildings = useMemo(
     () => makeBuildings(data, surface),
@@ -130,10 +133,10 @@ function CityGeometry({ data }: { data: CityData }) {
     () =>
       selected?.kind === "building"
         ? buildingGeometry(selected as Building, surface)
-        : selected?.kind === "road"
+        : selected?.kind === "road" && !selectedSegmentId
           ? roadGeometry(selected as Road, surface)
           : null,
-    [selected, surface],
+    [selected, selectedSegmentId, surface],
   );
   // Merged geometry keeps draw calls bounded; face ranges retain selection IDs.
   useEffect(
@@ -155,7 +158,10 @@ function CityGeometry({ data }: { data: CityData }) {
   const pick = (event: ThreeEvent<MouseEvent>, group: typeof buildings) => {
     if (event.delta > 4 || event.faceIndex == null) return;
     event.stopPropagation();
-    select(featureAtFace(group.ranges, event.faceIndex));
+    const feature = featureAtFace(group.ranges, event.faceIndex);
+    const network = useScenario.getState().network;
+    const section = network && feature?.kind === "road" ? nearestSegment(network, feature.id, [event.point.x, event.point.z]) : null;
+    select(feature, section);
   };
   return (
     <>
@@ -201,7 +207,7 @@ function CityGeometry({ data }: { data: CityData }) {
           />
         </mesh>
       ) : null}
-      {selected ? (
+      {selected && !selectedSegmentId ? (
         <mesh
           position={[
             selected.center[0],

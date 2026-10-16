@@ -4,12 +4,21 @@ import { expect, it } from "vitest";
 import { buildNetwork, type TransportSource } from "../src/simulation/network";
 import {
   DEMAND,
-  TrafficSimulation,
+  TrafficSimulation as ModelSimulation,
   TOTAL_TICKS,
-  permitted,
-  route,
-  type Policy,
+  permitted as modelPermitted,
+  route as modelRoute,
+  type Demand,
+  type Access,
 } from "../src/simulation/engine";
+import {
+  applyPlan,
+  emptyPlan,
+  segmentId,
+  segments,
+  type AccessRule,
+} from "../src/simulation/interventions";
+import type { Network, Edge } from "../src/simulation/network";
 import { useScenario } from "../src/state/scenario";
 import { trafficGeometry, trafficColor } from "../src/geo/traffic";
 import { terrainSampler } from "../src/geo/surface";
@@ -21,6 +30,39 @@ const source = JSON.parse(
   ),
 ) as TransportSource;
 const network = buildNetwork(source);
+// Preserve all 3A regression cases by translating historical choices to data.
+// The production engine has no global policies or corridor-specific access logic.
+type Policy = "baseline" | "restricted" | "pedestrian";
+const rule = (p: Policy): AccessRule =>
+  p === "restricted" ? "local" : p === "pedestrian" ? "service" : "all";
+const historicalPlan = (n: Network, p: Policy) => ({
+  ...emptyPlan(n),
+  interventions:
+    p === "baseline"
+      ? []
+      : segments(n)
+          .filter((e) => e.corridor)
+          .map((e) => ({
+            segmentId: segmentId(e),
+            access: rule(p),
+            capacityFactor: 1,
+          })),
+});
+class TrafficSimulation extends ModelSimulation {
+  constructor(n: Network, p: Policy, demand: readonly Demand[] = DEMAND) {
+    super(n, historicalPlan(n, p), demand);
+  }
+}
+const route = (
+  n: Network,
+  from: string,
+  to: string,
+  p: Policy,
+  access: Access,
+  loads: readonly number[],
+) => modelRoute(applyPlan(n, historicalPlan(n, p)), from, to, access, loads);
+const permitted = (e: Edge, p: Policy, access: Access) =>
+  modelPermitted({ ...e, modelAccess: e.corridor ? rule(p) : "all" }, access);
 const run = (policy: Policy) => {
   const sim = new TrafficSimulation(network, policy);
   for (let i = 0; i < TOTAL_TICKS; i++) sim.step();
@@ -184,29 +226,37 @@ it("terminates after exactly 60 ticks and retains bounded snapshot memory", () =
 it("reset clears comparisons, policy, progress and results; policies invalidate stale results", () => {
   const s = useScenario.getState();
   s.open(source);
-  s.choose("pedestrian");
+  s.edit({
+    segmentId: segmentId(network.edges.find((e) => e.corridor)!),
+    access: "service",
+    capacityFactor: 1,
+  });
   useScenario.setState({
     intervention: run("pedestrian"),
     baseline: run("baseline"),
     phase: "complete",
-    compare: true,
+    mapView: "baseline",
     heatmap: false,
   });
   s.reset();
   expect(useScenario.getState()).toMatchObject({
-    policy: "baseline",
+    plan: { interventions: [] },
     phase: "ready",
     baseline: null,
     intervention: null,
-    compare: false,
+    mapView: "plan",
     heatmap: true,
     computeMs: 0,
   });
   expect(useScenario.getState().network).toEqual(network);
   useScenario.setState({ intervention: run("baseline"), phase: "complete" });
-  s.choose("restricted");
+  s.edit({
+    segmentId: segmentId(network.edges.find((e) => e.corridor)!),
+    access: "local",
+    capacityFactor: 1,
+  });
   expect(useScenario.getState()).toMatchObject({
-    policy: "restricted",
+    plan: { interventions: [{ access: "local" }] },
     phase: "ready",
     intervention: null,
   });
@@ -328,7 +378,11 @@ it("terminates cancelled workers and ignores late results after reset", async ()
   try {
     const s = useScenario.getState();
     s.open(source);
-    s.choose("restricted");
+    s.edit({
+      segmentId: segmentId(network.edges.find((e) => e.corridor)!),
+      access: "local",
+      capacityFactor: 1,
+    });
     s.run();
     const worker = WorkerFixture.instances[0];
     expect(useScenario.getState().phase).toBe("running");
@@ -348,7 +402,7 @@ it("terminates cancelled workers and ignores late results after reset", async ()
     });
     expect(useScenario.getState()).toMatchObject({
       phase: "ready",
-      policy: "baseline",
+      plan: { interventions: [] },
       intervention: null,
       baseline: null,
     });

@@ -1,0 +1,109 @@
+{
+  "label": "after",
+  "quality": "balanced",
+  "baselineCommit": "54c65318a3a82af51d36e196c2cc313148703efc",
+  "viewport": [
+    1440,
+    1000
+  ],
+  "renderer": "Chromium / ANGLE SwiftShader (software, not a hardware FPS benchmark)",
+  "browserVersion": "151.0.7922.173",
+  "readyMs": 3450,
+  "medianCpuFrameMs": 0.5,
+  "p95CpuFrameMs": 0.7999999970197678,
+  "medianCameraLatencyMs": 448.3999999985099,
+  "p95CameraLatencyMs": 573.8999999985099,
+  "idleFrames": 0,
+  "views": [
+    {
+      "name": "overview",
+      "frames": 2,
+      "cpuFrameMs": 1.8999999985098839,
+      "cameraLatencyMs": 3.6999999955296516,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 5,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        1049.9999999999998,
+        1950,
+        2149.9999999999995
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "vagen",
+      "frames": 3,
+      "cpuFrameMs": 0.5999999940395355,
+      "cameraLatencyMs": 7.699999995529652,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 5,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -428.02,
+        301.42,
+        229.23999999999995
+      ],
+      "target": [
+        1.98,
+        1.42,
+        -270.76
+      ]
+    },
+    {
+      "name": "bergenhus",
+      "frames": 4,
+      "cpuFrameMs": 0.7000000029802322,
+      "cameraLatencyMs": 1.1000000014901161,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 5,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -663.46,
+        305.2,
+        -80.35999999999996
+      ],
+      "target": [
+        -333.46,
+        5.2,
+        -520.36
+      ]
+    },
+    {
+      "name": "nordnes",
+      "frames": 5,
+      "cpuFrameMs": 0.6000000014901161,
+      "cameraLatencyMs": 0.7999999970197678,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 5,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -372.0199999999998,
+        600,
+        -6.079999999999927
+      ],
+      "target": [
+        -822.0199999999999,
+        0,
+        -766.08
+      ]
+    }
+  ],
+  "errors": [],
+  "captureCommand": "npm run test:visual (current 3B, fixed geographic cameras, Planning Mode closed)"
+}

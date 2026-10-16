@@ -17,7 +17,8 @@
     "test:baseline": "node tests/capture-baseline.mjs",
     "check:isolation": "node scripts/check-isolation.mjs",
     "test:scenario": "node tests/scenario-browser.mjs",
-    "test:scenario-baseline": "node tests/capture-scenario-baseline.mjs"
+    "test:scenario-baseline": "node tests/capture-scenario-baseline.mjs",
+    "test:sandbox-baseline": "node tests/capture-sandbox-baseline.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.4.0",
