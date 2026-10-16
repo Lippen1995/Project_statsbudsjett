@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.vercel/
+.env*
+!*.example
+artifacts/
+data-cache/
+__pycache__/
