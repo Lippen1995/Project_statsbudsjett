@@ -1,0 +1,49 @@
+{
+  "browserVersion": "151.0.7922.173",
+  "renderer": "ANGLE SwiftShader software renderer; physical-device GPU performance unverified",
+  "checks": [
+    "Mouse polygon draw, terrain-following mesh, direct corner drag, accessible coordinate edit and invalid-placement rejection",
+    "Explicit road rule changes synthetic routes; baseline comparison and cross-type undo/redo rerun reproducibly",
+    "Duplicated physical designs compare independently in 3D without overwriting the original",
+    "Save/reload, real JSON download/import and malformed geometry rejection preserve the active combined plan",
+    "Legacy 3B import succeeds and a real-network combined plan achieves the optional challenge",
+    "Direct surface inspection/removal and reset return the city to the original five rendering passes",
+    "Touch polygon placement, landscaped treatment, mobile save/reload and zero idle rendering"
+  ],
+  "desktop": {
+    "loadMs": 3251.4790980000007,
+    "computeMs": 75.29999999993015,
+    "activeProfile": {
+      "calls": 9,
+      "triangles": 289358,
+      "lines": 34,
+      "geometries": 9,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 409.5999999999767,
+      "p95CameraLatencyMs": 490.80000000004657,
+      "medianCpuFrameMs": 0.40000000002328306,
+      "idleFrames": 0
+    }
+  },
+  "mobile": {
+    "loadMs": 2038.187918999989,
+    "computeMs": 49.6999999997206,
+    "activeProfile": {
+      "calls": 9,
+      "triangles": 289358,
+      "lines": 34,
+      "geometries": 9,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 265,
+      "p95CameraLatencyMs": 572.2000000000698,
+      "medianCpuFrameMs": 0.6000000000931323,
+      "idleFrames": 0
+    }
+  },
+  "passed": true,
+  "errors": [],
+  "baselineCommit": "d9ab083387da97181ea5ed7e0ed56a1676a2669b",
+  "captureCommand": "npm run build; npm run test:physical (at clean d9ab083, before source edits)",
+  "reproduceCommand": "npm run test:building-baseline",
+  "harnessCorrection": "None; exact committed 4A application and harness."
+}

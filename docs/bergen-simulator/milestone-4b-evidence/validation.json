@@ -1,0 +1,23 @@
+{
+  "baselineCommit": "d9ab083387da97181ea5ed7e0ed56a1676a2669b",
+  "branch": "feature/bergen-simulator",
+  "vitest": 112,
+  "releasePolicyTests": 10,
+  "geographicTests": 3,
+  "checks": {
+    "lint": "passed",
+    "independentBuild": "passed",
+    "isolation": "passed",
+    "constructionBrowserDesktopMobile": "passed",
+    "publicSpaceBrowserDesktopMobile": "passed",
+    "streetPlanningBrowserDesktopMobile": "passed",
+    "explorerBrowser": "passed",
+    "fourGeographicVisualViews": "passed"
+  },
+  "protectedFilesMatchingInitialSHA256": 1473,
+  "geographicSnapshotChanged": false,
+  "transportEngineChanged": false,
+  "workflowFilesChanged": false,
+  "mainAtInspection": "057ac2e7eec251d548f53b281ff8370b04547a08",
+  "hardwareGPUPerformanceVerified": false
+}

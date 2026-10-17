@@ -71,3 +71,12 @@ Source IDs and original road directions are immutable. Surface placement alone
 must not silently change access, capacity or any synthetic simulation parameter.
 Only explicit street edits enter the existing transport worker. State the difference
 between geometric eligibility, synthetic outcomes and unmodelled real-world feasibility.
+
+Construction proposals must remain bounded parameter-only records. Revalidate every
+building against the pinned terrain, observed footprints/water/coast, modelled road
+corridors, other buildings and public spaces on import and edit. Never trust meshes,
+source overrides or imported validity flags. Validate public-space edits against
+existing construction too. Preserve scenario-1/2 reads and existing saved bytes.
+Construction must not silently change traffic demand, capacity, access or outcomes.
+Audit multiple real-snapshot sites before changing placement bounds. Measure against
+the exact 4A baseline and retain zero idle rendering and disposal checks.

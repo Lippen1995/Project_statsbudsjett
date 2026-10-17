@@ -1163,3 +1163,29 @@ button:disabled { cursor: default; opacity: .48; }
   .viewport:has(.physical-map-tools) .map-bottom{bottom:20px}
   .viewport:has(.physical-map-tools) .map-status{display:none}
 }
+/* Construction is a reversible city layer, using the same compact map tools. */
+.building-palette {display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:12px 0;}
+.building-palette button {min-height:44px;padding:8px 4px;border:1px solid #b6c6af;border-top:3px solid #bd8970;background:transparent;color:inherit;cursor:pointer;font:inherit;font-size:11px;}
+.building-palette .purpose-commercial {border-top-color:#689eac;}
+.building-palette .purpose-civic {border-top-color:#c4ac68;}
+.building-dimensions {display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.building-dimensions label {font-size:11px;display:grid;gap:5px;}
+.building-dimensions input {min-width:0;width:100%;padding:9px;background:#f7f8ef;border:1px solid #b6c6af;color:#2d5147;}
+.building-map-tools .placement-feedback p {max-height:58px;overflow:auto;}
+.building-map-tools .planning-actions button[aria-pressed=true] {border-color:#d9c085;color:#f2d797;}
+.development-summary {margin-top:16px;}
+.planning-mode-tabs {flex-wrap:wrap;}
+@media(max-width:700px){.building-map-tools{max-width:calc(100% - 24px);}.building-map-tools .planning-actions{gap:4px;}.building-map-tools .planning-actions button{min-height:36px;padding:6px 9px;}.building-map-tools .placement-feedback span{font-size:10px;}.building-map-tools>span{font-size:10px;}}
+
+.building-editor h3{font:19px Georgia,serif;margin:10px 0;}
+
+.building-map-tools .planning-actions{flex-wrap:wrap;}
+
+.construction-gesture-select{display:none;}
+@media(max-width:700px){
+ .building-map-tools{width:calc(100% - 24px);padding:8px 10px;}
+ .building-map-tools>span,.building-map-tools .construction-gesture-button{display:none;}
+ .building-map-tools .placement-feedback{padding:6px;margin:5px 0;}
+ .building-map-tools .planning-actions{margin:6px 0;flex-wrap:nowrap;}
+ .building-map-tools .construction-gesture-select{display:block;min-width:0;max-width:120px;background:#355b51;border:1px solid #7b9581;color:#fff0cc;font-size:10px;}
+}

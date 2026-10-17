@@ -69,3 +69,9 @@ Validate a second municipality before generalizing the geographic adapter. Then
 introduce municipal boundaries, inter-municipality flows and national policy.
 Nationwide simulation is a separate scale and modelling milestone, not a reason
 to broaden the current Bergen renderer prematurely.
+
+Milestone 4B adds bounded conceptual building placement, terrain/geometry conflict
+checks, direct manipulation, combined version-3 scenarios and the verified A New
+Urban Quarter challenge. See [4B](milestone-4b.md). Next, investigate traceable parcel
+and heritage data before reversible demolition and land-use envelopes; postpone
+construction economics and induced demand until their assumptions can be defended.

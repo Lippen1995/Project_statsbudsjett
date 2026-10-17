@@ -220,3 +220,20 @@ original mapped directions.
 This is an ordinary, separately undoable street edit; removing a surface retains
 that explicit traffic decision until the player restores it. No partial-section
 capacity, pedestrian-demand or economic effect is invented.
+
+## Milestone 4B — reversible conceptual construction
+
+`physical/buildings.ts` derives bounded rotated rectangles and validates them through
+the existing TIN/OSM constraint context, with additional building relief, clearance
+and road-corridor checks. It remains pure TypeScript. `state/construction.ts` owns
+unapplied direct-manipulation drafts; `state/scenario.ts` keeps all three confirmed
+layers in one bounded undo/redo history. Construction-only edits retain traffic
+results and do not alter the worker engine or demand. `geo/development.ts` batches
+all proposed building bodies/roofs into one mesh and edges into one additional pass;
+`ProposedBuildings.tsx` handles terrain picking, bounded handles and resource disposal.
+
+Scenario version 3 adds a version-1 development wrapper containing strict numeric
+parameters, never imported meshes, terrain or validity flags. Version-1/2 scenarios
+remain readable and their saved bytes are untouched until an explicit save. All
+layers are validated together before applying an import or replacing storage.
+See [4B contracts, assumptions and evidence](milestone-4b.md).

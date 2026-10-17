@@ -1,0 +1,81 @@
+{
+  "browserVersion": "151.0.7922.173",
+  "renderer": "ANGLE SwiftShader software renderer; physical-device GPU performance unverified",
+  "checks": [
+    "Terrain placement; direct resize and rotation; numeric storeys, purpose and roof; observed-building and water rejection; hypothetical geometry visibly changes 3D",
+    "Combined public-space/construction plans; challenge achieved; zero automatic traffic edits; retained traffic results; undo/redo, compare, save/reload, actual JSON export/import, legacy 3B and 4A imports",
+    "Touch placement, accessible numeric editing, mobile import/reload and viewport fit; bounded draw calls, GPU geometry disposal, zero idle frames"
+  ],
+  "desktop": {
+    "loadMs": 3284.213739,
+    "computeMs": 45.59999999962747,
+    "compatibilityProfile": {
+      "calls": 9,
+      "triangles": 289358,
+      "lines": 34,
+      "geometries": 9,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 417,
+      "p95CameraLatencyMs": 465.29999999981374,
+      "medianCpuFrameMs": 0.6000000000931323,
+      "idleFrames": 0
+    },
+    "developedProfile": {
+      "calls": 11,
+      "triangles": 289524,
+      "lines": 53,
+      "geometries": 11,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 408.29999999981374,
+      "p95CameraLatencyMs": 510.4000000001397,
+      "medianCpuFrameMs": 0.8999999999068677,
+      "idleFrames": 0
+    },
+    "resizeCommandLatencyMs": {
+      "sampleCount": 8,
+      "median": 244.4633029999968,
+      "p95": 255.36659299999883,
+      "meaning": "Playwright numeric resize command through next observed frame; software renderer and automation overhead, not physical GPU FPS"
+    },
+    "retainedGeometries": [
+      11,
+      11,
+      11,
+      11,
+      11,
+      11
+    ],
+    "heapRetentionBytes": {
+      "before": 24683368,
+      "after": 24917620,
+      "meaning": "CDP used JavaScript heap after explicit GC before/after six confirmed construction edits; GPU buffers checked separately"
+    }
+  },
+  "mobile": {
+    "loadMs": 1988.6131830000086,
+    "compatibilityProfile": {
+      "calls": 9,
+      "triangles": 289358,
+      "lines": 34,
+      "geometries": 9,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 190.10000000009313,
+      "p95CameraLatencyMs": 207.39999999990687,
+      "medianCpuFrameMs": 0.7000000001862645,
+      "idleFrames": 0
+    },
+    "developedProfile": {
+      "calls": 11,
+      "triangles": 289524,
+      "lines": 53,
+      "geometries": 11,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 200.79999999981374,
+      "p95CameraLatencyMs": 254.10000000009313,
+      "medianCpuFrameMs": 0.6000000000931323,
+      "idleFrames": 0
+    }
+  },
+  "passed": true,
+  "errors": []
+}

@@ -1,3 +1,5 @@
+import { useConstruction } from "../state/construction";
+import ProposedBuildings from "./ProposedBuildings";
 import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
@@ -28,6 +30,10 @@ function CameraControls({ data }: { data: CityData }) {
   const editing = usePhysical(
     (s) => s.mode === "spaces" && s.action !== "navigate",
   );
+  const constructing = useConstruction(
+    (s) => !!s.draft && s.action !== "navigate",
+  );
+  const buildingMode = usePhysical((s) => s.mode === "buildings");
   const controls = useRef<OrbitControls | null>(null);
   useEffect(() => {
     const orbit = new OrbitControls(camera, gl.domElement);
@@ -57,8 +63,9 @@ function CameraControls({ data }: { data: CityData }) {
     };
   }, [camera, gl, invalidate, data.extent]);
   useEffect(() => {
-    if (controls.current) controls.current.enabled = !editing;
-  }, [editing]);
+    if (controls.current)
+      controls.current.enabled = !editing && !(constructing && buildingMode);
+  }, [editing, constructing, buildingMode]);
   useEffect(() => {
     const orbit = controls.current;
     if (!orbit) return;
@@ -166,6 +173,7 @@ function CityGeometry({ data }: { data: CityData }) {
   const pick = (event: ThreeEvent<MouseEvent>, group: typeof buildings) => {
     if (
       usePhysical.getState().draft ||
+      useConstruction.getState().draft ||
       event.delta > 4 ||
       event.faceIndex == null
     )
@@ -213,6 +221,7 @@ function CityGeometry({ data }: { data: CityData }) {
       </mesh>
       <TrafficOverlay data={data} surface={surface} />
       <PublicSpaces terrain={terrain} surface={surface} />
+      <ProposedBuildings terrain={terrain} surface={surface} />
       {highlight ? (
         <mesh geometry={highlight} renderOrder={3}>
           <meshBasicMaterial

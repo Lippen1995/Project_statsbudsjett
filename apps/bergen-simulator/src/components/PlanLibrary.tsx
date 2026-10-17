@@ -1,9 +1,12 @@
+import { useConstruction } from "../state/construction";
 import { usePhysical } from "../state/physical";
 import { useState } from "react";
 import { useScenario } from "../state/scenario";
 import { scenarioFile } from "../planning/scenarios";
 export default function PlanLibrary() {
-  const draft = usePhysical((p) => p.draft);
+  const physicalDraft = usePhysical((p) => p.draft);
+  const buildingDraft = useConstruction((c) => c.draft);
+  const draft = physicalDraft || buildingDraft;
   const s = useScenario(),
     [selectedId, setSelectedId] = useState(""),
     [importing, setImporting] = useState(false);
@@ -25,6 +28,7 @@ export default function PlanLibrary() {
         s.network,
         s.context,
         s.physical,
+        s.development,
       );
       const url = URL.createObjectURL(
         new Blob([JSON.stringify(file, null, 2) + "\n"], {
@@ -85,6 +89,7 @@ export default function PlanLibrary() {
         disabled={!!draft || !s.library.some((p) => p.id === selectedId)}
         onClick={() => {
           usePhysical.getState().cancel();
+          useConstruction.getState().cancel();
           s.reopen(selectedId);
         }}
       >
@@ -106,9 +111,9 @@ export default function PlanLibrary() {
         </select>
       </label>
       <p className="data-note">
-        Open one configuration, select another as reference, then run. Both
-        plans and the initial baseline are recalculated from identical synthetic
-        demand.
+        Select a saved reference to compare geometry immediately. Run to compare
+        traffic. Both plans and the initial baseline are recalculated from
+        identical synthetic demand.
       </p>
       <div className="planning-actions">
         <button onClick={exportFile} disabled={!!draft}>
@@ -134,8 +139,10 @@ export default function PlanLibrary() {
               }
               setImporting(true);
               try {
-                if (s.importPlan(await file.text()))
+                if (s.importPlan(await file.text())) {
                   usePhysical.getState().cancel();
+                  useConstruction.getState().cancel();
+                }
               } catch {
                 s.report(
                   "The selected file could not be read. Your plan was preserved.",

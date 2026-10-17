@@ -185,3 +185,14 @@ and 8 m proximity connection are explicit game assumptions, not measured road wi
 or proof of pedestrian/vehicle access. The 16 m display terrain cannot resolve kerbs,
 quay structures or detailed accessible grades. Missing ownership, heritage, utilities,
 engineering feasibility, construction costs and pedestrian demand remain unknown.
+
+### Milestone 4B source boundary
+
+No new geographic dataset is imported and no source record is refreshed. Conceptual
+buildings use player-authored local metre parameters, not asserted observations.
+Placement reads the existing OSM footprints/coast/inland water (ODbL) and the pinned
+Kartverket display terrain (CC BY 4.0, original acquisition/CRS/NN2000 records above).
+The read-only grid survey and hashes in [4B evidence](milestone-4b-evidence/site-audit.json)
+are derived screening results. Design-study coordinates and proposed dimensions do
+not establish vacant land, cadastral boundaries, heritage clearance, surveyed
+building heights, construction permission or engineering feasibility.

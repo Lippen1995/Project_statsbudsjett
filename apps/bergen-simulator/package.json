@@ -20,7 +20,9 @@
     "test:scenario-baseline": "node tests/capture-scenario-baseline.mjs",
     "test:sandbox-baseline": "node tests/capture-sandbox-baseline.mjs",
     "test:physical": "node tests/physical-browser.mjs",
-    "test:physical-baseline": "node tests/capture-physical-baseline.mjs"
+    "test:physical-baseline": "node tests/capture-physical-baseline.mjs",
+    "test:buildings": "node tests/building-browser.mjs",
+    "test:building-baseline": "node tests/capture-building-baseline.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.4.0",

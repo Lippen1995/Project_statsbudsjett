@@ -32,7 +32,7 @@ export default function TrafficOverlay({
     intervention,
     reference,
   } = useScenario();
-  const physicalMode = usePhysical((p) => p.mode === "spaces");
+  const physicalMode = usePhysical((p) => p.mode !== "streets");
   const selectedId = useCity((s) => s.selectedSegmentId);
   const displayPlan =
     mapView === "plan"

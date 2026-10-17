@@ -110,3 +110,14 @@ Local save/export version 2 supports combined designs; valid 3B version-1 plans
 remain usable. No database, account, new geographic snapshot or deployment project
 is introduced. Building placement, demolition, zoning and terrain modification are
 future milestones, with separate safeguards and source requirements.
+
+## Milestone 4B — building placement
+
+The Buildings tool adds residential, commercial and civic conceptual massing on a
+separate hypothetical layer. Place, move, rotate, resize, change storeys/assumed floor
+height and choose flat/gabled roofs. Shared history, local saves, JSON and comparisons
+include construction and public space. Derived floor area and use breakdowns are
+geometric game quantities; no population, employment, fiscal or demand effects are
+inferred. Scenario version 3 safely reads 3B/4A plans. The optional A New Urban Quarter
+challenge has an automatically verified multi-building/public-space solution.
+See [4B acceptance and remaining limits](milestone-4b.md).

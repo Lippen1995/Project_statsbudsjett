@@ -1,8 +1,28 @@
+import {
+  type DevelopmentPlan,
+  spaceBuildingErrors,
+} from "../physical/buildings";
 import { useMemo, useState } from "react";
 import { useScenario } from "../state/scenario";
 import { usePhysical } from "../state/physical";
 import { useCity } from "../state/store";
-import { placement } from "../physical/model";
+import {
+  type PublicSpace,
+  type PlacementContext,
+  placement as basePlacement,
+} from "../physical/model";
+const placement = (
+  space: PublicSpace,
+  context: PlacementContext,
+  others: PublicSpace[] = [],
+  development: DevelopmentPlan | null = null,
+) => {
+  const c = basePlacement(space, context, others);
+  if (space.vertices.length >= 3)
+    c.errors.push(...spaceBuildingErrors(space, development));
+  c.valid = c.errors.length === 0;
+  return c;
+};
 import { waterfrontChallenge } from "../physical/challenge";
 import { number } from "./PlanningResults";
 
@@ -12,9 +32,9 @@ export function PlacementFeedback() {
   const check = useMemo(
     () =>
       p.draft && s.context
-        ? placement(p.draft, s.context, s.physical?.proposals)
+        ? placement(p.draft, s.context, s.physical?.proposals, s.development)
         : null,
-    [p.draft, s.context, s.physical],
+    [p.draft, s.context, s.physical, s.development],
   );
   if (!p.draft) return null;
   return (
@@ -81,7 +101,12 @@ export function PhysicalMapTools() {
               onClick={p.confirm}
               disabled={
                 !s.context ||
-                !placement(p.draft, s.context, s.physical?.proposals).valid
+                !placement(
+                  p.draft,
+                  s.context,
+                  s.physical?.proposals,
+                  s.development,
+                ).valid
               }
             >
               Apply surface
@@ -155,9 +180,9 @@ export default function PublicSpaceEditor() {
   const check = useMemo(
     () =>
       space && s.context
-        ? placement(space, s.context, s.physical?.proposals)
+        ? placement(space, s.context, s.physical?.proposals, s.development)
         : null,
-    [space, s.context, s.physical],
+    [space, s.context, s.physical, s.development],
   );
   const draft = p.draft,
     vertex = draft?.vertices[p.vertex];

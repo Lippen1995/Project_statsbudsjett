@@ -1,3 +1,5 @@
+import { spaceBuildingErrors } from "../physical/buildings";
+import { useConstruction } from "../state/construction";
 import { useEffect, useMemo, useRef } from "react";
 import { useThree, type ThreeEvent } from "@react-three/fiber";
 import {
@@ -62,6 +64,10 @@ export default function PublicSpaces({
       const check = placement(space, s.context, visible),
         isDraft = space === draft,
         selected = space.id === p.selectedId;
+      if (isDraft && space.vertices.length >= 3) {
+        check.errors.push(...spaceBuildingErrors(space, s.development));
+        check.valid = check.errors.length === 0;
+      }
       const color = new Color(
           isDraft && !check.valid
             ? "#d97964"
@@ -112,7 +118,15 @@ export default function PublicSpaces({
       boundary: geometry(lines, lineColors),
       ranges,
     };
-  }, [s.context, s.mapView, spaces, p.draft, p.selectedId, surface]);
+  }, [
+    s.context,
+    s.mapView,
+    spaces,
+    p.draft,
+    p.selectedId,
+    surface,
+    s.development,
+  ]);
   useEffect(
     () => () => {
       batch.surface.dispose();
@@ -136,7 +150,13 @@ export default function PublicSpaces({
     mesh.instanceMatrix.needsUpdate = true;
   }, [draft, surface]);
   function select(event: ThreeEvent<MouseEvent>) {
-    if (p.draft || event.delta > 4 || event.faceIndex == null) return;
+    if (
+      p.draft ||
+      useConstruction.getState().draft ||
+      event.delta > 4 ||
+      event.faceIndex == null
+    )
+      return;
     const space = batch.ranges.find((r) => event.faceIndex! < r.end);
     if (space) {
       event.stopPropagation();

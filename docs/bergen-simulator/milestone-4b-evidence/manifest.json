@@ -1,0 +1,66 @@
+{
+  "05-plan-comparison.jpg": {
+    "bytes": 146558,
+    "sha256": "a347250f2b91d59420f402504645195341c23737f99abed856d9f8209b0b04b5"
+  },
+  "public-space-regression.json": {
+    "bytes": 1705,
+    "sha256": "a1df6aaa9b567f71bd76edc426b3babf55e20e7b5a695a8816f0fc02b333f00a"
+  },
+  "site-audit.json": {
+    "bytes": 21317,
+    "sha256": "b7c3d019268c0e8d7d93e88442ffcb834b38cac475daf369c1e24ab9a91f22ef"
+  },
+  "explorer-regression.json": {
+    "bytes": 507,
+    "sha256": "7015ca173101d16b9c728cd586ff695c06114910839f786f0224609168d03bd7"
+  },
+  "before-browser-report.json": {
+    "bytes": 2018,
+    "sha256": "df82433705bfc8282388c7299e5c5bbf586ef86948da86ffec3ccf3fbca0574a"
+  },
+  "06-mobile-construction.jpg": {
+    "bytes": 42479,
+    "sha256": "234e1cd8e345e10261287c7ff548df68986e487f4f4eac85ca819adfcf3c5d68"
+  },
+  "03-invalid-construction.jpg": {
+    "bytes": 147654,
+    "sha256": "0ab5eee5301e42efa17e20d91385e3305aa282aadf302f67ef8920ba716b0a12"
+  },
+  "after-browser-report.json": {
+    "bytes": 2695,
+    "sha256": "f5aad8efa6ebdbed0b784fb649b9d506e7596a75c8f365d2018b621e80c1797c"
+  },
+  "combined-development-plan.json": {
+    "bytes": 1862,
+    "sha256": "223c6222e7fe423a6fb4f55cfa862d6a3671139d07ce70066e8aa006866eb14e"
+  },
+  "geographic-visual-regression.json": {
+    "bytes": 2242,
+    "sha256": "3e655974a04d2e6630e7694753735fa5ed2ad2378aef2d0804ddb183cc140b03"
+  },
+  "README.md": {
+    "bytes": 2013,
+    "sha256": "aabeb8403cc1fe87da6d3082b1dad3da7231b43035589edc24ef5bce20aaf8b1"
+  },
+  "street-sandbox-regression.json": {
+    "bytes": 8142,
+    "sha256": "20bf7743043daf3bb416e082f4a60f9c0300f12e21233728800096ed8380c9f7"
+  },
+  "validation.json": {
+    "bytes": 766,
+    "sha256": "66914b33f39e65f72a9a6b6e77725d793a0131fc47f7bda4fdfe38eb01babb1d"
+  },
+  "01-observed-bergen.jpg": {
+    "bytes": 82878,
+    "sha256": "3e2ac5bef9e78089f9ff5616e4f6870730a29a31255087a6d65173807529ae7d"
+  },
+  "04-developed-bergen.jpg": {
+    "bytes": 86391,
+    "sha256": "86f21cc585ccd5cac330760372af218c2788832993e21f1ff3534e0f77da3914"
+  },
+  "02-building-preview.jpg": {
+    "bytes": 141920,
+    "sha256": "84f2157bce0bb728d44942ec5b9dd2757f169eaa7ce9b0bc880e5b19f0433a1e"
+  }
+}

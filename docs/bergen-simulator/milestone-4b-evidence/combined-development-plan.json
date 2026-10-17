@@ -1,0 +1,90 @@
+{
+  "kind": "bergen-reimagined-plan",
+  "version": 3,
+  "physical": {
+    "version": 1,
+    "geographyId": "bergen-physical-1-05c9a48e",
+    "proposals": [
+      {
+        "id": "e2fcb261-1965-4ad0-90f1-360aa2c17755",
+        "name": "Waterfront proposal",
+        "kind": "pedestrian",
+        "vertices": [
+          [
+            -53,
+            -255
+          ],
+          [
+            -35,
+            -238.8
+          ],
+          [
+            -40,
+            -232.8
+          ],
+          [
+            -58,
+            -249
+          ]
+        ]
+      }
+    ]
+  },
+  "development": {
+    "version": 1,
+    "geographyId": "bergen-physical-1-05c9a48e",
+    "proposals": [
+      {
+        "id": "36460fe1-51d6-4196-bb76-694412c2ab8c",
+        "name": "Waterfront homes",
+        "purpose": "residential",
+        "center": [
+          -95,
+          -317
+        ],
+        "width": 10,
+        "depth": 14,
+        "rotation": 5,
+        "storeys": 3,
+        "storeyHeight": 3.2,
+        "roof": "gabled"
+      },
+      {
+        "id": "6600ef96-6359-4574-818f-f18f35460e15",
+        "name": "Quay workspace",
+        "purpose": "commercial",
+        "center": [
+          -23,
+          -237
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 3,
+        "storeyHeight": 3.2,
+        "roof": "flat"
+      },
+      {
+        "id": "e639cce4-86fe-4a86-bdea-75c0b3f31853",
+        "name": "Community pavilion",
+        "purpose": "civic",
+        "center": [
+          9,
+          -213
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 2,
+        "storeyHeight": 3.2,
+        "roof": "flat"
+      }
+    ]
+  },
+  "name": "My combined urban quarter",
+  "plan": {
+    "version": 1,
+    "networkId": "bryggen-transport-model-1-4ea4ffed",
+    "interventions": []
+  }
+}

@@ -1,3 +1,9 @@
+import {
+  emptyDevelopment,
+  validateDevelopment,
+  type DevelopmentPlan,
+  type BuildingProposal,
+} from "../physical/buildings";
 import type { CityData } from "../geo/types";
 import {
   placementContext,
@@ -41,11 +47,18 @@ export type MapView = "plan" | "baseline" | "reference";
 interface Draft {
   plan: Plan;
   physical: PhysicalPlan | null;
+  development: DevelopmentPlan | null;
 }
 interface ScenarioState {
   context: PlacementContext | null;
   physical: PhysicalPlan | null;
+  development: DevelopmentPlan | null;
   putSpace: (space: PublicSpace) => boolean;
+  putBuilding: (building: BuildingProposal) => boolean;
+  removeBuilding: (id: string) => void;
+  clearBuildings: () => void;
+  showBuildings: boolean;
+  toggleBuildings: () => void;
   removeSpace: (id: string) => void;
   source: TransportSource | null;
   network: Network | null;
@@ -116,6 +129,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
   ...clean,
   context: null,
   physical: null,
+  development: null,
+  showBuildings: true,
   source: null,
   network: null,
   plan: null,
@@ -127,16 +142,19 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       network = buildNetwork(owned),
       plan = emptyPlan(network),
       context = data ? placementContext(data, network) : null,
-      physical = context ? emptyPhysical(context) : null;
+      physical = context ? emptyPhysical(context) : null,
+      development = context ? emptyDevelopment(context) : null;
     stop();
     set({
       ...clean,
       context,
       physical,
+      development,
+      showBuildings: true,
       source: owned,
       network,
       plan,
-      history: [{ plan, physical }],
+      history: [{ plan, physical, development }],
       phase: "ready",
       library: [],
       storageBlocked: false,
@@ -150,7 +168,11 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       if (JSON.stringify(next) === JSON.stringify(plan)) return;
       const updated = [
         ...history.slice(0, cursor + 1),
-        { plan: next, physical: get().physical },
+        {
+          plan: next,
+          physical: get().physical,
+          development: get().development,
+        },
       ].slice(-51);
       stop();
       set({
@@ -179,10 +201,12 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         },
         s.context,
       );
+      if (s.development)
+        validateDevelopment(s.development, s.context, physical);
       if (JSON.stringify(physical) === JSON.stringify(s.physical)) return true;
       const history = [
         ...s.history.slice(0, s.cursor + 1),
-        { plan: s.plan, physical },
+        { plan: s.plan, physical, development: s.development },
       ].slice(-51);
       stop();
       set({
@@ -214,7 +238,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     };
     const history = [
       ...s.history.slice(0, s.cursor + 1),
-      { plan: s.plan, physical },
+      { plan: s.plan, physical, development: s.development },
     ].slice(-51);
     stop();
     set({
@@ -227,9 +251,96 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         "Surface removed. Explicit street edits remain in your plan; undo or restore them separately.",
     });
   },
+  putBuilding: (building) => {
+    const s = get();
+    if (!s.context || !s.development || !s.plan) return false;
+    try {
+      const development = validateDevelopment(
+        {
+          ...s.development,
+          proposals: [
+            ...s.development.proposals.filter((b) => b.id !== building.id),
+            building,
+          ],
+        },
+        s.context,
+        s.physical,
+      );
+      if (JSON.stringify(development) === JSON.stringify(s.development))
+        return true;
+      const history = [
+        ...s.history.slice(0, s.cursor + 1),
+        { plan: s.plan, physical: s.physical, development },
+      ].slice(-51);
+      // Geometry-only construction preserves all traffic results and the running worker.
+      set({
+        development,
+        history,
+        cursor: history.length - 1,
+        showBuildings: true,
+        mapView: "plan",
+        error: "",
+        notice:
+          "Conceptual building placed. Geometry changed; traffic demand and results are unchanged.",
+      });
+      return true;
+    } catch (e) {
+      set({ error: message(e) });
+      return false;
+    }
+  },
+  removeBuilding: (id) => {
+    const s = get();
+    if (!s.development || !s.plan) return;
+    const development = {
+      ...s.development,
+      proposals: s.development.proposals.filter((b) => b.id !== id),
+    };
+    if (development.proposals.length === s.development.proposals.length) return;
+    const history = [
+      ...s.history.slice(0, s.cursor + 1),
+      { plan: s.plan, physical: s.physical, development },
+    ].slice(-51);
+    set({
+      development,
+      history,
+      cursor: history.length - 1,
+      error: "",
+      notice:
+        "Conceptual building removed. Observed city and traffic plan retained.",
+    });
+  },
+  clearBuildings: () => {
+    const s = get();
+    if (!s.development?.proposals.length || !s.plan) return;
+    const development = { ...s.development, proposals: [] };
+    const history = [
+      ...s.history.slice(0, s.cursor + 1),
+      { plan: s.plan, physical: s.physical, development },
+    ].slice(-51);
+    set({
+      development,
+      history,
+      cursor: history.length - 1,
+      notice: "All proposed buildings removed. Existing geography retained.",
+    });
+  },
+  toggleBuildings: () => set((s) => ({ showBuildings: !s.showBuildings })),
   undo: () => {
     const s = get();
     if (s.cursor < 1) return;
+    const target = s.history[s.cursor - 1];
+    if (
+      JSON.stringify(target.plan) === JSON.stringify(s.plan) &&
+      JSON.stringify(target.physical) === JSON.stringify(s.physical)
+    ) {
+      set({
+        ...structuredClone(target),
+        cursor: s.cursor - 1,
+        notice: "Construction edit undone. Traffic results retained.",
+      });
+      return;
+    }
     stop();
     set({
       ...resultReset,
@@ -242,6 +353,18 @@ export const useScenario = create<ScenarioState>((set, get) => ({
   redo: () => {
     const s = get();
     if (s.cursor >= s.history.length - 1) return;
+    const target = s.history[s.cursor + 1];
+    if (
+      JSON.stringify(target.plan) === JSON.stringify(s.plan) &&
+      JSON.stringify(target.physical) === JSON.stringify(s.physical)
+    ) {
+      set({
+        ...structuredClone(target),
+        cursor: s.cursor + 1,
+        notice: "Construction edit restored. Traffic results retained.",
+      });
+      return;
+    }
     stop();
     set({
       ...resultReset,
@@ -264,6 +387,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       validatePlan(plan, network);
       if (get().physical && get().context)
         validatePhysical(get().physical, get().context!);
+      if (get().development && get().context)
+        validateDevelopment(get().development, get().context!, get().physical);
       if (referencePlan) validatePlan(referencePlan, network);
       const current = new Worker(
         new URL("../simulation/worker.ts", import.meta.url),
@@ -329,12 +454,15 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     const network = get().network;
     stop();
     const plan = network ? emptyPlan(network) : null,
-      physical = get().context ? emptyPhysical(get().context!) : null;
+      physical = get().context ? emptyPhysical(get().context!) : null,
+      development = get().context ? emptyDevelopment(get().context!) : null;
     set({
       ...clean,
       plan,
       physical,
-      history: plan ? [{ plan, physical }] : [],
+      development,
+      showBuildings: true,
+      history: plan ? [{ plan, physical, development }] : [],
       phase: network ? "ready" : "closed",
       notice: "City restored to the original model. Saved plans are retained.",
     });
@@ -345,6 +473,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       ...clean,
       context: null,
       physical: null,
+      development: null,
+      showBuildings: true,
       source: null,
       network: null,
       plan: null,
@@ -408,6 +538,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         s.network,
         s.context,
         s.physical,
+        s.development,
       );
       const id = duplicate || !s.currentId ? crypto.randomUUID() : s.currentId;
       const record = { id, savedAt: new Date().toISOString(), scenario };
@@ -464,6 +595,15 @@ export const useScenario = create<ScenarioState>((set, get) => ({
           ? validatePhysical(record.scenario.physical, s.context!)
           : s.context
             ? emptyPhysical(s.context)
+            : null,
+        development = record.scenario.development
+          ? validateDevelopment(
+              record.scenario.development,
+              s.context!,
+              physical,
+            )
+          : s.context
+            ? emptyDevelopment(s.context)
             : null;
       stop();
       set({
@@ -472,7 +612,9 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         currentId: id,
         plan,
         physical,
-        history: [{ plan, physical }],
+        development,
+        showBuildings: true,
+        history: [{ plan, physical, development }],
         cursor: 0,
         referenceId: null,
         phase: "ready",
@@ -489,15 +631,20 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       const file = parseScenario(text, n, get().context);
       const physical =
         file.physical ?? (get().context ? emptyPhysical(get().context!) : null);
+      const development =
+        file.development ??
+        (get().context ? emptyDevelopment(get().context!) : null);
       stop();
       set({
         ...resultReset,
         physical,
+        development,
+        showBuildings: true,
         plan: file.plan,
         name: file.name,
         currentId: null,
         referenceId: null,
-        history: [{ plan: file.plan, physical }],
+        history: [{ plan: file.plan, physical, development }],
         cursor: 0,
         phase: "ready",
         notice:

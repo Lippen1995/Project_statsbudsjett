@@ -198,6 +198,7 @@ export default function App() {
   const selected = useCity((s) => s.selected);
   const planning = useScenario((s) => s.phase !== "closed");
   const physicalMode = usePhysical((s) => s.mode === "spaces");
+  const buildingMode = usePhysical((s) => s.mode === "buildings");
   useEffect(() => {
     const controller = new AbortController();
     fetch("/data/bergen.json", { signal: controller.signal })
@@ -225,7 +226,7 @@ export default function App() {
           </span>
         </a>
         <div className="header-center">
-          CITY PLANNING PROTOTYPE <span>04A / BERGEN</span>
+          CITY PLANNING PROTOTYPE <span>04B / BERGEN</span>
         </div>
         <span className="prototype-badge">
           <span />
@@ -273,13 +274,15 @@ export default function App() {
           <ScenarioLegend />
           <div className="map-status">
             <span className="status-dot" />
-            {planning && physicalMode
-              ? "Public-space design"
-              : selected
-                ? selected.name
-                : planning
-                  ? "Street planning"
-                  : "Explore mode"}
+            {planning && buildingMode
+              ? "Conceptual construction"
+              : planning && physicalMode
+                ? "Public-space design"
+                : selected
+                  ? selected.name
+                  : planning
+                    ? "Street planning"
+                    : "Explore mode"}
             <span className="status-separator" />
             3D VIEW
           </div>

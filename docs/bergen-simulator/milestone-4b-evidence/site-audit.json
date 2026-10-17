@@ -1,0 +1,1002 @@
+{
+  "sourceHashes": {
+    "public/data/bergen.json": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812",
+    "public/data/bryggen-transport.json": "7082fe3888c1dfd1fb9a8603c86bdce9fe09df56bfa7cf7900150815a7268d11"
+  },
+  "rectangleMetres": [
+    12,
+    16
+  ],
+  "gridStepMetres": 8,
+  "observedClearanceMetres": 0.25,
+  "assumedModelRoadClearanceMetres": 6,
+  "regions": [
+    {
+      "region": "bryggen",
+      "extent": [
+        -145,
+        -335,
+        145,
+        -65
+      ],
+      "candidateCount": 15,
+      "candidates": [
+        {
+          "center": [
+            9,
+            -213
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02878,
+          "relief": 0.309,
+          "distanceToModelRoad": 10.15
+        },
+        {
+          "center": [
+            -95,
+            -317
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01577,
+          "relief": 0.31,
+          "distanceToModelRoad": 8.03
+        },
+        {
+          "center": [
+            17,
+            -205
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02774,
+          "relief": 0.333,
+          "distanceToModelRoad": 9.45
+        },
+        {
+          "center": [
+            -23,
+            -237
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02801,
+          "relief": 0.343,
+          "distanceToModelRoad": 6.51
+        },
+        {
+          "center": [
+            -31,
+            -245
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02801,
+          "relief": 0.376,
+          "distanceToModelRoad": 7.02
+        },
+        {
+          "center": [
+            -87,
+            -325
+          ],
+          "area": 192.0,
+          "maxGrade": 0.04836,
+          "relief": 0.474,
+          "distanceToModelRoad": 19.34
+        },
+        {
+          "center": [
+            -87,
+            -317
+          ],
+          "area": 192.0,
+          "maxGrade": 0.06244,
+          "relief": 0.482,
+          "distanceToModelRoad": 14.3
+        },
+        {
+          "center": [
+            -103,
+            -325
+          ],
+          "area": 192.0,
+          "maxGrade": 0.04726,
+          "relief": 0.499,
+          "distanceToModelRoad": 7.69
+        },
+        {
+          "center": [
+            -87,
+            -301
+          ],
+          "area": 192.0,
+          "maxGrade": 0.06244,
+          "relief": 0.524,
+          "distanceToModelRoad": 7.29
+        },
+        {
+          "center": [
+            -95,
+            -325
+          ],
+          "area": 192.0,
+          "maxGrade": 0.04549,
+          "relief": 0.538,
+          "distanceToModelRoad": 13.46
+        },
+        {
+          "center": [
+            -87,
+            -309
+          ],
+          "area": 192.0,
+          "maxGrade": 0.06244,
+          "relief": 0.565,
+          "distanceToModelRoad": 10.53
+        },
+        {
+          "center": [
+            -79,
+            -317
+          ],
+          "area": 192.0,
+          "maxGrade": 0.06244,
+          "relief": 0.604,
+          "distanceToModelRoad": 21.35
+        },
+        {
+          "center": [
+            -79,
+            -325
+          ],
+          "area": 192.0,
+          "maxGrade": 0.04836,
+          "relief": 0.391,
+          "distanceToModelRoad": 25.38
+        },
+        {
+          "center": [
+            -71,
+            -325
+          ],
+          "area": 192.0,
+          "maxGrade": 0.07673,
+          "relief": 0.821,
+          "distanceToModelRoad": 32.18
+        },
+        {
+          "center": [
+            65,
+            -317
+          ],
+          "area": 192.0,
+          "maxGrade": 0.19932,
+          "relief": 2.339,
+          "distanceToModelRoad": 10.89
+        }
+      ]
+    },
+    {
+      "region": "bergenhus",
+      "extent": [
+        -300,
+        -750,
+        160,
+        -340
+      ],
+      "candidateCount": 816,
+      "candidates": [
+        {
+          "center": [
+            -186,
+            -372
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02177,
+          "relief": 0.161,
+          "distanceToModelRoad": 11.14
+        },
+        {
+          "center": [
+            -194,
+            -372
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02177,
+          "relief": 0.167,
+          "distanceToModelRoad": 19.14
+        },
+        {
+          "center": [
+            -194,
+            -380
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02177,
+          "relief": 0.186,
+          "distanceToModelRoad": 19.88
+        },
+        {
+          "center": [
+            -186,
+            -380
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02177,
+          "relief": 0.243,
+          "distanceToModelRoad": 12.36
+        },
+        {
+          "center": [
+            -178,
+            -412
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03092,
+          "relief": 0.374,
+          "distanceToModelRoad": 24.85
+        },
+        {
+          "center": [
+            -178,
+            -388
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03092,
+          "relief": 0.39,
+          "distanceToModelRoad": 11.18
+        },
+        {
+          "center": [
+            -194,
+            -388
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03442,
+          "relief": 0.393,
+          "distanceToModelRoad": 23.34
+        },
+        {
+          "center": [
+            -162,
+            -404
+          ],
+          "area": 192.0,
+          "maxGrade": 0.04531,
+          "relief": 0.394,
+          "distanceToModelRoad": 7.09
+        },
+        {
+          "center": [
+            -170,
+            -412
+          ],
+          "area": 192.0,
+          "maxGrade": 0.04531,
+          "relief": 0.394,
+          "distanceToModelRoad": 18.19
+        },
+        {
+          "center": [
+            -186,
+            -388
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03442,
+          "relief": 0.446,
+          "distanceToModelRoad": 17.19
+        },
+        {
+          "center": [
+            -170,
+            -404
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03092,
+          "relief": 0.453,
+          "distanceToModelRoad": 13.78
+        },
+        {
+          "center": [
+            -178,
+            -404
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03092,
+          "relief": 0.469,
+          "distanceToModelRoad": 20.48
+        },
+        {
+          "center": [
+            -2,
+            -412
+          ],
+          "area": 192.0,
+          "maxGrade": 0.05,
+          "relief": 0.476,
+          "distanceToModelRoad": 21.19
+        },
+        {
+          "center": [
+            -170,
+            -396
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03092,
+          "relief": 0.507,
+          "distanceToModelRoad": 9.41
+        },
+        {
+          "center": [
+            -178,
+            -396
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03092,
+          "relief": 0.52,
+          "distanceToModelRoad": 16.11
+        },
+        {
+          "center": [
+            -186,
+            -396
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03442,
+          "relief": 0.583,
+          "distanceToModelRoad": 22.48
+        },
+        {
+          "center": [
+            -34,
+            -436
+          ],
+          "area": 192.0,
+          "maxGrade": 0.04195,
+          "relief": 0.631,
+          "distanceToModelRoad": 9.13
+        },
+        {
+          "center": [
+            -106,
+            -492
+          ],
+          "area": 192.0,
+          "maxGrade": 0.06317,
+          "relief": 0.655,
+          "distanceToModelRoad": 10.64
+        },
+        {
+          "center": [
+            -106,
+            -500
+          ],
+          "area": 192.0,
+          "maxGrade": 0.06423,
+          "relief": 0.655,
+          "distanceToModelRoad": 18.64
+        },
+        {
+          "center": [
+            -2,
+            -404
+          ],
+          "area": 192.0,
+          "maxGrade": 0.05,
+          "relief": 0.661,
+          "distanceToModelRoad": 23.81
+        },
+        {
+          "center": [
+            6,
+            -412
+          ],
+          "area": 192.0,
+          "maxGrade": 0.09641,
+          "relief": 0.733,
+          "distanceToModelRoad": 13.63
+        },
+        {
+          "center": [
+            6,
+            -404
+          ],
+          "area": 192.0,
+          "maxGrade": 0.08347,
+          "relief": 0.762,
+          "distanceToModelRoad": 16.23
+        },
+        {
+          "center": [
+            -58,
+            -420
+          ],
+          "area": 192.0,
+          "maxGrade": 0.06113,
+          "relief": 0.855,
+          "distanceToModelRoad": 20.3
+        },
+        {
+          "center": [
+            -114,
+            -492
+          ],
+          "area": 192.0,
+          "maxGrade": 0.06317,
+          "relief": 0.876,
+          "distanceToModelRoad": 10.64
+        },
+        {
+          "center": [
+            -50,
+            -428
+          ],
+          "area": 192.0,
+          "maxGrade": 0.05408,
+          "relief": 0.886,
+          "distanceToModelRoad": 12.24
+        },
+        {
+          "center": [
+            -50,
+            -420
+          ],
+          "area": 192.0,
+          "maxGrade": 0.05408,
+          "relief": 0.901,
+          "distanceToModelRoad": 20.24
+        },
+        {
+          "center": [
+            14,
+            -404
+          ],
+          "area": 192.0,
+          "maxGrade": 0.09641,
+          "relief": 1.184,
+          "distanceToModelRoad": 8.66
+        },
+        {
+          "center": [
+            14,
+            -412
+          ],
+          "area": 192.0,
+          "maxGrade": 0.09641,
+          "relief": 1.249,
+          "distanceToModelRoad": 6.07
+        },
+        {
+          "center": [
+            -210,
+            -548
+          ],
+          "area": 192.0,
+          "maxGrade": 0.00566,
+          "relief": 0.06,
+          "distanceToModelRoad": 114.67
+        },
+        {
+          "center": [
+            -210,
+            -564
+          ],
+          "area": 192.0,
+          "maxGrade": 0.00707,
+          "relief": 0.084,
+          "distanceToModelRoad": 124.65
+        },
+        {
+          "center": [
+            -210,
+            -556
+          ],
+          "area": 192.0,
+          "maxGrade": 0.00566,
+          "relief": 0.09,
+          "distanceToModelRoad": 119.5
+        },
+        {
+          "center": [
+            -210,
+            -540
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01908,
+          "relief": 0.095,
+          "distanceToModelRoad": 110.21
+        },
+        {
+          "center": [
+            -170,
+            -572
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01593,
+          "relief": 0.096,
+          "distanceToModelRoad": 105.16
+        },
+        {
+          "center": [
+            -274,
+            -572
+          ],
+          "area": 192.0,
+          "maxGrade": 0.06069,
+          "relief": 0.098,
+          "distanceToModelRoad": 181.56
+        },
+        {
+          "center": [
+            -202,
+            -540
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01577,
+          "relief": 0.101,
+          "distanceToModelRoad": 103.53
+        },
+        {
+          "center": [
+            -202,
+            -548
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01264,
+          "relief": 0.101,
+          "distanceToModelRoad": 108.26
+        },
+        {
+          "center": [
+            -162,
+            -564
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01593,
+          "relief": 0.103,
+          "distanceToModelRoad": 94.25
+        },
+        {
+          "center": [
+            -162,
+            -556
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02166,
+          "relief": 0.104,
+          "distanceToModelRoad": 87.32
+        },
+        {
+          "center": [
+            -210,
+            -580
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01376,
+          "relief": 0.105,
+          "distanceToModelRoad": 135.79
+        },
+        {
+          "center": [
+            -210,
+            -572
+          ],
+          "area": 192.0,
+          "maxGrade": 0.00707,
+          "relief": 0.109,
+          "distanceToModelRoad": 130.09
+        }
+      ]
+    },
+    {
+      "region": "nordnes",
+      "extent": [
+        -900,
+        -400,
+        -380,
+        180
+      ],
+      "candidateCount": 736,
+      "candidates": [
+        {
+          "center": [
+            -530,
+            -294
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01107,
+          "relief": 0.052,
+          "distanceToModelRoad": 360.97
+        },
+        {
+          "center": [
+            -530,
+            -286
+          ],
+          "area": 192.0,
+          "maxGrade": 0.00419,
+          "relief": 0.056,
+          "distanceToModelRoad": 362.49
+        },
+        {
+          "center": [
+            -522,
+            -286
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01202,
+          "relief": 0.062,
+          "distanceToModelRoad": 354.66
+        },
+        {
+          "center": [
+            -530,
+            -278
+          ],
+          "area": 192.0,
+          "maxGrade": 0.0097,
+          "relief": 0.071,
+          "distanceToModelRoad": 364.18
+        },
+        {
+          "center": [
+            -522,
+            -278
+          ],
+          "area": 192.0,
+          "maxGrade": 0.00988,
+          "relief": 0.091,
+          "distanceToModelRoad": 356.38
+        },
+        {
+          "center": [
+            -538,
+            -278
+          ],
+          "area": 192.0,
+          "maxGrade": 0.0101,
+          "relief": 0.101,
+          "distanceToModelRoad": 371.99
+        },
+        {
+          "center": [
+            -530,
+            -302
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01107,
+          "relief": 0.112,
+          "distanceToModelRoad": 359.63
+        },
+        {
+          "center": [
+            -698,
+            42
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02258,
+          "relief": 0.128,
+          "distanceToModelRoad": 658.93
+        },
+        {
+          "center": [
+            -706,
+            42
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01125,
+          "relief": 0.13,
+          "distanceToModelRoad": 665.3
+        },
+        {
+          "center": [
+            -522,
+            -270
+          ],
+          "area": 192.0,
+          "maxGrade": 0.00988,
+          "relief": 0.131,
+          "distanceToModelRoad": 358.28
+        },
+        {
+          "center": [
+            -706,
+            50
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01017,
+          "relief": 0.131,
+          "distanceToModelRoad": 670.15
+        },
+        {
+          "center": [
+            -642,
+            82
+          ],
+          "area": 192.0,
+          "maxGrade": 0.00929,
+          "relief": 0.137,
+          "distanceToModelRoad": 642.17
+        },
+        {
+          "center": [
+            -706,
+            34
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01125,
+          "relief": 0.139,
+          "distanceToModelRoad": 660.51
+        },
+        {
+          "center": [
+            -722,
+            66
+          ],
+          "area": 192.0,
+          "maxGrade": 0.00937,
+          "relief": 0.139,
+          "distanceToModelRoad": 692.59
+        },
+        {
+          "center": [
+            -698,
+            50
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02258,
+          "relief": 0.143,
+          "distanceToModelRoad": 663.82
+        },
+        {
+          "center": [
+            -514,
+            -286
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01202,
+          "relief": 0.144,
+          "distanceToModelRoad": 346.83
+        },
+        {
+          "center": [
+            -530,
+            -270
+          ],
+          "area": 192.0,
+          "maxGrade": 0.0097,
+          "relief": 0.146,
+          "distanceToModelRoad": 366.03
+        },
+        {
+          "center": [
+            -658,
+            90
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02086,
+          "relief": 0.158,
+          "distanceToModelRoad": 659.32
+        },
+        {
+          "center": [
+            -634,
+            90
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01729,
+          "relief": 0.172,
+          "distanceToModelRoad": 641.94
+        },
+        {
+          "center": [
+            -642,
+            114
+          ],
+          "area": 192.0,
+          "maxGrade": 0.0177,
+          "relief": 0.173,
+          "distanceToModelRoad": 664.54
+        },
+        {
+          "center": [
+            -650,
+            82
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01683,
+          "relief": 0.179,
+          "distanceToModelRoad": 648.01
+        },
+        {
+          "center": [
+            -658,
+            82
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01683,
+          "relief": 0.181,
+          "distanceToModelRoad": 653.9
+        },
+        {
+          "center": [
+            -690,
+            82
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01252,
+          "relief": 0.189,
+          "distanceToModelRoad": 677.89
+        },
+        {
+          "center": [
+            -506,
+            -254
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02618,
+          "relief": 0.191,
+          "distanceToModelRoad": 347.28
+        },
+        {
+          "center": [
+            -642,
+            90
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01817,
+          "relief": 0.193,
+          "distanceToModelRoad": 647.69
+        },
+        {
+          "center": [
+            -650,
+            90
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01817,
+          "relief": 0.196,
+          "distanceToModelRoad": 653.48
+        },
+        {
+          "center": [
+            -650,
+            106
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02086,
+          "relief": 0.196,
+          "distanceToModelRoad": 664.57
+        },
+        {
+          "center": [
+            -714,
+            58
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03458,
+          "relief": 0.196,
+          "distanceToModelRoad": 681.37
+        },
+        {
+          "center": [
+            -626,
+            130
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01383,
+          "relief": 0.205,
+          "distanceToModelRoad": 662.04
+        },
+        {
+          "center": [
+            -594,
+            -238
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01439,
+          "relief": 0.209,
+          "distanceToModelRoad": 436.16
+        },
+        {
+          "center": [
+            -634,
+            122
+          ],
+          "area": 192.0,
+          "maxGrade": 0.0177,
+          "relief": 0.21,
+          "distanceToModelRoad": 663.65
+        },
+        {
+          "center": [
+            -642,
+            122
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02095,
+          "relief": 0.213,
+          "distanceToModelRoad": 670.11
+        },
+        {
+          "center": [
+            -682,
+            90
+          ],
+          "area": 192.0,
+          "maxGrade": 0.03289,
+          "relief": 0.213,
+          "distanceToModelRoad": 677.1
+        },
+        {
+          "center": [
+            -722,
+            74
+          ],
+          "area": 192.0,
+          "maxGrade": 0.0214,
+          "relief": 0.213,
+          "distanceToModelRoad": 697.52
+        },
+        {
+          "center": [
+            -714,
+            50
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01947,
+          "relief": 0.214,
+          "distanceToModelRoad": 676.5
+        },
+        {
+          "center": [
+            -642,
+            138
+          ],
+          "area": 192.0,
+          "maxGrade": 0.02095,
+          "relief": 0.221,
+          "distanceToModelRoad": 679.62
+        },
+        {
+          "center": [
+            -498,
+            -254
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01898,
+          "relief": 0.223,
+          "distanceToModelRoad": 339.66
+        },
+        {
+          "center": [
+            -602,
+            130
+          ],
+          "area": 192.0,
+          "maxGrade": 0.0251,
+          "relief": 0.224,
+          "distanceToModelRoad": 643.12
+        },
+        {
+          "center": [
+            -722,
+            58
+          ],
+          "area": 192.0,
+          "maxGrade": 0.01947,
+          "relief": 0.224,
+          "distanceToModelRoad": 687.71
+        },
+        {
+          "center": [
+            -522,
+            -294
+          ],
+          "area": 192.0,
+          "maxGrade": 0.04939,
+          "relief": 0.229,
+          "distanceToModelRoad": 353.11
+        }
+      ]
+    }
+  ],
+  "interpretation": "Screened geometric candidates, often overlapping. Not evidence of land availability, legal permission, heritage clearance or engineering feasibility. Only the original Bryggen window is enabled."
+}
