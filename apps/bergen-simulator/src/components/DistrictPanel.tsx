@@ -1,3 +1,5 @@
+import { useConnected } from "../state/connected";
+import { usePhysical } from "../state/physical";
 import { districtTransportBoundary } from "../transport/boundary";
 import ManagementPanel from "./ManagementPanel";
 import { useState } from "react";
@@ -189,6 +191,7 @@ export function DistrictMapTools() {
   );
 }
 export default function DistrictPanel() {
+  const connected = useConnected((v) => v.result);
   const d = useDistrict(),
     s = useScenario(),
     r = d.current[d.month],
@@ -443,26 +446,48 @@ export default function DistrictPanel() {
       <p
         className="planning-note"
         aria-label="District transport connection"
-        data-added-trips="0"
+        data-added-trips={connected?.ledger.assigned ?? 0}
       >
-        <strong>
-          0 / {s.development?.proposals.length ?? 0} sites with verified
-          transport access.
-        </strong>{" "}
-        District activity adds no traffic. Monthly activity is not a 30-minute
-        trip table.
+        {connected ? (
+          <>
+            <strong>
+              {connected.ledger.routed} additional routed trips /{" "}
+              {connected.ledger.unrouted} unrouted.
+            </strong>{" "}
+            Explicit hypothetical vehicle access and calculated month{" "}
+            {connected.ledger.month}; one synthetic 30-minute period. No
+            observed entrances are asserted.
+          </>
+        ) : (
+          <>
+            <strong>
+              0 / {s.development?.proposals.length ?? 0} sites with verified
+              transport access.
+            </strong>{" "}
+            The original traffic run adds no district traffic. Monthly activity
+            is not a 30-minute trip table. Use Access Planning to design
+            hypothetical access and opt in.
+          </>
+        )}
       </p>
+      <button
+        className="compare-button"
+        onClick={() => usePhysical.getState().setMode("access")}
+      >
+        Plan hypothetical access & transport
+      </button>
       <details className="scenario-assumptions">
-        <summary>Why traffic is separate</summary>
+        <summary>Why observed access remains unverified</summary>
         <p>
           The 27-way source graph has no verified entrance/connector from the
           conceptual sites to its routing nodes. A nearby centreline is not a
           mapped access connection. District activity adds no trips to that
           model. Outside labour and jobs are assumptions, with no implied
-          journey route or congestion forecast. Network/access provenance needs
-          a separate expansion before coupling. The complete pinned OSM cache
-          was reviewed again for 5C; pedestrian paths and entrances to observed
-          buildings do not establish vehicle access to a proposed site.
+          journey route or congestion forecast. Use Access Planning to design a
+          separate hypothetical connector and explicitly enable synthetic
+          demand. It never certifies observed access. The complete pinned OSM
+          cache was reviewed again for 5C; pedestrian paths and entrances to
+          observed buildings do not establish vehicle access to a proposed site.
         </p>
         <ul>
           {districtTransportBoundary(

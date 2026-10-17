@@ -28,7 +28,9 @@
     "test:management": "node tests/management-browser.mjs",
     "test:management-baseline": "node tests/capture-management-baseline.mjs",
     "test:connected": "node tests/connected-browser.mjs",
-    "test:connected-baseline": "node tests/capture-connected-baseline.mjs"
+    "test:connected-baseline": "node tests/capture-connected-baseline.mjs",
+    "test:access": "node tests/access-browser.mjs",
+    "test:access-baseline": "node tests/capture-access-baseline.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.4.0",

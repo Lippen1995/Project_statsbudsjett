@@ -1,3 +1,5 @@
+import ProposedAccess from "./ProposedAccess";
+import { useAccess } from "../state/access";
 import { startCityPreparation } from "../geo/preparation-client";
 import type { PreparedCity } from "../geo/preparation";
 import { preparation } from "../geo/diagnostics";
@@ -28,6 +30,8 @@ function CameraControls({ data }: { data: CityData }) {
     (s) => !!s.draft && s.action !== "navigate",
   );
   const buildingMode = usePhysical((s) => s.mode === "buildings");
+  const accessDrawing = useAccess((a) => a.drawing);
+  const accessMode = usePhysical((p) => p.mode === "access");
   const controls = useRef<OrbitControls | null>(null);
   useEffect(() => {
     const orbit = new OrbitControls(camera, gl.domElement);
@@ -58,8 +62,11 @@ function CameraControls({ data }: { data: CityData }) {
   }, [camera, gl, invalidate, data.extent, scene]);
   useEffect(() => {
     if (controls.current)
-      controls.current.enabled = !editing && !(constructing && buildingMode);
-  }, [editing, constructing, buildingMode]);
+      controls.current.enabled =
+        !editing &&
+        !(constructing && buildingMode) &&
+        !(accessDrawing && accessMode);
+  }, [editing, constructing, buildingMode, accessDrawing, accessMode]);
   useEffect(() => {
     const orbit = controls.current;
     if (!orbit) return;
@@ -208,6 +215,7 @@ function CityGeometry({
       <TrafficOverlay data={data} surface={surface} />
       <PublicSpaces terrain={terrain} surface={surface} />
       <ProposedBuildings terrain={terrain} surface={surface} />
+      <ProposedAccess terrain={terrain} surface={surface} />
       {highlight ? (
         <mesh geometry={highlight} renderOrder={3}>
           <meshBasicMaterial

@@ -168,3 +168,18 @@ access and adds zero trips. A reviewed offline network extension is available fo
 further GIS work; no player-facing expanded-network or coupling option is enabled.
 Scenario versions 1–5 remain supported. Physical GPU responsiveness and source-supported
 site access are explicit gates for the next connected-city gameplay slice.
+
+## Milestone 5D — planned access and representative-period mobility
+
+Players can explicitly design bounded hypothetical pedestrian or vehicle connections
+from proposed building portals to original endpoints in the active 27-way road graph.
+These are proposed infrastructure and never observed entrances or legal access rights.
+Full-width terrain, source/proposal collision and crossing checks gate confirmation.
+
+An optional connected worker samples actual selected-month operational occupancy/jobs,
+uses declared synthetic trip-end rates for one 30-minute period, and routes through the
+existing source directions and player street rules. Capped, blocked and unrouted demand
+remain visible; pedestrian links never authorize cars. Scenario version 6 preserves
+versions 1–5 and default-off legacy outcomes. The optional Connect the New Quarter
+challenge uses the common district and traffic engines. Private-link travel/turn capacity,
+pedestrian flows and congestion feedback to district growth remain unmodelled.

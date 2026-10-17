@@ -237,3 +237,13 @@ the active 27-way source is unchanged. No proposed-site entrance was verified.
 Official NVDB Vegnett/FKB catalogue metadata was investigated, without acquiring
 or adopting their geometry or assuming redistribution entitlement. Source references,
 CRS/datum limits, IDs, checksums and exclusions are in [the 5C audit](milestone-5c.md).
+
+## Milestone 5D source boundary
+
+No new geographical dataset is acquired or redistributed. Existing pinned OSM
+(ODbL-1.0) roads/buildings/water/coast and Kartverket CC BY 4.0 display terrain retain
+their IDs, coordinate/vertical conventions, provenance and file checksums. Source node
+IDs on new links refer to the unchanged 27-way graph. Link geometry and conceptual
+building portals are player-authored hypothetical proposals, never source observations.
+Four existing endpoint extrema serve only as explicitly synthetic external gateways.
+The 48-way offline candidate stays inactive. See [placement and demand rules](milestone-5d.md).

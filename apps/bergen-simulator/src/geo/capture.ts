@@ -57,11 +57,23 @@ export function installCapture(
     orbit.update();
     invalidate();
   };
+  // Sample settled allocations without forcing another render or reporting stale
+  // counters captured before React's post-frame resource disposal.
+  const memory = () => {
+    gl.domElement.dataset.memory = JSON.stringify({
+      ...attributeMemory(scene),
+      geometries: gl.info.memory.geometries,
+      textures: gl.info.memory.textures,
+    });
+  };
+  gl.domElement.addEventListener("bergen:memory", memory);
   gl.domElement.addEventListener("bergen:capture", setView);
   return () => {
     before();
     after();
     gl.domElement.removeEventListener("bergen:capture", setView);
+    gl.domElement.removeEventListener("bergen:memory", memory);
+    delete gl.domElement.dataset.memory;
     delete gl.domElement.dataset.capture;
     delete gl.domElement.dataset.preparation;
   };

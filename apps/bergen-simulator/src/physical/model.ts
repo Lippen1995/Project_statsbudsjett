@@ -56,6 +56,12 @@ export interface PlacementContext {
   water: Point[][][];
   coastline: Point[][];
   network: Network;
+  accessRoads?: {
+    id: string;
+    kind: string;
+    surface: boolean;
+    points: Point[];
+  }[];
 }
 export interface Placement {
   valid: boolean;
@@ -117,6 +123,20 @@ export function placementContext(
     water: data.water.map((w) => w.rings),
     coastline: data.coastline,
     network,
+    accessRoads: data.roads
+      .filter((r) =>
+        boxesIntersect(
+          bounds(r.points.map((p) => [p[0], p[2]])),
+          [...WINDOW],
+          5,
+        ),
+      )
+      .map((r) => ({
+        id: r.id,
+        kind: r.roadClass,
+        surface: !r.renderStatus || r.renderStatus === "surface",
+        points: r.points.map((p) => [p[0], p[2]] as Point),
+      })),
   };
 }
 export const emptyPhysical = (context: PlacementContext): PhysicalPlan => ({

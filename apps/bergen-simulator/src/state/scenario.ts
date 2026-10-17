@@ -1,3 +1,9 @@
+import { emptyAccess, validateAccess, type AccessPlan } from "../access/model";
+import {
+  defaultMobility,
+  validateMobility,
+  type MobilityInputs,
+} from "../access/demand";
 import {
   defaultManagement,
   validateManagement,
@@ -48,9 +54,16 @@ import {
   type SavedPlan,
 } from "../planning/scenarios";
 export type Phase =
-  "closed" | "ready" | "running" | "paused" | "complete" | "error";
+  | "closed"
+  | "ready"
+  | "running"
+  | "paused"
+  | "complete"
+  | "error";
 export type MapView = "plan" | "baseline" | "reference";
 interface Draft {
+  access: AccessPlan | null;
+  mobility: MobilityInputs;
   management: ManagementInputs;
   living: LivingInputs;
   plan: Plan;
@@ -58,6 +71,10 @@ interface Draft {
   development: DevelopmentPlan | null;
 }
 interface ScenarioState {
+  access: AccessPlan | null;
+  mobility: MobilityInputs;
+  editAccess: (input: unknown) => boolean;
+  editMobility: (input: unknown) => boolean;
   management: ManagementInputs;
   editManagement: (input: unknown) => boolean;
   living: LivingInputs;
@@ -141,6 +158,8 @@ const message = (e: unknown) =>
   e instanceof Error ? e.message : "The plan could not be processed.";
 export const useScenario = create<ScenarioState>((set, get) => ({
   ...clean,
+  access: null,
+  mobility: defaultMobility(),
   living: defaultLiving(),
   management: defaultManagement(),
   districtEpoch: 0,
@@ -162,10 +181,14 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       physical = context ? emptyPhysical(context) : null,
       development = context ? emptyDevelopment(context) : null,
       living = defaultLiving(),
-      management = defaultManagement();
+      management = defaultManagement(),
+      access = context ? emptyAccess(context) : null,
+      mobility = defaultMobility();
     stop();
     set({
       ...clean,
+      access,
+      mobility,
       living,
       management,
       districtEpoch: get().districtEpoch + 1,
@@ -176,7 +199,9 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       source: owned,
       network,
       plan,
-      history: [{ plan, physical, development, living, management }],
+      history: [
+        { plan, physical, development, living, management, access, mobility },
+      ],
       phase: "ready",
       library: [],
       storageBlocked: false,
@@ -191,6 +216,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       const updated = [
         ...history.slice(0, cursor + 1),
         {
+          access: get().access,
+          mobility: get().mobility,
           living: get().living,
           management: get().management,
           plan: next,
@@ -227,10 +254,14 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       );
       if (s.development)
         validateDevelopment(s.development, s.context, physical);
+      if (s.access && s.development)
+        validateAccess(s.access, s.context, s.development, physical);
       if (JSON.stringify(physical) === JSON.stringify(s.physical)) return true;
       const history = [
         ...s.history.slice(0, s.cursor + 1),
         {
+          access: s.access,
+          mobility: s.mobility,
           plan: s.plan,
           physical,
           development: s.development,
@@ -269,6 +300,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     const history = [
       ...s.history.slice(0, s.cursor + 1),
       {
+        access: s.access,
+        mobility: s.mobility,
         plan: s.plan,
         physical,
         development: s.development,
@@ -302,12 +335,16 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         s.context,
         s.physical,
       );
+      if (s.access)
+        validateAccess(s.access, s.context, development, s.physical);
       if (JSON.stringify(development) === JSON.stringify(s.development))
         return true;
       const management = syncManagement(s.management, development.proposals);
       const history = [
         ...s.history.slice(0, s.cursor + 1),
         {
+          access: s.access,
+          mobility: s.mobility,
           plan: s.plan,
           physical: s.physical,
           development,
@@ -335,6 +372,13 @@ export const useScenario = create<ScenarioState>((set, get) => ({
   },
   removeBuilding: (id) => {
     const s = get();
+    if (s.access?.connections.some((a) => a.buildingId === id)) {
+      set({
+        error:
+          "Remove this building’s proposed access first, or undo the connected plan.",
+      });
+      return;
+    }
     if (!s.development || !s.plan) return;
     const development = {
       ...s.development,
@@ -345,6 +389,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     const history = [
       ...s.history.slice(0, s.cursor + 1),
       {
+        access: s.access,
+        mobility: s.mobility,
         plan: s.plan,
         physical: s.physical,
         development,
@@ -364,12 +410,18 @@ export const useScenario = create<ScenarioState>((set, get) => ({
   },
   clearBuildings: () => {
     const s = get();
+    if (s.access?.connections.length) {
+      set({ error: "Remove proposed access before clearing buildings." });
+      return;
+    }
     if (!s.development?.proposals.length || !s.plan) return;
     const development = { ...s.development, proposals: [] };
     const management = syncManagement(s.management, development.proposals);
     const history = [
       ...s.history.slice(0, s.cursor + 1),
       {
+        access: s.access,
+        mobility: s.mobility,
         plan: s.plan,
         physical: s.physical,
         development,
@@ -394,6 +446,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       const history = [
         ...s.history.slice(0, s.cursor + 1),
         {
+          access: s.access,
+          mobility: s.mobility,
           plan: s.plan,
           physical: s.physical,
           development: s.development,
@@ -425,6 +479,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       const history = [
         ...s.history.slice(0, s.cursor + 1),
         {
+          access: s.access,
+          mobility: s.mobility,
           plan: s.plan,
           physical: s.physical,
           development: s.development,
@@ -439,6 +495,74 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         error: "",
         notice:
           "Management strategy changed. Replay from month zero; traffic is unchanged.",
+      });
+      return true;
+    } catch (e) {
+      set({ error: message(e) });
+      return false;
+    }
+  },
+  editAccess: (input) => {
+    const s = get();
+    if (!s.context || !s.development || !s.plan) return false;
+    try {
+      const access = validateAccess(
+        input,
+        s.context,
+        s.development,
+        s.physical,
+      );
+      const history = [
+        ...s.history.slice(0, s.cursor + 1),
+        {
+          plan: s.plan,
+          physical: s.physical,
+          development: s.development,
+          living: s.living,
+          management: s.management,
+          access,
+          mobility: s.mobility,
+        },
+      ].slice(-51);
+      set({
+        access,
+        history,
+        cursor: history.length - 1,
+        error: "",
+        mapView: "plan",
+        notice:
+          "Proposed access changed. Run the connected model to recompute demand.",
+      });
+      return true;
+    } catch (e) {
+      set({ error: message(e) });
+      return false;
+    }
+  },
+  editMobility: (input) => {
+    const s = get();
+    if (!s.network || !s.plan) return false;
+    try {
+      const mobility = validateMobility(input, s.network);
+      const history = [
+        ...s.history.slice(0, s.cursor + 1),
+        {
+          plan: s.plan,
+          physical: s.physical,
+          development: s.development,
+          living: s.living,
+          management: s.management,
+          access: s.access,
+          mobility,
+        },
+      ].slice(-51);
+      set({
+        mobility,
+        history,
+        cursor: history.length - 1,
+        error: "",
+        notice:
+          "Representative transport assumptions changed; district stocks are unchanged.",
       });
       return true;
     } catch (e) {
@@ -583,6 +707,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       management = defaultManagement();
     set({
       ...clean,
+      access: get().context ? emptyAccess(get().context!) : null,
+      mobility: defaultMobility(),
       living,
       management,
       districtEpoch: get().districtEpoch + 1,
@@ -591,7 +717,17 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       development,
       showBuildings: true,
       history: plan
-        ? [{ plan, physical, development, living, management }]
+        ? [
+            {
+              plan,
+              physical,
+              development,
+              living,
+              management,
+              access: get().context ? emptyAccess(get().context!) : null,
+              mobility: defaultMobility(),
+            },
+          ]
         : [],
       phase: network ? "ready" : "closed",
       notice: "City restored to the original model. Saved plans are retained.",
@@ -601,6 +737,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     stop();
     set({
       ...clean,
+      access: null,
+      mobility: defaultMobility(),
       living: defaultLiving(),
       management: defaultManagement(),
       districtEpoch: get().districtEpoch + 1,
@@ -674,6 +812,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         s.development,
         s.living,
         s.management,
+        s.access,
+        s.mobility,
       );
       const id = duplicate || !s.currentId ? crypto.randomUUID() : s.currentId;
       const record = { id, savedAt: new Date().toISOString(), scenario };
@@ -745,9 +885,14 @@ export const useScenario = create<ScenarioState>((set, get) => ({
           defaultManagement(development?.proposals ?? [], true),
         development?.proposals ?? [],
       );
+      const access =
+          record.scenario.access ?? (s.context ? emptyAccess(s.context) : null),
+        mobility = record.scenario.mobility ?? defaultMobility();
       stop();
       set({
         ...resultReset,
+        access,
+        mobility,
         name: record.scenario.name,
         currentId: id,
         plan,
@@ -757,6 +902,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         showBuildings: true,
         history: [
           {
+            access,
+            mobility,
             plan,
             physical,
             development,
@@ -792,9 +939,14 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       const management =
         file.management ??
         defaultManagement(development?.proposals ?? [], true);
+      const access =
+          file.access ?? (get().context ? emptyAccess(get().context!) : null),
+        mobility = file.mobility ?? defaultMobility();
       stop();
       set({
         ...resultReset,
+        access,
+        mobility,
         physical,
         development,
         management,
@@ -807,6 +959,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         referenceId: null,
         history: [
           {
+            access,
+            mobility,
             plan: file.plan,
             physical,
             development,

@@ -1,0 +1,191 @@
+{
+  "kind": "bergen-reimagined-plan",
+  "version": 6,
+  "name": "Connected New Quarter",
+  "plan": {
+    "version": 1,
+    "networkId": "bryggen-transport-model-1-4ea4ffed",
+    "interventions": []
+  },
+  "physical": {
+    "version": 1,
+    "geographyId": "bergen-physical-1-05c9a48e",
+    "proposals": [
+      {
+        "id": "public-study",
+        "name": "Waterfront public-space study",
+        "kind": "pedestrian",
+        "vertices": [
+          [
+            -53,
+            -255
+          ],
+          [
+            -35,
+            -238.8
+          ],
+          [
+            -40,
+            -232.8
+          ],
+          [
+            -58,
+            -249
+          ]
+        ]
+      }
+    ]
+  },
+  "development": {
+    "version": 1,
+    "geographyId": "bergen-physical-1-05c9a48e",
+    "proposals": [
+      {
+        "id": "study-0",
+        "name": "Quay homes",
+        "purpose": "residential",
+        "center": [
+          -95,
+          -317
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 3,
+        "storeyHeight": 3.2,
+        "roof": "gabled"
+      },
+      {
+        "id": "study-1",
+        "name": "Community pavilion",
+        "purpose": "civic",
+        "center": [
+          -23,
+          -237
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 2,
+        "storeyHeight": 3.2,
+        "roof": "flat"
+      },
+      {
+        "id": "study-2",
+        "name": "Quay workspace",
+        "purpose": "commercial",
+        "center": [
+          9,
+          -213
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 3,
+        "storeyHeight": 3.2,
+        "roof": "flat"
+      }
+    ]
+  },
+  "living": {
+    "version": 1,
+    "areaPerHousehold": 80,
+    "areaPerJob": 30,
+    "areaPerServicePlace": 20,
+    "householdSize": 2.2,
+    "workersPerHousehold": 1.1,
+    "householdArrivals": 2,
+    "jobDemandArrivals": 3,
+    "externalJobOpportunities": 2,
+    "externalWorkforce": 2,
+    "householdMoveInRate": 0.45,
+    "jobFillRate": 0.4,
+    "householdTurnover": 0.02,
+    "jobSeparation": 0.03,
+    "minimumServiceAttraction": 0.25
+  },
+  "management": {
+    "version": 1,
+    "mode": "scheduled",
+    "budget": {
+      "version": 1,
+      "startingCapital": 1000,
+      "monthlyCapital": 0,
+      "startingOperating": 0,
+      "monthlyOperating": 40,
+      "civicCapitalPerM2": 2,
+      "operatingPerService": 2
+    },
+    "projects": [
+      {
+        "id": "study-0",
+        "startMonth": 1,
+        "durationMonths": 3,
+        "priority": 4,
+        "cancelMonth": null
+      },
+      {
+        "id": "study-1",
+        "startMonth": 1,
+        "durationMonths": 4,
+        "priority": 4,
+        "cancelMonth": null
+      },
+      {
+        "id": "study-2",
+        "startMonth": 1,
+        "durationMonths": 2,
+        "priority": 4,
+        "cancelMonth": null
+      }
+    ]
+  },
+  "access": {
+    "version": 1,
+    "geographyId": "bergen-physical-1-05c9a48e",
+    "networkId": "bryggen-transport-model-1-4ea4ffed",
+    "connections": [
+      {
+        "id": "homes-access",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -101,
+            -317
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      {
+        "id": "work-access",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            15,
+            -213
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      }
+    ]
+  },
+  "mobility": {
+    "version": 1,
+    "enabled": true,
+    "month": 24,
+    "householdTripEnds": 1,
+    "jobTripEnds": 0.6,
+    "cap": 120,
+    "gatewayId": "645601"
+  }
+}

@@ -1,3 +1,4 @@
+import { useAccess } from "../state/access";
 import { useConstruction } from "../state/construction";
 import { usePhysical } from "../state/physical";
 import { useState } from "react";
@@ -6,7 +7,8 @@ import { scenarioFile } from "../planning/scenarios";
 export default function PlanLibrary() {
   const physicalDraft = usePhysical((p) => p.draft);
   const buildingDraft = useConstruction((c) => c.draft);
-  const draft = physicalDraft || buildingDraft;
+  const accessDraft = useAccess((a) => a.draft);
+  const draft = physicalDraft || buildingDraft || accessDraft;
   const s = useScenario(),
     [selectedId, setSelectedId] = useState(""),
     [importing, setImporting] = useState(false);
@@ -31,6 +33,8 @@ export default function PlanLibrary() {
         s.development,
         s.living,
         s.management,
+        s.access,
+        s.mobility,
       );
       const url = URL.createObjectURL(
         new Blob([JSON.stringify(file, null, 2) + "\n"], {
@@ -114,8 +118,9 @@ export default function PlanLibrary() {
       </label>
       <p className="data-note">
         Select a saved reference to compare geometry immediately. Run to compare
-        traffic. Both plans and the initial baseline are recalculated from
-        identical synthetic demand.
+        traffic. The original traffic run uses identical baseline demand.
+        Connected comparisons use the same selected month, trip rates and
+        gateway, with each saved design and access plan.
       </p>
       <div className="planning-actions">
         <button onClick={exportFile} disabled={!!draft}>

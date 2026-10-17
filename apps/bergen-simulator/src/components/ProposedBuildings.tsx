@@ -1,3 +1,4 @@
+import { useAccess } from "../state/access";
 import type { ProjectPhase } from "../management/model";
 import { useEffect, useMemo, useRef } from "react";
 import { useThree, type ThreeEvent } from "@react-three/fiber";
@@ -56,6 +57,7 @@ export default function ProposedBuildings({
   surface: SurfaceSampler;
 }) {
   const invalidate = useThree((v) => v.invalidate);
+  const accessBuildingId = useAccess((a) => a.buildingId);
   const active = useDistrict((d) => d.active && d.tint),
     currentActivity = useDistrict((d) => d.current[d.month]),
     referenceActivity = useDistrict((d) => d.reference?.[d.month]);
@@ -92,13 +94,25 @@ export default function ProposedBuildings({
                 building: b,
                 baseY: check.baseY,
                 invalid: b === draft && !check.valid,
-                selected: b.id === c.selectedId || b === draft,
+                selected:
+                  (mode === "access"
+                    ? b.id === accessBuildingId
+                    : b.id === c.selectedId) || b === draft,
               };
             })
           : [],
         surface,
       ),
-    [s.context, s.physical, proposals, draft, c.selectedId, surface],
+    [
+      s.context,
+      s.physical,
+      proposals,
+      draft,
+      c.selectedId,
+      surface,
+      mode,
+      accessBuildingId,
+    ],
   );
   useEffect(() => {
     const r = s.mapView === "reference" ? referenceActivity : currentActivity;
@@ -153,7 +167,13 @@ export default function ProposedBuildings({
     mesh.instanceMatrix.needsUpdate = true;
   }, [draft, s.context, s.physical, proposals]);
   function select(e: ThreeEvent<MouseEvent>) {
-    if (c.draft || e.delta > 4 || e.faceIndex == null) return;
+    if (
+      useAccess.getState().drawing ||
+      c.draft ||
+      e.delta > 4 ||
+      e.faceIndex == null
+    )
+      return;
     const triangle = batch.body.index
       ? batch.body.index.getX(e.faceIndex * 3) / 3
       : e.faceIndex;
@@ -164,17 +184,31 @@ export default function ProposedBuildings({
       c.feedback("Comparison view. Show your plan to edit construction.");
       return;
     }
+    if (usePhysical.getState().mode === "access") {
+      useAccess.getState().selectBuilding(hit.id);
+      return;
+    }
     usePhysical.getState().setMode("buildings");
     c.select(hit.id);
     useCity.getState().select(null);
   }
   function selectOutline(e: ThreeEvent<MouseEvent>) {
-    if (c.draft || e.delta > 4 || e.index == null) return;
+    if (
+      useAccess.getState().drawing ||
+      c.draft ||
+      e.delta > 4 ||
+      e.index == null
+    )
+      return;
     const hit = batch.ranges.find((r) => e.index! < r.edgeEnd);
     if (!hit) return;
     e.stopPropagation();
     if (s.mapView !== "plan") {
       c.feedback("Comparison view. Show your plan to edit construction.");
+      return;
+    }
+    if (usePhysical.getState().mode === "access") {
+      useAccess.getState().selectBuilding(hit.id);
       return;
     }
     usePhysical.getState().setMode("buildings");

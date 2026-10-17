@@ -230,7 +230,7 @@ export default function App() {
           </span>
         </a>
         <div className="header-center">
-          CITY PLANNING PROTOTYPE <span>05C / BERGEN</span>
+          CITY PLANNING PROTOTYPE <span>05D / BERGEN</span>
         </div>
         <span className="prototype-badge">
           <span />

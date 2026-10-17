@@ -1,0 +1,83 @@
+{
+  "baseline": "830a39fdef6a92a66ad4c4850cff7219bb1af975",
+  "branch": "feature/bergen-simulator",
+  "applicationTests": 221,
+  "releasePolicyTests": 10,
+  "gisTests": 6,
+  "browserSuites": [
+    "access desktop+touch",
+    "connected profiler desktop+touch",
+    "management",
+    "living",
+    "buildings",
+    "physical",
+    "scenario",
+    "browser",
+    "visual"
+  ],
+  "lint": "pass",
+  "build": "pass",
+  "isolation": "pass",
+  "protectedFilesUnchanged": 1473,
+  "sourceSnapshots": {
+    "public/data/source-manifest.json": "d664f52364fe5ada89639b45ef074a1092e26d3586b9faedc2c88e5f847002b4",
+    "public/data/bergen-context-osm.json.gz": "f041539a4c73faed909664c8c64a1f4751fac60dc4175dbe1616633a3ea2016d",
+    "public/data/bergen-osm.json.gz": "11b0e3c5b20de3defa1fa077ce5d64eb7d67eb83df2c966599a8da0528c05fb9",
+    "public/data/terrain-source.json": "5e350bce3a5c17dfbe411082491fff1cbc6a83442ee03ce3e56e5accc7a0e97c",
+    "public/data/bryggen-transport.json": "7082fe3888c1dfd1fb9a8603c86bdce9fe09df56bfa7cf7900150815a7268d11",
+    "public/data/NOTICE.md": "af19590b6509ce091f7ac8de69f533f0d63539c7806a24401bd7f8d744dc75b6",
+    "public/data/bergen.json": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812"
+  },
+  "physicalGPU": "unverified; software renderer only",
+  "observedSourceBatchesUnchanged": true,
+  "nativeGitDeploymentConfigUnchanged": true,
+  "releaseWorkflowUnchanged": true,
+  "connectedExample": {
+    "desktop": {
+      "generated": "13",
+      "routed": "13",
+      "unrouted": "0",
+      "lowerHousingTrips": "8",
+      "retainedGeometries": [
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "lastFrameGeometryCounters": [
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "heapGrowthBytes": 370063,
+      "cameraMedianMs": 396.30000000074506,
+      "workerComputeMs": "177.69999999925494"
+    },
+    "mobile": {
+      "generated": "13",
+      "routed": "13",
+      "unrouted": "0",
+      "lowerHousingTrips": "8",
+      "retainedGeometries": [
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "lastFrameGeometryCounters": [
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "heapGrowthBytes": -26427,
+      "cameraMedianMs": 196,
+      "workerComputeMs": "145.90000000037253"
+    }
+  }
+}

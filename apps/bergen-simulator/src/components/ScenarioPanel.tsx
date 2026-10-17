@@ -1,3 +1,5 @@
+import AccessEditor, { AccessMapTools } from "./AccessEditor";
+import { useAccess } from "../state/access";
 import DistrictPanel, { DistrictMapTools } from "./DistrictPanel";
 import { useDistrict } from "../state/district";
 import { useConstruction } from "../state/construction";
@@ -15,6 +17,7 @@ import PlanLibrary from "./PlanLibrary";
 import PlanningResults, { ChallengeReadout, number } from "./PlanningResults";
 export default function ScenarioPanel({ data }: { data: CityData }) {
   const p = usePhysical();
+  const a = useAccess();
   const c = useConstruction();
   const s = useScenario(),
     [loading, setLoading] = useState(false),
@@ -26,6 +29,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
       useScenario.getState().close();
       usePhysical.getState().clear();
       useConstruction.getState().clear();
+      useAccess.getState().clear();
     },
     [],
   );
@@ -62,6 +66,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
       if (controller.signal.aborted) return;
       p.clear();
       c.clear();
+      a.clear();
       s.open(source, data);
       useCity.getState().select(null);
       useCity.getState().focus([20, -220]);
@@ -110,6 +115,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
           className="icon-button"
           aria-label="Leave Planning Mode"
           onClick={() => {
+            a.clear();
             p.clear();
             c.clear();
             s.close();
@@ -134,14 +140,17 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
       <div className="planning-actions history-controls">
         <button
           disabled={
-            c.draft
-              ? !c.past.length
-              : p.draft
-                ? p.past.length === 0
-                : s.cursor < 1
+            a.draft
+              ? !a.past.length
+              : c.draft
+                ? !c.past.length
+                : p.draft
+                  ? p.past.length === 0
+                  : s.cursor < 1
           }
           onClick={() => {
-            if (c.draft) c.undo();
+            if (a.draft) a.undo();
+            else if (c.draft) c.undo();
             else if (p.draft) p.undoDraft();
             else s.undo();
           }}
@@ -150,14 +159,17 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
         </button>
         <button
           disabled={
-            c.draft
-              ? !c.future.length
-              : p.draft
-                ? p.future.length === 0
-                : s.cursor >= s.history.length - 1
+            a.draft
+              ? !a.future.length
+              : c.draft
+                ? !c.future.length
+                : p.draft
+                  ? p.future.length === 0
+                  : s.cursor >= s.history.length - 1
           }
           onClick={() => {
-            if (c.draft) c.redo();
+            if (a.draft) a.redo();
+            else if (c.draft) c.redo();
             else if (p.draft) p.redoDraft();
             else s.redo();
           }}
@@ -166,6 +178,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
         </button>
         <button
           onClick={() => {
+            a.clear();
             p.clear();
             c.clear();
             s.reset();
@@ -180,6 +193,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
         <button
           aria-pressed={p.mode === "streets"}
           onClick={() => {
+            a.cancel();
             c.cancel();
             p.setMode("streets");
           }}
@@ -189,6 +203,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
         <button
           aria-pressed={p.mode === "spaces"}
           onClick={() => {
+            a.cancel();
             c.cancel();
             p.setMode("spaces");
           }}
@@ -198,6 +213,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
         <button
           aria-pressed={p.mode === "buildings"}
           onClick={() => {
+            a.cancel();
             c.cancel();
             p.setMode("buildings");
           }}
@@ -205,8 +221,18 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
           Buildings
         </button>
         <button
+          aria-pressed={p.mode === "access"}
+          onClick={() => {
+            c.cancel();
+            p.setMode("access");
+          }}
+        >
+          Access Planning
+        </button>
+        <button
           aria-pressed={p.mode === "living"}
           onClick={() => {
+            a.cancel();
             c.cancel();
             p.setMode("living");
             if (!useDistrict.getState().active)
@@ -221,7 +247,9 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
           Living City
         </button>
       </div>
-      {p.mode === "living" ? (
+      {p.mode === "access" ? (
+        <AccessEditor />
+      ) : p.mode === "living" ? (
         <DistrictPanel />
       ) : p.mode === "buildings" ? (
         <BuildingEditor />
@@ -236,7 +264,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
           plan.
         </p>
       )}
-      {p.mode !== "living" && (
+      {p.mode !== "living" && p.mode !== "access" && (
         <>
           <div className="simulation-controls">
             {s.phase === "running" || s.phase === "paused" ? (
@@ -285,7 +313,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
           {s.notice}
         </p>
       )}
-      {p.mode !== "living" && (
+      {p.mode !== "living" && p.mode !== "access" && (
         <>
           <PlanningResults />
           <label className="traffic-toggle">
@@ -355,6 +383,7 @@ export function ScenarioLegend() {
     selectedId = useCity((v) => v.selectedSegmentId),
     selected = useCity((v) => v.selected);
   if (s.phase === "closed") return null;
+  if (p.mode === "access") return <AccessMapTools />;
   if (p.mode === "living") return <DistrictMapTools />;
   if (p.mode === "spaces") return <PhysicalMapTools />;
   if (p.mode === "buildings") return <BuildingMapTools />;

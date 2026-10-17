@@ -100,3 +100,11 @@ current renderer or infer that this small Bryggen district represents all Bergen
 - Blocked: district-to-traffic coupling; no verified entrance/connector to proposed sites.
 - Next: real-device GPU/peak-memory testing, reviewed site access and boundary/turn
   semantics, then an opt-in bounded representative-period transport-input contract.
+
+## Milestone 5D status
+
+Explicit hypothetical access now provides an opt-in connection without claiming real
+site entrances. The verified 27-way network stays active; the offline 48-way candidate
+is not enabled. Next: physical-device profiling, private-connector travel/turn capacity,
+shared hypothetical access and sensitivity analysis. Expand observed transport only
+through a reviewed source revision. Keep district/transport feedback a separate model.

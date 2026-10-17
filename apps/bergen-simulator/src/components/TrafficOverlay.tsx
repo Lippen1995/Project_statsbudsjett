@@ -1,3 +1,4 @@
+import { useConnected } from "../state/connected";
 import { usePhysical } from "../state/physical";
 import { useEffect, useMemo } from "react";
 import { DoubleSide } from "three";
@@ -40,8 +41,14 @@ export default function TrafficOverlay({
       : mapView === "reference"
         ? library.find((p) => p.id === referenceId)?.scenario.plan
         : null;
-  const result =
-    mapView === "baseline"
+  const connected = useConnected();
+  const result = connected.result
+    ? mapView === "baseline"
+      ? connected.result.baseline
+      : mapView === "reference"
+        ? (connected.reference?.combined ?? null)
+        : connected.result.combined
+    : mapView === "baseline"
       ? baseline
       : mapView === "reference"
         ? reference

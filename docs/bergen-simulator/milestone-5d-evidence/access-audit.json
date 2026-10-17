@@ -1,0 +1,2333 @@
+{
+  "valid": [
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -101,
+            -312.2
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 23.363827603759635,
+      "maxGrade": 0.01858258593414813
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -101,
+            -314.6
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 22.65718192940532,
+      "maxGrade": 0.01858258593414813
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -101,
+            -317
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 22.188901407373503,
+      "maxGrade": 0.01858258593414813
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            15,
+            -217.8
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "lengthM": 40.46891512285085,
+      "maxGrade": 0.027740426276465172
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            15,
+            -215.4
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "lengthM": 38.166409497931184,
+      "maxGrade": 0.027740426276465172
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            15,
+            -213
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "lengthM": 35.876685141008174,
+      "maxGrade": 0.027740426276465172
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            15,
+            -210.6
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "lengthM": 33.602354968815824,
+      "maxGrade": 0.027740426276465172
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            15,
+            -208.2
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "lengthM": 31.34676988452824,
+      "maxGrade": 0.027740426276465172
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            12.6,
+            -205
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "lengthM": 29.397080114292976,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            10.8,
+            -205
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "lengthM": 30.265208561850976,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            9,
+            -205
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "lengthM": 31.213096279262594,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            7.199999999999999,
+            -205
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "lengthM": 32.23370765805099,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            5.399999999999999,
+            -205
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "lengthM": 33.32036073380469,
+      "maxGrade": 0.07644604924467566
+    }
+  ],
+  "near": [
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "10937740719",
+        "points": [
+          [
+            -101,
+            -312.2
+          ],
+          [
+            -140.5334118395885,
+            -338.0775219416074
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Keep the full corridor within the existing Bryggen authoring window.",
+        "Unsupported crossing of way/1177313138; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 47.24972797294064,
+      "maxGrade": 0.03633610463437158
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "10937740719",
+        "points": [
+          [
+            -101,
+            -314.6
+          ],
+          [
+            -140.5334118395885,
+            -338.0775219416074
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Keep the full corridor within the existing Bryggen authoring window.",
+        "Unsupported crossing of way/1177313138; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 45.979176680288354,
+      "maxGrade": 0.03633610463437158
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "10937740719",
+        "points": [
+          [
+            -101,
+            -317
+          ],
+          [
+            -140.5334118395885,
+            -338.0775219416074
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Keep the full corridor within the existing Bryggen authoring window.",
+        "Unsupported crossing of way/1177313138; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 44.80125648770866,
+      "maxGrade": 0.03633610463437158
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "10937740719",
+        "points": [
+          [
+            -101,
+            -319.4
+          ],
+          [
+            -140.5334118395885,
+            -338.0775219416074
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Keep the full corridor within the existing Bryggen authoring window.",
+        "Unsupported crossing of way/1177313138; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 43.72345454739073,
+      "maxGrade": 0.03633610463437158
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "10937740719",
+        "points": [
+          [
+            -101,
+            -321.8
+          ],
+          [
+            -140.5334118395885,
+            -338.0775219416074
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Keep the full corridor within the existing Bryggen authoring window.",
+        "Observed building collision or less than 0.25 m clearance."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 42.753343404206724,
+      "maxGrade": 0.03633610463437158
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -89,
+            -317
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/503034662; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 34.10865985307471,
+      "maxGrade": 0.04835577783471175
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -89,
+            -314.6
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 34.41513074635603,
+      "maxGrade": 0.04835577783471175
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -89,
+            -312.2
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 34.88440585139455,
+      "maxGrade": 0.04835577783471175
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -91.4,
+            -309
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 33.48061879801796,
+      "maxGrade": 0.01858258593414813
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -93.2,
+            -309
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 31.789523988292157,
+      "maxGrade": 0.01858258593414813
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -95,
+            -309
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 30.111058362439056,
+      "maxGrade": 0.01858258593414813
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -96.8,
+            -309
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 28.44745746126039,
+      "maxGrade": 0.01858258593414813
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -98.6,
+            -309
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/984438272; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 26.80148944208565,
+      "maxGrade": 0.01858258593414813
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -101,
+            -319.4
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/503034662; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 21.974230324407554,
+      "maxGrade": 0.01858258593414813
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "4933873322",
+        "points": [
+          [
+            -101,
+            -321.8
+          ],
+          [
+            -122.96055547110872,
+            -320.1751140241728
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/503034662; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 22.020586982051206,
+      "maxGrade": 0.01858258593414813
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -98.6,
+            -325
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 20.733443023237687,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -89,
+            -317
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 24.67129552386846,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -89,
+            -314.6
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 24.067307322310743,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -89,
+            -312.2
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 23.692145125907285,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -91.4,
+            -309
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 21.166887131895827,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -93.2,
+            -309
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 19.36786461059765,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -95,
+            -309
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 17.56904232718632,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -96.8,
+            -309
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 15.770488800747053,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -98.6,
+            -309
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 13.972307817054128,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -101,
+            -312.2
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 11.830674768043004,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -101,
+            -314.6
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 12.565126602892205,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -101,
+            -317
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 13.686487775401291,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -101,
+            -319.4
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 15.108854645727064,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-0",
+        "buildingId": "study-0",
+        "mode": "vehicle",
+        "nodeId": "75457133",
+        "points": [
+          [
+            -101,
+            -321.8
+          ],
+          [
+            -112.55636979999345,
+            -309.6671789417709
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [
+        "Crosses a mapped walking route: hypothetical at-grade crossing only; continuity, rights and engineering are unverified."
+      ],
+      "lengthM": 16.75574617214073,
+      "maxGrade": 0.10914767638586045
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            -17,
+            -241.8
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 70.35022146609211,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            -17,
+            -239.4
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 68.69827006771276,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            -17,
+            -237
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 67.0915118346918,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            -17,
+            -234.6
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 65.53327101734494,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            -17,
+            -232.2
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 64.02709004945464,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            -19.4,
+            -229
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 64.07032214286785,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            -21.2,
+            -229
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 65.56234413891931,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            -23,
+            -229
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 67.06948455511876,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            -24.8,
+            -229
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 68.59074681025524,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            -26.6,
+            -229
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 70.12521185342517,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            -17,
+            -241.8
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion."
+      ],
+      "warnings": [],
+      "lengthM": 76.25947488052385,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            -17,
+            -239.4
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion."
+      ],
+      "warnings": [],
+      "lengthM": 74.29164981205165,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            -17,
+            -237
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion."
+      ],
+      "warnings": [],
+      "lengthM": 72.34992021101183,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            -17,
+            -234.6
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion."
+      ],
+      "warnings": [],
+      "lengthM": 70.43644424076959,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            -17,
+            -232.2
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Conflicts with proposed building Community pavilion."
+      ],
+      "warnings": [],
+      "lengthM": 68.55358779835166,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            -23,
+            -229
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/9649862; attach only within 4 m of an incident source-node endpoint.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [],
+      "lengthM": 70.15434268219794,
+      "maxGrade": 0.10742720136443235
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            -24.8,
+            -229
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/9649862; attach only within 4 m of an incident source-node endpoint.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [],
+      "lengthM": 71.42538993395442,
+      "maxGrade": 0.10742720136443235
+    },
+    {
+      "access": {
+        "id": "audit-study-1",
+        "buildingId": "study-1",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            -26.6,
+            -229
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/9649862; attach only within 4 m of an incident source-node endpoint.",
+        "Terrain exceeds the 10% corridor grade assumption."
+      ],
+      "warnings": [],
+      "lengthM": 72.71877926136834,
+      "maxGrade": 0.10742720136443235
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            5.4,
+            -221
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 39.796846911058054,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            7.199999999999999,
+            -221
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 38.55041160043517,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            9,
+            -221
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 37.34915588154225,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            10.8,
+            -221
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 36.19757803451106,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            12.600000000000001,
+            -221
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 35.10056788807402,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            15,
+            -217.8
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 31.100723678995813,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            15,
+            -215.4
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 29.20194622495978,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            15,
+            -213
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 27.381970588210677,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            15,
+            -210.6
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 25.65757126584328,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            15,
+            -208.2
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 24.049316273649424,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            12.6,
+            -205
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 24.1641787056773,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            10.8,
+            -205
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 25.73173764088101,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            9,
+            -205
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 27.327954762813064,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            7.199999999999999,
+            -205
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 28.948089764569644,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            5.399999999999999,
+            -205
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 30.588342395703727,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            3,
+            -208.2
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 34.12625885187019,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            3,
+            -210.6
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 35.278079500685074,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            3,
+            -213
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 36.55139181055168,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            3,
+            -215.4
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 37.93396358568759,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "25284792",
+        "points": [
+          [
+            3,
+            -217.8
+          ],
+          [
+            33.42633041645123,
+            -192.74555207670673
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend.",
+        "Unsupported crossing of way/905824552; attach only within 4 m of an incident source-node endpoint."
+      ],
+      "warnings": [],
+      "lengthM": 39.4142987169895,
+      "maxGrade": 0.04896187930420972
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            5.4,
+            -221
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [],
+      "lengthM": 46.92655560705939,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            7.199999999999999,
+            -221
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [],
+      "lengthM": 46.161315959320945,
+      "maxGrade": 0.027740426276465172
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            9,
+            -221
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [],
+      "lengthM": 45.454510898810476,
+      "maxGrade": 0.027740426276465172
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            10.8,
+            -221
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [],
+      "lengthM": 44.80890571085063,
+      "maxGrade": 0.027740426276465172
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            12.600000000000001,
+            -221
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [],
+      "lengthM": 44.22718056758449,
+      "maxGrade": 0.027740426276465172
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            3,
+            -208.2
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [],
+      "lengthM": 37.319121763086684,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            3,
+            -210.6
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [],
+      "lengthM": 39.23283225086898,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            3,
+            -213
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [],
+      "lengthM": 41.19749268683181,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            3,
+            -215.4
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [],
+      "lengthM": 43.20615327633664,
+      "maxGrade": 0.07644604924467566
+    },
+    {
+      "access": {
+        "id": "audit-study-2",
+        "buildingId": "study-2",
+        "mode": "vehicle",
+        "nodeId": "645523",
+        "points": [
+          [
+            3,
+            -217.8
+          ],
+          [
+            26.087369457271816,
+            -178.87952557151362
+          ]
+        ]
+      },
+      "valid": false,
+      "errors": [
+        "The centreline enters its own building; move the proposed portal or bend."
+      ],
+      "warnings": [],
+      "lengthM": 45.252955242669294,
+      "maxGrade": 0.07644604924467566
+    }
+  ]
+}

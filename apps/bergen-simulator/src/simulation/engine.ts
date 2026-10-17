@@ -7,6 +7,7 @@ export interface Demand {
   to: string;
   access: Access;
   vehiclesPerTick: number;
+  tickVehicles?: number[]; // Optional exact 60-tick integer demand; legacy pulse is unchanged.
 }
 export const TICK_SECONDS = 30;
 export const TOTAL_TICKS = 60; // A synthetic 30-minute planning period.
@@ -141,8 +142,24 @@ export class TrafficSimulation {
       ) ||
       demand.length > 100 ||
       demand.reduce((sum, d) => sum + d.vehiclesPerTick, 0) > 60 ||
+      Array.from({ length: TOTAL_TICKS }, (_, tick) =>
+        demand.reduce(
+          (sum, d) =>
+            sum +
+            (d.tickVehicles?.[tick] ??
+              d.vehiclesPerTick * (tick >= 20 && tick < 40 ? 2 : 1)),
+          0,
+        ),
+      ).some((n) => n > 120) ||
       demand.some(
         (d) =>
+          (d.tickVehicles !== undefined &&
+            (!Array.isArray(d.tickVehicles) ||
+              d.tickVehicles.length !== TOTAL_TICKS ||
+              d.vehiclesPerTick !== 0 ||
+              d.tickVehicles.some(
+                (n) => !Number.isInteger(n) || n < 0 || n > 4,
+              ))) ||
           !Number.isInteger(d.vehiclesPerTick) ||
           d.vehiclesPerTick < 0 ||
           d.vehiclesPerTick > 100 ||
@@ -179,7 +196,11 @@ export class TrafficSimulation {
     // Incremental assignment within each fixed tick; routes respond to loads using
     // exactly the same cost function for every policy. Not a vehicle movement model.
     for (const od of this.demand)
-      for (let trip = 0; trip < od.vehiclesPerTick * multiplier; trip++) {
+      for (
+        let trip = 0;
+        trip < (od.tickVehicles?.[r.tick] ?? od.vehiclesPerTick * multiplier);
+        trip++
+      ) {
         r.requested++;
         const path = route(this.network, od.from, od.to, od.access, loads);
         if (!path) {

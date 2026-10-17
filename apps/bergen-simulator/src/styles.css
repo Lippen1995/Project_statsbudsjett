@@ -1207,3 +1207,8 @@ button:disabled { cursor: default; opacity: .48; }
 .management-accounts dl{margin:0}.management-accounts dl>div{padding:10px 0;border-bottom:1px solid #c6d1be}.management-accounts dt{font-size:10px}.management-accounts dd{font:20px Georgia,serif;margin:6px 0}.management-accounts dd small,.management-accounts span{font:10px Inter,"Segoe UI",sans-serif;line-height:1.6}.management-accounts span{display:block}
 .management-shortfall{padding:8px 0 8px 10px;border-left:2px solid #ac7047;font-size:11px;line-height:1.6}.project-roster{display:grid;gap:0;margin:14px 0}.project-roster button{display:flex;flex-direction:column;text-align:left;border:0;border-bottom:1px solid #b7c6b1;padding:10px 5px;background:transparent;color:#355b51;min-height:44px}.project-roster button[aria-pressed=true]{border-left:2px solid #a37a35;background:#e1e8d7}.project-roster small{font-size:9px;margin-top:4px}.project-context{padding:12px 0;border-block:1px solid #c3cebb}.project-context>strong{font-size:12px}.project-context>span{display:block;font-size:10px;line-height:1.6;margin:7px 0}.project-context .building-dimensions{margin-top:12px}.public-funding .building-dimensions small{font-size:9px;display:block}
 @media(max-width:700px){.city-management input{min-height:42px}.district-map-tools [aria-label="Map construction phases"]{font-size:9px}}
+
+.access-editor h3 { margin-top: 1.2rem; }
+.access-editor .plan-button { margin: .6rem 0; }
+.access-editor .building-dimensions input { min-width: 0; }
+.connected-readout { border-left: 3px solid #ba8c4f; padding-left: .7rem; }

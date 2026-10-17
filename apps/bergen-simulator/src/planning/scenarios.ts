@@ -1,3 +1,9 @@
+import { validateAccess, type AccessPlan } from "../access/model";
+import {
+  validateMobility,
+  defaultMobility,
+  type MobilityInputs,
+} from "../access/demand";
 import { validateManagement, type ManagementInputs } from "../management/model";
 import { validateLiving, type LivingInputs } from "../district/model";
 import {
@@ -21,7 +27,9 @@ import type { Network } from "../simulation/network";
 export const STORAGE_KEY = "bergen.reimagined.plans.v1";
 export interface ScenarioFile {
   kind: "bergen-reimagined-plan";
-  version: 1 | 2 | 3 | 4 | 5;
+  version: 1 | 2 | 3 | 4 | 5 | 6;
+  access?: AccessPlan;
+  mobility?: MobilityInputs;
   management?: ManagementInputs;
   living?: LivingInputs;
   physical?: PhysicalPlan;
@@ -62,19 +70,26 @@ export function validateScenario(
     "version",
     "name",
     "plan",
-    ...(s.version === 2 || s.version === 3 || s.version === 4 || s.version === 5
+    ...(s.version === 6 ? ["access", "mobility"] : []),
+    ...(s.version === 2 ||
+    s.version === 3 ||
+    s.version === 4 ||
+    s.version === 5 ||
+    s.version === 6
       ? ["physical"]
       : []),
-    ...(s.version === 3 || s.version === 4 || s.version === 5
+    ...(s.version === 3 || s.version === 4 || s.version === 5 || s.version === 6
       ? ["development"]
       : []),
-    ...(s.version === 4 || s.version === 5 ? ["living"] : []),
-    ...(s.version === 5 ? ["management"] : []),
+    ...(s.version === 4 || s.version === 5 || s.version === 6
+      ? ["living"]
+      : []),
+    ...(s.version === 5 || s.version === 6 ? ["management"] : []),
   ];
   exactKeys(s, fields);
   if (
     s.kind !== "bergen-reimagined-plan" ||
-    ![1, 2, 3, 4, 5].includes(s.version as number)
+    ![1, 2, 3, 4, 5, 6].includes(s.version as number)
   )
     throw new Error(
       "Unsupported scenario version. No automatic migration is available for this format.",
@@ -86,20 +101,26 @@ export function validateScenario(
   const physical =
     s.version !== 1 ? validatePhysical(s.physical, context!) : null;
   const development =
-    s.version === 3 || s.version === 4 || s.version === 5
+    s.version === 3 || s.version === 4 || s.version === 5 || s.version === 6
       ? validateDevelopment(s.development, context!, physical)
       : undefined;
   return {
     kind: "bergen-reimagined-plan",
-    version: s.version as 1 | 2 | 3 | 4 | 5,
+    version: s.version as 1 | 2 | 3 | 4 | 5 | 6,
+    ...(s.version === 6
+      ? {
+          access: validateAccess(s.access, context!, development!, physical),
+          mobility: validateMobility(s.mobility, network),
+        }
+      : {}),
     name: planName(s.name),
     plan: validatePlan(s.plan, network),
     ...(physical ? { physical } : {}),
     ...(development ? { development } : {}),
-    ...(s.version === 4 || s.version === 5
+    ...(s.version === 4 || s.version === 5 || s.version === 6
       ? { living: validateLiving(s.living) }
       : {}),
-    ...(s.version === 5
+    ...(s.version === 5 || s.version === 6
       ? { management: validateManagement(s.management, development!.proposals) }
       : {}),
   };
@@ -122,7 +143,15 @@ export function scenarioFile(
   development?: DevelopmentPlan | null,
   living?: LivingInputs | null,
   management?: ManagementInputs | null,
+  access?: AccessPlan | null,
+  mobility?: MobilityInputs | null,
 ): ScenarioFile {
+  const connected = !!(
+    access &&
+    mobility &&
+    (access.connections.length ||
+      JSON.stringify(mobility) !== JSON.stringify(defaultMobility()))
+  );
   return validateScenario(
     {
       kind: "bergen-reimagined-plan",
@@ -130,11 +159,16 @@ export function scenarioFile(
         ? development
           ? living
             ? management
-              ? 5
+              ? connected
+                ? 6
+                : 5
               : 4
             : 3
           : 2
         : 1,
+      ...(context && development && living && management && connected
+        ? { access, mobility }
+        : {}),
       name,
       plan,
       ...(context && development && living ? { living } : {}),

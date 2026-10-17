@@ -288,3 +288,14 @@ and traffic contracts are unchanged; scenario version 5 remains current. A read-
 site-access boundary reports unverified access and zero added trips. The source-audited
 48-way candidate remains offline until access/boundary/turn review supports activation.
 See [5C architecture and audit](milestone-5c.md).
+
+## Milestone 5D — explicit proposed access
+
+A separate hypothetical AccessPlan v1 binds proposed building portals to original
+27-way graph endpoints after full-width geometric validation. It never rewrites the
+observed graph or certifies actual entrances. Scenario version 6 adds opt-in mobility
+inputs; versions 1–5 initialize empty access and keep prior outcomes. One-shot connected
+workers recompute selected-month district stocks, generate a conserved/capped synthetic
+30-minute trip schedule and reuse the existing directed traffic engine. There is no
+traffic-to-district feedback. Proposal dashes are batched; the 5C geometry worker and
+all original static batches remain. See [contracts, equations and limits](milestone-5d.md).

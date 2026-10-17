@@ -130,3 +130,10 @@ never remove this guard or change Authentication for profiling. Geometry prepara
 workers must terminate on completion/error/cancellation/deadline, dispose obsolete
 batches and preserve exact source-linked pick ranges. Native GPU/worker peak memory
 remain unverified until measured. See [5C evidence](milestone-5c-evidence/README.md).
+
+Milestone 5D permits explicit player-authored access in the reversible proposal layer.
+It does not authorize inferring existing entrances, public rights or new observed road
+junctions. Revalidate the full width, all mapped-road crossings and every proposal on
+import/edit. Preserve mode separation, capped/blocked/unrouted trip accounting and
+legacy default-off outcomes. Do not propagate transport congestion into district stocks
+or finances without a separately defined, tested model.
