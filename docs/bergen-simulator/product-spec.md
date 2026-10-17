@@ -140,3 +140,21 @@ all design layers and simulation inputs; versions 1–3 remain readable unchange
 Traffic remains separate until verified entrance/graph connectivity exists. No
 financial, individual-agent, real migration, employment or service forecast is added.
 See [5A specification and evidence](milestone-5a.md).
+
+## Milestone 5B — construction, funding and city management
+
+The current loop is Plan → prioritize → construct → fund services → advance → adapt.
+New developments use explicit deterministic start dates and durations. Capacity enters
+only when operational. A fictional PMU budget charges civic construction and monthly
+service readiness, with separate capital/operating allocations, visible reservations,
+actual expenditure, shortfalls and deferrals. Private construction finance remains
+unmodelled. Funded service capacity can be lower than the completed physical capacity,
+affecting the existing synthetic household/job dynamics.
+
+City Management provides compact project/context controls, account inspection and
+saved-strategy comparison. Planned outlines, construction massing and activity tint
+reflect actual model phases. The optional Building a Sustainable Quarter challenge
+requires timely balanced delivery, funded services and retained public space within
+explicit game-resource limits. Version-5 input-only plans preserve versions 1–4 via
+explicit legacy-immediate commissioning. This is not Norwegian municipal finance,
+construction permission or a real population/service forecast. See [5B](milestone-5b.md).

@@ -255,3 +255,25 @@ months and completion flags are never imported or saved. Coefficients join the
 existing bounded shared history. The proposed-building renderer updates its existing
 vertex colour attribute on visible monthly changes; no additional passes, meshes,
 agents or continuous rendering are introduced. See [5A equations and contracts](milestone-5a.md).
+
+## Milestone 5B — managed construction and public services
+
+`management/` contains independent pure TypeScript contracts, a monthly construction
+state machine, integer-subunit capital/operating accounts and reconciliation checks.
+The district worker commissions projects and funds effective civic capacity before
+running the existing household/job recurrence. A full civic capital reservation is
+required before work; installments spend that reservation, cancellations retain sunk
+expenditure, and insufficient capital defers the actual start. Potential commissioned
+services and operating-funded services are separate quantities.
+
+Scenario version 5 adds version-1 management inputs, never trusted dates, balances,
+results or completion flags. Legacy versions 1–4 initialize an explicit immediate
+contract and keep the original version-1 district calculation/output path. An explicit
+player action converts to schedules; source design and old library bytes are retained.
+Management joins the existing shared history and worker generation invalidation.
+
+The existing two building batches render planned/cancelled outlines, subdued work
+massing and operational activity through reusable index/colour buffers. Indexed faces
+map back to original per-proposal ranges; outlines remain selectable. No source mesh,
+extra per-building React tree, continuous render loop or transport coupling is added.
+See [5B contracts, units and evidence](milestone-5b.md).

@@ -97,3 +97,23 @@ render loops and tint existing buffers rather than creating actors. District act
 must not change traffic inputs or create fictional connectors. Verify source-node
 site entrances before any explicit future coupling. Challenge thresholds need an
 actual geometrically valid winning plan and common-engine exploit tests.
+
+## Construction and public accounts (5B)
+
+Keep public capital and operating accounts separate, in integer fictional PMU subunits.
+Require full civic-cost reservation before construction; no debt, negative cash, private
+construction charges or hidden refunds. Account for sunk spending and release only
+unspent commitments on pre-completion cancellation. Fund service readiness from the
+operating account and distinguish physical, funded, used and unmet service capacity.
+
+Legacy plans must retain explicit immediate commissioning and historical 5A outputs;
+activating schedules is a visible, undoable conversion. Store only versioned inputs.
+Reconcile all financial outputs and construction transitions before worker state
+reaches the scene. New/removed buildings synchronize schedules atomically. Shared
+history and stale-worker protection cover every management edit. Challenge comparisons
+must state coefficient/funding differences and never reward unused money alone.
+
+Keep phase visuals in the existing bounded batches and restore indexed selection IDs.
+Dispose replaced GPU geometry. Use no persistent animation loop. Real-device diagnostics
+must preserve Vercel Authentication and collect no player data; software-renderer probes
+remain explicitly distinct from physical-device FPS.

@@ -1,3 +1,13 @@
+import {
+  validateManagement,
+  operationalCapacities,
+  type ManagementInputs,
+  type ManagementMonth,
+} from "../management/model";
+import {
+  validateManagementMonth,
+  validateManagementTransition,
+} from "../management/validation";
 import { exactKeys, object } from "../simulation/interventions";
 import { validateBuilding, type BuildingProposal } from "../physical/buildings";
 export const HORIZON = 24;
@@ -151,22 +161,39 @@ export function validateLiving(value: unknown): LivingInputs {
   } as LivingInputs;
 }
 export interface DistrictInput {
-  version: 1;
+  version: 1 | 2;
+  management?: ManagementInputs;
   living: LivingInputs;
   buildings: BuildingProposal[];
 }
 export function districtInput(
   living: unknown,
   buildings: unknown,
+  management?: unknown,
 ): DistrictInput {
-  return validateDistrictInput({ version: 1, living, buildings });
+  const base = validateDistrictInput({ version: 1, living, buildings });
+  if (management === undefined) return base;
+  const m = validateManagement(management, base.buildings);
+  // Explicit legacy contract in scenarios; preserve exact historical engine output shape.
+  return m.mode === "legacy-immediate"
+    ? base
+    : { ...base, version: 2, management: m };
 }
 export function validateDistrictInput(value: unknown): DistrictInput {
   const d = object(value);
-  exactKeys(d, ["version", "living", "buildings"]);
-  if (d.version !== 1 || !Array.isArray(d.buildings) || d.buildings.length > 8)
+  exactKeys(d, [
+    "version",
+    "living",
+    "buildings",
+    ...(d.version === 2 ? ["management"] : []),
+  ]);
+  if (
+    ![1, 2].includes(d.version as number) ||
+    !Array.isArray(d.buildings) ||
+    d.buildings.length > 8
+  )
     throw new Error(
-      "Use a version-1 district with at most eight proposed buildings.",
+      "Use a version-1/2 district with at most eight proposed buildings.",
     );
   const buildings = d.buildings.map(validateBuilding),
     ids = new Set<string>();
@@ -174,7 +201,16 @@ export function validateDistrictInput(value: unknown): DistrictInput {
     if (ids.has(b.id)) throw new Error("Duplicate district building.");
     ids.add(b.id);
   }
-  return { version: 1, living: validateLiving(d.living), buildings };
+  const management =
+    d.version === 2 ? validateManagement(d.management, buildings) : undefined;
+  if (management?.mode === "legacy-immediate")
+    throw new Error("Use the canonical legacy district input factory.");
+  return {
+    version: d.version as 1 | 2,
+    living: validateLiving(d.living),
+    buildings,
+    ...(management ? { management } : {}),
+  };
 }
 export type Role = "residential" | "commercial" | "civic";
 export function capacities(input: DistrictInput) {
@@ -210,6 +246,7 @@ export interface Activity {
   utilization: number;
 }
 export interface DistrictMonth {
+  management?: ManagementMonth;
   month: number;
   householdCapacity: number;
   occupiedHouseholds: number;
@@ -278,7 +315,12 @@ export function validateMonth(
   input: DistrictInput,
 ): DistrictMonth {
   const v = object(value);
-  exactKeys(v, [...numericKeys, "constraint", "buildings"]);
+  exactKeys(v, [
+    ...numericKeys,
+    "constraint",
+    "buildings",
+    ...(input.version === 2 ? ["management"] : []),
+  ]);
   for (const key of numericKeys)
     if (
       typeof v[key] !== "number" ||
@@ -289,7 +331,18 @@ export function validateMonth(
       throw new Error("Non-finite or unbounded district output.");
   const r = v as unknown as DistrictMonth,
     a = input.living,
-    c = capacities(input),
+    potential = capacities(input),
+    management =
+      input.version === 2
+        ? validateManagementMonth(
+            v.management,
+            input.management!,
+            input.buildings,
+            potential,
+            r.month,
+          )
+        : undefined,
+    c = management ? operationalCapacities(potential, management) : potential,
     sum = (role: Role) =>
       c.filter((b) => b.purpose === role).reduce((n, b) => n + b.capacity, 0);
   if (
@@ -373,7 +426,7 @@ export function validateMonth(
         .reduce((n, b) => n + b.used, 0),
       total,
     );
-  return { ...r, buildings };
+  return { ...r, buildings, ...(management ? { management } : {}) };
 }
 export function validateHistory(
   values: unknown,
@@ -396,6 +449,8 @@ export function validateHistory(
   for (let i = 1; i < result.length; i++) {
     const r = result[i],
       p = result[i - 1];
+    if (input.version === 2)
+      validateManagementTransition(p.management!, r.management!);
     close(
       r.occupiedHouseholds,
       p.occupiedHouseholds - r.exitedHouseholds + r.admittedHouseholds,

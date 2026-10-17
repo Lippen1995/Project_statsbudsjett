@@ -1,0 +1,67 @@
+{
+  "observedAt": "2026-10-17 12:10:04 UTC",
+  "branch": "feature/bergen-simulator",
+  "baselineCommit": "87ab5393b8b002208b3785897882825f58a0e495",
+  "initialMainCommit": "057ac2e7eec251d548f53b281ff8370b04547a08",
+  "preReleaseMainCommit": "45cfc4c198f0f4d55e2a851787bbce64028764aa",
+  "unrelatedMainUpdate": {
+    "author": "github-actions[bot]",
+    "date": "2026-10-17T10:57:27Z",
+    "message": "data: oppdater kommunepolitikk",
+    "files": [
+      "web/src/kostra/municipal-politics.json"
+    ],
+    "actionByThisTask": "none; not fetched, merged or modified"
+  },
+  "preRelease": {
+    "bergenProject": {
+      "id": "prj_s9Bugj93zirfeEvLLwJvygz9syny",
+      "name": "bergen-reimagined",
+      "updatedAt": 1792224364558,
+      "ssoProtection": {
+        "enabled": true,
+        "deploymentType": "all"
+      }
+    },
+    "bergenAlias": {
+      "alias": "bergen-reimagined.vercel.app",
+      "projectId": "prj_s9Bugj93zirfeEvLLwJvygz9syny",
+      "deploymentId": "dpl_5PzAdB1JgYGdChadnqYysyRCMigE"
+    },
+    "fellestallProject": {
+      "id": "prj_UCZp0PnkkoWMO6EJsLHW3y787ALp",
+      "name": "fellestall",
+      "updatedAt": 1792234878684,
+      "ssoProtection": {
+        "enabled": true,
+        "deploymentType": "all_except_custom_domains"
+      }
+    },
+    "fellestallAlias": {
+      "alias": "fellestall-fjord-insight.vercel.app",
+      "projectId": "prj_UCZp0PnkkoWMO6EJsLHW3y787ALp",
+      "deploymentId": "dpl_Gmw4hsmUAVK69GAKUcFvR3j44omV"
+    }
+  },
+  "isolation": {
+    "protectedTrackedFilesUnchanged": 1473,
+    "geographicSnapshotsUnchanged": true,
+    "workflowsUnchanged": true,
+    "trafficEngineUnchanged": true,
+    "appLockfileUnchanged": true,
+    "noProductionDatabaseOrEnvironmentUsed": true
+  },
+  "githubEnvironment": {
+    "name": "bergen-simulator",
+    "branchPolicies": [
+      {
+        "name": "feature/bergen-simulator",
+        "type": "branch"
+      }
+    ],
+    "secretNameListing": "HTTP 403; inspection stopped; no permission or secret changes attempted",
+    "tokenValueRead": false,
+    "tokenPresenceCheck": "existing release job checks the environment-scoped token before deployment"
+  },
+  "release": "Existing isolated Bergen workflow only; final commit, Actions URL and READY/protection verification are reported after pushing. This file records the pre-release comparator."
+}

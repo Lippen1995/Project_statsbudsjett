@@ -24,7 +24,9 @@
     "test:buildings": "node tests/building-browser.mjs",
     "test:building-baseline": "node tests/capture-building-baseline.mjs",
     "test:living": "node tests/living-browser.mjs",
-    "test:living-baseline": "node tests/capture-living-baseline.mjs"
+    "test:living-baseline": "node tests/capture-living-baseline.mjs",
+    "test:management": "node tests/management-browser.mjs",
+    "test:management-baseline": "node tests/capture-management-baseline.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.4.0",

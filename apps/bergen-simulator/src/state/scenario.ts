@@ -1,4 +1,10 @@
 import {
+  defaultManagement,
+  validateManagement,
+  syncManagement,
+  type ManagementInputs,
+} from "../management/model";
+import {
   defaultLiving,
   validateLiving,
   type LivingInputs,
@@ -45,12 +51,15 @@ export type Phase =
   "closed" | "ready" | "running" | "paused" | "complete" | "error";
 export type MapView = "plan" | "baseline" | "reference";
 interface Draft {
+  management: ManagementInputs;
   living: LivingInputs;
   plan: Plan;
   physical: PhysicalPlan | null;
   development: DevelopmentPlan | null;
 }
 interface ScenarioState {
+  management: ManagementInputs;
+  editManagement: (input: unknown) => boolean;
   living: LivingInputs;
   districtEpoch: number;
   editLiving: (inputs: unknown) => boolean;
@@ -133,6 +142,7 @@ const message = (e: unknown) =>
 export const useScenario = create<ScenarioState>((set, get) => ({
   ...clean,
   living: defaultLiving(),
+  management: defaultManagement(),
   districtEpoch: 0,
   context: null,
   physical: null,
@@ -151,11 +161,13 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       context = data ? placementContext(data, network) : null,
       physical = context ? emptyPhysical(context) : null,
       development = context ? emptyDevelopment(context) : null,
-      living = defaultLiving();
+      living = defaultLiving(),
+      management = defaultManagement();
     stop();
     set({
       ...clean,
       living,
+      management,
       districtEpoch: get().districtEpoch + 1,
       context,
       physical,
@@ -164,7 +176,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       source: owned,
       network,
       plan,
-      history: [{ plan, physical, development, living }],
+      history: [{ plan, physical, development, living, management }],
       phase: "ready",
       library: [],
       storageBlocked: false,
@@ -180,6 +192,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         ...history.slice(0, cursor + 1),
         {
           living: get().living,
+          management: get().management,
           plan: next,
           physical: get().physical,
           development: get().development,
@@ -222,6 +235,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
           physical,
           development: s.development,
           living: s.living,
+          management: s.management,
         },
       ].slice(-51);
       stop();
@@ -254,7 +268,13 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     };
     const history = [
       ...s.history.slice(0, s.cursor + 1),
-      { plan: s.plan, physical, development: s.development, living: s.living },
+      {
+        plan: s.plan,
+        physical,
+        development: s.development,
+        living: s.living,
+        management: s.management,
+      },
     ].slice(-51);
     stop();
     set({
@@ -284,13 +304,21 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       );
       if (JSON.stringify(development) === JSON.stringify(s.development))
         return true;
+      const management = syncManagement(s.management, development.proposals);
       const history = [
         ...s.history.slice(0, s.cursor + 1),
-        { plan: s.plan, physical: s.physical, development, living: s.living },
+        {
+          plan: s.plan,
+          physical: s.physical,
+          development,
+          living: s.living,
+          management,
+        },
       ].slice(-51);
       // Geometry-only construction preserves all traffic results and the running worker.
       set({
         development,
+        management,
         history,
         cursor: history.length - 1,
         showBuildings: true,
@@ -313,12 +341,20 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       proposals: s.development.proposals.filter((b) => b.id !== id),
     };
     if (development.proposals.length === s.development.proposals.length) return;
+    const management = syncManagement(s.management, development.proposals);
     const history = [
       ...s.history.slice(0, s.cursor + 1),
-      { plan: s.plan, physical: s.physical, development, living: s.living },
+      {
+        plan: s.plan,
+        physical: s.physical,
+        development,
+        living: s.living,
+        management,
+      },
     ].slice(-51);
     set({
       development,
+      management,
       history,
       cursor: history.length - 1,
       error: "",
@@ -330,12 +366,20 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     const s = get();
     if (!s.development?.proposals.length || !s.plan) return;
     const development = { ...s.development, proposals: [] };
+    const management = syncManagement(s.management, development.proposals);
     const history = [
       ...s.history.slice(0, s.cursor + 1),
-      { plan: s.plan, physical: s.physical, development, living: s.living },
+      {
+        plan: s.plan,
+        physical: s.physical,
+        development,
+        living: s.living,
+        management,
+      },
     ].slice(-51);
     set({
       development,
+      management,
       history,
       cursor: history.length - 1,
       notice: "All proposed buildings removed. Existing geography retained.",
@@ -354,6 +398,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
           physical: s.physical,
           development: s.development,
           living,
+          management: s.management,
         },
       ].slice(-51);
       set({
@@ -363,6 +408,37 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         error: "",
         notice:
           "District assumptions changed. Living City restarts at month zero; traffic is unchanged.",
+      });
+      return true;
+    } catch (e) {
+      set({ error: message(e) });
+      return false;
+    }
+  },
+  editManagement: (input) => {
+    const s = get();
+    if (!s.plan || !s.development) return false;
+    try {
+      const management = validateManagement(input, s.development.proposals);
+      if (JSON.stringify(management) === JSON.stringify(s.management))
+        return true;
+      const history = [
+        ...s.history.slice(0, s.cursor + 1),
+        {
+          plan: s.plan,
+          physical: s.physical,
+          development: s.development,
+          living: s.living,
+          management,
+        },
+      ].slice(-51);
+      set({
+        management,
+        history,
+        cursor: history.length - 1,
+        error: "",
+        notice:
+          "Management strategy changed. Replay from month zero; traffic is unchanged.",
       });
       return true;
     } catch (e) {
@@ -503,16 +579,20 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     const plan = network ? emptyPlan(network) : null,
       physical = get().context ? emptyPhysical(get().context!) : null,
       development = get().context ? emptyDevelopment(get().context!) : null,
-      living = defaultLiving();
+      living = defaultLiving(),
+      management = defaultManagement();
     set({
       ...clean,
       living,
+      management,
       districtEpoch: get().districtEpoch + 1,
       plan,
       physical,
       development,
       showBuildings: true,
-      history: plan ? [{ plan, physical, development, living }] : [],
+      history: plan
+        ? [{ plan, physical, development, living, management }]
+        : [],
       phase: network ? "ready" : "closed",
       notice: "City restored to the original model. Saved plans are retained.",
     });
@@ -522,6 +602,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     set({
       ...clean,
       living: defaultLiving(),
+      management: defaultManagement(),
       districtEpoch: get().districtEpoch + 1,
       context: null,
       physical: null,
@@ -592,6 +673,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         s.physical,
         s.development,
         s.living,
+        s.management,
       );
       const id = duplicate || !s.currentId ? crypto.randomUUID() : s.currentId;
       const record = { id, savedAt: new Date().toISOString(), scenario };
@@ -658,6 +740,11 @@ export const useScenario = create<ScenarioState>((set, get) => ({
           : s.context
             ? emptyDevelopment(s.context)
             : null;
+      const management = validateManagement(
+        record.scenario.management ??
+          defaultManagement(development?.proposals ?? [], true),
+        development?.proposals ?? [],
+      );
       stop();
       set({
         ...resultReset,
@@ -666,12 +753,14 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         plan,
         physical,
         development,
+        management,
         showBuildings: true,
         history: [
           {
             plan,
             physical,
             development,
+            management,
             living: record.scenario.living
               ? validateLiving(record.scenario.living)
               : defaultLiving(),
@@ -700,11 +789,15 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       const development =
         file.development ??
         (get().context ? emptyDevelopment(get().context!) : null);
+      const management =
+        file.management ??
+        defaultManagement(development?.proposals ?? [], true);
       stop();
       set({
         ...resultReset,
         physical,
         development,
+        management,
         living: file.living ?? defaultLiving(),
         districtEpoch: get().districtEpoch + 1,
         showBuildings: true,
@@ -717,6 +810,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
             plan: file.plan,
             physical,
             development,
+            management,
             living: file.living ?? defaultLiving(),
           },
         ],

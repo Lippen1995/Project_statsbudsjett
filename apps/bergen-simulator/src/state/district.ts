@@ -1,3 +1,4 @@
+import { defaultManagement } from "../management/model";
 import { create } from "zustand";
 import { useScenario } from "./scenario";
 import { usePhysical } from "./physical";
@@ -71,9 +72,11 @@ function currentKey() {
     s.districtEpoch,
     s.development,
     s.living,
+    s.management,
     s.referenceId,
     r?.development,
     r?.living,
+    r?.management,
   ]);
 }
 function configure(notice: string) {
@@ -90,13 +93,15 @@ function configure(notice: string) {
   let input: DistrictInput,
     referenceInput: DistrictInput | null = null;
   try {
-    input = districtInput(s.living, s.development.proposals);
+    input = districtInput(s.living, s.development.proposals, s.management);
     if (s.referenceId) {
       const r = s.library.find((r) => r.id === s.referenceId);
       if (!r) throw new Error("Saved comparison is unavailable.");
       referenceInput = districtInput(
         r.scenario.living ?? defaultLiving(),
         r.scenario.development?.proposals ?? [],
+        r.scenario.management ??
+          defaultManagement(r.scenario.development?.proposals ?? [], true),
       );
     }
     const current = new Worker(
@@ -201,7 +206,7 @@ export const useDistrict = create<DistrictState>((set, get) => ({
   open: () => {
     if (get().active && get().current.length) return;
     configure(
-      "Month zero: proposals are available but unoccupied. Demand begins next month.",
+      "Month zero: no occupants or jobs. Scheduled projects provide capacity only after commissioning; legacy plans retain immediate capacity.",
     );
   },
   close: () => {

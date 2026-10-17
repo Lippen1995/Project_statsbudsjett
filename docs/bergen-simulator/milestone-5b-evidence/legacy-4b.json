@@ -1,0 +1,121 @@
+{
+  "kind": "bergen-reimagined-plan",
+  "version": 3,
+  "name": "Quayside quarter study",
+  "plan": {
+    "version": 1,
+    "networkId": "bryggen-transport-model-1-4ea4ffed",
+    "interventions": [
+      {
+        "segmentId": "way/10573529:21540818:645519",
+        "access": "all",
+        "capacityFactor": 2
+      },
+      {
+        "segmentId": "way/1549858387:3945414362:645603",
+        "access": "all",
+        "capacityFactor": 1.25
+      },
+      {
+        "segmentId": "way/4072239:21540816:21540818",
+        "access": "all",
+        "capacityFactor": 2
+      },
+      {
+        "segmentId": "way/4269919:21540816:3944889944",
+        "access": "all",
+        "capacityFactor": 2
+      },
+      {
+        "segmentId": "way/719637467:3945414777:6755477129",
+        "access": "all",
+        "capacityFactor": 2
+      },
+      {
+        "segmentId": "way/9649862:645523:75457133",
+        "access": "local",
+        "capacityFactor": 1
+      }
+    ]
+  },
+  "physical": {
+    "version": 1,
+    "geographyId": "bergen-physical-1-05c9a48e",
+    "proposals": [
+      {
+        "id": "public-study",
+        "name": "Waterfront public-space study",
+        "kind": "pedestrian",
+        "vertices": [
+          [
+            -53,
+            -255
+          ],
+          [
+            -35,
+            -238.8
+          ],
+          [
+            -40,
+            -232.8
+          ],
+          [
+            -58,
+            -249
+          ]
+        ]
+      }
+    ]
+  },
+  "development": {
+    "version": 1,
+    "geographyId": "bergen-physical-1-05c9a48e",
+    "proposals": [
+      {
+        "id": "study-0",
+        "name": "Quay homes",
+        "purpose": "residential",
+        "center": [
+          -95,
+          -317
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 2,
+        "storeyHeight": 3.2,
+        "roof": "gabled"
+      },
+      {
+        "id": "study-1",
+        "name": "Quay workspace",
+        "purpose": "commercial",
+        "center": [
+          -23,
+          -237
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 3,
+        "storeyHeight": 3.2,
+        "roof": "flat"
+      },
+      {
+        "id": "study-2",
+        "name": "Community pavilion",
+        "purpose": "civic",
+        "center": [
+          9,
+          -213
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 2,
+        "storeyHeight": 3.2,
+        "roof": "flat"
+      }
+    ]
+  }
+}

@@ -445,7 +445,7 @@ try {
   const path = resolve(output, "combined-waterfront-plan.json");
   await download.saveAs(path);
   const exported = JSON.parse(readFileSync(path));
-  assert.equal(exported.version, 4);
+  assert.equal(exported.version, 5);
   assert.equal(exported.physical.proposals.length, 1);
   assert.equal(exported.plan.interventions.length, 1);
   assert.equal(

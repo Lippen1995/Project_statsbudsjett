@@ -1,3 +1,4 @@
+import { ProjectControls } from "./ManagementPanel";
 import { DistrictBuildingInfo } from "./DistrictPanel";
 import { useMemo } from "react";
 import { useConstruction } from "../state/construction";
@@ -379,6 +380,7 @@ export default function BuildingEditor() {
                 {number(buildingHeight(b), 1)} m height
               </p>
               <DistrictBuildingInfo id={b.id} />
+              <ProjectControls id={b.id} />
               <div className="planning-actions">
                 <button
                   onClick={() => {

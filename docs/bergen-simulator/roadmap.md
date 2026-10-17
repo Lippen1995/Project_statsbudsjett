@@ -45,6 +45,15 @@ saved-strategy comparisons and a tested Balanced New Quarter challenge complete 
 build/observe/revise loop. Version-4 input-only saves preserve valid versions 1–3.
 See [5A](milestone-5a.md). These are game equivalents, not real Bergen statistics.
 
+## Completed — 5B construction, services and management
+
+Scheduled projects, deterministic commissioning, fictional public capital/operating
+accounts, funded civic readiness and a tested Sustainable Quarter challenge add timing
+and resource trade-offs. Version-5 inputs preserve immediate commissioning for legacy
+plans. Contextual project tools and batched phases complete the management loop. See
+[5B](milestone-5b.md). Private finance and actual Norwegian municipal finances remain
+unmodelled; no new geographic data or transport connection is inferred.
+
 ## Recommended next — evidence-backed district and access expansion
 
 Measure representative physical desktop/mobile GPUs and profile mesh preparation,

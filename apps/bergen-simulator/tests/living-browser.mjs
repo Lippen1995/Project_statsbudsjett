@@ -403,7 +403,7 @@ try {
     JSON.parse(localStorage.getItem("bergen.reimagined.plans.v1")).plans.at(-1),
   );
   const exported = await exportPlan(page);
-  assert.equal(exported.version, 4);
+  assert.equal(exported.version, 5);
   assert.equal(exported.living.version, 1);
   assert.equal(exported.results, undefined);
   writeFileSync(

@@ -1,0 +1,73 @@
+{
+  "recordedAtUtc": "2026-10-17T12:10:05.494920+00:00",
+  "baselineCommit": "87ab5393b8b002208b3785897882825f58a0e495",
+  "branch": "feature/bergen-simulator",
+  "node": "v24.19.0",
+  "applicationTests": {
+    "passed": 167,
+    "files": 8,
+    "newManagementTests": 26
+  },
+  "releasePolicyTests": {
+    "passed": 10
+  },
+  "geographicOfflineTests": {
+    "passed": 3,
+    "sourceRefreshPerformed": false
+  },
+  "browserSuites": {
+    "after-browser-report.json": {
+      "passed": true,
+      "errors": []
+    },
+    "living-regression.json": {
+      "passed": true,
+      "errors": []
+    },
+    "construction-regression.json": {
+      "passed": true,
+      "errors": []
+    },
+    "public-space-regression.json": {
+      "passed": true,
+      "errors": []
+    },
+    "street-regression.json": {
+      "passed": true,
+      "errors": []
+    },
+    "explorer-regression.json": {
+      "passed": true,
+      "errors": []
+    },
+    "geographic-view-regression.json": {
+      "passed": true,
+      "errors": []
+    }
+  },
+  "lint": "passed; zero warnings",
+  "typescriptAndViteBuild": "passed; existing Three.js chunk-size advisory retained",
+  "managementBaselineScriptSyntax": "passed",
+  "isolation": "passed; 1473 protected tracked files unchanged, source snapshots/traffic engine/workflows/lockfile unchanged",
+  "whitespace": "passed",
+  "exampleSchemaVersion": 5,
+  "legacyVersionsTested": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "legacy5AHistory": "all 25 archived monthly frames exactly reproduced",
+  "invalidImportBehavior": "current design, month, simulation and storage unchanged",
+  "challenge": "common engine/source-valid three-purpose plan passes; single-purpose, wholly delayed, oversized civic, capital-zero, operating-zero, excessive-allocation and altered-coefficient counterexamples fail",
+  "browserSecurity": "local production build, production CSP, local-only request guard; no bypass secret or authentication changes",
+  "physicalDeviceGpuPerformance": "unverified; software rendering is not physical-device FPS",
+  "knownLimits": [
+    "24 months; eight proposed buildings; synthetic PMU and service assumptions only",
+    "Private development and public-space financing are outside the public budget",
+    "No site-to-traffic coupling; source-verified connectors are absent",
+    "No ownership, approvals, engineering, procurement, inflation, debt or real municipal finance model",
+    "Post-GC main-thread heap and geometry probes do not establish absence of native memory leaks",
+    "Authenticated hosted browser access requires the normal authorized Vercel session; full acceptance ran locally under production CSP"
+  ]
+}

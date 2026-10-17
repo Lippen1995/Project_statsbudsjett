@@ -1,4 +1,10 @@
-import { BufferGeometry, Float32BufferAttribute, Color } from "three";
+import type { ProjectPhase } from "../management/model";
+import {
+  BufferGeometry,
+  Float32BufferAttribute,
+  Uint16BufferAttribute,
+  Color,
+} from "three";
 import type { Point3 } from "./types";
 import type { SurfaceSampler } from "./surface";
 import {
@@ -33,7 +39,8 @@ export function developmentGeometry(
     colors: number[] = [],
     lines: number[] = [],
     lineColors: number[] = [],
-    ranges: { id: string; end: number }[] = [];
+    ranges: { id: string; end: number; edgeEnd: number; selected: boolean }[] =
+      [];
   for (const item of items.slice(0, 8)) {
     const b = item.building;
     try {
@@ -108,11 +115,24 @@ export function developmentGeometry(
       edge(top[2], r1);
       edge(top[3], r1);
     }
-    ranges.push({ id: b.id, end: positions.length / 9 });
+    ranges.push({
+      id: b.id,
+      end: positions.length / 9,
+      edgeEnd: lines.length / 3,
+      selected: !!item.selected,
+    });
   }
+  const body = buffer(positions, colors, true);
+  body.setIndex(
+    new Uint16BufferAttribute(
+      Array.from({ length: positions.length / 3 }, (_, i) => i),
+      1,
+    ),
+  );
   return {
+    baseEdgeColors: new Float32Array(lineColors),
     baseColors: new Float32Array(colors),
-    body: buffer(positions, colors, true),
+    body,
     edges: buffer(lines, lineColors),
     ranges,
   };
@@ -124,14 +144,49 @@ export function applyDevelopmentActivity(
   batch: ReturnType<typeof developmentGeometry>,
   activity: Map<string, number> | null,
   excludedId?: string,
+  phases: Map<string, ProjectPhase> | null = null,
 ) {
   const attribute = batch.body.getAttribute("color"),
     array = attribute.array;
   array.set(batch.baseColors);
+  const edges = batch.edges.getAttribute("color"),
+    index = batch.body.getIndex()!;
+  edges.array.set(batch.baseEdgeColors);
+  let indexCount = 0,
+    edgeStart = 0;
   let start = 0;
   for (const range of batch.ranges) {
     const end = range.end * 9,
-      value = activity?.get(range.id);
+      phase = range.id === excludedId ? undefined : phases?.get(range.id),
+      value =
+        phase && phase !== "operational" ? undefined : activity?.get(range.id);
+    if (phase !== "planned" && phase !== "cancelled")
+      for (let i = start / 3; i < end / 3; i++) index.setX(indexCount++, i);
+    if (phase === "under-construction") {
+      const color = new Color("#a58c60");
+      for (let i = start; i < end; i += 3) {
+        array[i] = color.r;
+        array[i + 1] = color.g;
+        array[i + 2] = color.b;
+      }
+    }
+    if (phase && !range.selected) {
+      const color = new Color(
+        phase === "planned"
+          ? "#d3e4cf"
+          : phase === "under-construction"
+            ? "#d2ab65"
+            : phase === "cancelled"
+              ? "#6d7a77"
+              : "#e6ce9d",
+      );
+      for (let i = edgeStart; i < range.edgeEnd * 3; i += 3) {
+        edges.array[i] = color.r;
+        edges.array[i + 1] = color.g;
+        edges.array[i + 2] = color.b;
+      }
+    }
+    edgeStart = range.edgeEnd * 3;
     if (
       value !== undefined &&
       range.id !== excludedId &&
@@ -147,5 +202,8 @@ export function applyDevelopmentActivity(
     }
     start = end;
   }
+  index.needsUpdate = true;
+  batch.body.setDrawRange(0, indexCount);
+  edges.needsUpdate = true;
   attribute.needsUpdate = true;
 }

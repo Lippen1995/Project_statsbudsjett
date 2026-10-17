@@ -270,6 +270,18 @@ try {
   const { page, loadMs } = await setup();
   report.desktop.loadMs = loadMs;
   await enter(page);
+  // Preserve this historical massing journey's immediate, pre-5B semantics.
+  const legacyEmpty = JSON.parse(
+    readFileSync(
+      new URL("../public/plans/living-quarter-example.json", import.meta.url),
+    ),
+  );
+  legacyEmpty.name = "Immediate construction regression";
+  legacyEmpty.plan.interventions = [];
+  legacyEmpty.physical.proposals = [];
+  legacyEmpty.development.proposals = [];
+  await importJson(page, legacyEmpty);
+
   await run(page);
   await camera(page);
   await page
@@ -440,7 +452,7 @@ try {
   await count(page, 2);
   assert.match(await page.getByLabel("Development summary").innerText(), /189/);
   const beforeRun = await exportPlan(page);
-  assert.equal(beforeRun.version, 4);
+  assert.equal(beforeRun.version, 5);
   assert.equal(beforeRun.development.proposals.length, 2);
   assert.equal(beforeRun.physical.proposals.length, 1);
   assert.equal(
@@ -680,6 +692,7 @@ try {
   report.mobile.loadMs = mobile.loadMs;
   const m = mobile.page;
   await enter(m);
+  await importJson(m, legacyEmpty);
   await m.getByRole("button", { name: "Residential", exact: true }).click();
   await camera(m, [-40, 115, -100], [9, 1, -213]);
   const touch = await screen(m, 9, -213);

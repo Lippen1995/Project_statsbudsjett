@@ -1,3 +1,8 @@
+import { ConstructionSimulation } from "../management/construction";
+import {
+  operationalCapacities,
+  type ManagementMonth,
+} from "../management/model";
 import {
   capacities,
   HORIZON,
@@ -10,6 +15,11 @@ import {
 } from "./model";
 const EPS = 1e-8;
 function frozen(r: DistrictMonth): DistrictMonth {
+  if (r.management) {
+    r.management.projects.forEach(Object.freeze);
+    Object.freeze(r.management.projects);
+    Object.freeze(r.management);
+  }
   r.buildings.forEach(Object.freeze);
   Object.freeze(r.buildings);
   return Object.freeze(r);
@@ -18,6 +28,7 @@ function frozen(r: DistrictMonth): DistrictMonth {
 export class DistrictSimulation {
   readonly input: DistrictInput;
   private months: DistrictMonth[] = [];
+  private construction?: ConstructionSimulation;
   constructor(value: unknown) {
     this.input = validateDistrictInput(value);
     for (const b of this.input.buildings) {
@@ -25,12 +36,41 @@ export class DistrictSimulation {
       Object.freeze(b);
     }
     Object.freeze(this.input.buildings);
+    if (this.input.management) {
+      this.input.management.projects.forEach(Object.freeze);
+      Object.freeze(this.input.management.projects);
+      Object.freeze(this.input.management.budget);
+      Object.freeze(this.input.management);
+    }
     Object.freeze(this.input.living);
     Object.freeze(this.input);
+    if (this.input.management)
+      this.construction = new ConstructionSimulation(
+        this.input.management,
+        this.input.buildings,
+        capacities(this.input),
+      );
     this.reset();
   }
   reset() {
-    this.months = [this.result(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1)];
+    this.months = [
+      this.result(
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        this.construction?.reset(),
+      ),
+    ];
     return this.snapshot();
   }
   snapshot() {
@@ -53,8 +93,11 @@ export class DistrictSimulation {
     labour: number,
     employmentSupport: number,
     serviceAdmissionCover: number,
+    management?: ManagementMonth,
   ): DistrictMonth {
-    const caps = capacities(this.input),
+    const caps = management
+        ? operationalCapacities(capacities(this.input), management)
+        : capacities(this.input),
       sum = (p: string) =>
         caps.filter((b) => b.purpose === p).reduce((n, b) => n + b.capacity, 0),
       hc = sum("residential"),
@@ -82,6 +125,7 @@ export class DistrictSimulation {
       validateMonth(
         {
           month,
+          ...(management ? { management } : {}),
           householdCapacity: hc,
           occupiedHouseholds: h,
           residents,
@@ -117,11 +161,13 @@ export class DistrictSimulation {
                   ? jUse
                   : share(used, sc)),
             utilization:
-              b.purpose === "residential"
-                ? hUse
-                : b.purpose === "commercial"
-                  ? jUse
-                  : share(used, sc),
+              b.capacity === 0
+                ? 0
+                : b.purpose === "residential"
+                  ? hUse
+                  : b.purpose === "commercial"
+                    ? jUse
+                    : share(used, sc),
           })),
         },
         this.input,
@@ -133,6 +179,17 @@ export class DistrictSimulation {
     if (p.month >= HORIZON)
       throw new Error("The 24-month simulation horizon has been reached.");
     const a = this.input.living;
+    const management = this.construction?.step(),
+      caps = management
+        ? operationalCapacities(capacities(this.input), management)
+        : capacities(this.input),
+      sum = (role: string) =>
+        caps
+          .filter((b) => b.purpose === role)
+          .reduce((n, b) => n + b.capacity, 0);
+    const hc = management ? sum("residential") : p.householdCapacity,
+      jc = management ? sum("commercial") : p.employmentCapacity,
+      sc = management ? management.fundedServiceCapacity : p.serviceCapacity;
     // 1. Exits and separations. Positions losing workers return to business demand.
     const exited = p.occupiedHouseholds * a.householdTurnover,
       h = p.occupiedHouseholds - exited,
@@ -150,7 +207,7 @@ export class DistrictSimulation {
         0,
         Math.min(
           waitingJ,
-          (p.employmentCapacity - survivingJobs) * a.jobFillRate,
+          (jc - survivingJobs) * a.jobFillRate,
           labour - survivingJobs,
         ),
       ),
@@ -158,7 +215,7 @@ export class DistrictSimulation {
     // 4. Admit households. A first-pass uptake target tests employment/service support.
     const tentative = Math.max(
         0,
-        Math.min(waitingH, (p.householdCapacity - h) * a.householdMoveInRate),
+        Math.min(waitingH, (hc - h) * a.householdMoveInRate),
       ),
       prospectiveH = h + tentative;
     const employmentSupport =
@@ -171,7 +228,7 @@ export class DistrictSimulation {
           : 1,
       serviceCover =
         prospectiveH > 0
-          ? Math.min(1, p.serviceCapacity / (prospectiveH * a.householdSize))
+          ? Math.min(1, sc / (prospectiveH * a.householdSize))
           : 1;
     const admitted =
       tentative *
@@ -193,6 +250,7 @@ export class DistrictSimulation {
       labour,
       employmentSupport,
       serviceCover,
+      management,
     );
     this.months.push(next);
     return next;

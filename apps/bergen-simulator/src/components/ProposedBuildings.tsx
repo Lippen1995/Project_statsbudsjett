@@ -1,3 +1,4 @@
+import type { ProjectPhase } from "../management/model";
 import { useEffect, useMemo, useRef } from "react";
 import { useThree, type ThreeEvent } from "@react-three/fiber";
 import {
@@ -105,13 +106,28 @@ export default function ProposedBuildings({
       active && r && s.mapView !== "baseline"
         ? new Map(r.buildings.map((b) => [b.id, b.utilization]))
         : null;
-    applyDevelopmentActivity(batch, activity, draft?.id);
+    const displayed =
+      s.mapView === "reference"
+        ? s.library.find((p) => p.id === s.referenceId)?.scenario.management
+        : s.management;
+    const phases =
+      displayed?.mode === "scheduled"
+        ? new Map<string, ProjectPhase>(
+            r?.management
+              ? r.management.projects.map((p) => [p.id, p.phase])
+              : displayed.projects.map((p) => [p.id, "planned"]),
+          )
+        : null;
+    applyDevelopmentActivity(batch, activity, draft?.id, phases);
     invalidate();
   }, [
     active,
     currentActivity,
     referenceActivity,
     s.mapView,
+    s.management,
+    s.library,
+    s.referenceId,
     batch,
     draft?.id,
     invalidate,
@@ -138,7 +154,23 @@ export default function ProposedBuildings({
   }, [draft, s.context, s.physical, proposals]);
   function select(e: ThreeEvent<MouseEvent>) {
     if (c.draft || e.delta > 4 || e.faceIndex == null) return;
-    const hit = batch.ranges.find((r) => e.faceIndex! < r.end);
+    const triangle = batch.body.index
+      ? batch.body.index.getX(e.faceIndex * 3) / 3
+      : e.faceIndex;
+    const hit = batch.ranges.find((r) => triangle < r.end);
+    if (!hit) return;
+    e.stopPropagation();
+    if (s.mapView !== "plan") {
+      c.feedback("Comparison view. Show your plan to edit construction.");
+      return;
+    }
+    usePhysical.getState().setMode("buildings");
+    c.select(hit.id);
+    useCity.getState().select(null);
+  }
+  function selectOutline(e: ThreeEvent<MouseEvent>) {
+    if (c.draft || e.delta > 4 || e.index == null) return;
+    const hit = batch.ranges.find((r) => e.index! < r.edgeEnd);
     if (!hit) return;
     e.stopPropagation();
     if (s.mapView !== "plan") {
@@ -157,7 +189,7 @@ export default function ProposedBuildings({
         </mesh>
       )}
       {batch.edges.getAttribute("position").count > 0 && (
-        <lineSegments geometry={batch.edges}>
+        <lineSegments geometry={batch.edges} onClick={selectOutline}>
           <lineBasicMaterial vertexColors toneMapped={false} />
         </lineSegments>
       )}

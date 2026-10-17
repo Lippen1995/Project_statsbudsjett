@@ -212,3 +212,17 @@ local metre projection, not invented road geometry. Node proximity is insufficie
 to verify a site connector; no generated travel demand enters the 27-way graph.
 All development coordinates, utilization tints and economic inputs remain separate
 hypotheses. See [complete coefficients and model limits](milestone-5a.md).
+
+### Milestone 5B source boundary
+
+The pinned OSM and Kartverket snapshots, IDs, licensing and acquisition/CRS/NN2000
+provenance remain unchanged. No real financial, contractor, staffing or public-service
+dataset was imported. Construction schedules, PMU allocations, GFA-based civic cost
+and operating-readiness requirements are authored game assumptions. They must never
+be labelled Bergen municipal expenditure, actual grants/taxes or observed progress.
+
+Planned outlines and construction colours describe only reversible player proposals.
+Funding/commissioning creates no source-road connection or induced travel forecast;
+the existing missing-entrance audit still applies. Parcel ownership, approvals,
+heritage, procurement, inflation and Norwegian fiscal constraints remain unmodelled.
+See [5B model boundary and units](milestone-5b.md).

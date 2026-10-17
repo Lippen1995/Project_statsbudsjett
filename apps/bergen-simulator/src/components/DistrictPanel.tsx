@@ -1,3 +1,4 @@
+import ManagementPanel from "./ManagementPanel";
 import { useState } from "react";
 import { useDistrict } from "../state/district";
 import { useScenario } from "../state/scenario";
@@ -23,7 +24,7 @@ const labels: Record<Constraint, string> = {
 };
 export function constraintExplanation(r: DistrictMonth, a: LivingInputs) {
   if (r.month === 0)
-    return "All proposals start unoccupied. External demand enters at month one; observed Bergen is outside this model.";
+    return "Proposals start unoccupied; scheduled capacity waits for commissioning. External demand enters at month one; observed Bergen is outside this model.";
   switch (r.constraint) {
     case "housing-capacity":
       return `Accommodation capacity limits further uptake. ${number(r.waitingHouseholds, 1)} household equivalents remain in the synthetic demand queue.`;
@@ -153,6 +154,23 @@ export function DistrictMapTools() {
           {number(r.serviceCoverage * 100)}% service cover
         </span>
       )}
+      {r?.management && (
+        <span aria-label="Map construction phases">
+          {r.management.projects.filter((p) => p.phase === "planned").length}{" "}
+          planned ·{" "}
+          {
+            r.management.projects.filter(
+              (p) => p.phase === "under-construction",
+            ).length
+          }{" "}
+          building ·{" "}
+          {
+            r.management.projects.filter((p) => p.phase === "operational")
+              .length
+          }{" "}
+          operational. Outline → sand → activity tint.
+        </span>
+      )}
       <span>
         Dim → warm: assumed use of proposed capacity. No real occupancy is
         observed.
@@ -185,11 +203,13 @@ export default function DistrictPanel() {
       </p>
       <p className="data-note">
         Only your proposed buildings provide capacity. All start unoccupied at
-        month zero. Build, advance time, inspect the constraint, then revise the
-        plan. Confirmed construction or assumption changes restart this model;
-        traffic remains separate.
+        month zero; scheduled projects must commission first. Build, advance
+        time, inspect the constraint, then revise the plan. Confirmed
+        construction or assumption changes restart this model; traffic remains
+        separate.
       </p>
       <DistrictTimeline />
+      <ManagementPanel />
       {d.error && (
         <p className="planning-error" role="alert">
           {d.error}
@@ -241,7 +261,10 @@ export default function DistrictPanel() {
                 )}
               </div>
               <div>
-                <dt>Aggregate civic service · used / capacity</dt>
+                <dt>
+                  Aggregate civic service · used /{" "}
+                  {r.management ? "funded capacity" : "capacity"}
+                </dt>
                 <dd>
                   {number(r.usedService, 1)}{" "}
                   <small>/ {number(r.serviceCapacity)} units / month</small>
@@ -353,10 +376,55 @@ export default function DistrictPanel() {
             {signed(r.occupiedHouseholds - reference.occupiedHouseholds)}{" "}
             households · {signed(r.filledJobs - reference.filledJobs)} jobs
           </span>
+          {r.management && reference.management ? (
+            <span>
+              Public spending · current − saved: capital{" "}
+              {signed(
+                (r.management.totalCapitalSpentCents -
+                  reference.management.totalCapitalSpentCents) /
+                  100,
+              )}{" "}
+              PMU; operating{" "}
+              {signed(
+                (r.management.totalOperatingSpentCents -
+                  reference.management.totalOperatingSpentCents) /
+                  100,
+              )}{" "}
+              PMU. Funded services{" "}
+              {number(r.management.fundedServiceCapacity, 1)} /{" "}
+              {number(reference.management.fundedServiceCapacity, 1)}{" "}
+              units/month.
+            </span>
+          ) : r.management || reference.management ? (
+            <span>
+              One strategy uses legacy immediate commissioning, with public
+              finance unmodelled. Its costs cannot be treated as zero-price
+              managed delivery.
+            </span>
+          ) : null}
+          {r.management && reference.management && (
+            <span>
+              Delivered through M{d.month}:{" "}
+              {number(
+                d.current
+                  .slice(0, d.month + 1)
+                  .reduce((n, r) => n + r.occupiedHouseholds, 0),
+                1,
+              )}{" "}
+              /{" "}
+              {number(
+                d
+                  .reference!.slice(0, d.month + 1)
+                  .reduce((n, r) => n + r.occupiedHouseholds, 0),
+                1,
+              )}{" "}
+              household-equivalent months (current / saved).
+            </span>
+          )}
           <span>
             {JSON.stringify(ref.scenario.living ?? defaultLiving()) ===
             JSON.stringify(s.living)
-              ? "Identical assumptions and empty initial stocks; only the designs differ."
+              ? "Identical living assumptions and empty initial stocks. Designs, construction schedules and public funding may differ; inspect both inputs."
               : "These plans use different declared assumptions. Both start empty; inspect inputs before attributing a difference to design alone."}
           </span>
           <button
@@ -382,15 +450,19 @@ export default function DistrictPanel() {
           a separate expansion before coupling.
         </p>
       </details>
-      <button
-        className="compare-button"
-        onClick={() => d.setChallenge(!d.challenge)}
-      >
-        {d.challenge
-          ? "Leave living-city challenge"
-          : "Challenge · A Balanced New Quarter"}
-      </button>
-      {d.challenge && <BalancedChallenge />}
+      {s.management.mode === "legacy-immediate" && (
+        <button
+          className="compare-button"
+          onClick={() => d.setChallenge(!d.challenge)}
+        >
+          {d.challenge
+            ? "Leave living-city challenge"
+            : "Challenge · A Balanced New Quarter"}
+        </button>
+      )}
+      {d.challenge && s.management.mode === "legacy-immediate" && (
+        <BalancedChallenge />
+      )}
     </section>
   );
 }
@@ -404,8 +476,8 @@ function LivingAssumptions() {
       <p>
         All coefficients are game assumptions, not observed Bergen statistics.
         Applying changes restarts district time from the same empty month-zero
-        stocks. Proposals are available immediately; construction lead times and
-        costs are not modelled.
+        stocks. Legacy plans retain immediate capacity. Scheduled plans apply
+        the separate construction and public funding inputs.
       </p>
       <div className="building-dimensions">
         {(
