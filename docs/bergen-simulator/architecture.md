@@ -277,3 +277,14 @@ massing and operational activity through reusable index/colour buffers. Indexed 
 map back to original per-proposal ranges; outlines remain selectable. No source mesh,
 extra per-building React tree, continuous render loop or transport coupling is added.
 See [5B contracts, units and evidence](milestone-5b.md).
+
+
+## Milestone 5C boundaries
+
+Observed-city batching now runs in a bounded one-shot geometry worker (protocol v1),
+with transferable attribute buffers, validated source-ID pick ranges and explicit
+cleanup/cancellation. Rendering remains demand based. District, construction, finance
+and traffic contracts are unchanged; scenario version 5 remains current. A read-only
+site-access boundary reports unverified access and zero added trips. The source-audited
+48-way candidate remains offline until access/boundary/turn review supports activation.
+See [5C architecture and audit](milestone-5c.md).

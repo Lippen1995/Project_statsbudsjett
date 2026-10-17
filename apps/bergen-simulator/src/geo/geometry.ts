@@ -120,13 +120,21 @@ export function buildingGeometry(
         z = p.getZ(i);
       // Float32 conversion may round source coordinates, so use the terrain TIN
       // first, then the nearest retained footprint corner outside the land mask.
-      const nearest = corners.reduce((a, c) =>
-        Math.hypot(c[0] - x, c[1] - z) < Math.hypot(a[0] - x, a[1] - z) ? c : a,
-      );
+      const sampled = sample?.(x, z);
+      // Only find the fallback corner outside the terrain TIN. The pinned city
+      // samples 245,253 vertices; 244,264 already have a terrain height.
+      const nearest =
+        sampled == null
+          ? corners.reduce((a, c) =>
+              Math.hypot(c[0] - x, c[1] - z) < Math.hypot(a[0] - x, a[1] - z)
+                ? c
+                : a,
+            )
+          : null;
       p.setY(
         i,
-        (sample?.(x, z) ??
-          heights.get(`${nearest[0]},${nearest[1]}`) ??
+        (sampled ??
+          (nearest ? heights.get(`${nearest[0]},${nearest[1]}`) : undefined) ??
           b.elevation) + (b.height === null ? 0.3 : 0.05),
       );
     }

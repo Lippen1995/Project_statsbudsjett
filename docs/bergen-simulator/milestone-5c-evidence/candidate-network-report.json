@@ -1,0 +1,28 @@
+{
+  "interpretation": "Offline graph review only, unchanged synthetic 30-minute demonstration demand. Not an enabled network, district coupling, legal route assurance or Bergen forecast.",
+  "active": {
+    "ways": 27,
+    "nodes": 26,
+    "edges": 54,
+    "result": {
+      "requested": 960,
+      "served": 960,
+      "unrouted": 0,
+      "vehicleMinutes": 1938.2422267995762,
+      "corridorTrips": 940
+    }
+  },
+  "candidate": {
+    "ways": 48,
+    "nodes": 51,
+    "edges": 95,
+    "result": {
+      "requested": 960,
+      "served": 960,
+      "unrouted": 0,
+      "vehicleMinutes": 1938.2422267995812,
+      "corridorTrips": 940
+    }
+  },
+  "addedDistrictTrips": 0
+}

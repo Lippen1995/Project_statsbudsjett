@@ -226,3 +226,14 @@ Funding/commissioning creates no source-road connection or induced travel foreca
 the existing missing-entrance audit still applies. Parcel ownership, approvals,
 heritage, procurement, inflation and Norwegian fiscal constraints remain unmodelled.
 See [5B model boundary and units](milestone-5b.md).
+
+
+## Milestone 5C source review
+
+No observed snapshot was refreshed. The complete original 30-tile OSM cache was
+checksum-verified and reviewed for node connectivity, entrances, access and restriction
+relations. A separately labelled ODbL offline candidate retains 48 original ways;
+the active 27-way source is unchanged. No proposed-site entrance was verified.
+Official NVDB Vegnett/FKB catalogue metadata was investigated, without acquiring
+or adopting their geometry or assuming redistribution entitlement. Source references,
+CRS/datum limits, IDs, checksums and exclusions are in [the 5C audit](milestone-5c.md).

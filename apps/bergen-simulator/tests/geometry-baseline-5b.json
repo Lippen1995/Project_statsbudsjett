@@ -1,0 +1,32 @@
+{
+  "baselineCommit": "c334ba6ad0caedd90b6706d34c004a833d7f7dd5",
+  "geometry": {
+    "buildings": {
+      "sha256": "2d260d5d29c810807c89bd1086b1893ef6846460fa51e779f5b267e859c856d2",
+      "bytes": 17982972,
+      "vertices": 499527
+    },
+    "roads": {
+      "sha256": "67ec4018b62def2b9f843821ff6cec76d3a7faf091492dddcadf8b13c30f8bb0",
+      "bytes": 7494768,
+      "vertices": 208188
+    },
+    "terrain": {
+      "sha256": "03b0bf9a7f6e7d7ec0ebb486adeadc67481449af16ed3cb0c0d4e2236bf64f11",
+      "bytes": 1255206,
+      "vertices": 26648
+    },
+    "water": {
+      "sha256": "bc2955390c0196b36eed5b2b041a849ab03463423f0725b55744415d331f9ef7",
+      "bytes": 109080,
+      "vertices": 3030
+    },
+    "coast": {
+      "sha256": "2f048c4e9d49e1b2d3f17f6d18763157122f74e02af12d41179fda5f9f6f78fb",
+      "bytes": 206496,
+      "vertices": 5736
+    }
+  },
+  "samples": 245253,
+  "missingSamples": 989
+}

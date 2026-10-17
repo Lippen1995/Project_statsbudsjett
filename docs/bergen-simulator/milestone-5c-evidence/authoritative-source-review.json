@@ -1,0 +1,71 @@
+{
+  "retrievedReferences": [
+    {
+      "name": "osm-licence",
+      "url": "https://www.openstreetmap.org/copyright",
+      "retrievedAt": "2026-10-17T16:07:40.571Z",
+      "status": 200,
+      "bytes": 21314,
+      "sha256": "852dc1aa36fa993e8853d9cfd9baad5b7ce94680a0cfa0c63038b0abd5aeb495"
+    },
+    {
+      "name": "nvdb-api",
+      "url": "https://nvdbapiles-v3.atlas.vegvesen.no/vegnett",
+      "retrievedAt": "2026-10-17T16:07:40.859Z",
+      "status": 400,
+      "bytes": 352,
+      "sha256": "078fddb9c424764ce367841171ed8f6bb3b0b45deea510188561dca09f7e1cf4"
+    },
+    {
+      "name": "geonorge-elveg",
+      "url": "https://kartkatalog.geonorge.no/api/search?text=Elveg&limit=3",
+      "retrievedAt": "2026-10-17T16:07:41.181Z",
+      "status": 200,
+      "bytes": 54590,
+      "sha256": "ef8648481524f039330e9dc715c17b7cc191ffd718fd4d38ac2932a47454ebce"
+    },
+    {
+      "name": "geonorge-fkb",
+      "url": "https://kartkatalog.geonorge.no/api/search?text=FKB%20Bygning&limit=3",
+      "retrievedAt": "2026-10-17T16:07:41.479Z",
+      "status": 200,
+      "bytes": 62152,
+      "sha256": "3f2861aeddb4bddb93cad883cc3ebafe51ec58e6f487bbc2bec54f825e6ef43b"
+    },
+    {
+      "name": "geonorge-elveg-exact",
+      "url": "https://kartkatalog.geonorge.no/api/search?text=Elveg%202.0&limit=10",
+      "retrievedAt": "2026-10-17T16:13:24.750Z",
+      "status": 200,
+      "bytes": 59070,
+      "sha256": "ccf1a11378de252544dcc2054bd50bda08db8e37339b6fea8ebae4f49794a386"
+    },
+    {
+      "name": "nvdb-documentation",
+      "url": "https://nvdbapiles.atlas.vegvesen.no/",
+      "retrievedAt": "2026-10-17T16:13:25.621Z",
+      "status": 200,
+      "bytes": 20922,
+      "sha256": "6b79e9071ab17cd79cbf076eb163081aed9cc18ebe33e8eeef2bed20d0f26bd7"
+    }
+  ],
+  "selectedCatalogueMetadata": [
+    {
+      "Uuid": "ad17eb84-b6b7-4fd1-99d9-b1b920421705",
+      "Title": "NVDB Vegnett",
+      "Abstract": "NVDB Vegnett er en forenklet utgave av vegnettsdatasettet NVDB Vegnett Pluss og inneholder kun veglenkegeometri og vegsperringer. Dette datasettet erstatter Forenklet Elveg 2.0. Det omfatter alle kjørbare veger som er lengre enn 50 meter, eller er en del av et nettverk, samt gang- og sykkelveger, sykkelveger, fortau, gangveger og gangfeltrepresentert som veglenkegeometri. Traktor veger og stier som tidligere fantes i FKB-TraktorvegSti skal også bli en del av NVDB Vegnett i gradvis løpet av 2026-2027. NVDB Vegnett er en eksport fra Nasjonal vegdatabank (NVDB) og ajourholdes av Statens vegvesen og Kartverket.  Leveranse består av lands-, fylkes- og kommunevise filer. Oppdateres og utgis ukentlig.",
+      "AccessConstraint": "no restrictions",
+      "OtherConstraintsAccess": "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations",
+      "DistributionUrl": "https://nedlasting.geonorge.no/api/capabilities/"
+    },
+    {
+      "Uuid": "8b4304ea-4fb0-479c-a24d-fa225e2c6e97",
+      "Title": "FKB-Bygning",
+      "Abstract": "FKB-Bygning er en del av Felles Kartdatabase (FKB). FKB er en samling datasett som utgjør en sentral del av grunnkartet. Se metadataoppføring for Felles Kartdatabase for mer info.\n\nFKB-Bygning inneholder detaljert bygningsinformasjon. Dataene omfatter beskrivelse av alle typer bygninger, takoverbygg, beskrivende bygningslinjer (for eksempel mønelinje) samt bygningsvedheng (for eksempel veranda).\n\nFKB-Bygning benytter samme definisjon/inndeling av en bygning som matrikkelen og har en 1:1 kobling mot matrikkelen ved at bygningsnummer fra matrikkelen legges inn på bygningene i FKB-Bygning.\n\nFKB-Bygning bygger på en 2.5D bygningsmodell. Det innebærer at dataene ikke inneholder volum/3D-objekter, men at høydeverdiene til toppen av objektene registreres. Enkle 3D-modeller kan dermed lages ved å projisere FKB-dataene ned på en terrengmodell.\n\nFKB-data er ikke-sensistive og åpne data. FKB-dataene er finansiert gjennom Geovekst-samarbeidet, eller kommunene alene for kommuner som står utenfor Geovekst. FKB-dataene er fritt tilgjengelige for Norge digitalt parter og kan lastes ned gjennom nedlastingsløsningen på Geonorge. Private aktører må kjøpe tilgang til dataene gjennom en forhandler.",
+      "AccessConstraint": "norway digital restricted",
+      "OtherConstraintsAccess": "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d",
+      "DistributionUrl": "https://nedlasting.geonorge.no/api/capabilities/"
+    }
+  ],
+  "interpretation": "Catalogue/licence investigation only. No new authoritative geographic dataset was downloaded or incorporated. Access metadata is not a substitute for an explicit redistribution-licence, CRS/datum and local topology review."
+}

@@ -1,3 +1,4 @@
+import { districtTransportBoundary } from "../transport/boundary";
 import ManagementPanel from "./ManagementPanel";
 import { useState } from "react";
 import { useDistrict } from "../state/district";
@@ -439,6 +440,18 @@ export default function DistrictPanel() {
         </div>
       )}
       <LivingAssumptions key={JSON.stringify(s.living)} />
+      <p
+        className="planning-note"
+        aria-label="District transport connection"
+        data-added-trips="0"
+      >
+        <strong>
+          0 / {s.development?.proposals.length ?? 0} sites with verified
+          transport access.
+        </strong>{" "}
+        District activity adds no traffic. Monthly activity is not a 30-minute
+        trip table.
+      </p>
       <details className="scenario-assumptions">
         <summary>Why traffic is separate</summary>
         <p>
@@ -447,8 +460,20 @@ export default function DistrictPanel() {
           mapped access connection. District activity adds no trips to that
           model. Outside labour and jobs are assumptions, with no implied
           journey route or congestion forecast. Network/access provenance needs
-          a separate expansion before coupling.
+          a separate expansion before coupling. The complete pinned OSM cache
+          was reviewed again for 5C; pedestrian paths and entrances to observed
+          buildings do not establish vehicle access to a proposed site.
         </p>
+        <ul>
+          {districtTransportBoundary(
+            s.development?.proposals ?? [],
+            s.network,
+          ).sites.map((site) => (
+            <li key={site.proposalId}>
+              {site.name}: {site.reason}
+            </li>
+          ))}
+        </ul>
       </details>
       {s.management.mode === "legacy-immediate" && (
         <button

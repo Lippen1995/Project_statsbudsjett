@@ -117,3 +117,16 @@ Keep phase visuals in the existing bounded batches and restore indexed selection
 Dispose replaced GPU geometry. Use no persistent animation loop. Real-device diagnostics
 must preserve Vercel Authentication and collect no player data; software-renderer probes
 remain explicitly distinct from physical-device FPS.
+
+
+## Connected City safeguards
+
+Never turn centroid proximity, shared coordinates or an entrance to another observed
+building into a proposed-site connector. Unreviewed turn relations, conditional
+access, node barriers and grade separation fail closed. The offline 5C candidate
+is not an enabled runtime network. No month-to-traffic conversion exists while
+verified site endpoints are absent. Local diagnostics require localhost and capture=1;
+never remove this guard or change Authentication for profiling. Geometry preparation
+workers must terminate on completion/error/cancellation/deadline, dispose obsolete
+batches and preserve exact source-linked pick ranges. Native GPU/worker peak memory
+remain unverified until measured. See [5C evidence](milestone-5c-evidence/README.md).

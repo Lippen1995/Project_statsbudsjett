@@ -6,6 +6,10 @@ export interface TransportSource {
   origin: [number, number];
   nodes: Record<string, [number, number]>;
   ways: { id: string; nodeIds: string[]; tags: Record<string, string> }[];
+  // Any supplied relations require a reviewed turn-aware importer; never ignore them.
+  relations?: unknown[];
+  restrictions?: unknown[];
+  nodeTags?: Record<string, Record<string, string>>;
   provenance: {
     licence: string;
     topology: string;
@@ -43,6 +47,15 @@ export function buildNetwork(source: TransportSource): Network {
     !source.origin.every(Number.isFinite)
   )
     throw new Error("Invalid or unbounded transport snapshot.");
+  if (
+    (source.relations !== undefined &&
+      (!Array.isArray(source.relations) || source.relations.length > 0)) ||
+    (source.restrictions !== undefined &&
+      (!Array.isArray(source.restrictions) || source.restrictions.length > 0))
+  )
+    throw new Error(
+      "Turn restrictions/relations require an explicit source and routing review.",
+    );
   const seen = new Set<string>();
   const usage = new Map<string, number>();
   for (const way of source.ways) {
@@ -57,6 +70,24 @@ export function buildNetwork(source: TransportSource): Network {
     seen.add(way.id);
     if (
       !MOTOR.test(way.tags.highway) ||
+      (way.tags.layer !== undefined && way.tags.layer !== "0") ||
+      !!way.tags.junction ||
+      Object.keys(way.tags).some(
+        (k) =>
+          k.includes("conditional") ||
+          [
+            "oneway:motorcar",
+            "oneway:motor_vehicle",
+            "oneway:vehicle",
+          ].includes(k),
+      ) ||
+      !["yes", "permissive", "designated"].includes(
+        way.tags.motorcar ??
+          way.tags.motor_vehicle ??
+          way.tags.vehicle ??
+          way.tags.access ??
+          "yes",
+      ) ||
       way.tags.bridge ||
       way.tags.tunnel ||
       ["no", "private"].includes(way.tags.motor_vehicle ?? way.tags.access) ||
@@ -74,6 +105,21 @@ export function buildNetwork(source: TransportSource): Network {
         Math.abs(p[1] - source.origin[1]) > 0.05
       )
         throw new Error("Missing or invalid original OSM node.");
+      const tags = source.nodeTags?.[id];
+      if (
+        tags &&
+        (tags.barrier ||
+          !["yes", "permissive", "designated"].includes(
+            tags.motorcar ??
+              tags.motor_vehicle ??
+              tags.vehicle ??
+              tags.access ??
+              "yes",
+          ))
+      )
+        throw new Error(
+          "Source-node barrier or access restriction requires explicit review.",
+        );
       usage.set(id, (usage.get(id) ?? 0) + 1);
     }
   }

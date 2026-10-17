@@ -89,3 +89,14 @@ Validate a second municipality before generalizing the geographic adapter. Then
 introduce municipal boundaries, inter-municipality flows and national policy. Nationwide
 simulation is a separate scale and modelling milestone, not a reason to broaden the
 current renderer or infer that this small Bryggen district represents all Bergen.
+
+
+## Milestone 5C status
+
+- Complete: exact-5B profiling, measured startup-blocking reduction through a geometry
+  worker, byte-identical batches, local diagnostics and native-device procedure.
+- Complete: pinned OSM access/entrance/restriction audit, bounded offline 48-way
+  candidate and fail-closed graph/source tests.
+- Blocked: district-to-traffic coupling; no verified entrance/connector to proposed sites.
+- Next: real-device GPU/peak-memory testing, reviewed site access and boundary/turn
+  semantics, then an opt-in bounded representative-period transport-input contract.

@@ -1,0 +1,46 @@
+{
+  "observedAt": "2026-10-17 16:37:12 UTC",
+  "branch": "feature/bergen-simulator",
+  "baselineCommit": "c334ba6ad0caedd90b6706d34c004a833d7f7dd5",
+  "remoteMain": "45cfc4c198f0f4d55e2a851787bbce64028764aa",
+  "preRelease": {
+    "bergenProject": {
+      "id": "prj_s9Bugj93zirfeEvLLwJvygz9syny",
+      "name": "bergen-reimagined",
+      "updatedAt": 1792239115962,
+      "ssoProtection": {
+        "enabled": true,
+        "deploymentType": "all"
+      }
+    },
+    "bergenAlias": {
+      "alias": "bergen-reimagined.vercel.app",
+      "projectId": "prj_s9Bugj93zirfeEvLLwJvygz9syny",
+      "deploymentId": "dpl_5kSakmmoHLvyhXSi9cmRemjz9W4x"
+    },
+    "fellestallProject": {
+      "id": "prj_UCZp0PnkkoWMO6EJsLHW3y787ALp",
+      "name": "fellestall",
+      "updatedAt": 1792234878684,
+      "ssoProtection": {
+        "enabled": true,
+        "deploymentType": "all_except_custom_domains"
+      }
+    },
+    "fellestallAlias": {
+      "alias": "fellestall-fjord-insight.vercel.app",
+      "projectId": "prj_UCZp0PnkkoWMO6EJsLHW3y787ALp",
+      "deploymentId": "dpl_Gmw4hsmUAVK69GAKUcFvR3j44omV"
+    }
+  },
+  "isolation": {
+    "protectedTrackedFilesUnchanged": 1473,
+    "observedSnapshotsUnchanged": true,
+    "scenarioInputsAndPublicPlansUnchanged": true,
+    "workflowsAndDeploymentSettingsUnchanged": true,
+    "districtAndFinanceAndTrafficEnginesUnchanged": true,
+    "onlyGraphInputSafetyValidationHardened": true,
+    "noProductionServicesOrCredentialsUsedByApplication": true
+  },
+  "release": "Existing isolated Bergen GitHub Actions pipeline only. Final commit/Actions/READY/auth verification are reported after pushing."
+}

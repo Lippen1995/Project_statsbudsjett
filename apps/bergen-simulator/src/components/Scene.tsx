@@ -1,6 +1,9 @@
+import { startCityPreparation } from "../geo/preparation-client";
+import type { PreparedCity } from "../geo/preparation";
+import { preparation } from "../geo/diagnostics";
 import { useConstruction } from "../state/construction";
 import ProposedBuildings from "./ProposedBuildings";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -9,23 +12,14 @@ import { nearestSegment } from "../simulation/interventions";
 import { useCity } from "../state/store";
 import { installCapture } from "../geo/capture";
 import type { Building, CityData, Road } from "../geo/types";
-import {
-  buildingGeometry,
-  featureAtFace,
-  makeBuildings,
-  makeRoads,
-  makeTerrain,
-  makeWater,
-  makeCoastalEdge,
-  roadGeometry,
-} from "../geo/geometry";
+import { buildingGeometry, featureAtFace, roadGeometry } from "../geo/geometry";
 import TrafficOverlay from "./TrafficOverlay";
 import PublicSpaces from "./PublicSpaces";
 import { usePhysical } from "../state/physical";
 import { terrainSampler } from "../geo/surface";
 
 function CameraControls({ data }: { data: CityData }) {
-  const { camera, gl, invalidate } = useThree();
+  const { camera, gl, invalidate, scene } = useThree();
   const command = useCity((s) => s.camera);
   const editing = usePhysical(
     (s) => s.mode === "spaces" && s.action !== "navigate",
@@ -55,13 +49,13 @@ function CameraControls({ data }: { data: CityData }) {
       invalidate();
     };
     orbit.addEventListener("change", onChange);
-    const stopCapture = installCapture(camera, gl, orbit, invalidate);
+    const stopCapture = installCapture(camera, gl, orbit, invalidate, scene);
     return () => {
       stopCapture();
       orbit.dispose();
       controls.current = null;
     };
-  }, [camera, gl, invalidate, data.extent]);
+  }, [camera, gl, invalidate, data.extent, scene]);
   useEffect(() => {
     if (controls.current)
       controls.current.enabled = !editing && !(constructing && buildingMode);
@@ -130,20 +124,22 @@ function CameraControls({ data }: { data: CityData }) {
   return null;
 }
 
-function CityGeometry({ data }: { data: CityData }) {
+function CityGeometry({
+  data,
+  prepared,
+}: {
+  data: CityData;
+  prepared: PreparedCity;
+}) {
   const layers = useCity((s) => s.layers);
   const select = useCity((s) => s.select);
   const selected = useCity((s) => s.selected);
   const selectedSegmentId = useCity((s) => s.selectedSegmentId);
-  const surface = useMemo(() => terrainSampler(data.terrain), [data]);
-  const buildings = useMemo(
-    () => makeBuildings(data, surface),
-    [data, surface],
+  const surface = useMemo(
+    () => preparation("terrain.index", () => terrainSampler(data.terrain)),
+    [data],
   );
-  const roads = useMemo(() => makeRoads(data, surface), [data, surface]);
-  const terrain = useMemo(() => makeTerrain(data), [data]);
-  const coast = useMemo(() => makeCoastalEdge(data), [data]);
-  const water = useMemo(() => makeWater(data), [data]);
+  const { buildings, roads, terrain, coast, water } = prepared;
   const highlight = useMemo(
     () =>
       selected?.kind === "building"
@@ -153,17 +149,7 @@ function CityGeometry({ data }: { data: CityData }) {
           : null,
     [selected, selectedSegmentId, surface],
   );
-  // Merged geometry keeps draw calls bounded; face ranges retain selection IDs.
-  useEffect(
-    () => () => {
-      buildings.geometry.dispose();
-      roads.geometry.dispose();
-      terrain.dispose();
-      coast.dispose();
-      water.dispose();
-    },
-    [buildings, roads, terrain, coast, water],
-  );
+  // Static batches are owned/disposed by the preparation worker client.
   useEffect(
     () => () => {
       highlight?.dispose();
@@ -302,6 +288,27 @@ function StaticShadows() {
 
 export default function Scene({ data }: { data: CityData }) {
   const quality = useCity((s) => s.quality);
+  const [prepared, setPrepared] = useState<{
+    source: CityData;
+    city: PreparedCity;
+  } | null>(null);
+  const [error, setError] = useState("");
+  useEffect(
+    () =>
+      startCityPreparation(
+        data,
+        (city) => setPrepared({ source: data, city }),
+        setError,
+      ),
+    [data],
+  );
+  if (error) throw new Error(error);
+  if (prepared?.source !== data)
+    return (
+      <div className="scene-loading" role="status">
+        Preparing verified Bergen geometry…
+      </div>
+    );
   return (
     <Canvas
       frameloop="demand"
@@ -341,7 +348,7 @@ export default function Scene({ data }: { data: CityData }) {
         shadow-bias={-0.0003}
         shadow-normalBias={1.5}
       />
-      <CityGeometry data={data} />
+      <CityGeometry data={data} prepared={prepared.city} />
       <CameraControls data={data} />
       <StaticShadows />
     </Canvas>

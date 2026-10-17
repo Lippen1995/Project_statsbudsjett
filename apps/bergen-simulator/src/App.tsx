@@ -1,3 +1,4 @@
+import { preparation } from "./geo/diagnostics";
 import { useScenario } from "./state/scenario";
 import { usePhysical } from "./state/physical";
 import {
@@ -210,7 +211,9 @@ export default function App() {
           );
         return response.json();
       })
-      .then(parseCityData)
+      .then((raw) =>
+        preparation("geography.validate", () => parseCityData(raw)),
+      )
       .then(setData)
       .catch((e) => {
         if (!controller.signal.aborted) setError(e.message);
@@ -227,7 +230,7 @@ export default function App() {
           </span>
         </a>
         <div className="header-center">
-          CITY PLANNING PROTOTYPE <span>05B / BERGEN</span>
+          CITY PLANNING PROTOTYPE <span>05C / BERGEN</span>
         </div>
         <span className="prototype-badge">
           <span />
@@ -333,9 +336,8 @@ export default function App() {
                 </button>
               </div>
               <p>
-                Footprints, streets and coastline: © OpenStreetMap
-                contributors, ODbL. Snapshot{" "}
-                {data.provenance.osmTimestamp.slice(0, 10)}.
+                Footprints, streets and coastline: © OpenStreetMap contributors,
+                ODbL. Snapshot {data.provenance.osmTimestamp.slice(0, 10)}.
               </p>
               <p>
                 Terrain: © Kartverket, CC BY 4.0. Bergen laser projects 2022 /

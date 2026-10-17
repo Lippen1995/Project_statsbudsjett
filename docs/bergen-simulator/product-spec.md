@@ -158,3 +158,13 @@ requires timely balanced delivery, funded services and retained public space wit
 explicit game-resource limits. Version-5 input-only plans preserve versions 1–4 via
 explicit legacy-immediate commissioning. This is not Norwegian municipal finance,
 construction permission or a real population/service forecast. See [5B](milestone-5b.md).
+
+
+## Milestone 5C — connected-city preparation
+
+Startup geometry is prepared off the main thread, retaining the same observed city
+and planning gameplay. Living City reports each proposed site's unverified transport
+access and adds zero trips. A reviewed offline network extension is available for
+further GIS work; no player-facing expanded-network or coupling option is enabled.
+Scenario versions 1–5 remain supported. Physical GPU responsiveness and source-supported
+site access are explicit gates for the next connected-city gameplay slice.

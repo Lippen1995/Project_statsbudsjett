@@ -1,0 +1,107 @@
+{
+  "browserVersion": "151.0.7922.173",
+  "renderer": "ANGLE SwiftShader software renderer; physical-device GPU performance unverified",
+  "checks": [
+    "Load legacy 4B → living month zero → six dynamic months → identify workforce imbalance → add residential storey → rerun from identical baseline → compare saved strategies",
+    "Direct 3D activity colour change without mesh growth; previous-month inspection; automatic play/pause; 24-month challenge; local save/reload and exact replay; strict imports; 3B/4A/4B compatibility; construction undo/redo",
+    "Mobile timeline/inspection, 24-month scenario replay, local reload, viewport fit and zero idle frames; repeated worker resets retain bounded heap and fixed GPU geometry"
+  ],
+  "desktop": {
+    "loadMs": 3121.318881,
+    "strategies": {
+      "month": 6,
+      "originalTwoStoreys": {
+        "month": "6",
+        "households": "3.808812945181858",
+        "jobs": "6.017625890363717",
+        "serviceDemand": "8.379388479400088",
+        "serviceUnmet": "0",
+        "balance": "0.31671715212440615"
+      },
+      "revisedThreeStoreys": {
+        "month": "6",
+        "households": "6.59048593755636",
+        "jobs": "8.88097187511272",
+        "serviceDemand": "14.499069062623994",
+        "serviceUnmet": "0",
+        "balance": "0.4674195723743537"
+      }
+    },
+    "finalStocks": {
+      "month": "24",
+      "households": "6.8329682253667405",
+      "jobs": "9.365936450733482",
+      "serviceDemand": "15.03253009580683",
+      "serviceUnmet": "0",
+      "balance": "0.4929440237228149"
+    },
+    "activeProfile": {
+      "calls": 11,
+      "triangles": 289528,
+      "lines": 53,
+      "geometries": 11,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 409.69999999552965,
+      "p95CameraLatencyMs": 480.5,
+      "medianCpuFrameMs": 0.7000000029802322,
+      "idleFrames": 0,
+      "cameraLatencySamplesMs": [
+        474.80000000447035,
+        454,
+        1.0999999940395355,
+        295.20000000298023,
+        413.69999999552965,
+        409.69999999552965,
+        386.8999999985099,
+        354.5,
+        332.20000000298023,
+        480.5,
+        405.19999999552965,
+        414.19999999552965
+      ]
+    },
+    "workerComputeMs": "3.100000001490116",
+    "memory": {
+      "retainedGeometries": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "heapBefore": 24168156,
+      "heapAfter": 24341012
+    }
+  },
+  "mobile": {
+    "loadMs": 2475.8355620000075,
+    "activeProfile": {
+      "calls": 11,
+      "triangles": 289528,
+      "lines": 53,
+      "geometries": 11,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 271.1000000014901,
+      "p95CameraLatencyMs": 293.5,
+      "medianCpuFrameMs": 0.7000000029802322,
+      "idleFrames": 0,
+      "cameraLatencySamplesMs": [
+        0.8000000044703484,
+        229,
+        288.6000000014901,
+        293.5,
+        272.1000000014901,
+        274.3999999985099,
+        289.70000000298023,
+        271.1000000014901,
+        191.10000000149012,
+        217.70000000298023,
+        205.39999999850988,
+        191.10000000149012
+      ]
+    }
+  },
+  "passed": true,
+  "errors": []
+}

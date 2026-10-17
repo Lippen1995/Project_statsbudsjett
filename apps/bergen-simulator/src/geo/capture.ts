@@ -1,5 +1,6 @@
+import { attributeMemory, preparationSnapshot } from "./diagnostics";
 import { addAfterEffect, addEffect } from "@react-three/fiber";
-import type { Camera, WebGLRenderer } from "three";
+import type { Camera, WebGLRenderer, Scene } from "three";
 import type { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 // Local acceptance harness only: fixed cameras and renderer counters, no extra
@@ -9,6 +10,7 @@ export function installCapture(
   gl: WebGLRenderer,
   orbit: OrbitControls,
   invalidate: () => void,
+  scene: Scene,
 ) {
   if (
     !["localhost", "127.0.0.1"].includes(location.hostname) ||
@@ -27,6 +29,7 @@ export function installCapture(
     previous = gl.info.render.frame;
     gl.domElement.dataset.capture = JSON.stringify({
       frames: ++frames,
+      ...attributeMemory(scene),
       cpuFrameMs: performance.now() - start,
       cameraLatencyMs: requested ? performance.now() - requested : null,
       calls: gl.info.render.calls,
@@ -38,6 +41,7 @@ export function installCapture(
       position: camera.position.toArray(),
       target: orbit.target.toArray(),
     });
+    gl.domElement.dataset.preparation = JSON.stringify(preparationSnapshot());
   });
   const setView = (event: Event) => {
     const { position, target } = (event as CustomEvent).detail ?? {};
@@ -59,5 +63,6 @@ export function installCapture(
     after();
     gl.domElement.removeEventListener("bergen:capture", setView);
     delete gl.domElement.dataset.capture;
+    delete gl.domElement.dataset.preparation;
   };
 }

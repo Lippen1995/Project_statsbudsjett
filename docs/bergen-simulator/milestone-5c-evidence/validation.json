@@ -1,0 +1,62 @@
+{
+  "recordedAt": "2026-10-17T16:37:13.357720+00:00",
+  "baselineCommit": "c334ba6ad0caedd90b6706d34c004a833d7f7dd5",
+  "branch": "feature/bergen-simulator",
+  "applicationTests": {
+    "passed": 200,
+    "files": 11,
+    "addedTests": 33
+  },
+  "releasePolicyTests": 10,
+  "geographicOfflineTests": {
+    "existing": 3,
+    "newAuditIntegrity": 3
+  },
+  "browserSuites": {
+    "connected": "passed",
+    "management": "passed",
+    "living": "passed",
+    "buildings": "passed",
+    "physical": "passed",
+    "scenario": "passed",
+    "browser": "passed",
+    "visual": "passed"
+  },
+  "lint": "passed; zero warnings",
+  "typescriptViteBuild": "passed; existing Three.js chunk advisory retained",
+  "postBrowserBuild": "byte-identical runtime output",
+  "evidenceCapture": "passed; actual month-24 model, desktop and touch viewport, explicit zero added trips",
+  "isolation": "1473 protected tracked files unchanged; observed snapshots, scenario contracts/public plans, workflows/deployment settings and model stock/finance/traffic engines unchanged",
+  "scenarioVersions": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "schemaVersionIntroduced": false,
+  "sourceAndGeometryImmutability": "all five static layer attribute hashes match exact 5B baseline; operational before/after JPEG byte-identical",
+  "network": {
+    "activeWays": 27,
+    "offlineCandidateWays": 48,
+    "candidateNodes": 51,
+    "candidateDirectedEdges": 95,
+    "candidateTurnRelations": 0,
+    "candidateOnly": true,
+    "auditedHighwayWays": 366,
+    "mappedEntrancesInWindow": 16,
+    "verifiedProposedSiteConnections": 0,
+    "addedDistrictTrips": 0
+  },
+  "tripGeneration": "not enabled: no source-supported proposed-site endpoints; no temporal conversion manufactured",
+  "profile": "Chromium 151 SwiftShader DPR1; physical GPU performance and worker/native peak memory unverified",
+  "knownLimitations": [
+    "Scene readiness can increase due to worker download/clone/hydration; measured benefit is less main-thread startup blocking",
+    "Camera/software-renderer and command timings vary; no native GPU improvement claimed",
+    "Candidate boundary/turn interpretation and site access require review before activation",
+    "No new authoritative geography acquired; catalogue access metadata is not a redistribution licence",
+    "27,048,522 typed attribute/index bytes are not native GPU VRAM",
+    "Main-thread hydration remains approximately 0.1 seconds; worker peak heap is not measured",
+    "Hosted authenticated checks depend on existing Trusted Sources; protection will not be disabled"
+  ]
+}
