@@ -1,0 +1,1347 @@
+{
+  "interpretation": "Synthetic game simulation for proposed Bryggen district only; not actual Bergen population, jobs or services.",
+  "input": {
+    "version": 1,
+    "living": {
+      "version": 1,
+      "areaPerHousehold": 80,
+      "areaPerJob": 30,
+      "areaPerServicePlace": 20,
+      "householdSize": 2.2,
+      "workersPerHousehold": 1.1,
+      "householdArrivals": 2,
+      "jobDemandArrivals": 3,
+      "externalJobOpportunities": 2,
+      "externalWorkforce": 2,
+      "householdMoveInRate": 0.45,
+      "jobFillRate": 0.4,
+      "householdTurnover": 0.02,
+      "jobSeparation": 0.03,
+      "minimumServiceAttraction": 0.25
+    },
+    "buildings": [
+      {
+        "id": "study-0",
+        "name": "Quay homes",
+        "purpose": "residential",
+        "center": [
+          -95,
+          -317
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 3,
+        "storeyHeight": 3.2,
+        "roof": "gabled"
+      },
+      {
+        "id": "study-1",
+        "name": "Quay workspace",
+        "purpose": "commercial",
+        "center": [
+          -23,
+          -237
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 3,
+        "storeyHeight": 3.2,
+        "roof": "flat"
+      },
+      {
+        "id": "study-2",
+        "name": "Community pavilion",
+        "purpose": "civic",
+        "center": [
+          9,
+          -213
+        ],
+        "width": 12,
+        "depth": 16,
+        "rotation": 0,
+        "storeys": 2,
+        "storeyHeight": 3.2,
+        "roof": "flat"
+      }
+    ]
+  },
+  "months": [
+    {
+      "month": 0,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 0,
+      "residents": 0,
+      "employmentCapacity": 19,
+      "filledJobs": 0,
+      "serviceCapacity": 19,
+      "serviceDemand": 0,
+      "usedService": 0,
+      "unmetService": 0,
+      "waitingHouseholds": 0,
+      "waitingJobs": 0,
+      "departedHouseholds": 0,
+      "admittedHouseholds": 0,
+      "exitedHouseholds": 0,
+      "hiredJobs": 0,
+      "vacatedJobs": 0,
+      "recruitmentLabour": 0,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0,
+      "jobUtilization": 0,
+      "serviceUtilization": 0,
+      "serviceCoverage": 1,
+      "balance": 0,
+      "constraint": "uptake",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 0,
+          "utilization": 0
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 0,
+          "utilization": 0
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 0,
+          "utilization": 0
+        }
+      ]
+    },
+    {
+      "month": 1,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 2,
+      "residents": 4.4,
+      "employmentCapacity": 19,
+      "filledJobs": 2,
+      "serviceCapacity": 19,
+      "serviceDemand": 4.4,
+      "usedService": 4.4,
+      "unmetService": 0,
+      "waitingHouseholds": 0,
+      "waitingJobs": 1,
+      "departedHouseholds": 0,
+      "admittedHouseholds": 2,
+      "exitedHouseholds": 0,
+      "hiredJobs": 2,
+      "vacatedJobs": 0,
+      "recruitmentLabour": 2,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.2857142857142857,
+      "jobUtilization": 0.10526315789473684,
+      "serviceUtilization": 0.23157894736842108,
+      "serviceCoverage": 1,
+      "balance": 0.10526315789473684,
+      "constraint": "household-demand",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 2,
+          "utilization": 0.2857142857142857
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 2,
+          "utilization": 0.10526315789473684
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 4.4,
+          "utilization": 0.23157894736842108
+        }
+      ]
+    },
+    {
+      "month": 2,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 3.96,
+      "residents": 8.712,
+      "employmentCapacity": 19,
+      "filledJobs": 4.156000000000001,
+      "serviceCapacity": 19,
+      "serviceDemand": 8.712,
+      "usedService": 8.712,
+      "unmetService": 0,
+      "waitingHouseholds": 0,
+      "waitingJobs": 1.8439999999999999,
+      "departedHouseholds": 0.04,
+      "admittedHouseholds": 2,
+      "exitedHouseholds": 0.04,
+      "hiredJobs": 2.2160000000000006,
+      "vacatedJobs": 0.06000000000000005,
+      "recruitmentLabour": 4.156000000000001,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.5657142857142857,
+      "jobUtilization": 0.2187368421052632,
+      "serviceUtilization": 0.45852631578947367,
+      "serviceCoverage": 1,
+      "balance": 0.2187368421052632,
+      "constraint": "household-demand",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 3.96,
+          "utilization": 0.5657142857142857
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 4.156000000000001,
+          "utilization": 0.2187368421052632
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 8.712,
+          "utilization": 0.45852631578947367
+        }
+      ]
+    },
+    {
+      "month": 3,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 5.28444,
+      "residents": 11.625768,
+      "employmentCapacity": 19,
+      "filledJobs": 6.26888,
+      "serviceCapacity": 19,
+      "serviceDemand": 11.625768,
+      "usedService": 11.625768,
+      "unmetService": 0,
+      "waitingHouseholds": 0.5963599999999998,
+      "waitingJobs": 2.7311199999999998,
+      "departedHouseholds": 0.1192,
+      "admittedHouseholds": 1.4036400000000002,
+      "exitedHouseholds": 0.0792,
+      "hiredJobs": 2.23756,
+      "vacatedJobs": 0.12468000000000057,
+      "recruitmentLabour": 6.26888,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.75492,
+      "jobUtilization": 0.32994105263157897,
+      "serviceUtilization": 0.6118825263157895,
+      "serviceCoverage": 1,
+      "balance": 0.32994105263157897,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 5.28444,
+          "utilization": 0.75492
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 6.26888,
+          "utilization": 0.32994105263157897
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 11.625768,
+          "utilization": 0.6118825263157895
+        }
+      ]
+    },
+    {
+      "month": 4,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 5.99831316,
+      "residents": 13.196288952000002,
+      "employmentCapacity": 19,
+      "filledJobs": 7.69662632,
+      "serviceCapacity": 19,
+      "serviceDemand": 13.196288952000002,
+      "usedService": 13.196288952000002,
+      "unmetService": 0,
+      "waitingHouseholds": 1.7767980399999996,
+      "waitingJobs": 4.30337368,
+      "departedHouseholds": 0.2248888,
+      "admittedHouseholds": 0.8195619600000001,
+      "exitedHouseholds": 0.1056888,
+      "hiredJobs": 1.61581272,
+      "vacatedJobs": 0.1880664000000003,
+      "recruitmentLabour": 7.69662632,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.85690188,
+      "jobUtilization": 0.4050855957894737,
+      "serviceUtilization": 0.6945415237894738,
+      "serviceCoverage": 1,
+      "balance": 0.4050855957894737,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 5.99831316,
+          "utilization": 0.85690188
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 7.69662632,
+          "utilization": 0.4050855957894737
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 13.196288952000002,
+          "utilization": 0.6945415237894738
+        }
+      ]
+    },
+    {
+      "month": 5,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.38309079324,
+      "residents": 14.042799745128,
+      "employmentCapacity": 19,
+      "filledJobs": 8.466181586480001,
+      "serviceCapacity": 19,
+      "serviceDemand": 14.042799745128,
+      "usedService": 14.042799745128,
+      "unmetService": 0,
+      "waitingHouseholds": 3.2720541435599997,
+      "waitingJobs": 6.533818413519999,
+      "departedHouseholds": 0.34485506320000003,
+      "admittedHouseholds": 0.50474389644,
+      "exitedHouseholds": 0.1199662632,
+      "hiredJobs": 1.0004540560800015,
+      "vacatedJobs": 0.23089878960000032,
+      "recruitmentLabour": 8.466181586480001,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.91187011332,
+      "jobUtilization": 0.445588504551579,
+      "serviceUtilization": 0.7390947234277895,
+      "serviceCoverage": 1,
+      "balance": 0.445588504551579,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.38309079324,
+          "utilization": 0.91187011332
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 8.466181586480001,
+          "utilization": 0.445588504551579
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 14.042799745128,
+          "utilization": 0.7390947234277895
+        }
+      ]
+    },
+    {
+      "month": 6,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.59048593755636,
+      "residents": 14.499069062623994,
+      "employmentCapacity": 19,
+      "filledJobs": 8.88097187511272,
+      "serviceCapacity": 19,
+      "serviceDemand": 14.499069062623994,
+      "usedService": 14.499069062623994,
+      "unmetService": 0,
+      "waitingHouseholds": 4.93699718337884,
+      "waitingJobs": 9.11902812488728,
+      "departedHouseholds": 0.4725168790648,
+      "admittedHouseholds": 0.33505696018116016,
+      "exitedHouseholds": 0.1276618158648,
+      "hiredJobs": 0.6687757362271203,
+      "vacatedJobs": 0.2539854475944008,
+      "recruitmentLabour": 8.88097187511272,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.94149799107948,
+      "jobUtilization": 0.4674195723743537,
+      "serviceUtilization": 0.7631088980328418,
+      "serviceCoverage": 1,
+      "balance": 0.4674195723743537,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.59048593755636,
+          "utilization": 0.94149799107948
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 8.88097187511272,
+          "utilization": 0.4674195723743537
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 14.499069062623994,
+          "utilization": 0.7631088980328418
+        }
+      ]
+    },
+    {
+      "month": 7,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.702271920342878,
+      "residents": 14.744998224754333,
+      "employmentCapacity": 19,
+      "filledJobs": 9.104543840685757,
+      "serviceCapacity": 19,
+      "serviceDemand": 14.744998224754333,
+      "usedService": 14.744998224754333,
+      "unmetService": 0,
+      "waitingHouseholds": 6.693401481841194,
+      "waitingJobs": 11.895456159314243,
+      "departedHouseholds": 0.6043265978159272,
+      "admittedHouseholds": 0.2435957015376455,
+      "exitedHouseholds": 0.1318097187511272,
+      "hiredJobs": 0.49000112182641864,
+      "vacatedJobs": 0.26642915625338226,
+      "recruitmentLabour": 9.104543840685757,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9574674171918397,
+      "jobUtilization": 0.47918651793082934,
+      "serviceUtilization": 0.7760525381449649,
+      "serviceCoverage": 1,
+      "balance": 0.47918651793082934,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.702271920342878,
+          "utilization": 0.9574674171918397
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.104543840685757,
+          "utilization": 0.47918651793082934
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 14.744998224754333,
+          "utilization": 0.7760525381449649
+        }
+      ]
+    },
+    {
+      "month": 8,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.762524565064811,
+      "residents": 14.877554043142585,
+      "employmentCapacity": 19,
+      "filledJobs": 9.225049130129623,
+      "serviceCapacity": 19,
+      "serviceDemand": 14.877554043142585,
+      "usedService": 14.877554043142585,
+      "unmetService": 0,
+      "waitingHouseholds": 8.499103398712403,
+      "waitingJobs": 14.774950869870377,
+      "departedHouseholds": 0.7383720362227848,
+      "admittedHouseholds": 0.19429808312879096,
+      "exitedHouseholds": 0.13404543840685756,
+      "hiredJobs": 0.3936416046644382,
+      "vacatedJobs": 0.27313631522057236,
+      "recruitmentLabour": 9.225049130129623,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9660749378664015,
+      "jobUtilization": 0.4855289015857696,
+      "serviceUtilization": 0.7830291601653991,
+      "serviceCoverage": 1,
+      "balance": 0.4855289015857696,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.762524565064811,
+          "utilization": 0.9660749378664015
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.225049130129623,
+          "utilization": 0.4855289015857696
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 14.877554043142585,
+          "utilization": 0.7830291601653991
+        }
+      ]
+    },
+    {
+      "month": 9,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.795000740569932,
+      "residents": 14.949001629253852,
+      "employmentCapacity": 19,
+      "filledJobs": 9.290001481139866,
+      "serviceCapacity": 19,
+      "serviceDemand": 14.949001629253852,
+      "usedService": 14.949001629253852,
+      "unmetService": 0,
+      "waitingHouseholds": 10.331376731905985,
+      "waitingJobs": 17.709998518860132,
+      "departedHouseholds": 0.873622527524081,
+      "admittedHouseholds": 0.16772666680641857,
+      "exitedHouseholds": 0.1352504913012962,
+      "hiredJobs": 0.3417038249141324,
+      "vacatedJobs": 0.27675147390388943,
+      "recruitmentLabour": 9.290001481139866,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9707143915099904,
+      "jobUtilization": 0.4889474463757824,
+      "serviceUtilization": 0.7867895594344132,
+      "serviceCoverage": 1,
+      "balance": 0.4889474463757824,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.795000740569932,
+          "utilization": 0.9707143915099904
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.290001481139866,
+          "utilization": 0.4889474463757824
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 14.94900162925385,
+          "utilization": 0.7867895594344132
+        }
+      ]
+    },
+    {
+      "month": 10,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.812505399167193,
+      "residents": 14.987511878167826,
+      "employmentCapacity": 19,
+      "filledJobs": 9.325010798334388,
+      "serviceCapacity": 19,
+      "serviceDemand": 14.987511878167826,
+      "usedService": 14.987511878167826,
+      "unmetService": 0,
+      "waitingHouseholds": 12.177972058497325,
+      "waitingJobs": 20.67498920166561,
+      "departedHouseholds": 1.0095225423354797,
+      "admittedHouseholds": 0.15340467340865982,
+      "exitedHouseholds": 0.13590001481139866,
+      "hiredJobs": 0.31370936162871743,
+      "vacatedJobs": 0.2787000444341956,
+      "recruitmentLabour": 9.325010798334388,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9732150570238848,
+      "jobUtilization": 0.49079004201759935,
+      "serviceUtilization": 0.7888164146404119,
+      "serviceCoverage": 1,
+      "balance": 0.49079004201759935,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.812505399167193,
+          "utilization": 0.9732150570238848
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.325010798334388,
+          "utilization": 0.49079004201759935
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 14.987511878167826,
+          "utilization": 0.7888164146404119
+        }
+      ]
+    },
+    {
+      "month": 11,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.821940410151117,
+      "residents": 15.008268902332459,
+      "employmentCapacity": 19,
+      "filledJobs": 9.343880820302235,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.008268902332459,
+      "usedService": 15.008268902332459,
+      "unmetService": 0,
+      "waitingHouseholds": 14.032286939530056,
+      "waitingJobs": 23.656119179697765,
+      "departedHouseholds": 1.1457726503188235,
+      "admittedHouseholds": 0.14568511896726763,
+      "exitedHouseholds": 0.13625010798334386,
+      "hiredJobs": 0.2986203459178789,
+      "vacatedJobs": 0.2797503239500312,
+      "recruitmentLabour": 9.343880820302235,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9745629157358738,
+      "jobUtilization": 0.49178320106853873,
+      "serviceUtilization": 0.7899088895964452,
+      "serviceCoverage": 1,
+      "balance": 0.49178320106853873,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.821940410151117,
+          "utilization": 0.9745629157358738
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.343880820302235,
+          "utilization": 0.49178320106853873
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.008268902332459,
+          "utilization": 0.7899088895964452
+        }
+      ]
+    },
+    {
+      "month": 12,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.827025881071452,
+      "residents": 15.019456938357196,
+      "employmentCapacity": 19,
+      "filledJobs": 9.354051762142905,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.019456938357196,
+      "usedService": 15.019456938357196,
+      "unmetService": 0,
+      "waitingHouseholds": 15.890762660406699,
+      "waitingJobs": 26.64594823785709,
+      "departedHouseholds": 1.2822114585218458,
+      "admittedHouseholds": 0.14152427912335713,
+      "exitedHouseholds": 0.13643880820302234,
+      "hiredJobs": 0.29048736644973694,
+      "vacatedJobs": 0.280316424609067,
+      "recruitmentLabour": 9.354051762142905,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9752894115816361,
+      "jobUtilization": 0.49231851379699504,
+      "serviceUtilization": 0.7904977335977472,
+      "serviceCoverage": 1,
+      "balance": 0.49231851379699504,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.827025881071452,
+          "utilization": 0.9752894115816361
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.354051762142905,
+          "utilization": 0.49231851379699504
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.019456938357198,
+          "utilization": 0.7904977335977472
+        }
+      ]
+    },
+    {
+      "month": 13,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.829766949897513,
+      "residents": 15.02548728977453,
+      "employmentCapacity": 19,
+      "filledJobs": 9.359533899795025,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.02548728977453,
+      "usedService": 15.02548728977453,
+      "unmetService": 0,
+      "waitingHouseholds": 17.751481073959212,
+      "waitingJobs": 29.640466100204975,
+      "departedHouseholds": 1.418751976143275,
+      "admittedHouseholds": 0.13928158644748975,
+      "exitedHouseholds": 0.13654051762142905,
+      "hiredJobs": 0.2861036905164074,
+      "vacatedJobs": 0.2806215528642877,
+      "recruitmentLabour": 9.359533899795025,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9756809928425019,
+      "jobUtilization": 0.4926070473576329,
+      "serviceUtilization": 0.7908151205144489,
+      "serviceCoverage": 1,
+      "balance": 0.4926070473576329,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.829766949897513,
+          "utilization": 0.9756809928425019
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.359533899795025,
+          "utilization": 0.4926070473576329
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.02548728977453,
+          "utilization": 0.7908151205144489
+        }
+      ]
+    },
+    {
+      "month": 14,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.83124438599476,
+      "residents": 15.028737649188471,
+      "employmentCapacity": 19,
+      "filledJobs": 9.362488771989518,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.028737649188471,
+      "usedService": 15.028737649188471,
+      "unmetService": 0,
+      "waitingHouseholds": 19.613408298864016,
+      "waitingJobs": 32.63751122801048,
+      "departedHouseholds": 1.5553473151412252,
+      "admittedHouseholds": 0.1380727750951969,
+      "exitedHouseholds": 0.13659533899795026,
+      "hiredJobs": 0.28374088918834417,
+      "vacatedJobs": 0.28078601699385075,
+      "recruitmentLabour": 9.362488771989518,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9758920551421085,
+      "jobUtilization": 0.49276256694681675,
+      "serviceUtilization": 0.7909861920625512,
+      "serviceCoverage": 1,
+      "balance": 0.49276256694681675,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.83124438599476,
+          "utilization": 0.9758920551421085
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.362488771989518,
+          "utilization": 0.49276256694681675
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.028737649188471,
+          "utilization": 0.7909861920625512
+        }
+      ]
+    },
+    {
+      "month": 15,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.832040724051176,
+      "residents": 15.030489592912588,
+      "employmentCapacity": 19,
+      "filledJobs": 9.36408144810235,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.030489592912588,
+      "usedService": 15.030489592912588,
+      "unmetService": 0,
+      "waitingHouseholds": 21.475987073087705,
+      "waitingJobs": 35.635918551897646,
+      "departedHouseholds": 1.6919722028611204,
+      "admittedHouseholds": 0.13742122577631105,
+      "exitedHouseholds": 0.1366248877198952,
+      "hiredJobs": 0.2824673392725181,
+      "vacatedJobs": 0.2808746631596861,
+      "recruitmentLabour": 9.36408144810235,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9760058177215966,
+      "jobUtilization": 0.4928463920053869,
+      "serviceUtilization": 0.7910783996269783,
+      "serviceCoverage": 1,
+      "balance": 0.4928463920053869,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.832040724051176,
+          "utilization": 0.9760058177215966
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.36408144810235,
+          "utilization": 0.4928463920053869
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.030489592912588,
+          "utilization": 0.7910783996269783
+        }
+      ]
+    },
+    {
+      "month": 16,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.832469950263583,
+      "residents": 15.031433890579883,
+      "employmentCapacity": 19,
+      "filledJobs": 9.364939900527167,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.031433890579883,
+      "usedService": 15.031433890579883,
+      "unmetService": 0,
+      "waitingHouseholds": 23.338917032394274,
+      "waitingJobs": 38.63506009947283,
+      "departedHouseholds": 1.828613017342144,
+      "admittedHouseholds": 0.13707004069343173,
+      "exitedHouseholds": 0.13664081448102353,
+      "hiredJobs": 0.2817808958678878,
+      "vacatedJobs": 0.28092244344307105,
+      "recruitmentLabour": 9.364939900527167,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9760671357519405,
+      "jobUtilization": 0.4928915737119562,
+      "serviceUtilization": 0.7911280995042044,
+      "serviceCoverage": 1,
+      "balance": 0.4928915737119562,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.832469950263583,
+          "utilization": 0.9760671357519405
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.364939900527167,
+          "utilization": 0.4928915737119562
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.031433890579883,
+          "utilization": 0.7911280995042044
+        }
+      ]
+    },
+    {
+      "month": 17,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.832701303192072,
+      "residents": 15.03194286702256,
+      "employmentCapacity": 19,
+      "filledJobs": 9.365402606384144,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.03194286702256,
+      "usedService": 15.03194286702256,
+      "unmetService": 0,
+      "waitingHouseholds": 25.202036280460515,
+      "waitingJobs": 41.634597393615856,
+      "departedHouseholds": 1.9652624163474157,
+      "admittedHouseholds": 0.1368807519337599,
+      "exitedHouseholds": 0.13664939900527168,
+      "hiredJobs": 0.2814109028727927,
+      "vacatedJobs": 0.28094819701581564,
+      "recruitmentLabour": 9.365402606384144,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9761001861702959,
+      "jobUtilization": 0.49291592665179707,
+      "serviceUtilization": 0.7911548877380294,
+      "serviceCoverage": 1,
+      "balance": 0.49291592665179707,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.832701303192072,
+          "utilization": 0.9761001861702959
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.365402606384144,
+          "utilization": 0.49291592665179707
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.03194286702256,
+          "utilization": 0.7911548877380294
+        }
+      ]
+    },
+    {
+      "month": 18,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.832826002420527,
+      "residents": 15.03221720532516,
+      "employmentCapacity": 19,
+      "filledJobs": 9.365652004841053,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.03221720532516,
+      "usedService": 15.03221720532516,
+      "unmetService": 0,
+      "waitingHouseholds": 27.06525755516822,
+      "waitingJobs": 44.63434799515895,
+      "departedHouseholds": 2.101916442411257,
+      "admittedHouseholds": 0.1367787252922966,
+      "exitedHouseholds": 0.13665402606384144,
+      "hiredJobs": 0.2812114766484335,
+      "vacatedJobs": 0.28096207819152497,
+      "recruitmentLabour": 9.365652004841053,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9761180003457895,
+      "jobUtilization": 0.4929290528863712,
+      "serviceUtilization": 0.7911693265960611,
+      "serviceCoverage": 1,
+      "balance": 0.4929290528863712,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.832826002420527,
+          "utilization": 0.9761180003457895
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.365652004841053,
+          "utilization": 0.4929290528863712
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.03221720532516,
+          "utilization": 0.7911693265960611
+        }
+      ]
+    },
+    {
+      "month": 19,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.832893215304663,
+      "residents": 15.03236507367026,
+      "employmentCapacity": 19,
+      "filledJobs": 9.365786430609328,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.03236507367026,
+      "usedService": 15.03236507367026,
+      "unmetService": 0,
+      "waitingHouseholds": 28.92853382223567,
+      "waitingJobs": 47.63421356939067,
+      "departedHouseholds": 2.2385729624596675,
+      "admittedHouseholds": 0.1367237329325479,
+      "exitedHouseholds": 0.13665652004841053,
+      "hiredJobs": 0.28110398591350716,
+      "vacatedJobs": 0.2809695601452322,
+      "recruitmentLabour": 9.365786430609328,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9761276021863805,
+      "jobUtilization": 0.49293612792680674,
+      "serviceUtilization": 0.79117710914054,
+      "serviceCoverage": 1,
+      "balance": 0.49293612792680674,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.832893215304663,
+          "utilization": 0.9761276021863805
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.365786430609328,
+          "utilization": 0.49293612792680674
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.03236507367026,
+          "utilization": 0.79117710914054
+        }
+      ]
+    },
+    {
+      "month": 20,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.832929443049213,
+      "residents": 15.03244477470827,
+      "employmentCapacity": 19,
+      "filledJobs": 9.365858886098428,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.03244477470827,
+      "usedService": 15.03244477470827,
+      "unmetService": 0,
+      "waitingHouseholds": 30.79183973018503,
+      "waitingJobs": 50.63414111390156,
+      "departedHouseholds": 2.375230826765761,
+      "admittedHouseholds": 0.13669409205064334,
+      "exitedHouseholds": 0.13665786430609328,
+      "hiredJobs": 0.28104604840737935,
+      "vacatedJobs": 0.2809735929182793,
+      "recruitmentLabour": 9.365858886098428,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9761327775784591,
+      "jobUtilization": 0.4929399413736015,
+      "serviceUtilization": 0.7911813039320142,
+      "serviceCoverage": 1,
+      "balance": 0.4929399413736015,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.832929443049213,
+          "utilization": 0.9761327775784591
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.365858886098428,
+          "utilization": 0.4929399413736015
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.03244477470827,
+          "utilization": 0.7911813039320142
+        }
+      ]
+    },
+    {
+      "month": 21,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.8329489698035255,
+      "residents": 15.032487733567757,
+      "employmentCapacity": 19,
+      "filledJobs": 9.365897939607052,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.032487733567757,
+      "usedService": 15.032487733567757,
+      "unmetService": 0,
+      "waitingHouseholds": 32.655161614569735,
+      "waitingJobs": 53.63410206039294,
+      "departedHouseholds": 2.511889415626745,
+      "admittedHouseholds": 0.13667811561529705,
+      "exitedHouseholds": 0.13665858886098428,
+      "hiredJobs": 0.28101482009157763,
+      "vacatedJobs": 0.2809757665829533,
+      "recruitmentLabour": 9.365897939607052,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9761355671147893,
+      "jobUtilization": 0.4929419968214238,
+      "serviceUtilization": 0.7911835649246188,
+      "serviceCoverage": 1,
+      "balance": 0.4929419968214238,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.8329489698035255,
+          "utilization": 0.9761355671147893
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.365897939607052,
+          "utilization": 0.4929419968214238
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.032487733567757,
+          "utilization": 0.7911835649246188
+        }
+      ]
+    },
+    {
+      "month": 22,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.832959494724101,
+      "residents": 15.032510888393022,
+      "employmentCapacity": 19,
+      "filledJobs": 9.3659189894482,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.032510888393022,
+      "usedService": 15.032510888393022,
+      "unmetService": 0,
+      "waitingHouseholds": 34.51849211025309,
+      "waitingJobs": 56.63408101055179,
+      "departedHouseholds": 2.6485483950228157,
+      "admittedHouseholds": 0.13666950431664532,
+      "exitedHouseholds": 0.13665897939607052,
+      "hiredJobs": 0.2809979880293607,
+      "vacatedJobs": 0.28097693818821234,
+      "recruitmentLabour": 9.3659189894482,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9761370706748715,
+      "jobUtilization": 0.4929431047078,
+      "serviceUtilization": 0.7911847835996327,
+      "serviceCoverage": 1,
+      "balance": 0.4929431047078,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.832959494724101,
+          "utilization": 0.9761370706748715
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.3659189894482,
+          "utilization": 0.4929431047078
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.032510888393022,
+          "utilization": 0.7911847835996327
+        }
+      ]
+    },
+    {
+      "month": 23,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.83296516765629,
+      "residents": 15.03252336884384,
+      "employmentCapacity": 19,
+      "filledJobs": 9.36593033531258,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.03252336884384,
+      "usedService": 15.03252336884384,
+      "unmetService": 0,
+      "waitingHouseholds": 36.38182724742642,
+      "waitingJobs": 59.634069664687416,
+      "departedHouseholds": 2.7852075849172975,
+      "admittedHouseholds": 0.13666486282667176,
+      "exitedHouseholds": 0.136659189894482,
+      "hiredJobs": 0.2809889155478267,
+      "vacatedJobs": 0.2809775696834471,
+      "recruitmentLabour": 9.36593033531258,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9761378810937558,
+      "jobUtilization": 0.49294370185855685,
+      "serviceUtilization": 0.7911854404654652,
+      "serviceCoverage": 1,
+      "balance": 0.49294370185855685,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.83296516765629,
+          "utilization": 0.9761378810937558
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.36593033531258,
+          "utilization": 0.49294370185855685
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.03252336884384,
+          "utilization": 0.7911854404654652
+        }
+      ]
+    },
+    {
+      "month": 24,
+      "householdCapacity": 7,
+      "occupiedHouseholds": 6.8329682253667405,
+      "residents": 15.03253009580683,
+      "employmentCapacity": 19,
+      "filledJobs": 9.365936450733482,
+      "serviceCapacity": 19,
+      "serviceDemand": 15.03253009580683,
+      "usedService": 15.03253009580683,
+      "unmetService": 0,
+      "waitingHouseholds": 38.24516488636284,
+      "waitingJobs": 62.634063549266514,
+      "departedHouseholds": 2.921866888270423,
+      "admittedHouseholds": 0.13666236106357585,
+      "exitedHouseholds": 0.13665930335312582,
+      "hiredJobs": 0.28098402548027934,
+      "vacatedJobs": 0.2809779100593772,
+      "recruitmentLabour": 9.365936450733482,
+      "employmentSupport": 1,
+      "serviceAdmissionCover": 1,
+      "householdUtilization": 0.9761383179095343,
+      "jobUtilization": 0.4929440237228149,
+      "serviceUtilization": 0.791185794516149,
+      "serviceCoverage": 1,
+      "balance": 0.4929440237228149,
+      "constraint": "workforce",
+      "buildings": [
+        {
+          "id": "study-0",
+          "purpose": "residential",
+          "capacity": 7,
+          "used": 6.8329682253667405,
+          "utilization": 0.9761383179095343
+        },
+        {
+          "id": "study-1",
+          "purpose": "commercial",
+          "capacity": 19,
+          "used": 9.365936450733482,
+          "utilization": 0.4929440237228149
+        },
+        {
+          "id": "study-2",
+          "purpose": "civic",
+          "capacity": 19,
+          "used": 15.03253009580683,
+          "utilization": 0.791185794516149
+        }
+      ]
+    }
+  ]
+}

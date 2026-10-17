@@ -29,6 +29,7 @@ export default function PlanLibrary() {
         s.context,
         s.physical,
         s.development,
+        s.living,
       );
       const url = URL.createObjectURL(
         new Blob([JSON.stringify(file, null, 2) + "\n"], {

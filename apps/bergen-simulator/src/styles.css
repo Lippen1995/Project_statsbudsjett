@@ -1189,3 +1189,16 @@ button:disabled { cursor: default; opacity: .48; }
  .building-map-tools .planning-actions{margin:6px 0;flex-wrap:nowrap;}
  .building-map-tools .construction-gesture-select{display:block;min-width:0;max-width:120px;background:#355b51;border:1px solid #7b9581;color:#fff0cc;font-size:10px;}
 }
+/* Living City: a time control and a few legible stocks, with the city still central. */
+.district-panel h3{font:20px Georgia,serif;margin:13px 0;}
+.district-date{display:flex;gap:9px;align-items:baseline;border-block:1px solid #b4c5b3;padding:12px 0;}
+.district-date strong{font:23px Georgia,serif;letter-spacing:.03em;}.district-date span{font-size:10px;}
+.district-time .planning-actions{flex-wrap:wrap;}.district-state{font-size:10px;display:block;color:#58705e;}
+.district-readout{margin:17px 0;}.district-readout dl{margin:0;}.district-readout dl>div{padding:11px 0;border-bottom:1px solid #c6d1be;}
+.district-readout dt{font-size:10px;}.district-readout dd{margin:5px 0;font:23px Georgia,serif;}.district-readout dd small{font:10px Inter,"Segoe UI",sans-serif;}
+.district-readout dl span,.district-readout>p,.district-balance span{font-size:10px;line-height:1.6;display:block;}
+.district-balance{padding:12px 0;}.district-balance strong{font-size:11px;}.district-trend{width:100%;height:54px;}
+.district-constraint{border-left:2px solid #a37a35;padding-left:10px;font-size:11px;line-height:1.6;margin:12px 0;}.district-constraint p{font-size:10px;}
+.living-assumptions .building-dimensions small{font-size:9px;color:#61745e;}.district-building-info{font-size:10px;line-height:1.7;border-left:2px solid #719580;padding-left:10px;}
+.district-map-tools .district-date{border-color:#617d6c;margin-top:9px;}.district-map-tools .district-state{color:#d2e0cf;}.district-map-tools .planning-actions{flex-wrap:wrap;margin:8px 0;}.district-map-tools>button{margin-top:8px;}
+@media(max-width:700px){.district-map-tools{width:calc(100% - 24px);padding:9px 12px;}.district-map-tools .district-date{padding:5px 0;}.district-map-tools .district-date strong{font-size:19px;}.district-map-tools>span:last-of-type{display:none;}.district-map-tools .planning-actions button{min-height:36px;}.district-map-tools>button{font-size:10px;}.living-assumptions .building-dimensions input{min-height:42px;}}

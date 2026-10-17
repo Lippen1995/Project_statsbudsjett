@@ -1,0 +1,60 @@
+{
+  "browserVersion": "151.0.7922.173",
+  "renderer": "ANGLE SwiftShader software renderer; physical-device GPU performance unverified",
+  "checks": [
+    "Load legacy 4B → living month zero → six dynamic months → identify workforce imbalance → add residential storey → rerun from identical baseline → compare saved strategies",
+    "Direct 3D activity colour change without mesh growth; previous-month inspection; automatic play/pause; 24-month challenge; local save/reload and exact replay; strict imports; 3B/4A/4B compatibility; construction undo/redo",
+    "Mobile timeline/inspection, 24-month scenario replay, local reload, viewport fit and zero idle frames; repeated worker resets retain bounded heap and fixed GPU geometry"
+  ],
+  "desktop": {
+    "loadMs": 3123.683711,
+    "finalStocks": {
+      "month": "24",
+      "households": "6.8329682253667405",
+      "jobs": "9.365936450733482",
+      "serviceDemand": "15.03253009580683",
+      "serviceUnmet": "0",
+      "balance": "0.4929440237228149"
+    },
+    "activeProfile": {
+      "calls": 11,
+      "triangles": 289528,
+      "lines": 53,
+      "geometries": 11,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 396.09999999962747,
+      "p95CameraLatencyMs": 443.8999999994412,
+      "medianCpuFrameMs": 0.5,
+      "idleFrames": 0
+    },
+    "workerComputeMs": "4.7999999998137355",
+    "memory": {
+      "retainedGeometries": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "heapBefore": 24467916,
+      "heapAfter": 24640692
+    }
+  },
+  "mobile": {
+    "loadMs": 2065.922609999994,
+    "activeProfile": {
+      "calls": 11,
+      "triangles": 289528,
+      "lines": 53,
+      "geometries": 11,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 207.8999999994412,
+      "p95CameraLatencyMs": 392.59999999962747,
+      "medianCpuFrameMs": 0.6999999992549419,
+      "idleFrames": 0
+    }
+  },
+  "passed": true,
+  "errors": []
+}

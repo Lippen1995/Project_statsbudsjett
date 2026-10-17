@@ -1,4 +1,9 @@
 import {
+  defaultLiving,
+  validateLiving,
+  type LivingInputs,
+} from "../district/model";
+import {
   emptyDevelopment,
   validateDevelopment,
   type DevelopmentPlan,
@@ -37,19 +42,18 @@ import {
   type SavedPlan,
 } from "../planning/scenarios";
 export type Phase =
-  | "closed"
-  | "ready"
-  | "running"
-  | "paused"
-  | "complete"
-  | "error";
+  "closed" | "ready" | "running" | "paused" | "complete" | "error";
 export type MapView = "plan" | "baseline" | "reference";
 interface Draft {
+  living: LivingInputs;
   plan: Plan;
   physical: PhysicalPlan | null;
   development: DevelopmentPlan | null;
 }
 interface ScenarioState {
+  living: LivingInputs;
+  districtEpoch: number;
+  editLiving: (inputs: unknown) => boolean;
   context: PlacementContext | null;
   physical: PhysicalPlan | null;
   development: DevelopmentPlan | null;
@@ -58,6 +62,7 @@ interface ScenarioState {
   removeBuilding: (id: string) => void;
   clearBuildings: () => void;
   showBuildings: boolean;
+
   toggleBuildings: () => void;
   removeSpace: (id: string) => void;
   source: TransportSource | null;
@@ -127,6 +132,8 @@ const message = (e: unknown) =>
   e instanceof Error ? e.message : "The plan could not be processed.";
 export const useScenario = create<ScenarioState>((set, get) => ({
   ...clean,
+  living: defaultLiving(),
+  districtEpoch: 0,
   context: null,
   physical: null,
   development: null,
@@ -143,10 +150,13 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       plan = emptyPlan(network),
       context = data ? placementContext(data, network) : null,
       physical = context ? emptyPhysical(context) : null,
-      development = context ? emptyDevelopment(context) : null;
+      development = context ? emptyDevelopment(context) : null,
+      living = defaultLiving();
     stop();
     set({
       ...clean,
+      living,
+      districtEpoch: get().districtEpoch + 1,
       context,
       physical,
       development,
@@ -154,7 +164,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       source: owned,
       network,
       plan,
-      history: [{ plan, physical, development }],
+      history: [{ plan, physical, development, living }],
       phase: "ready",
       library: [],
       storageBlocked: false,
@@ -169,6 +179,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       const updated = [
         ...history.slice(0, cursor + 1),
         {
+          living: get().living,
           plan: next,
           physical: get().physical,
           development: get().development,
@@ -206,7 +217,12 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       if (JSON.stringify(physical) === JSON.stringify(s.physical)) return true;
       const history = [
         ...s.history.slice(0, s.cursor + 1),
-        { plan: s.plan, physical, development: s.development },
+        {
+          plan: s.plan,
+          physical,
+          development: s.development,
+          living: s.living,
+        },
       ].slice(-51);
       stop();
       set({
@@ -238,7 +254,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     };
     const history = [
       ...s.history.slice(0, s.cursor + 1),
-      { plan: s.plan, physical, development: s.development },
+      { plan: s.plan, physical, development: s.development, living: s.living },
     ].slice(-51);
     stop();
     set({
@@ -270,7 +286,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         return true;
       const history = [
         ...s.history.slice(0, s.cursor + 1),
-        { plan: s.plan, physical: s.physical, development },
+        { plan: s.plan, physical: s.physical, development, living: s.living },
       ].slice(-51);
       // Geometry-only construction preserves all traffic results and the running worker.
       set({
@@ -299,7 +315,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     if (development.proposals.length === s.development.proposals.length) return;
     const history = [
       ...s.history.slice(0, s.cursor + 1),
-      { plan: s.plan, physical: s.physical, development },
+      { plan: s.plan, physical: s.physical, development, living: s.living },
     ].slice(-51);
     set({
       development,
@@ -316,7 +332,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     const development = { ...s.development, proposals: [] };
     const history = [
       ...s.history.slice(0, s.cursor + 1),
-      { plan: s.plan, physical: s.physical, development },
+      { plan: s.plan, physical: s.physical, development, living: s.living },
     ].slice(-51);
     set({
       development,
@@ -324,6 +340,35 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       cursor: history.length - 1,
       notice: "All proposed buildings removed. Existing geography retained.",
     });
+  },
+  editLiving: (inputs) => {
+    const s = get();
+    if (!s.plan) return false;
+    try {
+      const living = validateLiving(inputs);
+      if (JSON.stringify(living) === JSON.stringify(s.living)) return true;
+      const history = [
+        ...s.history.slice(0, s.cursor + 1),
+        {
+          plan: s.plan,
+          physical: s.physical,
+          development: s.development,
+          living,
+        },
+      ].slice(-51);
+      set({
+        living,
+        history,
+        cursor: history.length - 1,
+        error: "",
+        notice:
+          "District assumptions changed. Living City restarts at month zero; traffic is unchanged.",
+      });
+      return true;
+    } catch (e) {
+      set({ error: message(e) });
+      return false;
+    }
   },
   toggleBuildings: () => set((s) => ({ showBuildings: !s.showBuildings })),
   undo: () => {
@@ -337,7 +382,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       set({
         ...structuredClone(target),
         cursor: s.cursor - 1,
-        notice: "Construction edit undone. Traffic results retained.",
+        notice:
+          "Design or district-input edit undone. Traffic results retained.",
       });
       return;
     }
@@ -361,7 +407,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
       set({
         ...structuredClone(target),
         cursor: s.cursor + 1,
-        notice: "Construction edit restored. Traffic results retained.",
+        notice:
+          "Design or district-input edit restored. Traffic results retained.",
       });
       return;
     }
@@ -455,14 +502,17 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     stop();
     const plan = network ? emptyPlan(network) : null,
       physical = get().context ? emptyPhysical(get().context!) : null,
-      development = get().context ? emptyDevelopment(get().context!) : null;
+      development = get().context ? emptyDevelopment(get().context!) : null,
+      living = defaultLiving();
     set({
       ...clean,
+      living,
+      districtEpoch: get().districtEpoch + 1,
       plan,
       physical,
       development,
       showBuildings: true,
-      history: plan ? [{ plan, physical, development }] : [],
+      history: plan ? [{ plan, physical, development, living }] : [],
       phase: network ? "ready" : "closed",
       notice: "City restored to the original model. Saved plans are retained.",
     });
@@ -471,6 +521,8 @@ export const useScenario = create<ScenarioState>((set, get) => ({
     stop();
     set({
       ...clean,
+      living: defaultLiving(),
+      districtEpoch: get().districtEpoch + 1,
       context: null,
       physical: null,
       development: null,
@@ -539,6 +591,7 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         s.context,
         s.physical,
         s.development,
+        s.living,
       );
       const id = duplicate || !s.currentId ? crypto.randomUUID() : s.currentId;
       const record = { id, savedAt: new Date().toISOString(), scenario };
@@ -614,9 +667,22 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         physical,
         development,
         showBuildings: true,
-        history: [{ plan, physical, development }],
+        history: [
+          {
+            plan,
+            physical,
+            development,
+            living: record.scenario.living
+              ? validateLiving(record.scenario.living)
+              : defaultLiving(),
+          },
+        ],
         cursor: 0,
         referenceId: null,
+        living: record.scenario.living
+          ? validateLiving(record.scenario.living)
+          : defaultLiving(),
+        districtEpoch: get().districtEpoch + 1,
         phase: "ready",
         notice: "Saved plan restored. Run to recalculate its outcomes.",
       });
@@ -639,12 +705,21 @@ export const useScenario = create<ScenarioState>((set, get) => ({
         ...resultReset,
         physical,
         development,
+        living: file.living ?? defaultLiving(),
+        districtEpoch: get().districtEpoch + 1,
         showBuildings: true,
         plan: file.plan,
         name: file.name,
         currentId: null,
         referenceId: null,
-        history: [{ plan: file.plan, physical, development }],
+        history: [
+          {
+            plan: file.plan,
+            physical,
+            development,
+            living: file.living ?? defaultLiving(),
+          },
+        ],
         cursor: 0,
         phase: "ready",
         notice:

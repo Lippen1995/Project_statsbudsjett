@@ -22,7 +22,9 @@
     "test:physical": "node tests/physical-browser.mjs",
     "test:physical-baseline": "node tests/capture-physical-baseline.mjs",
     "test:buildings": "node tests/building-browser.mjs",
-    "test:building-baseline": "node tests/capture-building-baseline.mjs"
+    "test:building-baseline": "node tests/capture-building-baseline.mjs",
+    "test:living": "node tests/living-browser.mjs",
+    "test:living-baseline": "node tests/capture-living-baseline.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.4.0",

@@ -1,0 +1,72 @@
+{
+  "interpretation": "Synthetic proposed-site audit only. Nearest-node distance and a clear straight line do not verify an entrance, right of way, footpath connection or carriageway access. No connector edges or generated trips are added.",
+  "sourceHashes": {
+    "public/data/bergen.json": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812",
+    "public/data/bryggen-transport.json": "7082fe3888c1dfd1fb9a8603c86bdce9fe09df56bfa7cf7900150815a7268d11"
+  },
+  "auditedWayCount": 27,
+  "graphNodeCount": 26,
+  "proposedBuildingCount": 3,
+  "sourceContainsEntranceOrSiteConnectorRecords": false,
+  "evidenceForMissingConnectors": "The pinned transport contract contains only nodes/ways for the audited highway graph; proposed sites have no matching source node or entrance IDs. City building records contain footprints/tags, not a verified site-to-graph entrance contract.",
+  "sites": [
+    {
+      "proposalId": "study-0",
+      "center": [
+        -95,
+        -317
+      ],
+      "nearestAuditedGraphNodeId": "75457133",
+      "nearestNodePoint": [
+        -112.55636979999348,
+        -309.66717894177094
+      ],
+      "straightLineDistanceM": 19.026,
+      "straightLineObservedBuildingConflicts": [],
+      "associatedSourceWays": [
+        "way/9649862",
+        "way/984438272"
+      ],
+      "verifiedSiteConnector": false
+    },
+    {
+      "proposalId": "study-1",
+      "center": [
+        -23,
+        -237
+      ],
+      "nearestAuditedGraphNodeId": "25284792",
+      "nearestNodePoint": [
+        33.426330416451236,
+        -192.74555207670673
+      ],
+      "straightLineDistanceM": 71.71,
+      "straightLineObservedBuildingConflicts": [],
+      "associatedSourceWays": [
+        "way/59411015",
+        "way/225959813"
+      ],
+      "verifiedSiteConnector": false
+    },
+    {
+      "proposalId": "study-2",
+      "center": [
+        9,
+        -213
+      ],
+      "nearestAuditedGraphNodeId": "25284792",
+      "nearestNodePoint": [
+        33.426330416451236,
+        -192.74555207670673
+      ],
+      "straightLineDistanceM": 31.732,
+      "straightLineObservedBuildingConflicts": [],
+      "associatedSourceWays": [
+        "way/59411015",
+        "way/225959813"
+      ],
+      "verifiedSiteConnector": false
+    }
+  ],
+  "decision": "Keep district and transport results separate; future coupling requires a reviewed source revision with explicit site entrances/connectors and bounded trip rates."
+}

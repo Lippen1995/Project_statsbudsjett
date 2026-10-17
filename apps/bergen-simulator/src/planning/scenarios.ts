@@ -1,3 +1,4 @@
+import { validateLiving, type LivingInputs } from "../district/model";
 import {
   validateDevelopment,
   emptyDevelopment,
@@ -19,7 +20,8 @@ import type { Network } from "../simulation/network";
 export const STORAGE_KEY = "bergen.reimagined.plans.v1";
 export interface ScenarioFile {
   kind: "bergen-reimagined-plan";
-  version: 1 | 2 | 3;
+  version: 1 | 2 | 3 | 4;
+  living?: LivingInputs;
   physical?: PhysicalPlan;
   development?: DevelopmentPlan;
   name: string;
@@ -53,42 +55,41 @@ export function validateScenario(
   context?: PlacementContext | null,
 ): ScenarioFile {
   const s = object(value);
-  exactKeys(
-    s,
-    s.version === 3
-      ? ["kind", "version", "name", "plan", "physical", "development"]
-      : s.version === 2
-        ? ["kind", "version", "name", "plan", "physical"]
-        : ["kind", "version", "name", "plan"],
-  );
+  const fields = [
+    "kind",
+    "version",
+    "name",
+    "plan",
+    ...(s.version === 2 || s.version === 3 || s.version === 4
+      ? ["physical"]
+      : []),
+    ...(s.version === 3 || s.version === 4 ? ["development"] : []),
+    ...(s.version === 4 ? ["living"] : []),
+  ];
+  exactKeys(s, fields);
   if (
     s.kind !== "bergen-reimagined-plan" ||
-    (s.version !== 1 && s.version !== 2 && s.version !== 3)
+    ![1, 2, 3, 4].includes(s.version as number)
   )
     throw new Error(
       "Unsupported scenario version. No automatic migration is available for this format.",
     );
-  if ((s.version === 2 || s.version === 3) && !context)
+  if (s.version !== 1 && !context)
     throw new Error(
       "Physical plans require the matching geographic snapshot before import.",
     );
+  const physical =
+    s.version !== 1 ? validatePhysical(s.physical, context!) : null;
   return {
     kind: "bergen-reimagined-plan",
-    version: s.version as 1 | 2 | 3,
-    ...(s.version === 2 || s.version === 3
-      ? { physical: validatePhysical(s.physical, context!) }
-      : {}),
-    ...(s.version === 3
-      ? {
-          development: validateDevelopment(
-            s.development,
-            context!,
-            validatePhysical(s.physical, context!),
-          ),
-        }
-      : {}),
+    version: s.version as 1 | 2 | 3 | 4,
     name: planName(s.name),
     plan: validatePlan(s.plan, network),
+    ...(physical ? { physical } : {}),
+    ...(s.version === 3 || s.version === 4
+      ? { development: validateDevelopment(s.development, context!, physical) }
+      : {}),
+    ...(s.version === 4 ? { living: validateLiving(s.living) } : {}),
   };
 }
 export function parseScenario(
@@ -107,13 +108,15 @@ export function scenarioFile(
   context?: PlacementContext | null,
   physical?: PhysicalPlan | null,
   development?: DevelopmentPlan | null,
+  living?: LivingInputs | null,
 ): ScenarioFile {
   return validateScenario(
     {
       kind: "bergen-reimagined-plan",
-      version: context ? (development ? 3 : 2) : 1,
+      version: context ? (development ? (living ? 4 : 3) : 2) : 1,
       name,
       plan,
+      ...(context && development && living ? { living } : {}),
       ...(context ? { physical: physical ?? emptyPhysical(context) } : {}),
       ...(context && development
         ? { development: development ?? emptyDevelopment(context) }

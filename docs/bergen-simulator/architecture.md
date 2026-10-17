@@ -237,3 +237,21 @@ parameters, never imported meshes, terrain or validity flags. Version-1/2 scenar
 remain readable and their saved bytes are untouched until an explicit save. All
 layers are validated together before applying an import or replacing storage.
 See [4B contracts, assumptions and evidence](milestone-4b.md).
+
+## Milestone 5A — monthly living district
+
+`district/model.ts` and `engine.ts` define a pure deterministic stock-flow system for
+proposed buildings only, with strict versioned coefficients, immutable owned inputs,
+monthly demand queues, turnover, bounded recruitment/admissions and service use.
+The independent district worker holds at most two 25-month histories for current and
+saved designs. Generation and worker-identity guards reject stale results; validated
+replies enforce stock/flow and capacity invariants. Construction/input changes reset
+the district to identical month-zero stocks. The existing traffic worker and source
+graph remain unchanged and uncoupled because no site entrance is verified.
+
+Scenario version 4 adds version-1 living coefficients. Legacy versions 1/2/3 are
+read without storage writes and initialize defaults in memory. Results, elapsed
+months and completion flags are never imported or saved. Coefficients join the
+existing bounded shared history. The proposed-building renderer updates its existing
+vertex colour attribute on visible monthly changes; no additional passes, meshes,
+agents or continuous rendering are introduced. See [5A equations and contracts](milestone-5a.md).

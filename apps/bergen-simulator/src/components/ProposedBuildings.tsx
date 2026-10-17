@@ -13,7 +13,11 @@ import {
 } from "three";
 import type { SurfaceSampler } from "../geo/surface";
 import type { Point } from "../geo/types";
-import { developmentGeometry } from "../geo/development";
+import { useDistrict } from "../state/district";
+import {
+  developmentGeometry,
+  applyDevelopmentActivity,
+} from "../geo/development";
 import {
   buildingPlacement,
   footprint,
@@ -50,6 +54,10 @@ export default function ProposedBuildings({
   terrain: BufferGeometry;
   surface: SurfaceSampler;
 }) {
+  const invalidate = useThree((v) => v.invalidate);
+  const active = useDistrict((d) => d.active && d.tint),
+    currentActivity = useDistrict((d) => d.current[d.month]),
+    referenceActivity = useDistrict((d) => d.reference?.[d.month]);
   const s = useScenario(),
     c = useConstruction(),
     mode = usePhysical((p) => p.mode),
@@ -91,6 +99,23 @@ export default function ProposedBuildings({
       ),
     [s.context, s.physical, proposals, draft, c.selectedId, surface],
   );
+  useEffect(() => {
+    const r = s.mapView === "reference" ? referenceActivity : currentActivity;
+    const activity =
+      active && r && s.mapView !== "baseline"
+        ? new Map(r.buildings.map((b) => [b.id, b.utilization]))
+        : null;
+    applyDevelopmentActivity(batch, activity, draft?.id);
+    invalidate();
+  }, [
+    active,
+    currentActivity,
+    referenceActivity,
+    s.mapView,
+    batch,
+    draft?.id,
+    invalidate,
+  ]);
   useEffect(
     () => () => {
       batch.body.dispose();

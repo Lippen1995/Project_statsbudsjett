@@ -121,3 +121,22 @@ geometric game quantities; no population, employment, fiscal or demand effects a
 inferred. Scenario version 3 safely reads 3B/4A plans. The optional A New Urban Quarter
 challenge has an automatically verified multi-building/public-space solution.
 See [4B acceptance and remaining limits](milestone-4b.md).
+
+## Milestone 5A — living proposed district
+
+Build → advance monthly time → inspect a constraint → revise the design → rerun
+from identical empty stocks. Residential, commercial and civic proposals provide
+synthetic capacity. Occupancy, filled positions, demand queues and aggregate civic
+use evolve through a deterministic 24-month worker model, with explicit external
+demand, turnover, workforce and bounded admission relationships. Capacity does not
+create instant occupants. All counts are hypothetical equivalents for this small
+authoring district, never observed or forecast Bergen statistics.
+
+Living City offers play/pause, one/six/24-month advances, past-month inspection,
+reset, contextual building utilization tint, saved-strategy comparison and editable
+model assumptions. The optional A Balanced New Quarter challenge requires a viable
+mix of use, utilization, services and retained public space. Version-4 saves retain
+all design layers and simulation inputs; versions 1–3 remain readable unchanged.
+Traffic remains separate until verified entrance/graph connectivity exists. No
+financial, individual-agent, real migration, employment or service forecast is added.
+See [5A specification and evidence](milestone-5a.md).

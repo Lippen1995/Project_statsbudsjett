@@ -440,7 +440,7 @@ try {
   await count(page, 2);
   assert.match(await page.getByLabel("Development summary").innerText(), /189/);
   const beforeRun = await exportPlan(page);
-  assert.equal(beforeRun.version, 3);
+  assert.equal(beforeRun.version, 4);
   assert.equal(beforeRun.development.proposals.length, 2);
   assert.equal(beforeRun.physical.proposals.length, 1);
   assert.equal(

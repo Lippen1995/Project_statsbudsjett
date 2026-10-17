@@ -1,3 +1,4 @@
+import { DistrictBuildingInfo } from "./DistrictPanel";
 import { useMemo } from "react";
 import { useConstruction } from "../state/construction";
 import { useScenario } from "../state/scenario";
@@ -377,6 +378,7 @@ export default function BuildingEditor() {
                 {number(b.width * b.depth * b.storeys)} m² assumed floor area ·{" "}
                 {number(buildingHeight(b), 1)} m height
               </p>
+              <DistrictBuildingInfo id={b.id} />
               <div className="planning-actions">
                 <button
                   onClick={() => {

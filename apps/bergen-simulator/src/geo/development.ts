@@ -111,8 +111,41 @@ export function developmentGeometry(
     ranges.push({ id: b.id, end: positions.length / 9 });
   }
   return {
+    baseColors: new Float32Array(colors),
     body: buffer(positions, colors, true),
     edges: buffer(lines, lineColors),
     ranges,
   };
+}
+
+const activityWarm = new Color("#efdbad");
+/** Activity only uploads colours; positions, triangles, normals and draw passes stay fixed. */
+export function applyDevelopmentActivity(
+  batch: ReturnType<typeof developmentGeometry>,
+  activity: Map<string, number> | null,
+  excludedId?: string,
+) {
+  const attribute = batch.body.getAttribute("color"),
+    array = attribute.array;
+  array.set(batch.baseColors);
+  let start = 0;
+  for (const range of batch.ranges) {
+    const end = range.end * 9,
+      value = activity?.get(range.id);
+    if (
+      value !== undefined &&
+      range.id !== excludedId &&
+      Number.isFinite(value)
+    ) {
+      const u = Math.max(0, Math.min(1, value)),
+        mix = 0.2 * u,
+        brightness = 0.55 + 0.45 * u,
+        warm = [activityWarm.r, activityWarm.g, activityWarm.b];
+      for (let i = start; i < end; i++)
+        array[i] =
+          (batch.baseColors[i] * (1 - mix) + warm[i % 3] * mix) * brightness;
+    }
+    start = end;
+  }
+  attribute.needsUpdate = true;
 }

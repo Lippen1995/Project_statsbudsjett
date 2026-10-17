@@ -3,7 +3,7 @@ import type { Point } from "../geo/types";
 import type { PublicSpace } from "../physical/model";
 import { useScenario } from "./scenario";
 interface PhysicalTool {
-  mode: "streets" | "spaces" | "buildings";
+  mode: "streets" | "spaces" | "buildings" | "living";
   action: "navigate" | "draw" | "reshape";
   draft: PublicSpace | null;
   past: Point[][];
@@ -14,7 +14,7 @@ interface PhysicalTool {
   vertex: number;
   hint: string;
   challenge: boolean;
-  setMode: (mode: "streets" | "spaces" | "buildings") => void;
+  setMode: (mode: "streets" | "spaces" | "buildings" | "living") => void;
   start: () => void;
   select: (id: string) => void;
   reshape: () => void;

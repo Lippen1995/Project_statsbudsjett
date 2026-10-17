@@ -80,3 +80,20 @@ existing construction too. Preserve scenario-1/2 reads and existing saved bytes.
 Construction must not silently change traffic demand, capacity, access or outcomes.
 Audit multiple real-snapshot sites before changing placement bounds. Measure against
 the exact 4A baseline and retain zero idle rendering and disposal checks.
+
+## Living district (5A)
+
+Keep coefficients and state variables explicitly synthetic and unit-labelled. The
+pure engine must not import UI, rendering, browser/storage, clocks or network APIs.
+Bound runs to 24 monthly ticks and eight buildings; retain waiting demand and check
+stock/flow, capacity and service reconciliation. Own/freeze engine inputs; never
+mutate observed geography. New building or coefficient inputs invalidate previous
+history and restart at the documented empty baseline. Reject stale worker replies.
+
+Save only validated inputs. Read legacy scenario versions 1/2/3 without automatic
+storage rewrites, and initialize living defaults only in memory. Never accept cached
+statistics or completion flags as authority. Keep time playback independent of R3F
+render loops and tint existing buffers rather than creating actors. District activity
+must not change traffic inputs or create fictional connectors. Verify source-node
+site entrances before any explicit future coupling. Challenge thresholds need an
+actual geometrically valid winning plan and common-engine exploit tests.

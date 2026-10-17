@@ -196,3 +196,19 @@ The read-only grid survey and hashes in [4B evidence](milestone-4b-evidence/site
 are derived screening results. Design-study coordinates and proposed dimensions do
 not establish vacant land, cadastral boundaries, heritage clearance, surveyed
 building heights, construction permission or engineering feasibility.
+
+### Milestone 5A source boundary
+
+No geographic, population, employment or service dataset was added or refreshed.
+The 5A district is a proposed-building-only game model with authored conversion,
+demand, uptake, workforce and turnover assumptions; none is calibrated to Bergen.
+Existing OSM ODbL and Kartverket CC BY 4.0 attribution/CRS/vertical datum/acquisition
+records remain authoritative for the unchanged scene. Derived monthly results must
+never be exported as observed municipal statistics.
+
+The [read-only site-access audit](milestone-5a-evidence/transport-access-audit.json)
+retains source hashes and nearest audited OSM node/way IDs. It uses the existing
+local metre projection, not invented road geometry. Node proximity is insufficient
+to verify a site connector; no generated travel demand enters the 27-way graph.
+All development coordinates, utilization tints and economic inputs remain separate
+hypotheses. See [complete coefficients and model limits](milestone-5a.md).

@@ -1,3 +1,5 @@
+import DistrictPanel, { DistrictMapTools } from "./DistrictPanel";
+import { useDistrict } from "../state/district";
 import { useConstruction } from "../state/construction";
 import BuildingEditor, { BuildingMapTools } from "./BuildingEditor";
 import { usePhysical } from "../state/physical";
@@ -85,8 +87,9 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
         <span className="eyebrow">URBAN PLANNING SANDBOX</span>
         <h2>Your streets. Your proposal.</h2>
         <p>
-          Redesign how real streets around Bryggen operate. The city stays real;
-          your interventions are hypothetical.
+          Shape a small district around Bryggen, then advance its hypothetical
+          households, jobs and services. Existing Bergen remains observed
+          geography.
         </p>
         <button className="plan-button" onClick={enter} disabled={loading}>
           {loading ? "Checking mapped network…" : "Enter Planning Mode →"}
@@ -118,7 +121,7 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
       </div>
       <h2>Draw a different future.</h2>
       <p className="synthetic-label">
-        HYPOTHETICAL PLAN · SYNTHETIC TRAFFIC · NOT A FORECAST
+        HYPOTHETICAL PLAN · SYNTHETIC MODELS · NOT A FORECAST
       </p>
       <div className="plan-heading">
         <strong>{s.name}</strong>
@@ -201,8 +204,26 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
         >
           Buildings
         </button>
+        <button
+          aria-pressed={p.mode === "living"}
+          onClick={() => {
+            c.cancel();
+            p.setMode("living");
+            if (!useDistrict.getState().active)
+              useCity.getState().focus([-35, -255], true);
+            useDistrict.getState().open();
+            if (window.matchMedia("(max-width: 700px)").matches)
+              document
+                .querySelector("canvas")
+                ?.scrollIntoView({ block: "center" });
+          }}
+        >
+          Living City
+        </button>
       </div>
-      {p.mode === "buildings" ? (
+      {p.mode === "living" ? (
+        <DistrictPanel />
+      ) : p.mode === "buildings" ? (
         <BuildingEditor />
       ) : p.mode === "spaces" ? (
         <PublicSpaceEditor />
@@ -215,39 +236,45 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
           plan.
         </p>
       )}
-      <div className="simulation-controls">
-        {s.phase === "running" || s.phase === "paused" ? (
-          <button className="plan-button" onClick={s.pauseResume}>
-            {s.phase === "running" ? "Pause simulation" : "Resume simulation"}
-          </button>
-        ) : (
-          <button
-            className="plan-button"
-            onClick={s.run}
-            disabled={!!p.draft || !!c.draft}
-          >
-            ▶ Run plan
-          </button>
-        )}
-      </div>
-      <div className="simulation-progress" data-compute-ms={s.computeMs}>
-        <progress
-          aria-label="Simulation progress"
-          value={s.intervention?.tick ?? 0}
-          max={TOTAL_TICKS}
-        />
-        <span role="status">
-          {s.phase === "complete"
-            ? "Simulation complete"
-            : s.phase === "paused"
-              ? "Simulation paused"
-              : s.phase === "running"
-                ? "Simulating"
-                : "Ready to test your plan"}{" "}
-          · {number(((s.intervention?.tick ?? 0) * TICK_SECONDS) / 60, 1)} / 30
-          min
-        </span>
-      </div>
+      {p.mode !== "living" && (
+        <>
+          <div className="simulation-controls">
+            {s.phase === "running" || s.phase === "paused" ? (
+              <button className="plan-button" onClick={s.pauseResume}>
+                {s.phase === "running"
+                  ? "Pause simulation"
+                  : "Resume simulation"}
+              </button>
+            ) : (
+              <button
+                className="plan-button"
+                onClick={s.run}
+                disabled={!!p.draft || !!c.draft}
+              >
+                ▶ Run plan
+              </button>
+            )}
+          </div>
+          <div className="simulation-progress" data-compute-ms={s.computeMs}>
+            <progress
+              aria-label="Simulation progress"
+              value={s.intervention?.tick ?? 0}
+              max={TOTAL_TICKS}
+            />
+            <span role="status">
+              {s.phase === "complete"
+                ? "Simulation complete"
+                : s.phase === "paused"
+                  ? "Simulation paused"
+                  : s.phase === "running"
+                    ? "Simulating"
+                    : "Ready to test your plan"}{" "}
+              · {number(((s.intervention?.tick ?? 0) * TICK_SECONDS) / 60, 1)} /
+              30 min
+            </span>
+          </div>
+        </>
+      )}
       {s.error && (
         <p className="planning-error" role="alert">
           {s.error}
@@ -258,17 +285,28 @@ export default function ScenarioPanel({ data }: { data: CityData }) {
           {s.notice}
         </p>
       )}
-      <PlanningResults />
-      <label className="traffic-toggle">
-        <input type="checkbox" checked={s.heatmap} onChange={s.toggleHeatmap} />
-        Traffic intensity on map
-      </label>
-      {!s.challenge && (
-        <button className="compare-button" onClick={() => s.setChallenge(true)}>
-          Take the challenge · Rethinking Bryggen
-        </button>
+      {p.mode !== "living" && (
+        <>
+          <PlanningResults />
+          <label className="traffic-toggle">
+            <input
+              type="checkbox"
+              checked={s.heatmap}
+              onChange={s.toggleHeatmap}
+            />
+            Traffic intensity on map
+          </label>
+          {!s.challenge && (
+            <button
+              className="compare-button"
+              onClick={() => s.setChallenge(true)}
+            >
+              Take the challenge · Rethinking Bryggen
+            </button>
+          )}
+          <ChallengeReadout />
+        </>
       )}
-      <ChallengeReadout />
       <PlanLibrary />
       <details className="scenario-assumptions">
         <summary>Observed geography & model assumptions</summary>
@@ -317,6 +355,7 @@ export function ScenarioLegend() {
     selectedId = useCity((v) => v.selectedSegmentId),
     selected = useCity((v) => v.selected);
   if (s.phase === "closed") return null;
+  if (p.mode === "living") return <DistrictMapTools />;
   if (p.mode === "spaces") return <PhysicalMapTools />;
   if (p.mode === "buildings") return <BuildingMapTools />;
   const reference = s.library.find((p) => p.id === s.referenceId);

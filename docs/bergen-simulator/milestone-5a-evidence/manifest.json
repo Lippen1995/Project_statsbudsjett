@@ -1,0 +1,29 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "01-month-zero.jpg": "0bff8d78b3193006c63b79f223fc9949d57ee92d5ddc3482975e61c0fbfa390d",
+    "02-six-month-activity.jpg": "3cab8034946eb9269c9751445fd65eaf7628b5f34bf3ea2584b9181ca5aec453",
+    "03-strategy-comparison.jpg": "d487a24a47b689ebf1515f79f50f71cac2b0c6f8e64c0105001597d5040a66f4",
+    "04-balanced-quarter.jpg": "5d23d4b2dd97ef52bad6058b1b047626c89d1824b5ad55eb024238b36a459f5b",
+    "05-mobile-living-quarter.jpg": "5850f1adb3700bcd24f991e628adee78f7878accaa0b136cb222731176e32378",
+    "README.md": "a5d58dd8528027bf9152ebea61f42fdad40ae5e34dd4b774da14f3f1ff63935e",
+    "after-browser-report.json": "91e452df314e7ccff048d285ca5f0822ef0f4789dcb73c985a41e6f1f2a8d760",
+    "baseline-4b-01-observed-bergen.jpg": "3e2ac5bef9e78089f9ff5616e4f6870730a29a31255087a6d65173807529ae7d",
+    "baseline-4b-04-developed-bergen.jpg": "86f21cc585ccd5cac330760372af218c2788832993e21f1ff3534e0f77da3914",
+    "before-browser-report.json": "bdbdb5d67f0a81e87e1d211751c851516d7d08504d57cb301d0b4203e37e0f60",
+    "combined-living-plan.json": "d1a76718885b778c7ec4cbcbbb5ea9b69cbd5896db4ea292389d1bf074b6bffe",
+    "construction-regression.json": "da62ac014c15b6c6d6712099bf393d0cc0ab855d9385acf9f7df3e7333fb1bb5",
+    "explorer-regression.json": "d2a831a5b8eaddb6f90efee7332ae1b1e71762e33365acdfc6fd1b29ac1b9316",
+    "first-complete-browser-report.json": "5e98478529a92372ad15d0e7e8da3e7fc942c65e3d4a449d3cb66c3764ee5d90",
+    "geographic-view-regression.json": "da5a4d1843a49c914a990949e0db4b47a72bacc055f40ed7fc9dda3a0073a846",
+    "legacy-3b.json": "9a0e730f1827a53e91490daa758398eadc7e2b2b9f9a5c8fb275b902e7337e11",
+    "legacy-4a.json": "2a026119d817a6ab049e6391774ef7f290e40e98d5a2a515093fd575022dd582",
+    "legacy-4b.json": "8f1662eba2b9a83a872fc2ca8d49cda62a3669676fa94f617406e95385d78f8a",
+    "living-quarter-example.json": "8bf01e3566a1549c8549f3965d238c9a9a26b41ee4e907e8f74f7bcdb558ee95",
+    "public-space-regression.json": "ccd244515218ddca8cad8468509acb5211e8d64430ec4066f5f90aaa2a6f6ba4",
+    "sample-24-months.json": "8456e5f82e760bf70633c581d3c3b942a20411ba3a39b97e7c4d4403e0915796",
+    "street-regression.json": "7d057e34d42159d8ea8f9311939e858da6ac822237d5a50fcebef657b0fde6ff",
+    "transport-access-audit.json": "be4e6fc1c3e6eb4e354169e58aee5fd480e1cd8b174139d57d9719634b15b7db",
+    "validation.json": "555769f6668024a2455fac5bb69e0360d9c767ab137c081862b9ece8bbbb3ee9"
+  }
+}

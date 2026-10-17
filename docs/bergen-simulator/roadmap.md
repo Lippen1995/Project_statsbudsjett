@@ -1,77 +1,82 @@
 # Roadmap
 
-## 1 — Geographic foundation (this prototype)
+## Completed — geographic foundation and 2A
 
-Independent build; central Bergen OSM snapshot; real terrain; navigation, layer
-controls and inspection; documented provenance; isolated deployment preparation.
-No public deployment is part of this milestone.
+Independent Vite/React application, central Bergen OSM snapshot, source inspection,
+real terrain, navigation and an isolated protected deployment. Milestone 2A added
+the dated Kartverket DTM workflow, NN2000 verification, source-supported gables,
+mapped green areas and batched visual improvements. See [2A](milestone-2a.md).
 
-## 2 — Bergen data quality and spatial streaming (recommended next)
+Geographic work still needed: authoritative open building heights, mapped samples
+at Bryggen/Bergenhus/Nordnes, bridges/tunnels/quays and terrain/base alignment.
+Preserve stable snapshot IDs, attribution, completeness checks and repeatable updates.
+Source revisions require separate review rather than implicit game-feature migrations.
 
-Milestone 2A completed the dated Kartverket DTM workflow, NN2000 verification,
-source-supported gables, mapped green areas and batched visual improvements.
-See [acceptance evidence and limits](milestone-2a.md).
+## Completed — 3A transport and 3B street sandbox
 
-Next confirm access and redistribution rights for authoritative building
-heights where openly licensed, compare mapped samples at Bryggen/Bergenhus/Nordnes,
-and resolve bridges, tunnels, quays and terrain/base alignment. Establish automated
-source completeness and topology checks, stable snapshot versions, attribution and
-repeatable updates. Tile the scene spatially, move mesh preparation to a worker,
-add frustum culling and a geometry budget. Measure frame time/memory on representative
-mobile hardware. Exit when recognition and source fidelity pass a documented review.
+A deterministic worker-based Bryggen/Vågen transport scenario uses validated source
+nodes and directions, synthetic demand, visible intensities and baseline comparison.
+3B generalizes policies into player-authored road-section access/capacity edits,
+shared history, local saves, JSON interchange and a tested Rethinking Bryggen challenge.
+See [3A](milestone-3a.md) and [3B](milestone-3b.md). The 27-way model is not Bergen's
+whole transport network or a calibrated traffic forecast.
 
-## 3 — First deterministic simulation and street sandbox (3A / 3B complete)
+## Completed — 4A physical public spaces
 
-Bryggen/Vågen now has a playable, deterministic worker-based transport scenario
-with three policies, source-node topology, visible road intensities, pause/reset
-and baseline comparisons. Demand and every transport parameter remain synthetic.
-See [3A evidence and assumptions](milestone-3a.md).
+Bounded terrain-following polygons, direct vertex manipulation, accessible numeric
+tools, placement checks, explicit traffic-conflict decisions and combined local plans.
+Geometric eligibility does not establish ownership, heritage clearance, permission
+or engineering feasibility. See [4A](milestone-4a.md).
 
-3B adds direct real-street section edits, bounded access/capacity proposals, undo/redo,
-versioned local plans, JSON interchange and saved-plan comparison. A tested
-Rethinking Bryggen challenge evaluates player plans and penalizes lost access.
+## Completed — 4B conceptual construction
 
-## 4A — Physical public spaces (complete)
+Residential, commercial and civic massing, direct/numeric dimensions, assumed storeys,
+roofs, terrain/building/water/road/proposal conflict checks, reversible visibility,
+version-3 combined scenarios and the verified A New Urban Quarter challenge.
+See [4B](milestone-4b.md). Observed buildings remain immutable. Demolition, excavation,
+parcel rights, heritage constraints and real construction economics are unmodelled.
 
-Bounded terrain-following proposed polygons, direct vertex editing and accessible
-coordinate tools, strict placement validation, explicit traffic conflict decisions,
-shared undo/redo, combined local saves and safe legacy import. The city is observed;
-the surface is hypothetical. See [4A evidence and limits](milestone-4a.md).
+## Completed — 5A The Living City
 
-Next: a small **conceptual building-placement** slice with a separate proposal layer,
-known footprint/height assumptions, terrain/building/water collision checks, reversible
-construction visibility and the existing combined saves. Begin on player-authored
-eligible polygons. Do not imply ownership or permission. Treat removal of observed
-buildings as a later, explicit hypothetical-demolition layer preserving source IDs,
-never deleting geography. Land-use categories can follow as scenario assumptions;
-validated physical, economic or pedestrian consequences need additional evidence.
+A 24-month deterministic worker model gives proposed buildings synthetic household,
+employment and aggregate civic-service roles. Demand queues, turnover, recruitment
+and moderated uptake produce stateful consequences. Time controls, building tint,
+saved-strategy comparisons and a tested Balanced New Quarter challenge complete the
+build/observe/revise loop. Version-4 input-only saves preserve valid versions 1–3.
+See [5A](milestone-5a.md). These are game equivalents, not real Bergen statistics.
 
-Keep widening the audited road/access boundary and profile on actual desktop/mobile
-hardware before animated agents or broader simulation scope.
+## Recommended next — evidence-backed district and access expansion
 
-## 4B and beyond — Construction, land-use and independent persistence
+Measure representative physical desktop/mobile GPUs and profile mesh preparation,
+render scheduling and memory. Software-renderer probes do not establish device FPS.
+Investigate spatial tiles, worker mesh preparation and culling only against measured
+bottlenecks, with explicit geometry budgets and zero unnecessary idle rendering.
 
-Scenario saves, undo, version migrations and comparison views. Provision a dedicated
-simulator database and identity boundary only when needed. Never reuse production
-Neon credentials or a production-derived branch. Add budget, population and transport
-systems incrementally with testable units and sensitivity analysis.
+Audit source-supported site entrances/connectors before coupling living activity to
+roads. Expand the audited network through a documented source revision with complete
+licensing, datum/provenance and topology checks. Then introduce several bounded
+districts with explicit external household/job flows and opt-in capped synthetic trip
+rates. Test access, unrouted demand, sensitivity and conservation at the larger boundary.
+Keep transport separate wherever connectivity is unverified.
 
-## 5 — Fellestall integration
+Add construction timing and investigate traceable parcel/heritage constraints before
+hypothetical demolition or land-use envelopes. Preserve source IDs rather than deleting
+observations. Calibrate only with defensible evidence; defer real-world population,
+labour-market, service, fiscal and economic claims. Cloud persistence or identity is a
+separate milestone: provision an independent simulator boundary only when necessary,
+never production Neon credentials or a production-derived database branch.
 
-Begin with an ordinary link and a versioned read-only municipal fact export.
-Agree ownership, rate limits, caching, provenance, accessibility and independent
-release/rollback procedures. Common navigation and identity are later decisions.
-Existing Fellestall pages and production data processing stay operationally separate.
+## Later — Fellestall integration
 
-## 6 — Municipalities and Norway
+Begin with an ordinary link and a versioned read-only municipal fact export. Agree
+ownership, provenance, rate limits, caching, accessibility and independent release/
+rollback procedures. Common navigation and identity are later decisions. Observed
+facts and simulated outcomes remain separate. Existing Fellestall pages and data
+processing retain their own production lifecycle.
+
+## Later — municipalities and Norway
 
 Validate a second municipality before generalizing the geographic adapter. Then
-introduce municipal boundaries, inter-municipality flows and national policy.
-Nationwide simulation is a separate scale and modelling milestone, not a reason
-to broaden the current Bergen renderer prematurely.
-
-Milestone 4B adds bounded conceptual building placement, terrain/geometry conflict
-checks, direct manipulation, combined version-3 scenarios and the verified A New
-Urban Quarter challenge. See [4B](milestone-4b.md). Next, investigate traceable parcel
-and heritage data before reversible demolition and land-use envelopes; postpone
-construction economics and induced demand until their assumptions can be defended.
+introduce municipal boundaries, inter-municipality flows and national policy. Nationwide
+simulation is a separate scale and modelling milestone, not a reason to broaden the
+current renderer or infer that this small Bryggen district represents all Bergen.
