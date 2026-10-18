@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-18",
+  "mechanism": "instruction-based; no model fine-tuning",
+  "rules": [
+    {
+      "id": "P001",
+      "status": "active",
+      "scope": "article",
+      "rule": "Etabler totalen kort. Bruk hovedplassen på navngitte poster og dokumenterte hendelser.",
+      "provenance": {
+        "kind": "existing-explicit-project-instruction",
+        "source": "docs/analysis-plan.md (lest på main 18. oktober 2026)",
+        "section": "Redaksjonell presisering fra PR #14, 5. oktober 2026"
+      }
+    },
+    {
+      "id": "P002",
+      "status": "active",
+      "scope": "article-and-linkedin",
+      "rule": "Tittel og åpning kan spisses, men årsakspåstander og målestokk må være dokumenterte.",
+      "provenance": {
+        "kind": "existing-explicit-project-instruction",
+        "source": "docs/analysis-plan.md (lest på main 18. oktober 2026)",
+        "section": "Avtalt innhold og gjennomgang"
+      }
+    },
+    {
+      "id": "P003",
+      "status": "active",
+      "scope": "linkedin",
+      "rule": "Bruk en skarp observasjon og tørr humor om tall og regnskap; unngå oppramsing og gjenbruk av samme vits.",
+      "provenance": {
+        "kind": "existing-explicit-project-instruction",
+        "source": "docs/analysis-plan.md (lest på main 18. oktober 2026)",
+        "section": "Avtalt innhold og gjennomgang"
+      }
+    },
+    {
+      "id": "P004",
+      "status": "active",
+      "scope": "article-and-linkedin",
+      "rule": "Vær politisk nøytral og unngå humor på bekostning av mennesker eller grupper.",
+      "provenance": {
+        "kind": "existing-explicit-project-instruction",
+        "source": "docs/analysis-plan.md (lest på main 18. oktober 2026)",
+        "section": "Avtalt innhold og gjennomgang"
+      }
+    },
+    {
+      "id": "P005",
+      "status": "active",
+      "scope": "article",
+      "rule": "Unngå metatekst om hvordan leseren skal lese analysen. Gå direkte til poster og hendelser.",
+      "provenance": {
+        "kind": "existing-explicit-project-instruction",
+        "source": "docs/analysis-plan.md (lest på main 18. oktober 2026)",
+        "section": "Redaksjonell presisering fra PR #14, 5. oktober 2026"
+      }
+    },
+    {
+      "id": "P006",
+      "status": "active",
+      "scope": "learning",
+      "rule": "Bruk profesjonell politisk journalistikk som håndverksgrunnlag og brukerens tilbakemeldinger til å spisse Fellestalls tone.",
+      "provenance": {
+        "kind": "explicit-current-user-instruction",
+        "source": "Samtale 18. oktober 2026",
+        "note": "Brukeren godkjente oppstart. Ingen GitHub-feedback-ID eller publiseringsgodkjenning opprettes av dette."
+      }
+    }
+  ],
+  "feedbackEvents": [],
+  "note": "Ingen nye tilbakemeldinger eller før-/ettergodkjenninger er fabrikkert. Globale AI-utledede preferanser skal stå som proposed til de er bekreftet."
+}

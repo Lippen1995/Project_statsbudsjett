@@ -114,3 +114,14 @@ Les `docs/analysis-charts-topics.md` før hvert valg. Velg én til syv grafer og
 ### Særskilt budsjettdagslevering og partikilder, 6. oktober 2026
 
 Brukeren har bekreftet den ekstra native kjøringen 7. oktober kl. 11.00 Europe/Oslo. Ikke opprett den på nytt eller endre mandagsplanen. Kjør preflight.mjs i det publiserte miljøet fra fersk main før arbeidet. Bruk prepare.mjs med --budget-year=2027 for den uttrykkelig bestilte ekstra analysen; mode budget-day lar denne hendelsen gjennomgås parallelt med et eldre regnskapsutkast, uten duplikat eller automatisk publisering. Kontrollerte partiprioriteringer arkiveres nå separat gjennom priorities i budget-evidence.json, også før Gul bok kommer. Les format, opprinnelige år/programperioder, PDF/HTML-kontroll og nye faktareferanser i docs/budsjettdagen-2027.md. Ingen partiprogrammer skal fremstilles som parlamentariske forlik.
+
+
+## Redaksjonell læring for Sven, 18. oktober 2026
+
+Les `editorial/learning/README.md`, `handbook.md`, aktive regler i `preferences.json` og relevante notater i `references.md` før nye analyser og revisjoner. Filene ligger under `editorial/learning/`. Velg høyst to relevante fortellergrep. Referanseartikler gir håndverk, aldri ukontrollerte fakta til dagens analyse. Merk faktisk lest omfang; ikke påstå full artikkelgjennomgang ved bare tilgjengelig åpning.
+
+Oversett autoriserte menneskelige tilbakemeldinger til konkrete revisjoner og sporbare læringsnotater. Skill en lokal endring fra en eksplisitt varig føring; AI-utledede globale preferanser står som proposed til menneskelig bekreftelse. Ikke oppfinn feedback-ID-er, godkjenninger eller historikk. Bevar før-/etterreferanser og behold eksisterende vern for eksakt publiseringsversjon.
+
+Bruk håndbokens egenkontroll og `editorial/learning/evaluation.md` ved en særskilt kvalitetsprøve. Ikke la evaluering skape parallelle publiseringsutkast, omgå køprioritet eller endre rapportgrunnlag under ren tekstrevisjon. Læringsfiler og redaksjonelle vurderinger er interne arbeidsinstrukser, ikke brødtekst eller nye felter i artikkelskjemaet.
+
+Dette er instruksjonsbasert læring, ingen finjustering eller ny bakgrunnsjobb. Behold eksisterende native tidsplan og produksjon uten separat AI-API. VG-fulltekster skal ikke massehentes, lagres eller inngå i finjusteringsdatasett uten avklart bruk.
