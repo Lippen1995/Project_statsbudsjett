@@ -247,3 +247,16 @@ IDs on new links refer to the unchanged 27-way graph. Link geometry and conceptu
 building portals are player-authored hypothetical proposals, never source observations.
 Four existing endpoint extrema serve only as explicitly synthetic external gateways.
 The 48-way offline candidate stays inactive. See [placement and demand rules](milestone-5d.md).
+
+## R1 — unchanged factual snapshot, richer presentation
+
+All seven source files remain byte-identical. No facade photo, texture, mesh or new
+geographical dataset is imported. The pilot interprets existing mapper colour tags
+(including Skur 11's `darkgreen`) and outlines 13 already-supported gables. Footprint,
+height, normal and source-ID fidelity is tested; unknown heights and roof dimensions
+are not filled. Baked contact tone, grain, lighting, sky-toned water and selection
+outlines are illustrative presentation, not surveys or observed materials.
+
+See [R1 provenance and limitations](r1-quality-benchmark.md#source-and-asset-boundary)
+and [source checksums / pilot IDs](r1-evidence/source-audit.json). Existing ODbL and
+Kartverket CC BY 4.0 attribution, CRS/datum and acquisition records remain authoritative.

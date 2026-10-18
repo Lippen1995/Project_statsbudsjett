@@ -299,3 +299,12 @@ workers recompute selected-month district stocks, generate a conserved/capped sy
 30-minute trip schedule and reuse the existing directed traffic engine. There is no
 traffic-to-district feedback. Proposal dashes are batched; the 5C geometry worker and
 all original static batches remain. See [contracts, equations and limits](milestone-5d.md).
+
+## R1 — source-based 3D benchmark
+
+The approved 18 October Bible supersedes the earlier private-development product
+direction. Existing concept simulation/saves remain isolated and compatible. R1 changes
+only presentation, camera and inspection: source coordinates/heights remain pinned,
+one bounded roof-line batch travels through geometry-worker protocol v2, and two static
+shadow LODs retain demand rendering. No engine migration, source refresh or LIVE public
+release. See [scope, provenance, measurements and limits](r1-quality-benchmark.md).

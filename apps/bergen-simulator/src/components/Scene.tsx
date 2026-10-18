@@ -6,7 +6,12 @@ import { preparation } from "../geo/diagnostics";
 import { useConstruction } from "../state/construction";
 import ProposedBuildings from "./ProposedBuildings";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
+import {
+  Canvas,
+  useFrame,
+  useThree,
+  type ThreeEvent,
+} from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { useScenario } from "../state/scenario";
@@ -19,6 +24,12 @@ import TrafficOverlay from "./TrafficOverlay";
 import PublicSpaces from "./PublicSpaces";
 import { usePhysical } from "../state/physical";
 import { terrainSampler } from "../geo/surface";
+import {
+  BENCHMARK_VIEWS,
+  heroShadow,
+  inspectionCamera,
+} from "../geo/benchmark";
+import { SourceBuildingMaterial, WaterMaterial } from "./CityMaterials";
 
 function CameraControls({ data }: { data: CityData }) {
   const { camera, gl, invalidate, scene } = useThree();
@@ -37,7 +48,7 @@ function CameraControls({ data }: { data: CityData }) {
     const orbit = new OrbitControls(camera, gl.domElement);
     controls.current = orbit;
     orbit.enableDamping = false;
-    orbit.minDistance = 65;
+    orbit.minDistance = 18;
     orbit.maxDistance = 6200;
     orbit.maxPolarAngle = Math.PI / 2.12;
     orbit.zoomSpeed = 0.8;
@@ -70,6 +81,20 @@ function CameraControls({ data }: { data: CityData }) {
   useEffect(() => {
     const orbit = controls.current;
     if (!orbit) return;
+    const view = BENCHMARK_VIEWS.find((v) => v.id === command.view);
+    const selected = command.object
+      ? [...data.buildings, ...data.roads, ...data.landmarks].find(
+          (f) => f.id === command.object,
+        )
+      : undefined;
+    const pose = view ?? (selected ? inspectionCamera(selected, data) : null);
+    if (pose) {
+      orbit.target.fromArray(pose.target);
+      camera.position.fromArray(pose.position);
+      orbit.update();
+      invalidate();
+      return;
+    }
     const [x, z] = command.point ?? [0, 0];
     const feature = command.point
       ? [...data.landmarks, ...data.buildings].find(
@@ -142,20 +167,23 @@ function CityGeometry({
   const select = useCity((s) => s.select);
   const selected = useCity((s) => s.selected);
   const selectedSegmentId = useCity((s) => s.selectedSegmentId);
+  const quality = useCity((s) => s.quality);
   const surface = useMemo(
     () => preparation("terrain.index", () => terrainSampler(data.terrain)),
     [data],
   );
   const { buildings, roads, terrain, coast, water } = prepared;
-  const highlight = useMemo(
-    () =>
-      selected?.kind === "building"
-        ? buildingGeometry(selected as Building, surface)
-        : selected?.kind === "road" && !selectedSegmentId
-          ? roadGeometry(selected as Road, surface)
-          : null,
-    [selected, selectedSegmentId, surface],
-  );
+  const highlight = useMemo(() => {
+    if (selected?.kind === "building") {
+      const body = buildingGeometry(selected as Building, surface);
+      const edges = new THREE.EdgesGeometry(body, 25);
+      body.dispose();
+      return edges;
+    }
+    return selected?.kind === "road" && !selectedSegmentId
+      ? roadGeometry(selected as Road, surface)
+      : null;
+  }, [selected, selectedSegmentId, surface]);
   // Static batches are owned/disposed by the preparation worker client.
   useEffect(
     () => () => {
@@ -192,7 +220,7 @@ function CityGeometry({
         <meshLambertMaterial vertexColors side={THREE.DoubleSide} />
       </mesh>
       <mesh geometry={water} visible={layers.water}>
-        <WaterMaterial />
+        <WaterMaterial detail={quality === "balanced"} />
       </mesh>
       <mesh geometry={coast} receiveShadow>
         <meshLambertMaterial vertexColors side={THREE.DoubleSide} />
@@ -203,8 +231,12 @@ function CityGeometry({
         castShadow
         onClick={(e) => pick(e, buildings)}
       >
-        <meshLambertMaterial vertexColors />
+        <SourceBuildingMaterial detail={quality === "balanced"} />
       </mesh>
+      <RoofAccents
+        geometry={prepared.roofEdges}
+        enabled={layers.buildings && quality === "balanced"}
+      />
       <mesh
         visible={layers.roads}
         geometry={roads.geometry}
@@ -216,7 +248,16 @@ function CityGeometry({
       <PublicSpaces terrain={terrain} surface={surface} />
       <ProposedBuildings terrain={terrain} surface={surface} />
       <ProposedAccess terrain={terrain} surface={surface} />
-      {highlight ? (
+      {highlight && selected?.kind === "building" ? (
+        <lineSegments geometry={highlight} renderOrder={3}>
+          <lineBasicMaterial
+            color="#e9b94f"
+            transparent
+            opacity={0.9}
+            depthTest={false}
+          />
+        </lineSegments>
+      ) : highlight ? (
         <mesh geometry={highlight} renderOrder={3}>
           <meshBasicMaterial
             color="#f1c65b"
@@ -227,15 +268,11 @@ function CityGeometry({
           />
         </mesh>
       ) : null}
-      {selected && !selectedSegmentId ? (
+      {selected && selected.kind !== "building" && !selectedSegmentId ? (
         <mesh
           position={[
             selected.center[0],
-            selected.elevation +
-              (selected.kind === "building"
-                ? ((selected as Building).height ?? 0)
-                : 0) +
-              14,
+            selected.elevation + 14,
             selected.center[1],
           ]}
         >
@@ -247,36 +284,93 @@ function CityGeometry({
   );
 }
 
-function WaterMaterial() {
-  const material = useMemo(() => {
-    const m = new THREE.MeshBasicMaterial({ vertexColors: true });
-    // Static, world-space tonal ripples. Cheap triangle waves, no texture, PBR,
-    // animated loop, reflection pass or bathymetry claim.
-    m.onBeforeCompile = (shader) => {
-      shader.vertexShader = shader.vertexShader
-        .replace(
-          "#include <common>",
-          "#include <common>\nvarying vec2 waterWorld;",
-        )
-        .replace(
-          "#include <begin_vertex>",
-          "#include <begin_vertex>\nwaterWorld = (modelMatrix * vec4(transformed, 1.0)).xz;",
-        );
-      shader.fragmentShader = shader.fragmentShader
-        .replace(
-          "#include <common>",
-          "#include <common>\nvarying vec2 waterWorld;",
-        )
-        .replace(
-          "#include <color_fragment>",
-          "#include <color_fragment>\nfloat broad = abs(fract(dot(waterWorld, vec2(0.012, 0.021))) * 2.0 - 1.0);\nfloat fine = abs(fract(dot(waterWorld, vec2(0.18, -0.11))) * 2.0 - 1.0);\ndiffuseColor.rgb *= 0.97 + 0.035 * broad + 0.015 * fine;",
-        );
-    };
-    m.customProgramCacheKey = () => "bergen-static-water-v2";
-    return m;
-  }, []);
-  useEffect(() => () => material.dispose(), [material]);
-  return <primitive object={material} attach="material" />;
+function RoofAccents({
+  geometry,
+  enabled,
+}: {
+  geometry: THREE.BufferGeometry;
+  enabled: boolean;
+}) {
+  const ref = useRef<THREE.LineSegments>(null);
+  useFrame(({ camera }) => {
+    if (!ref.current) return;
+    const d = Math.hypot(
+      camera.position.x,
+      camera.position.y - 8,
+      camera.position.z + 250,
+    );
+    const visible = enabled && d < 900;
+    if (ref.current.visible && !visible) geometry.dispose();
+    ref.current.visible = visible;
+    (ref.current.material as THREE.LineBasicMaterial).opacity =
+      0.42 * (1 - THREE.MathUtils.smoothstep(d, 420, 900));
+  });
+  useEffect(() => () => geometry.dispose(), [geometry]);
+  return (
+    <lineSegments
+      ref={ref}
+      geometry={geometry}
+      visible={false}
+      raycast={() => {}}
+    >
+      <lineBasicMaterial
+        vertexColors
+        transparent
+        opacity={0.42}
+        depthWrite={false}
+      />
+    </lineSegments>
+  );
+}
+
+function SunLight({ enabled }: { enabled: boolean }) {
+  const ref = useRef<THREE.DirectionalLight>(null);
+  const close = useRef<boolean | null>(null);
+  const direction = useRef(new THREE.Vector3());
+  // Called only on demand-rendered frames. Refit once at each shadow LOD
+  // transition; ordinary orbit input reuses the already rendered shadow map.
+  useFrame(({ camera, gl }) => {
+    const light = ref.current,
+      hero = heroShadow(
+        camera.position,
+        camera.getWorldDirection(direction.current),
+      );
+    if (!light || close.current === hero) return;
+    close.current = hero;
+    const z = hero ? -245 : 0,
+      radius = hero ? 330 : 1900;
+    light.target.position.set(0, 0, z);
+    light.target.updateMatrixWorld();
+    light.position.set(-1200, 2500, 1000 + z);
+    const c = light.shadow.camera;
+    c.left = -radius;
+    c.right = radius;
+    c.top = radius;
+    c.bottom = -radius;
+    c.updateProjectionMatrix();
+    light.shadow.normalBias = hero ? 0.3 : 1.5;
+    light.shadow.bias = hero ? -0.00006 : -0.0003;
+    light.shadow.needsUpdate = true;
+    gl.shadowMap.needsUpdate = true;
+  });
+  return (
+    <directionalLight
+      ref={ref}
+      position={[-1200, 2500, 1000]}
+      intensity={2.1}
+      color="#fff1db"
+      castShadow={enabled}
+      shadow-mapSize={[1024, 1024]}
+      shadow-camera-left={-1900}
+      shadow-camera-right={1900}
+      shadow-camera-top={1900}
+      shadow-camera-bottom={-1900}
+      shadow-camera-near={10}
+      shadow-camera-far={6500}
+      shadow-bias={-0.0003}
+      shadow-normalBias={1.5}
+    />
+  );
 }
 
 function StaticShadows() {
@@ -322,7 +416,7 @@ export default function Scene({ data }: { data: CityData }) {
       frameloop="demand"
       shadows={quality === "balanced" ? "basic" : false}
       dpr={quality === "low" ? 1 : [1, 1.5]}
-      camera={{ position: [1050, 1950, 2150], fov: 43, near: 2, far: 14000 }}
+      camera={{ position: [-145, 85, -45], fov: 43, near: 2, far: 14000 }}
       gl={{
         antialias: quality !== "low",
         powerPreference: "low-power",
@@ -340,22 +434,8 @@ export default function Scene({ data }: { data: CityData }) {
     >
       <color attach="background" args={["#c2d3d6"]} />
       <fog attach="fog" args={["#c2d3d6", 2300, 7200]} />
-      <hemisphereLight args={["#e3eff5", "#66756b", 1.25]} />
-      <directionalLight
-        position={[-1200, 2500, 1000]}
-        intensity={2.1}
-        color="#fff3dc"
-        castShadow={quality === "balanced"}
-        shadow-mapSize={[1024, 1024]}
-        shadow-camera-left={-1900}
-        shadow-camera-right={1900}
-        shadow-camera-top={1900}
-        shadow-camera-bottom={-1900}
-        shadow-camera-near={10}
-        shadow-camera-far={6500}
-        shadow-bias={-0.0003}
-        shadow-normalBias={1.5}
-      />
+      <hemisphereLight args={["#e4eef5", "#64746c", 1.4]} />
+      <SunLight enabled={quality === "balanced"} />
       <CityGeometry data={data} prepared={prepared.city} />
       <CameraControls data={data} />
       <StaticShadows />

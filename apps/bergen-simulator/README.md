@@ -25,6 +25,15 @@ two fingers pan/zoom. Focus the canvas for arrow-key pan, +/− zoom, R reset an
 Escape to clear selection. Search provides a keyboard-accessible selection path.
 Select a building or street for source identity and height provenance.
 
+R1 opens at the Bryggen waterfront. Use the waterfront/roofscape/Vågen bookmarks
+and **Focus on object** for close source inspection. Roof accents and surface grain
+are presentation choices; unknown heights/facades remain explicitly unknown.
+The existing planning tools are an experimental concept sandbox, not municipal
+authority or real development permissions. The approved product role is byrådsleder.
+See the [R1 benchmark and evidence](../../docs/bergen-simulator/r1-quality-benchmark.md).
+`npm run test:quality-baseline` reconstructs the exact baseline without switching
+branches; `npm run test:quality` compares the running localhost build against it.
+
 The checked-in static snapshot works without geographic services at runtime.
 For pinned reproduction, create a separate Python virtual environment, install
 `scripts/requirements-geo.txt`, then run `scripts/refine-geography.py`. Inputs cache

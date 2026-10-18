@@ -28,9 +28,15 @@ try {
     resolve(app, "tests/connected-browser.mjs"),
     resolve(archived, "tests/connected-browser.mjs"),
   );
-  cpSync(
-    resolve(app, "tests/geometry-profile.test.ts"),
+  // Pin the original 5C profiler: it measures 5B's byte-identical five batches.
+  // Copying the current R1 profiler would require exports absent from old code.
+  writeFileSync(
     resolve(archived, "tests/geometry-profile.test.ts"),
+    execFileSync(
+      "git",
+      ["show", "830a39f:apps/bergen-simulator/tests/geometry-profile.test.ts"],
+      { cwd: resolve(app, "../..") },
+    ),
   );
   cpSync(
     resolve(app, "tests/geometry-baseline-5b.json"),

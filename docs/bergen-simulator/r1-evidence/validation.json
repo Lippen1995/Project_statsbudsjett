@@ -1,0 +1,152 @@
+{
+  "applicationTests": 226,
+  "releasePolicyTests": 10,
+  "gisImporterTests": 3,
+  "gisConnectivityTests": 3,
+  "historicalProfilerBuilds": [
+    "c334ba6",
+    "830a39f"
+  ],
+  "lint": "passed",
+  "typescriptViteBuild": "passed",
+  "isolation": "passed",
+  "browserSuites": {
+    "browser": {
+      "passed": true,
+      "errors": [],
+      "checks": [
+        "WebGL scene",
+        "zoom",
+        "orbit",
+        "pan",
+        "layer visibility",
+        "low power rendering",
+        "merged-mesh pointer selection",
+        "source inspection",
+        "camera focus/reset",
+        "accuracy panel",
+        "390px responsive layout",
+        "3× display bounded to DPR 1.5; low power DPR 1",
+        "no external runtime services",
+        "missing snapshot failure"
+      ]
+    },
+    "scenario": {
+      "passed": true,
+      "errors": [],
+      "checks": [
+        "direct 3D selection of two connected mapped sections",
+        "hypothetical access and capacity edits",
+        "worker pause/resume and deterministic outcomes",
+        "changed intensity at fixed camera",
+        "baseline comparison",
+        "undo and rerun",
+        "save/name/duplicate",
+        "two saved configurations recalculated in worker",
+        "reload and reopen",
+        "actual JSON download/import roundtrip",
+        "incompatible import preserves current results",
+        "challenge solution calculated by common engine",
+        "accessibility loss is prominent and penalized",
+        "non-editable street explicitly identified",
+        "heatmap toggle and overlay disposal",
+        "zero idle frames",
+        "390px touch editing and local restore",
+        "missing transport data fails explicitly",
+        "same-origin static runtime under unchanged Vercel CSP"
+      ]
+    },
+    "physical": {
+      "passed": true,
+      "errors": [],
+      "checks": [
+        "Mouse polygon draw, terrain-following mesh, direct corner drag, accessible coordinate edit and invalid-placement rejection",
+        "Explicit road rule changes synthetic routes; baseline comparison and cross-type undo/redo rerun reproducibly",
+        "Duplicated physical designs compare independently in 3D without overwriting the original",
+        "Save/reload, real JSON download/import and malformed geometry rejection preserve the active combined plan",
+        "Legacy 3B import succeeds and a real-network combined plan achieves the optional challenge",
+        "Direct surface inspection/removal and reset retain five source passes plus the bounded R1 roof accents",
+        "Touch polygon placement, landscaped treatment, mobile save/reload and zero idle rendering"
+      ]
+    },
+    "buildings": {
+      "passed": true,
+      "errors": [],
+      "checks": [
+        "Terrain placement; direct resize and rotation; numeric storeys, purpose and roof; observed-building and water rejection; hypothetical geometry visibly changes 3D",
+        "Combined public-space/construction plans; challenge achieved; zero automatic traffic edits; retained traffic results; undo/redo, compare, save/reload, actual JSON export/import, legacy 3B and 4A imports",
+        "Touch placement, accessible numeric editing, mobile import/reload and viewport fit; bounded draw calls, GPU geometry disposal, zero idle frames"
+      ]
+    },
+    "living": {
+      "passed": true,
+      "errors": [],
+      "checks": [
+        "Load legacy 4B → living month zero → six dynamic months → identify workforce imbalance → add residential storey → rerun from identical baseline → compare saved strategies",
+        "Direct 3D activity colour change without mesh growth; previous-month inspection; automatic play/pause; 24-month challenge; local save/reload and exact replay; strict imports; 3B/4A/4B compatibility; construction undo/redo",
+        "Mobile timeline/inspection, 24-month scenario replay, local reload, viewport fit and zero idle frames; repeated worker resets retain bounded heap and fixed GPU geometry"
+      ]
+    },
+    "management": {
+      "passed": true,
+      "errors": [],
+      "checks": [
+        "Legacy 5A exact replay; explicit scheduled conversion; project dates/priority; planned → construction → operational 3D; no unfinished capacity",
+        "Operating shortfall and restored funding; capital deferral without overspending; schedule strategy comparison; verified challenge; shared undo/redo; save/reload/export/import and versions 1–4",
+        "Touch viewport scheduling/funding, exact local replay, stable geometry retention and zero idle frames under production CSP"
+      ]
+    },
+    "connected": {
+      "passed": true,
+      "errors": [],
+      "checks": []
+    },
+    "access": {
+      "passed": true,
+      "errors": [],
+      "checks": []
+    },
+    "visual": {
+      "passed": true,
+      "errors": [],
+      "checks": []
+    },
+    "quality": {
+      "passed": true,
+      "cases": [
+        "desktop-balanced",
+        "desktop-low",
+        "mobile-balanced",
+        "mobile-low"
+      ],
+      "errors": [],
+      "method": "two RAF + WebGL finish; exact baseline and candidate remeasured"
+    }
+  },
+  "savedScenarioVersionsUnchanged": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "protectedTrackedFilesUnchanged": 1473,
+  "geographicFilesUnchanged": 7,
+  "mainAtStart": "45cfc4c198f0f4d55e2a851787bbce64028764aa",
+  "independentMainUpdate": {
+    "sha": "ac4878577d0ad59d718eb9f91af3ec622141a168",
+    "date": "2026-10-18T11:39:00Z",
+    "note": "Independent default-branch work; not fetched, merged or pushed by R1."
+  },
+  "productionNote": "Main was updated independently during this work. No main branch or Fellestall file/workflow/database/domain/configuration is modified by R1. Only the simulator branch will be pushed.",
+  "notVerified": [
+    "physical-device GPU/FPS/VRAM/energy/touch latency",
+    "product-owner landmark-recognition approval",
+    "authenticated production UI session"
+  ],
+  "warnings": [
+    "existing Vite chunk-size warning",
+    "existing Rasterio/Affine pending-deprecation warnings"
+  ]
+}

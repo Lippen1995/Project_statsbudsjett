@@ -64,7 +64,7 @@ export function startCityPreparation(
     };
     worker.onerror = reject;
     timeout = setTimeout(reject, 30000);
-    worker.postMessage({ version: 1, requestId: 1, geography: data });
+    worker.postMessage({ version: 2, requestId: 1, geography: data });
   } catch {
     reject();
   }

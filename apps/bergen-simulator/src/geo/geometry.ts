@@ -3,6 +3,7 @@ import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import type { Building, CityData, Feature, Point, Road } from "./types";
 import { clipAtRidge, gableProfile, metreTag } from "./roofs";
 import { terrainSampler, type SurfaceSampler } from "./surface";
+import { inHeroBlock, sourceSwatch } from "./benchmark";
 
 export function polygonShape(rings: Point[][]): THREE.Shape {
   const shape = new THREE.Shape(
@@ -78,11 +79,16 @@ const TINTS: Record<string, string> = {
 export function buildingPalette(b: Building) {
   const hash = [...b.id].reduce((n, c) => (n * 31 + c.charCodeAt(0)) >>> 0, 0);
   return {
-    wall: TINTS[b.tags["building:colour"]] ?? WALLS[hash % WALLS.length],
+    wall:
+      (inHeroBlock(b) ? sourceSwatch(b.tags["building:colour"]) : null) ??
+      TINTS[b.tags["building:colour"]] ??
+      WALLS[hash % WALLS.length],
     roof:
       b.height === null
         ? "#7b928b"
-        : (TINTS[b.tags["roof:colour"]] ?? ROOFS[hash % ROOFS.length]),
+        : ((inHeroBlock(b) ? sourceSwatch(b.tags["roof:colour"]) : null) ??
+          TINTS[b.tags["roof:colour"]] ??
+          ROOFS[hash % ROOFS.length]),
   };
 }
 
@@ -202,7 +208,87 @@ export function buildingGeometry(
     }
     parts.push(triangles(vertices, roof), triangles(ends, wall));
   }
-  return mergeParts(parts);
+  const result = mergeParts(parts);
+  if (inHeroBlock(b) && b.height !== null) {
+    const p = result.getAttribute("position"),
+      colors = result.getAttribute("color");
+    // Baked illustrative contact/vertical tonal grading. No windows, facade
+    // openings, dimensions, material survey or added surface geometry implied.
+    const eave = base + b.height - (profile?.height ?? 0);
+    for (let i = 0; i < p.count; i++) {
+      const t = THREE.MathUtils.clamp(
+        (p.getY(i) - base) / Math.max(1, eave - base),
+        0,
+        1,
+      );
+      const shade = 0.79 + 0.21 * Math.sqrt(t);
+      colors.setXYZ(
+        i,
+        colors.getX(i) * shade,
+        colors.getY(i) * shade,
+        colors.getZ(i) * shade,
+      );
+    }
+  }
+  return result;
+}
+
+/** One bounded line batch, derived solely from already-supported gable edges. */
+export function makeRoofEdges(data: CityData) {
+  const positions: number[] = [];
+  for (const b of data.buildings) {
+    if (!inHeroBlock(b)) continue;
+    const profile = gableProfile(b);
+    if (!profile) continue;
+    const y = b.elevation + 0.3 + b.height! - profile.height;
+    for (let i = 0; i < profile.ring.length; i++) {
+      const a = profile.ring[i],
+        c = profile.ring[(i + 1) % profile.ring.length];
+      const da = profile.distance(a),
+        dc = profile.distance(c),
+        edge = [a];
+      if (da * dc < 0) {
+        const t = da / (da - dc);
+        edge.push([a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t]);
+      }
+      edge.push(c);
+      for (let j = 1; j < edge.length; j++)
+        for (const p of [edge[j - 1], edge[j]])
+          positions.push(p[0], y + profile.rise(p), p[1]);
+    }
+    const intersections: Point[] = [];
+    for (let i = 0; i < profile.ring.length; i++) {
+      const a = profile.ring[i],
+        b = profile.ring[(i + 1) % profile.ring.length],
+        da = profile.distance(a),
+        db = profile.distance(b);
+      if (Math.abs(da) < 1e-8) intersections.push(a);
+      if (da * db < 0) {
+        const t = da / (da - db);
+        intersections.push([
+          a[0] + (b[0] - a[0]) * t,
+          a[1] + (b[1] - a[1]) * t,
+        ]);
+      }
+    }
+    // Conservative gables are near rectangles; never join multiple ridge spans.
+    if (intersections.length === 2)
+      for (const p of intersections)
+        positions.push(p[0], y + profile.height, p[1]);
+  }
+  if (positions.length > 12000) throw new Error("Roof accent budget exceeded.");
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  g.setAttribute(
+    "normal",
+    new THREE.Float32BufferAttribute(new Float32Array(positions.length), 3),
+  );
+  const colors = new Float32Array(positions.length),
+    color = new THREE.Color("#4d4840");
+  for (let i = 0; i < colors.length; i += 3) color.toArray(colors, i);
+  g.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+  g.computeBoundingSphere();
+  return g;
 }
 
 export interface FeatureRange {

@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import Inspector from "./components/Inspector";
+import BenchmarkViews from "./components/BenchmarkViews";
 import ScenarioPanel, { ScenarioLegend } from "./components/ScenarioPanel";
 import { useCity, type Layer } from "./state/store";
 import { parseCityData, type CityData } from "./geo/types";
@@ -230,7 +231,7 @@ export default function App() {
           </span>
         </a>
         <div className="header-center">
-          CITY PLANNING PROTOTYPE <span>05D / BERGEN</span>
+          SOURCE-BASED CITY PROTOTYPE <span>R1 / BRYGGEN</span>
         </div>
         <span className="prototype-badge">
           <span />
@@ -276,6 +277,7 @@ export default function App() {
             <p>60°23′ N · 5°19′ E</p>
           </div>
           <ScenarioLegend />
+          {!planning ? <BenchmarkViews /> : null}
           <div className="map-status">
             <span className="status-dot" />
             {planning && livingMode
@@ -336,8 +338,9 @@ export default function App() {
                 </button>
               </div>
               <p>
-                Footprints, streets and coastline: © OpenStreetMap contributors,
-                ODbL. Snapshot {data.provenance.osmTimestamp.slice(0, 10)}.
+                Footprints, streets and coastline: © OpenStreetMap
+                contributors, ODbL. Snapshot{" "}
+                {data.provenance.osmTimestamp.slice(0, 10)}.
               </p>
               <p>
                 Terrain: © Kartverket, CC BY 4.0. Bergen laser projects 2022 /
@@ -353,6 +356,13 @@ export default function App() {
                 directions are labelled. Foundations are schematic
                 ground-contact skirts. Colours, lighting and water ripples are
                 artistic.
+              </p>
+              <p>
+                R1 studies the Bryggen waterfront block. Roof accents follow
+                supported source gables. Surface grain and close-view shadowing
+                are illustrative; there are no surveyed facade textures or
+                invented windows. This protected prototype is not a public
+                Bergen LIVE release.
               </p>
               <p>
                 Coast and lake outlines retain the original OSM mapping. Water

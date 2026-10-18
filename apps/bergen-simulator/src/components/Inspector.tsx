@@ -1,11 +1,12 @@
 import { useCity } from "../state/store";
 import type { Building } from "../geo/types";
 import { gableProfile } from "../geo/roofs";
+import { inHeroBlock } from "../geo/benchmark";
 
 export default function Inspector() {
   const selected = useCity((s) => s.selected);
   const select = useCity((s) => s.select);
-  const focus = useCity((s) => s.focus);
+  const inspect = useCity((s) => s.inspect);
   const building =
     selected?.kind === "building" ? (selected as Building) : null;
   const roof = building ? gableProfile(building) : null;
@@ -72,6 +73,20 @@ export default function Inspector() {
                     ? "Estimated height: OSM storeys × 3 m."
                     : "Footprint only. No height or storey count is available; no height has been assigned."}
               </p>
+              {inHeroBlock(building) ? (
+                <p className="data-note benchmark-note">
+                  R1 waterfront study ·{" "}
+                  {building.tags["building:colour"]
+                    ? `OSM wall colour: ${building.tags["building:colour"]}. `
+                    : "Wall colour not documented. "}
+                  {building.tags["roof:colour"]
+                    ? `OSM roof colour: ${building.tags["roof:colour"]}. `
+                    : "Roof colour not documented. "}
+                  Surface grain, tonal grading and lighting are illustrative,
+                  not a facade survey. Windows and architectural details are not
+                  documented.
+                </p>
+              ) : null}
               <p className="data-note">
                 {roof
                   ? `Gabled roof: ${roof.height} m from OSM roof:height; included in total height. ${roof.orientation === "osm-direction" ? "Direction reported in OSM." : "Ridge direction inferred from the footprint; not survey verified."}`
@@ -89,7 +104,7 @@ export default function Inspector() {
           )}
           <button
             className="secondary-button"
-            onClick={() => focus(selected.center)}
+            onClick={() => inspect(selected)}
           >
             Focus on object <span>↗</span>
           </button>

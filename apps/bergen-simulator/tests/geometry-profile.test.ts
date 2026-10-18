@@ -8,6 +8,7 @@ import {
   makeRoads,
   makeWater,
   makeCoastalEdge,
+  makeRoofEdges,
 } from "../src/geo/geometry";
 import { terrainSampler } from "../src/geo/surface";
 import { parseCityData } from "../src/geo/types";
@@ -40,6 +41,7 @@ test("profile pinned geometry with reproducible attribute hashes and bounded dis
   const terrain = measure("geometry.terrain", () => makeTerrain(data));
   const water = measure("geometry.water", () => makeWater(data));
   const coast = measure("geometry.coast", () => makeCoastalEdge(data));
+  const roofEdges = measure("geometry.roof-edges", () => makeRoofEdges(data));
   const hash = (g: BufferGeometry) => {
     const h = createHash("sha256");
     let bytes = 0;
@@ -70,17 +72,25 @@ test("profile pinned geometry with reproducible attribute hashes and bounded dis
       terrain,
       water,
       coast,
+      roofEdges,
     }).map(([k, g]) => [k, hash(g)]),
   );
   const baseline = JSON.parse(
-    readFileSync("tests/geometry-baseline-5b.json", "utf8"),
+    readFileSync("tests/geometry-baseline-r1.json", "utf8"),
   );
   expect(geometry).toEqual(baseline.geometry);
   expect(samples).toBe(baseline.samples);
   expect(missingSamples).toBe(baseline.missingSamples);
   expect(buildings.ranges).toHaveLength(data.buildings.length);
   expect(samples).toBeGreaterThan(1000);
-  for (const g of [buildings.geometry, roads.geometry, terrain, water, coast])
+  for (const g of [
+    buildings.geometry,
+    roads.geometry,
+    terrain,
+    water,
+    coast,
+    roofEdges,
+  ])
     g.dispose();
   if (process.env.BERGEN_PROFILE) {
     const dir = "artifacts/milestone-5c/" + process.env.BERGEN_PROFILE;
@@ -93,7 +103,7 @@ test("profile pinned geometry with reproducible attribute hashes and bounded dis
           geometry,
           samples,
           missingSamples,
-          note: "Node CPU diagnostic, not browser/GPU performance. Attributes must remain byte-identical.",
+          note: "Node CPU diagnostic, not browser/GPU performance. R1 attribute hashes pinned; source positions/normals independently pinned to 7243b535.",
         },
         null,
         2,

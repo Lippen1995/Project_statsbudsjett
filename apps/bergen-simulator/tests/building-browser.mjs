@@ -679,8 +679,8 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(page);
-  assert.equal((await metrics(page)).calls, 5);
-  assert.equal((await metrics(page)).geometries, 5);
+  assert.equal((await metrics(page)).calls, 6);
+  assert.equal((await metrics(page)).geometries, 6);
   await page.close();
   report.checks.push(
     "Terrain placement; direct resize and rotation; numeric storeys, purpose and roof; observed-building and water rejection; hypothetical geometry visibly changes 3D",
@@ -733,7 +733,7 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(m);
-  assert.equal((await metrics(m)).geometries, 5);
+  assert.equal((await metrics(m)).geometries, 6);
   await m.close();
   report.checks.push(
     "Touch placement, accessible numeric editing, mobile import/reload and viewport fit; bounded draw calls, GPU geometry disposal, zero idle frames",

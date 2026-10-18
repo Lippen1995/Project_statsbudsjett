@@ -1,0 +1,38 @@
+{
+  "baselineCommit": "7243b53544ffbae88d680eb7df531cd67f273ded",
+  "geometry": {
+    "buildings": {
+      "sha256": "1231c09112d035451c0c18140dd3e652e4d2f88b41399a3ed186f778e3268a77",
+      "bytes": 17982972,
+      "vertices": 499527
+    },
+    "roads": {
+      "sha256": "67ec4018b62def2b9f843821ff6cec76d3a7faf091492dddcadf8b13c30f8bb0",
+      "bytes": 7494768,
+      "vertices": 208188
+    },
+    "terrain": {
+      "sha256": "03b0bf9a7f6e7d7ec0ebb486adeadc67481449af16ed3cb0c0d4e2236bf64f11",
+      "bytes": 1255206,
+      "vertices": 26648
+    },
+    "water": {
+      "sha256": "bc2955390c0196b36eed5b2b041a849ab03463423f0725b55744415d331f9ef7",
+      "bytes": 109080,
+      "vertices": 3030
+    },
+    "coast": {
+      "sha256": "2f048c4e9d49e1b2d3f17f6d18763157122f74e02af12d41179fda5f9f6f78fb",
+      "bytes": 206496,
+      "vertices": 5736
+    },
+    "roofEdges": {
+      "sha256": "72b324c87d1f300a72aa62dc8a8eb67cc0f55756c7e5e7f2f3f0e03ef89f6be9",
+      "bytes": 7848,
+      "vertices": 218
+    }
+  },
+  "samples": 245253,
+  "missingSamples": 989,
+  "presentationVersion": "r1-v1"
+}

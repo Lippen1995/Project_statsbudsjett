@@ -30,7 +30,9 @@
     "test:connected": "node tests/connected-browser.mjs",
     "test:connected-baseline": "node tests/capture-connected-baseline.mjs",
     "test:access": "node tests/access-browser.mjs",
-    "test:access-baseline": "node tests/capture-access-baseline.mjs"
+    "test:access-baseline": "node tests/capture-access-baseline.mjs",
+    "test:quality": "node tests/quality-browser.mjs",
+    "test:quality-baseline": "node tests/capture-quality-baseline.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.4.0",

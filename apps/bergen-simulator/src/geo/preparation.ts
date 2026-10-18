@@ -5,11 +5,19 @@ import {
   makeTerrain,
   makeWater,
   makeCoastalEdge,
+  makeRoofEdges,
   type FeatureRange,
 } from "./geometry";
 import { parseCityData, type CityData, type Feature } from "./types";
 import { terrainSampler } from "./surface";
-const LAYERS = ["buildings", "roads", "terrain", "water", "coast"] as const;
+const LAYERS = [
+  "buildings",
+  "roads",
+  "terrain",
+  "water",
+  "coast",
+  "roofEdges",
+] as const;
 type Layer = (typeof LAYERS)[number];
 export interface PackedGeometry {
   position: Float32Array;
@@ -19,7 +27,7 @@ export interface PackedGeometry {
   sphere: [number, number, number, number];
 }
 export interface PreparedReply {
-  version: 1;
+  version: 2;
   requestId: number;
   layers: Record<Layer, PackedGeometry>;
   ranges: {
@@ -34,6 +42,7 @@ export interface PreparedCity {
   terrain: BufferGeometry;
   water: BufferGeometry;
   coast: BufferGeometry;
+  roofEdges: BufferGeometry;
 }
 const fail = () => {
   throw new Error("Invalid or unbounded geographic preparation message.");
@@ -78,6 +87,7 @@ export function prepareCity(value: unknown, requestId: number): PreparedReply {
     terrain: measure("geometry.terrain", () => makeTerrain(data)),
     water: measure("geometry.water", () => makeWater(data)),
     coast: measure("geometry.coast", () => makeCoastalEdge(data)),
+    roofEdges: measure("geometry.roof-edges", () => makeRoofEdges(data)),
   };
   const pack = (g: BufferGeometry): PackedGeometry => {
     g.computeBoundingSphere();
@@ -92,7 +102,7 @@ export function prepareCity(value: unknown, requestId: number): PreparedReply {
   };
   try {
     return {
-      version: 1,
+      version: 2,
       requestId,
       layers: Object.fromEntries(
         LAYERS.map((k) => [k, pack(geometry[k])]),
@@ -129,6 +139,7 @@ export function disposePrepared(city: PreparedCity) {
     city.terrain,
     city.water,
     city.coast,
+    city.roofEdges,
   ].forEach((g) => g.dispose());
 }
 /** Validate before GPU allocation. Only fixed typed attributes, never imported meshes. */
@@ -140,7 +151,7 @@ export function unpackCity(
   if (!value || typeof value !== "object") return fail();
   const r = value as PreparedReply;
   if (
-    r.version !== 1 ||
+    r.version !== 2 ||
     r.requestId !== requestId ||
     !r.layers ||
     !r.ranges ||
@@ -182,6 +193,11 @@ export function unpackCity(
       for (const v of a)
         if (!Number.isFinite(v) || Math.abs(v) > 1000000) fail();
     }
+    if (
+      k === "roofEdges" &&
+      (g.position.length > 12000 || g.position.length % 6 || g.index !== null)
+    )
+      fail();
     if (g.index !== null) {
       if (
         !(g.index instanceof Uint16Array) &&
@@ -239,5 +255,6 @@ export function unpackCity(
     terrain: hydrate("terrain"),
     water: hydrate("water"),
     coast: hydrate("coast"),
+    roofEdges: hydrate("roofEdges"),
   };
 }

@@ -108,3 +108,17 @@ site entrances. The verified 27-way network stays active; the offline 48-way can
 is not enabled. Next: physical-device profiling, private-connector travel/turn capacity,
 shared hypothetical access and sensitivity analysis. Expand observed transport only
 through a reviewed source revision. Keep district/transport feedback a separate model.
+
+## Current direction — 18 October 2026
+
+The [Game Design Bible](GAME_DESIGN_BIBLE_v1.md) and latest approved R1 request
+supersede the earlier sandbox expansion priorities above. The product now prioritizes
+source-based Bergen LIVE and a future byrådsleder game, with institutional limits.
+Existing private-development/PMU tools remain a compatible legacy concept sandbox.
+
+R1 implements a bounded Bryggen/Vågen presentation benchmark with fixed screenshots,
+source fidelity checks and software performance budgets. See [implementation](r1-quality-benchmark.md)
+and [evidence](r1-evidence/README.md). Native GPU measurements, licensed high-fidelity
+roof/facade inputs and owner landmark-recognition review remain open. Retain the protected
+deployment. Follow the [canonical acceptance gates](ROADMAP_AND_ACCEPTANCE_GATES_v1.md)
+before R2 or geographic expansion; this technical delivery does not approve a public LIVE release.

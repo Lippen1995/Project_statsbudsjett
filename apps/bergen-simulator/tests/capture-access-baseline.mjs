@@ -28,10 +28,8 @@ try {
     resolve(app, "tests/connected-browser.mjs"),
     resolve(archived, "tests/connected-browser.mjs"),
   );
-  cpSync(
-    resolve(app, "tests/geometry-profile.test.ts"),
-    resolve(archived, "tests/geometry-profile.test.ts"),
-  );
+  // Keep the archived 5C profiler. The R1 profiler requires a sixth geometry
+  // export that deliberately does not exist in the historical implementation.
   cpSync(
     resolve(app, "tests/geometry-baseline-5b.json"),
     resolve(archived, "tests/geometry-baseline-5b.json"),

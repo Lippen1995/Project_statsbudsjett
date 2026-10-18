@@ -391,7 +391,7 @@ try {
   await camera(page);
   await scenePhoto(page, "03-operational.jpg");
   report.desktop.phaseMetrics.operational = await metrics(page);
-  assert((await metrics(page)).calls <= 11);
+  assert((await metrics(page)).calls <= 12); // One bounded R1 roof-accent pass.
   await to24(page);
   const healthy = await stocks(page);
   report.desktop.funded24 = healthy;
@@ -613,8 +613,8 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(page);
-  assert.equal((await metrics(page)).calls, 5);
-  assert.equal((await metrics(page)).geometries, 5);
+  assert.equal((await metrics(page)).calls, 6);
+  assert.equal((await metrics(page)).geometries, 6);
   await page.close();
   report.checks.push(
     "Legacy 5A exact replay; explicit scheduled conversion; project dates/priority; planned → construction → operational 3D; no unfinished capacity",
@@ -671,7 +671,7 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(m);
-  assert.equal((await metrics(m)).geometries, 5);
+  assert.equal((await metrics(m)).geometries, 6);
   await m.close();
   report.checks.push(
     "Touch viewport scheduling/funding, exact local replay, stable geometry retention and zero idle frames under production CSP",

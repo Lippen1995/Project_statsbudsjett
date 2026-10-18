@@ -1,0 +1,1053 @@
+{
+  "phase": "after",
+  "baselineCommit": "7243b53544ffbae88d680eb7df531cd67f273ded",
+  "browser": "151.0.7922.173",
+  "renderer": "ANGLE SwiftShader; software measurements, physical GPU unverified",
+  "cases": {
+    "desktop-balanced": {
+      "readyMs": 3928.406271,
+      "captures": [
+        {
+          "name": "waterfront",
+          "frames": 2,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.8999999999068677,
+          "cameraLatencyMs": 1.5,
+          "calls": 6,
+          "triangles": 288140,
+          "lines": 109,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "name": "roofs",
+          "frames": 3,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.599999999627471,
+          "cameraLatencyMs": 2.1999999997206032,
+          "calls": 6,
+          "triangles": 288140,
+          "lines": 109,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -105.00000000000003,
+            100.00000000000001,
+            -385
+          ],
+          "target": [
+            -23,
+            9,
+            -263
+          ]
+        },
+        {
+          "name": "vagen",
+          "frames": 4,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.599999999627471,
+          "cameraLatencyMs": 1,
+          "calls": 6,
+          "triangles": 288140,
+          "lines": 109,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -428.02,
+            301.42,
+            229.23999999999995
+          ],
+          "target": [
+            1.98,
+            1.42,
+            -270.76
+          ]
+        }
+      ],
+      "samples": [
+        {
+          "cpu": 0.5,
+          "latency": 279.6999999997206,
+          "renderCallbackLatency": 1.3999999999068677
+        },
+        {
+          "cpu": 0.7000000001862645,
+          "latency": 276.5,
+          "renderCallbackLatency": 1.5
+        },
+        {
+          "cpu": 0.8999999999068677,
+          "latency": 248.39999999990687,
+          "renderCallbackLatency": 1.6000000000931323
+        },
+        {
+          "cpu": 2.1000000000931323,
+          "latency": 317.79999999981374,
+          "renderCallbackLatency": 3
+        },
+        {
+          "cpu": 0.6000000000931323,
+          "latency": 308.40000000037253,
+          "renderCallbackLatency": 1.1000000000931323
+        },
+        {
+          "cpu": 1,
+          "latency": 233.70000000018626,
+          "renderCallbackLatency": 1.6000000000931323
+        },
+        {
+          "cpu": 0.39999999990686774,
+          "latency": 242.39999999990687,
+          "renderCallbackLatency": 0.8999999999068677
+        },
+        {
+          "cpu": 0.2999999998137355,
+          "latency": 285.29999999981374,
+          "renderCallbackLatency": 0.7999999998137355
+        },
+        {
+          "cpu": 1.8999999999068677,
+          "latency": 306.8000000002794,
+          "renderCallbackLatency": 2.8999999999068677
+        },
+        {
+          "cpu": 0.5,
+          "latency": 312.39999999990687,
+          "renderCallbackLatency": 1.1000000000931323
+        },
+        {
+          "cpu": 0.39999999990686774,
+          "latency": 304,
+          "renderCallbackLatency": 296.70000000018626
+        },
+        {
+          "cpu": 0.5,
+          "latency": 255.6999999997206,
+          "renderCallbackLatency": 247.10000000009313
+        }
+      ],
+      "medianCpuMs": 0.6000000000931323,
+      "p95CpuMs": 2.1000000000931323,
+      "medianCameraMs": 285.29999999981374,
+      "p95CameraMs": 317.79999999981374,
+      "retention": [
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        }
+      ],
+      "heap": 21598720,
+      "heapAfter": 21649668,
+      "idleFrames": 0,
+      "preparation": [
+        {
+          "name": "geography.validate",
+          "durationMs": 31.899999999906868
+        },
+        {
+          "name": "geometry.hydrate-main",
+          "durationMs": 120.8000000002794
+        },
+        {
+          "name": "geometry.worker-roundtrip",
+          "durationMs": 1326.3999999999069
+        },
+        {
+          "name": "worker.terrain.index",
+          "durationMs": 16.300000000279397
+        },
+        {
+          "name": "worker.geometry.buildings",
+          "durationMs": 638.1000000000931
+        },
+        {
+          "name": "worker.geometry.roads",
+          "durationMs": 159.39999999990687
+        },
+        {
+          "name": "worker.geometry.terrain",
+          "durationMs": 21.699999999720603
+        },
+        {
+          "name": "worker.geometry.water",
+          "durationMs": 9.5
+        },
+        {
+          "name": "worker.geometry.coast",
+          "durationMs": 2.2000000001862645
+        },
+        {
+          "name": "worker.geometry.roof-edges",
+          "durationMs": 4.100000000093132
+        },
+        {
+          "name": "terrain.index",
+          "durationMs": 13.899999999906868
+        }
+      ],
+      "diagnostics": {
+        "longTasks": [
+          {
+            "start": 186.89999999990687,
+            "duration": 76
+          },
+          {
+            "start": 381.5,
+            "duration": 83
+          },
+          {
+            "start": 809,
+            "duration": 168
+          },
+          {
+            "start": 1053.8000000002794,
+            "duration": 107
+          },
+          {
+            "start": 2318.8000000002794,
+            "duration": 98
+          },
+          {
+            "start": 3520.7000000001863,
+            "duration": 125
+          },
+          {
+            "start": 3703.5,
+            "duration": 98
+          },
+          {
+            "start": 3802.100000000093,
+            "duration": 114
+          }
+        ],
+        "workers": [
+          {
+            "created": 2319.100000000093,
+            "replyMs": 1201.7000000001863,
+            "terminated": true
+          }
+        ]
+      }
+    },
+    "desktop-low": {
+      "readyMs": 3928.406271,
+      "captures": [
+        {
+          "name": "waterfront",
+          "frames": 32,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.20000000018626451,
+          "cameraLatencyMs": 5,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 5,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "name": "roofs",
+          "frames": 33,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.40000000037252903,
+          "cameraLatencyMs": 0.7000000001862645,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 5,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -105.00000000000003,
+            100.00000000000001,
+            -385
+          ],
+          "target": [
+            -23,
+            9,
+            -263
+          ]
+        },
+        {
+          "name": "vagen",
+          "frames": 34,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.40000000037252903,
+          "cameraLatencyMs": 6.400000000372529,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 5,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -428.02,
+            301.42,
+            229.23999999999995
+          ],
+          "target": [
+            1.98,
+            1.42,
+            -270.76
+          ]
+        }
+      ],
+      "samples": [
+        {
+          "cpu": 0.7999999998137355,
+          "latency": 235.79999999981374,
+          "renderCallbackLatency": 231
+        },
+        {
+          "cpu": 0.2999999998137355,
+          "latency": 212.40000000037253,
+          "renderCallbackLatency": 198.89999999990687
+        },
+        {
+          "cpu": 0.5,
+          "latency": 206.39999999990687,
+          "renderCallbackLatency": 193.29999999981374
+        },
+        {
+          "cpu": 0.7000000001862645,
+          "latency": 289.8000000002794,
+          "renderCallbackLatency": 281.20000000018626
+        },
+        {
+          "cpu": 0.6000000000931323,
+          "latency": 284.3000000002794,
+          "renderCallbackLatency": 250.89999999990687
+        },
+        {
+          "cpu": 0.5,
+          "latency": 274.39999999990687,
+          "renderCallbackLatency": 260.5
+        },
+        {
+          "cpu": 0.40000000037252903,
+          "latency": 267.40000000037253,
+          "renderCallbackLatency": 263.40000000037253
+        },
+        {
+          "cpu": 0.39999999990686774,
+          "latency": 210,
+          "renderCallbackLatency": 197.79999999981374
+        },
+        {
+          "cpu": 0.6000000000931323,
+          "latency": 206.79999999981374,
+          "renderCallbackLatency": 196.79999999981374
+        },
+        {
+          "cpu": 0.5,
+          "latency": 225,
+          "renderCallbackLatency": 213.1999999997206
+        },
+        {
+          "cpu": 0.7999999998137355,
+          "latency": 209.29999999981374,
+          "renderCallbackLatency": 197.89999999990687
+        },
+        {
+          "cpu": 0.5,
+          "latency": 257.40000000037253,
+          "renderCallbackLatency": 241.70000000018626
+        }
+      ],
+      "medianCpuMs": 0.5,
+      "p95CpuMs": 0.7999999998137355,
+      "medianCameraMs": 235.79999999981374,
+      "p95CameraMs": 289.8000000002794,
+      "retention": [
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 5,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 5,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 5,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 5,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 5,
+          "textures": 1
+        }
+      ],
+      "heap": 21890124,
+      "heapAfter": 21908368,
+      "idleFrames": 0,
+      "preparation": [
+        {
+          "name": "geography.validate",
+          "durationMs": 31.899999999906868
+        },
+        {
+          "name": "geometry.hydrate-main",
+          "durationMs": 120.8000000002794
+        },
+        {
+          "name": "geometry.worker-roundtrip",
+          "durationMs": 1326.3999999999069
+        },
+        {
+          "name": "worker.terrain.index",
+          "durationMs": 16.300000000279397
+        },
+        {
+          "name": "worker.geometry.buildings",
+          "durationMs": 638.1000000000931
+        },
+        {
+          "name": "worker.geometry.roads",
+          "durationMs": 159.39999999990687
+        },
+        {
+          "name": "worker.geometry.terrain",
+          "durationMs": 21.699999999720603
+        },
+        {
+          "name": "worker.geometry.water",
+          "durationMs": 9.5
+        },
+        {
+          "name": "worker.geometry.coast",
+          "durationMs": 2.2000000001862645
+        },
+        {
+          "name": "worker.geometry.roof-edges",
+          "durationMs": 4.100000000093132
+        },
+        {
+          "name": "terrain.index",
+          "durationMs": 13.899999999906868
+        }
+      ],
+      "diagnostics": {
+        "longTasks": [
+          {
+            "start": 186.89999999990687,
+            "duration": 76
+          },
+          {
+            "start": 381.5,
+            "duration": 83
+          },
+          {
+            "start": 809,
+            "duration": 168
+          },
+          {
+            "start": 1053.8000000002794,
+            "duration": 107
+          },
+          {
+            "start": 2318.8000000002794,
+            "duration": 98
+          },
+          {
+            "start": 3520.7000000001863,
+            "duration": 125
+          },
+          {
+            "start": 3703.5,
+            "duration": 98
+          },
+          {
+            "start": 3802.100000000093,
+            "duration": 114
+          }
+        ],
+        "workers": [
+          {
+            "created": 2319.100000000093,
+            "replyMs": 1201.7000000001863,
+            "terminated": true
+          }
+        ]
+      }
+    },
+    "mobile-balanced": {
+      "readyMs": 2256.996610999995,
+      "captures": [
+        {
+          "name": "waterfront",
+          "frames": 2,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.8999999999068677,
+          "cameraLatencyMs": 2.2999999998137355,
+          "calls": 6,
+          "triangles": 288140,
+          "lines": 109,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "name": "roofs",
+          "frames": 3,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.6999999997206032,
+          "cameraLatencyMs": 3.7999999998137355,
+          "calls": 6,
+          "triangles": 288140,
+          "lines": 109,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -105.00000000000003,
+            100.00000000000001,
+            -385
+          ],
+          "target": [
+            -23,
+            9,
+            -263
+          ]
+        },
+        {
+          "name": "vagen",
+          "frames": 4,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 1.8999999999068677,
+          "cameraLatencyMs": 10.5,
+          "calls": 6,
+          "triangles": 288140,
+          "lines": 109,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -428.02,
+            301.42,
+            229.23999999999995
+          ],
+          "target": [
+            1.98,
+            1.42,
+            -270.76
+          ]
+        }
+      ],
+      "samples": [
+        {
+          "cpu": 0.8000000002793968,
+          "latency": 124.39999999990687,
+          "renderCallbackLatency": 2.1000000000931323
+        },
+        {
+          "cpu": 0.7000000001862645,
+          "latency": 149.8000000002794,
+          "renderCallbackLatency": 1.2000000001862645
+        },
+        {
+          "cpu": 0.6000000000931323,
+          "latency": 141.5,
+          "renderCallbackLatency": 127.89999999990687
+        },
+        {
+          "cpu": 0.5,
+          "latency": 209,
+          "renderCallbackLatency": 199.29999999981374
+        },
+        {
+          "cpu": 0.599999999627471,
+          "latency": 196.5,
+          "renderCallbackLatency": 188
+        },
+        {
+          "cpu": 0.39999999990686774,
+          "latency": 223.89999999990687,
+          "renderCallbackLatency": 209.89999999990687
+        },
+        {
+          "cpu": 0.5,
+          "latency": 259.5,
+          "renderCallbackLatency": 247.89999999990687
+        },
+        {
+          "cpu": 0.5,
+          "latency": 206.10000000009313,
+          "renderCallbackLatency": 195.5
+        },
+        {
+          "cpu": 1.1000000000931323,
+          "latency": 129.79999999981374,
+          "renderCallbackLatency": 129.39999999990687
+        },
+        {
+          "cpu": 0.5,
+          "latency": 133,
+          "renderCallbackLatency": 0.8999999999068677
+        },
+        {
+          "cpu": 0.2999999998137355,
+          "latency": 161.09999999962747,
+          "renderCallbackLatency": 0.5
+        },
+        {
+          "cpu": 0.5,
+          "latency": 174.70000000018626,
+          "renderCallbackLatency": 0.8000000002793968
+        }
+      ],
+      "medianCpuMs": 0.5,
+      "p95CpuMs": 1.1000000000931323,
+      "medianCameraMs": 174.70000000018626,
+      "p95CameraMs": 259.5,
+      "retention": [
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        }
+      ],
+      "heap": 21631904,
+      "heapAfter": 21672024,
+      "idleFrames": 0,
+      "preparation": [
+        {
+          "name": "geography.validate",
+          "durationMs": 15.600000000093132
+        },
+        {
+          "name": "geometry.hydrate-main",
+          "durationMs": 101.8000000002794
+        },
+        {
+          "name": "geometry.worker-roundtrip",
+          "durationMs": 925
+        },
+        {
+          "name": "worker.terrain.index",
+          "durationMs": 16.699999999720603
+        },
+        {
+          "name": "worker.geometry.buildings",
+          "durationMs": 491.60000000009313
+        },
+        {
+          "name": "worker.geometry.roads",
+          "durationMs": 123.60000000009313
+        },
+        {
+          "name": "worker.geometry.terrain",
+          "durationMs": 15.699999999720603
+        },
+        {
+          "name": "worker.geometry.water",
+          "durationMs": 3.7000000001862645
+        },
+        {
+          "name": "worker.geometry.coast",
+          "durationMs": 2.1000000000931323
+        },
+        {
+          "name": "worker.geometry.roof-edges",
+          "durationMs": 3.6000000000931323
+        },
+        {
+          "name": "terrain.index",
+          "durationMs": 13
+        }
+      ],
+      "diagnostics": {
+        "longTasks": [
+          {
+            "start": 177,
+            "duration": 76
+          },
+          {
+            "start": 743.7000000001863,
+            "duration": 78
+          },
+          {
+            "start": 1146.7000000001863,
+            "duration": 51
+          },
+          {
+            "start": 1966.4000000003725,
+            "duration": 105
+          },
+          {
+            "start": 2177.4000000003725,
+            "duration": 72
+          }
+        ],
+        "workers": [
+          {
+            "created": 1147.2000000001863,
+            "replyMs": 819.2000000001863,
+            "terminated": true
+          }
+        ]
+      }
+    },
+    "mobile-low": {
+      "readyMs": 2256.996610999995,
+      "captures": [
+        {
+          "name": "waterfront",
+          "frames": 32,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.2999999998137355,
+          "cameraLatencyMs": 0.39999999990686774,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 5,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "name": "roofs",
+          "frames": 33,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.2999999998137355,
+          "cameraLatencyMs": 4.100000000093132,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 5,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -105.00000000000003,
+            100.00000000000001,
+            -385
+          ],
+          "target": [
+            -23,
+            9,
+            -263
+          ]
+        },
+        {
+          "name": "vagen",
+          "frames": 34,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.2999999998137355,
+          "cameraLatencyMs": 8,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 5,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -428.02,
+            301.42,
+            229.23999999999995
+          ],
+          "target": [
+            1.98,
+            1.42,
+            -270.76
+          ]
+        }
+      ],
+      "samples": [
+        {
+          "cpu": 0.39999999990686774,
+          "latency": 158.5,
+          "renderCallbackLatency": 1
+        },
+        {
+          "cpu": 0.5,
+          "latency": 159,
+          "renderCallbackLatency": 1.3999999999068677
+        },
+        {
+          "cpu": 0.2999999998137355,
+          "latency": 163.79999999981374,
+          "renderCallbackLatency": 0.7999999998137355
+        },
+        {
+          "cpu": 0.5,
+          "latency": 162.29999999981374,
+          "renderCallbackLatency": 1.6000000000931323
+        },
+        {
+          "cpu": 0.39999999990686774,
+          "latency": 155.8000000002794,
+          "renderCallbackLatency": 0.8999999999068677
+        },
+        {
+          "cpu": 0.2999999998137355,
+          "latency": 167.8000000002794,
+          "renderCallbackLatency": 1.2999999998137355
+        },
+        {
+          "cpu": 0.2999999998137355,
+          "latency": 173,
+          "renderCallbackLatency": 0.7999999998137355
+        },
+        {
+          "cpu": 0.3000000002793968,
+          "latency": 117.10000000009313,
+          "renderCallbackLatency": 1.2000000001862645
+        },
+        {
+          "cpu": 0.7000000001862645,
+          "latency": 161.79999999981374,
+          "renderCallbackLatency": 1.3999999999068677
+        },
+        {
+          "cpu": 0.39999999990686774,
+          "latency": 163.09999999962747,
+          "renderCallbackLatency": 1.1999999997206032
+        },
+        {
+          "cpu": 0.3000000002793968,
+          "latency": 117,
+          "renderCallbackLatency": 1.2000000001862645
+        },
+        {
+          "cpu": 0.3000000002793968,
+          "latency": 114.70000000018626,
+          "renderCallbackLatency": 0.8000000002793968
+        }
+      ],
+      "medianCpuMs": 0.39999999990686774,
+      "p95CpuMs": 0.7000000001862645,
+      "medianCameraMs": 161.79999999981374,
+      "p95CameraMs": 173,
+      "retention": [
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 5,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 5,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 5,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 5,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 5,
+          "textures": 1
+        }
+      ],
+      "heap": 21920524,
+      "heapAfter": 21939304,
+      "idleFrames": 0,
+      "preparation": [
+        {
+          "name": "geography.validate",
+          "durationMs": 15.600000000093132
+        },
+        {
+          "name": "geometry.hydrate-main",
+          "durationMs": 101.8000000002794
+        },
+        {
+          "name": "geometry.worker-roundtrip",
+          "durationMs": 925
+        },
+        {
+          "name": "worker.terrain.index",
+          "durationMs": 16.699999999720603
+        },
+        {
+          "name": "worker.geometry.buildings",
+          "durationMs": 491.60000000009313
+        },
+        {
+          "name": "worker.geometry.roads",
+          "durationMs": 123.60000000009313
+        },
+        {
+          "name": "worker.geometry.terrain",
+          "durationMs": 15.699999999720603
+        },
+        {
+          "name": "worker.geometry.water",
+          "durationMs": 3.7000000001862645
+        },
+        {
+          "name": "worker.geometry.coast",
+          "durationMs": 2.1000000000931323
+        },
+        {
+          "name": "worker.geometry.roof-edges",
+          "durationMs": 3.6000000000931323
+        },
+        {
+          "name": "terrain.index",
+          "durationMs": 13
+        }
+      ],
+      "diagnostics": {
+        "longTasks": [
+          {
+            "start": 177,
+            "duration": 76
+          },
+          {
+            "start": 743.7000000001863,
+            "duration": 78
+          },
+          {
+            "start": 1146.7000000001863,
+            "duration": 51
+          },
+          {
+            "start": 1966.4000000003725,
+            "duration": 105
+          },
+          {
+            "start": 2177.4000000003725,
+            "duration": 72
+          }
+        ],
+        "workers": [
+          {
+            "created": 1147.2000000001863,
+            "replyMs": 819.2000000001863,
+            "terminated": true
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

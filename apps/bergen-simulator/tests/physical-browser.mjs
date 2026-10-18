@@ -538,14 +538,14 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(page);
-  assert.equal((await metrics(page)).calls, 5);
+  assert.equal((await metrics(page)).calls, 6);
   assert.equal(
     (await metrics(page)).geometries,
-    5,
+    6,
     "Obsolete draft/surface/traffic buffers must be disposed after reset and exit",
   );
   report.checks.push(
-    "Direct surface inspection/removal and reset return the city to the original five rendering passes",
+    "Direct surface inspection/removal and reset retain five source passes plus the bounded R1 roof accents",
   );
   await page.close();
   const mobile = await setup(true),

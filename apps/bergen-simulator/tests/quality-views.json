@@ -1,0 +1,13 @@
+[
+  {
+    "name": "waterfront",
+    "position": [-145, 85, -45],
+    "target": [-12, 8, -260]
+  },
+  { "name": "roofs", "position": [-105, 100, -385], "target": [-23, 9, -263] },
+  {
+    "name": "vagen",
+    "position": [-428.02, 301.42, 229.24],
+    "target": [1.98, 1.42, -270.76]
+  }
+]

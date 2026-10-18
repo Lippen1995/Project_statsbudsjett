@@ -1,0 +1,28 @@
+{
+  "baselineCommit": "7243b53544ffbae88d680eb7df531cd67f273ded",
+  "sourceGeometryPositionNormalBaseline": "apps/bergen-simulator/tests/r1-source-baseline.json",
+  "files": {
+    "README.md": "1b55ddc8a8905824757f2f150b07590a4328591c2b1d8babf8a758514f80780b",
+    "after/desktop-balanced-roofs.jpg": "5aa9da6a80930abd8d2c0d90264dbf15b4da7c979fb9b0ff1fbef6d50b044243",
+    "after/desktop-balanced-vagen.jpg": "2527a3a8625f6b59c899ae87b81c63a6820715c5550afb3d90f7862f2f3fe3c4",
+    "after/desktop-balanced-waterfront.jpg": "febaaed4e18fd1add8092952570fb91cb0944d38d9d0cb7969cd2c48f9361fa5",
+    "after/desktop-inspection.jpg": "b012bde770881a6a55100fbdd8c053467ee754971ced8f9fb91fcc617a9d8309",
+    "after/desktop-skur11.jpg": "42b245ad90c7b64dba9a05b25f52184756085acb531914df56bf36c1ff20b622",
+    "after/metrics.json": "d7ea10b5374a07081a246e5301a6c35da16f9261a0f55b425144777e563a4547",
+    "after/mobile-balanced-waterfront.jpg": "6505a1a0626b690078546b1f870f9b6ac355f867cd4691e55a9e835855dae1b3",
+    "after/mobile-inspection.jpg": "463c20f73dba595038e9b80648eeb78d597bb3a62e907d1477a0320b7d717649",
+    "after/mobile-skur11.jpg": "36cd80c3e6b7b92e80feb576312ca661f257a8baa66665be4ce221b973bf2b14",
+    "before/desktop-balanced-roofs.jpg": "5a5c029492651b7697e7c4b84efc1da8a442bc0c25898974409e1420bbaca881",
+    "before/desktop-balanced-vagen.jpg": "293ed9cfb62f60bb819b58afc6c74e2b1defbba10389f9f34dab1047c8ab9127",
+    "before/desktop-balanced-waterfront.jpg": "d729b7206244d913ca2c437d69c77bc4facb83c7911e6c91c96946fea1285f81",
+    "before/metrics.json": "531c24d3480044fa1af2efb0cea64c60f4ce7e928f67107b52c0678661e1b267",
+    "before/mobile-balanced-waterfront.jpg": "8038b48ec24b569453f712a014bb77b173ac4c72b9195e6e3865be429c521764",
+    "diagnostics/after-double-raf-before-low-fallback.json": "6bb40c4710ef66a05850642d2044b34d2c513753d988b9be4ec0e50bcb6cd9d2",
+    "diagnostics/after-metrics.json": "98eb0aa8067557beac729a8ef6b0c7daede7f3446cf5e8a79fea566b7e96afbf",
+    "diagnostics/after-shadow-proxy-failed.json": "d0f5e2d89ba007fe7753bbf2e9c9fb327171b7a822af5f05440edc3906bcb88c",
+    "diagnostics/before-metrics.json": "a7c158f829660f8a75cb2a6e914a10cfeda59dc00ae6b909691e6b3e64b27b24",
+    "performance.md": "4c4be9743d9bf246bf7ed08f847140de74c748f386099eb5daa8328c00333eb1",
+    "source-audit.json": "9e9f104850ca32d03323536c6f6ab7170bf48d8ce7e6f2f25059cf1c347facf5",
+    "validation.json": "f5ca6e490e846fa0eea067ab4da9eb147f226ab737df02dee4b28819ea154642"
+  }
+}

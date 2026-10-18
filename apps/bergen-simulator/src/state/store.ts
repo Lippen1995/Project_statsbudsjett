@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { Feature } from "../geo/types";
+import type { BenchmarkView } from "../geo/benchmark";
 
 export type Layer = "buildings" | "roads" | "water";
 interface CityState {
@@ -7,11 +8,19 @@ interface CityState {
   selected: Feature | null;
   selectedSegmentId: string | null;
   quality: "balanced" | "low";
-  camera: { revision: number; point: [number, number] | null; close?: boolean };
+  camera: {
+    revision: number;
+    point: [number, number] | null;
+    close?: boolean;
+    view?: BenchmarkView;
+    object?: string;
+  };
   select: (feature: Feature | null, segmentId?: string | null) => void;
   toggleLayer: (layer: Layer) => void;
   setQuality: (quality: "balanced" | "low") => void;
   focus: (point: [number, number] | null, close?: boolean) => void;
+  inspect: (feature: Feature) => void;
+  viewBenchmark: (view: BenchmarkView) => void;
 }
 
 export const useCity = create<CityState>((set) => ({
@@ -19,7 +28,7 @@ export const useCity = create<CityState>((set) => ({
   selected: null,
   selectedSegmentId: null,
   quality: "balanced",
-  camera: { revision: 0, point: null },
+  camera: { revision: 0, point: null, view: "waterfront" },
   select: (selected, selectedSegmentId = null) =>
     set({ selected, selectedSegmentId }),
   toggleLayer: (layer) =>
@@ -37,5 +46,19 @@ export const useCity = create<CityState>((set) => ({
         point,
         ...(close ? { close: true } : {}),
       },
+    })),
+  inspect: (feature) =>
+    set((s) => ({
+      camera: {
+        revision: s.camera.revision + 1,
+        point: feature.center,
+        object: feature.id,
+      },
+    })),
+  viewBenchmark: (view) =>
+    set((s) => ({
+      camera: { revision: s.camera.revision + 1, point: null, view },
+      selected: null,
+      selectedSegmentId: null,
     })),
 }));

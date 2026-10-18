@@ -47,7 +47,7 @@ class FakeWorker {
     this.onerror?.call(this as unknown as Worker, {} as ErrorEvent);
   }
 }
-it("transfers all fixed geometry buffers without copies and preserves exact 5B attributes", () => {
+it("transfers all fixed geometry buffers without copies and preserves R1 attributes", () => {
   const cloned = structuredClone(reply),
     buffers = transferBuffers(cloned);
   expect(new Set(buffers).size).toBe(buffers.length);
@@ -55,7 +55,7 @@ it("transfers all fixed geometry buffers without copies and preserves exact 5B a
   expect(buffers.every((b) => b.byteLength === 0)).toBe(true);
   const city = unpackCity(moved, data, 1);
   const baseline = JSON.parse(
-    readFileSync("tests/geometry-baseline-5b.json", "utf8"),
+    readFileSync("tests/geometry-baseline-r1.json", "utf8"),
   );
   for (const [key, g] of Object.entries({
     buildings: city.buildings.geometry,
@@ -63,6 +63,7 @@ it("transfers all fixed geometry buffers without copies and preserves exact 5B a
     terrain: city.terrain,
     water: city.water,
     coast: city.coast,
+    roofEdges: city.roofEdges,
   })) {
     const h = createHash("sha256");
     for (const [name, a] of Object.entries(g.attributes).sort(([a], [b]) =>
@@ -90,6 +91,15 @@ it.each([0, 2, NaN])(
   },
 );
 it("rejects malformed attributes, source identities, nonfinite bounds and unbounded output", () => {
+  for (const roofEdges of [
+    undefined,
+    { ...reply.layers.roofEdges, position: new Float32Array(12006) },
+    { ...reply.layers.roofEdges, index: new Uint16Array([0, 1, 2]) },
+  ]) {
+    expect(() =>
+      unpackCity({ ...reply, layers: { ...reply.layers, roofEdges } }, data, 1),
+    ).toThrow();
+  }
   expect(() =>
     unpackCity(
       {
@@ -164,14 +174,14 @@ it("cancels workers and ignores late geometry without changing source data", () 
     ready = vi.fn(),
     error = vi.fn();
   const stop = startCityPreparation(data, ready, error, () => w);
-  expect(w.request).toEqual({ version: 1, requestId: 1, geography: data });
+  expect(w.request).toEqual({ version: 2, requestId: 1, geography: data });
   stop();
   w.emit(reply);
   expect(ready).not.toHaveBeenCalled();
   expect(error).not.toHaveBeenCalled();
   expect(w.terminated).toBe(1);
 });
-it("owns exactly five disposable batches and never accepts a second reply", () => {
+it("owns exactly six disposable batches and never accepts a second reply", () => {
   const w = new FakeWorker(),
     ready = vi.fn(),
     error = vi.fn();
@@ -190,11 +200,12 @@ it("owns exactly five disposable batches and never accepts a second reply", () =
     city.terrain,
     city.water,
     city.coast,
+    city.roofEdges,
   ])
     g.addEventListener("dispose", dispose);
   stop();
   stop();
-  expect(dispose).toHaveBeenCalledTimes(5);
+  expect(dispose).toHaveBeenCalledTimes(6);
   expect(error).not.toHaveBeenCalled();
 });
 it("fails explicitly on malformed worker replies or worker startup failure", () => {

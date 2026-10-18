@@ -6,6 +6,39 @@
   font-weight: 400;
   font-size: 14px;
 }
+.benchmark-views {
+  position: absolute;
+  left: 30px;
+  top: 142px;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: calc(100% - 100px);
+  gap: 1px;
+  background: #264c49;
+  border-left: 2px solid #c3aa73;
+  box-shadow: 0 3px 12px #12373222;
+}
+.benchmark-views > span {
+  padding: 11px 12px;
+  font-size: 9px;
+  letter-spacing: 1.3px;
+  color: #e8e7d6;
+}
+.benchmark-views button {
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 0;
+  background: #fafaf2f2;
+  font-size: 11px;
+}
+.benchmark-views button:hover { background: #e5e7d8; }
+.benchmark-note { border-left: 2px solid #b29761; padding-left: 9px; }
+@media (max-width: 700px) {
+  .benchmark-views { left: 14px; top: 112px; max-width: calc(100% - 28px); }
+  .benchmark-views > span { display: none; }
+  .benchmark-views button { padding: 8px; font-size: 10px; }
+}
 * {
   box-sizing: border-box;
 }

@@ -5,7 +5,7 @@ self.onmessage = ({ data }: MessageEvent<unknown>) => {
       !data ||
       typeof data !== "object" ||
       !("version" in data) ||
-      data.version !== 1 ||
+      data.version !== 2 ||
       !("requestId" in data) ||
       typeof data.requestId !== "number" ||
       !("geography" in data)
@@ -15,7 +15,7 @@ self.onmessage = ({ data }: MessageEvent<unknown>) => {
     self.postMessage(reply, { transfer: transferBuffers(reply) });
   } catch {
     self.postMessage({
-      version: 1,
+      version: 2,
       type: "error",
       message: "The verified geographic geometry could not be prepared.",
     });

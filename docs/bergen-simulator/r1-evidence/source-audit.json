@@ -1,0 +1,702 @@
+{
+  "baselineCommit": "7243b53544ffbae88d680eb7df531cd67f273ded",
+  "sourceFilesUnchanged": {
+    "apps/bergen-simulator/public/data/NOTICE.md": "af19590b6509ce091f7ac8de69f533f0d63539c7806a24401bd7f8d744dc75b6",
+    "apps/bergen-simulator/public/data/bergen-context-osm.json.gz": "f041539a4c73faed909664c8c64a1f4751fac60dc4175dbe1616633a3ea2016d",
+    "apps/bergen-simulator/public/data/bergen-osm.json.gz": "11b0e3c5b20de3defa1fa077ce5d64eb7d67eb83df2c966599a8da0528c05fb9",
+    "apps/bergen-simulator/public/data/bergen.json": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812",
+    "apps/bergen-simulator/public/data/bryggen-transport.json": "7082fe3888c1dfd1fb9a8603c86bdce9fe09df56bfa7cf7900150815a7268d11",
+    "apps/bergen-simulator/public/data/source-manifest.json": "d664f52364fe5ada89639b45ef074a1092e26d3586b9faedc2c88e5f847002b4",
+    "apps/bergen-simulator/public/data/terrain-source.json": "5e350bce3a5c17dfbe411082491fff1cbc6a83442ee03ce3e56e5accc7a0e97c"
+  },
+  "sourceBounds": [
+    5.298,
+    60.382,
+    5.349,
+    60.408
+  ],
+  "origin": [
+    5.3235,
+    60.395
+  ],
+  "pilotBoundsLocalMetres": [
+    -85,
+    -330,
+    95,
+    -120
+  ],
+  "supportedGables": 13,
+  "sourceLicenses": [
+    "OpenStreetMap contributors / ODbL-1.0",
+    "Kartverket / CC BY 4.0"
+  ],
+  "newExternalAssets": [],
+  "buildings": [
+    {
+      "id": "way/292320260",
+      "name": "Mapped building",
+      "height": 14.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "14",
+        "building:levels": "3",
+        "building:colour": "white",
+        "roof:shape": "gabled",
+        "roof:height": "5"
+      }
+    },
+    {
+      "id": "way/292320261",
+      "name": "Mapped building",
+      "height": 14.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "14",
+        "building:levels": "3",
+        "building:colour": "white",
+        "roof:shape": "gabled",
+        "roof:height": "5"
+      }
+    },
+    {
+      "id": "way/331274536",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274541",
+      "name": "Mapped building",
+      "height": 12.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "12",
+        "building:levels": "3",
+        "building:colour": "brown",
+        "roof:shape": "gabled",
+        "roof:height": "4"
+      }
+    },
+    {
+      "id": "way/331274546",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274552",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274560",
+      "name": "Mapped building",
+      "height": 13.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "13",
+        "building:levels": "3",
+        "building:colour": "red",
+        "roof:shape": "gabled",
+        "roof:height": "3"
+      }
+    },
+    {
+      "id": "way/331274562",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274567",
+      "name": "Mapped building",
+      "height": 16.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "16",
+        "building:levels": "3",
+        "building:colour": "brown",
+        "roof:shape": "gabled",
+        "roof:height": "7"
+      }
+    },
+    {
+      "id": "way/331274569",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274574",
+      "name": "Mapped building",
+      "height": 13.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "13",
+        "building:levels": "3",
+        "building:colour": "beige",
+        "roof:shape": "gabled",
+        "roof:height": "5"
+      }
+    },
+    {
+      "id": "way/331274575",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274578",
+      "name": "Mapped building",
+      "height": 16.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "16",
+        "building:levels": "3",
+        "building:colour": "beige",
+        "roof:shape": "gabled",
+        "roof:height": "6"
+      }
+    },
+    {
+      "id": "way/331274582",
+      "name": "Mapped building",
+      "height": 14.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "14",
+        "building:levels": "3",
+        "building:colour": "beige",
+        "roof:shape": "gabled",
+        "roof:height": "5"
+      }
+    },
+    {
+      "id": "way/331274583",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274591",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/488690088",
+      "name": "Mapped building",
+      "height": 13.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "13",
+        "building:levels": "3",
+        "building:colour": "white",
+        "roof:shape": "gabled",
+        "roof:height": "4",
+        "roof:colour": "orange"
+      }
+    },
+    {
+      "id": "way/331274528",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274555",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274563",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274586",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/488690084",
+      "name": "Mapped building",
+      "height": 16.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "16",
+        "building:levels": "3",
+        "building:colour": "brown",
+        "roof:shape": "gabled",
+        "roof:height": "6"
+      }
+    },
+    {
+      "id": "way/292242383",
+      "name": "Mapped building",
+      "height": 3.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "1",
+        "building:colour": "aqua",
+        "roof:shape": "hipped",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292242388",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "building:colour": "red",
+        "roof:shape": "gabled",
+        "roof:colour": "black"
+      }
+    },
+    {
+      "id": "way/292320263",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320264",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320265",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320266",
+      "name": "Mapped building",
+      "height": 14.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "14",
+        "building:levels": "3",
+        "building:colour": "red",
+        "roof:shape": "gabled",
+        "roof:height": "5",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320267",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320268",
+      "name": "Mapped building",
+      "height": 13.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "13",
+        "building:levels": "3",
+        "building:colour": "red",
+        "roof:shape": "gabled",
+        "roof:height": "4",
+        "roof:colour": "black"
+      }
+    },
+    {
+      "id": "way/292320269",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "building:colour": "orange",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320271",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320272",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320273",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320274",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "building:colour": "orange",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320275",
+      "name": "Mapped building",
+      "height": 13.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "13",
+        "building:levels": "3",
+        "building:colour": "red",
+        "roof:shape": "gabled",
+        "roof:height": "4",
+        "roof:colour": "orange"
+      }
+    },
+    {
+      "id": "way/292320276",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "building:colour": "red",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/292320278",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/331274526",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274527",
+      "name": "Mapped building",
+      "height": 15.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "5",
+        "building:colour": "mahogany",
+        "building:material": "brick",
+        "roof:shape": "gabled",
+        "roof:material": "slate"
+      }
+    },
+    {
+      "id": "way/331274539",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274540",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274543",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274548",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274556",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274570",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274572",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274573",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274577",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274580",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274581",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274587",
+      "name": "Mapped building",
+      "height": 13.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "13",
+        "building:levels": "3",
+        "building:colour": "red",
+        "roof:shape": "gabled",
+        "roof:height": "4",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/331274594",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274596",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274599",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274605",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/393025479",
+      "name": "Skur 11",
+      "height": 3.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "1",
+        "building:colour": "darkgreen",
+        "roof:shape": "gabled",
+        "roof:colour": "darkgreen"
+      }
+    },
+    {
+      "id": "way/416421844",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "roof:shape": "gabled",
+        "roof:colour": "brown"
+      }
+    },
+    {
+      "id": "way/418057357",
+      "name": "Mapped building",
+      "height": 15.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "5",
+        "building:colour": "mahogany",
+        "building:material": "brick",
+        "roof:shape": "gabled",
+        "roof:material": "slate"
+      }
+    },
+    {
+      "id": "way/418057369",
+      "name": "Mapped building",
+      "height": 15.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "5",
+        "building:colour": "mahogany",
+        "building:material": "brick",
+        "roof:shape": "gabled",
+        "roof:material": "slate"
+      }
+    },
+    {
+      "id": "way/488690087",
+      "name": "Mapped building",
+      "height": 13.0,
+      "heightStatus": "osm-height",
+      "tags": {
+        "height": "13",
+        "building:levels": "3",
+        "building:colour": "white",
+        "roof:shape": "gabled",
+        "roof:height": "4",
+        "roof:colour": "orange"
+      }
+    },
+    {
+      "id": "way/719637440",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/984917585",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/292242381",
+      "name": "Bryggen Tracteursted",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "building:colour": "red",
+        "roof:shape": "gabled",
+        "roof:colour": "black"
+      }
+    },
+    {
+      "id": "way/292242384",
+      "name": "Mapped building",
+      "height": 6.0,
+      "heightStatus": "levels-estimate",
+      "tags": {
+        "building:levels": "2",
+        "building:colour": "orange",
+        "roof:shape": "gabled",
+        "roof:colour": "black"
+      }
+    },
+    {
+      "id": "way/331274542",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274547",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    },
+    {
+      "id": "way/331274559",
+      "name": "Mapped building",
+      "height": null,
+      "heightStatus": "unknown",
+      "tags": {}
+    }
+  ]
+}
