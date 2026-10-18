@@ -1,14 +1,18 @@
+import catalogue from "../architecture/catalogue.json";
+import { useArchitecture } from "../architecture/state";
 import { useCity } from "../state/store";
 import type { Building } from "../geo/types";
 import { gableProfile } from "../geo/roofs";
 import { inHeroBlock } from "../geo/benchmark";
 
 export default function Inspector() {
+  const assetStatus = useArchitecture((s) => s.status);
   const selected = useCity((s) => s.selected);
   const select = useCity((s) => s.select);
   const inspect = useCity((s) => s.inspect);
   const building =
     selected?.kind === "building" ? (selected as Building) : null;
+  const asset = catalogue.buildings.find((b) => b.id === building?.id);
   const roof = building ? gableProfile(building) : null;
   return (
     <section
@@ -34,6 +38,43 @@ export default function Inspector() {
         <>
           <span className="eyebrow">{selected.kind} · OpenStreetMap</span>
           <h3>{selected.name}</h3>
+          {asset ? (
+            <p className="data-note benchmark-note">
+              R1B architectural study · {asset.label}.{" "}
+              {assetStatus === "ready"
+                ? "Detailed render layer loaded."
+                : assetStatus === "unavailable"
+                  ? "Architectural detail unavailable; original schematic geometry retained."
+                  : "Schematic fallback; detail streams at near balanced zoom."}{" "}
+              {asset.roof.accepted
+                ? `Roof envelope inferred from Kartverket 2022 laser surface: ridge ${asset.roof.ridgeNN2000} m NN2000, eave ${asset.roof.eaveNN2000} m NN2000; inlier fit error ${asset.roof.inlierRmseM} m. Not a building survey.`
+                : "Laser roof fit rejected; original OSM roof dimensions retained."}{" "}
+              {asset.facade}.
+            </p>
+          ) : null}
+          {asset && asset.id !== "way/393025479" ? (
+            <p className="data-note">
+              Facade imagery: Kognos / Wikimedia Commons, 3 October 2022 ·
+              cropped and perspective-mapped ·{" "}
+              <a
+                href="https://commons.wikimedia.org/wiki/File:Panorama_of_Bryggen,_Bergen.jpg"
+                target="_blank"
+                rel="noreferrer"
+              >
+                source
+              </a>{" "}
+              ·{" "}
+              <a
+                href="https://creativecommons.org/licenses/by-sa/4.0/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                CC BY-SA 4.0
+              </a>
+              . Historical appearance; no current tenancy, facade depth or
+              surveyed opening dimensions asserted.
+            </p>
+          ) : null}
           <dl>
             <div>
               <dt>Map reference</dt>
@@ -53,7 +94,9 @@ export default function Inspector() {
                 <dd>
                   {building.height === null
                     ? "Unknown · footprint only"
-                    : `${building.height.toFixed(1)} m`}
+                    : asset && assetStatus === "ready"
+                      ? `${(asset.roof.ridgeNN2000 - building.elevation).toFixed(1)} m render envelope; ${building.height.toFixed(1)} m original snapshot`
+                      : `${building.height.toFixed(1)} m`}
                 </dd>
               </div>
             ) : null}
@@ -67,6 +110,7 @@ export default function Inspector() {
                     (building.heightStatus === "osm-height" ? "observed" : "")
                   }
                 />
+                {asset ? "Original snapshot fallback: " : null}
                 {building.heightStatus === "osm-height"
                   ? "Height reported in OSM; not survey verified."
                   : building.heightStatus === "levels-estimate"
@@ -83,14 +127,18 @@ export default function Inspector() {
                     ? `OSM roof colour: ${building.tags["roof:colour"]}. `
                     : "Roof colour not documented. "}
                   Surface grain, tonal grading and lighting are illustrative,
-                  not a facade survey. Windows and architectural details are not
-                  documented.
+                  not a facade survey.{" "}
+                  {asset
+                    ? "Only the photographed waterfront face has dated image detail; other faces remain schematic."
+                    : "Windows and architectural details are not documented."}
                 </p>
               ) : null}
               <p className="data-note">
                 {roof
                   ? `Gabled roof: ${roof.height} m from OSM roof:height; included in total height. ${roof.orientation === "osm-direction" ? "Direction reported in OSM." : "Ridge direction inferred from the footprint; not survey verified."}`
-                  : "Roof form unresolved; simplified geometry retained."}{" "}
+                  : asset?.roof.accepted
+                    ? "Roof form unresolved in the original snapshot; schematic fallback preserved. Separate render roof described above."
+                    : "Roof form unresolved; simplified geometry retained."}{" "}
                 Ground contact follows the 16 m terrain mesh; foundations and
                 material tints are schematic.
               </p>

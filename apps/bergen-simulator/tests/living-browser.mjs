@@ -502,8 +502,8 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(page);
-  assert.equal((await metrics(page)).calls, 6);
-  assert.equal((await metrics(page)).geometries, 6);
+  assert.equal((await metrics(page)).calls, 7); // Five source passes + two R1B architectural batches.
+  assert.equal((await metrics(page)).geometries, 8); // Original batch, filtered index view and two asset geometries are bounded.
   await page.close();
   report.checks.push(
     "Load legacy 4B → living month zero → six dynamic months → identify workforce imbalance → add residential storey → rerun from identical baseline → compare saved strategies",
@@ -569,7 +569,7 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(m);
-  assert.equal((await metrics(m)).geometries, 6);
+  assert.equal((await metrics(m)).geometries, 8);
   await m.close();
   report.checks.push(
     "Mobile timeline/inspection, 24-month scenario replay, local reload, viewport fit and zero idle frames; repeated worker resets retain bounded heap and fixed GPU geometry",

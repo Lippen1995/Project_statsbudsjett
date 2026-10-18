@@ -1,0 +1,58 @@
+{
+  "phase": "before",
+  "views": [
+    {
+      "name": "northern-group",
+      "position": [
+        -145,
+        34,
+        -200
+      ],
+      "target": [
+        -55,
+        8,
+        -280
+      ]
+    },
+    {
+      "name": "skur-gable",
+      "position": [
+        105,
+        22,
+        -102
+      ],
+      "target": [
+        51,
+        6,
+        -142
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "mobile": false,
+      "view": "northern-group",
+      "calls": 6,
+      "triangles": 288140
+    },
+    {
+      "mobile": false,
+      "view": "skur-gable",
+      "calls": 6,
+      "triangles": 288140
+    },
+    {
+      "mobile": true,
+      "view": "northern-group",
+      "calls": 6,
+      "triangles": 288140
+    },
+    {
+      "mobile": true,
+      "view": "skur-gable",
+      "calls": 6,
+      "triangles": 288140
+    }
+  ],
+  "errors": []
+}

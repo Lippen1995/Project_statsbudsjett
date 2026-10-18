@@ -308,3 +308,18 @@ only presentation, camera and inspection: source coordinates/heights remain pinn
 one bounded roof-line batch travels through geometry-worker protocol v2, and two static
 shadow LODs retain demand rendering. No engine migration, source refresh or LIVE public
 release. See [scope, provenance, measurements and limits](r1-quality-benchmark.md).
+
+## R1B — separate architectural render assets
+
+`src/architecture/` and `public/architecture/` add a source-only, versioned GLB
+catalogue for seven existing OSM IDs. It leaves the pinned geographic snapshot,
+geometry worker and scenario versions 1–6 unchanged. The opt-in compiler locks
+Kartverket DOM and licensed dated facade imagery; runtime batches source-linked
+meshes into two passes with bounded LOD, integrity checks, immutable index-only
+fallback filtering and explicit lifetime ownership. No source asset is a game input.
+
+See [architectural pipeline / limitations](r1b-architectural-realism.md),
+[source permissions](r1b-asset-source-register.md) and
+[visual/performance evidence](r1b-evidence/README.md). This is one bounded tile,
+not a completed citywide streamer or a photorealistic digital twin. Human recognition
+and physical-device GPU acceptance remain open before broader expansion.

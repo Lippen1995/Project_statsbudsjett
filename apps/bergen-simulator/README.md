@@ -144,3 +144,10 @@ physical-design/save/reload/legacy-import journey under the existing CSP. Eviden
 is written to ignored `artifacts/milestone-4a/`. `npm run test:physical-baseline`
 reconstructs exact 3B commit e047904 on port 4181 without switching branches.
 Run captures sequentially. See [geometry limits, evidence and performance](../../docs/bergen-simulator/milestone-4a.md).
+
+R1B adds a separately licensed, source-ID-linked architectural GLB demonstration for
+seven Bryggen buildings. See [pipeline and reproduction](../../docs/bergen-simulator/r1b-architectural-realism.md),
+[source/asset rights](../../docs/bergen-simulator/r1b-asset-source-register.md), and
+[fixed-camera visual/performance evidence](../../docs/bergen-simulator/r1b-evidence/README.md).
+The original geography, game engines, save formats and protected deployment workflow
+are unchanged. This is not a complete photorealistic landmark reconstruction.

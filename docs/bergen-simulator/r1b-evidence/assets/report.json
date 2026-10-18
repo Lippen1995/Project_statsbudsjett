@@ -1,0 +1,137 @@
+{
+  "errors": [],
+  "checks": [
+    "missing retains immutable fallback without stale detail",
+    "corrupt retains immutable fallback without stale detail",
+    "cancelled retains immutable fallback without stale detail",
+    "All seven source IDs picked directly per viewport, including six photographic facades; unchanged CSP; no blob fetch; zero idle; low tier; bounded tile eviction"
+  ],
+  "cases": [
+    {
+      "mobile": false,
+      "picked": [
+        "way/488690084",
+        "way/331274578",
+        "way/331274560",
+        "way/331274567",
+        "way/292320260",
+        "way/292320261",
+        "way/393025479"
+      ],
+      "pickSamplesMs": [
+        121.70697099999961,
+        122.4409770000002,
+        159.40287700000044,
+        100.81711500000074,
+        104.51298599999973,
+        88.49375800000053,
+        73.77315999999882
+      ],
+      "near": {
+        "frames": 1,
+        "attributeArrays": 26,
+        "attributeBytes": 29066598,
+        "cpuFrameMs": 101.80000000074506,
+        "cameraLatencyMs": null,
+        "calls": 7,
+        "triangles": 288104,
+        "lines": 0,
+        "geometries": 7,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          -145,
+          85,
+          -45
+        ],
+        "target": [
+          -12.000000000000002,
+          8,
+          -260
+        ]
+      },
+      "cycles": [
+        {
+          "geometries": 8,
+          "textures": 2,
+          "bytes": 29066598
+        },
+        {
+          "geometries": 8,
+          "textures": 2,
+          "bytes": 29066598
+        },
+        {
+          "geometries": 8,
+          "textures": 2,
+          "bytes": 29066598
+        }
+      ],
+      "heapBefore": 23509096,
+      "heapAfter": 23726564
+    },
+    {
+      "mobile": true,
+      "picked": [
+        "way/488690084",
+        "way/331274578",
+        "way/331274560",
+        "way/331274567",
+        "way/292320260",
+        "way/292320261",
+        "way/393025479"
+      ],
+      "pickSamplesMs": [
+        173.6588449999981,
+        267.54901699999755,
+        331.1759549999988,
+        280.4791980000009,
+        217.0997920000009,
+        254.16728600000351,
+        68.84892499999842
+      ],
+      "near": {
+        "frames": 1,
+        "attributeArrays": 26,
+        "attributeBytes": 29066598,
+        "cpuFrameMs": 77.69999999925494,
+        "cameraLatencyMs": null,
+        "calls": 7,
+        "triangles": 288104,
+        "lines": 0,
+        "geometries": 7,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          -145,
+          85,
+          -45
+        ],
+        "target": [
+          -12.000000000000002,
+          8,
+          -260
+        ]
+      },
+      "cycles": [
+        {
+          "geometries": 8,
+          "textures": 2,
+          "bytes": 29066598
+        },
+        {
+          "geometries": 8,
+          "textures": 2,
+          "bytes": 29066598
+        },
+        {
+          "geometries": 8,
+          "textures": 2,
+          "bytes": 29066598
+        }
+      ],
+      "heapBefore": 23525156,
+      "heapAfter": 23766960
+    }
+  ]
+}

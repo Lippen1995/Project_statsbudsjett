@@ -679,8 +679,8 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(page);
-  assert.equal((await metrics(page)).calls, 6);
-  assert.equal((await metrics(page)).geometries, 6);
+  assert.equal((await metrics(page)).calls, 7); // Five source passes + two R1B architectural batches.
+  assert.equal((await metrics(page)).geometries, 8); // Original batch, filtered index view and two asset geometries are bounded.
   await page.close();
   report.checks.push(
     "Terrain placement; direct resize and rotation; numeric storeys, purpose and roof; observed-building and water rejection; hypothetical geometry visibly changes 3D",
@@ -703,7 +703,7 @@ try {
   await count(m, 1);
   await camera(m, [-40, 115, -100], [9, 1, -213]);
   assert(
-    (await metrics(m)).triangles > 288140,
+    (await metrics(m)).triangles > 288104,
     "The touch-placed concept must be visible in the mobile scene",
   );
   await m.screenshot({ path: resolve(output, "06-mobile-construction.jpg") });
@@ -733,7 +733,7 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(m);
-  assert.equal((await metrics(m)).geometries, 6);
+  assert.equal((await metrics(m)).geometries, 8);
   await m.close();
   report.checks.push(
     "Touch placement, accessible numeric editing, mobile import/reload and viewport fit; bounded draw calls, GPU geometry disposal, zero idle frames",

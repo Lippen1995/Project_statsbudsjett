@@ -260,3 +260,20 @@ outlines are illustrative presentation, not surveys or observed materials.
 See [R1 provenance and limitations](r1-quality-benchmark.md#source-and-asset-boundary)
 and [source checksums / pilot IDs](r1-evidence/source-audit.json). Existing ODbL and
 Kartverket CC BY 4.0 attribution, CRS/datum and acquisition records remain authoritative.
+
+## R1B — separately pinned architectural render sources
+
+The original seven `public/data/` files remain byte-identical. A separate source-ID
+catalogue/GLB uses a 0.5 m Kartverket DOM crop, Bergen 10pkt 2022 / project 6266,
+EPSG:25832 / NN2000, CC BY 4.0, to infer five bounded roof envelopes. Two failed
+fits retain original OSM dimensions. Six upper waterfront faces use Kognos's dated
+3 October 2022 Bryggen panorama, CC BY-SA 4.0, cropped and perspective-mapped with
+explicit uncertainty. Skur 11 has a separate CC BY-SA 3.0 historical reference photo,
+not a copied runtime texture or source of invented dimensions.
+
+Inputs, licences, checksums, coordinates, dates, rejected alternatives and commercial
+redistribution review are in [the R1B asset register](r1b-asset-source-register.md).
+[The implementation](r1b-architectural-realism.md) distinguishes observed pixels,
+inferred geometry/registration and illustrative shading. Existing placement/traffic/
+district facts and all saved scenario meanings are unchanged. Building heights in
+the inspector identify the original snapshot versus the separate inferred render layer.

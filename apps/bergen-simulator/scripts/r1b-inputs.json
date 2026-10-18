@@ -1,0 +1,32 @@
+[
+  {
+    "file": "dom.tif",
+    "url": "https://hoydedata.no/arcgis/rest/services/DOM/ImageServer/exportImage?f=image&bbox=297372%2C6701150%2C297560%2C6701402&bboxSR=25832&imageSR=25832&size=376%2C504&format=tiff&pixelType=F32&interpolation=RSP_BilinearInterpolation&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicAttribute%22%2C+%22where%22%3A+%22LAS_PROJECT_ID+%3D+6266%22%2C+%22mosaicOperation%22%3A+%22MT_FIRST%22%7D",
+    "sha256": "50080ed26d13ff0079f252f763004d5468b506dbc2d7f9667a64588a7c521ed9",
+    "bytes": 787662
+  },
+  {
+    "file": "reference.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/33/Panorama_of_Bryggen%2C_Bergen.jpg",
+    "sha256": "c09b8e7e510330e3039799ae646a61945655e4dfb2d93b63dd9c9f53f402e8ad",
+    "bytes": 6359698
+  },
+  {
+    "file": "skur11.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Skur11.jpg",
+    "sha256": "55bcb45e2b7d0079975a7c16208dbb67eae853c47eafe03755f627269f62184e",
+    "bytes": 3533786
+  },
+  {
+    "file": "dom-service.json",
+    "url": "https://hoydedata.no/arcgis/rest/services/DOM/ImageServer?f=pjson",
+    "sha256": "3b7e433fd0709c33de50c23df6dfe26423fd622452e29752700745a57f114a22",
+    "bytes": 7999
+  },
+  {
+    "file": "dom-project.json",
+    "url": "https://hoydedata.no/laserservices/rest/projectMetadata.ashx?request=%7BProjects%3A%27Bergen%2010pkt%202022%27%2CReturnMetadata%3Atrue%7D",
+    "sha256": "8ab0652e2297db9d32c58c7bf6b7eb3fa2606d4dc47afb9c38ec8b40c679935b",
+    "bytes": 1395
+  }
+]

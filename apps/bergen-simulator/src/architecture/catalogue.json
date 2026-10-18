@@ -1,0 +1,343 @@
+{
+  "version": 1,
+  "snapshotSha256": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812",
+  "url": "/architecture/bryggen-e3dcf1e48192914c.glb",
+  "sha256": "e3dcf1e48192914cd30f10a04722992b167d3953d88b489e64845c97582ae352",
+  "bytes": 192588,
+  "bounds": [
+    -85,
+    -330,
+    95,
+    -120
+  ],
+  "textureSize": [
+    1024,
+    1024
+  ],
+  "acquiredAt": "2026-10-18",
+  "sources": [
+    {
+      "file": "dom.tif",
+      "url": "https://hoydedata.no/arcgis/rest/services/DOM/ImageServer/exportImage?f=image&bbox=297372%2C6701150%2C297560%2C6701402&bboxSR=25832&imageSR=25832&size=376%2C504&format=tiff&pixelType=F32&interpolation=RSP_BilinearInterpolation&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicAttribute%22%2C+%22where%22%3A+%22LAS_PROJECT_ID+%3D+6266%22%2C+%22mosaicOperation%22%3A+%22MT_FIRST%22%7D",
+      "sha256": "50080ed26d13ff0079f252f763004d5468b506dbc2d7f9667a64588a7c521ed9",
+      "bytes": 787662
+    },
+    {
+      "file": "reference.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/33/Panorama_of_Bryggen%2C_Bergen.jpg",
+      "sha256": "c09b8e7e510330e3039799ae646a61945655e4dfb2d93b63dd9c9f53f402e8ad",
+      "bytes": 6359698
+    },
+    {
+      "file": "skur11.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Skur11.jpg",
+      "sha256": "55bcb45e2b7d0079975a7c16208dbb67eae853c47eafe03755f627269f62184e",
+      "bytes": 3533786
+    },
+    {
+      "file": "dom-service.json",
+      "url": "https://hoydedata.no/arcgis/rest/services/DOM/ImageServer?f=pjson",
+      "sha256": "3b7e433fd0709c33de50c23df6dfe26423fd622452e29752700745a57f114a22",
+      "bytes": 7999
+    },
+    {
+      "file": "dom-project.json",
+      "url": "https://hoydedata.no/laserservices/rest/projectMetadata.ashx?request=%7BProjects%3A%27Bergen%2010pkt%202022%27%2CReturnMetadata%3Atrue%7D",
+      "sha256": "8ab0652e2297db9d32c58c7bf6b7eb3fa2606d4dc47afb9c38ec8b40c679935b",
+      "bytes": 1395
+    }
+  ],
+  "buildings": [
+    {
+      "id": "way/488690084",
+      "footprint": [
+        [
+          [
+            -71.02,
+            -290.88
+          ],
+          [
+            -58.01,
+            -311.0
+          ],
+          [
+            -66.19,
+            -316.28
+          ],
+          [
+            -79.19,
+            -296.16
+          ],
+          [
+            -71.02,
+            -290.88
+          ]
+        ]
+      ],
+      "sourceHeight": 16.0,
+      "sourceElevation": 2.34,
+      "label": "Northern brown gable",
+      "roof": {
+        "method": "robust symmetric gable fit to DOM; ridge axis inferred from OSM footprint",
+        "accepted": true,
+        "samples": 728,
+        "inlierFraction": 0.8571,
+        "inlierRmseM": 0.187,
+        "eaveNN2000": 10.619,
+        "ridgeNN2000": 15.992,
+        "pitchDegrees": 47.82
+      },
+      "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
+    },
+    {
+      "id": "way/331274578",
+      "footprint": [
+        [
+          [
+            -63.33,
+            -284.13
+          ],
+          [
+            -51.63,
+            -298.53
+          ],
+          [
+            -58.94,
+            -304.46
+          ],
+          [
+            -70.64,
+            -290.07
+          ],
+          [
+            -63.33,
+            -284.13
+          ]
+        ]
+      ],
+      "sourceHeight": 16.0,
+      "sourceElevation": 2.16,
+      "label": "Northern ochre gable",
+      "roof": {
+        "method": "robust symmetric gable fit to DOM; ridge axis inferred from OSM footprint",
+        "accepted": true,
+        "samples": 530,
+        "inlierFraction": 0.9264,
+        "inlierRmseM": 0.41,
+        "eaveNN2000": 10.794,
+        "ridgeNN2000": 16.128,
+        "pitchDegrees": 48.56
+      },
+      "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
+    },
+    {
+      "id": "way/331274560",
+      "footprint": [
+        [
+          [
+            -58.66,
+            -280.33
+          ],
+          [
+            -47.75,
+            -293.74
+          ],
+          [
+            -52.42,
+            -297.54
+          ],
+          [
+            -63.33,
+            -284.13
+          ],
+          [
+            -58.66,
+            -280.33
+          ]
+        ]
+      ],
+      "sourceHeight": 13.0,
+      "sourceElevation": 2.09,
+      "label": "Narrow red gable",
+      "roof": {
+        "method": "robust symmetric gable fit to DOM; ridge axis inferred from OSM footprint",
+        "accepted": true,
+        "samples": 278,
+        "inlierFraction": 0.9029,
+        "inlierRmseM": 0.302,
+        "eaveNN2000": 11.092,
+        "ridgeNN2000": 13.545,
+        "pitchDegrees": 39.18
+      },
+      "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
+    },
+    {
+      "id": "way/331274567",
+      "footprint": [
+        [
+          [
+            -51.76,
+            -274.72
+          ],
+          [
+            -41.68,
+            -287.11
+          ],
+          [
+            -40.85,
+            -288.13
+          ],
+          [
+            -47.75,
+            -293.74
+          ],
+          [
+            -58.66,
+            -280.33
+          ],
+          [
+            -51.76,
+            -274.72
+          ]
+        ]
+      ],
+      "sourceHeight": 16.0,
+      "sourceElevation": 2.08,
+      "label": "Wide red gable",
+      "roof": {
+        "method": "robust symmetric gable fit to DOM; ridge axis inferred from OSM footprint",
+        "accepted": false,
+        "samples": 458,
+        "inlierFraction": 0.9585,
+        "inlierRmseM": 0.945,
+        "eaveNN2000": 11.38,
+        "ridgeNN2000": 18.38,
+        "pitchDegrees": 57.58
+      },
+      "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
+    },
+    {
+      "id": "way/292320260",
+      "footprint": [
+        [
+          [
+            -45.89,
+            -269.95
+          ],
+          [
+            -35.79,
+            -282.36
+          ],
+          [
+            -41.68,
+            -287.11
+          ],
+          [
+            -51.76,
+            -274.72
+          ],
+          [
+            -45.89,
+            -269.95
+          ]
+        ]
+      ],
+      "sourceHeight": 14.0,
+      "sourceElevation": 2.01,
+      "label": "North white gable",
+      "roof": {
+        "method": "robust symmetric gable fit to DOM; ridge axis inferred from OSM footprint",
+        "accepted": true,
+        "samples": 344,
+        "inlierFraction": 0.9506,
+        "inlierRmseM": 0.541,
+        "eaveNN2000": 10.05,
+        "ridgeNN2000": 14.305,
+        "pitchDegrees": 48.36
+      },
+      "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
+    },
+    {
+      "id": "way/292320261",
+      "footprint": [
+        [
+          [
+            -40.23,
+            -265.34
+          ],
+          [
+            -30.14,
+            -277.75
+          ],
+          [
+            -35.79,
+            -282.36
+          ],
+          [
+            -45.89,
+            -269.95
+          ],
+          [
+            -40.23,
+            -265.34
+          ]
+        ]
+      ],
+      "sourceHeight": 14.0,
+      "sourceElevation": 1.82,
+      "label": "South white gable",
+      "roof": {
+        "method": "robust symmetric gable fit to DOM; ridge axis inferred from OSM footprint",
+        "accepted": false,
+        "samples": 328,
+        "inlierFraction": 0.9756,
+        "inlierRmseM": 0.965,
+        "eaveNN2000": 11.12,
+        "ridgeNN2000": 16.12,
+        "pitchDegrees": 53.87
+      },
+      "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
+    },
+    {
+      "id": "way/393025479",
+      "footprint": [
+        [
+          [
+            65.12,
+            -134.6
+          ],
+          [
+            43.3,
+            -155.96
+          ],
+          [
+            37.35,
+            -149.89
+          ],
+          [
+            59.17,
+            -128.53
+          ],
+          [
+            65.12,
+            -134.6
+          ]
+        ]
+      ],
+      "sourceHeight": 3.0,
+      "sourceElevation": 1.88,
+      "label": "Skur 11",
+      "roof": {
+        "method": "robust symmetric gable fit to DOM; ridge axis inferred from OSM footprint",
+        "accepted": true,
+        "samples": 804,
+        "inlierFraction": 1.0,
+        "inlierRmseM": 0.062,
+        "eaveNN2000": 8.26,
+        "ridgeNN2000": 9.6,
+        "pitchDegrees": 17.5
+      },
+      "facade": "schematic OSM darkgreen; pillars, doors and corrugation unmodelled"
+    }
+  ]
+}

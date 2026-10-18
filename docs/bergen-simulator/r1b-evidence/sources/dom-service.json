@@ -1,0 +1,413 @@
+{
+ "currentVersion": 11.1,
+ "serviceDescription": "DOM",
+ "name": "DOM",
+ "description": "",
+ "extent": {
+  "xmin": -516478.5,
+  "ymin": 6399795,
+  "xmax": 1211121.75,
+  "ymax": 9013488.25,
+  "spatialReference": {
+   "wkid": 25833,
+   "latestWkid": 25833
+  }
+ },
+ "initialExtent": {
+  "xmin": -516478.5,
+  "ymin": 6399795,
+  "xmax": 1211121.75,
+  "ymax": 9013488.25,
+  "spatialReference": {
+   "wkid": 25833,
+   "latestWkid": 25833
+  }
+ },
+ "fullExtent": {
+  "xmin": -516478.5,
+  "ymin": 6399795,
+  "xmax": 1211121.75,
+  "ymax": 9013488.25,
+  "spatialReference": {
+   "wkid": 25833,
+   "latestWkid": 25833
+  }
+ },
+ "sortableFields": "",
+ "bandCount": 1,
+ "pixelType": "F32",
+ "minValues": [
+  -70
+ ],
+ "maxValues": [
+  2469
+ ],
+ "meanValues": [
+  150
+ ],
+ "stdvValues": [
+  20
+ ],
+ "hasMultidimensions": false,
+ "pixelSizeX": 0.25,
+ "pixelSizeY": 0.25,
+ "datasetFormat": "AMD",
+ "uncompressedSize": 288986695175892,
+ "blockWidth": 2048,
+ "blockHeight": 256,
+ "compressionType": "None",
+ "bandNames": [
+  "Band_1"
+ ],
+ "allowCopy": true,
+ "allowAnalysis": true,
+ "itemAccess": false,
+ "minPixelSize": 0,
+ "maxPixelSize": 0,
+ "copyrightText": "",
+ "serviceDataType": "esriImageServiceDataTypeElevation",
+ "serviceSourceType": "esriImageServiceSourceTypeMosaicDataset",
+ "objectIdField": "OBJECTID",
+ "fields": [
+  {
+   "name": "OBJECTID",
+   "type": "esriFieldTypeOID",
+   "alias": "OBJECTID",
+   "domain": null
+  },
+  {
+   "name": "NAME",
+   "type": "esriFieldTypeString",
+   "alias": "NAME",
+   "domain": null,
+   "length": 200
+  },
+  {
+   "name": "MINPS",
+   "type": "esriFieldTypeDouble",
+   "alias": "MINPS",
+   "domain": null
+  },
+  {
+   "name": "MAXPS",
+   "type": "esriFieldTypeDouble",
+   "alias": "MAXPS",
+   "domain": null
+  },
+  {
+   "name": "LOWPS",
+   "type": "esriFieldTypeDouble",
+   "alias": "LOWPS",
+   "domain": null
+  },
+  {
+   "name": "HIGHPS",
+   "type": "esriFieldTypeDouble",
+   "alias": "HIGHPS",
+   "domain": null
+  },
+  {
+   "name": "CATEGORY",
+   "type": "esriFieldTypeInteger",
+   "alias": "CATEGORY",
+   "domain": {
+    "type": "codedValue",
+    "name": "MosaicCatalogItemCategoryDomain",
+    "description": "Catalog item categories.",
+    "codedValues": [
+     {
+      "name": "Unknown",
+      "code": 0
+     },
+     {
+      "name": "Primary",
+      "code": 1
+     },
+     {
+      "name": "Overview",
+      "code": 2
+     },
+     {
+      "name": "Unprocessed Overview",
+      "code": 3
+     },
+     {
+      "name": "Partial Overview",
+      "code": 4
+     },
+     {
+      "name": "Uploaded",
+      "code": 253
+     },
+     {
+      "name": "Incomplete",
+      "code": 254
+     },
+     {
+      "name": "Custom",
+      "code": 255
+     }
+    ],
+    "mergePolicy": "esriMPTDefaultValue",
+    "splitPolicy": "esriSPTDefaultValue"
+   }
+  },
+  {
+   "name": "TAG",
+   "type": "esriFieldTypeString",
+   "alias": "TAG",
+   "domain": null,
+   "length": 100
+  },
+  {
+   "name": "GROUPNAME",
+   "type": "esriFieldTypeString",
+   "alias": "GROUPNAME",
+   "domain": null,
+   "length": 100
+  },
+  {
+   "name": "PRODUCTNAME",
+   "type": "esriFieldTypeString",
+   "alias": "PRODUCTNAME",
+   "domain": null,
+   "length": 100
+  },
+  {
+   "name": "CENTERX",
+   "type": "esriFieldTypeDouble",
+   "alias": "CENTERX",
+   "domain": null
+  },
+  {
+   "name": "CENTERY",
+   "type": "esriFieldTypeDouble",
+   "alias": "CENTERY",
+   "domain": null
+  },
+  {
+   "name": "ZORDER",
+   "type": "esriFieldTypeInteger",
+   "alias": "ZORDER",
+   "domain": null
+  },
+  {
+   "name": "SHAPE",
+   "type": "esriFieldTypeGeometry",
+   "alias": "SHAPE",
+   "domain": null
+  },
+  {
+   "name": "LAS_PROJECT_ID",
+   "type": "esriFieldTypeInteger",
+   "alias": "LAS_PROJECT_ID",
+   "domain": null
+  },
+  {
+   "name": "LAS_PROJECT_NAME",
+   "type": "esriFieldTypeString",
+   "alias": "LAS_PROJECT_NAME",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "OPPDRAGSGIVER",
+   "type": "esriFieldTypeString",
+   "alias": "OPPDRAGSGIVER",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "DEKNINGSNUMMER",
+   "type": "esriFieldTypeString",
+   "alias": "DEKNINGSNUMMER",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "FKB_LASERSTANDARD",
+   "type": "esriFieldTypeString",
+   "alias": "FKB_LASERSTANDARD",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "FLYFIRMA",
+   "type": "esriFieldTypeString",
+   "alias": "FLYFIRMA",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "TYPE",
+   "type": "esriFieldTypeString",
+   "alias": "TYPE",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "PRIORITET",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "PRIORITET",
+   "domain": null
+  },
+  {
+   "name": "TILGANG",
+   "type": "esriFieldTypeString",
+   "alias": "TILGANG",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "PROSJEKTNR",
+   "type": "esriFieldTypeString",
+   "alias": "PROSJEKTNR",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "KOORDINATSYSTEM",
+   "type": "esriFieldTypeString",
+   "alias": "KOORDINATSYSTEM",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "HOYDESYSTEM",
+   "type": "esriFieldTypeString",
+   "alias": "HOYDESYSTEM",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "PUNKTTETTHET",
+   "type": "esriFieldTypeDouble",
+   "alias": "PUNKTTETTHET",
+   "domain": null
+  },
+  {
+   "name": "AARSTALL",
+   "type": "esriFieldTypeInteger",
+   "alias": "AARSTALL",
+   "domain": null
+  },
+  {
+   "name": "SISTEFLYDATO",
+   "type": "esriFieldTypeDate",
+   "alias": "SISTEFLYDATO",
+   "domain": null,
+   "length": 8
+  },
+  {
+   "name": "PUBLISERT",
+   "type": "esriFieldTypeString",
+   "alias": "PUBLISERT",
+   "domain": null,
+   "length": 20
+  },
+  {
+   "name": "RAPPORT",
+   "type": "esriFieldTypeString",
+   "alias": "RAPPORT",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "OPPLOSNING",
+   "type": "esriFieldTypeDouble",
+   "alias": "OPPLOSNING",
+   "domain": null
+  },
+  {
+   "name": "OBJEKTKATALOG",
+   "type": "esriFieldTypeString",
+   "alias": "OBJEKTKATALOG",
+   "domain": null,
+   "length": 255
+  },
+  {
+   "name": "SHAPE.AREA",
+   "type": "esriFieldTypeDouble",
+   "alias": "SHAPE.AREA",
+   "domain": null
+  },
+  {
+   "name": "SHAPE.LEN",
+   "type": "esriFieldTypeDouble",
+   "alias": "SHAPE.LEN",
+   "domain": null
+  }
+ ],
+ "capabilities": "Catalog,Image,Metadata",
+ "defaultMosaicMethod": "ByAttribute",
+ "allowedMosaicMethods": "ByAttribute,NorthWest,LockRaster",
+ "sortField": "lowps",
+ "sortValue": "0",
+ "sortAscending": true,
+ "mosaicOperator": "First",
+ "maxDownloadSizeLimit": 2048,
+ "defaultCompressionQuality": 10000,
+ "defaultResamplingMethod": "Bilinear",
+ "maxImageHeight": 15000,
+ "maxImageWidth": 15000,
+ "maxRecordCount": 1000,
+ "maxDownloadImageCount": 0,
+ "maxMosaicImageCount": 50,
+ "allowRasterFunction": true,
+ "rasterFunctionInfos": [
+  {
+   "name": "dynamisk_farget_hoyde",
+   "description": "A raster function template.",
+   "help": ""
+  },
+  {
+   "name": "skyggerelieff",
+   "description": "A raster function template.",
+   "help": ""
+  },
+  {
+   "name": "None",
+   "description": "A No-Op Function.",
+   "help": ""
+  }
+ ],
+ "rasterTypeInfos": [
+  {
+   "name": "Raster Dataset",
+   "description": "Supports all ArcGIS Raster Datasets",
+   "help": ""
+  }
+ ],
+ "mensurationCapabilities": "None",
+ "hasHistograms": false,
+ "hasColormap": false,
+ "hasRasterAttributeTable": false,
+ "minScale": 0,
+ "maxScale": 0,
+ "exportTilesAllowed": false,
+ "supportsStatistics": true,
+ "supportsAdvancedQueries": true,
+ "editFieldsInfo": {
+  "creationDateField": "created_date",
+  "creatorField": "created_by",
+  "editDateField": "changed_date",
+  "editorField": "changed_by"
+ },
+ "ownershipBasedAccessControlForRasters": {
+  "allowOthersToDelete": false,
+  "allowOthersToUpdate": false
+ },
+ "allowComputeTiePoints": false,
+ "useStandardizedQueries": true,
+ "advancedQueryCapabilities": {
+  "useStandardizedQueries": true,
+  "supportsStatistics": true,
+  "supportsOrderBy": true,
+  "supportsDistinct": true,
+  "supportsPagination": true
+ },
+ "spatialReference": {
+  "wkid": 25833,
+  "latestWkid": 25833
+ }
+}

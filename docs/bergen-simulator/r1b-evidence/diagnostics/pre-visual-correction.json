@@ -1,0 +1,1529 @@
+{
+  "phase": "after",
+  "baselineCommit": "b827783c8ebb94e95c4722d1a695d8ab4790e190",
+  "browser": "151.0.7922.173",
+  "renderer": "ANGLE SwiftShader; software measurements, physical GPU unverified",
+  "cases": {
+    "desktop-balanced": {
+      "readyMs": 3753.581375,
+      "sourceReadyMs": 3680.2474529999995,
+      "captures": [
+        {
+          "name": "waterfront",
+          "frames": 2,
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "cpuFrameMs": 1.199999999254942,
+          "cameraLatencyMs": 4.899999998509884,
+          "calls": 7,
+          "triangles": 288104,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "name": "roofs",
+          "frames": 3,
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "cpuFrameMs": 0.8000000007450581,
+          "cameraLatencyMs": 1.1000000014901161,
+          "calls": 7,
+          "triangles": 288104,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -105.00000000000003,
+            100.00000000000001,
+            -385
+          ],
+          "target": [
+            -23,
+            9,
+            -263
+          ]
+        },
+        {
+          "name": "vagen",
+          "frames": 4,
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "cpuFrameMs": 0.8999999985098839,
+          "cameraLatencyMs": 3.199999999254942,
+          "calls": 6,
+          "triangles": 288086,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -428.02,
+            301.42,
+            229.23999999999995
+          ],
+          "target": [
+            1.98,
+            1.42,
+            -270.76
+          ]
+        },
+        {
+          "name": "facades",
+          "frames": 5,
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "cpuFrameMs": 0.8000000007450581,
+          "cameraLatencyMs": 5.300000000745058,
+          "calls": 7,
+          "triangles": 288104,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -112,
+            24,
+            -230
+          ],
+          "target": [
+            -48,
+            8,
+            -279
+          ]
+        },
+        {
+          "name": "skur-roof",
+          "frames": 6,
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "cpuFrameMs": 0.6999999992549419,
+          "cameraLatencyMs": 1.0999999977648258,
+          "calls": 6,
+          "triangles": 288086,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            7.105427357601002e-15,
+            26.00000000000001,
+            -90.00000000000001
+          ],
+          "target": [
+            51,
+            6,
+            -142
+          ]
+        }
+      ],
+      "samples": [
+        {
+          "cpu": 0.5,
+          "latency": 328.9000000022352,
+          "renderCallbackLatency": 1,
+          "presentationOpportunityMs": 328.80000000074506
+        },
+        {
+          "cpu": 1.2000000029802322,
+          "latency": 319.19999999925494,
+          "renderCallbackLatency": 317.6000000014901,
+          "presentationOpportunityMs": 319.19999999925494
+        },
+        {
+          "cpu": 1,
+          "latency": 328.29999999701977,
+          "renderCallbackLatency": 2,
+          "presentationOpportunityMs": 328.29999999701977
+        },
+        {
+          "cpu": 0.6999999992549419,
+          "latency": 308.20000000298023,
+          "renderCallbackLatency": 1.5,
+          "presentationOpportunityMs": 308.1000000014901
+        },
+        {
+          "cpu": 0.6999999992549419,
+          "latency": 359.19999999925494,
+          "renderCallbackLatency": 1.1000000014901161,
+          "presentationOpportunityMs": 359.0999999977648
+        },
+        {
+          "cpu": 0.30000000074505806,
+          "latency": 376.5999999977648,
+          "renderCallbackLatency": 0.8999999985098839,
+          "presentationOpportunityMs": 376.3999999985099
+        },
+        {
+          "cpu": 0.30000000074505806,
+          "latency": 403.80000000074506,
+          "renderCallbackLatency": 1.1000000014901161,
+          "presentationOpportunityMs": 403.6000000014901
+        },
+        {
+          "cpu": 0.6000000014901161,
+          "latency": 324.5,
+          "renderCallbackLatency": 3.599999997764826,
+          "presentationOpportunityMs": 324.3999999985099
+        },
+        {
+          "cpu": 0.3999999985098839,
+          "latency": 361.30000000074506,
+          "renderCallbackLatency": 0.6000000014901161,
+          "presentationOpportunityMs": 361.0999999977648
+        },
+        {
+          "cpu": 0.6000000014901161,
+          "latency": 309,
+          "renderCallbackLatency": 1.300000000745058,
+          "presentationOpportunityMs": 309
+        },
+        {
+          "cpu": 0.6000000014901161,
+          "latency": 336.1000000014901,
+          "renderCallbackLatency": 1.300000000745058,
+          "presentationOpportunityMs": 333.69999999925494
+        },
+        {
+          "cpu": 0.30000000074505806,
+          "latency": 333.4000000022352,
+          "renderCallbackLatency": 0.8000000007450581,
+          "presentationOpportunityMs": 332.4000000022352
+        }
+      ],
+      "medianCpuMs": 0.6000000014901161,
+      "p95CpuMs": 1.2000000029802322,
+      "medianCameraMs": 333.4000000022352,
+      "p95CameraMs": 403.80000000074506,
+      "retention": [
+        {
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "geometries": 7,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "geometries": 7,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "geometries": 7,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "geometries": 7,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "geometries": 7,
+          "textures": 2
+        }
+      ],
+      "heap": 22224820,
+      "heapAfter": 22258156,
+      "idleFrames": 0,
+      "preparation": [
+        {
+          "name": "geography.validate",
+          "durationMs": 20.199999999254942
+        },
+        {
+          "name": "architecture.fetch-decode-batch",
+          "durationMs": 218.69999999925494
+        },
+        {
+          "name": "geometry.hydrate-main",
+          "durationMs": 102.39999999850988
+        },
+        {
+          "name": "geometry.worker-roundtrip",
+          "durationMs": 2011.800000000745
+        },
+        {
+          "name": "worker.terrain.index",
+          "durationMs": 26.799999997019768
+        },
+        {
+          "name": "worker.geometry.buildings",
+          "durationMs": 1267.800000000745
+        },
+        {
+          "name": "worker.geometry.roads",
+          "durationMs": 167.19999999925494
+        },
+        {
+          "name": "worker.geometry.terrain",
+          "durationMs": 23.399999998509884
+        },
+        {
+          "name": "worker.geometry.water",
+          "durationMs": 4.400000002235174
+        },
+        {
+          "name": "worker.geometry.coast",
+          "durationMs": 1.800000000745058
+        },
+        {
+          "name": "worker.geometry.roof-edges",
+          "durationMs": 4.199999999254942
+        },
+        {
+          "name": "terrain.index",
+          "durationMs": 13.600000001490116
+        },
+        {
+          "name": "architecture.fallback-index",
+          "durationMs": 6.400000002235174
+        }
+      ],
+      "resources": [
+        {
+          "path": "/assets/index-BW_NlmgR.js",
+          "transferBytes": 124833,
+          "encodedBytes": 124533,
+          "durationMs": 58.5
+        },
+        {
+          "path": "/assets/index-DiaddRX7.css",
+          "transferBytes": 6955,
+          "encodedBytes": 6655,
+          "durationMs": 37
+        },
+        {
+          "path": "/data/bergen.json",
+          "transferBytes": 1819378,
+          "encodedBytes": 1819078,
+          "durationMs": 403.8999999985099
+        },
+        {
+          "path": "/assets/Scene-BiBrIVHp.js",
+          "transferBytes": 152885,
+          "encodedBytes": 152585,
+          "durationMs": 63.80000000074506
+        },
+        {
+          "path": "/assets/model-CGxEbz2Q.js",
+          "transferBytes": 100482,
+          "encodedBytes": 100182,
+          "durationMs": 63.399999998509884
+        },
+        {
+          "path": "/assets/load-DXoIRz6J.js",
+          "transferBytes": 14085,
+          "encodedBytes": 13785,
+          "durationMs": 158.5
+        },
+        {
+          "path": "/assets/preparation-worker-DxYyy4DF.js",
+          "transferBytes": 43565,
+          "encodedBytes": 43265,
+          "durationMs": -136.30000000074506
+        },
+        {
+          "path": "/architecture/bryggen-66d44fb598cd3b1b.glb",
+          "transferBytes": 192868,
+          "encodedBytes": 192568,
+          "durationMs": 7.300000000745058
+        }
+      ],
+      "diagnostics": {
+        "longTasks": [
+          {
+            "start": 193.59999999776483,
+            "duration": 59
+          },
+          {
+            "start": 346.5,
+            "duration": 147
+          },
+          {
+            "start": 720.0999999977648,
+            "duration": 87
+          },
+          {
+            "start": 840.3999999985099,
+            "duration": 87
+          },
+          {
+            "start": 1339.5,
+            "duration": 112
+          },
+          {
+            "start": 3245.89999999851,
+            "duration": 106
+          },
+          {
+            "start": 3419.199999999255,
+            "duration": 76
+          },
+          {
+            "start": 3495.7999999970198,
+            "duration": 104
+          }
+        ],
+        "workers": [
+          {
+            "created": 1340.7999999970198,
+            "replyMs": 1905.2000000029802,
+            "terminated": true
+          }
+        ]
+      }
+    },
+    "desktop-low": {
+      "readyMs": 3753.581375,
+      "sourceReadyMs": 3680.2474529999995,
+      "captures": [
+        {
+          "name": "waterfront",
+          "frames": 35,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.4000000022351742,
+          "cameraLatencyMs": 241.69999999925494,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "name": "roofs",
+          "frames": 36,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.30000000074505806,
+          "cameraLatencyMs": 1.5,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -105.00000000000003,
+            100.00000000000001,
+            -385
+          ],
+          "target": [
+            -23,
+            9,
+            -263
+          ]
+        },
+        {
+          "name": "vagen",
+          "frames": 37,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.6999999992549419,
+          "cameraLatencyMs": 1.2999999970197678,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -428.02,
+            301.42,
+            229.23999999999995
+          ],
+          "target": [
+            1.98,
+            1.42,
+            -270.76
+          ]
+        },
+        {
+          "name": "facades",
+          "frames": 38,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.30000000074505806,
+          "cameraLatencyMs": 0.6999999992549419,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -112,
+            24,
+            -230
+          ],
+          "target": [
+            -48,
+            8,
+            -279
+          ]
+        },
+        {
+          "name": "skur-roof",
+          "frames": 39,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 9.299999997019768,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            7.105427357601002e-15,
+            26.00000000000001,
+            -90.00000000000001
+          ],
+          "target": [
+            51,
+            6,
+            -142
+          ]
+        }
+      ],
+      "samples": [
+        {
+          "cpu": 0.4000000022351742,
+          "latency": 215,
+          "renderCallbackLatency": 0.9000000022351742,
+          "presentationOpportunityMs": 215
+        },
+        {
+          "cpu": 0.5,
+          "latency": 279.30000000074506,
+          "renderCallbackLatency": 2.300000000745058,
+          "presentationOpportunityMs": 279.19999999925494
+        },
+        {
+          "cpu": 0.4000000022351742,
+          "latency": 277.80000000074506,
+          "renderCallbackLatency": 0.9000000022351742,
+          "presentationOpportunityMs": 277.80000000074506
+        },
+        {
+          "cpu": 0.5,
+          "latency": 258.5,
+          "renderCallbackLatency": 1.1000000014901161,
+          "presentationOpportunityMs": 258.4000000022352
+        },
+        {
+          "cpu": 0.3999999985098839,
+          "latency": 256.79999999701977,
+          "renderCallbackLatency": 36.599999997764826,
+          "presentationOpportunityMs": 256.5999999977648
+        },
+        {
+          "cpu": 4.100000001490116,
+          "latency": 279.69999999925494,
+          "renderCallbackLatency": 4.699999999254942,
+          "presentationOpportunityMs": 279.5
+        },
+        {
+          "cpu": 2.399999998509884,
+          "latency": 308.6000000014901,
+          "renderCallbackLatency": 3,
+          "presentationOpportunityMs": 308.5
+        },
+        {
+          "cpu": 0.29999999701976776,
+          "latency": 287.9000000022352,
+          "renderCallbackLatency": 0.8999999985098839,
+          "presentationOpportunityMs": 287.80000000074506
+        },
+        {
+          "cpu": 0.4000000022351742,
+          "latency": 288.70000000298023,
+          "renderCallbackLatency": 3.199999999254942,
+          "presentationOpportunityMs": 288.70000000298023
+        },
+        {
+          "cpu": 0.3999999985098839,
+          "latency": 298.1000000014901,
+          "renderCallbackLatency": 5.199999999254942,
+          "presentationOpportunityMs": 298.1000000014901
+        },
+        {
+          "cpu": 0.3999999985098839,
+          "latency": 272.5,
+          "renderCallbackLatency": 0.9000000022351742,
+          "presentationOpportunityMs": 272.5
+        },
+        {
+          "cpu": 0.29999999701976776,
+          "latency": 237,
+          "renderCallbackLatency": 2.899999998509884,
+          "presentationOpportunityMs": 237
+        }
+      ],
+      "medianCpuMs": 0.4000000022351742,
+      "p95CpuMs": 4.100000001490116,
+      "medianCameraMs": 279.30000000074506,
+      "p95CameraMs": 308.6000000014901,
+      "retention": [
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        }
+      ],
+      "heap": 22568444,
+      "heapAfter": 22570496,
+      "idleFrames": 0,
+      "preparation": [
+        {
+          "name": "geography.validate",
+          "durationMs": 20.199999999254942
+        },
+        {
+          "name": "architecture.fetch-decode-batch",
+          "durationMs": 218.69999999925494
+        },
+        {
+          "name": "geometry.hydrate-main",
+          "durationMs": 102.39999999850988
+        },
+        {
+          "name": "geometry.worker-roundtrip",
+          "durationMs": 2011.800000000745
+        },
+        {
+          "name": "worker.terrain.index",
+          "durationMs": 26.799999997019768
+        },
+        {
+          "name": "worker.geometry.buildings",
+          "durationMs": 1267.800000000745
+        },
+        {
+          "name": "worker.geometry.roads",
+          "durationMs": 167.19999999925494
+        },
+        {
+          "name": "worker.geometry.terrain",
+          "durationMs": 23.399999998509884
+        },
+        {
+          "name": "worker.geometry.water",
+          "durationMs": 4.400000002235174
+        },
+        {
+          "name": "worker.geometry.coast",
+          "durationMs": 1.800000000745058
+        },
+        {
+          "name": "worker.geometry.roof-edges",
+          "durationMs": 4.199999999254942
+        },
+        {
+          "name": "terrain.index",
+          "durationMs": 13.600000001490116
+        },
+        {
+          "name": "architecture.fallback-index",
+          "durationMs": 6.400000002235174
+        }
+      ],
+      "resources": [
+        {
+          "path": "/assets/index-BW_NlmgR.js",
+          "transferBytes": 124833,
+          "encodedBytes": 124533,
+          "durationMs": 58.5
+        },
+        {
+          "path": "/assets/index-DiaddRX7.css",
+          "transferBytes": 6955,
+          "encodedBytes": 6655,
+          "durationMs": 37
+        },
+        {
+          "path": "/data/bergen.json",
+          "transferBytes": 1819378,
+          "encodedBytes": 1819078,
+          "durationMs": 403.8999999985099
+        },
+        {
+          "path": "/assets/Scene-BiBrIVHp.js",
+          "transferBytes": 152885,
+          "encodedBytes": 152585,
+          "durationMs": 63.80000000074506
+        },
+        {
+          "path": "/assets/model-CGxEbz2Q.js",
+          "transferBytes": 100482,
+          "encodedBytes": 100182,
+          "durationMs": 63.399999998509884
+        },
+        {
+          "path": "/assets/load-DXoIRz6J.js",
+          "transferBytes": 14085,
+          "encodedBytes": 13785,
+          "durationMs": 158.5
+        },
+        {
+          "path": "/assets/preparation-worker-DxYyy4DF.js",
+          "transferBytes": 43565,
+          "encodedBytes": 43265,
+          "durationMs": -136.30000000074506
+        },
+        {
+          "path": "/architecture/bryggen-66d44fb598cd3b1b.glb",
+          "transferBytes": 192868,
+          "encodedBytes": 192568,
+          "durationMs": 7.300000000745058
+        }
+      ],
+      "diagnostics": {
+        "longTasks": [
+          {
+            "start": 193.59999999776483,
+            "duration": 59
+          },
+          {
+            "start": 346.5,
+            "duration": 147
+          },
+          {
+            "start": 720.0999999977648,
+            "duration": 87
+          },
+          {
+            "start": 840.3999999985099,
+            "duration": 87
+          },
+          {
+            "start": 1339.5,
+            "duration": 112
+          },
+          {
+            "start": 3245.89999999851,
+            "duration": 106
+          },
+          {
+            "start": 3419.199999999255,
+            "duration": 76
+          },
+          {
+            "start": 3495.7999999970198,
+            "duration": 104
+          }
+        ],
+        "workers": [
+          {
+            "created": 1340.7999999970198,
+            "replyMs": 1905.2000000029802,
+            "terminated": true
+          }
+        ]
+      }
+    },
+    "mobile-balanced": {
+      "readyMs": 2481.8881630000105,
+      "sourceReadyMs": 2465.1163959999976,
+      "captures": [
+        {
+          "name": "waterfront",
+          "frames": 2,
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "cpuFrameMs": 0.8000000007450581,
+          "cameraLatencyMs": 1.4000000022351742,
+          "calls": 7,
+          "triangles": 288104,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "name": "roofs",
+          "frames": 3,
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "cpuFrameMs": 0.6999999992549419,
+          "cameraLatencyMs": 9.399999998509884,
+          "calls": 7,
+          "triangles": 288104,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -105.00000000000003,
+            100.00000000000001,
+            -385
+          ],
+          "target": [
+            -23,
+            9,
+            -263
+          ]
+        },
+        {
+          "name": "vagen",
+          "frames": 4,
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "cpuFrameMs": 0.8999999985098839,
+          "cameraLatencyMs": 7.600000001490116,
+          "calls": 6,
+          "triangles": 288086,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -428.02,
+            301.42,
+            229.23999999999995
+          ],
+          "target": [
+            1.98,
+            1.42,
+            -270.76
+          ]
+        },
+        {
+          "name": "facades",
+          "frames": 5,
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "cpuFrameMs": 0.8999999985098839,
+          "cameraLatencyMs": 7.899999998509884,
+          "calls": 7,
+          "triangles": 288104,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -112,
+            24,
+            -230
+          ],
+          "target": [
+            -48,
+            8,
+            -279
+          ]
+        },
+        {
+          "name": "skur-roof",
+          "frames": 6,
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 2.199999999254942,
+          "calls": 6,
+          "triangles": 288086,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            7.105427357601002e-15,
+            26.00000000000001,
+            -90.00000000000001
+          ],
+          "target": [
+            51,
+            6,
+            -142
+          ]
+        }
+      ],
+      "samples": [
+        {
+          "cpu": 0.9000000022351742,
+          "latency": 253.09999999776483,
+          "renderCallbackLatency": 239.10000000149012,
+          "presentationOpportunityMs": 253.09999999776483
+        },
+        {
+          "cpu": 0.8000000007450581,
+          "latency": 181.19999999925494,
+          "renderCallbackLatency": 174.60000000149012,
+          "presentationOpportunityMs": 181.19999999925494
+        },
+        {
+          "cpu": 0.6000000014901161,
+          "latency": 149.39999999850988,
+          "renderCallbackLatency": 134.89999999850988,
+          "presentationOpportunityMs": 149.29999999701977
+        },
+        {
+          "cpu": 0.6999999992549419,
+          "latency": 136.30000000074506,
+          "renderCallbackLatency": 129.69999999925494,
+          "presentationOpportunityMs": 136.30000000074506
+        },
+        {
+          "cpu": 0.6999999992549419,
+          "latency": 184.60000000149012,
+          "renderCallbackLatency": 183.39999999850988,
+          "presentationOpportunityMs": 184.60000000149012
+        },
+        {
+          "cpu": 9.199999999254942,
+          "latency": 169.80000000074506,
+          "renderCallbackLatency": 9.900000002235174,
+          "presentationOpportunityMs": 169.80000000074506
+        },
+        {
+          "cpu": 0.3999999985098839,
+          "latency": 177.59999999776483,
+          "renderCallbackLatency": 1.800000000745058,
+          "presentationOpportunityMs": 177.59999999776483
+        },
+        {
+          "cpu": 0.5,
+          "latency": 175.29999999701977,
+          "renderCallbackLatency": 1.3999999985098839,
+          "presentationOpportunityMs": 175.09999999776483
+        },
+        {
+          "cpu": 0.6999999992549419,
+          "latency": 137.10000000149012,
+          "renderCallbackLatency": 130.29999999701977,
+          "presentationOpportunityMs": 137.10000000149012
+        },
+        {
+          "cpu": 0.5,
+          "latency": 158,
+          "renderCallbackLatency": 154,
+          "presentationOpportunityMs": 158
+        },
+        {
+          "cpu": 0.5,
+          "latency": 113.29999999701977,
+          "renderCallbackLatency": 108.5,
+          "presentationOpportunityMs": 113.29999999701977
+        },
+        {
+          "cpu": 1,
+          "latency": 175.19999999925494,
+          "renderCallbackLatency": 169.5,
+          "presentationOpportunityMs": 175.19999999925494
+        }
+      ],
+      "medianCpuMs": 0.6999999992549419,
+      "p95CpuMs": 9.199999999254942,
+      "medianCameraMs": 175.19999999925494,
+      "p95CameraMs": 253.09999999776483,
+      "retention": [
+        {
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "geometries": 7,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "geometries": 7,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "geometries": 7,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "geometries": 7,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 26,
+          "attributeBytes": 29066598,
+          "geometries": 7,
+          "textures": 2
+        }
+      ],
+      "heap": 22266172,
+      "heapAfter": 22299572,
+      "idleFrames": 0,
+      "preparation": [
+        {
+          "name": "geography.validate",
+          "durationMs": 14.799999997019768
+        },
+        {
+          "name": "architecture.fetch-decode-batch",
+          "durationMs": 84.70000000298023
+        },
+        {
+          "name": "geometry.hydrate-main",
+          "durationMs": 90.59999999776483
+        },
+        {
+          "name": "geometry.worker-roundtrip",
+          "durationMs": 992.1000000014901
+        },
+        {
+          "name": "worker.terrain.index",
+          "durationMs": 18.100000001490116
+        },
+        {
+          "name": "worker.geometry.buildings",
+          "durationMs": 543.8000000007451
+        },
+        {
+          "name": "worker.geometry.roads",
+          "durationMs": 127.79999999701977
+        },
+        {
+          "name": "worker.geometry.terrain",
+          "durationMs": 19.100000001490116
+        },
+        {
+          "name": "worker.geometry.water",
+          "durationMs": 4
+        },
+        {
+          "name": "worker.geometry.coast",
+          "durationMs": 1.5
+        },
+        {
+          "name": "worker.geometry.roof-edges",
+          "durationMs": 3.199999999254942
+        },
+        {
+          "name": "terrain.index",
+          "durationMs": 15.100000001490116
+        },
+        {
+          "name": "architecture.fallback-index",
+          "durationMs": 6.899999998509884
+        }
+      ],
+      "resources": [
+        {
+          "path": "/assets/index-BW_NlmgR.js",
+          "transferBytes": 124833,
+          "encodedBytes": 124533,
+          "durationMs": 36
+        },
+        {
+          "path": "/assets/index-DiaddRX7.css",
+          "transferBytes": 6955,
+          "encodedBytes": 6655,
+          "durationMs": 17.699999999254942
+        },
+        {
+          "path": "/data/bergen.json",
+          "transferBytes": 1819378,
+          "encodedBytes": 1819078,
+          "durationMs": 431.3999999985099
+        },
+        {
+          "path": "/assets/Scene-BiBrIVHp.js",
+          "transferBytes": 152885,
+          "encodedBytes": 152585,
+          "durationMs": 34.5
+        },
+        {
+          "path": "/assets/model-CGxEbz2Q.js",
+          "transferBytes": 100482,
+          "encodedBytes": 100182,
+          "durationMs": 22.600000001490116
+        },
+        {
+          "path": "/assets/load-DXoIRz6J.js",
+          "transferBytes": 14085,
+          "encodedBytes": 13785,
+          "durationMs": 57.19999999925494
+        },
+        {
+          "path": "/assets/preparation-worker-DxYyy4DF.js",
+          "transferBytes": 43565,
+          "encodedBytes": 43265,
+          "durationMs": -41.19999999925494
+        },
+        {
+          "path": "/architecture/bryggen-66d44fb598cd3b1b.glb",
+          "transferBytes": 192868,
+          "encodedBytes": 192568,
+          "durationMs": 4.599999997764826
+        }
+      ],
+      "diagnostics": {
+        "longTasks": [
+          {
+            "start": 147.89999999850988,
+            "duration": 109
+          },
+          {
+            "start": 807,
+            "duration": 75
+          },
+          {
+            "start": 2108.2999999970198,
+            "duration": 94
+          },
+          {
+            "start": 2275.699999999255,
+            "duration": 55
+          },
+          {
+            "start": 2331.5,
+            "duration": 90
+          }
+        ],
+        "workers": [
+          {
+            "created": 1210.7999999970198,
+            "replyMs": 897.6000000014901,
+            "terminated": true
+          }
+        ]
+      }
+    },
+    "mobile-low": {
+      "readyMs": 2481.8881630000105,
+      "sourceReadyMs": 2465.1163959999976,
+      "captures": [
+        {
+          "name": "waterfront",
+          "frames": 35,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 119.89999999850988,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "name": "roofs",
+          "frames": 36,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.6000000014901161,
+          "cameraLatencyMs": 7.199999999254942,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -105.00000000000003,
+            100.00000000000001,
+            -385
+          ],
+          "target": [
+            -23,
+            9,
+            -263
+          ]
+        },
+        {
+          "name": "vagen",
+          "frames": 37,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.8000000007450581,
+          "cameraLatencyMs": 5.600000001490116,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -428.02,
+            301.42,
+            229.23999999999995
+          ],
+          "target": [
+            1.98,
+            1.42,
+            -270.76
+          ]
+        },
+        {
+          "name": "facades",
+          "frames": 38,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 2.400000002235174,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            -112,
+            24,
+            -230
+          ],
+          "target": [
+            -48,
+            8,
+            -279
+          ]
+        },
+        {
+          "name": "skur-roof",
+          "frames": 39,
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 5.300000000745058,
+          "calls": 5,
+          "triangles": 288140,
+          "lines": 0,
+          "geometries": 6,
+          "textures": 1,
+          "pixelRatio": 1,
+          "position": [
+            7.105427357601002e-15,
+            26.00000000000001,
+            -90.00000000000001
+          ],
+          "target": [
+            51,
+            6,
+            -142
+          ]
+        }
+      ],
+      "samples": [
+        {
+          "cpu": 0.5,
+          "latency": 147.80000000074506,
+          "renderCallbackLatency": 132.80000000074506,
+          "presentationOpportunityMs": 147.30000000074506
+        },
+        {
+          "cpu": 0.8999999985098839,
+          "latency": 116.90000000223517,
+          "renderCallbackLatency": 111.29999999701977,
+          "presentationOpportunityMs": 116.90000000223517
+        },
+        {
+          "cpu": 0.3999999985098839,
+          "latency": 101.5,
+          "renderCallbackLatency": 97.80000000074506,
+          "presentationOpportunityMs": 101.5
+        },
+        {
+          "cpu": 0.5,
+          "latency": 104.70000000298023,
+          "renderCallbackLatency": 92.20000000298023,
+          "presentationOpportunityMs": 104.70000000298023
+        },
+        {
+          "cpu": 0.5,
+          "latency": 112.30000000074506,
+          "renderCallbackLatency": 99.30000000074506,
+          "presentationOpportunityMs": 112.10000000149012
+        },
+        {
+          "cpu": 0.5,
+          "latency": 92.69999999925494,
+          "renderCallbackLatency": 87.09999999776483,
+          "presentationOpportunityMs": 92.60000000149012
+        },
+        {
+          "cpu": 0.6999999992549419,
+          "latency": 183,
+          "renderCallbackLatency": 141.89999999850988,
+          "presentationOpportunityMs": 182.90000000223517
+        },
+        {
+          "cpu": 0.5,
+          "latency": 176.90000000223517,
+          "renderCallbackLatency": 175.80000000074506,
+          "presentationOpportunityMs": 176.80000000074506
+        },
+        {
+          "cpu": 0.3999999985098839,
+          "latency": 135.69999999925494,
+          "renderCallbackLatency": 1.3999999985098839,
+          "presentationOpportunityMs": 135.60000000149012
+        },
+        {
+          "cpu": 0.30000000074505806,
+          "latency": 126.69999999925494,
+          "renderCallbackLatency": 0.8000000007450581,
+          "presentationOpportunityMs": 126.60000000149012
+        },
+        {
+          "cpu": 0.3999999985098839,
+          "latency": 114.90000000223517,
+          "renderCallbackLatency": 1,
+          "presentationOpportunityMs": 114.69999999925494
+        },
+        {
+          "cpu": 0.30000000074505806,
+          "latency": 148.30000000074506,
+          "renderCallbackLatency": 0.9000000022351742,
+          "presentationOpportunityMs": 148.19999999925494
+        }
+      ],
+      "medianCpuMs": 0.5,
+      "p95CpuMs": 0.8999999985098839,
+      "medianCameraMs": 126.69999999925494,
+      "p95CameraMs": 183,
+      "retention": [
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        },
+        {
+          "attributeArrays": 19,
+          "attributeBytes": 27056370,
+          "geometries": 6,
+          "textures": 1
+        }
+      ],
+      "heap": 22582740,
+      "heapAfter": 22599536,
+      "idleFrames": 0,
+      "preparation": [
+        {
+          "name": "geography.validate",
+          "durationMs": 14.799999997019768
+        },
+        {
+          "name": "architecture.fetch-decode-batch",
+          "durationMs": 84.70000000298023
+        },
+        {
+          "name": "geometry.hydrate-main",
+          "durationMs": 90.59999999776483
+        },
+        {
+          "name": "geometry.worker-roundtrip",
+          "durationMs": 992.1000000014901
+        },
+        {
+          "name": "worker.terrain.index",
+          "durationMs": 18.100000001490116
+        },
+        {
+          "name": "worker.geometry.buildings",
+          "durationMs": 543.8000000007451
+        },
+        {
+          "name": "worker.geometry.roads",
+          "durationMs": 127.79999999701977
+        },
+        {
+          "name": "worker.geometry.terrain",
+          "durationMs": 19.100000001490116
+        },
+        {
+          "name": "worker.geometry.water",
+          "durationMs": 4
+        },
+        {
+          "name": "worker.geometry.coast",
+          "durationMs": 1.5
+        },
+        {
+          "name": "worker.geometry.roof-edges",
+          "durationMs": 3.199999999254942
+        },
+        {
+          "name": "terrain.index",
+          "durationMs": 15.100000001490116
+        },
+        {
+          "name": "architecture.fallback-index",
+          "durationMs": 6.899999998509884
+        }
+      ],
+      "resources": [
+        {
+          "path": "/assets/index-BW_NlmgR.js",
+          "transferBytes": 124833,
+          "encodedBytes": 124533,
+          "durationMs": 36
+        },
+        {
+          "path": "/assets/index-DiaddRX7.css",
+          "transferBytes": 6955,
+          "encodedBytes": 6655,
+          "durationMs": 17.699999999254942
+        },
+        {
+          "path": "/data/bergen.json",
+          "transferBytes": 1819378,
+          "encodedBytes": 1819078,
+          "durationMs": 431.3999999985099
+        },
+        {
+          "path": "/assets/Scene-BiBrIVHp.js",
+          "transferBytes": 152885,
+          "encodedBytes": 152585,
+          "durationMs": 34.5
+        },
+        {
+          "path": "/assets/model-CGxEbz2Q.js",
+          "transferBytes": 100482,
+          "encodedBytes": 100182,
+          "durationMs": 22.600000001490116
+        },
+        {
+          "path": "/assets/load-DXoIRz6J.js",
+          "transferBytes": 14085,
+          "encodedBytes": 13785,
+          "durationMs": 57.19999999925494
+        },
+        {
+          "path": "/assets/preparation-worker-DxYyy4DF.js",
+          "transferBytes": 43565,
+          "encodedBytes": 43265,
+          "durationMs": -41.19999999925494
+        },
+        {
+          "path": "/architecture/bryggen-66d44fb598cd3b1b.glb",
+          "transferBytes": 192868,
+          "encodedBytes": 192568,
+          "durationMs": 4.599999997764826
+        }
+      ],
+      "diagnostics": {
+        "longTasks": [
+          {
+            "start": 147.89999999850988,
+            "duration": 109
+          },
+          {
+            "start": 807,
+            "duration": 75
+          },
+          {
+            "start": 2108.2999999970198,
+            "duration": 94
+          },
+          {
+            "start": 2275.699999999255,
+            "duration": 55
+          },
+          {
+            "start": 2331.5,
+            "duration": 90
+          }
+        ],
+        "workers": [
+          {
+            "created": 1210.7999999970198,
+            "replyMs": 897.6000000014901,
+            "terminated": true
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

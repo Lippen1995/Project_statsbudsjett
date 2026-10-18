@@ -493,7 +493,7 @@ try {
     await click(p, "Reset city");
     await camera(p);
     r.reset = await metrics(p);
-    assert.equal(r.reset.calls, 7); // Five source passes + R1 roof accents + network overlay.
+    assert.equal(r.reset.calls, 8); // Five source passes + two R1B asset passes + network overlay.
     await settle(p);
     assert(
       await p.evaluate(

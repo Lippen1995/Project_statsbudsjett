@@ -22,6 +22,7 @@ const artifacts = new URL("../artifacts/", import.meta.url);
 mkdirSync(artifacts, { recursive: true });
 const errors = [],
   failures = [],
+  cancelledAssets = [],
   requests = new Set();
 const page = await browser.newPage({
   viewport: { width: 1440, height: 1000 },
@@ -31,9 +32,24 @@ page.on("pageerror", (e) => errors.push(e.message));
 page.on("console", (m) => {
   if (m.type() === "error") errors.push(m.text());
 });
-page.on("requestfailed", (r) =>
-  failures.push(`${r.url()}: ${r.failure()?.errorText}`),
-);
+const architecturalUrl = new URL(
+  JSON.parse(
+    readFileSync(
+      new URL("../src/architecture/catalogue.json", import.meta.url),
+    ),
+  ).url,
+  base,
+).href;
+page.on("requestfailed", (r) => {
+  // Layer/quality switches deliberately cancel this optional tile. Source-data,
+  // module, HTTP and all other network failures remain fatal below.
+  if (
+    r.url() === architecturalUrl &&
+    r.failure()?.errorText === "net::ERR_ABORTED"
+  )
+    cancelledAssets.push(r.url());
+  else failures.push(`${r.url()}: ${r.failure()?.errorText}`);
+});
 page.on("response", (r) => {
   if (r.status() >= 400) failures.push(`${r.status()} ${r.url()}`);
 });
@@ -192,6 +208,7 @@ try {
     errors,
     failures,
     localRequests: requests.size,
+    cancelledAssets,
     checks: [
       "WebGL scene",
       "zoom",

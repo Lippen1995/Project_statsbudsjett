@@ -231,7 +231,7 @@ export default function App() {
           </span>
         </a>
         <div className="header-center">
-          SOURCE-BASED CITY PROTOTYPE <span>R1 / BRYGGEN</span>
+          SOURCE-BASED CITY PROTOTYPE <span>R1B / BRYGGEN</span>
         </div>
         <span className="prototype-badge">
           <span />
@@ -358,11 +358,14 @@ export default function App() {
                 artistic.
               </p>
               <p>
-                R1 studies the Bryggen waterfront block. Roof accents follow
-                supported source gables. Surface grain and close-view shadowing
-                are illustrative; there are no surveyed facade textures or
-                invented windows. This protected prototype is not a public
-                Bergen LIVE release.
+                R1B adds a separate architectural render layer for seven source
+                buildings. Five roof envelopes are inferred from a 2022 laser
+                surface; six waterfront faces use dated, perspective-mapped 2022
+                photographs. Other faces and occluded shops remain schematic.
+                Roof accents follow supported source gables. Surface grain and
+                close-view shadowing are illustrative; there are no surveyed
+                facade textures or invented windows. This protected prototype is
+                not a public Bergen LIVE release.
               </p>
               <p>
                 Coast and lake outlines retain the original OSM mapping. Water
@@ -395,7 +398,11 @@ export default function App() {
             </section>
           ) : null}
           <div className="map-attribution">
-            © OpenStreetMap contributors · Terrain: © Kartverket · CC BY 4.0
+            © OpenStreetMap contributors · Terrain/roofs: © Kartverket CC BY
+            4.0 ·{" "}
+            <a href="/architecture/NOTICE.md" target="_blank" rel="noreferrer">
+              Facades: Kognos / Commons CC BY-SA 4.0 (2022, adapted)
+            </a>
           </div>
         </section>
       </main>

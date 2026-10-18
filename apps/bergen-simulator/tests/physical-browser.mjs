@@ -538,14 +538,14 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(page);
-  assert.equal((await metrics(page)).calls, 6);
+  assert.equal((await metrics(page)).calls, 7); // Five source passes + two R1B architectural batches.
   assert.equal(
     (await metrics(page)).geometries,
-    6,
+    8,
     "Obsolete draft/surface/traffic buffers must be disposed after reset and exit",
   );
   report.checks.push(
-    "Direct surface inspection/removal and reset retain five source passes plus the bounded R1 roof accents",
+    "Direct surface inspection/removal and reset retain five source passes plus two bounded R1B architectural batches",
   );
   await page.close();
   const mobile = await setup(true),

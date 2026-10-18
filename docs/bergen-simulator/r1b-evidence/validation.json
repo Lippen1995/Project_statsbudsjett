@@ -1,0 +1,148 @@
+{
+  "baselineCommit": "b827783c8ebb94e95c4722d1a695d8ab4790e190",
+  "branch": "feature/bergen-simulator",
+  "recordedAt": "2026-10-18T16:56:34.539300+00:00",
+  "checks": [
+    {
+      "name": "lint",
+      "exitCode": 0,
+      "durationMs": 3367.411701
+    },
+    {
+      "name": "unit",
+      "exitCode": 0,
+      "durationMs": 21427.446466
+    },
+    {
+      "name": "isolation",
+      "exitCode": 0,
+      "durationMs": 138.97489399999904
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "durationMs": 5175.989901000001
+    },
+    {
+      "name": "gis-importer",
+      "exitCode": 0,
+      "durationMs": 284.7826700000005
+    },
+    {
+      "name": "gis-connectivity",
+      "exitCode": 0,
+      "durationMs": 3049.920218000003
+    },
+    {
+      "name": "gis-architecture",
+      "exitCode": 0,
+      "durationMs": 793.6857430000018
+    },
+    {
+      "name": "architecture-assets",
+      "exitCode": 0,
+      "durationMs": 68227.94828400001,
+      "note": "Final rerun additionally verifies all seven direct picks on desktop/touch and bounded JS heap retention."
+    },
+    {
+      "name": "architecture-performance",
+      "exitCode": 0,
+      "durationMs": 136338.649026
+    },
+    {
+      "name": "quality",
+      "exitCode": 0,
+      "durationMs": 123045.26898599998
+    },
+    {
+      "name": "browser",
+      "exitCode": 0,
+      "durationMs": 18964.502708
+    },
+    {
+      "name": "scenario",
+      "exitCode": 0,
+      "durationMs": 142416.373832
+    },
+    {
+      "name": "physical",
+      "exitCode": 0,
+      "durationMs": 167668.142829
+    },
+    {
+      "name": "buildings",
+      "exitCode": 0,
+      "durationMs": 192750.51607900002
+    },
+    {
+      "name": "living",
+      "exitCode": 0,
+      "durationMs": 115699.96202400001
+    },
+    {
+      "name": "management",
+      "exitCode": 0,
+      "durationMs": 130146.86517100001
+    },
+    {
+      "name": "connected",
+      "exitCode": 0,
+      "durationMs": 76173.43107000005
+    },
+    {
+      "name": "access",
+      "exitCode": 0,
+      "durationMs": 138574.32726499997
+    },
+    {
+      "name": "visual",
+      "exitCode": 0,
+      "durationMs": 18120.926599
+    }
+  ],
+  "vitest": {
+    "files": 14,
+    "tests": 231,
+    "status": "passed"
+  },
+  "releasePolicy": {
+    "tests": 10,
+    "status": "passed"
+  },
+  "gis": {
+    "originalImporter": 3,
+    "connectivity": 3,
+    "architecture": 3,
+    "status": "passed"
+  },
+  "extraBrowserChecks": {
+    "detailBaseline": "passed",
+    "detailAfter": "passed",
+    "sourceIdPicksPerViewport": 7,
+    "missingCorruptCancelled": "passed"
+  },
+  "compilerReproduction": "GLB and catalogue byte-identical after rerun",
+  "isolation": {
+    "protectedAndPinnedFiles": 1480,
+    "unchanged": true,
+    "originalGeographyFiles": 7,
+    "appDeploymentAndLockAndWorkflow": "byte-identical to R1",
+    "scenarioFormats": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "simulationEngines": "unchanged"
+  },
+  "physicalGpu": "unverified; no hardware available",
+  "remoteRelease": "Commit/push and isolated protected Actions verification follow these local gates; see final handoff / GitHub run.",
+  "limitations": [
+    "Historical flat photo facades, no recess geometry or hidden shop completion",
+    "Five inferred roof envelopes; two rejected fits retain original OSM dimensions",
+    "Skur 11 pillars/corrugation/doors unmodelled",
+    "Single bounded tile; physical GPU and independent Bergen-expert recognition acceptance pending"
+  ]
+}

@@ -1,3 +1,9 @@
+import ArchitecturalBuildings, {
+  useArchitecturalTile,
+  ArchitecturalLod,
+} from "./ArchitecturalBuildings";
+import type { ArchitecturalTile } from "../architecture/load";
+import { catalogue, fallbackWithoutAssets } from "../architecture/model";
 import ProposedAccess from "./ProposedAccess";
 import { useAccess } from "../state/access";
 import { startCityPreparation } from "../geo/preparation-client";
@@ -87,7 +93,15 @@ function CameraControls({ data }: { data: CityData }) {
           (f) => f.id === command.object,
         )
       : undefined;
-    const pose = view ?? (selected ? inspectionCamera(selected, data) : null);
+    const renderAsset = catalogue.buildings.find((b) => b.id === selected?.id);
+    const inspected =
+      selected?.kind === "building" && renderAsset
+        ? ({
+            ...selected,
+            height: renderAsset.roof.ridgeNN2000 - selected.elevation,
+          } as Building)
+        : selected;
+    const pose = view ?? (inspected ? inspectionCamera(inspected, data) : null);
     if (pose) {
       orbit.target.fromArray(pose.target);
       camera.position.fromArray(pose.position);
@@ -159,9 +173,11 @@ function CameraControls({ data }: { data: CityData }) {
 function CityGeometry({
   data,
   prepared,
+  architecture,
 }: {
   data: CityData;
   prepared: PreparedCity;
+  architecture: ArchitecturalTile | null;
 }) {
   const layers = useCity((s) => s.layers);
   const select = useCity((s) => s.select);
@@ -173,9 +189,35 @@ function CityGeometry({
     [data],
   );
   const { buildings, roads, terrain, coast, water } = prepared;
+  const filtered = useMemo(
+    () =>
+      preparation("architecture.fallback-index", () =>
+        fallbackWithoutAssets(buildings),
+      ),
+    [buildings],
+  );
+  useEffect(() => () => filtered.geometry.dispose(), [filtered]);
+  const visibleBuildings = architecture ? filtered : buildings;
   const highlight = useMemo(() => {
     if (selected?.kind === "building") {
-      const body = buildingGeometry(selected as Building, surface);
+      const assetRange =
+        architecture?.body.ranges.findIndex(
+          (r) => r.feature.id === selected.id,
+        ) ?? -1;
+      let body: THREE.BufferGeometry;
+      if (architecture && assetRange >= 0) {
+        const start = assetRange
+          ? architecture.body.ranges[assetRange - 1].end
+          : 0;
+        const end = architecture.body.ranges[assetRange].end;
+        const positions = architecture.body.geometry
+          .getAttribute("position")
+          .array.slice(start * 9, end * 9);
+        body = new THREE.BufferGeometry().setAttribute(
+          "position",
+          new THREE.BufferAttribute(positions, 3),
+        );
+      } else body = buildingGeometry(selected as Building, surface);
       const edges = new THREE.EdgesGeometry(body, 25);
       body.dispose();
       return edges;
@@ -183,7 +225,7 @@ function CityGeometry({
     return selected?.kind === "road" && !selectedSegmentId
       ? roadGeometry(selected as Road, surface)
       : null;
-  }, [selected, selectedSegmentId, surface]);
+  }, [selected, selectedSegmentId, surface, architecture]);
   // Static batches are owned/disposed by the preparation worker client.
   useEffect(
     () => () => {
@@ -227,15 +269,18 @@ function CityGeometry({
       </mesh>
       <mesh
         visible={layers.buildings}
-        geometry={buildings.geometry}
+        geometry={visibleBuildings.geometry}
         castShadow
-        onClick={(e) => pick(e, buildings)}
+        onClick={(e) => pick(e, visibleBuildings)}
       >
         <SourceBuildingMaterial detail={quality === "balanced"} />
       </mesh>
+      {architecture ? (
+        <ArchitecturalBuildings tile={architecture} pick={pick} />
+      ) : null}
       <RoofAccents
         geometry={prepared.roofEdges}
-        enabled={layers.buildings && quality === "balanced"}
+        enabled={layers.buildings && quality === "balanced" && !architecture}
       />
       <mesh
         visible={layers.roads}
@@ -390,6 +435,11 @@ function StaticShadows() {
 
 export default function Scene({ data }: { data: CityData }) {
   const quality = useCity((s) => s.quality);
+  const buildingsEnabled = useCity((s) => s.layers.buildings);
+  const architectural = useArchitecturalTile(
+    data,
+    buildingsEnabled && quality === "balanced",
+  );
   const [prepared, setPrepared] = useState<{
     source: CityData;
     city: PreparedCity;
@@ -436,7 +486,15 @@ export default function Scene({ data }: { data: CityData }) {
       <fog attach="fog" args={["#c2d3d6", 2300, 7200]} />
       <hemisphereLight args={["#e4eef5", "#64746c", 1.4]} />
       <SunLight enabled={quality === "balanced"} />
-      <CityGeometry data={data} prepared={prepared.city} />
+      <ArchitecturalLod
+        enabled={buildingsEnabled && quality === "balanced"}
+        {...architectural}
+      />
+      <CityGeometry
+        data={data}
+        prepared={prepared.city}
+        architecture={architectural.tile}
+      />
       <CameraControls data={data} />
       <StaticShadows />
     </Canvas>
