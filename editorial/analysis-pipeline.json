@@ -2,20 +2,20 @@
   "version": 1,
   "items": [
     {
-      "id": "542549ac-ef4b-4750-ba6a-08613c78ea68",
+      "id": "459ef5a7-9652-41b9-ae7f-8d6ac8223fb9",
       "source": "sven",
-      "topic": "Kunnskapsdepartementet: Har det blitt mer eller mindre å rutte med?",
-      "instructions": "Undersøk kunnskapsdepartementet med det kontrollerte tallgrunnlaget. Skill beløp fra prisvekst og befolkningsutvikling når det er relevant. Følg interessante funn til konkrete poster og primærkilder. Forklar avgrensning og usikkerhet.",
+      "topic": "Kultur- og likestillingsdepartementet: Har det blitt mer eller mindre å rutte med?",
+      "instructions": "Undersøk kultur- og likestillingsdepartementet med det kontrollerte tallgrunnlaget. Skill beløp fra prisvekst og befolkningsutvikling når det er relevant. Følg interessante funn til konkrete poster og primærkilder. Forklar avgrensning og usikkerhet.",
       "scheduledDate": "2026-10-26",
-      "createdAt": "2026-10-19T14:37:25.239Z",
-      "updatedAt": "2026-10-19T14:37:25.239Z",
+      "createdAt": "2026-10-19T16:31:54.227Z",
+      "updatedAt": "2026-10-19T16:31:54.227Z",
       "reportPlan": {
         "kind": "expenditure",
-        "departmentId": "u-02",
+        "departmentId": "u-03",
         "start": 2020,
         "end": 2025
       },
-      "topicKey": "u-02:real-expenditure-growth"
+      "topicKey": "u-03:real-expenditure-growth"
     }
   ],
   "history": []
