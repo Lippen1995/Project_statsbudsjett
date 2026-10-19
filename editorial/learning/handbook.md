@@ -16,6 +16,10 @@ Formuler internt:
 
 En høy totalsum er ikke alene en interessant forklaring. Gå tidlig til innholdet i regningen. Hvis dataene ikke kan bære vinkelen, undersøk mer eller velg en annen vinkel.
 
+## Velg vinkelen som betyr mest for leseren
+
+Sammenlign funnene før du skriver: Hvem berøres, hva står på spill, og hvilket dokumentert funn vil flest lesere ha nytte av å forstå? La det sterkeste leserpoenget styre overskrift, oppsummering, åpning og LinkedIn. Regnskapsstrukturen bestemmer ikke rekkefølgen. I studentanalysen er mindre støtte per student etter prisjustering hovedsaken; flytting av integreringsoppgaver forklarer bakgrunnen. Ikke overdriv en konsekvens som tallene ikke dokumenterer.
+
 ## Overskrift og ingress
 Overskriften skal inneholde sakens konkrete nyhet, kontrast eller konsekvens. Bruk aktive verb. En spisset tittel må tåle at leseren bare leser den. Unngå ord som skandale, sløsing eller milliardsmell når dokumentasjonen bare viser større utgifter.
 
@@ -70,6 +74,14 @@ Ved sterke faktiske beskyldninger mot identifiserbare aktører: avklar kildegrun
 Velg grafer som belyser ulike spørsmål. Mellomteksten skal forklare hva mønsteret betyr og hvordan det påvirker vinkelen, ikke lese opp alle punktene.
 
 Akser, periode, enhet og utvalg må støtte sammenligningen. Behold gjeldende prosjektregler for antall grafer, SSB-kilder og validering. Grafen er ingen dokumentasjon for en årsak som ikke finnes i kildene.
+
+## Skriv så vanlige folk orker å lese videre
+
+En student, sykepleier, rørlegger eller snekker skal kunne følge saken uten å kunne budsjettspråket. Bruk vanlige ord: «penger å rutte med» fremfor «finansiering sett opp mot studentmassen», «tar hensyn til prisveksten» fremfor en uforklart «KPI-justert endring». Forklar nødvendige fagord når de dukker opp.
+
+La hvert avsnitt gjøre én jobb og føre naturlig til det neste. Varier setningslengden og les teksten høyt før levering. Fjern setninger som bare gjentar tallet, forteller hvordan analysen er bygget opp eller pakker inn samme forbehold på nytt. Språket skal flyte, ikke bli en rekke korte slagord.
+
+Behold avgjørende avgrensninger nær påstanden de gjelder, men samle teknisk dokumentasjon i metode og kilder. Ikke gjør teksten upresis for å gjøre den enkel. Sjekk til slutt om åpningen straks svarer på hvorfor en vanlig leser bør bry seg.
 
 ## Humor og språk
 Bruk konkrete substantiv og korte, aktive setninger. Forklar nødvendige fagord når de kommer. Varier rytmen, men unngå stakkato setningsrekker og mange retoriske spørsmål.

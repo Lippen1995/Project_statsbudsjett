@@ -79,6 +79,39 @@
         "source": "Brukerens tilbakemelding i oppgavens chat 19. oktober 2026",
         "note": "Ingen GitHub-feedback-ID eller publiseringsgodkjenning opprettes av dette."
       }
+    },
+    {
+      "id": "P008",
+      "status": "active",
+      "scope": "article-and-linkedin",
+      "rule": "Skriv for lesere uten økonomiske forkunnskaper. Bruk vanlige ord, aktive setninger og naturlige overganger. Forklar nødvendige fagord med en gang. La hvert avsnitt føre historien videre; unngå gjentakelser og en strøm av forbehold. Behold viktige presiseringer der de trengs, og legg tekniske detaljer i metode og kilder.",
+      "provenance": {
+        "kind": "explicit-current-user-instruction",
+        "source": "Brukerens tilbakemelding i oppgavens chat 19. oktober 2026, etter første revisjon av PR #65",
+        "note": "Uttrykkelig føring om lettlest språk, flyt og valg av hovedvinkel. Ingen GitHub-feedback-ID eller publiseringsgodkjenning opprettes av dette."
+      }
+    },
+    {
+      "id": "P009",
+      "status": "active",
+      "scope": "article-and-linkedin",
+      "rule": "Velg hovedvinkel etter hva som er mest interessant og relevant for vanlige lesere. La overskrift, oppsummering, åpning og LinkedIn lede med det dokumenterte funnet som berører mennesker og tjenester. Velg vinkelen selv etter å ha sammenlignet funnene; rekkefølgen i databasen og tekniske regnskapsendringer skal ikke automatisk styre fortellingen. I denne revisjonen er finansieringen per student hovedsak, og omorganiseringen er bakgrunn.",
+      "provenance": {
+        "kind": "explicit-current-user-instruction",
+        "source": "Brukerens tilbakemelding i oppgavens chat 19. oktober 2026, etter første revisjon av PR #65",
+        "note": "Uttrykkelig føring om lettlest språk, flyt og valg av hovedvinkel. Ingen GitHub-feedback-ID eller publiseringsgodkjenning opprettes av dette."
+      }
+    },
+    {
+      "id": "P010",
+      "status": "active",
+      "scope": "article-and-linkedin",
+      "rule": "La tidsformen følge dataperioden. Beskriv historiske endringer med fortidsform eller «har fått/har økt/har falt» og oppgi perioden. Ikke la overskrift eller oppsummering høres ut som en framtidig endring eller en påstand om dagens situasjon når grunnlaget bare gjelder avsluttede regnskapsår.",
+      "provenance": {
+        "kind": "explicit-current-user-instruction",
+        "source": "Brukerens retting av tidsform i oppgavens chat 19. oktober 2026",
+        "note": "Gjelder perioden 2020–2025 i PR #65. Ingen GitHub-feedback-ID eller publiseringsgodkjenning opprettes av dette."
+      }
     }
   ],
   "feedbackEvents": [],
