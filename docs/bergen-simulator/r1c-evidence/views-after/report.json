@@ -1,0 +1,183 @@
+{
+  "phase": "after",
+  "views": [
+    {
+      "name": "aerial",
+      "position": [
+        105,
+        65,
+        -70
+      ],
+      "target": [
+        51,
+        5,
+        -142
+      ]
+    },
+    {
+      "name": "waterfront",
+      "position": [
+        -145,
+        85,
+        -45
+      ],
+      "target": [
+        -12,
+        8,
+        -260
+      ]
+    },
+    {
+      "name": "street-frontal",
+      "position": [
+        89,
+        6.5,
+        -126
+      ],
+      "target": [
+        62,
+        3,
+        -132
+      ]
+    },
+    {
+      "name": "street-angled",
+      "position": [
+        30,
+        8,
+        -105
+      ],
+      "target": [
+        51,
+        3,
+        -142
+      ]
+    },
+    {
+      "name": "roof",
+      "position": [
+        0,
+        26,
+        -90
+      ],
+      "target": [
+        51,
+        6,
+        -142
+      ]
+    },
+    {
+      "name": "detail",
+      "position": [
+        49,
+        6,
+        -111
+      ],
+      "target": [
+        63,
+        3,
+        -134
+      ]
+    },
+    {
+      "name": "roadside",
+      "position": [
+        70,
+        6,
+        -151
+      ],
+      "target": [
+        51,
+        3,
+        -142
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "mobile": false,
+      "view": "aerial",
+      "calls": 7,
+      "triangles": 288848
+    },
+    {
+      "mobile": false,
+      "view": "waterfront",
+      "calls": 7,
+      "triangles": 288848
+    },
+    {
+      "mobile": false,
+      "view": "street-frontal",
+      "calls": 6,
+      "triangles": 291786
+    },
+    {
+      "mobile": false,
+      "view": "street-angled",
+      "calls": 6,
+      "triangles": 291786
+    },
+    {
+      "mobile": false,
+      "view": "roof",
+      "calls": 6,
+      "triangles": 291786
+    },
+    {
+      "mobile": false,
+      "view": "detail",
+      "calls": 6,
+      "triangles": 291786
+    },
+    {
+      "mobile": false,
+      "view": "roadside",
+      "calls": 6,
+      "triangles": 291786
+    },
+    {
+      "mobile": true,
+      "view": "aerial",
+      "calls": 7,
+      "triangles": 288848
+    },
+    {
+      "mobile": true,
+      "view": "waterfront",
+      "calls": 7,
+      "triangles": 288848
+    },
+    {
+      "mobile": true,
+      "view": "street-frontal",
+      "calls": 6,
+      "triangles": 288830
+    },
+    {
+      "mobile": true,
+      "view": "street-angled",
+      "calls": 6,
+      "triangles": 288830
+    },
+    {
+      "mobile": true,
+      "view": "roof",
+      "calls": 6,
+      "triangles": 288830
+    },
+    {
+      "mobile": true,
+      "view": "detail",
+      "calls": 6,
+      "triangles": 291786
+    },
+    {
+      "mobile": true,
+      "view": "roadside",
+      "calls": 6,
+      "triangles": 291786
+    }
+  ],
+  "errors": []
+}

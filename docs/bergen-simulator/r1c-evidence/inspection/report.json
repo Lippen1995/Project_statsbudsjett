@@ -1,0 +1,347 @@
+{
+  "errors": [],
+  "cases": [
+    {
+      "mobile": false,
+      "overview": {
+        "frames": 1,
+        "attributeArrays": 26,
+        "attributeBytes": 29146950,
+        "cpuFrameMs": 99.29999999701977,
+        "cameraLatencyMs": null,
+        "calls": 7,
+        "triangles": 288848,
+        "lines": 0,
+        "geometries": 7,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          -145,
+          85,
+          -45
+        ],
+        "target": [
+          -12.000000000000002,
+          8,
+          -260
+        ]
+      },
+      "arrived": {
+        "frames": 11,
+        "attributeArrays": 27,
+        "attributeBytes": 29466294,
+        "cpuFrameMs": 1,
+        "cameraLatencyMs": null,
+        "calls": 8,
+        "triangles": 291804,
+        "lines": 4,
+        "geometries": 9,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          77,
+          4.799999999999997,
+          -117
+        ],
+        "target": [
+          62,
+          4.6,
+          -132
+        ]
+      },
+      "views": [
+        {
+          "name": "Gable & doors",
+          "frames": 15,
+          "attributeArrays": 27,
+          "attributeBytes": 29466294,
+          "cpuFrameMs": 0.8999999985098839,
+          "cameraLatencyMs": null,
+          "calls": 8,
+          "triangles": 291804,
+          "lines": 4,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            77,
+            4.799999999999997,
+            -117
+          ],
+          "target": [
+            62,
+            4.6,
+            -132
+          ]
+        },
+        {
+          "name": "Quay side",
+          "frames": 18,
+          "attributeArrays": 27,
+          "attributeBytes": 29466294,
+          "cpuFrameMs": 0.5999999977648258,
+          "cameraLatencyMs": null,
+          "calls": 7,
+          "triangles": 291786,
+          "lines": 4,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            32.00000000000001,
+            4.799999999999998,
+            -124
+          ],
+          "target": [
+            51.00000000000001,
+            4.6,
+            -142
+          ]
+        },
+        {
+          "name": "Street side",
+          "frames": 22,
+          "attributeArrays": 27,
+          "attributeBytes": 29466294,
+          "cpuFrameMs": 0.9000000022351742,
+          "cameraLatencyMs": null,
+          "calls": 7,
+          "triangles": 291786,
+          "lines": 4,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            69.66781589995823,
+            4.8,
+            -154.1574189871806
+          ],
+          "target": [
+            51.00000000000001,
+            4.6,
+            -142
+          ]
+        },
+        {
+          "name": "Stone capital",
+          "frames": 25,
+          "attributeArrays": 27,
+          "attributeBytes": 29466294,
+          "cpuFrameMs": 0.6000000014901161,
+          "cameraLatencyMs": null,
+          "calls": 8,
+          "triangles": 291804,
+          "lines": 4,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            60.99999999999999,
+            10.3,
+            -125
+          ],
+          "target": [
+            59.169999999999995,
+            9.9,
+            -128.53
+          ]
+        }
+      ],
+      "zoomed": {
+        "frames": 37,
+        "attributeArrays": 27,
+        "attributeBytes": 29466294,
+        "cpuFrameMs": 0.8000000007450581,
+        "cameraLatencyMs": null,
+        "calls": 8,
+        "triangles": 291804,
+        "lines": 4,
+        "geometries": 9,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          61.13134780469162,
+          10.250330780835345,
+          -125.65243451281633
+        ],
+        "target": [
+          59.169999999999995,
+          9.9,
+          -128.53
+        ]
+      },
+      "idleFrames": 0
+    },
+    {
+      "mobile": true,
+      "overview": {
+        "frames": 1,
+        "attributeArrays": 26,
+        "attributeBytes": 29146950,
+        "cpuFrameMs": 75.10000000149012,
+        "cameraLatencyMs": null,
+        "calls": 7,
+        "triangles": 288848,
+        "lines": 0,
+        "geometries": 7,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          -145,
+          85,
+          -45
+        ],
+        "target": [
+          -12.000000000000002,
+          8,
+          -260
+        ]
+      },
+      "arrived": {
+        "frames": 15,
+        "attributeArrays": 27,
+        "attributeBytes": 29466294,
+        "cpuFrameMs": 0.7999999970197678,
+        "cameraLatencyMs": null,
+        "calls": 8,
+        "triangles": 291804,
+        "lines": 4,
+        "geometries": 9,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          77,
+          4.799999999999997,
+          -117
+        ],
+        "target": [
+          62,
+          4.6,
+          -132
+        ]
+      },
+      "views": [
+        {
+          "name": "Gable & doors",
+          "frames": 18,
+          "attributeArrays": 27,
+          "attributeBytes": 29466294,
+          "cpuFrameMs": 0.6000000014901161,
+          "cameraLatencyMs": null,
+          "calls": 8,
+          "triangles": 291804,
+          "lines": 4,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            77,
+            4.799999999999997,
+            -117
+          ],
+          "target": [
+            62,
+            4.6,
+            -132
+          ]
+        },
+        {
+          "name": "Quay side",
+          "frames": 21,
+          "attributeArrays": 27,
+          "attributeBytes": 29466294,
+          "cpuFrameMs": 0.9000000022351742,
+          "cameraLatencyMs": null,
+          "calls": 7,
+          "triangles": 291786,
+          "lines": 4,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            32.00000000000001,
+            4.799999999999998,
+            -124
+          ],
+          "target": [
+            51.00000000000001,
+            4.6,
+            -142
+          ]
+        },
+        {
+          "name": "Street side",
+          "frames": 24,
+          "attributeArrays": 27,
+          "attributeBytes": 29466294,
+          "cpuFrameMs": 0.6000000014901161,
+          "cameraLatencyMs": null,
+          "calls": 7,
+          "triangles": 291786,
+          "lines": 4,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            69.66781589995823,
+            4.8,
+            -154.1574189871806
+          ],
+          "target": [
+            51.00000000000001,
+            4.6,
+            -142
+          ]
+        },
+        {
+          "name": "Stone capital",
+          "frames": 27,
+          "attributeArrays": 27,
+          "attributeBytes": 29466294,
+          "cpuFrameMs": 3.600000001490116,
+          "cameraLatencyMs": null,
+          "calls": 8,
+          "triangles": 291804,
+          "lines": 4,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            60.99999999999999,
+            10.3,
+            -125
+          ],
+          "target": [
+            59.169999999999995,
+            9.9,
+            -128.53
+          ]
+        }
+      ],
+      "zoomed": {
+        "frames": 40,
+        "attributeArrays": 27,
+        "attributeBytes": 29466294,
+        "cpuFrameMs": 0.6000000014901161,
+        "cameraLatencyMs": null,
+        "calls": 8,
+        "triangles": 291804,
+        "lines": 4,
+        "geometries": 9,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          61.13134780469162,
+          10.250330780835345,
+          -125.65243451281633
+        ],
+        "target": [
+          59.169999999999995,
+          9.9,
+          -128.53
+        ]
+      },
+      "idleFrames": 0
+    }
+  ]
+}

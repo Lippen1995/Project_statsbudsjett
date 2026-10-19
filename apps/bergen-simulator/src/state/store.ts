@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { Feature } from "../geo/types";
+import type { LandmarkView } from "../architecture/inspection";
 import type { BenchmarkView } from "../geo/benchmark";
 
 export type Layer = "buildings" | "roads" | "water";
@@ -14,12 +15,15 @@ interface CityState {
     close?: boolean;
     view?: BenchmarkView;
     object?: string;
+    landmark?: LandmarkView;
+    immediate?: boolean;
   };
   select: (feature: Feature | null, segmentId?: string | null) => void;
   toggleLayer: (layer: Layer) => void;
   setQuality: (quality: "balanced" | "low") => void;
   focus: (point: [number, number] | null, close?: boolean) => void;
   inspect: (feature: Feature) => void;
+  inspectLandmark: (view: LandmarkView, immediate?: boolean) => void;
   viewBenchmark: (view: BenchmarkView) => void;
 }
 
@@ -53,6 +57,15 @@ export const useCity = create<CityState>((set) => ({
         revision: s.camera.revision + 1,
         point: feature.center,
         object: feature.id,
+      },
+    })),
+  inspectLandmark: (landmark, immediate = false) =>
+    set((s) => ({
+      camera: {
+        revision: s.camera.revision + 1,
+        point: null,
+        landmark,
+        immediate,
       },
     })),
   viewBenchmark: (view) =>

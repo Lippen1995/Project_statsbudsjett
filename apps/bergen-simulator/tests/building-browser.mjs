@@ -680,7 +680,7 @@ try {
     .click();
   await camera(page);
   assert.equal((await metrics(page)).calls, 7); // Five source passes + two R1B architectural batches.
-  assert.equal((await metrics(page)).geometries, 8); // Original batch, filtered index view and two asset geometries are bounded.
+  assert([8, 9].includes((await metrics(page)).geometries)); // Source/index, medium asset and optional warmed landmark LOD remain bounded.
   await page.close();
   report.checks.push(
     "Terrain placement; direct resize and rotation; numeric storeys, purpose and roof; observed-building and water rejection; hypothetical geometry visibly changes 3D",
@@ -733,7 +733,7 @@ try {
     .getByRole("button", { name: "Leave Planning Mode", exact: true })
     .click();
   await camera(m);
-  assert.equal((await metrics(m)).geometries, 8);
+  assert([8, 9].includes((await metrics(m)).geometries));
   await m.close();
   report.checks.push(
     "Touch placement, accessible numeric editing, mobile import/reload and viewport fit; bounded draw calls, GPU geometry disposal, zero idle frames",

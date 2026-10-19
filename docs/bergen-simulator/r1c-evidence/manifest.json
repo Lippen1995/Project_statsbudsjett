@@ -1,0 +1,418 @@
+{
+  "algorithm": "SHA-256",
+  "excludesSelf": true,
+  "files": {
+    "README.md": {
+      "sha256": "4c85f5115f32e23217d83ae04b1419ca8408e44628276fd6228edb4ebcf2046d",
+      "bytes": 4276
+    },
+    "after/desktop-balanced-facades.jpg": {
+      "sha256": "52b2b0e0c7fd0124ead42bffa8733bbd40ccaf78f60d4b128f7e8fcb46d6226f",
+      "bytes": 163153
+    },
+    "after/desktop-balanced-roofs.jpg": {
+      "sha256": "d3867477e50c918172cd3a89c2b64514f5ff54aa7073d2cbedbc7742cd2cf5a6",
+      "bytes": 149278
+    },
+    "after/desktop-balanced-skur-roof.jpg": {
+      "sha256": "4dbc231277256ab0c3e485fb48b6427cf4494e57251ddae930d6f64eed9895fa",
+      "bytes": 109778
+    },
+    "after/desktop-balanced-vagen.jpg": {
+      "sha256": "98cac73fae608bcd94e5ca16e7bf960cfdef638cc042f5e9a72e6a6e532e7177",
+      "bytes": 244883
+    },
+    "after/desktop-balanced-waterfront.jpg": {
+      "sha256": "984f19b133675ea564274f1be9e3d74f88d30f4bb0529dc52422b77ea8083c40",
+      "bytes": 180495
+    },
+    "after/desktop-inspection.jpg": {
+      "sha256": "ff680c337070478ee12820b766678feffc71c874d0534518d1cd64383ff42fc1",
+      "bytes": 100224
+    },
+    "after/desktop-low-facades.jpg": {
+      "sha256": "c5839cb98a932bc70666d17331ceeac41d35e59c9a5c81f018424d8c6ea64014",
+      "bytes": 129256
+    },
+    "after/desktop-low-roofs.jpg": {
+      "sha256": "4d276c8ecba7b70ad66fadb04a368d5e7e258309a68969d2d6e56f4a926d92fc",
+      "bytes": 145996
+    },
+    "after/desktop-low-skur-roof.jpg": {
+      "sha256": "6623a49d3e29107c931ecbc103fb948e813d08d9922c167fad8e581196b362a7",
+      "bytes": 100045
+    },
+    "after/desktop-low-vagen.jpg": {
+      "sha256": "5dfff4bd06c5b85206336036ff3c20417e6152f1978bde246d929c7d32df436b",
+      "bytes": 244463
+    },
+    "after/desktop-low-waterfront.jpg": {
+      "sha256": "f23bc5c7ae92f9d796337410a42fa999a62cb254ea5976d17739c77722c30590",
+      "bytes": 174593
+    },
+    "after/desktop-skur11.jpg": {
+      "sha256": "8addfb97b9d6e26e3fb4d73f02d8549f0156b7a2cf55ff3ac5cdfda026f37509",
+      "bytes": 97207
+    },
+    "after/metrics.json": {
+      "sha256": "06a6d35b7ae0e144eae41af408989602cb6db37af7978bf6927d3f182ca7eb5f",
+      "bytes": 40558
+    },
+    "after/mobile-balanced-facades.jpg": {
+      "sha256": "55a993e0be86b5c460df525fb57746bbebcb274d3f606da72c93eb59de0fd67c",
+      "bytes": 53775
+    },
+    "after/mobile-balanced-roofs.jpg": {
+      "sha256": "fd95cb9a3ac583300d3aaf2961b4d9aca72afb1874e93a6854044d1ed68c3bb2",
+      "bytes": 52276
+    },
+    "after/mobile-balanced-skur-roof.jpg": {
+      "sha256": "f72fa117ab7ddf8a5c050c20dadf8f168dfcd7ad54a7846fd09343f0786f7a43",
+      "bytes": 40349
+    },
+    "after/mobile-balanced-vagen.jpg": {
+      "sha256": "1b7375877f6642626759e03f58750a7cec3cfa813ad7cc277d5bbdc8a403abf7",
+      "bytes": 66950
+    },
+    "after/mobile-balanced-waterfront.jpg": {
+      "sha256": "5ca53c1acf5efc16c65be90a69bfdfc2d1cb7462e35bff2069e10bd602e94ab8",
+      "bytes": 58568
+    },
+    "after/mobile-inspection.jpg": {
+      "sha256": "71f7cecae5e2c76aad9313a834bfcd67546c4586d106cc548f45fd4786115cb5",
+      "bytes": 41879
+    },
+    "after/mobile-low-facades.jpg": {
+      "sha256": "c380df5b2ae74fdb36b2352cafe9c5c486cde625e87e2f32dae18398a1b43ca3",
+      "bytes": 45427
+    },
+    "after/mobile-low-roofs.jpg": {
+      "sha256": "63a3e0b899297551ae60231c5bf677aa9f5ef9eddad63f0305443a2466719eb1",
+      "bytes": 52677
+    },
+    "after/mobile-low-skur-roof.jpg": {
+      "sha256": "448c7b6ef5b5a9f55bcc457c928073d326d7f7fabfb4bfa227af3c86c93f93a9",
+      "bytes": 38766
+    },
+    "after/mobile-low-vagen.jpg": {
+      "sha256": "12fb0f16d7e03c82afcf8ff660d27c5f02552ac921eae53bceb3c92798a6f56e",
+      "bytes": 66669
+    },
+    "after/mobile-low-waterfront.jpg": {
+      "sha256": "4a85f1beb5b68e977fb6360493ec907dd7d587f7e5227cf23b6e2eaf4698987c",
+      "bytes": 57363
+    },
+    "after/mobile-skur11.jpg": {
+      "sha256": "49fdfa7a972ccefd2320994fa1611f3f9c832c56d024c71a39be9274fb8819b5",
+      "bytes": 40214
+    },
+    "assets/desktop-selected.jpg": {
+      "sha256": "9201f53b8b6b4ffce1b9ab559c968ce97c440fa1df5d93c17b768da0caa62296",
+      "bytes": 159223
+    },
+    "assets/desktop-skur-selected.jpg": {
+      "sha256": "3a99ec2d119e0f2cb5680a652ea9b020a6527d94f3acea3678f964fe3b543a59",
+      "bytes": 100765
+    },
+    "assets/mobile-selected.jpg": {
+      "sha256": "7e08f71ad46feae1599301da2197dbfdbf615adec2f5894c811f71dc92e4195c",
+      "bytes": 54801
+    },
+    "assets/mobile-skur-selected.jpg": {
+      "sha256": "2d1f902a6c125fdf3ef41e27d909432f182db791c528fa63346189ef7377d6a2",
+      "bytes": 41118
+    },
+    "assets/report.json": {
+      "sha256": "ee093670a403954224caf58fed0782d1ba0bf666ce7d67e6c9eddd04f892b9c4",
+      "bytes": 3100
+    },
+    "before/desktop-balanced-facades.jpg": {
+      "sha256": "faeb18c0c7703def59e1e4190b174d942adecdfa4ae1cd54e95e61e947e4183a",
+      "bytes": 159519
+    },
+    "before/desktop-balanced-roofs.jpg": {
+      "sha256": "2b326d28729b0dafb72b2fe196ff0f82170aa55466989da3c7aad8ea45eadf71",
+      "bytes": 145343
+    },
+    "before/desktop-balanced-skur-roof.jpg": {
+      "sha256": "354230ec87f238280f9cae476ffa69b513d3c86b31c3bf2fca57382c149a20f3",
+      "bytes": 97108
+    },
+    "before/desktop-balanced-vagen.jpg": {
+      "sha256": "646d235ff34af675343f385915257bb65033862fafe3b898286f6a9e51d80d89",
+      "bytes": 242386
+    },
+    "before/desktop-balanced-waterfront.jpg": {
+      "sha256": "013e70d3407650cce415916f5bfc06bb6162436b2ef2839c06d55122320d8d67",
+      "bytes": 176000
+    },
+    "before/desktop-low-facades.jpg": {
+      "sha256": "4f44359b909ad1b60037e9631ffcc073830b8e6ec0cc13f37b0970f69a0336f9",
+      "bytes": 125584
+    },
+    "before/desktop-low-roofs.jpg": {
+      "sha256": "b2e2c2559bdae98862f11e35b514cdf93601ab5b36897f9858d129f3290b3844",
+      "bytes": 142207
+    },
+    "before/desktop-low-skur-roof.jpg": {
+      "sha256": "af5c39af551167bad0ee9ce9a72fb972b5aabea59acde23861002911e0313a21",
+      "bytes": 95090
+    },
+    "before/desktop-low-vagen.jpg": {
+      "sha256": "12ea42c32cc7cfe458c10052454347640555db96bbade34355abec8b9906c431",
+      "bytes": 241975
+    },
+    "before/desktop-low-waterfront.jpg": {
+      "sha256": "03d19793fc1e8910471e3c1027bdb2362c744541fb802806ee79c825c09d559b",
+      "bytes": 169787
+    },
+    "before/metrics.json": {
+      "sha256": "c7d3faa3b478613205665e471a7edb3303032bd974088f1d56ac3ae0f1f9d69e",
+      "bytes": 40619
+    },
+    "before/mobile-balanced-facades.jpg": {
+      "sha256": "2862b0495739c5f5eaf30383766a7e32a275e8841f9c94e4e2d890b17389f7cc",
+      "bytes": 52507
+    },
+    "before/mobile-balanced-roofs.jpg": {
+      "sha256": "c4eb17f58e8c97a3519ab49f329c77e762761841da7d9fa4b65c7a5f1fd05ac6",
+      "bytes": 51270
+    },
+    "before/mobile-balanced-skur-roof.jpg": {
+      "sha256": "ba6c50e35a98830a12f75076693687c03f755e952324c739a4a7e57e9a53cb1d",
+      "bytes": 36594
+    },
+    "before/mobile-balanced-vagen.jpg": {
+      "sha256": "f695a08e9a975d6afc5cd4dc3042e419eb2f3790d71dc2c781eb35696bd70d28",
+      "bytes": 66256
+    },
+    "before/mobile-balanced-waterfront.jpg": {
+      "sha256": "b4053a55912941cd3a85cb388cf2deb821d468d3346c1d8d98d71d147c4382a6",
+      "bytes": 56907
+    },
+    "before/mobile-low-facades.jpg": {
+      "sha256": "9c87087e41e34989697213c6f801d43be02effa058953fa60480c5e0d5266601",
+      "bytes": 44080
+    },
+    "before/mobile-low-roofs.jpg": {
+      "sha256": "0dea9c77ea8403bd90c0eadd19fa39d417c37a76fbec5379d2f759977443a760",
+      "bytes": 51553
+    },
+    "before/mobile-low-skur-roof.jpg": {
+      "sha256": "ea43bd77ccab01c95ae6589d7fd761bf9b183969163cfb34381d9ee815d92b80",
+      "bytes": 37021
+    },
+    "before/mobile-low-vagen.jpg": {
+      "sha256": "4f24c2a6714f4975dea926adbded74d826624684942dbe8fab05325740e357a9",
+      "bytes": 66067
+    },
+    "before/mobile-low-waterfront.jpg": {
+      "sha256": "95683c51fb87b8d5fd16cc031a608b37cda2aeb6c3a6a4a2e99b4ee5fefcaa59",
+      "bytes": 55693
+    },
+    "close-after/metrics.json": {
+      "sha256": "8fedc909b261be0702cfb181cd4962121105977b478893362420500b46fa6c42",
+      "bytes": 29822
+    },
+    "close-before/metrics.json": {
+      "sha256": "09732c390bc52cabd53c9bd56a3ef1f845067c1376462cd2207a11f23422d0e8",
+      "bytes": 29764
+    },
+    "diagnostics/close-before-viewport-lod.json": {
+      "sha256": "b4cd9f18877fd96dcdd49a4e07933c2a318944133e835addbe5dd5733f575cc6",
+      "bytes": 29753
+    },
+    "inspection/desktop-gable.jpg": {
+      "sha256": "f6b8cf4c1385f7dbc55af189b67a66037e03738780ef9286075c29e77eee79a8",
+      "bytes": 100249
+    },
+    "inspection/desktop-quay.jpg": {
+      "sha256": "ac11268058b7e7b185ce3049c9a642eebcb79f110c78ce727f263cf4e9452277",
+      "bytes": 117160
+    },
+    "inspection/desktop-stone.jpg": {
+      "sha256": "01a9cb33255dca84ba7182634cc3f6627ceded6d60f376a6cd1d8b1898898369",
+      "bytes": 126114
+    },
+    "inspection/desktop-street.jpg": {
+      "sha256": "ce4dc0b3196e17785ea6ff45f044659902ebcb1bbcc6989107afd9bc4049e6b4",
+      "bytes": 88693
+    },
+    "inspection/mobile-gable.jpg": {
+      "sha256": "7e708ff2915a0cc8e246ed0417a94137e6805416570f74dbcd9aafecca0c88a8",
+      "bytes": 40006
+    },
+    "inspection/mobile-quay.jpg": {
+      "sha256": "31d9a7636e814219e105998b1a820ffb114d315e365a8f6e06137afc05c9955d",
+      "bytes": 42008
+    },
+    "inspection/mobile-stone.jpg": {
+      "sha256": "0520650a898fbdcb3ea0e961a0d4034929127a1cf958655ae2ab8e0b0f7d56e5",
+      "bytes": 45635
+    },
+    "inspection/mobile-street.jpg": {
+      "sha256": "42956fdce31f2ac17ff8ff1fbd4eb0f632169c5116110955ea5c3859884de055",
+      "bytes": 37950
+    },
+    "inspection/report.json": {
+      "sha256": "b7fd9552d24da3c28550cf899adcd1a948e5aab711daa8e45e774ff9af964e7c",
+      "bytes": 7977
+    },
+    "performance.md": {
+      "sha256": "a94987b46980405a1fa45c6e35282eed3cffd4c9cbaf7844a3c1f10d76ae3223",
+      "bytes": 4852
+    },
+    "physical-device-procedure.md": {
+      "sha256": "4653616dae1f330a32428efedcd5c563ec40469c30ce8792c8b80963b56d7243",
+      "bytes": 3222
+    },
+    "preimplementation-budget.md": {
+      "sha256": "96eeddff9591d4a60eff4af8414c326dece859bd662cdb25a2456288ded3318c",
+      "bytes": 1267
+    },
+    "references/Skur_11a.jpg": {
+      "sha256": "c0eb16b584724984449403e9ebeed6bfc8670b8267578666ffcb556c000f28ec",
+      "bytes": 236844
+    },
+    "references/Skur_11b.jpg": {
+      "sha256": "9f6b82b226625fe5026037d0e8f747a4d57de154c2c13ba6d39ea65ba94fd8fd",
+      "bytes": 271291
+    },
+    "references/Skur_11c.jpg": {
+      "sha256": "93076ad659b165d5fc02e1d3de1a4b8dfc70d05b11d3172ab776e1bda9920bda",
+      "bytes": 258283
+    },
+    "references/Skur_11d.jpg": {
+      "sha256": "5e719e028627b8038bc147eaf71a84cfc07686437d8b6a0f1f704458b763225c",
+      "bytes": 264386
+    },
+    "references/skur11-2009.jpg": {
+      "sha256": "e0f5dc7fc4c20ff848dfab882304fa5f2f48c98100fc1b259630415ae2cc0a9a",
+      "bytes": 200113
+    },
+    "validation.json": {
+      "sha256": "223d43e452c90d9099644b814369cd91f0a74abcdf3c20eaf2d381733a5117a2",
+      "bytes": 4654
+    },
+    "views-after/desktop-aerial.jpg": {
+      "sha256": "291be99ed457f365510c3ebf1d8297a4de8c50403271de8940292e57c47ac62c",
+      "bytes": 125781
+    },
+    "views-after/desktop-detail.jpg": {
+      "sha256": "ea5b4f89be82ee705bdcf6134196524ddcf9c75d37faa9738a0da1cd5aba947e",
+      "bytes": 117303
+    },
+    "views-after/desktop-roadside.jpg": {
+      "sha256": "a3a5177566993cfb71c5ce17b7d2e8fa9c742f58f42b01f836fc672d9d273e03",
+      "bytes": 81308
+    },
+    "views-after/desktop-roof.jpg": {
+      "sha256": "b3ef8aa80eaaf62a25a7f68634cae97c0e3340a97b2dba1a014806b35c02638a",
+      "bytes": 127537
+    },
+    "views-after/desktop-street-angled.jpg": {
+      "sha256": "5247768a8b74e18c2efa180367f43fa3ea730b998bbb6c57267505eb6f2f6422",
+      "bytes": 117084
+    },
+    "views-after/desktop-street-frontal.jpg": {
+      "sha256": "2bc530c7c5119e475790c766ee1cf9ece18cfb9d93d7ef62104a41be18ac733c",
+      "bytes": 99170
+    },
+    "views-after/desktop-waterfront.jpg": {
+      "sha256": "c668397c78bd372a8e0e66486adf3c417f6694c859a79e458efaf8756ff4b589",
+      "bytes": 210957
+    },
+    "views-after/mobile-aerial.jpg": {
+      "sha256": "e13348999de7876f041333e208233e0b563a69a0fea19f2c0accb32c41c334ed",
+      "bytes": 50898
+    },
+    "views-after/mobile-detail.jpg": {
+      "sha256": "3bd9227a5ba862662bfd0d032a66d93d8717596fb5c445e312626886023a29c4",
+      "bytes": 43481
+    },
+    "views-after/mobile-roadside.jpg": {
+      "sha256": "4f1caf3e01792de72481e68ec0e7431addfff083a546f7a965c5c214a760b881",
+      "bytes": 39280
+    },
+    "views-after/mobile-roof.jpg": {
+      "sha256": "4cbd37cf4c90109c5610c0eb83d41558bd2d0ca5d52d18c1aa72083b0ed41061",
+      "bytes": 45722
+    },
+    "views-after/mobile-street-angled.jpg": {
+      "sha256": "49569bac22d1da7a0c9d2d39eee4e907258685b5a7028748ef3ebe35086b5220",
+      "bytes": 42077
+    },
+    "views-after/mobile-street-frontal.jpg": {
+      "sha256": "1d8a58d59e227d7372a7864a37041da5bce59e470f83f1f7a8ea71c2f77768e9",
+      "bytes": 38344
+    },
+    "views-after/mobile-waterfront.jpg": {
+      "sha256": "95f66cae803dd74132d81aa687dfd45d6022971bc277fc951500cfeb85b11975",
+      "bytes": 67373
+    },
+    "views-after/report.json": {
+      "sha256": "c6a025f04951f134c5d8efb56d56e764d49c19191a6bdc923a911993c1a4a457",
+      "bytes": 2732
+    },
+    "views-before/desktop-aerial.jpg": {
+      "sha256": "40dfda23ea817479eed3e66ecfdd7987076c390dc4cfa4efb8fed8613ce7a46c",
+      "bytes": 119134
+    },
+    "views-before/desktop-detail.jpg": {
+      "sha256": "311e1a61394ae9f684aad6e764e81a97050e93b7dc059e2bd9931dd181b777cc",
+      "bytes": 94116
+    },
+    "views-before/desktop-roadside.jpg": {
+      "sha256": "136db31fe21f9292403ed8643739ebccf2e1e824f43cd6e462d6c845a7932c98",
+      "bytes": 55729
+    },
+    "views-before/desktop-roof.jpg": {
+      "sha256": "6b4fcc8e1e0662c139ee9f49d96d561d65046450f704970087f02e16d90c6532",
+      "bytes": 112382
+    },
+    "views-before/desktop-street-angled.jpg": {
+      "sha256": "b2db5c29d7e7c1e083c62e8f581f53db2d134f3eb60e6c485a228191f1333bcc",
+      "bytes": 90658
+    },
+    "views-before/desktop-street-frontal.jpg": {
+      "sha256": "7e35b0169958afb772e490874a21958ed6245d58352dea7d8f8ab21a8013e25a",
+      "bytes": 72284
+    },
+    "views-before/desktop-waterfront.jpg": {
+      "sha256": "caaf3027a351e79c55192afbfffd63a304d8de7f36b6734472b429e6ae7ffb37",
+      "bytes": 205908
+    },
+    "views-before/mobile-aerial.jpg": {
+      "sha256": "9c64cdf9ea69ce20886da7257fd86d3cd9dcfb82a155777562c39d6659003082",
+      "bytes": 48844
+    },
+    "views-before/mobile-detail.jpg": {
+      "sha256": "7f4c0c34a3fef07636880059707db6b24156a5d8a2a7b9224b685284759f2a53",
+      "bytes": 36576
+    },
+    "views-before/mobile-roadside.jpg": {
+      "sha256": "c53539e8dcf7a25addaeaaf33182bf50028154719b187cf738578ad6afcce29d",
+      "bytes": 29770
+    },
+    "views-before/mobile-roof.jpg": {
+      "sha256": "35f923cffacddd49c71955e31587e896e2457b47406a878ab9b53af44e3005ab",
+      "bytes": 41368
+    },
+    "views-before/mobile-street-angled.jpg": {
+      "sha256": "ccff35b5b4bf2e81f446765a48268d553fd10b3cc522591b63a51d7ce57f89c6",
+      "bytes": 35125
+    },
+    "views-before/mobile-street-frontal.jpg": {
+      "sha256": "469528d5fb6cb0764379a975f827f20539bb861254394c4027bbf0db76a0d75b",
+      "bytes": 31776
+    },
+    "views-before/mobile-waterfront.jpg": {
+      "sha256": "117aab6c97c28098e1c1910e4e7338240521d6885acef08ccd41784f6b23fb4e",
+      "bytes": 65564
+    },
+    "views-before/report.json": {
+      "sha256": "5bca9daff23d171cbc1c5ed0a6219e1448273e23cdb7f3ce570ac2574cc1b34a",
+      "bytes": 2733
+    }
+  }
+}

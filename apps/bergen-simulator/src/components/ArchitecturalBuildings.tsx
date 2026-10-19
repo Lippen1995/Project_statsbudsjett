@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { MathUtils, Mesh, MeshLambertMaterial, DoubleSide } from "three";
 import type { CityData } from "../geo/types";
+import { landmarkDetailLod } from "../architecture/inspection";
 import { architecturalLod } from "../architecture/model";
 import { useArchitecture } from "../architecture/state";
 import type { ArchitecturalTile } from "../architecture/load";
@@ -100,9 +101,28 @@ export default function ArchitecturalBuildings({
     group: ArchitecturalTile["body"],
   ) => void;
 }) {
+  const { gl, size } = useThree();
   const facade = useRef<Mesh>(null);
+  const body = useRef<Mesh>(null);
+  const close = useRef(false);
+  const active = useRef(tile.body);
   useFrame(({ camera }) => {
-    if (!facade.current) return;
+    if (!facade.current || !body.current) return;
+    const distance = Math.hypot(
+      camera.position.x - 51.24,
+      camera.position.y - 6,
+      camera.position.z + 142.25,
+    );
+    // Small-view front probes showed needless subpixel relief cost. Keep the
+    // silhouette LOD until fine geometry occupies useful screen space. This is
+    // a conservative pixel-budget heuristic, not a physical-device FPS claim.
+    const next = landmarkDetailLod(distance, close.current, size.width / 1000);
+    if (next !== close.current) {
+      gl.shadowMap.needsUpdate = true;
+      close.current = next;
+      active.current = next ? tile.closeBody : tile.body;
+      body.current.geometry = active.current.geometry;
+    }
     const d = Math.hypot(
       camera.position.x,
       camera.position.y - 8,
@@ -115,16 +135,17 @@ export default function ArchitecturalBuildings({
   return (
     <>
       <mesh
+        ref={body}
         geometry={tile.body.geometry}
         castShadow
-          onClick={(e) => pick(e, tile.body)}
+        onClick={(e) => pick(e, active.current)}
       >
         <meshLambertMaterial vertexColors side={DoubleSide} />
       </mesh>
       <mesh
         ref={facade}
         geometry={tile.facade.geometry}
-          onClick={(e) => pick(e, tile.facade)}
+        onClick={(e) => pick(e, tile.facade)}
       >
         <meshLambertMaterial
           map={tile.texture}

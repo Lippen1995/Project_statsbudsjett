@@ -323,3 +323,8 @@ See [architectural pipeline / limitations](r1b-architectural-realism.md),
 [visual/performance evidence](r1b-evidence/README.md). This is one bounded tile,
 not a completed citywide streamer or a photorealistic digital twin. Human recognition
 and physical-device GPU acceptance remain open before broader expansion.
+
+
+R1C adds a source-only, versioned Skur 11 reconstruction and controlled street inspection.
+See [landmark fidelity](r1c-landmark-fidelity.md), [pipeline](r1c-reconstruction-pipeline.md)
+and [source register](r1c-source-register.md). Scenario versions 1–6 and original GIS remain unchanged.

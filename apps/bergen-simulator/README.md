@@ -151,3 +151,5 @@ seven Bryggen buildings. See [pipeline and reproduction](../../docs/bergen-simul
 [fixed-camera visual/performance evidence](../../docs/bergen-simulator/r1b-evidence/README.md).
 The original geography, game engines, save formats and protected deployment workflow
 are unchanged. This is not a complete photorealistic landmark reconstruction.
+
+R1C: [Skur 11 landmark fidelity](../../docs/bergen-simulator/r1c-landmark-fidelity.md) and [reconstruction pipeline](../../docs/bergen-simulator/r1c-reconstruction-pipeline.md). Read-only historical detail; no scenario or production coupling.

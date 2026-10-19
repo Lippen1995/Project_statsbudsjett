@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import Inspector from "./components/Inspector";
+import LandmarkInspection from "./components/LandmarkInspection";
 import BenchmarkViews from "./components/BenchmarkViews";
 import ScenarioPanel, { ScenarioLegend } from "./components/ScenarioPanel";
 import { useCity, type Layer } from "./state/store";
@@ -277,7 +278,12 @@ export default function App() {
             <p>60°23′ N · 5°19′ E</p>
           </div>
           <ScenarioLegend />
-          {!planning ? <BenchmarkViews /> : null}
+          {!planning && data ? (
+            <>
+              <BenchmarkViews />
+              <LandmarkInspection data={data} />
+            </>
+          ) : null}
           <div className="map-status">
             <span className="status-dot" />
             {planning && livingMode
@@ -401,7 +407,8 @@ export default function App() {
             © OpenStreetMap contributors · Terrain/roofs: © Kartverket CC BY
             4.0 ·{" "}
             <a href="/architecture/NOTICE.md" target="_blank" rel="noreferrer">
-              Facades: Kognos / Commons CC BY-SA 4.0 (2022, adapted)
+              Facades: Kognos CC BY-SA 4.0 · Skur: Andersen / David40226543 CC
+              BY-SA 3.0 NO / 3.0 (historical, adapted)
             </a>
           </div>
         </section>

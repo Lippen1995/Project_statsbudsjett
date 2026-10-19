@@ -16,14 +16,17 @@ import { assertAssetSnapshot, assetIds, catalogue } from "./model";
 export interface ArchitecturalTile {
   body: { geometry: BufferGeometry; ranges: FeatureRange[] };
   facade: { geometry: BufferGeometry; ranges: FeatureRange[] };
+  closeBody: { geometry: BufferGeometry; ranges: FeatureRange[] };
   texture: Texture;
   dispose: () => void;
 }
 export function checkedGlbJson(bytes: ArrayBuffer) {
+  if (catalogue.version !== 2 || catalogue.reconstruction.version !== 1)
+    throw new Error("Unsupported render catalogue version");
   const view = new DataView(bytes);
   if (
     bytes.byteLength !== catalogue.bytes ||
-    bytes.byteLength > 256 * 1024 ||
+    bytes.byteLength > 1024 * 1024 ||
     view.getUint32(0, true) !== 0x46546c67 ||
     view.getUint32(4, true) !== 2 ||
     view.getUint32(8, true) !== bytes.byteLength ||
@@ -44,8 +47,8 @@ export function checkedGlbJson(bytes: ArrayBuffer) {
     json.images?.length !== 1 ||
     json.images[0].uri ||
     json.images[0].mimeType !== "image/jpeg" ||
-    json.meshes?.length !== 13 ||
-    json.nodes?.length !== 13 ||
+    json.meshes?.length !== 14 ||
+    json.nodes?.length !== 14 ||
     json.materials?.length !== 2
   )
     throw new Error("Unsupported architectural asset resources");
@@ -115,8 +118,13 @@ export async function loadArchitecturalTile(
   const groups = {
     body: [] as BufferGeometry[],
     facade: [] as BufferGeometry[],
+    landmark: [] as BufferGeometry[],
   };
-  const ranges = { body: [] as FeatureRange[], facade: [] as FeatureRange[] };
+  const ranges = {
+    body: [] as FeatureRange[],
+    facade: [] as FeatureRange[],
+    landmark: [] as FeatureRange[],
+  };
   const materials = new Set<MeshStandardMaterial>();
   let texture: Texture | undefined;
   const merged: BufferGeometry[] = [];
@@ -134,8 +142,10 @@ export async function loadArchitecturalTile(
       if (!(object instanceof Mesh)) return;
       const id = object.userData.sourceId,
         layer = object.userData.layer;
-      if (!assetIds.has(id) || !["body", "facade"].includes(layer))
+      if (!assetIds.has(id) || !["body", "facade", "landmark"].includes(layer))
         throw new Error("Invalid asset identity");
+      if (layer === "landmark" && id !== catalogue.reconstruction.sourceId)
+        throw new Error("Landmark identity mismatch");
       const kind = layer as keyof typeof groups;
       const feature = data.buildings.find((b) => b.id === id)!;
       const g = object.geometry as BufferGeometry;
@@ -146,7 +156,12 @@ export async function loadArchitecturalTile(
         g.index ||
         !p ||
         !n ||
-        p.count > 200 ||
+        p.count >
+          (kind === "landmark"
+            ? 12000
+            : id === catalogue.reconstruction.sourceId
+              ? 3000
+              : 200) ||
         p.count % 3 ||
         n.count !== p.count
       )
@@ -176,7 +191,12 @@ export async function loadArchitecturalTile(
       materials.add(material);
       if (material.map) texture = material.map;
     });
-    if (groups.body.length !== 7 || groups.facade.length !== 6 || !texture)
+    if (
+      groups.body.length !== 7 ||
+      groups.facade.length !== 6 ||
+      groups.landmark.length !== 1 ||
+      !texture
+    )
       throw new Error("Incomplete architectural tile");
     if (texture.image.width !== 1024 || texture.image.height !== 1024)
       throw new Error("Unbounded architectural texture");
@@ -184,7 +204,25 @@ export async function loadArchitecturalTile(
     const body = mergeGeometries(groups.body, false),
       facade = mergeGeometries(groups.facade, false);
     if (!body || !facade) throw new Error("Architectural batching failed");
-    merged.push(body, facade);
+    const closeGeometries = groups.body.filter(
+      (_, i) => ranges.body[i].feature.id !== catalogue.reconstruction.sourceId,
+    );
+    closeGeometries.push(groups.landmark[0]);
+    const closeBody = mergeGeometries(closeGeometries, false);
+    if (!closeBody) throw new Error("Landmark LOD batching failed");
+    const closeRanges: FeatureRange[] = [];
+    const features = ranges.body
+      .filter((r) => r.feature.id !== catalogue.reconstruction.sourceId)
+      .map((r) => r.feature);
+    features.push(ranges.landmark[0].feature);
+    closeGeometries.forEach((g, i) =>
+      closeRanges.push({
+        end:
+          (closeRanges.at(-1)?.end ?? 0) + g.getAttribute("position").count / 3,
+        feature: features[i],
+      }),
+    );
+    merged.push(body, facade, closeBody);
     for (const g of merged) g.computeBoundingSphere();
     texture.colorSpace = SRGBColorSpace;
     Object.values(groups)
@@ -196,6 +234,7 @@ export async function loadArchitecturalTile(
     return {
       body: { geometry: body, ranges: ranges.body },
       facade: { geometry: facade, ranges: ranges.facade },
+      closeBody: { geometry: closeBody, ranges: closeRanges },
       texture,
       dispose: () => {
         if (disposed) return;

@@ -277,3 +277,7 @@ redistribution review are in [the R1B asset register](r1b-asset-source-register.
 inferred geometry/registration and illustrative shading. Existing placement/traffic/
 district facts and all saved scenario meanings are unchanged. Building heights in
 the inspector identify the original snapshot versus the separate inferred render layer.
+
+
+R1C adds dated, licensed Skur 11 photographic evidence for inferred render relief,
+without refreshing the source snapshot. See [R1C source register](r1c-source-register.md).

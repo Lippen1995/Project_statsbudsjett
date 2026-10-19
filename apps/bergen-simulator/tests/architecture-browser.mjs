@@ -271,10 +271,10 @@ try {
         captures.every(
           (m) =>
             m.calls <= 8 &&
-            m.triangles <= 289140 &&
-            m.attributeBytes <= 27056370 + 2 * 1024 * 1024,
+            m.triangles <= 292500 &&
+            m.attributeBytes <= 31.5 * 1024 * 1024,
         ),
-        "R1B predeclared bounded asset budget",
+        "R1C asset budget; R1B reports retain their original thresholds",
       );
     }
     if (phase === "after") {

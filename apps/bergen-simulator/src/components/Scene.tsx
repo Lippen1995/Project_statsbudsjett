@@ -3,6 +3,10 @@ import ArchitecturalBuildings, {
   ArchitecturalLod,
 } from "./ArchitecturalBuildings";
 import type { ArchitecturalTile } from "../architecture/load";
+import {
+  clearInspectionPosition,
+  LANDMARK_VIEWS,
+} from "../architecture/inspection";
 import { catalogue, fallbackWithoutAssets } from "../architecture/model";
 import ProposedAccess from "./ProposedAccess";
 import { useAccess } from "../state/access";
@@ -40,6 +44,11 @@ import { SourceBuildingMaterial, WaterMaterial } from "./CityMaterials";
 function CameraControls({ data }: { data: CityData }) {
   const { camera, gl, invalidate, scene } = useThree();
   const command = useCity((s) => s.camera);
+  const planning = useScenario((s) => s.phase !== "closed");
+  useEffect(() => {
+    if (planning && useCity.getState().camera.landmark)
+      useCity.getState().focus(null);
+  }, [planning]);
   const editing = usePhysical(
     (s) => s.mode === "spaces" && s.action !== "navigate",
   );
@@ -50,6 +59,60 @@ function CameraControls({ data }: { data: CityData }) {
   const accessDrawing = useAccess((a) => a.drawing);
   const accessMode = usePhysical((p) => p.mode === "access");
   const controls = useRef<OrbitControls | null>(null);
+  const street = useRef(false);
+  const flight = useRef<{
+    started: number;
+    from: THREE.Vector3;
+    fromTarget: THREE.Vector3;
+    position: THREE.Vector3;
+    target: THREE.Vector3;
+    height: number;
+  } | null>(null);
+  const ground = useRef<ReturnType<typeof terrainSampler> | null>(null);
+  const obstacles = useMemo(
+    () =>
+      data.buildings.filter(
+        (b) => Math.hypot(b.center[0] - 51.24, b.center[1] + 142.25) < 140,
+      ),
+    [data],
+  );
+  useFrame(() => {
+    const f = flight.current,
+      orbit = controls.current;
+    if (!f || !orbit) return;
+    const t = Math.min(1, (performance.now() - f.started) / 1800);
+    const smooth = (x: number) => x * x * (3 - 2 * x);
+    // Fly above the bounded city first, translate overhead, then descend at an
+    // already-cleared exterior viewpoint; never interpolate through the landmark.
+    if (t < 0.25)
+      camera.position
+        .copy(f.from)
+        .lerp(
+          new THREE.Vector3(f.from.x, f.height, f.from.z),
+          smooth(t / 0.25),
+        );
+    else if (t < 0.65)
+      camera.position.set(
+        THREE.MathUtils.lerp(f.from.x, f.position.x, smooth((t - 0.25) / 0.4)),
+        f.height,
+        THREE.MathUtils.lerp(f.from.z, f.position.z, smooth((t - 0.25) / 0.4)),
+      );
+    else
+      camera.position.set(
+        f.position.x,
+        THREE.MathUtils.lerp(f.height, f.position.y, smooth((t - 0.65) / 0.35)),
+        f.position.z,
+      );
+    orbit.target.copy(f.fromTarget).lerp(f.target, smooth(t));
+    if (t === 1) {
+      flight.current = null;
+      orbit.minDistance = 3.5;
+      orbit.maxDistance = 90;
+      orbit.enabled = true;
+    }
+    orbit.update();
+    invalidate();
+  });
   useEffect(() => {
     const orbit = new OrbitControls(camera, gl.domElement);
     controls.current = orbit;
@@ -60,6 +123,16 @@ function CameraControls({ data }: { data: CityData }) {
     orbit.zoomSpeed = 0.8;
     orbit.screenSpacePanning = false;
     const onChange = () => {
+      if (street.current && !flight.current) {
+        const p = camera.position;
+        const corrected = clearInspectionPosition(
+          p.toArray() as [number, number, number],
+          ground.current?.(p.x, p.z) ?? null,
+          obstacles,
+        );
+        camera.position.fromArray(corrected);
+        camera.lookAt(orbit.target);
+      }
       const [west, north, east, south] = data.extent;
       const next = orbit.target.clone();
       next.x = THREE.MathUtils.clamp(next.x, west, east);
@@ -76,7 +149,7 @@ function CameraControls({ data }: { data: CityData }) {
       orbit.dispose();
       controls.current = null;
     };
-  }, [camera, gl, invalidate, data.extent, scene]);
+  }, [camera, gl, invalidate, data.extent, scene, obstacles]);
   useEffect(() => {
     if (controls.current)
       controls.current.enabled =
@@ -87,6 +160,47 @@ function CameraControls({ data }: { data: CityData }) {
   useEffect(() => {
     const orbit = controls.current;
     if (!orbit) return;
+    flight.current = null;
+    street.current = !!command.landmark;
+    orbit.enablePan = !command.landmark;
+    orbit.minDistance = command.landmark ? 3.5 : 18;
+    orbit.maxDistance = command.landmark ? 90 : 6200;
+    orbit.maxPolarAngle = command.landmark ? Math.PI / 2 : Math.PI / 2.12;
+    orbit.enabled = true;
+    if (command.landmark) {
+      ground.current ??= terrainSampler(data.terrain);
+      const v = LANDMARK_VIEWS.find((v) => v.id === command.landmark)!;
+      const position = new THREE.Vector3(
+        ...clearInspectionPosition(
+          [...v.position],
+          ground.current(v.position[0], v.position[2]),
+          obstacles,
+        ),
+      );
+      const target = new THREE.Vector3(...v.target);
+      if (
+        command.immediate ||
+        matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        camera.position.copy(position);
+        orbit.target.copy(target);
+        orbit.update();
+      } else {
+        flight.current = {
+          started: performance.now(),
+          from: camera.position.clone(),
+          fromTarget: orbit.target.clone(),
+          position,
+          target,
+          height: Math.max(100, camera.position.y),
+        };
+        orbit.minDistance = 1;
+        orbit.maxDistance = 6200;
+        orbit.enabled = false;
+      }
+      invalidate();
+      return;
+    }
     const view = BENCHMARK_VIEWS.find((v) => v.id === command.view);
     const selected = command.object
       ? [...data.buildings, ...data.roads, ...data.landmarks].find(
@@ -124,7 +238,7 @@ function CameraControls({ data }: { data: CityData }) {
     );
     orbit.update();
     invalidate();
-  }, [camera, command, data, invalidate]);
+  }, [camera, command, data, invalidate, obstacles]);
   useEffect(() => {
     const canvas = gl.domElement;
     const onKey = (event: KeyboardEvent) => {
@@ -140,10 +254,37 @@ function CameraControls({ data }: { data: CityData }) {
       else if (event.key === "-")
         camera.position.copy(orbit.target).add(direction.multiplyScalar(1.15));
       else if (event.key.toLowerCase() === "r") useCity.getState().focus(null);
-      else if (event.key === "Escape") useCity.getState().select(null);
-      else if (
+      else if (event.key === "Escape") {
+        if (flight.current) {
+          // Escape skips to the cleared destination rather than stranding a
+          // street camera around an intermediate aerial target.
+          camera.position.copy(flight.current.position);
+          orbit.target.copy(flight.current.target);
+          flight.current = null;
+          orbit.enabled = true;
+          orbit.maxDistance = 90;
+          orbit.minDistance = 3.5;
+        } else useCity.getState().select(null);
+      } else if (
         ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)
       ) {
+        if (street.current) {
+          direction.applyAxisAngle(
+            new THREE.Vector3(0, 1, 0),
+            event.key === "ArrowLeft"
+              ? -0.12
+              : event.key === "ArrowRight"
+                ? 0.12
+                : 0,
+          );
+          if (event.key === "ArrowUp") direction.y += 1;
+          if (event.key === "ArrowDown") direction.y -= 1;
+          camera.position.copy(orbit.target).add(direction);
+          event.preventDefault();
+          orbit.update();
+          invalidate();
+          return;
+        }
         const delta = new THREE.Vector3(
           event.key === "ArrowLeft" ? -60 : event.key === "ArrowRight" ? 60 : 0,
           0,
@@ -162,7 +303,7 @@ function CameraControls({ data }: { data: CityData }) {
     canvas.setAttribute("role", "img");
     canvas.setAttribute(
       "aria-label",
-      "Interactive 3D map of central Bergen. Arrow keys pan, plus and minus zoom, R resets, Escape clears selection.",
+      "Interactive 3D map of central Bergen. Arrow keys pan, plus and minus zoom, R resets, Escape skips movement or clears selection.",
     );
     canvas.addEventListener("keydown", onKey);
     return () => canvas.removeEventListener("keydown", onKey);
@@ -200,6 +341,19 @@ function CityGeometry({
   const visibleBuildings = architecture ? filtered : buildings;
   const highlight = useMemo(() => {
     if (selected?.kind === "building") {
+      // Ground perimeter keeps selection legible without x-raying internal LOD
+      // edges across the architecture being inspected.
+      if (selected.id === "way/393025479") {
+        const b = selected as Building;
+        const points: number[] = [];
+        for (let i = 0; i < b.rings[0].length - 1; i++)
+          for (const [x, z] of [b.rings[0][i], b.rings[0][i + 1]])
+            points.push(x, (surface(x, z) ?? b.elevation) + 0.1, z);
+        return new THREE.BufferGeometry().setAttribute(
+          "position",
+          new THREE.Float32BufferAttribute(points, 3),
+        );
+      }
       const assetRange =
         architecture?.body.ranges.findIndex(
           (r) => r.feature.id === selected.id,

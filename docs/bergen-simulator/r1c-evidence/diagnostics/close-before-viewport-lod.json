@@ -1,0 +1,1189 @@
+{
+  "phase": "after",
+  "baselineCommit": "d278ec9a5f17f5750c4a62a0bfae6c0ee891e0f8",
+  "browser": "151.0.7922.173",
+  "method": "four warm-ups + twelve retained two-RAF/gl.finish software completion probes; not physical FPS",
+  "cases": {
+    "desktop-street-frontal": {
+      "medianMs": 320.19999999925494,
+      "p95Ms": 356.80000000074506,
+      "samples": [
+        {
+          "driverMs": 320.19999999925494,
+          "frames": 6,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.7000000029802322,
+          "cameraLatencyMs": 313.1000000014901,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 298.4000000022352,
+          "frames": 7,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.6000000014901161,
+          "cameraLatencyMs": 296.5,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 345.0999999977648,
+          "frames": 8,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.6999999992549419,
+          "cameraLatencyMs": 332.5,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 332,
+          "frames": 9,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 1,
+          "cameraLatencyMs": 329.30000000074506,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 304.4000000022352,
+          "frames": 10,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.7000000029802322,
+          "cameraLatencyMs": 292,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 324.5999999977648,
+          "frames": 11,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 319.0999999977648,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 334.30000000074506,
+          "frames": 12,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.6000000014901161,
+          "cameraLatencyMs": 321.20000000298023,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 356.80000000074506,
+          "frames": 13,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.6999999992549419,
+          "cameraLatencyMs": 339.79999999701977,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 266.80000000074506,
+          "frames": 14,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.9000000022351742,
+          "cameraLatencyMs": 233,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 293.30000000074506,
+          "frames": 15,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 280.30000000074506,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 234.5,
+          "frames": 16,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 1.3999999985098839,
+          "cameraLatencyMs": 233.79999999701977,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 244.40000000223517,
+          "frames": 17,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.8000000007450581,
+          "cameraLatencyMs": 1.199999999254942,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        }
+      ],
+      "idleFrames": 0
+    },
+    "desktop-detail": {
+      "medianMs": 461.3999999985099,
+      "p95Ms": 566.7000000029802,
+      "samples": [
+        {
+          "driverMs": 431.5,
+          "frames": 22,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.4000000022351742,
+          "cameraLatencyMs": 0.6000000014901161,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 428.29999999701977,
+          "frames": 23,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 1,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 461.3999999985099,
+          "frames": 24,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.5999999977648258,
+          "cameraLatencyMs": 5.299999997019768,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 437.30000000074506,
+          "frames": 25,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.6000000014901161,
+          "cameraLatencyMs": 0.9000000022351742,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 469.8999999985099,
+          "frames": 26,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 34.70000000298023,
+          "cameraLatencyMs": 35,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 471,
+          "frames": 27,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.30000000074505806,
+          "cameraLatencyMs": 0.5,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 507,
+          "frames": 28,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 0.5999999977648258,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 566.7000000029802,
+          "frames": 29,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 4.5,
+          "cameraLatencyMs": 4.800000000745058,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 426.29999999701977,
+          "frames": 30,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 1,
+          "cameraLatencyMs": 1.8999999985098839,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 489.30000000074506,
+          "frames": 31,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.8000000007450581,
+          "cameraLatencyMs": 2,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 412,
+          "frames": 32,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 0.8000000007450581,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 412.19999999925494,
+          "frames": 33,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 0.6999999992549419,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        }
+      ],
+      "idleFrames": 0
+    },
+    "mobile-street-frontal": {
+      "medianMs": 195.30000000074506,
+      "p95Ms": 223.90000000223517,
+      "samples": [
+        {
+          "driverMs": 195,
+          "frames": 6,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.8000000007450581,
+          "cameraLatencyMs": 1.3999999985098839,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 174,
+          "frames": 7,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 1.1000000014901161,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 195.29999999701977,
+          "frames": 8,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 1.1000000014901161,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 223.90000000223517,
+          "frames": 9,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 1.199999999254942,
+          "cameraLatencyMs": 1.3999999985098839,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 201.60000000149012,
+          "frames": 10,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.8999999985098839,
+          "cameraLatencyMs": 1.199999999254942,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 165.19999999925494,
+          "frames": 11,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 1.5999999977648258,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 195.30000000074506,
+          "frames": 12,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.4000000022351742,
+          "cameraLatencyMs": 0.8000000007450581,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 199.19999999925494,
+          "frames": 13,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 1.300000000745058,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 199.79999999701977,
+          "frames": 14,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 1.5,
+          "cameraLatencyMs": 1.699999999254942,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 195.69999999925494,
+          "frames": 15,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.30000000074505806,
+          "cameraLatencyMs": 0.5999999977648258,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 193.89999999850988,
+          "frames": 16,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 5.699999999254942,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89,
+            6.500000000000002,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        },
+        {
+          "driverMs": 189.5,
+          "frames": 17,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 1,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            89.5,
+            6.5000000000000036,
+            -126
+          ],
+          "target": [
+            62,
+            3,
+            -132
+          ]
+        }
+      ],
+      "idleFrames": 0
+    },
+    "mobile-detail": {
+      "medianMs": 196.10000000149012,
+      "p95Ms": 205.19999999925494,
+      "samples": [
+        {
+          "driverMs": 158.80000000074506,
+          "frames": 22,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 156.80000000074506,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 196.10000000149012,
+          "frames": 23,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 1.199999999254942,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 197.70000000298023,
+          "frames": 24,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 1,
+          "cameraLatencyMs": 1.7000000029802322,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 182.30000000074506,
+          "frames": 25,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.30000000074505806,
+          "cameraLatencyMs": 0.8000000007450581,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 188.5,
+          "frames": 26,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 0.5999999977648258,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 199.39999999850988,
+          "frames": 27,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.8000000007450581,
+          "cameraLatencyMs": 0.9000000022351742,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 198.79999999701977,
+          "frames": 28,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.6000000014901161,
+          "cameraLatencyMs": 1.300000000745058,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 185.80000000074506,
+          "frames": 29,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.3999999985098839,
+          "cameraLatencyMs": 0.6000000014901161,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 183.5,
+          "frames": 30,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 1.5,
+          "cameraLatencyMs": 1.699999999254942,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 205.19999999925494,
+          "frames": 31,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 1.0999999977648258,
+          "cameraLatencyMs": 1.2999999970197678,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 197.80000000074506,
+          "frames": 32,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.30000000074505806,
+          "cameraLatencyMs": 3.300000000745058,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            48.99999999999999,
+            6.000000000000002,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        },
+        {
+          "driverMs": 176.80000000074506,
+          "frames": 33,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.4000000022351742,
+          "cameraLatencyMs": 0.6999999992549419,
+          "calls": 6,
+          "triangles": 291786,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            49.49999999999999,
+            6.000000000000001,
+            -111
+          ],
+          "target": [
+            62.99999999999999,
+            2.9999999999999996,
+            -134
+          ]
+        }
+      ],
+      "idleFrames": 0
+    }
+  },
+  "errors": []
+}

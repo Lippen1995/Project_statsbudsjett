@@ -24,7 +24,7 @@ describe("bounded, source-only architecture assets", () => {
     expect(hash(raw)).toBe(catalogue.snapshotSha256);
     expect(hash(glb)).toBe(catalogue.sha256);
     expect(glb.length).toBe(catalogue.bytes);
-    expect(glb.length).toBeLessThan(250 * 1024);
+    expect(glb.length).toBeLessThan(1024 * 1024);
     expect(assetIds.size).toBe(7);
     const notice = readFileSync("public/architecture/NOTICE.md", "utf8");
     for (const credit of [

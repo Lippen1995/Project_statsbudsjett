@@ -10,6 +10,7 @@ import rasterio
 from pyproj import Transformer
 from shapely.geometry import Point, Polygon
 from PIL import Image
+from reconstruction import reconstruct, validate_contract
 
 APP = Path(__file__).resolve().parent.parent
 INPUTS = json.loads((APP / "scripts/r1b-inputs.json").read_text())
@@ -44,10 +45,21 @@ def checked(entry):
         else (
             fixture.read_bytes()
             if entry["file"] == "dom.tif" and fixture.exists()
-            else urllib.request.urlopen(entry["url"], timeout=60).read()
+            else urllib.request.urlopen(
+                urllib.request.Request(
+                    entry["url"],
+                    headers={
+                        "User-Agent": "BergenReimagined/0.1 (licensed architectural asset compilation)"
+                    },
+                ),
+                timeout=60,
+            ).read()
         )
     )
-    if hashlib.sha256(raw).hexdigest() != entry["sha256"]:
+    if (
+        len(raw) != entry.get("bytes", len(raw))
+        or hashlib.sha256(raw).hexdigest() != entry["sha256"]
+    ):
         raise ValueError("Source drift: " + entry["file"])
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(raw)
@@ -123,6 +135,12 @@ def fit_roof(b, raster, T):
 
 
 def main():
+    reconstruction = validate_contract(
+        json.loads((APP / "scripts/reconstructions/skur-11.v1.json").read_text())
+    )
+    extra = json.loads((APP / "scripts/r1c-inputs.json").read_text())
+    for entry in extra:
+        checked(entry)
     raw = {x["file"]: checked(x) for x in INPUTS}
     project = json.loads(raw["dom-project.json"])["ProjectMetadata"][0]["properties"]
     assert project["HOYDESYSTEM"] == "5941" and project["BEST_OPEN"] == "1"
@@ -244,6 +262,7 @@ def main():
                     ][k]
                 ),
                 roof=fit,
+                qualityTier=1 if k == 6 else 2,
                 facade=(
                     "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
                     if k < 6
@@ -299,6 +318,19 @@ def main():
                 uv=[v for i in faces for v in uv[i]],
             )
         )
+    b = next(x for x in data["buildings"] if x["id"] == reconstruction["sourceId"])
+    r = next(x for x in records if x["id"] == b["id"])
+    mid_mesh = reconstruct(b, r["roof"], reconstruction, detail=False)
+    mid_mesh["kind"] = "body"
+    meshes[
+        meshes.index(
+            next(m for m in meshes if m["id"] == b["id"] and m["kind"] == "body")
+        )
+    ] = mid_mesh
+    meshes.append(reconstruct(b, r["roof"], reconstruction))
+    r["facade"] = (
+        "R1C historical photo-inferred relief: recessed doors, bracing, six visible piers, corrugated faces; NW end schematic. Dimensions/depth not survey verified."
+    )
     atlas_bytes = io.BytesIO()
     atlas.save(atlas_bytes, format="JPEG", quality=82, optimize=True, subsampling=2)
     blob = bytearray()
@@ -354,8 +386,8 @@ def main():
     g = dict(
         asset=dict(
             version="2.0",
-            generator="Bergen R1B pinned architectural compiler",
-            copyright="Geometry: OSM contributors ODbL-1.0 + Kartverket CC-BY-4.0. Photo atlas: Kognos / Wikimedia Commons CC-BY-SA-4.0; cropped/resampled. See NOTICE.md.",
+            generator="Bergen R1C source-linked reconstruction compiler",
+            copyright="Geometry: OSM contributors ODbL-1.0 + Kartverket CC-BY-4.0. Photo atlas: Kognos / Wikimedia Commons CC-BY-SA-4.0; cropped/resampled. Skur reconstruction: photo-derived CC-BY-SA-3.0-NO / CC-BY-SA-3.0, inferred dimensions. See NOTICE.md.",
         ),
         scene=0,
         scenes=[dict(nodes=list(range(len(meshes))))],
@@ -398,7 +430,7 @@ def main():
     name = "bryggen-" + digest[:16] + ".glb"
     (dest / name).write_bytes(glb)
     catalogue = dict(
-        version=1,
+        version=2,
         snapshotSha256=source_hash,
         url="/architecture/" + name,
         sha256=digest,
@@ -406,7 +438,18 @@ def main():
         bounds=[-85, -330, 95, -120],
         textureSize=[1024, 1024],
         acquiredAt="2026-10-18",
-        sources=INPUTS,
+        sources=INPUTS + extra,
+        reconstruction=dict(
+            version=1,
+            sourceId=reconstruction["sourceId"],
+            contract="scripts/reconstructions/skur-11.v1.json",
+            sha256=hashlib.sha256(
+                (APP / "scripts/reconstructions/skur-11.v1.json").read_bytes()
+            ).hexdigest(),
+            highTriangles=len(meshes[-1]["positions"]) // 9,
+            mediumTriangles=len(mid_mesh["positions"]) // 9,
+            tier=1,
+        ),
         buildings=records,
     )
     (APP / "src/architecture").mkdir(exist_ok=True)
@@ -414,7 +457,12 @@ def main():
         json.dumps(catalogue, indent=2) + "\n"
     )
     print(
-        "Compiled", name, len(glb), "bytes", len(meshes), "meshes -> 2 runtime batches"
+        "Compiled",
+        name,
+        len(glb),
+        "bytes",
+        len(meshes),
+        "meshes -> 2 runtime batches / replaceable landmark LOD",
     )
     print([(r["id"], r["roof"]["accepted"], r["roof"]["inlierRmseM"]) for r in records])
 

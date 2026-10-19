@@ -1,0 +1,152 @@
+{
+  "recordedAt": "2026-10-19T06:13:06.356362+00:00",
+  "baselineCommit": "d278ec9a5f17f5750c4a62a0bfae6c0ee891e0f8",
+  "branch": "feature/bergen-simulator",
+  "landmarkSourceId": "way/393025479",
+  "asset": {
+    "url": "/architecture/bryggen-e5943b20bcfb86bb.glb",
+    "sha256": "e5943b20bcfb86bb70eaca757bfaed32410a1fb801a940e35e999890090c8e60",
+    "bytes": 675280,
+    "snapshotSha256": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812"
+  },
+  "checks": {
+    "eslint": "passed, zero warnings",
+    "vitest": {
+      "passed": 236,
+      "files": 15
+    },
+    "nodeReleasePolicy": {
+      "passed": 10
+    },
+    "typescriptAndVite": "passed; existing >500 kB chunk advisory remains",
+    "isolationScript": "passed",
+    "gisPython": {
+      "importer": 3,
+      "connectivity": 3,
+      "architecture": 3,
+      "reconstruction": 6,
+      "allPassed": true
+    },
+    "compilerReproducibility": {
+      "passed": true,
+      "hashes": {
+        "src/architecture/catalogue.json": "ef1737c8f9f786bd72fbc8b2a892eb1145c11956aaf3165410701a7be5bc2b38",
+        "public/architecture/bryggen-e5943b20bcfb86bb.glb": "e5943b20bcfb86bb70eaca757bfaed32410a1fb801a940e35e999890090c8e60"
+      }
+    },
+    "browserScripts": [
+      {
+        "name": "landmark-performance",
+        "exitCode": 0,
+        "durationMs": 137856
+      },
+      {
+        "name": "landmark-views",
+        "exitCode": 0,
+        "durationMs": 23011
+      },
+      {
+        "name": "landmark-inspection-browser",
+        "exitCode": 0,
+        "durationMs": 61375
+      },
+      {
+        "name": "architectural-assets-browser",
+        "exitCode": 0,
+        "durationMs": 74548
+      },
+      {
+        "name": "quality-browser",
+        "exitCode": 0,
+        "durationMs": 122398
+      },
+      {
+        "name": "browser",
+        "exitCode": 0,
+        "durationMs": 19513
+      },
+      {
+        "name": "scenario-browser",
+        "exitCode": 0,
+        "durationMs": 141393
+      },
+      {
+        "name": "physical-browser",
+        "exitCode": 0,
+        "durationMs": 166678
+      },
+      {
+        "name": "building-browser",
+        "exitCode": 0,
+        "durationMs": 191964
+      },
+      {
+        "name": "living-browser",
+        "exitCode": 0,
+        "durationMs": 114776
+      },
+      {
+        "name": "management-browser",
+        "exitCode": 0,
+        "durationMs": 131643
+      },
+      {
+        "name": "connected-browser",
+        "exitCode": 0,
+        "durationMs": 75888
+      },
+      {
+        "name": "access-browser",
+        "exitCode": 0,
+        "durationMs": 140568
+      },
+      {
+        "name": "visual",
+        "exitCode": 0,
+        "durationMs": 19325
+      },
+      {
+        "name": "architecture-browser",
+        "exitCode": 0,
+        "durationMs": 137912
+      },
+      {
+        "name": "architectural-details-browser",
+        "exitCode": 0,
+        "durationMs": 11413
+      },
+      {
+        "name": "landmark-close-performance",
+        "exitCode": 0,
+        "receipt": "close-after/metrics.json"
+      }
+    ],
+    "interruptedRun": "Workspace suspension interrupted management-browser. The first 10 completed scripts were retained; management-browser and the remaining 5 scripts were rerun successfully. No interrupted result is counted as a pass.",
+    "protectedTrackedFiles": {
+      "count": 1480,
+      "sha256Mismatches": 0
+    },
+    "diffWhitespace": "passed",
+    "changesConfinedToSimulatorAppAndDocs": true,
+    "scenarioVersions1Through6": "unchanged contracts; existing regression journeys passed",
+    "observedGeographicSnapshots": "unchanged"
+  },
+  "visualReview": {
+    "reviewed": [
+      "identical-pose frontal/angled/roof/detail/overview images",
+      "four interactive tour views",
+      "desktop and emulated touch/mobile"
+    ],
+    "result": "Visible geometric depth beyond R1B, incomplete historical reconstruction; see five-criterion assessment",
+    "independentBergenExpertRecognition": "not performed",
+    "completeFourFaceSurvey": "not available",
+    "physicalGpuAndHandsetPerformance": "unverified"
+  },
+  "release": {
+    "workflow": ".github/workflows/bergen-simulator.yml (unchanged)",
+    "target": "existing protected bergen-reimagined project only",
+    "stableUrl": "https://bergen-reimagined.vercel.app",
+    "status": "This is a pre-release local validation receipt. See this commit's GitHub Actions run for hosted release status.",
+    "directActionsVariableMetadataInspection": "HTTP 403; no variable, secret, environment or permission change attempted. Existing CI gate verifies the armed branch-restricted environment before deployment."
+  }
+}

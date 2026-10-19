@@ -1245,3 +1245,9 @@ button:disabled { cursor: default; opacity: .48; }
 .access-editor .plan-button { margin: .6rem 0; }
 .access-editor .building-dimensions input { min-width: 0; }
 .connected-readout { border-left: 3px solid #ba8c4f; padding-left: .7rem; }
+
+.landmark-inspection{position:absolute;left:24px;bottom:100px;z-index:3;max-width:360px;color:var(--ink,#172d32);background:#f7f5edee;border-left:2px solid #56776b;padding:8px 10px;display:grid;gap:6px}
+.landmark-inspection>span{font-size:9px;letter-spacing:.08em}.landmark-inspection>div{display:flex;flex-wrap:wrap;gap:4px}.landmark-inspection button{min-height:34px;padding:6px 9px;border:1px solid #9ea99e;background:#f7f5ed;cursor:pointer;font:inherit;font-size:11px}.landmark-inspection button[aria-pressed=true]{background:#294b43;color:white}.landmark-inspection small{font-size:10px;max-width:290px}.landmark-inspection button:focus-visible{outline:2px solid #a86530;outline-offset:2px}
+@media(max-width:700px){.landmark-inspection{left:12px;bottom:88px;max-width:calc(100% - 70px);padding:6px}.landmark-inspection button{min-height:40px}.viewport:has(.landmark-inspection [aria-pressed]) .map-title{display:none}}
+
+.viewport:has(.landmark-inspection [aria-pressed]) .benchmark-views{display:none}

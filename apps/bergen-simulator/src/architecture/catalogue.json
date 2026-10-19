@@ -1,9 +1,9 @@
 {
-  "version": 1,
+  "version": 2,
   "snapshotSha256": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812",
-  "url": "/architecture/bryggen-e3dcf1e48192914c.glb",
-  "sha256": "e3dcf1e48192914cd30f10a04722992b167d3953d88b489e64845c97582ae352",
-  "bytes": 192588,
+  "url": "/architecture/bryggen-e5943b20bcfb86bb.glb",
+  "sha256": "e5943b20bcfb86bb70eaca757bfaed32410a1fb801a940e35e999890090c8e60",
+  "bytes": 675280,
   "bounds": [
     -85,
     -330,
@@ -45,8 +45,41 @@
       "url": "https://hoydedata.no/laserservices/rest/projectMetadata.ashx?request=%7BProjects%3A%27Bergen%2010pkt%202022%27%2CReturnMetadata%3Atrue%7D",
       "sha256": "8ab0652e2297db9d32c58c7bf6b7eb3fa2606d4dc47afb9c38ec8b40c679935b",
       "bytes": 1395
+    },
+    {
+      "file": "Skur_11a.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Skur_11a.jpg?utm_campaign=index&utm_content=original&utm_source=commons.wikimedia.org",
+      "bytes": 5019341,
+      "sha256": "5e708efff5bdcbe6a239187f9c4d144fc913ddee71cf5a299cd544c14d56badd"
+    },
+    {
+      "file": "Skur_11b.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/15/Skur_11b.jpg?utm_campaign=index&utm_content=original&utm_source=commons.wikimedia.org",
+      "bytes": 6018660,
+      "sha256": "855e6b93ac2cbdae09f72d4ba7fc78465fe40bc10190eded073bd97ccdb74433"
+    },
+    {
+      "file": "Skur_11c.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Skur_11c.jpg?utm_campaign=index&utm_content=original&utm_source=commons.wikimedia.org",
+      "bytes": 7755533,
+      "sha256": "947b8ab7377d7a59ca6bb9990075a0dbfd160c556a8b4e13faba49428de171e2"
+    },
+    {
+      "file": "Skur_11d.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Skur_11d.jpg?utm_campaign=index&utm_content=original&utm_source=commons.wikimedia.org",
+      "bytes": 5732352,
+      "sha256": "8818c3f60e0a07ba9376d021a9edae1fd7ab10d40f1a82370474850b039a013f"
     }
   ],
+  "reconstruction": {
+    "version": 1,
+    "sourceId": "way/393025479",
+    "contract": "scripts/reconstructions/skur-11.v1.json",
+    "sha256": "5e157e6aef12dc7b7d508dd526a6bf8fdbab3bd78334e0d9cfa13292c67b01a0",
+    "highTriangles": 3716,
+    "mediumTriangles": 760,
+    "tier": 1
+  },
   "buildings": [
     {
       "id": "way/488690084",
@@ -87,6 +120,7 @@
         "ridgeNN2000": 15.992,
         "pitchDegrees": 47.82
       },
+      "qualityTier": 2,
       "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
     },
     {
@@ -128,6 +162,7 @@
         "ridgeNN2000": 16.128,
         "pitchDegrees": 48.56
       },
+      "qualityTier": 2,
       "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
     },
     {
@@ -169,6 +204,7 @@
         "ridgeNN2000": 13.545,
         "pitchDegrees": 39.18
       },
+      "qualityTier": 2,
       "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
     },
     {
@@ -214,6 +250,7 @@
         "ridgeNN2000": 18.38,
         "pitchDegrees": 57.58
       },
+      "qualityTier": 2,
       "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
     },
     {
@@ -255,6 +292,7 @@
         "ridgeNN2000": 14.305,
         "pitchDegrees": 48.36
       },
+      "qualityTier": 2,
       "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
     },
     {
@@ -296,6 +334,7 @@
         "ridgeNN2000": 16.12,
         "pitchDegrees": 53.87
       },
+      "qualityTier": 2,
       "facade": "2022-10-03 photograph, perspective-mapped upper waterfront face; registration inferred, not a measured facade"
     },
     {
@@ -337,7 +376,8 @@
         "ridgeNN2000": 9.6,
         "pitchDegrees": 17.5
       },
-      "facade": "schematic OSM darkgreen; pillars, doors and corrugation unmodelled"
+      "qualityTier": 1,
+      "facade": "R1C historical photo-inferred relief: recessed doors, bracing, six visible piers, corrugated faces; NW end schematic. Dimensions/depth not survey verified."
     }
   ]
 }

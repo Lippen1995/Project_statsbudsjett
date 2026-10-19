@@ -9,6 +9,7 @@ export default function Inspector() {
   const assetStatus = useArchitecture((s) => s.status);
   const selected = useCity((s) => s.selected);
   const select = useCity((s) => s.select);
+  const inspectLandmark = useCity((s) => s.inspectLandmark);
   const inspect = useCity((s) => s.inspect);
   const building =
     selected?.kind === "building" ? (selected as Building) : null;
@@ -50,6 +51,24 @@ export default function Inspector() {
                 ? `Roof envelope inferred from Kartverket 2022 laser surface: ridge ${asset.roof.ridgeNN2000} m NN2000, eave ${asset.roof.eaveNN2000} m NN2000; inlier fit error ${asset.roof.inlierRmseM} m. Not a building survey.`
                 : "Laser roof fit rejected; original OSM roof dimensions retained."}{" "}
               {asset.facade}.
+            </p>
+          ) : null}
+          {asset?.id === "way/393025479" ? (
+            <p className="data-note">
+              R1C landmark · six photo-inferred stone piers, recessed braced
+              doors and corrugated relief. Dated references: David40226543
+              (2009, CC BY-SA 3.0) and Jonatan Andersen (2012, CC BY-SA 3.0 NO).
+              Positions and relief depths are approximate reconstruction; north
+              end and hidden details remain schematic. Tier 1 describes visual
+              delivery, not survey accuracy. No windows have been invented.
+              <a
+                href="/architecture/NOTICE.md"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {" "}
+                Source details and licences ↗
+              </a>
             </p>
           ) : null}
           {asset && asset.id !== "way/393025479" ? (
@@ -129,7 +148,9 @@ export default function Inspector() {
                   Surface grain, tonal grading and lighting are illustrative,
                   not a facade survey.{" "}
                   {asset
-                    ? "Only the photographed waterfront face has dated image detail; other faces remain schematic."
+                    ? asset.id === "way/393025479"
+                      ? "Historical photo-inferred relief on supported faces; north end remains schematic."
+                      : "Only the photographed waterfront face has dated image detail; other faces remain schematic."
                     : "Windows and architectural details are not documented."}
                 </p>
               ) : null}
@@ -150,6 +171,14 @@ export default function Inspector() {
                 : "Location from OpenStreetMap. Terrain elevation from a regional DEM."}
             </p>
           )}
+          {asset?.id === "way/393025479" ? (
+            <button
+              className="secondary-button"
+              onClick={() => inspectLandmark("gable")}
+            >
+              Inspect Skur 11 at street level ↘
+            </button>
+          ) : null}
           <button
             className="secondary-button"
             onClick={() => inspect(selected)}

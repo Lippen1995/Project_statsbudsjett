@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "sourceId": "way/393025479",
+  "tier": 1,
+  "references": {
+    "Skur_11a.jpg": {
+      "file": "Skur_11a.jpg",
+      "page": "https://commons.wikimedia.org/wiki/File:Skur_11a.jpg",
+      "creator": "Jonatan Andersen",
+      "date": "2012-04-21",
+      "license": "CC-BY-SA-3.0-NO",
+      "role": "historical visual evidence, not calibrated metric survey"
+    },
+    "Skur_11b.jpg": {
+      "file": "Skur_11b.jpg",
+      "page": "https://commons.wikimedia.org/wiki/File:Skur_11b.jpg",
+      "creator": "Jonatan Andersen",
+      "date": "2012-04-21",
+      "license": "CC-BY-SA-3.0-NO",
+      "role": "historical visual evidence, not calibrated metric survey"
+    },
+    "Skur_11c.jpg": {
+      "file": "Skur_11c.jpg",
+      "page": "https://commons.wikimedia.org/wiki/File:Skur_11c.jpg",
+      "creator": "Jonatan Andersen",
+      "date": "2012-04-21",
+      "license": "CC-BY-SA-3.0-NO",
+      "role": "historical visual evidence, not calibrated metric survey"
+    },
+    "Skur_11d.jpg": {
+      "file": "Skur_11d.jpg",
+      "page": "https://commons.wikimedia.org/wiki/File:Skur_11d.jpg",
+      "creator": "Jonatan Andersen",
+      "date": "2012-04-21",
+      "license": "CC-BY-SA-3.0-NO",
+      "role": "historical visual evidence, not calibrated metric survey"
+    },
+    "skur11.jpg": {
+      "file": "skur11.jpg",
+      "page": "https://commons.wikimedia.org/wiki/File:Skur11.jpg",
+      "creator": "David40226543",
+      "date": "2009-04-04",
+      "license": "CC-BY-SA-3.0",
+      "role": "SE gable and quay-side visible features; registration inferred"
+    }
+  },
+  "features": {
+    "doors": [
+      {
+        "face": "ne",
+        "u0": 0.05,
+        "u1": 0.17,
+        "heightFraction": 0.82,
+        "reference": "Skur_11d.jpg",
+        "confidence": "photo-inferred"
+      },
+      {
+        "face": "ne",
+        "u0": 0.44,
+        "u1": 0.57,
+        "heightFraction": 0.82,
+        "reference": "Skur_11d.jpg",
+        "confidence": "photo-inferred"
+      },
+      {
+        "face": "ne",
+        "u0": 0.84,
+        "u1": 0.96,
+        "heightFraction": 0.82,
+        "reference": "Skur_11d.jpg",
+        "confidence": "photo-inferred"
+      },
+      {
+        "face": "sw",
+        "u0": 0.44,
+        "u1": 0.57,
+        "heightFraction": 0.82,
+        "reference": "skur11.jpg",
+        "confidence": "photo-inferred"
+      },
+      {
+        "face": "sw",
+        "u0": 0.77,
+        "u1": 0.89,
+        "heightFraction": 0.82,
+        "reference": "skur11.jpg",
+        "confidence": "photo-inferred"
+      },
+      {
+        "face": "se",
+        "u0": 0.28,
+        "u1": 0.72,
+        "heightFraction": 0.82,
+        "reference": "skur11.jpg",
+        "confidence": "photo-inferred"
+      }
+    ],
+    "piers": [
+      {
+        "u": 1,
+        "v": 0,
+        "reference": "skur11.jpg",
+        "confidence": "photo-inferred"
+      },
+      {
+        "u": 1,
+        "v": 1,
+        "reference": "skur11.jpg",
+        "confidence": "photo-inferred"
+      },
+      {
+        "u": 0.43,
+        "v": 0,
+        "reference": "skur11.jpg",
+        "confidence": "photo-inferred"
+      },
+      {
+        "u": 0.58,
+        "v": 0,
+        "reference": "skur11.jpg",
+        "confidence": "photo-inferred"
+      },
+      {
+        "u": 0.43,
+        "v": 1,
+        "reference": "Skur_11a.jpg",
+        "confidence": "photo-inferred"
+      },
+      {
+        "u": 0.58,
+        "v": 1,
+        "reference": "Skur_11a.jpg",
+        "confidence": "photo-inferred"
+      }
+    ],
+    "corrugationPitchM": 0.2
+  },
+  "presentation": {
+    "recessM": 0.16,
+    "pierWidthM": 0.6,
+    "reliefM": 0.025,
+    "capAboveEaveM": 2.1
+  },
+  "limitations": [
+    "Tier 1 is a visual delivery class, not survey accuracy.",
+    "Only visible SE, NE and part of SW features reconstructed; NW remains schematic.",
+    "Relative positions/counts traced from historical photos; no calibrated photogrammetry or independent depth measurements.",
+    "Door recess, corrugation pitch/depth, pier dimensions/capital relief and material RGB are approximate presentation parameters.",
+    "No windows are evidenced on modelled faces; none added.",
+    "Dates 2009/2012 appearance + 2022 roof do not establish current condition."
+  ]
+}
