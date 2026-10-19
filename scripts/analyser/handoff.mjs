@@ -1,3 +1,4 @@
+import { deliverResearchRevision } from './research-revision.mjs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { analysisSettings } from './config.mjs'
@@ -20,12 +21,13 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
   if (!source) throw Error('Leveringsfilen finnes ikke')
   const packet = source.value
   const mode =
-    input.mode === 'weekly' && ['replacement', 'budget-day', 'oil-funds'].includes(packet.mode)
+    input.mode === 'weekly' && ['replacement', 'budget-day', 'oil-funds', 'research-revision'].includes(packet.mode)
       ? packet.mode
       : input.mode
   const article = validateArticle(packet.article ?? packet)
   if (article.status !== 'draft' || article.approval || article.publishedAt)
     throw Error('Bare et utkast uten godkjenning kan leveres')
+  if (mode === 'research-revision') return deliverResearchRevision({g,reviewer,actor,packet,sourceCommit:input.sourceCommit,...options})
   let event = null,
     previous = null
   if (mode === 'feedback') {

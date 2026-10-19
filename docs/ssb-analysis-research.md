@@ -64,3 +64,13 @@ Se etter alternative forklaringer og moteksempler. Samtidig vekst er ikke bevis 
 SSBs API krever nettverk til `data.ssb.no`, ikke bare `www.ssb.no`. Domenet er lagret i miljøutkastet; publisering av miljøinnstillingene er nødvendig før direkte tilgang kan bekreftes. `ssb-research-ci.yml` kontrollerer en faktisk tabell og et lite testuttrekk fra GitHub Actions; testdataene arkiveres eller publiseres ikke. En lokal test uten nettverk markerer livekontrollen som utelatt, ikke bestått.
 
 Livekontrollen i GitHub Actions er bekreftet bestått 5. oktober 2026: https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/37338143460. Den kjørte faktisk søk, metadata og årsuttrekk fra tabell 07459 med live-testflagget aktivt. Lokal direkte API-tilgang er en egen miljøforutsetning.
+
+## Beregninger og avgrensede summer, 19. oktober 2026
+
+Undersøk og beregn før manglende data brukes som avslutning på et relevant spørsmål. Det ordinære PxWeb v2-endepunktet brukes nå; beta-endepunktet kan ha eldre siste år. Velg aldri et nyere år ved å anta at beta-arkivet er oppdatert.
+
+Et uttrekk kan eksplisitt summere én kategoridimensjon med `aggregation: {"dimension":"<faktisk kode>","method":"sum"}`. Oppgi alle medlemskodene i selections og kontroller at de er adskilte, relevante enheter. Total-kategorien skal ikke summeres med undergrupper. Kildens faktiske nuller bevares; manglende eller skjermede celler stopper hele summen. Originaldata og medlemsliste fryses. For læresteder må historiske navne-/kodeendringer undersøkes.
+
+`report.researchPlan` kan beregne `exclude-chapters` fra eventEvidence-grupper og `per-observation` fra en regnskapsgruppe og en arkivert SSB-serie med personantall. Ingen egne beløp tillates i planen. Første operasjon trekker valgte hele kapitler fra departementet i hvert år, ikke fra nasjonale utgifter. Den andre er en bevilgningsindikator per registrert person, ikke automatisk en full tjenestekostnad. Hele felles perioden og positiv nevner kreves. `source: calculation` i seriegrafer bruker bare disse gjenberegnede seriene.
+
+En uttrykkelig bestilt utvidelse av et åpent utkast klargjøres med `prepare-research-revision.mjs <leveringsfil> <pr-nummer> <utvalgsfil>`. Utvalgsfilen inneholder `reason`, `detailSelections` og `researchPlan`. Behold primærserien og artikkelidentiteten, revider teksten og lever bare JSON via `analysis/input-*`. Boten gjenberegner alt fra betrodd main, kontrollerer uendret head og innspillskø, fjerner eventuell godkjenning og ber om ny review. Dette er en annen operasjon enn ren tekstrevisjon og kan aldri publisere.

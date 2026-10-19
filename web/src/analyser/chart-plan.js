@@ -1,3 +1,4 @@
+import { calculateResearch } from './research-calculations.js'
 import { bridgeRows } from './budget-bridge.js'
 const stateKinds = ['growth', 'real-expenditure', 'annual-change']
 const budgetKinds = ['budget-totals', 'budget-changes', 'budget-bridge']
@@ -83,6 +84,11 @@ export function seriesGraph(graph, report) {
         rows: report.rows.map((r) => ({ year: r.year, value: r[ref.id] })),
         source: 'Finansdepartementet, analysens frosne nøkkeltall',
       }
+    }
+    if (ref.source === 'calculation') {
+      const s = calculateResearch(report).series.find(s => s.id === ref.id)
+      if (!s) throw Error('Ukjent beregnet serie')
+      return { ...s, label: ref.label ?? s.label }
     }
     if (ref.source === 'ssb') {
       const evidence = report.ssbEvidence?.find((e) => e.id === ref.id)

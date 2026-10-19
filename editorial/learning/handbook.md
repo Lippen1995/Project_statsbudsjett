@@ -50,6 +50,10 @@ En husholdningseffekt krever dokumenterte satser, målgruppe og relevante nettoe
 
 Ikke kall den største beløpsøkningen den største prioriteringen uten å undersøke pris, demografi, rettigheter og endret oppgaveinnhold.
 
+## Undersøk spørsmålet ferdig
+
+Når et funn utløser et relevant spørsmål, undersøk svaret før du avslutter med et forbehold. Søk i SSB og andre primærkilder før du sier at data mangler. Gjør kontrollerbare beregninger med tilgjengelige kilder: hold navngitte flyttede oppgaver utenfor alle sammenligningsår, velg en relevant mottakernevner og undersøk nettoeffekter. Skill bevilgning per student fra institusjonenes faktiske kostnad per student. Utvid beregningsgrunnlaget gjennom kildekontroll og ny versjonsgodkjenning; ikke legg ubekreftede tall i friteksten.
+
 ## Dokumenter forklaringen
 Skill mellom:
 - Observasjon: hva dataene viser.

@@ -88,3 +88,19 @@ def test_archive_preserves_versions_and_rejects_missing_identity(tmp_path, monke
     index=json.loads((tmp_path/'ssb-research/index.json').read_text())
     assert index['extracts']==[second]
     with pytest.raises(ValueError):ssb_research.archive(tmp_path,{**request,'scope':'../../escape'})
+
+def test_explicit_category_sum_and_dimension_order():
+    d,s=fixture()
+    d['dimension']['Region']['category']={'index':{'a':0,'b':1},'label':{'a':'Lærested A','b':'Lærested B'}}
+    d['size']=[2,1,2];d['value']=[100,110,20,25];s['Region']=['a','b']
+    agg={'dimension':'Region','method':'sum'}
+    assert normalize(d,d,s,agg)['rows']==[{'year':2024,'value':120},{'year':2025,'value':135}]
+    assert normalize(d,d,s,agg)['categories']['Region']['codes']==['a','b']
+    # Time first rather than last: values are indexed by actual dimension order.
+    d['id']=['Tid','Region','ContentsCode'];d['size']=[2,2,1];d['value']=[100,20,110,25]
+    assert normalize(d,d,s,agg)['rows'][-1]['value']==135
+    d['value'][-1]=None
+    with pytest.raises(ValueError):normalize(d,d,s,agg)
+    d['dimension']['Region']['category']['label']['a']='Lærested i alt'
+    with pytest.raises(ValueError):selection_params(d,s,agg)
+    with pytest.raises(ValueError):selection_params(d,s,{'dimension':'Tid','method':'sum'})
