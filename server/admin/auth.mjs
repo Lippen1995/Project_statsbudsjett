@@ -23,5 +23,5 @@ export function createAuth(database, { secret = process.env.BETTER_AUTH_SECRET, 
 
 export function authPool() {
   if (!process.env.DATABASE_URL) throw Error('DATABASE_URL mangler på serveren')
-  return new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 3, connectionTimeoutMillis: 10000 })
+  return new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 3, connectionTimeoutMillis: 10000, query_timeout: 8000 })
 }

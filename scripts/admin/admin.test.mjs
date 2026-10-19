@@ -17,7 +17,7 @@ test('ekte innlogging, serververn, CSRF, utlogging og statistikk mot PostgreSQL'
   let writes = 0
   const handler = createHandler({ ...db, github: { writable: true, save: async () => { writes++; return {} } }, origin })
   const login = password => handler(request('/api/auth/sign-in/email', { method: 'POST', body: JSON.stringify({ email: adminEmail, password }) }))
-  for (const path of ['/api/admin/session', '/api/admin/metrics', '/api/admin/pipeline', '/api/admin/sven/files', '/api/admin/sven/file?id=instructions', '/api/admin/log', '/api/admin/status']) {
+  for (const path of ['/api/admin/session', '/api/admin/metrics', '/api/admin/live', '/api/admin/live-status', '/api/admin/pipeline', '/api/admin/sven/files', '/api/admin/sven/file?id=instructions', '/api/admin/log', '/api/admin/status']) {
     const result = await handler(request(path))
     assert.equal(result.status, 401, path)
     assert.equal(result.headers.get('cache-control'), 'no-store')

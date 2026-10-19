@@ -65,7 +65,7 @@ if (command === 'pack') {
   const config = {
     version: 3,
     routes: [
-      ...(paths.includes('admin/index.html') ? [{ src: '/api/(admin(?:/.*)?|auth(?:/.*)?|telemetry)', dest: '/admin-api' }] : []),
+      ...(paths.includes('admin/index.html') ? [{ src: '/api/(admin(?:/.*)?|auth(?:/.*)?|telemetry|health)', dest: '/admin-api' }] : []),
       { src: '/(.*)', headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' }, continue: true },
       { src: '/assets/(.*)', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
       { src: '/admin(?:/.*)?', headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow', 'X-Frame-Options': 'DENY', 'Referrer-Policy': 'same-origin',
@@ -76,7 +76,7 @@ if (command === 'pack') {
       { src: '/(.*)', status: 404 },
     ],
   }
-  if (paths.includes('admin/index.html')) await packageAdmin(output)
+  if (paths.includes('admin/index.html')) await packageAdmin(output, { dataDir: resolve(source, 'data') })
   await writeFile(resolve(output, 'config.json'), JSON.stringify(config, null, 2) + '\n')
   console.log(`Pakket ${paths.length} filer til Build Output API v3`)
 } else if (command === 'verify') {
@@ -106,10 +106,19 @@ if (command === 'pack') {
     if (!/^x-robots-tag:.*noindex/im.test(admin.headers) || !/^cache-control:.*no-store/im.test(admin.headers)) {
       throw new Error('Adminområdet mangler noindex eller no-store')
     }
-    for (const endpoint of ['/api/admin/session', '/api/admin/metrics', '/api/admin/sven/files']) {
+    for (const endpoint of ['/api/admin/session', '/api/admin/metrics', '/api/admin/live', '/api/admin/live-status', '/api/admin/pipeline', '/api/admin/sven/files']) {
       const result = await response(endpoint, url.origin)
       if (result.status !== 401) throw new Error(`Admin-API ${endpoint} svarte ${result.status}; forventet 401 uten innlogging. Kontroller serveroppsettet før aktivering.`)
     }
+    const health = await response('/api/health', url.origin)
+    let report
+    try { report = JSON.parse(health.body.toString('utf8')) } catch { throw new Error('Helsesjekken returnerte ikke JSON') }
+    if (![200, 503].includes(health.status) || !['operational', 'degraded', 'outage'].includes(report.status) ||
+        !Array.isArray(report.components) || report.components.length !== 3 ||
+        report.components.some(component => !['website', 'database', 'sven'].includes(component.id))) {
+      throw new Error('Helsesjekken mangler et gyldig kontrollresultat. Kontroller serveroppsettet før aktivering.')
+    }
+    console.log(`Helsesjekk kontrollert: ${report.status}`)
   }
   console.log('Manglende JSON gir 404. Utrullingen er kontrollert; domener er ikke flyttet.')
 } else {

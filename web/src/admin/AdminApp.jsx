@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import AnalysisPipeline from './AnalysisPipeline.jsx'
+import LivePerformance from './LivePerformance.jsx'
+import ServiceStatus from './ServiceStatus.jsx'
 import { api, useResource } from './api.js'
 
 const sections = [
@@ -111,6 +113,7 @@ function Measurements({ section, days }) {
     { name: 'CLS', label: 'Visuell stabilitet', key: 'cls', good: 0.1, unit: '', scale: 1, text: 'Mål: 0,10 eller lavere' },
   ]
   return <>
+    <div className="ad-history-heading"><p className="ad-eyebrow">HISTORISKE MÅLINGER</p><h2>Utviklingen over tid.</h2></div>
     <div className="ad-section-line"><span className="ad-tag"><i className="ad-dot" /> Faktiske nettlesermålinger</span><span className="ad-muted">Gjennomsnitt · siste {days} dager</span></div>
     <div className="ad-metrics">{cards.map(c => <MetricCard key={c.key} label={c.name + ' · ' + c.label} value={t[c.key] == null ? '—' : `${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: c.key === 'inp' ? 0 : 2 }).format(t[c.key] / c.scale)} ${c.unit}`} note={t[c.key] == null ? 'Venter på målinger' : `${number(t[c.key + '_count'])} målinger · ${t[c.key] <= c.good ? 'Innenfor målet' : 'Over målet'}`} tone={t[c.key] != null && t[c.key] <= c.good ? 'ad-good' : ''} />)}</div>
     <Panel title="En rask og stødig opplevelse" eyebrow="NETTSTEDETS YTELSE">{!t.lcp_count && !t.inp_count && !t.cls_count ? <Empty title="Klar for de første målingene">Når leserne bruker Fellestall, samler vi inn lasting, responstid og visuell stabilitet. Ingen historiske målinger er lagt til.</Empty> : <div className="ad-quality-list">{cards.map(c => <div key={c.key}><strong>{c.name}</strong><span>{c.label}<small>{c.text}</small></span><span className="ad-tag">{number(t[c.key + '_count'] || 0)} målinger</span></div>)}</div>}</Panel>
@@ -191,12 +194,7 @@ function Activity() {
   return <div className="ad-columns"><Panel title="Redaksjonelle endringer"><LogRows rows={resource.data.commits} /></Panel><Panel title="Automatiske kjøringer"><LogRows rows={resource.data.runs} /></Panel></div>
 }
 function Operations() {
-  const resource = useResource('/api/admin/status')
-  if (!resource.data) return <ResourceState resource={resource} />
-  const data = resource.data
-  return <><Panel title="Tjenester" eyebrow="DRIFT" extra={<button className="ad-text-button" onClick={resource.reload}><Icon name="refresh" size={16} /> Oppdater</button>}><div className="ad-quality-list">{[
-    ['Administrasjons-API', 'Tilgjengelig', true], ['Neon-database', data.database ? 'Tilkoblet' : 'Utilgjengelig', data.database], ['Svens arbeidsfiler', data.githubWrite ? 'Skrivetilgang konfigurert' : 'Kun lesetilgang · mangler serveroppsett', data.githubWrite],
-  ].map(([label, text, ok]) => <div key={label}><Icon name="server" /><strong>{label}</strong><span className={`ad-tag ${ok ? 'ad-good' : ''}`}>{text}</span></div>)}</div><p className="ad-footnote">Kontrollert {date(data.checkedAt)}. GitHub-tilgangen er registrert fra serveroppsettet; faktisk lagring kontrolleres når du lagrer.</p></Panel><Panel title="Nyttig å følge videre"><div className="ad-suggestions"><article><h3>Datakvalitet</h3><p>Varsler om utdaterte datasett og feil fra DFØ- og SSB-importene.</p><span className="ad-tag">Forslag til neste steg</span></article><article><h3>Redaksjonell kø</h3><p>Oversikt over analyser som venter på gjennomgang og menneskelig godkjenning.</p><span className="ad-tag">Forslag til neste steg</span></article><article><h3>Varsling</h3><p>Beskjed ved mislykkede publiseringer og problemer med datainnhenting.</p><span className="ad-tag">Forslag til neste steg</span></article></div></Panel></>
+  return <ServiceStatus />
 }
 
 export default function AdminApp() {
@@ -253,6 +251,7 @@ export default function AdminApp() {
       <main id="admin-content" className="ad-content" tabIndex={-1}>
         <div className="ad-page-heading"><div><p className="ad-eyebrow">FELLESTALL · ADMINISTRASJON</p><h1>{current.label}<span>.</span></h1><p>{current.description}</p></div>{['ytelse', 'trafikk'].includes(section) && <label className="ad-period"><Icon name="clock" size={16} /><span className="ad-visually-hidden">Måleperiode</span><select value={days} onChange={e => setDays(Number(e.target.value))}>{[7, 30, 90].map(d => <option key={d} value={d}>Siste {d} dager</option>)}</select></label>}</div>
         {error && <Notice error>{error}</Notice>}
+        {section === 'ytelse' && <><ServiceStatus compact onOpen={() => navigate('drift')} /><LivePerformance /></>}
         {['ytelse', 'trafikk'].includes(section) && <Measurements section={section} days={days} />}
         {section === 'sven' && <Sven onDirty={setDirty} onSaving={setSaving} />}
         {section === 'pipeline' && <AnalysisPipeline onDirty={setDirty} onSaving={setSaving} />}

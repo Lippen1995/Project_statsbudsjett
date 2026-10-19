@@ -50,7 +50,10 @@
   </p>
   <p>
     Statistikken brukes til å forbedre nettstedet og vise samlet bruk. Summer slettes
-    etter 90 dager ved neste innkommende måling. For å begrense misbruk brukes en nøkkel
+    etter 90 dager ved neste innkommende måling. For live-visningen samles også summer
+    per minutt og enhetstype; disse slettes etter 24 timer ved neste innkommende måling.
+    Ingen enkeltbesøk eller besøksidentifikatorer lagres i minuttsummeringen.
+    For å begrense misbruk brukes en nøkkel
     laget av IP-adresse og et tidsvindu på ett minutt med en hemmelig HMAC-nøkkel. Denne
     lagres separat, brukes ikke til besøksanalyse og utløper etter to minutter; utløpte
     nøkler slettes ved neste godtatte måling. Ingen IP-adresser lagres i denne tabellen.
@@ -102,13 +105,15 @@
   <p>
     Lønnen du skriver inn i kalkulatoren regnes ut i nettleseren din, i samme øyeblikk.
     Tallet sendes ikke noe sted, lagres ikke noe sted og er borte når du lukker fanen.
-    Det er ingen «lagre»-funksjon, fordi det ikke finnes noe sted å lagre til.
+    Opplysninger du selv taster inn i kalkulatorene, behandles i nettleseren og lagres
+    ikke på serveren. Administratorens instrukser og temaer lagres separat fra den
+    offentlige besøksstatistikken.
   </p>
 
   <h2>Endringer</h2>
   <p>
-    Skulle noe av dette endre seg – om det en dag skulle bli aktuelt med besøksstatistikk,
-    eller et kontaktpunkt – blir denne siden oppdatert før endringen tas i bruk, og datoen
+    Ved endringer i hvilke opplysninger som samles inn eller hvordan de brukes,
+    blir denne siden oppdatert før endringen tas i bruk, og datoen
     øverst forteller når.
   </p>
 </main>

@@ -15,6 +15,10 @@ test('produksjonspakken skiller API fra statikk og beskytter admin-cache og inde
     await mkdir(dirname(resolve(source, path)), { recursive: true })
     await writeFile(resolve(source, path), path.endsWith('.html') ? '<html></html>' : '{}')
   }
+  const series = { 2020: { regnskap: 100 }, 2021: { regnskap: 120 } }
+  for (const [name, data] of Object.entries({ meta: { regnskap_aar: [2020, 2021], oppdatert: '2026-10-19T00:00:00Z' }, utgifter: [{ id: 'test-department', navn: 'Testdepartementet', serier: series }], kpi: { 2020: 100, 2021: 102 }, befolkning: { 2020: 1000, 2021: 1010 } })) {
+    await writeFile(resolve(source, `data/${name}.json`), JSON.stringify(data))
+  }
   await promisify(execFile)(process.execPath, [fileURLToPath(new URL('../deploy/vercel-static.mjs', import.meta.url)), 'pack', source], { cwd: directory })
   const output = resolve(directory, '.vercel/output')
   const config = JSON.parse(await readFile(resolve(output, 'config.json'), 'utf8'))
@@ -22,6 +26,7 @@ test('produksjonspakken skiller API fra statikk og beskytter admin-cache og inde
   assert.equal(matching('/api/admin/session')[0].dest, '/admin-api')
   assert.equal(matching('/api/auth/sign-in/email')[0].dest, '/admin-api')
   assert.equal(matching('/api/telemetry')[0].dest, '/admin-api')
+  assert.equal(matching('/api/health')[0].dest, '/admin-api')
   const responseHeaders = Object.assign({}, ...matching('/admin/').filter(r => r.continue).map(r => r.headers))
   assert.equal(responseHeaders['Cache-Control'], 'no-store')
   assert.equal(responseHeaders['X-Robots-Tag'], 'noindex, nofollow')
@@ -30,4 +35,5 @@ test('produksjonspakken skiller API fra statikk og beskytter admin-cache og inde
   assert.equal(matching('/admin').find(r => r.status === 308).headers.Location, '/admin/')
   assert.equal(typeof (await import(pathToFileURL(resolve(output, 'functions/admin-api.func/index.mjs')).href)).default, 'function')
   assert.equal(await readFile(resolve(output, 'functions/admin-api.func/schema.sql'), 'utf8'), await readFile(new URL('../../server/admin/schema.sql', import.meta.url), 'utf8'))
+  assert.ok(JSON.parse(await readFile(resolve(output, 'functions/admin-api.func/topic-catalog.json'), 'utf8')).topics.some(topic => topic.topicKey.startsWith('test-department:')))
 })

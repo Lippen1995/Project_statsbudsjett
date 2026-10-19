@@ -20,8 +20,15 @@ Skjult adresse og indekseringsregler er ikke tilgangskontrollen.
 - **Analysepipeline:** ordnet liste med tema, konkrete instrukser og ønsket dato.
   Administrator kan legge til, redigere, slette og flytte også Svens forslag.
   Tom kø gir høyst ett neste automatisk mandagstema, ikke en samling reserveforslag.
-- **Driftsstatus:** databaseforbindelse, API og konfigurert skrivetilgang.
-  Datakvalitet, redaksjonell kø og varsling er merket som forslag til videre arbeid.
+- **Nye temaer fra Sven:** knappen henter ett datastøttet forslag til forhåndsvisning.
+  Administrator velger dato og godtar forslaget, ber om et annet eller redigerer selv.
+  Et nytt forslag kan erstatte et Sven-tema med samme ID, dato og plass i køen.
+  Det gamle temaet bevares som erstattet i historikken. Eksplisitte bestillinger
+  kan gi flere Sven-forslag; bakgrunnsplanleggingen fyller fortsatt bare inn ett
+  neste tema når hele køen er tom.
+- **Driftsstatus:** faktiske kontroller av nettstedet, databasen og Svens
+  arbeidsgrunnlag, med endringslogg og historikk fra overvåkingen startet.
+  Kontinuerlig bakgrunnsovervåking og e-post avventer Checkly-tilkoblingen.
 - **Endringshistorikk:** faktiske GitHub-commits og Actions-kjøringer.
 
 ## Serveroppsett
@@ -140,11 +147,45 @@ er generelt materiale i et offentlig repository; grensesnittet opplyser om dette
 En lagret endring gjelder når Sven leser filene ved neste skrive-/revisjonsøkt.
 Eksisterende godkjenningsvern for analysepublisering består.
 
-Telemetri samler bare daglige summer, ikke IP-adresser, søketekst,
+Telemetri samler daglige summer og kortlivede minuttsummer, ikke IP-adresser, søketekst,
 skattebeløp, full henvisningsadresse eller besøksidentifikatorer. En separat,
 kortlivet HMAC-nøkkel begrenser misbruk. Den utløper etter to minutter og
 slettes ved neste godtatte måling. Summer eldre enn 90 dager slettes samtidig.
 Personvernsiden er oppdatert. `/admin` og `/api` inngår ikke i statistikken.
+
+## Live-visning og driftskontroller
+
+Ytelse starter med en løpende driftsstatus og faktiske mottatte nettlesermålinger
+fra de siste 15 minuttbolkene. Målingene oppdateres hvert 15. sekund; status hentes
+hvert 30. sekund. Skjulte faner stanser polling, forespørsler avbrytes etter 12
+sekunder, og nettverksfeil gir gradvis lengre intervall og tydelig sist-kjente data.
+Minuttsummer per enhetstype lagres høyst 24 timer, uten besøks-ID, IP eller
+individuelle hendelser. Historiske dagssummer beholdes som før i 90 dager.
+
+`/api/health` utfører faktiske kontroller av nettstedets offentlige HTML, databasen
+og lesing av Svens arbeidsinstruks og pipeline. Det offentlige svaret inneholder
+bare tjenestenavn, status, tidspunkt og kontrollsvartid. Administratorens historikk,
+temaer, målinger og mottakeradresse krever innlogging. Kontrollene deler en
+databaselease og en 45-sekunders mellomlagring på tvers av funksjonsinstanser.
+Bare endrede tjenestetilstander eller gjenoppretting oppretter en logghendelse.
+Hendelser og kontrollsummer beholdes i 90 dager. Dager uten faktiske kontroller
+vises grå; prosenten i historikken er andel utførte enkeltkontroller uten avvik,
+ikke en påstand om kontinuerlig tilgjengelighet mellom kontrollene.
+
+De additive tabellendringene migreres atomisk med versjonsregister og databaselås.
+Dette krever ikke den fjernede passordhashen og endrer ikke eksisterende kontoer,
+økter eller datagrunnlag. Temaforslag bygges fra det samme verifiserte datasettet
+som nettstedet publiserer; lagring kontrollerer fersk GitHub-historikk og køens SHA.
+Nettleseren kan ikke sende inn en egen analyseplan som et Sven-forslag.
+
+**Bakgrunnsovervåking og e-postvarsler avventer tilkobling av Checkly.** Prosjektet
+har ingen slik integrasjon eller e-posttjeneste konfigurert ved denne kontrollen.
+Mens tilkoblingen mangler, utføres kontroller når adminvisningen eller helsesjekken
+åpnes; det er ikke etablert døgnkontinuerlig overvåking. Grensesnittet viser
+e-postvarslingen som inaktiv. Mottaker skal være `info@fjordinsight.com`.
+`FELLESTALL_STATUS_ALERTS_ENABLED` skal først settes etter at ekstern overvåking og
+faktisk e-postlevering er konfigurert og kontrollert. Ingen varselmail er sendt
+eller merket som levert av de isolerte testene.
 
 ## Verifikasjon av implementasjonen
 

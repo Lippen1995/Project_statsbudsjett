@@ -27,9 +27,9 @@ export function buildPipelineReport(dataDir, published, plan, at = new Date().to
   if (!report || topicBlocked(report, published, at)) throw Error('Analyseplanen mangler datagrunnlag, eller problemstillingen er allerede dekket. Behold bestillingen og avklar grunnlaget.')
   return report
 }
-export function suggestPipelineTopic(dataDir, published, document, at) {
+export function suggestPipelineTopic(dataDir, published, document, at, { reportCache } = {}) {
   const excludeTopicKeys = document.history.map(h => h.entry.topicKey).filter(Boolean)
-  const report = nextReport(dataDir, published, { at, excludeTopicKeys })
+  const report = nextReport(dataDir, published, { at, excludeTopicKeys, reportCache })
   if (!report) return null
   return {
     topic: report.kind === 'budget-comparison' ? `${report.scopeName}: Hva endres i budsjettet for ${report.year}?`
