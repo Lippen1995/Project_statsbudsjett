@@ -39,3 +39,30 @@ CREATE TABLE IF NOT EXISTS ft_admin_ingest_limit (
   key text PRIMARY KEY, count integer NOT NULL DEFAULT 1, expires_at timestamptz NOT NULL
 );
 CREATE INDEX IF NOT EXISTS ft_admin_ingest_expiry ON ft_admin_ingest_limit(expires_at);
+CREATE TABLE IF NOT EXISTS ft_admin_schema (
+  id integer PRIMARY KEY CHECK (id = 1), version integer NOT NULL,
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS ft_admin_minute (
+  minute timestamptz NOT NULL, device text NOT NULL,
+  views integer NOT NULL DEFAULT 0,
+  lcp_sum double precision NOT NULL DEFAULT 0, lcp_count integer NOT NULL DEFAULT 0,
+  inp_sum double precision NOT NULL DEFAULT 0, inp_count integer NOT NULL DEFAULT 0,
+  cls_sum double precision NOT NULL DEFAULT 0, cls_count integer NOT NULL DEFAULT 0,
+  last_seen_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (minute, device)
+);
+CREATE TABLE IF NOT EXISTS ft_admin_health_state (
+  id integer PRIMARY KEY CHECK (id = 1), report jsonb,
+  checked_at timestamptz, lease_owner text, lease_until timestamptz
+);
+CREATE TABLE IF NOT EXISTS ft_admin_health_events (
+  id text PRIMARY KEY, created_at timestamptz NOT NULL DEFAULT now(),
+  status text NOT NULL, summary text NOT NULL, components jsonb NOT NULL
+);
+CREATE INDEX IF NOT EXISTS ft_admin_health_event_time ON ft_admin_health_events(created_at);
+CREATE TABLE IF NOT EXISTS ft_admin_health_samples (
+  minute timestamptz NOT NULL, service text NOT NULL,
+  checks integer NOT NULL, operational integer NOT NULL,
+  PRIMARY KEY (minute, service)
+);

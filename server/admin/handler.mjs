@@ -1,6 +1,6 @@
 import { adminEmail } from './auth.mjs'
 import { svenFiles } from './sven.mjs'
-import { telemetryEvent, ingest, metrics } from './telemetry.mjs'
+import { telemetryEvent, ingest, metrics, liveMetrics } from './telemetry.mjs'
 
 const headers = { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow', 'X-Content-Type-Options': 'nosniff' }
 const json = (data, status = 200) => Response.json(data, { status, headers })
@@ -11,12 +11,16 @@ async function body(request) {
   try { return JSON.parse(text) } catch { throw Object.assign(Error('Ugyldig JSON.'), { status: 400 }) }
 }
 
-export function createHandler({ auth, sql, github, origin = 'https://fellestall.no', secret = process.env.BETTER_AUTH_SECRET }) {
+export function createHandler({ auth, sql, github, health, origin = 'https://fellestall.no', secret = process.env.BETTER_AUTH_SECRET }) {
   return async request => {
     try {
       const url = new URL(request.url)
       if (!['GET', 'POST', 'PUT'].includes(request.method)) return json({ error: 'Metoden støttes ikke.' }, 405)
       if (request.method !== 'GET' && request.headers.get('origin') !== origin) return json({ error: 'Ugyldig opprinnelse.' }, 403)
+      if (url.pathname === '/api/health' && request.method === 'GET') {
+        const report = await health.check()
+        return json({ status: report.status, checkedAt: report.checkedAt, components: report.components }, report.status === 'operational' ? 200 : 503)
+      }
       if (url.pathname.startsWith('/api/auth/')) {
         const response = await auth.handler(request)
         for (const [key, value] of Object.entries(headers)) response.headers.set(key, value)
@@ -31,7 +35,10 @@ export function createHandler({ auth, sql, github, origin = 'https://fellestall.
       const session = await auth.api.getSession({ headers: request.headers })
       if (!session || session.user.email.toLowerCase() !== adminEmail) return json({ error: 'Du må logge inn.' }, 401)
       if (url.pathname === '/api/admin/session' && request.method === 'GET') return json({ email: session.user.email })
+      if (url.pathname === '/api/admin/live' && request.method === 'GET') return json(await liveMetrics(sql))
+      if (url.pathname === '/api/admin/live-status' && request.method === 'GET') return json(await health.dashboard())
       if (url.pathname === '/api/admin/pipeline' && request.method === 'GET') return json(await github.readPipeline())
+      if (url.pathname === '/api/admin/pipeline/suggest' && request.method === 'POST') return json(await github.suggestTopic(await body(request)))
       if (url.pathname === '/api/admin/pipeline' && request.method === 'PUT') return json(await github.changePipeline(await body(request)))
       if (url.pathname === '/api/admin/metrics' && request.method === 'GET') {
         const days = Number(url.searchParams.get('days') ?? 7)

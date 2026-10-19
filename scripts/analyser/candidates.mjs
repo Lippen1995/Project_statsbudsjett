@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { buildReport } from './report.mjs'
 import { nextBudgetReport } from './budget-report.mjs'
 import { topicBlocked, focusedQuestions, topicKey } from '../../web/src/analyser/topics.js'
-export function nextReport(dataDir, published, { at = new Date().toISOString(), excludeTopicKeys = [] } = {}) {
+export function nextReport(dataDir, published, { at = new Date().toISOString(), excludeTopicKeys = [], reportCache } = {}) {
   const budget = nextBudgetReport(dataDir, published, {
     eligible: (r) => Date.parse(r.dataUpdated) <= Date.parse(at) && !topicBlocked(r, published, at) && !excludeTopicKeys.includes(topicKey(r)),
   })
@@ -22,13 +22,19 @@ export function nextReport(dataDir, published, { at = new Date().toISOString(), 
   ]
   for (const option of options) {
     let report
-    try {
-      report = buildReport(dataDir, option)
-    } catch (error) {
-      // Newly created departments may not have a complete historical series.
-      if (error.message.startsWith('Ingen utgifter for')) continue
-      if (error.message.includes('Problemstillingen mangler')) continue
-      throw error
+    const cacheKey = JSON.stringify(option)
+    if (reportCache?.has(cacheKey)) {
+      report = reportCache.get(cacheKey)
+      if (!report) continue
+    } else {
+      try {
+        report = buildReport(dataDir, option)
+        reportCache?.set(cacheKey, report)
+      } catch (error) {
+        // Newly created departments may not have a complete historical series.
+        if (error.message.startsWith('Ingen utgifter for') || error.message.includes('Problemstillingen mangler')) { reportCache?.set(cacheKey, null); continue }
+        throw error
+      }
     }
     const alreadyCovered = topicBlocked(report, published, at)
     if (!alreadyCovered && !excludeTopicKeys.includes(topicKey(report))) return report

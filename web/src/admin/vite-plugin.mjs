@@ -22,7 +22,7 @@ export function adminPlugin() {
       })
       server.middlewares.use((req, res, next) => {
         const path = new URL(req.url, 'http://localhost').pathname
-        if (/^\/api\/(admin(?:\/|$)|auth(?:\/|$)|telemetry$)/.test(path)) return handle(req, res)
+        if (/^\/api\/(admin(?:\/|$)|auth(?:\/|$)|telemetry$|health$)/.test(path)) return handle(req, res)
         if (path === '/admin') { req.url = '/admin/index.html'; return next() }
         next()
       })

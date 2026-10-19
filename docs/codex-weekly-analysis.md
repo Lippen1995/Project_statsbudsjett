@@ -14,6 +14,10 @@ godkjenningsvern består. Ikke opprett en ny parallell tidsplan.
 
 - Administrator kan bestille tema, konkrete instrukser og ønsket skrivedato,
   redigere, slette og flytte også Svens eget forslag.
+- Sven-temaer med `requestedBy: admin` er eksplisitte bestillinger fra
+  administrasjonens forslagsknapp. Flere slike temaer kan ligge i køen samtidig.
+  Behold valgt dato og rekkefølge; dette gir ingen adgang til å fylle køen
+  automatisk. Et erstattet tema i historikken skal ikke gjenoppstå.
 - Datoer tolkes i `Europe/Oslo`. Velg det øverste temaet som har nådd datoen sin.
   Et fremtidig tema sperrer ikke en senere plassert bestilling som er klar.
   Start aldri før datoen. Høyst ett nytt utkast per kjøring; vent på en åpen

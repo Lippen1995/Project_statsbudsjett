@@ -22,9 +22,27 @@ export async function ingest(sql, event, ip, secret, now = Date.now()) {
     ON CONFLICT (day, path, source, device) DO UPDATE SET ${metric} = ft_admin_daily.${metric} + EXCLUDED.${metric}
     ${event.type === 'view' ? '' : `, ${event.type}_count = ft_admin_daily.${event.type}_count + 1`}`,
   [event.path, event.source, event.device, event.type === 'view' ? 1 : event.value])
+  await sql.query(`INSERT INTO ft_admin_minute(minute, device, ${metric}${countColumn})
+    VALUES (date_trunc('minute', now()), $1, $2${event.type === 'view' ? '' : ', 1'})
+    ON CONFLICT (minute, device) DO UPDATE SET ${metric} = ft_admin_minute.${metric} + EXCLUDED.${metric},
+    last_seen_at = now() ${event.type === 'view' ? '' : `, ${event.type}_count = ft_admin_minute.${event.type}_count + 1`}`,
+  [event.device, event.type === 'view' ? 1 : event.value])
   await sql.query(`DELETE FROM ft_admin_ingest_limit WHERE expires_at < now()`)
   await sql.query(`DELETE FROM ft_admin_daily WHERE day < CURRENT_DATE - 90`)
+  await sql.query(`DELETE FROM ft_admin_minute WHERE minute < now() - interval '24 hours'`)
   return true
+}
+
+export async function liveMetrics(sql) {
+  const [totals] = await sql.query(`SELECT COALESCE(sum(views), 0)::int AS views,
+    sum(lcp_sum) / NULLIF(sum(lcp_count), 0) AS lcp, COALESCE(sum(lcp_count), 0)::int AS lcp_count,
+    sum(inp_sum) / NULLIF(sum(inp_count), 0) AS inp, COALESCE(sum(inp_count), 0)::int AS inp_count,
+    sum(cls_sum) / NULLIF(sum(cls_count), 0) AS cls, COALESCE(sum(cls_count), 0)::int AS cls_count,
+    max(last_seen_at) AS latest_sample_at
+    FROM ft_admin_minute WHERE minute >= date_trunc('minute', now()) - interval '14 minutes'`)
+  const series = await sql.query(`SELECT minute, sum(views)::int AS views FROM ft_admin_minute
+    WHERE minute >= date_trunc('minute', now()) - interval '14 minutes' GROUP BY minute ORDER BY minute`)
+  return { checkedAt: new Date().toISOString(), windowMinutes: 15, totals, series }
 }
 
 export async function metrics(sql, days) {

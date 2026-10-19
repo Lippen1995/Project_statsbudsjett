@@ -21,6 +21,7 @@ function validateEntry(entry) {
   if (!entry || !/^[a-f0-9-]{36}$/.test(entry.id ?? '') || !['admin', 'sven'].includes(entry.source) ||
       typeof entry.topic !== 'string' || entry.topic.trim().length < 5 || entry.topic.length > 180 ||
       typeof entry.instructions !== 'string' || entry.instructions.length > 12000 || !validDate(entry.scheduledDate) ||
+      (entry.requestedBy !== undefined && (entry.requestedBy !== 'admin' || entry.source !== 'sven')) ||
       !Number.isFinite(Date.parse(entry.createdAt)) || !Number.isFinite(Date.parse(entry.updatedAt)) ||
       (entry.source === 'sven' && ((!entry.reportPlan && entry.editedBy !== 'admin') || typeof entry.topicKey !== 'string'))) fail('Pipeline inneholder et ugyldig tema.')
 }
@@ -28,8 +29,8 @@ export function validatePipeline(document) {
   if (!document || document.version !== 1 || !Array.isArray(document.items) || !Array.isArray(document.history) || document.items.length > 100 || document.history.length > 200) fail('Pipeline har et ugyldig format.')
   document.items.forEach(validateEntry)
   if (Buffer.byteLength(JSON.stringify(document.items)) > 500000) fail('Instruksene i køen er for store. Forkort noen instrukser før du legger til flere.')
-  if (new Set(document.items.map(i => i.id)).size !== document.items.length || document.items.filter(i => i.source === 'sven').length > 1) fail('Pipeline kan ha høyst ett kommende tema fra Sven og ingen dupliserte ID-er.')
-  if (document.history.some(h => !h || !['deleted', 'delivered'].includes(h.status) || !Number.isFinite(Date.parse(h.at)) || !h.entry?.id)) fail('Ugyldig pipelinehistorikk.')
+  if (new Set(document.items.map(i => i.id)).size !== document.items.length || document.items.filter(i => i.source === 'sven' && i.requestedBy !== 'admin').length > 1) fail('Pipeline kan ha høyst ett automatisk kommende tema fra Sven og ingen dupliserte ID-er.')
+  if (document.history.some(h => !h || !['deleted', 'delivered', 'replaced'].includes(h.status) || !Number.isFinite(Date.parse(h.at)) || !h.entry?.id)) fail('Ugyldig pipelinehistorikk.')
   return document
 }
 function retainHistory(document) {
@@ -85,6 +86,29 @@ export function assertCurrentEntry(document, reference, at) {
   const entry = dueEntry(document, at)
   if (!reference || entry?.id !== reference.id || entryFingerprint(entry) !== reference.fingerprint) fail('Pipeline er endret, omprioritert eller ikke klar ennå. Hent gjeldende instrukser og planlegg analysen på nytt.', 409)
   return entry
+}
+
+// Suggestions passed here are selected and validated on the server. A browser
+// supplies only a catalog key and date, never its own report plan or provenance.
+export function applySvenSuggestion(document, { id, suggestion, scheduledDate }, at = new Date().toISOString()) {
+  validatePipeline(document)
+  if (!suggestion || !validDate(scheduledDate) || !suggestion.reportPlan || typeof suggestion.topicKey !== 'string') fail('Ugyldig Sven-forslag.')
+  const next = structuredClone(document)
+  const index = id ? next.items.findIndex(i => i.id === id) : -1
+  if (id && index < 0) fail('Temaet finnes ikke lenger. Hent oppdatert pipeline.', 409)
+  if (!id && next.items.length >= 100) fail('Pipeline kan ha høyst 100 kommende temaer.')
+  const entry = {
+    id: id || randomUUID(), source: 'sven', requestedBy: 'admin',
+    topic: suggestion.topic, instructions: suggestion.instructions, scheduledDate,
+    reportPlan: structuredClone(suggestion.reportPlan), topicKey: suggestion.topicKey,
+    createdAt: index < 0 ? at : next.items[index].createdAt, updatedAt: at,
+  }
+  if (index < 0) next.items.push(entry)
+  else {
+    next.history.push({ entry: next.items[index], status: 'replaced', at })
+    next.items[index] = entry
+  }
+  return validatePipeline(retainHistory(next))
 }
 export function completeEntry(document, reference, { at, reviewUrl, topicKey }) {
   const entry = assertCurrentEntry(document, reference, at)
