@@ -6,7 +6,8 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: budget-data-import
+  # Independent immutable archive; commit-generated rebases disjoint files on fresh main.
+  group: ssb-research-archive
   cancel-in-progress: false
 jobs:
   verify:
