@@ -25,6 +25,9 @@ on:
       - 'web/**'
       - '.github/workflows/deploy.yml'
       - 'scripts/neon/**'
+      - 'server/admin/**'
+      - 'scripts/admin/**'
+      - 'scripts/deploy/**'
       - 'package.json'
       - 'package-lock.json'
 

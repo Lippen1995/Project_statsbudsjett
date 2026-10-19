@@ -1,6 +1,8 @@
-# Fellestall.no – alt innhold er offentlig og kan indekseres.
+# Fellestall.no – offentlig innhold kan indekseres.
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/
 
 # Hovedfilene beskrives som et datasett på forsiden og kan leses av
 # datasett-søkemotorer. De mange detaljfilene er tallgrunnlag, ikke landingssider.

@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs'
 import { buildReport } from './report.mjs'
 import { nextBudgetReport } from './budget-report.mjs'
-import { topicBlocked, focusedQuestions } from '../../web/src/analyser/topics.js'
-export function nextReport(dataDir, published, { at = new Date().toISOString() } = {}) {
+import { topicBlocked, focusedQuestions, topicKey } from '../../web/src/analyser/topics.js'
+export function nextReport(dataDir, published, { at = new Date().toISOString(), excludeTopicKeys = [] } = {}) {
   const budget = nextBudgetReport(dataDir, published, {
-    eligible: (r) => Date.parse(r.dataUpdated) <= Date.parse(at) && !topicBlocked(r, published, at),
+    eligible: (r) => Date.parse(r.dataUpdated) <= Date.parse(at) && !topicBlocked(r, published, at) && !excludeTopicKeys.includes(topicKey(r)),
   })
   if (budget) return budget
   const meta = JSON.parse(readFileSync(`${dataDir}/meta.json`))
@@ -31,7 +31,7 @@ export function nextReport(dataDir, published, { at = new Date().toISOString() }
       throw error
     }
     const alreadyCovered = topicBlocked(report, published, at)
-    if (!alreadyCovered) return report
+    if (!alreadyCovered && !excludeTopicKeys.includes(topicKey(report))) return report
   }
   return null
 }

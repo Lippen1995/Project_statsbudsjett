@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { githubClient } from './github.mjs'
 import { analysisSettings } from './config.mjs'
@@ -9,6 +9,8 @@ import { articleMetadata } from './article-metadata.mjs'
 import { nextBudgetReport } from './budget-report.mjs'
 import { topicBlocked } from '../../web/src/analyser/topics.js'
 import { buildOilReport } from './oil-report.mjs'
+import { pipelineRepository } from './pipeline-model.mjs'
+import { preparePipeline } from './pipeline-reports.mjs'
 
 const output = process.argv[2]
 if (!output || !/^editorial\/handoff\/[a-z0-9-]+\.json$/.test(output))
@@ -25,8 +27,10 @@ if (process.argv[5] && !budgetQuestion) throw Error('Ukjent budsjettspørsmål')
 if (process.argv[4] && process.argv[4] !== '--baseline=revidert') throw Error('Ukjent sammenligningsgrunnlag')
 const oil = /^--oil-year=(\d{4})$/.exec(process.argv[3] ?? '')
 const oilYear = oil ? Number(oil[1]) : null
+const pipelinePlan = /^--pipeline-plan=(editorial\/handoff\/[a-z0-9-]+\.json)$/.exec(process.argv[3] ?? '')
+if ((process.argv[3] ?? '').startsWith('--pipeline-plan') && !pipelinePlan) throw Error('Oppgi en kontrollert analyseplan under editorial/handoff/')
 let packet
-if (process.argv[3] && !budgetDay && !oil) {
+if (process.argv[3] && !budgetDay && !oil && !pipelinePlan) {
   if (!Number.isSafeInteger(number) || number < 1) throw Error('Ugyldig gjennomgangsnummer')
   const { pr, article } = await readReviewContext(g, { issue: { number } })
   const feedback = await pendingFeedback(g, number, article)
@@ -66,7 +70,18 @@ if (process.argv[3] && !budgetDay && !oil) {
         throw Error('Denne oljepengeanalysen har allerede et utkast til gjennomgang')
     }
   }
-  const report = oil ? buildOilReport('web/public/data', oilYear) : budgetDay
+  const at = new Date().toISOString()
+  const pipeline = !oil && !budgetDay ? await preparePipeline(pipelineRepository(g), {
+    dataDir: 'web/public/data', published, at,
+    ...(pipelinePlan ? { plan: JSON.parse(readFileSync(pipelinePlan[1], 'utf8')) } : {}),
+  }) : null
+  if (pipeline?.packet) {
+    mkdirSync(dirname(output), { recursive: true })
+    writeFileSync(output, JSON.stringify(pipeline.packet, null, 2) + '\n')
+    console.log(pipeline.packet.pipelineState === 'research-required' ? 'Bestillingen venter på relevant research og analyseplan; ingen annen analyse er valgt.' : 'Ingen temaer har nådd skrivedatoen. Pipeline er beholdt.')
+    process.exit(0)
+  }
+  const report = pipeline?.report ?? (oil ? buildOilReport('web/public/data', oilYear) : budgetDay
     ? nextBudgetReport('web/public/data', published, {
         baselineSeries: budgetBaseline,
         question: budgetQuestion,
@@ -77,11 +92,12 @@ if (process.argv[3] && !budgetDay && !oil) {
           r.comparison === 'previous-budget-to-proposal' &&
           !topicBlocked(r, published, new Date().toISOString()),
       })
-    : nextReport('web/public/data', published)
+    : nextReport('web/public/data', published))
   if (!report) throw Error('Ingen ny dokumentert problemstilling')
   if (oil && topicBlocked(report, published)) throw Error('Oljepengeanalysen er allerede dekket')
   const createdAt = new Date().toISOString()
   packet = {
+    ...(pipeline ? { pipeline: pipeline.reference } : {}),
     ...(oil ? { mode: 'oil-funds' } : budgetDay ? { mode: 'budget-day' } : {}),
     article: {
       ...articleMetadata(report, createdAt.slice(0, 10)),

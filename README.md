@@ -66,6 +66,12 @@ make dev
 # Åpne http://localhost:5173
 ```
 
+## Administrasjon
+
+Adminområdet ligger på `/admin/`, med egen innlogging, Ytelse, Trafikk,
+Sven, Analysepipeline, Driftsstatus og Endringshistorikk. Se [oppsett og produksjonsaktivering](docs/admin.md).
+Serverfunksjonen og administratorkontoen krever dette oppsettet før de kan brukes live.
+
 ## Kommandoer
 
 | Kommando | Beskrivelse |
@@ -171,8 +177,8 @@ nasjonalregnskap skal ikke overskrives av en prognoseserie. 12880 oppgir beløp 
 i begge (`_normaliser_enhet`) framfor å hardkodes, og må være en tierpotens.
 Frontenden merker anslagsår overalt: stjerne med fotnote i tabellen, skravert
 område med stiplet linje i grafen, og «(anslag)» i tooltipen.
-- **Dataformat**: Statisk JSON, ingen backend i drift
-- **Hosting**: Statisk (GitHub Pages, Cloudflare Pages o.l.)
+- **Dataformat**: Statisk JSON for de offentlige visningene. Administrasjon har et separat Node-API og egne Neon-tabeller; se oppsettet over.
+- **Hosting**: Vercel, med GitHub Pages som reserve for offentlige statiske sider.
 
 ## Analyser og redaksjonell automatisering
 

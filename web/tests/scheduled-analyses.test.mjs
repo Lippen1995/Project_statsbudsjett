@@ -39,6 +39,7 @@ function fixture({ packet = pilot(), comments = [], existing = false, published 
     repository: 'owner/repo',
     permission: async (login) => ['agent', 'reviewer'].includes(login),
     content: async (file, ref) => {
+      if (file === 'editorial/analysis-pipeline.json') return null
       if (file === input.sourcePath && ref === input.sourceCommit)
         return { value: structuredClone(packet) }
       if (file === 'web/src/analyser/publications.json') return { value: published }

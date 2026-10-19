@@ -2,6 +2,7 @@
 
 install:
 	pip install -r etl/requirements.txt
+	npm install
 	cd web && npm install
 
 etl:

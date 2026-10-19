@@ -6,6 +6,9 @@ import { githubClient } from './github.mjs'
 import { validateArticle } from './schema.mjs'
 import { assertReviewBranch } from './review.mjs'
 import { runWorkflow, readReviewContext } from './workflow.mjs'
+import { pipelineRepository, assertCurrentEntry, completeEntry, pipelinePath, pipelineMarker } from './pipeline-model.mjs'
+import { ensurePipelineNext, buildPipelineReport } from './pipeline-reports.mjs'
+import { topicKey } from '../../web/src/analyser/topics.js'
 
 export async function deliverScheduled({ g, reviewer, actor, input, ...options }) {
   if (!['weekly', 'feedback', 'replacement', 'budget-day', 'oil-funds'].includes(input.mode))
@@ -28,6 +31,18 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
   if (article.status !== 'draft' || article.approval || article.publishedAt)
     throw Error('Bare et utkast uten godkjenning kan leveres')
   if (mode === 'research-revision') return deliverResearchRevision({g,reviewer,actor,packet,sourceCommit:input.sourceCommit,...options})
+  const at = options.now?.() ?? new Date().toISOString()
+  const repository = pipelineRepository(g)
+  let queued = null
+  if (mode === 'weekly') {
+    const file = await g.content(pipelinePath)
+    if (file) {
+      // Et eldre ukesutkast skal ikke kunne omgå administratorens nye bestilling.
+      if (!packet.pipeline) throw Error('Ukesanalysen mangler gjeldende pipelineinstruks. Planlegg analysen på nytt.')
+      queued = assertCurrentEntry(file.value, packet.pipeline, at)
+      if (!packet.pipeline.plan || (queued.reportPlan && JSON.stringify(queued.reportPlan) !== JSON.stringify(packet.pipeline.plan))) throw Error('Ugyldig analyseplan for gjeldende pipelineinstruks.')
+    } else if (packet.pipeline) throw Error('Den oppgitte pipelineinstruksen finnes ikke på main.')
+  }
   let event = null,
     previous = null
   if (mode === 'feedback') {
@@ -40,7 +55,7 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
       throw Error('Revisjonen gjelder ikke gjeldende gjennomgangsversjon')
     previous = context.article.copy
   }
-  await runWorkflow({
+  let result = await runWorkflow({
     ...options,
     command: mode,
     replacementFor: mode === 'replacement' ? article.replaces : null,
@@ -53,6 +68,11 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
     g,
     reviewer,
     expectedHead: packet.base?.head,
+    ...(queued ? {
+      pipelinePlan: packet.pipeline.plan,
+      pipelineReference: packet.pipeline,
+      beforeDraftWrite: async () => assertCurrentEntry((await repository.read()).document, packet.pipeline, at),
+    } : {}),
     generateCopy: async (report, revision = {}) => {
       if (JSON.stringify(article.report) !== JSON.stringify(report))
         throw Error('Leveringens datagrunnlag samsvarer ikke med den kontrollerte rapporten')
@@ -65,6 +85,25 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
       return article.copy
     },
   })
+  if (queued && result?.waiting && result.pipelineMatch) {
+    // Gjenoppta hvis PR-en ble opprettet, men review request feilet før kvittering.
+    const context = await readReviewContext(g, { issue: { number: result.number } })
+    const published = (await g.content('web/src/analyser/publications.json')).value
+    const trustedReport = buildPipelineReport(options.dataDir ?? 'web/public/data', published, packet.pipeline.plan, at)
+    if (!context.pr.body?.includes(pipelineMarker(packet.pipeline)) ||
+        JSON.stringify(trustedReport) !== JSON.stringify(article.report) ||
+        JSON.stringify(context.article.report) !== JSON.stringify(article.report) ||
+        JSON.stringify(context.article.copy) !== JSON.stringify(article.copy)) throw Error('Gjennomgangen gjelder ikke samme kontrollerte pipelineutkast. Køen er beholdt.')
+    result = { ...result, waiting: false, delivered: true, recovered: true }
+  }
+  if (queued && result?.delivered) {
+    const current = await repository.read()
+    const completed = completeEntry(current.document, packet.pipeline, { at, reviewUrl: result.reviewUrl, topicKey: topicKey(article.report) })
+    await repository.write(completed, current.sha, `analysis: lever pipelinetema til gjennomgang #${result.number}`)
+    const published = (await g.content('web/src/analyser/publications.json')).value
+    await ensurePipelineNext(repository, { dataDir: options.dataDir ?? 'web/public/data', published, at })
+  }
+  return result
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
