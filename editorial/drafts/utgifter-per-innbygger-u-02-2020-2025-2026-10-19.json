@@ -5,7 +5,7 @@
   "type": "Utvikling over tid",
   "status": "draft",
   "createdAt": "2026-10-19T07:41:52.243Z",
-  "generatedAt": "2026-10-19T11:44:12.707Z",
+  "generatedAt": "2026-10-19T13:44:25.613Z",
   "report": {
     "kind": "real-expenditure-per-capita",
     "factsVersion": 2,
@@ -1219,87 +1219,90 @@
     }
   },
   "copy": {
-    "title": "Kunnskapsregningens store fall krymper når milliardflyttingen tas ut",
-    "description": "Et fall på {{fact:realPerCapitaGrowth}} per innbygger blir {{fact:calcUtenIntegreringRealPerCapitaGrowth}} når flyttede kapitler tas ut. Men ved statlige læresteder falt bevilgningen per student også etter prisjustering.",
-    "lead": "Kunnskapsdepartementets regning så ut til å ha krympet {{fact:realPerCapitaGrowth}} per innbygger etter prisjustering fra {{fact:startYear}} til {{fact:endYear}}. Holder vi de flyttede integreringskapitlene utenfor alle år, blir endringen {{fact:calcUtenIntegreringRealPerCapitaGrowth}}. Flyttingen forklarer mye av utslaget. Men en egen beregning viser at bevilgningen til statlige universiteter og høyskoler per registrert student falt i faste kroner.",
-    "conclusion": "Uten de flyttede integreringskapitlene økte departementsutgiftene {{fact:calcUtenIntegreringNominalGrowth}} nominelt og {{fact:calcUtenIntegreringRealGrowth}} etter KPI-justering. Per innbygger ble endringen {{fact:calcUtenIntegreringRealPerCapitaGrowth}}, langt mindre negativ enn den opprinnelige departementsserien. For statlige universiteter og høyskoler var endringen i KPI-justert bevilgning per registrert student {{fact:calcPerStudentRealGrowth}}. Omorganiseringen gjør totalbildet mindre dramatisk; den opphever ikke presset i universitetsbevilgningen.",
-    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nKunnskapsregningen falt {{fact:realPerCapitaGrowth}} per innbygger etter prisjustering. Så ryddet vi i flyttelasset.\n\nUten integreringskapitlene som byttet departement, ble endringen {{fact:calcUtenIntegreringRealPerCapitaGrowth}}. Organisasjonskartet hadde tatt en solid bit av overskriften.\n\nMen statlige universiteter og høyskoler fikk mindre per registrert student i faste kroner: {{fact:calcPerStudentRealGrowth}}.\n\nHvor mye var flytting, og hvor ble det faktisk trangere? Sven har regnet på begge deler. Les analysen på Fellestall.",
+    "title": "Universitetene får mindre å rutte med per student",
+    "description": "Flere studenter og høyere priser har spist opp økningen i støtten til statlige universiteter og høyskoler. Se hvordan pengene per student har utviklet seg.",
+    "lead": "Statlige universiteter og høyskoler får mer penger, men har også flere studenter og høyere priser å håndtere. Fra {{fact:startYear}} til {{fact:endYear}} falt støtten per student målt i faste kroner. Endringen var {{fact:calcPerStudentRealGrowth}}.",
+    "conclusion": "Pengene fra staten har ikke holdt tritt med både studentveksten og prisene. Det gir lærestedene mindre å rutte med per student etter vår prisjustering. Tallene viser press på finansieringen, men sier ikke om studentene faktisk har fått dårligere undervisning.",
+    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nFlere studenter. Mer penger. Likevel mindre å rutte med per student.\n\nStatlige universiteter og høyskoler har fått økt støtte, men studentveksten og prisene har løpt fra pengene. Prisjustert endring per student fra {{fact:startYear}} til {{fact:endYear}}: {{fact:calcPerStudentRealGrowth}}.\n\nPrisveksten tok ingen studierabatt.\n\nHva skjuler seg bak de voksende milliardbeløpene? Sven har gjort regnestykket. Les analysen på Fellestall.",
     "sections": [
       {
-        "heading": "Flyttelasset som så ut som en mindre regning",
-        "factIds": [
-          "integreringAmountB",
-          "integreringYearB",
-          "largestChangeYear"
-        ],
+        "heading": "Mer penger. Flere å dele dem på.",
         "paragraphs": [
-          "Bosetting av flyktninger, norskopplæring for voksne innvandrere og Integrerings- og mangfoldsdirektoratet sto for {{fact:integreringAmountB}} i regnskapsførte utgifter under Kunnskapsdepartementet i {{fact:integreringYearB}}. Året etter forsvant de gamle kapitlene fra departementets regnskapsserie. Oppgavene hadde fått ny adresse.",
-          "Regjeringens tilleggsforslag beskrev flytting av integreringsområdet til Arbeids- og inkluderingsdepartementet. Den senere proposisjonen bekrefter at overføringen skjedde i {{fact:largestChangeYear}}. Det er dette året ansvarsskiftet slår inn i sammenligningen. Det var altså ikke en nedleggelse av bosetting og norskopplæring.",
-          "For å undersøke utviklingen på en likere avgrensning trekker vi de gamle integreringskapitlene ut av departementsregnskapet i alle sammenligningsårene. Dermed slipper startåret å bære en oppgave som sluttåret ikke lenger inneholder. Det er en avgrenset kapitteljustering, ikke en antakelse om at de nasjonale integreringsutgiftene ble borte."
-        ]
-      },
-      {
-        "heading": "Nedgangen krymper kraftig når kapitlene tas ut",
-        "factIds": [
-          "startYear",
-          "endYear",
-          "realPerCapitaGrowth",
-          "calcUtenIntegreringStart",
-          "calcUtenIntegreringEnd",
-          "calcUtenIntegreringNominalGrowth",
-          "calcUtenIntegreringRealGrowth",
-          "calcUtenIntegreringRealPerCapitaGrowth"
+          "Statens støtte til de statlige universitetene og høyskolene økte fra {{fact:statsuniversiteterFirstRecordedAmount}} i {{fact:startYear}} til {{fact:statsuniversiteterLastAmount}} i {{fact:endYear}}. På papiret er det en solid økning. Men lærestedene hadde også fått flere studenter å fordele pengene på.",
+          "Studenttallet steg fra {{fact:ssbStatsstudenterStart}} til {{fact:ssbStatsstudenterEnd}} i samme periode. Når vi deler støtten på studenttallet, øker beløpet fra {{fact:calcPerStudentStart}} til {{fact:calcPerStudentEnd}} per student. Så langt ser utviklingen positiv ut.",
+          "Disse pengene går til lærestedene, blant annet til undervisning og forskning. Det er altså penger som skal bidra til å drive universitetene og høyskolene, ikke beløp studentene får inn på konto. Stipend og lån fra Lånekassen følger en annen ordning."
         ],
-        "paragraphs": [
-          "Uten disse kapitlene går utgiftene fra {{fact:calcUtenIntegreringStart}} i {{fact:startYear}} til {{fact:calcUtenIntegreringEnd}} i {{fact:endYear}}. Det er en nominell vekst på {{fact:calcUtenIntegreringNominalGrowth}}. Justert med KPI er den samlede økningen {{fact:calcUtenIntegreringRealGrowth}}. Når beløpene også deles på folketallet, blir endringen {{fact:calcUtenIntegreringRealPerCapitaGrowth}}.",
-          "Dette er et vesentlig annet bilde enn den opprinnelige endringen på {{fact:realPerCapitaGrowth}} per innbygger. Etter den avgrensede korrigeringen holder den samlede pengebruken omtrent tritt med konsumprisene, men ikke helt med både prisvekst og en større befolkning. Et stort departementsfall kan derfor ikke leses som et tilsvarende kutt til de oppgavene som ble igjen.",
-          "Korrigeringen omfatter de identifiserte integreringskapitlene. Administrasjonsmidler inne i departementets eget kapittel er ikke isolert som en egen regnskapsserie, og andre oppgaveendringer er ikke fullstendig omregnet. Resultatet viser hvor stor forskjell den dokumenterte kapittelflyttingen gjør; det presenteres ikke som en perfekt rekonstruksjon av identiske oppgaver."
-        ]
-      },
-      {
-        "heading": "Studentene gir en mer relevant nevner",
         "factIds": [
-          "startYear",
-          "endYear",
           "statsuniversiteterFirstRecordedAmount",
+          "startYear",
           "statsuniversiteterLastAmount",
+          "endYear",
           "ssbStatsstudenterStart",
           "ssbStatsstudenterEnd",
-          "ssbStatsstudenterGrowth"
-        ],
-        "paragraphs": [
-          "For universiteter og høyskoler er det mer relevant å spørre hva bevilgningen utgjør per student enn per innbygger. Vi avgrenser derfor til regnskapsposten for statlige universiteter og høyskoler og SSBs registrerte studenter ved de samme statlige lærestedene. Private læresteder, politiutdanning og militære høgskoler er utelatt fra denne beregningen.",
-          "Bevilgningsposten økte fra {{fact:statsuniversiteterFirstRecordedAmount}} i {{fact:startYear}} til {{fact:statsuniversiteterLastAmount}} i {{fact:endYear}}. Studenttallet økte samtidig fra {{fact:ssbStatsstudenterStart}} til {{fact:ssbStatsstudenterEnd}}, en vekst på {{fact:ssbStatsstudenterGrowth}}. SSBs gamle og nye lærestedskoder for Innlandet er begge med, slik at navneskiftet ikke bryter serien.",
-          "Nevneren er personer registrert ved lærestedene om høsten, ikke antall innbyggere eller antall nye studieplasser. Deltidsstudenter inngår, mens personer registrert i doktorgradsprogram og studenter i permisjon er utelatt etter SSBs definisjon. Vi har dermed en konkret, etterprøvbar studentindikator gjennom hele perioden."
-        ]
-      },
-      {
-        "heading": "Flere kroner per student, men mindre etter prisjustering",
-        "factIds": [
           "calcPerStudentStart",
-          "calcPerStudentEnd",
-          "calcPerStudentNominalGrowth",
-          "calcPerStudentRealGrowth",
-          "startYear",
-          "endYear"
-        ],
-        "paragraphs": [
-          "Når regnskapsført bevilgning deles på studenttallet, øker beløpet fra {{fact:calcPerStudentStart}} til {{fact:calcPerStudentEnd}} per registrert student. Den nominelle veksten er {{fact:calcPerStudentNominalGrowth}}. Etter KPI-justering er endringen {{fact:calcPerStudentRealGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Flere løpende kroner per student var altså ikke nok til å holde tritt med konsumprisveksten.",
-          "Dette svarer på finansieringsspørsmålet for den valgte posten. En lavere prisjustert bevilgning per student innebærer mindre av denne finansieringen sett opp mot studentmassen. Hvis lærestedene skulle opprettholde samme oppgaver og tilbud uten andre endringer, ville det legge press på hva bevilgningen kunne dekke. Det er ikke en måling av kvalitet eller et bevis på at undervisningen faktisk ble redusert.",
-          "Bevilgning og kostnad må fortsatt holdes fra hverandre. Statlige læresteder har andre inntekter, og rammebevilgningen finansierer også forskning og andre oppgaver. Vi beregner derfor bevilgning per registrert student, ikke hele institusjonens kostnad per heltidsstudent. KPI er en felles prisreferanse; den er ikke universitetenes egen lønns- og kostnadsindeks."
+          "calcPerStudentEnd"
         ]
       },
       {
-        "heading": "Lånekassen viser hvorfor totalen ikke avgjør alt",
+        "heading": "Prisveksten spiste opp økningen",
+        "paragraphs": [
+          "Også lærestedene må betale regningene sine. Derfor sammenligner vi pengene over tid med et felles mål på prisvekst: konsumprisindeksen, som viser hvordan prisene på varer og tjenester til husholdningene har utviklet seg.",
+          "Støtten per student økte med {{fact:calcPerStudentNominalGrowth}} i løpende kroner. Prisene steg samtidig {{fact:priceGrowth}}. Når vi regner om beløpene til samme prisnivå, går støtten per student tilbake. Endringen fra {{fact:startYear}} til {{fact:endYear}} blir {{fact:calcPerStudentRealGrowth}}.",
+          "Grafen viser dermed en annen utvikling enn milliardbeløpene alene: Selv om det kom mer penger inn, ble det mindre per student etter prisjusteringen. Konsumprisene er likevel bare en målestokk. Universitetenes egne utgifter til lønn, bygg og utstyr kan ha utviklet seg annerledes."
+        ],
+        "factIds": [
+          "calcPerStudentNominalGrowth",
+          "priceGrowth",
+          "startYear",
+          "endYear",
+          "calcPerStudentRealGrowth"
+        ]
+      },
+      {
+        "heading": "Hva betyr det for studentene?",
+        "paragraphs": [
+          "Mindre penger per student kan gjøre det vanskeligere å opprettholde samme tilbud hvis oppgavene ellers er uendret. Lærestedene kan måtte finne andre inntekter, endre tilbudet eller få mer ut av pengene. Regnskapet forteller ikke hvilke valg de faktisk har tatt.",
+          "Vi kan derfor ikke slå fast at studentene har fått færre forelesninger eller dårligere oppfølging. Støtten dekker dessuten forskning og andre oppgaver ved siden av undervisning. Beregningen viser hvordan finansieringen har utviklet seg i forhold til studenttallet, ikke hva en studieplass koster.",
+          "Vi bruker studenttall fra SSB for de samme statlige lærestedene som mottar støtten. Både heltids- og deltidsstudenter teller med. Private læresteder, politiutdanning og militære høgskoler er holdt utenfor. Dermed sammenligner vi pengene og studentene innenfor samme gruppe."
+        ],
+        "factIds": []
+      },
+      {
+        "heading": "Milliardfallet som var et flyttelass",
+        "paragraphs": [
+          "Ser vi på hele Kunnskapsdepartementet, dukker en annen forklaring opp. I {{fact:largestChangeYear}} ble ansvaret for integrering flyttet til Arbeids- og inkluderingsdepartementet. Penger til bosetting av flyktninger, norskopplæring og Integrerings- og mangfoldsdirektoratet fikk dermed en ny adresse i regnskapet.",
+          "Året før sto disse postene for {{fact:integreringAmountB}} under Kunnskapsdepartementet. Da de forsvant fra departementets regnskap, så pengebruken lavere ut. Oppgavene var flyttet, ikke lagt ned. Dette er dokumentert i regjeringens budsjettproposisjoner.",
+          "For å få en mer sammenlignbar utvikling tar vi disse postene ut av alle årene. Da sammenligner vi departementet uten de samme integreringsoppgavene både før og etter flyttingen."
+        ],
+        "factIds": [
+          "largestChangeYear",
+          "integreringAmountB"
+        ]
+      },
+      {
+        "heading": "Et langt mindre fall når vi rydder i regnskapet",
+        "paragraphs": [
+          "Uten de flyttede postene økte utgiftene fra {{fact:calcUtenIntegreringStart}} til {{fact:calcUtenIntegreringEnd}}. Etter prisjustering var den samlede veksten {{fact:calcUtenIntegreringRealGrowth}}. Pengebruken holdt altså omtrent tritt med konsumprisene.",
+          "Befolkningen vokste også. Deler vi i tillegg på antall innbyggere, blir endringen {{fact:calcUtenIntegreringRealPerCapitaGrowth}}. Det er et langt mindre fall enn {{fact:realPerCapitaGrowth}}, som vi får fra departementstallene uten å rette for flyttingen.",
+          "Vi har korrigert for de identifiserte integreringspostene, men ikke regnet om alle mulige endringer i departementets oppgaver. Justeringen forklarer likevel mye av det store utslaget. Den endrer ikke studentberegningen, som følger støtten til de statlige lærestedene separat."
+        ],
+        "factIds": [
+          "calcUtenIntegreringStart",
+          "calcUtenIntegreringEnd",
+          "calcUtenIntegreringRealGrowth",
+          "calcUtenIntegreringRealPerCapitaGrowth",
+          "realPerCapitaGrowth"
+        ]
+      },
+      {
+        "heading": "Studiestøtten følger et annet spor",
+        "paragraphs": [
+          "Lånekassens regnskap viser også hvorfor pengestrømmene må holdes fra hverandre. Utgiftene vi har med der, økte fra {{fact:studentstotteFirstRecordedAmount}} til {{fact:studentstotteLastAmount}}. Dette omfatter blant annet penger satt av til stipend og drift av ordningen. Selve låneutbetalingene er ikke med i denne summen.",
+          "Beløpet forteller derfor ikke hvor mye hver student fikk å leve av. Lånekassen støtter dessuten flere utdanningsgrupper enn studentene ved de statlige lærestedene. Her er hovedfunnet et annet: Universitetene og høyskolene fikk mer støtte i kroner, men mindre per student når vi tar hensyn til prisveksten."
+        ],
         "factIds": [
           "studentstotteFirstRecordedAmount",
-          "studentstotteLastAmount",
-          "studentstotteRealGrowthSinceReference"
-        ],
-        "paragraphs": [
-          "I Lånekassens kapittel økte de inkluderte utgiftene fra {{fact:studentstotteFirstRecordedAmount}} til {{fact:studentstotteLastAmount}}. Etter KPI- og befolkningsjustering er veksten {{fact:studentstotteRealGrowthSinceReference}}. Dette er en annen avgrensning enn universitetenes rammebevilgning: blant annet stipendavsetninger og administrasjon inngår, mens låneutbetalinger holdes utenfor som finansposter.",
-          "Beløpet skal derfor ikke deles på studentgruppen ved statlige læresteder og presenteres som studentenes gevinst. Lånekassen støtter flere utdanningsgrupper, og en stipendavsetning er heller ikke det samme som utbetalt stipend til hver student. Men regnskapet viser en relevant forskjell i prioriteringen av penger: ulike deler av kunnskapsområdet vokste i ulik takt.",
-          "Etter kapitteljusteringen er departementsbildet langt mindre dramatisk. Samtidig står funnet om lavere KPI-justert bevilgning per registrert student ved statlige universiteter og høyskoler igjen. Det er denne kombinasjonen som er verdt å diskutere: Omorganiseringen forklarer et stort utslag i totalen, mens en mer relevant mottakerberegning peker på press i finansieringen av lærestedene."
+          "studentstotteLastAmount"
         ]
       }
     ],
@@ -1307,33 +1310,33 @@
       {
         "kind": "series",
         "afterSection": 1,
-        "title": "Med og uten de flyttede integreringskapitlene",
-        "description": "Nominell utgiftsutvikling med samme basisår. Den korrigerte serien holder valgte kapitler utenfor i alle år. Indeks sammenligner vekst, ikke beløpsstørrelse.",
-        "mode": "index",
-        "series": [
-          {
-            "source": "fellestall",
-            "id": "expenditure",
-            "label": "Opprinnelig departementsavgrensning"
-          },
-          {
-            "source": "calculation",
-            "id": "UtenIntegrering",
-            "label": "Uten integreringskapitlene"
-          }
-        ]
-      },
-      {
-        "kind": "series",
-        "afterSection": 3,
-        "title": "Rammebevilgning per registrert student ved statlige læresteder",
-        "description": "Regnskapsført rammebevilgning delt på SSBs studenttall. KPI-justert til {{fact:endYear}}-kroner. Ikke samlet institusjonskostnad eller undervisningskostnad.",
+        "title": "Mindre støtte per student etter prisjustering",
+        "description": "Statens støtte til statlige universiteter og høyskoler delt på antall registrerte studenter. Alle beløp er i {{fact:endYear}}-kroner, justert med konsumprisindeksen.",
         "mode": "values",
         "series": [
           {
             "source": "calculation",
             "id": "PerStudentReal",
-            "label": "Bevilgning per student i faste kroner"
+            "label": "Støtte per student i faste kroner"
+          }
+        ]
+      },
+      {
+        "kind": "series",
+        "afterSection": 4,
+        "title": "Slik endres bildet når flyttede oppgaver tas ut",
+        "description": "Kurvene starter på samme nivå og viser veksten i løpende kroner. Den justerte kurven holder de flyttede integreringspostene utenfor i alle år.",
+        "mode": "index",
+        "series": [
+          {
+            "source": "fellestall",
+            "id": "expenditure",
+            "label": "Hele departementet"
+          },
+          {
+            "source": "calculation",
+            "id": "UtenIntegrering",
+            "label": "Uten de flyttede integreringspostene"
           }
         ]
       }
