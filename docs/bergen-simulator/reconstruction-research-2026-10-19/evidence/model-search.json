@@ -1,0 +1,56 @@
+[
+  {
+    "query": "\"Bryggen\"",
+    "returned": 24,
+    "next": true,
+    "candidates": [
+      {
+        "uid": "5055e307a8184a3c822e07ed71eb425a",
+        "name": "Bryggen",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 239936,
+        "vertexCount": 120115,
+        "viewerUrl": "https://sketchfab.com/3d-models/none-5055e307a8184a3c822e07ed71eb425a",
+        "descriptionSha256": "19484ff2446ea070f6cfab2cdec5f1fea13bb04e5cb3d509152076543ee5bb5f"
+      },
+      {
+        "uid": "50d0f8a3ecc343fb83c587b8d28afd36",
+        "name": "Bryggen Bergen OaW#003",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 15619,
+        "vertexCount": 8883,
+        "viewerUrl": "https://sketchfab.com/3d-models/none-50d0f8a3ecc343fb83c587b8d28afd36",
+        "descriptionSha256": "f6f2284569360dcb766629c75db59ab27a3563e1892a6515630e5660c314733e"
+      }
+    ]
+  },
+  {
+    "query": "Bryggen Bergen",
+    "returned": 3,
+    "next": false,
+    "candidates": [
+      {
+        "uid": "50d0f8a3ecc343fb83c587b8d28afd36",
+        "name": "Bryggen Bergen OaW#003",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 15619,
+        "vertexCount": 8883,
+        "viewerUrl": "https://sketchfab.com/3d-models/none-50d0f8a3ecc343fb83c587b8d28afd36",
+        "descriptionSha256": "f6f2284569360dcb766629c75db59ab27a3563e1892a6515630e5660c314733e"
+      },
+      {
+        "uid": "5055e307a8184a3c822e07ed71eb425a",
+        "name": "Bryggen",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 239936,
+        "vertexCount": 120115,
+        "viewerUrl": "https://sketchfab.com/3d-models/none-5055e307a8184a3c822e07ed71eb425a",
+        "descriptionSha256": "19484ff2446ea070f6cfab2cdec5f1fea13bb04e5cb3d509152076543ee5bb5f"
+      }
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "indexed": {
+    "triangles": 3716,
+    "exactExpandedOrder": true,
+    "maxSymmetricNearestVertexDistanceMetres": 0.0,
+    "sameVertexCountExpanded": true,
+    "thresholdMetres": 0
+  },
+  "meshopt": {
+    "triangles": 3716,
+    "exactExpandedOrder": false,
+    "maxSymmetricNearestVertexDistanceMetres": 0.00034739998398589024,
+    "sameVertexCountExpanded": true,
+    "thresholdMetres": 0.002
+  }
+}

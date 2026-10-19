@@ -1,0 +1,44 @@
+[
+  {
+    "software": "BlenderGIS",
+    "url": "https://raw.githubusercontent.com/domlysz/BlenderGIS/master/LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "bytes": 35149,
+    "retrievedDate": "2026-10-19"
+  },
+  {
+    "software": "COLMAP",
+    "url": "https://raw.githubusercontent.com/colmap/colmap/main/LICENSE",
+    "sha256": "b427b1780b9c1d5996a641597b35d6c97163316bf6b15f7f7bc27518d3dd8b36",
+    "bytes": 1968,
+    "retrievedDate": "2026-10-19"
+  },
+  {
+    "software": "Meshroom",
+    "url": "https://raw.githubusercontent.com/alicevision/Meshroom/develop/COPYING.md",
+    "sha256": "0e6d418f2593876fa3c1dac08be04f3d2f46b716838c42081831d96775c3f81b",
+    "bytes": 1175,
+    "retrievedDate": "2026-10-19"
+  },
+  {
+    "software": "gsplat",
+    "url": "https://raw.githubusercontent.com/nerfstudio-project/gsplat/main/LICENSE",
+    "sha256": "96a4f89293c0df19880da9b0e35f67589f5885ea61b224ef16bb2bd599a8a44d",
+    "bytes": 11345,
+    "retrievedDate": "2026-10-19"
+  },
+  {
+    "software": "VGGT",
+    "url": "https://raw.githubusercontent.com/facebookresearch/vggt/main/LICENSE.txt",
+    "sha256": "b94e46746792d1adfa0ebdbccada5d4576d244ae230be9de8a46b5868fff001b",
+    "bytes": 10722,
+    "retrievedDate": "2026-10-19"
+  },
+  {
+    "software": "OSM2World-current",
+    "url": "https://raw.githubusercontent.com/tordanik/OSM2World/master/LICENSE.txt",
+    "sha256": "d9c3557b2b6be171ad0694d9d6124181b80ad4037711d8bbe17d45f915284493",
+    "bytes": 1068,
+    "retrievedDate": "2026-10-19"
+  }
+]

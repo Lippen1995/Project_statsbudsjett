@@ -1,0 +1,20 @@
+{
+  "OSM2World": {
+    "version": "0.4.0",
+    "archiveUrl": "https://osm2world.org/download/files/0.4.0/OSM2World-0.4.0-bin.zip",
+    "archiveSha256": "c05b37920d29c26710a06e30c170ca62e5e8ea653cccbbb3243dfc7e5d20b899",
+    "archiveBytes": 452089567,
+    "license": "LGPL-3.0",
+    "licenseSha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+  },
+  "PyCOLMAP": {
+    "version": "4.0.3",
+    "device": "CPU",
+    "python": "3.12.14"
+  },
+  "glTFTransform": {
+    "version": "4.2.1",
+    "license": "MIT"
+  },
+  "baselineCommit": "358b3e03649de9550af66697a76d86471e53ccee"
+}

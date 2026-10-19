@@ -1,0 +1,807 @@
+{
+  "method": "Isolated single-building uniform-shader software renderer; 4 warmups + 12 retained two-RAF/gl.finish probes. No whole-city/hardware FPS claim.",
+  "browser": "151.0.7922.173",
+  "cases": [
+    {
+      "mobile": false,
+      "asset": "r1c",
+      "metadata": {
+        "key": "r1c",
+        "bytes": 402684,
+        "triangles": 3716,
+        "attributeBytes": 401328,
+        "indexBytes": 0,
+        "fetchMs": 85.59999999403954,
+        "parseMs": 7,
+        "interactiveMs": 1623.800000011921,
+        "renderer": "WebKit WebGL",
+        "geometryCount": 1,
+        "textureCount": 0
+      },
+      "ids": [
+        "way/393025479"
+      ],
+      "bounds": {
+        "min": [
+          37.33250045776367,
+          1.5700000524520874,
+          -155.9778594970703
+        ],
+        "max": [
+          65.67169952392578,
+          10.538000106811523,
+          -127.97866821289062
+        ]
+      },
+      "cameraMedianMs": 119.3999999910593,
+      "cameraP95Ms": 152.1000000089407,
+      "samples": [
+        {
+          "completionMs": 108,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 139.1000000089407,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 119.3999999910593,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 125.20000000298023,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 148.09999999403954,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 98.09999999403954,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 105.20000000298023,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 99.69999998807907,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 100.5,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 112.3999999910593,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 152.1000000089407,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 125.29999999701977,
+          "calls": 2,
+          "triangles": 3718
+        }
+      ],
+      "idleFrames": 0,
+      "pickedId": "way/393025479",
+      "errors": [],
+      "remoteRequests": []
+    },
+    {
+      "mobile": false,
+      "asset": "indexed",
+      "metadata": {
+        "key": "indexed",
+        "bytes": 323456,
+        "triangles": 3716,
+        "attributeBytes": 299952,
+        "indexBytes": 22296,
+        "fetchMs": 7.0999999940395355,
+        "parseMs": 7.200000002980232,
+        "interactiveMs": 371,
+        "renderer": "WebKit WebGL",
+        "geometryCount": 1,
+        "textureCount": 0
+      },
+      "ids": [
+        "way/393025479"
+      ],
+      "bounds": {
+        "min": [
+          37.33250045776367,
+          1.5700000524520874,
+          -155.9778594970703
+        ],
+        "max": [
+          65.67169952392578,
+          10.538000106811523,
+          -127.97866821289062
+        ]
+      },
+      "cameraMedianMs": 145.5,
+      "cameraP95Ms": 176.6000000089407,
+      "samples": [
+        {
+          "completionMs": 150.90000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 117.90000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 112.20000000298023,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 146.79999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 117.5,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 121.8999999910593,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 176.29999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 176.6000000089407,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 137.70000000298023,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 145.5,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 114.79999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 167.19999998807907,
+          "calls": 2,
+          "triangles": 3718
+        }
+      ],
+      "idleFrames": 0,
+      "pickedId": "way/393025479",
+      "errors": [],
+      "remoteRequests": []
+    },
+    {
+      "mobile": false,
+      "asset": "meshopt",
+      "metadata": {
+        "key": "meshopt",
+        "bytes": 54080,
+        "triangles": 3716,
+        "attributeBytes": 166640,
+        "indexBytes": 22296,
+        "fetchMs": 9.099999994039536,
+        "parseMs": 8.599999994039536,
+        "interactiveMs": 674,
+        "renderer": "WebKit WebGL",
+        "geometryCount": 1,
+        "textureCount": 0
+      },
+      "ids": [
+        "way/393025479"
+      ],
+      "bounds": {
+        "min": [
+          37.33250045776367,
+          1.570080967155306,
+          -155.9779164104163
+        ],
+        "max": [
+          65.67169952392578,
+          10.537919192108305,
+          -127.97861129954464
+        ]
+      },
+      "cameraMedianMs": 148.80000001192093,
+      "cameraP95Ms": 315.59999999403954,
+      "samples": [
+        {
+          "completionMs": 129,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 111.6000000089407,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 148.80000001192093,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 136,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 189.3999999910593,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 172.30000001192093,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 141.29999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 158.90000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 292.90000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 125.90000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 148.09999999403954,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 315.59999999403954,
+          "calls": 2,
+          "triangles": 3718
+        }
+      ],
+      "idleFrames": 0,
+      "pickedId": "way/393025479",
+      "errors": [],
+      "remoteRequests": []
+    },
+    {
+      "mobile": false,
+      "asset": "osm",
+      "metadata": {
+        "key": "osm",
+        "bytes": 127448,
+        "triangles": 1162,
+        "attributeBytes": 125496,
+        "indexBytes": 0,
+        "fetchMs": 8.299999997019768,
+        "parseMs": 10.400000005960464,
+        "interactiveMs": 305.5,
+        "renderer": "WebKit WebGL",
+        "geometryCount": 1,
+        "textureCount": 0
+      },
+      "ids": [
+        "w393025479"
+      ],
+      "bounds": {
+        "min": [
+          -13.899,
+          0,
+          -13.731
+        ],
+        "max": [
+          13.899,
+          3.5,
+          13.731
+        ]
+      },
+      "cameraMedianMs": 88.79999999701977,
+      "cameraP95Ms": 301.59999999403954,
+      "samples": [
+        {
+          "completionMs": 10.200000002980232,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 257,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 301.59999999403954,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 82.1000000089407,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 87.70000000298023,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 116.40000000596046,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 92.59999999403954,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 88.79999999701977,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 76.3999999910593,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 92.3999999910593,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 55,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 82,
+          "calls": 2,
+          "triangles": 1164
+        }
+      ],
+      "idleFrames": 0,
+      "pickedId": "w393025479",
+      "errors": [],
+      "remoteRequests": []
+    },
+    {
+      "mobile": true,
+      "asset": "r1c",
+      "metadata": {
+        "key": "r1c",
+        "bytes": 402684,
+        "triangles": 3716,
+        "attributeBytes": 401328,
+        "indexBytes": 0,
+        "fetchMs": 58.400000005960464,
+        "parseMs": 6.899999991059303,
+        "interactiveMs": 292.20000000298023,
+        "renderer": "WebKit WebGL",
+        "geometryCount": 1,
+        "textureCount": 0
+      },
+      "ids": [
+        "way/393025479"
+      ],
+      "bounds": {
+        "min": [
+          37.33250045776367,
+          1.5700000524520874,
+          -155.9778594970703
+        ],
+        "max": [
+          65.67169952392578,
+          10.538000106811523,
+          -127.97866821289062
+        ]
+      },
+      "cameraMedianMs": 76.79999999701977,
+      "cameraP95Ms": 107.40000000596046,
+      "samples": [
+        {
+          "completionMs": 49.8999999910593,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 107.40000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 59.70000000298023,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 51.599999994039536,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 76.79999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 19.299999997019768,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 80.79999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 94.5,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 57.20000000298023,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 58.79999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 90.29999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 89.09999999403954,
+          "calls": 2,
+          "triangles": 3718
+        }
+      ],
+      "idleFrames": 0,
+      "pickedId": "way/393025479",
+      "errors": [],
+      "remoteRequests": []
+    },
+    {
+      "mobile": true,
+      "asset": "indexed",
+      "metadata": {
+        "key": "indexed",
+        "bytes": 323456,
+        "triangles": 3716,
+        "attributeBytes": 299952,
+        "indexBytes": 22296,
+        "fetchMs": 18.099999994039536,
+        "parseMs": 31.200000002980232,
+        "interactiveMs": 292.6000000089407,
+        "renderer": "WebKit WebGL",
+        "geometryCount": 1,
+        "textureCount": 0
+      },
+      "ids": [
+        "way/393025479"
+      ],
+      "bounds": {
+        "min": [
+          37.33250045776367,
+          1.5700000524520874,
+          -155.9778594970703
+        ],
+        "max": [
+          65.67169952392578,
+          10.538000106811523,
+          -127.97866821289062
+        ]
+      },
+      "cameraMedianMs": 76,
+      "cameraP95Ms": 89.90000000596046,
+      "samples": [
+        {
+          "completionMs": 9.899999991059303,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 61.6000000089407,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 48.20000000298023,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 89.90000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 81.5,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 76,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 39.70000000298023,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 56.79999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 86.90000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 77.40000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 79.70000000298023,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 36.099999994039536,
+          "calls": 2,
+          "triangles": 3718
+        }
+      ],
+      "idleFrames": 0,
+      "pickedId": "way/393025479",
+      "errors": [],
+      "remoteRequests": []
+    },
+    {
+      "mobile": true,
+      "asset": "meshopt",
+      "metadata": {
+        "key": "meshopt",
+        "bytes": 54080,
+        "triangles": 3716,
+        "attributeBytes": 166640,
+        "indexBytes": 22296,
+        "fetchMs": 11.200000002980232,
+        "parseMs": 10.799999997019768,
+        "interactiveMs": 283.20000000298023,
+        "renderer": "WebKit WebGL",
+        "geometryCount": 1,
+        "textureCount": 0
+      },
+      "ids": [
+        "way/393025479"
+      ],
+      "bounds": {
+        "min": [
+          37.33250045776367,
+          1.570080967155306,
+          -155.9779164104163
+        ],
+        "max": [
+          65.67169952392578,
+          10.537919192108305,
+          -127.97861129954464
+        ]
+      },
+      "cameraMedianMs": 84.90000000596046,
+      "cameraP95Ms": 114.5,
+      "samples": [
+        {
+          "completionMs": 43.29999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 95.29999999701977,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 59.400000005960464,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 84.90000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 84.09999999403954,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 114.5,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 77.40000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 97.30000001192093,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 103.5,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 80.09999999403954,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 86.40000000596046,
+          "calls": 2,
+          "triangles": 3718
+        },
+        {
+          "completionMs": 83.3999999910593,
+          "calls": 2,
+          "triangles": 3718
+        }
+      ],
+      "idleFrames": 0,
+      "pickedId": "way/393025479",
+      "errors": [],
+      "remoteRequests": []
+    },
+    {
+      "mobile": true,
+      "asset": "osm",
+      "metadata": {
+        "key": "osm",
+        "bytes": 127448,
+        "triangles": 1162,
+        "attributeBytes": 125496,
+        "indexBytes": 0,
+        "fetchMs": 11.700000002980232,
+        "parseMs": 10.5,
+        "interactiveMs": 231.09999999403954,
+        "renderer": "WebKit WebGL",
+        "geometryCount": 1,
+        "textureCount": 0
+      },
+      "ids": [
+        "w393025479"
+      ],
+      "bounds": {
+        "min": [
+          -13.899,
+          0,
+          -13.731
+        ],
+        "max": [
+          13.899,
+          3.5,
+          13.731
+        ]
+      },
+      "cameraMedianMs": 34.70000000298023,
+      "cameraP95Ms": 57.79999999701977,
+      "samples": [
+        {
+          "completionMs": 54.5,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 36.400000005960464,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 57.79999999701977,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 16.399999991059303,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 29,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 0.9000000059604645,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 29.5,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 56.70000000298023,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 19.900000005960464,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 34.70000000298023,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 41.79999999701977,
+          "calls": 2,
+          "triangles": 1164
+        },
+        {
+          "completionMs": 26.900000005960464,
+          "calls": 2,
+          "triangles": 1164
+        }
+      ],
+      "idleFrames": 0,
+      "pickedId": "w393025479",
+      "errors": [],
+      "remoteRequests": []
+    }
+  ],
+  "errors": []
+}

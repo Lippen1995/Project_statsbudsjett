@@ -1,0 +1,160 @@
+{
+  "tool": "PyCOLMAP",
+  "version": "4.0.3",
+  "cudaAvailable": false,
+  "inputs": [
+    {
+      "file": "Skur_11a.jpg",
+      "sha256": "5e708efff5bdcbe6a239187f9c4d144fc913ddee71cf5a299cd544c14d56badd",
+      "bytes": 5019341
+    },
+    {
+      "file": "Skur_11b.jpg",
+      "sha256": "855e6b93ac2cbdae09f72d4ba7fc78465fe40bc10190eded073bd97ccdb74433",
+      "bytes": 6018660
+    },
+    {
+      "file": "Skur_11c.jpg",
+      "sha256": "947b8ab7377d7a59ca6bb9990075a0dbfd160c556a8b4e13faba49428de171e2",
+      "bytes": 7755533
+    },
+    {
+      "file": "Skur_11d.jpg",
+      "sha256": "8818c3f60e0a07ba9376d021a9edae1fd7ab10d40f1a82370474850b039a013f",
+      "bytes": 5732352
+    },
+    {
+      "file": "skur11.jpg",
+      "sha256": "55bcb45e2b7d0079975a7c16208dbb67eae853c47eafe03755f627269f62184e",
+      "bytes": 3533786
+    }
+  ],
+  "configuration": {
+    "imageMaxSide": 2400,
+    "siftMaxFeatures": 8192,
+    "affineShapeAndDspSift": true,
+    "threads": 2,
+    "seed": 7,
+    "guidedMatching": true,
+    "cameraMode": "AUTO / EXIF priors",
+    "minimumModelImages": 3,
+    "initialInliers": 100,
+    "initialTriangulationAngleDegrees": 16.0,
+    "mappingDeadlineSeconds": 120
+  },
+  "timingsSeconds": {
+    "features": 55.70024934298999,
+    "matching": 5.947840910012019,
+    "mapping": 0.08721534599317238,
+    "total": 61.73530559899518
+  },
+  "peakProcessRssKiB": 2293136,
+  "features": [
+    {
+      "image": "Skur_11a.jpg",
+      "keypoints": 11325
+    },
+    {
+      "image": "Skur_11b.jpg",
+      "keypoints": 8664
+    },
+    {
+      "image": "skur11.jpg",
+      "keypoints": 9302
+    },
+    {
+      "image": "Skur_11d.jpg",
+      "keypoints": 16180
+    },
+    {
+      "image": "Skur_11c.jpg",
+      "keypoints": 11348
+    }
+  ],
+  "verifiedPairs": [
+    {
+      "images": [
+        "Skur_11a.jpg",
+        "Skur_11b.jpg"
+      ],
+      "inliers": 300,
+      "configuration": 3
+    },
+    {
+      "images": [
+        "Skur_11a.jpg",
+        "skur11.jpg"
+      ],
+      "inliers": 0,
+      "configuration": 0
+    },
+    {
+      "images": [
+        "Skur_11a.jpg",
+        "Skur_11d.jpg"
+      ],
+      "inliers": 0,
+      "configuration": 0
+    },
+    {
+      "images": [
+        "Skur_11a.jpg",
+        "Skur_11c.jpg"
+      ],
+      "inliers": 0,
+      "configuration": 0
+    },
+    {
+      "images": [
+        "Skur_11b.jpg",
+        "skur11.jpg"
+      ],
+      "inliers": 0,
+      "configuration": 0
+    },
+    {
+      "images": [
+        "Skur_11b.jpg",
+        "Skur_11d.jpg"
+      ],
+      "inliers": 0,
+      "configuration": 0
+    },
+    {
+      "images": [
+        "Skur_11b.jpg",
+        "Skur_11c.jpg"
+      ],
+      "inliers": 502,
+      "configuration": 2
+    },
+    {
+      "images": [
+        "skur11.jpg",
+        "Skur_11d.jpg"
+      ],
+      "inliers": 0,
+      "configuration": 0
+    },
+    {
+      "images": [
+        "skur11.jpg",
+        "Skur_11c.jpg"
+      ],
+      "inliers": 0,
+      "configuration": 0
+    },
+    {
+      "images": [
+        "Skur_11d.jpg",
+        "Skur_11c.jpg"
+      ],
+      "inliers": 0,
+      "configuration": 0
+    }
+  ],
+  "models": [],
+  "metricScaleAndGeoreference": "unavailable; no surveyed control points or accepted similarity transform",
+  "denseModel": "not attempted: CPU-only sparse feasibility probe; sparse success alone does not justify a complete facade mesh",
+  "inputAccuracy": "uncalibrated 2009/2012 photographs; no withheld survey ground truth"
+}

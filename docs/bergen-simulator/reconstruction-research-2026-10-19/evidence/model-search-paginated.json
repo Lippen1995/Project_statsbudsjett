@@ -1,0 +1,117 @@
+[
+  {
+    "query": "\"Bryggen\"",
+    "pagesRead": 3,
+    "recordsRead": 49,
+    "morePagesRemaining": false,
+    "candidates": [
+      {
+        "uid": "5055e307a8184a3c822e07ed71eb425a",
+        "name": "Bryggen",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 239936,
+        "vertexCount": 120115,
+        "descriptionSha256": "19484ff2446ea070f6cfab2cdec5f1fea13bb04e5cb3d509152076543ee5bb5f"
+      },
+      {
+        "uid": "50d0f8a3ecc343fb83c587b8d28afd36",
+        "name": "Bryggen Bergen OaW#003",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 15619,
+        "vertexCount": 8883,
+        "descriptionSha256": "f6f2284569360dcb766629c75db59ab27a3563e1892a6515630e5660c314733e"
+      }
+    ]
+  },
+  {
+    "query": "Bergen Norway",
+    "pagesRead": 5,
+    "recordsRead": 103,
+    "morePagesRemaining": false,
+    "candidates": [
+      {
+        "uid": "5055e307a8184a3c822e07ed71eb425a",
+        "name": "Bryggen",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 239936,
+        "vertexCount": 120115,
+        "descriptionSha256": "19484ff2446ea070f6cfab2cdec5f1fea13bb04e5cb3d509152076543ee5bb5f"
+      },
+      {
+        "uid": "6946a4493583444c8e935fd71b579c1d",
+        "name": "STADLER Variobahn - Bergen",
+        "isDownloadable": false,
+        "license": {
+          "uid": "5b54cf13b1a4422ca439696eb152070d",
+          "label": "Editorial"
+        },
+        "faceCount": 21310,
+        "vertexCount": 11876,
+        "descriptionSha256": "11c0c61f9c696e36d1f04b9bfdd4f2b6451667266d140a665feddacc3abaeb57"
+      },
+      {
+        "uid": "646d0a869db841ebbdae32a8c5b9f082",
+        "name": "Small amphitheater in Bergen",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 706163,
+        "vertexCount": 355777,
+        "descriptionSha256": "872eeae10becfde9d0816621b5c92c6df260e3c0fac079094385fe22b25f5a8f"
+      },
+      {
+        "uid": "3cdb9ee7a92143e7a09516ef1baf727f",
+        "name": "Bergen Airport, Flesland Terminal",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 660245,
+        "vertexCount": 343480,
+        "descriptionSha256": "7885d78d906a7b14d72fd1f18f86b116456a02b012039e4a53b0b388ad3315ec"
+      },
+      {
+        "uid": "d1453d6c4d164099bc037ecac2be5fec",
+        "name": "BergenLowPoly",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 108664,
+        "vertexCount": 92783,
+        "descriptionSha256": "647fc2345c33f7334bf9463359bacacf38375c1c3a97bacd3cca5b6b6a4d8d62"
+      },
+      {
+        "uid": "c93f4bf31daf40918d5d9c1ee233442b",
+        "name": "Norwegian wood-root In Bergen",
+        "isDownloadable": true,
+        "license": {
+          "uid": "b9ddc40b93e34cdca1fc152f39b9f375",
+          "label": "CC Attribution-ShareAlike"
+        },
+        "faceCount": 71997,
+        "vertexCount": 37713,
+        "descriptionSha256": "baa30ad24713419b0e1b18d6e7421c2a0bd5a98cd1cfd6e92f05b0f538f39561"
+      },
+      {
+        "uid": "44498f2e961a459dbd1d2fc2984d0421",
+        "name": "Bergen V1",
+        "isDownloadable": true,
+        "license": {
+          "uid": "322a749bcfa841b29dff1e8a1bb74b0b",
+          "label": "CC Attribution"
+        },
+        "faceCount": 6967994,
+        "vertexCount": 3071573,
+        "descriptionSha256": "d6a8665d43202084d801eaa36870a10c65724dac0bc2c428c5d8a79545a387a2"
+      },
+      {
+        "uid": "6e281b5cf5d9423e892e98acb6019607",
+        "name": "Hurtigbåtruter fra Strandkaiterminalen i Bergen",
+        "isDownloadable": false,
+        "license": null,
+        "faceCount": 0,
+        "vertexCount": 2055797,
+        "descriptionSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  }
+]

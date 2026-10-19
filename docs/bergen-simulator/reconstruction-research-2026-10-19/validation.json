@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-19",
+  "baselineCommit": "358b3e03649de9550af66697a76d86471e53ccee",
+  "branch": "feature/bergen-simulator",
+  "scope": "Documentation and isolated offline research only; no app/deployment changes",
+  "checks": {
+    "applicationVitest": {
+      "files": 15,
+      "tests": 236,
+      "passed": true
+    },
+    "releasePolicyNodeTests": {
+      "tests": 10,
+      "passed": true
+    },
+    "applicationLint": "passed, no warnings",
+    "applicationTypeScriptAndVite": "passed; existing >500 kB chunk advisory remains",
+    "applicationIsolation": "passed",
+    "existingApplicationBrowserSmoke": "passed",
+    "researchAdapters": {
+      "tests": 2,
+      "passed": true
+    },
+    "researchBrowserCases": {
+      "cases": 8,
+      "errors": 0,
+      "allSourcePickingPassed": true,
+      "settledIdleFrames": 0
+    },
+    "researchJavascriptSyntax": "passed",
+    "researchPythonExecution": "all three tools/extraction executed; two adapters passed",
+    "compressionGeometry": "exact indexing; quantized symmetric nearest-vertex error 0.000347399984 m < 0.002 m",
+    "protectedTrackedFilesUnchanged": 1649,
+    "mainAndWorkflows": "not modified",
+    "sourceSnapshots": "unchanged SHA-256"
+  },
+  "methodOutcomes": {
+    "OSM2World": "executed successfully, REJECTED for landmark fidelity (generic windows/default height)",
+    "COLMAPstandard": "executed, no initialized model; not a photogrammetry acceptance pass",
+    "COLMAPenhanced": "executed, no initialized model; not a photogrammetry acceptance pass",
+    "MeshroomOpenMVSrooferBlenderGIS": "reviewed, not executed as reconstruction methods",
+    "indexedAndMeshoptDelivery": "working isolated prototype, not production-enabled",
+    "independentRecognitionReview": "not performed",
+    "physicalGpuMobileSafariThermalsAndNativeMemory": "unverified",
+    "catalogueSearch": "Completed all pages for quoted Bryggen (49 records) and Bergen Norway (103 records); additional CC BY 4.0 Bergen V1 candidate documented, not integrated"
+  },
+  "publication": {
+    "changes": "docs/bergen-simulator only",
+    "deployment": "no new deployment requested or triggered by these documentation paths",
+    "authSettings": "no writes, weakening, bypass, new project, credential or public LIVE release",
+    "verifiedHostedBaseline": {
+      "stableUrl": "https://bergen-reimagined.vercel.app",
+      "deploymentId": "dpl_5fWqvZ76pG1WBWD71R6Rneuo6wTW",
+      "projectUpdatedAtUnchanged": 1792390508519,
+      "authentication": "All Deployments",
+      "verifiedDate": "2026-10-19",
+      "accessControlChanges": 0
+    }
+  }
+}
