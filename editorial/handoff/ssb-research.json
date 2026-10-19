@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "extracts": [
+    {
+      "id": "Statsstudenter",
+      "scope": "u-02",
+      "purpose": "Registrerte studenter per 1. oktober ved statlige universiteter og høyskoler finansiert over kapittel 260 post 50. Historisk og ny Innlandet-kode summeres; politi, militære og private læresteder er utelatt. Ikke heltidsekvivalenter eller årsgjennomsnitt.",
+      "table": "08585",
+      "selections": {
+        "Kjonn": [
+          "0"
+        ],
+        "UtdHogLerested": [
+          "091a",
+          "010a",
+          "106",
+          "107",
+          "024",
+          "012",
+          "105",
+          "044",
+          "103",
+          "100",
+          "090",
+          "099a",
+          "092",
+          "094",
+          "027a",
+          "001",
+          "095a",
+          "017a",
+          "097",
+          "096",
+          "016a",
+          "214"
+        ],
+        "ContentsCode": [
+          "Studenter"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "aggregation": {
+        "dimension": "UtdHogLerested",
+        "method": "sum"
+      }
+    }
+  ]
+}
