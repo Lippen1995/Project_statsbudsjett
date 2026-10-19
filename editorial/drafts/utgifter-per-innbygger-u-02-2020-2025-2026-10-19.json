@@ -5,7 +5,7 @@
   "type": "Utvikling over tid",
   "status": "draft",
   "createdAt": "2026-10-19T07:41:52.243Z",
-  "generatedAt": "2026-10-19T13:44:25.613Z",
+  "generatedAt": "2026-10-19T14:06:39.012Z",
   "report": {
     "kind": "real-expenditure-per-capita",
     "factsVersion": 2,
@@ -1219,10 +1219,10 @@
     }
   },
   "copy": {
-    "title": "Universitetene får mindre å rutte med per student",
+    "title": "Universitetene har fått mindre å rutte med per student",
     "description": "Flere studenter og høyere priser har spist opp økningen i støtten til statlige universiteter og høyskoler. Se hvordan pengene per student har utviklet seg.",
-    "lead": "Statlige universiteter og høyskoler får mer penger, men har også flere studenter og høyere priser å håndtere. Fra {{fact:startYear}} til {{fact:endYear}} falt støtten per student målt i faste kroner. Endringen var {{fact:calcPerStudentRealGrowth}}.",
-    "conclusion": "Pengene fra staten har ikke holdt tritt med både studentveksten og prisene. Det gir lærestedene mindre å rutte med per student etter vår prisjustering. Tallene viser press på finansieringen, men sier ikke om studentene faktisk har fått dårligere undervisning.",
+    "lead": "Statlige universiteter og høyskoler har fått mer penger, men har også hatt flere studenter og høyere priser å håndtere. Fra {{fact:startYear}} til {{fact:endYear}} falt støtten per student målt i faste kroner. Endringen var {{fact:calcPerStudentRealGrowth}}.",
+    "conclusion": "Pengene fra staten har ikke holdt tritt med både studentveksten og prisene. Det har gitt lærestedene mindre å rutte med per student etter vår prisjustering. Tallene viser press på finansieringen, men sier ikke om studentene faktisk har fått dårligere undervisning.",
     "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nFlere studenter. Mer penger. Likevel mindre å rutte med per student.\n\nStatlige universiteter og høyskoler har fått økt støtte, men studentveksten og prisene har løpt fra pengene. Prisjustert endring per student fra {{fact:startYear}} til {{fact:endYear}}: {{fact:calcPerStudentRealGrowth}}.\n\nPrisveksten tok ingen studierabatt.\n\nHva skjuler seg bak de voksende milliardbeløpene? Sven har gjort regnestykket. Les analysen på Fellestall.",
     "sections": [
       {
