@@ -1,8 +1,53 @@
 # Oppgavebeskrivelse: ukentlig Fellestall-analyse
 
-Brukeren viste 4. oktober 2026 bekreftelsen på at **«Ukentlig Fellestall-analyse»** er opprettet og aktiv i en annen ChatGPT-samtale. Tidsplanen er mandager klokken **09.00, Europe/Oslo**, første gang **5. oktober 2026**. Oppgaven henter denne beskrivelsen fra main. Ikke opprett en ny tidsplan. Dette dokumenterer planleggingen, men analyseproduksjon, revisjon, mobilgjennomgang og publisering er ikke ende-til-ende-testet.
+Brukeren viste 4. oktober 2026 bekreftelsen på at **«Ukentlig Fellestall-analyse»** er opprettet og aktiv i en annen ChatGPT-samtale. Den opprinnelige tidsplanen var mandager klokken **09.00, Europe/Oslo**, første gang **5. oktober 2026**. Den samme oppgaven ble 19. oktober utvidet til **daglig køkontroll kl. 09.00 fra 20. oktober**, for å støtte administratorens daterte bestillinger. Vanlige automatiske Sven-analyser er fortsatt mandagsanalyser. Oppdateringsverktøyet bekreftet aktiv konfigurasjon; den nye pipelineflyten er ikke verifisert i produksjon. Oppgaven henter denne beskrivelsen fra main. Ikke opprett en ny parallell tidsplan.
 
 Kjør med abonnementspålogging og prosjektets vanlige tilganger. Bruk ingen OpenAI API-nøkkel til tekstproduksjon. Bruken inngår i kvotene for appen og modellen som utfører oppgaven. GitHub- og LinkedIn-integrasjoner er separate fra valg av AI-produksjon.
+
+## Datert analysepipeline, 19. oktober 2026
+
+Brukerens nye føring er en redigerbar kø i adminområdet. Les **fersk main-versjon**
+av `editorial/analysis-pipeline.json` før hver ny analyse. Disse føringene har
+forrang foran eldre regler om automatisk temavalg og én ukentlig produksjonsdag.
+Revisjon av en åpen gjennomgang beholder fortsatt prioritet, og eksisterende
+godkjenningsvern består. Ikke opprett en ny parallell tidsplan.
+
+- Administrator kan bestille tema, konkrete instrukser og ønsket skrivedato,
+  redigere, slette og flytte også Svens eget forslag.
+- Datoer tolkes i `Europe/Oslo`. Velg det øverste temaet som har nådd datoen sin.
+  Et fremtidig tema sperrer ikke en senere plassert bestilling som er klar.
+  Start aldri før datoen. Høyst ett nytt utkast per kjøring; vent på en åpen
+  gjennomgang. En dato er ingen automatisk godkjenning eller publiseringsdato.
+- Når køen er tom, velg og lagre **bare neste** dokumenterte tema, til neste
+  mandag. Ikke lag flere forslag eller en reservekø. Slettede og allerede
+  leverte forslag skal ikke gjenoppstå som samme automatiske tema.
+- `prepare.mjs` leser køen og returnerer enten et vanlig rapportutkast med
+  `pipeline`, `pipelineState: waiting`, eller `pipelineState: research-required`.
+  Ved `waiting`: ingen ny tekst. Ved `research-required`: undersøk bestillingen,
+  gjør kildearbeidet og skriv en konkret JSON-plan under `editorial/handoff/`.
+  Kjør så `prepare.mjs <utfil> --pipeline-plan=editorial/handoff/<plan>.json`.
+  Ikke velg en tilfeldig standardrapport som erstatning for en fri bestilling.
+  Mangler relevant datagrunnlag, behold bestillingen og rapporter blokkeringen.
+- Planen kan bruke `kind: expenditure` med `departmentId`, `start`, `end`,
+  `question`, `detailSelections` og `researchPlan`; `kind: budget` med `year`,
+  `phase`, `comparison`, `baselineSeries` og eventuelt `question`; eller
+  `kind: oil` med `year`. Behold faktisk avgrensning: et departement er ikke
+  automatisk et svar på et smalere spørsmål om sykehus eller en bestemt ordning.
+- Behold `packet.pipeline` og `packet.article.report` uendret mens teksten
+  skrives. Boten kontrollerer gjeldende bestilling, dato, prioritet og den
+  gjenberegnede rapporten igjen før skriving til gjennomgangsgrenen.
+- Først når boten har opprettet gjennomgangen og sendt review request, flyttes
+  det leverte temaet til pipelinehistorikken. Det er **levert**, ikke publisert.
+  Bare hvis kommende kø nå er tom, opprettes ett nytt mandagsforslag.
+
+`node scripts/analyser/pipeline-cli.mjs` planlegger ett neste tema dersom køen
+er tom, uten AI-API og uten å skrive artikkeltekst. `--local` brukes bare i et
+isolert arbeidsområde. Vanlig kommando skriver med SHA-kontroll til main.
+
+Daglig kontroll kl. 09.00 er nødvendig for bestillinger på andre ukedager.
+Før pipelinefilen og -koden finnes på main skal den eksisterende oppgaven
+fortsette vanlig mandagsarbeid og avslutte uten ny analyse på andre dager.
+Kildekode og lokal verifikasjon alene bekrefter ikke at adminområdet er live.
 
 ## Nåværende gjennomgang
 

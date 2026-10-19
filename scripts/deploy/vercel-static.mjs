@@ -3,6 +3,7 @@ import { resolve, relative } from 'node:path'
 import { tmpdir } from 'node:os'
 import { createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
+import { packageAdmin } from '../admin/package.mjs'
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex')
 
@@ -17,7 +18,7 @@ async function response(endpoint, deployment) {
     const headers = await readFile(resolve(temporary, 'headers'), 'utf8')
     const statuses = [...headers.matchAll(/^HTTP\/\S+\s+(\d{3})/gm)]
     if (!statuses.length) throw new Error(`Ingen HTTP-status for ${endpoint}`)
-    return { status: Number(statuses.at(-1)[1]), body: await readFile(resolve(temporary, 'body')) }
+    return { status: Number(statuses.at(-1)[1]), body: await readFile(resolve(temporary, 'body')), headers }
   } finally {
     await rm(temporary, { recursive: true, force: true })
   }
@@ -64,14 +65,18 @@ if (command === 'pack') {
   const config = {
     version: 3,
     routes: [
+      ...(paths.includes('admin/index.html') ? [{ src: '/api/(admin(?:/.*)?|auth(?:/.*)?|telemetry)', dest: '/admin-api' }] : []),
       { src: '/(.*)', headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' }, continue: true },
       { src: '/assets/(.*)', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
+      { src: '/admin(?:/.*)?', headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow', 'X-Frame-Options': 'DENY', 'Referrer-Policy': 'same-origin',
+        'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" }, continue: true },
       { src: '/', dest: '/index.html' },
       ...directoryRoutes,
       { handle: 'filesystem' },
       { src: '/(.*)', status: 404 },
     ],
   }
+  if (paths.includes('admin/index.html')) await packageAdmin(output)
   await writeFile(resolve(output, 'config.json'), JSON.stringify(config, null, 2) + '\n')
   console.log(`Pakket ${paths.length} filer til Build Output API v3`)
 } else if (command === 'verify') {
@@ -96,6 +101,16 @@ if (command === 'pack') {
   }
   const { status } = await response('/migration-missing-file.json', url.origin)
   if (status !== 404) throw new Error(`Manglende JSON svarte ${status}, forventet 404`)
+  if (paths.includes('admin/index.html')) {
+    const admin = await response('/admin/', url.origin)
+    if (!/^x-robots-tag:.*noindex/im.test(admin.headers) || !/^cache-control:.*no-store/im.test(admin.headers)) {
+      throw new Error('Adminområdet mangler noindex eller no-store')
+    }
+    for (const endpoint of ['/api/admin/session', '/api/admin/metrics', '/api/admin/sven/files']) {
+      const result = await response(endpoint, url.origin)
+      if (result.status !== 401) throw new Error(`Admin-API ${endpoint} svarte ${result.status}; forventet 401 uten innlogging. Kontroller serveroppsettet før aktivering.`)
+    }
+  }
   console.log('Manglende JSON gir 404. Utrullingen er kontrollert; domener er ikke flyttet.')
 } else {
   throw new Error('Bruk: node scripts/deploy/vercel-static.mjs pack|verify <kildemappe> [deployment-url]')

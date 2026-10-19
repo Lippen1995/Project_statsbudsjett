@@ -15,6 +15,8 @@ import { factText } from '../../web/src/analyser/model.js'
 import { buildReport } from './report.mjs'
 import { nextBudgetReport } from './budget-report.mjs'
 import { buildOilReport } from './oil-report.mjs'
+import { buildPipelineReport } from './pipeline-reports.mjs'
+import { pipelineMarker } from './pipeline-model.mjs'
 import { topicKey, topicBlocked } from '../../web/src/analyser/topics.js'
 import {
   replacementSource,
@@ -97,6 +99,9 @@ export async function runWorkflow({
   budgetQuestion,
   budgetBaseline = 'saldert',
   oilYear,
+  pipelinePlan,
+  pipelineReference,
+  beforeDraftWrite = async () => {},
 }) {
   const draftPrefix = 'editorial/drafts/'
   const comment = (number, body) =>
@@ -150,7 +155,9 @@ export async function runWorkflow({
       )
         await requestReview(existing.number)
       console.log('Et utkast venter allerede på gjennomgang. Ingen ny publisering.')
-      return
+      return { waiting: true, number: existing.number,
+        reviewUrl: existing.html_url ?? `https://github.com/${g.repository}/pull/${existing.number}`,
+        pipelineMatch: Boolean(pipelineReference && existing.body?.includes(pipelineMarker(pipelineReference))) }
     }
     const published = (await g.content(publicationPath)).value
     published.forEach((a) => validateArticle(a, { published: true }))
@@ -169,8 +176,9 @@ export async function runWorkflow({
               r.comparison === 'previous-budget-to-proposal' &&
               !topicBlocked(r, published, now()),
           })
+        : pipelinePlan ? buildPipelineReport(dataDir, published, pipelinePlan, now())
         : nextReport(dataDir, published, { at: now() })
-    if (!source && report && detailSelections) {
+    if (!source && !pipelinePlan && report && detailSelections) {
       if (report.kind !== 'real-expenditure-per-capita')
         throw Error('Postutvalg krever en regnskapsanalyse')
       report = buildReport(dataDir, {
@@ -207,6 +215,7 @@ export async function runWorkflow({
       report,
       copy: await generateCopy(report),
     })
+    await beforeDraftWrite()
     const main = await g.api(`${g.root}/git/ref/heads/main`)
     const branch = `analysis/weekly-${date}-${report.scopeId}-${report.start}-${report.end}${source ? '-revision-' + replacementFor.contentHash.slice(0, 8) : report.question ? '-' + report.question : ''}`
     const path = `${draftPrefix}${slug}.json`
@@ -258,11 +267,12 @@ export async function runWorkflow({
         title: `Analyse til gjennomgang: ${factText(article.copy.title, article.report)}`,
         head: branch,
         base: 'main',
-        body: renderReview(article),
+        body: renderReview(article) + (pipelineReference ? `\n\n${pipelineMarker(pipelineReference)}` : ''),
       },
     })
     await requestReview(pr.number)
     console.log(`Utkast klart i gjennomgang #${pr.number}. Ingen offentlig publisering.`)
+    return { delivered: true, number: pr.number, reviewUrl: pr.html_url ?? `https://github.com/${g.repository}/pull/${pr.number}` }
   } else if (command === 'feedback' || command === 'feedback-notice') {
     const actor = event.comment?.user ?? event.review?.user
     if (actor?.type === 'Bot' || !(await g.permission(actor?.login ?? ''))) {

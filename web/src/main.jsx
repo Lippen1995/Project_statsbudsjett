@@ -4,6 +4,9 @@ import Fellestall from './fellestall/Fellestall.jsx'
 import AnalyseApp from './analyser/AnalyseApp.jsx'
 import './index.css'
 import './analyser/analyser.css'
+import { startTelemetry } from './lib/telemetry.js'
+
+startTelemetry()
 
 const isAnalysis = /^\/analyser(?:\/|$)/.test(window.location.pathname)
 hydrateRoot(document.getElementById('root'),

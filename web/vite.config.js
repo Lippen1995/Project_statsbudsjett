@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { readFileSync } from 'node:fs'
 import SeoFallback from './src/fellestall/SeoFallback.jsx'
 import { analysesPlugin } from './src/analyser/vite-plugin.jsx'
+import { adminPlugin } from './src/admin/vite-plugin.mjs'
 
 const NETTSTED = 'https://fellestall.no/'
 
@@ -76,6 +77,7 @@ function seo() {
   return {
     name: 'fellestall-seo',
     transformIndexHtml(html) {
+      if (!html.includes('<!-- SEO_DATA -->')) return html
       return html
         .replace('<div id="root"></div>', `<div id="root">${fallback}</div>`)
         .replace('<!-- SEO_DATA -->', [
@@ -88,6 +90,6 @@ function seo() {
 }
 
 export default defineConfig({
-  plugins: [react(), seo(), analysesPlugin()],
+  plugins: [react(), seo(), analysesPlugin(), adminPlugin()],
   base: './',
 })

@@ -48,7 +48,9 @@ jobs:
           node-version: '24'
 
       - name: Installer fast Vercel CLI-versjon
-        run: npm install --global vercel@63.1.2
+        run: |
+          npm ci
+          npm install --global vercel@63.1.2
 
       - name: Pakk statiske filer uten nytt frontendbygg
         run: |
