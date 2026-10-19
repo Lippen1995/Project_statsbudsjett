@@ -101,6 +101,17 @@
         "source": "Brukerens tilbakemelding i oppgavens chat 19. oktober 2026, etter første revisjon av PR #65",
         "note": "Uttrykkelig føring om lettlest språk, flyt og valg av hovedvinkel. Ingen GitHub-feedback-ID eller publiseringsgodkjenning opprettes av dette."
       }
+    },
+    {
+      "id": "P010",
+      "status": "active",
+      "scope": "article-and-linkedin",
+      "rule": "La tidsformen følge dataperioden. Beskriv historiske endringer med fortidsform eller «har fått/har økt/har falt» og oppgi perioden. Ikke la overskrift eller oppsummering høres ut som en framtidig endring eller en påstand om dagens situasjon når grunnlaget bare gjelder avsluttede regnskapsår.",
+      "provenance": {
+        "kind": "explicit-current-user-instruction",
+        "source": "Brukerens retting av tidsform i oppgavens chat 19. oktober 2026",
+        "note": "Gjelder perioden 2020–2025 i PR #65. Ingen GitHub-feedback-ID eller publiseringsgodkjenning opprettes av dette."
+      }
     }
   ],
   "feedbackEvents": [],
