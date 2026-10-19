@@ -5,10 +5,25 @@
   "type": "Utvikling over tid",
   "status": "draft",
   "createdAt": "2026-10-19T07:41:52.243Z",
-  "generatedAt": "2026-10-19T07:41:52.243Z",
+  "generatedAt": "2026-10-19T11:44:12.707Z",
   "report": {
     "kind": "real-expenditure-per-capita",
     "factsVersion": 2,
+    "researchPlan": [
+      {
+        "id": "UtenIntegrering",
+        "kind": "exclude-chapters",
+        "evidenceIds": [
+          "integrering"
+        ]
+      },
+      {
+        "id": "PerStudent",
+        "kind": "per-observation",
+        "numerator": "statsuniversiteter",
+        "denominator": "Statsstudenter"
+      }
+    ],
     "scopeId": "u-02",
     "scopeName": "Kunnskapsdepartementet",
     "detailSelections": [
@@ -31,12 +46,18 @@
         "nodeIds": [
           "u-02-2410"
         ]
+      },
+      {
+        "id": "statsuniversiteter",
+        "nodeIds": [
+          "u-02-0260-50"
+        ]
       }
     ],
     "start": 2020,
     "end": 2025,
     "dataUpdated": "2026-10-08T13:41:18.909470+00:00",
-    "dataHash": "6fad6a1013be3009d874ce84914b1556bc6f627e327ddad3c1671908d7855597",
+    "dataHash": "681d66aa7f579db311c038df1741fd9d7d205d194789f052a2f8795851b9b001",
     "facts": {
       "startYear": {
         "value": 2020,
@@ -472,6 +493,221 @@
         "value": 6.194776833860405,
         "text": "6,2 %",
         "label": "Statens lånekasse for utdanning: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "statsuniversiteterPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): år med høyeste løpende beløp i perioden"
+      },
+      "statsuniversiteterPeakAmount": {
+        "value": 44149.2,
+        "text": "44,1 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): høyeste løpende beløp, 2025"
+      },
+      "statsuniversiteterLastAmount": {
+        "value": 44149.2,
+        "text": "44,1 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): løpende beløp, 2025"
+      },
+      "statsuniversiteterReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): sammenligningsår"
+      },
+      "statsuniversiteterReferenceAmount": {
+        "value": 37181.6,
+        "text": "37,2 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): løpende beløp, 2020"
+      },
+      "statsuniversiteterFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): første år med regnskapsføring på denne posten i perioden"
+      },
+      "statsuniversiteterYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): regnskapsår"
+      },
+      "statsuniversiteterAmountA": {
+        "value": 37181.6,
+        "text": "37,2 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): løpende beløp, 2020"
+      },
+      "statsuniversiteterYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): regnskapsår"
+      },
+      "statsuniversiteterAmountB": {
+        "value": 38917.6,
+        "text": "38,9 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): løpende beløp, 2021"
+      },
+      "statsuniversiteterYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): regnskapsår"
+      },
+      "statsuniversiteterAmountC": {
+        "value": 39565.5,
+        "text": "39,6 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): løpende beløp, 2022"
+      },
+      "statsuniversiteterYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): regnskapsår"
+      },
+      "statsuniversiteterAmountD": {
+        "value": 41549.9,
+        "text": "41,5 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): løpende beløp, 2023"
+      },
+      "statsuniversiteterYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): regnskapsår"
+      },
+      "statsuniversiteterAmountE": {
+        "value": 43128.5,
+        "text": "43,1 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): løpende beløp, 2024"
+      },
+      "statsuniversiteterYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): regnskapsår"
+      },
+      "statsuniversiteterAmountF": {
+        "value": 44149.2,
+        "text": "44,1 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): løpende beløp, 2025"
+      },
+      "statsuniversiteterFirstRecordedAmount": {
+        "value": 37181.6,
+        "text": "37,2 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): første observerte beløp på postutvalget"
+      },
+      "statsuniversiteterChangeSinceFirst": {
+        "value": 6967.5999999999985,
+        "text": "7,0 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "statsuniversiteterGrowthSinceFirst": {
+        "value": 18.739376465778772,
+        "text": "18,7 %",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): prosentvis endring fra første observerte år"
+      },
+      "statsuniversiteterContributionAmount": {
+        "value": 6967.5999999999985,
+        "text": "7,0 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "statsuniversiteterNetChangeRatio": {
+        "value": 71.97710814747505,
+        "text": "72,0 %",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "statsuniversiteterChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): beløpsendring fra høyeste observerte år"
+      },
+      "statsuniversiteterGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): prosentvis endring fra høyeste observerte år"
+      },
+      "statsuniversiteterLastAnnualChangeAmount": {
+        "value": 1020.6999999999971,
+        "text": "1,0 mrd. kr",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "statsuniversiteterGrowthLastYear": {
+        "value": 2.3666485038895235,
+        "text": "2,4 %",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "statsuniversiteterRealGrowthSinceReference": {
+        "value": -7.149971507076714,
+        "text": "−7,1 %",
+        "label": "Statlige universiteter og høyskoler (Universiteter og høyskoler): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "ssbStatsstudenterStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "08585: Studenter i universitets- og høgskoleutdanning i Norge. Kjønn og lærested 2014-2025: første observasjonsår"
+      },
+      "ssbStatsstudenterEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "08585: Studenter i universitets- og høgskoleutdanning i Norge. Kjønn og lærested 2014-2025: siste observasjonsår"
+      },
+      "ssbStatsstudenterStart": {
+        "value": 238806,
+        "text": "238 806 personer",
+        "label": "08585: Studenter i universitets- og høgskoleutdanning i Norge. Kjønn og lærested 2014-2025: startverdi"
+      },
+      "ssbStatsstudenterEnd": {
+        "value": 250538,
+        "text": "250 538 personer",
+        "label": "08585: Studenter i universitets- og høgskoleutdanning i Norge. Kjønn og lærested 2014-2025: sluttverdi"
+      },
+      "ssbStatsstudenterChange": {
+        "value": 11732,
+        "text": "11 732 personer",
+        "label": "08585: Studenter i universitets- og høgskoleutdanning i Norge. Kjønn og lærested 2014-2025: endring i måleenheten"
+      },
+      "ssbStatsstudenterGrowth": {
+        "value": 4.912774385903207,
+        "text": "4,91 %",
+        "label": "08585: Studenter i universitets- og høgskoleutdanning i Norge. Kjønn og lærested 2014-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "calcUtenIntegreringNominalGrowth": {
+        "value": 24.15190697233911,
+        "text": "24,2 %",
+        "label": "Nominell vekst uten valgte kapitler"
+      },
+      "calcUtenIntegreringRealGrowth": {
+        "value": 1.1838041824563605,
+        "text": "1,2 %",
+        "label": "KPI-justert samlet vekst uten valgte kapitler"
+      },
+      "calcUtenIntegreringRealPerCapitaGrowth": {
+        "value": -2.917562455326428,
+        "text": "−2,9 %",
+        "label": "KPI-justert vekst per innbygger uten valgte kapitler"
+      },
+      "calcUtenIntegreringStart": {
+        "value": 82358.3,
+        "text": "82,4 mrd. kr",
+        "label": "Departementsutgifter uten valgte kapitler i første år"
+      },
+      "calcUtenIntegreringEnd": {
+        "value": 102249.39999999997,
+        "text": "102,2 mrd. kr",
+        "label": "Departementsutgifter uten valgte kapitler i siste år"
+      },
+      "calcPerStudentNominalGrowth": {
+        "value": 13.179140634501607,
+        "text": "13,2 %",
+        "label": "Nominell endring per registrert person"
+      },
+      "calcPerStudentRealGrowth": {
+        "value": -7.759000382881198,
+        "text": "−7,8 %",
+        "label": "KPI-justert endring per registrert person"
+      },
+      "calcPerStudentStart": {
+        "value": 155697.9305377587,
+        "text": "155 698 kr",
+        "label": "Regnskapsført bevilgning per registrert student i første år"
+      },
+      "calcPerStudentEnd": {
+        "value": 176217.57976833853,
+        "text": "176 218 kr",
+        "label": "Regnskapsført bevilgning per registrert student i siste år"
       }
     },
     "eventEvidence": {
@@ -630,9 +866,57 @@
               "reported": true
             }
           ]
+        },
+        {
+          "id": "statsuniversiteter",
+          "nodeIds": [
+            "u-02-0260-50"
+          ],
+          "title": "Statlige universiteter og høyskoler (Universiteter og høyskoler)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-02-0260-50",
+              "name": "Statlige universiteter og høyskoler"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 37181.6,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 38917.6,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 39565.5,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 41549.9,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 43128.5,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 44149.2,
+              "reported": true
+            }
+          ]
         }
       ],
-      "hash": "17b60ea3df6ce699cfcf10c9f0506d70b56ba3db07b925b363a1e3a0f33adf90"
+      "hash": "e21a8a4722d1f5a9bafe9c4256fb92a32209334edaa97e044e12dd8101f283a2"
     },
     "rows": [
       {
@@ -720,6 +1004,32 @@
         "url": "https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen",
         "local": "/data/kpi.json",
         "description": "Årsgjennomsnitt for KPI, fra Fellestalls normaliserte serie."
+      },
+      {
+        "name": "SSB: 08585: Studenter i universitets- og høgskoleutdanning i Norge. Kjønn og lærested 2014-2025 — Statsstudenter (tabell 08585)",
+        "url": "https://www.ssb.no/statbank/table/08585/",
+        "description": "Frosset uttrekk hentet 2026-10-19T11:41:09.553375+00:00. Registrerte studenter per 1. oktober ved statlige universiteter og høyskoler finansiert over kapittel 260 post 50. Historisk og ny Innlandet-kode summeres; politi, militære og private læresteder er utelatt. Ikke heltidsekvivalenter eller årsgjennomsnitt."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Statsstudenter",
+        "url": "https://fellestall.no/data/ssb-research/ee13c4f16835d677151c66c3903eed4088625182ebcee0269d444ba1ad4c52c4.json",
+        "local": "/data/ssb-research/ee13c4f16835d677151c66c3903eed4088625182ebcee0269d444ba1ad4c52c4.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "Regjeringens tilleggsforslag: flytting av integreringsområdet",
+        "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-tillegg-1-20212022/id2885048/?ch=2",
+        "description": "Avsnittet om flytting av Integreringsavdelingen og tabell 2.2 er lest. Kapitlene 290–292 foreslås flyttet til 670–672. Administrasjonsmidler inne i kapittel 200 er ikke isolert som regnskapsført delserie."
+      },
+      {
+        "name": "Arbeids- og inkluderingsdepartementet: bekreftet overføring i 2022",
+        "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20222023/id2930910/?ch=2",
+        "description": "Proposisjonen bekrefter at integreringsområdet ble overført fra Kunnskapsdepartementet i 2022."
+      },
+      {
+        "name": "SSB: definisjon av registrerte studenter",
+        "url": "https://www.ssb.no/utdanning/hoyere-utdanning/statistikk/studenter-i-universitets-og-hogskoleutdanning",
+        "description": "Personer registrert 1. oktober; permisjon og doktorgradsprogram inngår ikke. Lærestedsutvalget i uttrekket omfatter statlige universiteter og høyskoler, med begge Innlandet-kodene for å bevare historikken."
       }
     ],
     "methodology": [
@@ -728,7 +1038,10 @@
       "Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.",
       "Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.",
       "Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.",
-      "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn."
+      "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn.",
+      "SSB-serier er eksplisitte årlige utvalg. Start-/sluttverdier, forskjell og eventuell prosentvis endring beregnes fra arkiverte observasjoner. Prosentvis endring er ikke prosentpoeng.",
+      "Tilleggsberegninger gjentas fra frosne kapittel/post-serier og eksplisitte SSB-utvalg. Kapitteljustering trekker samme navngitte kapitler fra departementet i hvert år; ingen nasjonal nullutgift antas når ansvaret flyttes.",
+      "Bevilgning per registrert student er valgt regnskapspost delt på eksplisitt valgte læresteders SSB-studenttall. Det er ikke institusjonenes totale kostnader per heltidsstudent. KPI-justering bruker sluttårets konsumpriser."
     ],
     "limitations": [
       "Departementenes ansvarsområder kan endres over tid. Serien følger Fellestalls normaliserte departementsinndeling, og må ikke alene tolkes som vekst i identiske tjenester.",
@@ -736,116 +1049,302 @@
       "Utgifter sier ikke hvor mye eller hvor god tjenesteproduksjon innbyggerne får. Overføringer, pensjoner og tilskudd inngår også.",
       "Tallene identifiserer ikke årsakene til endringene. De kan ikke alene brukes til å konkludere om effektivitet, sløsing eller virkningen av politiske beslutninger.",
       "Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.",
-      "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse."
-    ]
+      "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse.",
+      "SSB-seriene er bakgrunnsvariabler, ikke en dokumentert årsaksfordeling av budsjettveksten. Geografi, definisjoner, tidsperiode, revisjoner og eventuelle prognoser må vurderes før tolkning. Siste observerte år erstatter ikke et fremtidig budsjettår.",
+      "Kapitteljusteringen er avgrenset til oppgitte kapitler. Andre ansvarsendringer og integreringsrelatert administrasjon inne i andre kapitler er ikke omregnet.",
+      "Studenttall er SSBs personer per 1. oktober, uten doktorgradsstudenter og permisjoner. Deltid, forskning og andre institusjonsoppgaver påvirker tolkningen; bevilgning per student er ikke ren undervisningskostnad."
+    ],
+    "ssbEvidence": [
+      {
+        "id": "Statsstudenter",
+        "scope": "u-02",
+        "purpose": "Registrerte studenter per 1. oktober ved statlige universiteter og høyskoler finansiert over kapittel 260 post 50. Historisk og ny Innlandet-kode summeres; politi, militære og private læresteder er utelatt. Ikke heltidsekvivalenter eller årsgjennomsnitt.",
+        "hash": "ee13c4f16835d677151c66c3903eed4088625182ebcee0269d444ba1ad4c52c4",
+        "table": "08585",
+        "title": "08585: Studenter i universitets- og høgskoleutdanning i Norge. Kjønn og lærested 2014-2025",
+        "retrievedAt": "2026-10-19T11:41:09.553375+00:00",
+        "updated": "2026-07-03T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Studenter"
+          ],
+          "Kjonn": [
+            "0"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "UtdHogLerested": [
+            "091a",
+            "010a",
+            "106",
+            "107",
+            "024",
+            "012",
+            "105",
+            "044",
+            "103",
+            "100",
+            "090",
+            "099a",
+            "092",
+            "094",
+            "027a",
+            "001",
+            "095a",
+            "017a",
+            "097",
+            "096",
+            "016a",
+            "214"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Studenter",
+            "label": "Studenter"
+          },
+          "Kjonn": {
+            "code": "0",
+            "label": "Begge kjønn"
+          },
+          "UtdHogLerested": {
+            "aggregation": "sum",
+            "codes": [
+              "091a",
+              "010a",
+              "106",
+              "107",
+              "024",
+              "012",
+              "105",
+              "044",
+              "103",
+              "100",
+              "090",
+              "099a",
+              "092",
+              "094",
+              "027a",
+              "001",
+              "095a",
+              "017a",
+              "097",
+              "096",
+              "016a",
+              "214"
+            ],
+            "labels": [
+              "Arkitektur- og designhøgskolen i Oslo",
+              "Høgskolen i Molde - vitenskapelig høgskole i logistikk",
+              "Høgskolen i Innlandet",
+              "Universitetet i Innlandet",
+              "Høgskolen i Østfold",
+              "Høgskulen i Volda",
+              "Høgskulen på Vestlandet",
+              "Kunsthøgskolen i Oslo",
+              "Nord universitet",
+              "Norges Handelshøyskole",
+              "Norges idrettshøgskole",
+              "Norges miljø- og biovitenskapelige universitet",
+              "Norges musikkhøgskole",
+              "Norges teknisk-naturvitenskapelige universitet",
+              "OsloMet - storbyuniversitetet",
+              "Sámi allaskuvla - Samisk høgskole",
+              "UiT - Norges arktiske universitet",
+              "Universitetet i Agder",
+              "Universitetet i Bergen",
+              "Universitetet i Oslo",
+              "Universitetet i Stavanger",
+              "Universitetet i Sørøst-Norge"
+            ]
+          }
+        },
+        "unit": "personer",
+        "rows": [
+          {
+            "value": 238806,
+            "year": 2020
+          },
+          {
+            "value": 246178,
+            "year": 2021
+          },
+          {
+            "value": 240951,
+            "year": 2022
+          },
+          {
+            "value": 242114,
+            "year": 2023
+          },
+          {
+            "value": 244472,
+            "year": 2024
+          },
+          {
+            "value": 250538,
+            "year": 2025
+          }
+        ]
+      }
+    ],
+    "researchSources": {
+      "sha256": "4d8601fb39d028916226d888f49d82fa20a6db2e862c0f1c6628ba5e168776c3",
+      "version": 1,
+      "scope": "u-02",
+      "checkedAt": "2026-10-19",
+      "sources": [
+        {
+          "name": "Regjeringens tilleggsforslag: flytting av integreringsområdet",
+          "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-tillegg-1-20212022/id2885048/?ch=2",
+          "description": "Avsnittet om flytting av Integreringsavdelingen og tabell 2.2 er lest. Kapitlene 290–292 foreslås flyttet til 670–672. Administrasjonsmidler inne i kapittel 200 er ikke isolert som regnskapsført delserie."
+        },
+        {
+          "name": "Arbeids- og inkluderingsdepartementet: bekreftet overføring i 2022",
+          "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20222023/id2930910/?ch=2",
+          "description": "Proposisjonen bekrefter at integreringsområdet ble overført fra Kunnskapsdepartementet i 2022."
+        },
+        {
+          "name": "SSB: definisjon av registrerte studenter",
+          "url": "https://www.ssb.no/utdanning/hoyere-utdanning/statistikk/studenter-i-universitets-og-hogskoleutdanning",
+          "description": "Personer registrert 1. oktober; permisjon og doktorgradsprogram inngår ikke. Lærestedsutvalget i uttrekket omfatter statlige universiteter og høyskoler, med begge Innlandet-kodene for å bevare historikken."
+        }
+      ]
+    }
   },
   "copy": {
-    "title": "Kunnskapsregnskapets milliardfelle: Pengene hadde fått ny adresse",
-    "description": "Kunnskapsdepartementets utgifter steg {{fact:nominalGrowth}}, men falt per innbygger etter KPI-justering. Flyttede oppgaver og ulike spor for universiteter og studiestøtte forklarer hvorfor.",
-    "lead": "Integreringskapitler med {{fact:integreringAmountB}} i regnskapsførte utgifter forsvant fra Kunnskapsdepartementets avgrensning etter {{fact:integreringYearB}}. Oppgavene ble flyttet. Samtidig økte universitetsbevilgningene og utgiftene i Lånekassens kapittel i ulik takt. Det endrer historien om en krympende kunnskapsregning.",
-    "conclusion": "Fra {{fact:startYear}} til {{fact:endYear}} økte departementets utgifter {{fact:nominalGrowth}} i løpende kroner, mens endringen i KPI-justert beløp per innbygger var {{fact:realPerCapitaGrowth}}. Integreringsområdet ble flyttet ut underveis. Universitetene fikk nominelt mer, men mindre per innbygger etter KPI-justering; Lånekassens inkluderte utgifter økte også med denne målestokken. Departementstotalen gir derfor ikke et sammenlignbart mål på hele utdanningsinnsatsen.",
-    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nMilliarder forsvant fra kunnskapsregnskapet. De hadde fått ny adresse.\n\nIntegreringskapitler med {{fact:integreringAmountB}} i utgifter ble flyttet ut av departementets avgrensning. Samtidig gikk universiteter og Lånekassen i ulike retninger etter pris- og befolkningsjustering.\n\nOrganisasjonskartet har tydeligvis også en økonomiavdeling.\n\nHvor mye av den krympende kunnskapsregningen er en mindre regning – og hvor mye er en annen regning? Sven følger pengene på Fellestall.",
+    "title": "Kunnskapsregningens store fall krymper når milliardflyttingen tas ut",
+    "description": "Et fall på {{fact:realPerCapitaGrowth}} per innbygger blir {{fact:calcUtenIntegreringRealPerCapitaGrowth}} når flyttede kapitler tas ut. Men ved statlige læresteder falt bevilgningen per student også etter prisjustering.",
+    "lead": "Kunnskapsdepartementets regning så ut til å ha krympet {{fact:realPerCapitaGrowth}} per innbygger etter prisjustering fra {{fact:startYear}} til {{fact:endYear}}. Holder vi de flyttede integreringskapitlene utenfor alle år, blir endringen {{fact:calcUtenIntegreringRealPerCapitaGrowth}}. Flyttingen forklarer mye av utslaget. Men en egen beregning viser at bevilgningen til statlige universiteter og høyskoler per registrert student falt i faste kroner.",
+    "conclusion": "Uten de flyttede integreringskapitlene økte departementsutgiftene {{fact:calcUtenIntegreringNominalGrowth}} nominelt og {{fact:calcUtenIntegreringRealGrowth}} etter KPI-justering. Per innbygger ble endringen {{fact:calcUtenIntegreringRealPerCapitaGrowth}}, langt mindre negativ enn den opprinnelige departementsserien. For statlige universiteter og høyskoler var endringen i KPI-justert bevilgning per registrert student {{fact:calcPerStudentRealGrowth}}. Omorganiseringen gjør totalbildet mindre dramatisk; den opphever ikke presset i universitetsbevilgningen.",
+    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nKunnskapsregningen falt {{fact:realPerCapitaGrowth}} per innbygger etter prisjustering. Så ryddet vi i flyttelasset.\n\nUten integreringskapitlene som byttet departement, ble endringen {{fact:calcUtenIntegreringRealPerCapitaGrowth}}. Organisasjonskartet hadde tatt en solid bit av overskriften.\n\nMen statlige universiteter og høyskoler fikk mindre per registrert student i faste kroner: {{fact:calcPerStudentRealGrowth}}.\n\nHvor mye var flytting, og hvor ble det faktisk trangere? Sven har regnet på begge deler. Les analysen på Fellestall.",
     "sections": [
       {
-        "heading": "Milliardene som byttet departement",
+        "heading": "Flyttelasset som så ut som en mindre regning",
         "factIds": [
           "integreringAmountB",
           "integreringYearB",
           "largestChangeYear"
         ],
         "paragraphs": [
-          "Bosetting av flyktninger, norskopplæring for voksne innvandrere og Integrerings- og mangfoldsdirektoratet lå tidligere under Kunnskapsdepartementet. I {{fact:integreringYearB}} utgjorde disse kapitlene {{fact:integreringAmountB}} i Fellestalls regnskapsuttrekk. Fra {{fact:largestChangeYear}} finnes det ikke regnskapsføring på de gamle kapitlene i departementets serie.",
-          "Forklaringen finnes i regjeringens budsjettdokumenter: Integreringsområdet ble overført til Arbeids- og inkluderingsdepartementet. Tilleggsforslaget beskrev nye budsjettkapitler og flytting av bevilgningene; departementets senere proposisjon bekreftet overføringen. Bosetting og norskopplæring opphørte altså ikke fordi de gamle regnskapslinjene sluttet.",
-          "Dette er en konkret endring i hva Kunnskapsdepartementets regning dekker. Flyttingen bidrar til bruddet i tidsserien. Vi har ikke beregnet et fullstendig, omorganiseringsjustert utdanningsregnskap, og kan derfor ikke føre hele nedgangen som virkningen av denne flyttingen."
+          "Bosetting av flyktninger, norskopplæring for voksne innvandrere og Integrerings- og mangfoldsdirektoratet sto for {{fact:integreringAmountB}} i regnskapsførte utgifter under Kunnskapsdepartementet i {{fact:integreringYearB}}. Året etter forsvant de gamle kapitlene fra departementets regnskapsserie. Oppgavene hadde fått ny adresse.",
+          "Regjeringens tilleggsforslag beskrev flytting av integreringsområdet til Arbeids- og inkluderingsdepartementet. Den senere proposisjonen bekrefter at overføringen skjedde i {{fact:largestChangeYear}}. Det er dette året ansvarsskiftet slår inn i sammenligningen. Det var altså ikke en nedleggelse av bosetting og norskopplæring.",
+          "For å undersøke utviklingen på en likere avgrensning trekker vi de gamle integreringskapitlene ut av departementsregnskapet i alle sammenligningsårene. Dermed slipper startåret å bære en oppgave som sluttåret ikke lenger inneholder. Det er en avgrenset kapitteljustering, ikke en antakelse om at de nasjonale integreringsutgiftene ble borte."
         ]
       },
       {
-        "heading": "En mindre departementsregning er ikke et utdanningskutt",
+        "heading": "Nedgangen krymper kraftig når kapitlene tas ut",
         "factIds": [
           "startYear",
           "endYear",
-          "total",
-          "nominalGrowth",
-          "priceGrowth",
-          "populationGrowth",
           "realPerCapitaGrowth",
-          "largestChangeYear",
-          "largestAnnualChange"
+          "calcUtenIntegreringStart",
+          "calcUtenIntegreringEnd",
+          "calcUtenIntegreringNominalGrowth",
+          "calcUtenIntegreringRealGrowth",
+          "calcUtenIntegreringRealPerCapitaGrowth"
         ],
         "paragraphs": [
-          "I {{fact:endYear}} er departementets inkluderte utgifter {{fact:total}}. Det er {{fact:nominalGrowth}} mer enn i {{fact:startYear}}, målt i løpende kroner. Over samme periode steg konsumprisene {{fact:priceGrowth}}, og folketallet økte {{fact:populationGrowth}}. Når beløpene justeres for begge deler, er endringen per innbygger {{fact:realPerCapitaGrowth}}.",
-          "Det største årlige fallet med denne målestokken kom i {{fact:largestChangeYear}}: {{fact:largestAnnualChange}}. Det er også året da integreringsområdet kom over til et annet departement. Den dokumenterte ansvarsendringen betyr at start og slutt omfatter ulike oppgaver. Fallet er dermed et svakt utgangspunkt for en påstand om tilsvarende mindre penger til utdanning.",
-          "Avgrensningen er dessuten statens utgifter under dette departementet, uten finansposter. Kommunenes egne skole- og barnehageutgifter inngår ikke som en komplett serie her. Utviklingen kan verken oversettes til penger per elev eller brukes som en samlet fasit på norsk utdanningspolitikk."
+          "Uten disse kapitlene går utgiftene fra {{fact:calcUtenIntegreringStart}} i {{fact:startYear}} til {{fact:calcUtenIntegreringEnd}} i {{fact:endYear}}. Det er en nominell vekst på {{fact:calcUtenIntegreringNominalGrowth}}. Justert med KPI er den samlede økningen {{fact:calcUtenIntegreringRealGrowth}}. Når beløpene også deles på folketallet, blir endringen {{fact:calcUtenIntegreringRealPerCapitaGrowth}}.",
+          "Dette er et vesentlig annet bilde enn den opprinnelige endringen på {{fact:realPerCapitaGrowth}} per innbygger. Etter den avgrensede korrigeringen holder den samlede pengebruken omtrent tritt med konsumprisene, men ikke helt med både prisvekst og en større befolkning. Et stort departementsfall kan derfor ikke leses som et tilsvarende kutt til de oppgavene som ble igjen.",
+          "Korrigeringen omfatter de identifiserte integreringskapitlene. Administrasjonsmidler inne i departementets eget kapittel er ikke isolert som en egen regnskapsserie, og andre oppgaveendringer er ikke fullstendig omregnet. Resultatet viser hvor stor forskjell den dokumenterte kapittelflyttingen gjør; det presenteres ikke som en perfekt rekonstruksjon av identiske oppgaver."
         ]
       },
       {
-        "heading": "Universitetene fikk flere kroner. Prisene løp raskere.",
+        "heading": "Studentene gir en mer relevant nevner",
         "factIds": [
-          "universiteterFirstRecordedAmount",
-          "universiteterLastAmount",
-          "universiteterGrowthSinceFirst",
-          "universiteterRealGrowthSinceReference",
+          "startYear",
+          "endYear",
+          "statsuniversiteterFirstRecordedAmount",
+          "statsuniversiteterLastAmount",
+          "ssbStatsstudenterStart",
+          "ssbStatsstudenterEnd",
+          "ssbStatsstudenterGrowth"
+        ],
+        "paragraphs": [
+          "For universiteter og høyskoler er det mer relevant å spørre hva bevilgningen utgjør per student enn per innbygger. Vi avgrenser derfor til regnskapsposten for statlige universiteter og høyskoler og SSBs registrerte studenter ved de samme statlige lærestedene. Private læresteder, politiutdanning og militære høgskoler er utelatt fra denne beregningen.",
+          "Bevilgningsposten økte fra {{fact:statsuniversiteterFirstRecordedAmount}} i {{fact:startYear}} til {{fact:statsuniversiteterLastAmount}} i {{fact:endYear}}. Studenttallet økte samtidig fra {{fact:ssbStatsstudenterStart}} til {{fact:ssbStatsstudenterEnd}}, en vekst på {{fact:ssbStatsstudenterGrowth}}. SSBs gamle og nye lærestedskoder for Innlandet er begge med, slik at navneskiftet ikke bryter serien.",
+          "Nevneren er personer registrert ved lærestedene om høsten, ikke antall innbyggere eller antall nye studieplasser. Deltidsstudenter inngår, mens personer registrert i doktorgradsprogram og studenter i permisjon er utelatt etter SSBs definisjon. Vi har dermed en konkret, etterprøvbar studentindikator gjennom hele perioden."
+        ]
+      },
+      {
+        "heading": "Flere kroner per student, men mindre etter prisjustering",
+        "factIds": [
+          "calcPerStudentStart",
+          "calcPerStudentEnd",
+          "calcPerStudentNominalGrowth",
+          "calcPerStudentRealGrowth",
           "startYear",
           "endYear"
         ],
         "paragraphs": [
-          "Kapitlet Universiteter og høyskoler økte fra {{fact:universiteterFirstRecordedAmount}} i {{fact:startYear}} til {{fact:universiteterLastAmount}} i {{fact:endYear}}. Den nominelle veksten er {{fact:universiteterGrowthSinceFirst}}. Dette kapitlet ble værende i departementets regnskap og gir derfor et annet spor å følge enn integreringskapitlene.",
-          "Etter KPI- og befolkningsjustering er endringen {{fact:universiteterRealGrowthSinceReference}}. Det er et faktisk lavere beløp med denne målestokken, men fortsatt ikke et mål på bevilgning per student. Vi deler på hele befolkningen, og KPI følger husholdningenes konsumpriser. Universitetenes lønn, bygg, utstyr og andre kostnader har en annen sammensetning.",
-          "Tallene gir grunn til å undersøke hva institusjonene kunne finansiere, men dokumenterer ikke alene færre undervisningstimer eller svakere forskning. For å vurdere det trengs blant annet studenttall, kostnadsutvikling og endringer i oppgavene. Flere løpende kroner og strammere rammer kan eksistere samtidig; størrelsen på en bankoverføring avgjør ikke hvor langt den rekker."
+          "Når regnskapsført bevilgning deles på studenttallet, øker beløpet fra {{fact:calcPerStudentStart}} til {{fact:calcPerStudentEnd}} per registrert student. Den nominelle veksten er {{fact:calcPerStudentNominalGrowth}}. Etter KPI-justering er endringen {{fact:calcPerStudentRealGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Flere løpende kroner per student var altså ikke nok til å holde tritt med konsumprisveksten.",
+          "Dette svarer på finansieringsspørsmålet for den valgte posten. En lavere prisjustert bevilgning per student innebærer mindre av denne finansieringen sett opp mot studentmassen. Hvis lærestedene skulle opprettholde samme oppgaver og tilbud uten andre endringer, ville det legge press på hva bevilgningen kunne dekke. Det er ikke en måling av kvalitet eller et bevis på at undervisningen faktisk ble redusert.",
+          "Bevilgning og kostnad må fortsatt holdes fra hverandre. Statlige læresteder har andre inntekter, og rammebevilgningen finansierer også forskning og andre oppgaver. Vi beregner derfor bevilgning per registrert student, ikke hele institusjonens kostnad per heltidsstudent. KPI er en felles prisreferanse; den er ikke universitetenes egen lønns- og kostnadsindeks."
         ]
       },
       {
-        "heading": "Lånekassen fulgte et annet spor",
+        "heading": "Lånekassen viser hvorfor totalen ikke avgjør alt",
         "factIds": [
           "studentstotteFirstRecordedAmount",
           "studentstotteLastAmount",
-          "studentstotteGrowthSinceFirst",
-          "studentstotteRealGrowthSinceReference",
-          "startYear",
-          "endYear"
+          "studentstotteRealGrowthSinceReference"
         ],
         "paragraphs": [
-          "I Statens lånekasse for utdannings kapittel økte de inkluderte utgiftene fra {{fact:studentstotteFirstRecordedAmount}} til {{fact:studentstotteLastAmount}} mellom {{fact:startYear}} og {{fact:endYear}}. Det tilsvarer {{fact:studentstotteGrowthSinceFirst}} nominelt. Etter den samme KPI- og befolkningsjusteringen er veksten {{fact:studentstotteRealGrowthSinceReference}}. Her peker altså også den justerte serien opp.",
-          "Låneutbetalinger er finansposter og holdes utenfor denne sammenligningen. Kapitlet omfatter flere utgiftsposter, blant annet stipendavsetninger og driftsutgifter. Summen er derfor verken alle pengene studentene lånte eller et gjennomsnittlig stipend. Den må heller ikke leses som en tilsvarende økning i hver students kjøpekraft.",
-          "Kontrasten til universitetskapitlet er likevel relevant: Pengene til institusjonene og utgiftene gjennom støtteapparatet utviklet seg forskjellig. En felles departementsprosent skjuler det skillet. Studentenes økonomi må vurderes mot satser, mottakere og levekostnader; institusjonenes økonomi mot deres oppgaver og kostnader."
-        ]
-      },
-      {
-        "heading": "Hva kan vi faktisk si om kunnskapspengene?",
-        "factIds": [
-          "realPerCapitaGrowth"
-        ],
-        "paragraphs": [
-          "Departementsregnskapet viser lavere KPI-justert pengebruk per innbygger, med en endring på {{fact:realPerCapitaGrowth}} gjennom perioden. Men det inneholder et ansvarsskifte som gjør totalen mindre sammenlignbar. Innenfor regnskapet viser universiteter og Lånekassen dessuten ulike utviklingsløp. Begge funn må med når politikken vurderes.",
-          "En bedre undersøkelse av den samlede utdanningsinnsatsen må følge de samme oppgavene gjennom omorganiseringer, ta med riktig offentlig nivå og bruke relevante mottakertall. Deretter kan vi undersøke hvilke tjenester pengene finansierer. Først da kan en påstand om styrking eller svekkelse få en målestokk som faktisk passer.",
-          "Foreløpig er det konkrete funnet at deler av regningen flyttet, mens andre deler vokste i ulik takt. Det gjør ikke spørsmålene om utdanningsprioriteringer mindre viktige. Det gjør det viktigere å rette dem mot de riktige postene."
+          "I Lånekassens kapittel økte de inkluderte utgiftene fra {{fact:studentstotteFirstRecordedAmount}} til {{fact:studentstotteLastAmount}}. Etter KPI- og befolkningsjustering er veksten {{fact:studentstotteRealGrowthSinceReference}}. Dette er en annen avgrensning enn universitetenes rammebevilgning: blant annet stipendavsetninger og administrasjon inngår, mens låneutbetalinger holdes utenfor som finansposter.",
+          "Beløpet skal derfor ikke deles på studentgruppen ved statlige læresteder og presenteres som studentenes gevinst. Lånekassen støtter flere utdanningsgrupper, og en stipendavsetning er heller ikke det samme som utbetalt stipend til hver student. Men regnskapet viser en relevant forskjell i prioriteringen av penger: ulike deler av kunnskapsområdet vokste i ulik takt.",
+          "Etter kapitteljusteringen er departementsbildet langt mindre dramatisk. Samtidig står funnet om lavere KPI-justert bevilgning per registrert student ved statlige universiteter og høyskoler igjen. Det er denne kombinasjonen som er verdt å diskutere: Omorganiseringen forklarer et stort utslag i totalen, mens en mer relevant mottakerberegning peker på press i finansieringen av lærestedene."
         ]
       }
     ],
     "graphs": [
       {
-        "kind": "growth",
-        "afterSection": 1
+        "kind": "series",
+        "afterSection": 1,
+        "title": "Med og uten de flyttede integreringskapitlene",
+        "description": "Nominell utgiftsutvikling med samme basisår. Den korrigerte serien holder valgte kapitler utenfor i alle år. Indeks sammenligner vekst, ikke beløpsstørrelse.",
+        "mode": "index",
+        "series": [
+          {
+            "source": "fellestall",
+            "id": "expenditure",
+            "label": "Opprinnelig departementsavgrensning"
+          },
+          {
+            "source": "calculation",
+            "id": "UtenIntegrering",
+            "label": "Uten integreringskapitlene"
+          }
+        ]
       },
       {
         "kind": "series",
         "afterSection": 3,
-        "title": "Universiteter og Lånekassen følger ulike spor",
-        "description": "Løpende utgifter i de inkluderte kapitlene. Låneutbetalinger er utelatt. Indeks viser vekst, ikke beløpsstørrelse.",
-        "mode": "index",
+        "title": "Rammebevilgning per registrert student ved statlige læresteder",
+        "description": "Regnskapsført rammebevilgning delt på SSBs studenttall. KPI-justert til {{fact:endYear}}-kroner. Ikke samlet institusjonskostnad eller undervisningskostnad.",
+        "mode": "values",
         "series": [
           {
-            "source": "post",
-            "id": "universiteter",
-            "label": "Universiteter og høyskoler"
-          },
-          {
-            "source": "post",
-            "id": "studentstotte",
-            "label": "Lånekassen uten finansposter"
+            "source": "calculation",
+            "id": "PerStudentReal",
+            "label": "Bevilgning per student i faste kroner"
           }
         ]
       }
     ]
+  },
+  "processedFeedbackIds": [],
+  "researchRevision": {
+    "previousHead": "3377d1f9889a5cb120c3e18312a6d65bfe6d5c98",
+    "actor": "Lippen1995",
+    "sourceCommit": "1c55a763a1966e641616dff22c725fe1ace0325a",
+    "reason": "Brukeren ba 19. oktober 2026 uttrykkelig om omorganiseringsjustering, søk i eksterne primærkilder og beregning med relevant studentnevner før teksten konkluderer med at data mangler.",
+    "generatedAt": "2026-10-19T11:44:12.707Z"
   }
 }
