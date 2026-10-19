@@ -224,3 +224,33 @@ Vercel, og den midlertidige lokale hashfilen er slettet.
 Det er ikke registrert en faktisk gjennomført daglig analyseplanlegging med
 den nye køflyten; første planlagte kontroll er 20. oktober kl. 09.00 norsk tid.
 Eksisterende krav om menneskelig godkjenning av analyser er uendret.
+
+### Temaforslag, live-målinger og driftsstatus
+
+[PR #69](https://github.com/Lippen1995/Project_statsbudsjett/pull/69) ble publisert
+fra `33e11d3` gjennom [bestått produksjonskjøring](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/39313328493).
+Vercel-utrullingen er `dpl_BAULoWthAbYu7Ueem9iomU4rhS6o`.
+Kontrollen på det faktiske domenet 19. oktober kl. 21.48 norsk tid bekreftet:
+
+- Den eksisterende kontoen kan fortsatt logge inn etter den additive migreringen.
+  Anonyme kall til live-data, statushistorikk og temaforslag avvises med 401;
+  utlogging sperrer videre tilgang.
+- Live-målinger vises over historiske tall og bruker de siste 15 minuttbolkene.
+  Ingen målinger ble lagt inn for å fylle den nye visningen.
+- Den offentlige helsesjekken og administratorens tre tjenestekontroller viste
+  normal drift. Det offentlige svaret inneholder bare status, tidspunkt og
+  tjenestekontroller. Historikken starter med faktiske observasjoner.
+- Sven hentet et nytt, relevant tema fra produksjonens tallgrunnlag. Det ble
+  bare forhåndsvist: køens innhold og SHA var identiske før og etter kontrollen.
+  Redigeringsvalget tilbyr både et nytt Sven-forslag og manuell redigering.
+- Desktop og mobil fungerte uten JavaScript-/CSP-feil og horisontal sideflyt.
+
+25 rottester, 189 frontendtester, produksjonsbygg/SEO og isolerte nettlesertester
+bestod før publisering. Den isolerte testen prøvde også lagring, erstatning,
+manuell redigering, rekkefølge, datobevaring, konflikter og avvik/gjenoppretting.
+Produksjonsloggen viste en advarsel fra PostgreSQL-driveren om fremtidig navngiving
+av SSL-modus; ingen applikasjonsfeil ble observert under kontrollen.
+
+**Checkly-tilkobling, kontinuerlig bakgrunnsovervåking og faktisk varselmail er
+fortsatt ikke aktivert eller verifisert.** Dette vises eksplisitt i adminområdet.
+Ingen av kontrollene sendte e-post eller endret redaksjonelt innhold.
