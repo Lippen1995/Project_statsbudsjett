@@ -1,0 +1,39 @@
+{
+  "footprintAgreement": {
+    "microsoft": {
+      "matches": 2109,
+      "medianBestIou": 0.46,
+      "p10BestIou": 0.0982,
+      "warning": "Agreement to existing footprint; not surveyed accuracy. OSM lineage is shared."
+    },
+    "overture": {
+      "matches": 6475,
+      "medianBestIou": 0.9992,
+      "p10BestIou": 0.9982,
+      "warning": "Agreement to existing footprint; not surveyed accuracy. OSM lineage is shared."
+    }
+  },
+  "overtureHeightCandidatesByExistingStatus": {
+    "levels-estimate": 627,
+    "unknown": 679,
+    "osm-height": 69
+  },
+  "heightSourceCounts": {
+    "Microsoft ML Buildings": 1306,
+    "OpenStreetMap": 69
+  },
+  "maskClearSlopeCounts": {
+    "microsoft:coarse-slope-screen-only": 129,
+    "microsoft:slope-review-required": 33,
+    "overture:coarse-slope-screen-only": 81,
+    "overture:slope-review-required": 29
+  },
+  "bryggenRaster": {
+    "existingBuildings": 72,
+    "unknownHeightsWithRasterEstimate": 34,
+    "osmHeightComparisonCount": 15,
+    "medianAbsoluteQ90VsOsmDifferenceM": 0.507,
+    "warning": "Q90 surface height and mapper total height are different definitions; neither is independent survey truth."
+  },
+  "newBuildingsAdmitted": 0
+}

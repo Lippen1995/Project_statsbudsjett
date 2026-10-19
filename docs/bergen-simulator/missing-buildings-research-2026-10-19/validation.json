@@ -1,0 +1,65 @@
+{
+  "checkedAt": "2026-10-19",
+  "baselineCommit": "c1a11323828c4201f3fdf219f0b1bcef3cb75d60",
+  "branch": "feature/bergen-simulator",
+  "remoteMainShaBefore": "ac4878577d0ad59d718eb9f91af3ec622141a168",
+  "protectedOutsideBergenDocsFiles": 1649,
+  "drift": [],
+  "existingTrackedFilesChanged": [
+    "docs/bergen-simulator/architectural-reconstruction-strategy.md",
+    "docs/bergen-simulator/architecture.md"
+  ],
+  "pinnedSnapshotHashes": {
+    "bergen.json": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812",
+    "bergen-osm.json.gz": "11b0e3c5b20de3defa1fa077ce5d64eb7d67eb83df2c966599a8da0528c05fb9",
+    "bergen-context-osm.json.gz": "f041539a4c73faed909664c8c64a1f4751fac60dc4175dbe1616633a3ea2016d",
+    "bryggen-transport.json": "7082fe3888c1dfd1fb9a8603c86bdce9fe09df56bfa7cf7900150815a7268d11",
+    "source-manifest.json": "d664f52364fe5ada89639b45ef074a1092e26d3586b9faedc2c88e5f847002b4",
+    "terrain-source.json": "5e350bce3a5c17dfbe411082491fff1cbc6a83442ee03ce3e56e5accc7a0e97c",
+    "NOTICE.md": "af19590b6509ce091f7ac8de69f533f0d63539c7806a24401bd7f8d744dc75b6"
+  },
+  "tests": {
+    "newResearchTests": {
+      "passed": 18,
+      "failed": 0
+    },
+    "vitest": {
+      "files": 15,
+      "passed": 236
+    },
+    "releasePolicy": {
+      "passed": 10
+    },
+    "pythonGIS": {
+      "importer": 3,
+      "architecturalImporter": 3,
+      "reconstructionImporter": 6
+    },
+    "lint": "passed",
+    "typeScriptViteBuild": "passed",
+    "isolation": "passed",
+    "existingBrowserJourney": "passed",
+    "subsetReExtraction": "both compressed subset SHA-256 values match pinned inputs",
+    "compressedDerivedResults": "Four result datasets preserve exact JSON values after deterministic gzip; full prototype rerun and 18 tests passed"
+  },
+  "warnings": [
+    "Existing Vite chunk >500 kB",
+    "Rasterio/NumPy deprecation messages"
+  ],
+  "notRun": [
+    "Raw LAZ reconstruction / PDAL / 3dfier / roofer on new Bergen points",
+    "Full central-Bergen register extraction (15 MB limit stopped query)",
+    "Expanded DOM crop (HTTP 503)",
+    "Latest Microsoft August 2026 index (proxy HTTP 403)",
+    "Physical desktop/mobile GPU measurements",
+    "New browser rendering performance benchmark (no runtime changes)"
+  ],
+  "release": {
+    "scope": "Bergen documentation and isolated research only",
+    "newObservedBuildings": 0,
+    "newRuntimeAssets": 0,
+    "newVercelDeployment": "not requested; docs-only path does not trigger release",
+    "authentication": "no setting change or bypass",
+    "production": "no workflow/domain/database/service/credential mutation"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "sourceUrl": "https://kartkatalog.geonorge.no/api/getdata/24d7e9d1-87f6-45a0-b38e-3447f8d7f9a1",
+  "sourceSha256": "7ca9449b520529d2fe33631983c86be1205dc1c5fac2f3f1849c24ab0f98d46a",
+  "accessedAt": "2026-10-19",
+  "publisher": "Kartverket",
+  "constraints": {
+    "AccessConstraints": "Åpne data",
+    "OtherConstraintsLink": "https://creativecommons.org/licenses/by/4.0/",
+    "OtherConstraintsLinkText": "Creative Commons BY 4.0 (CC BY 4.0)",
+    "SecurityConstraints": "Ugradert",
+    "SecurityConstraintsNote": "Matrikkelloven §30, Forskrift om utlevering, viderebruk og annen behandling av opplysninger fra grunnboken og matrikkelen.",
+    "UseConstraints": "Lisens",
+    "UseLimitations": "Ingen begrensninger på bruk er oppgitt.",
+    "OtherConstraintsAccess": "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations"
+  },
+  "DateUpdated": "2026-10-17T00:00:00",
+  "DateMetadataUpdated": "2026-10-18T00:00:00",
+  "capabilitiesSha256": "3b7b0b7f85c3754d1fbae0f4c3907b2dd55cbfbb0a24de90c8a885692ce85a71",
+  "schemaSha256": "460e7deb3e3193b84fdeebbf0d4ec4a736ac031c438dad46f5ab95eb3ee69cd4",
+  "limitations": "4 bounded candidate probes only. 10000-count whole-crop request aborted at 15 MB without parsing/retaining a full extraction. Property projection ignored by WFS; response numberReturned unreliable. Keep only IDs/status/point/update date, not bruksenhet/ownership/address links."
+}

@@ -1,0 +1,78 @@
+{
+  "boundsWgs84": [
+    5.298,
+    60.382,
+    5.349,
+    60.408
+  ],
+  "crs": "EPSG:25832",
+  "baselineRenderedCount": 6502,
+  "baselineCentroidInBounds": 6502,
+  "baselineUniqueSourceIds": 6501,
+  "baselineMultiComponentSourceIds": {
+    "relation/5903565": 2
+  },
+  "baselineHeightStatus": {
+    "unknown": 2878,
+    "levels-estimate": 3555,
+    "osm-height": 69
+  },
+  "baselineTags": {
+    "height": 69,
+    "building:levels": 3609,
+    "roof:shape": 411,
+    "roof:height": 26,
+    "building:material": 45,
+    "building:colour": 93
+  },
+  "datasets": {
+    "microsoft": {
+      "centroidInBounds": 2947,
+      "classifications": {
+        "spatial-match": 2109,
+        "gap-candidate": 541,
+        "ambiguous-overlap-or-near": 296,
+        "invalid-source-geometry": 1
+      },
+      "heightPresentNotNecessarilyMeasured": 0,
+      "geometryLineage": {
+        "Microsoft ML Buildings": 2947
+      },
+      "quarantineReasons": {
+        "outside-rendered-terrain-or-sea": 74,
+        "coastline-review-buffer": 54,
+        "mapped-road-review-corridor": 245,
+        "area-outside-research-range": 138,
+        "inland-water": 6
+      },
+      "gapCandidatesNoMaskConflicts": 162
+    },
+    "overture": {
+      "centroidInBounds": 6721,
+      "classifications": {
+        "same-source-id": 6462,
+        "ambiguous-overlap-or-near": 67,
+        "gap-candidate": 179,
+        "spatial-match": 13
+      },
+      "heightPresentNotNecessarilyMeasured": 1579,
+      "geometryLineage": {
+        "OpenStreetMap": 6507,
+        "Microsoft ML Buildings": 214
+      },
+      "quarantineReasons": {
+        "mapped-road-review-corridor": 14,
+        "area-outside-research-range": 47,
+        "outside-rendered-terrain-or-sea": 8,
+        "coastline-review-buffer": 3,
+        "inland-water": 5
+      },
+      "gapCandidatesNoMaskConflicts": 110
+    }
+  },
+  "timing": {
+    "maskAndBaselinePreparationSeconds": 3.7604,
+    "totalSeconds": 11.424,
+    "processPeakRssMiB": 190.81
+  }
+}

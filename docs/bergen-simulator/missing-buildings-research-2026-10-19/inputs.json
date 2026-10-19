@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "accessedAt": "2026-10-19",
+  "boundsWgs84": [
+    5.298,
+    60.382,
+    5.349,
+    60.408
+  ],
+  "localInputs": {
+    "apps/bergen-simulator/public/data/bergen.json": {
+      "sha256": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812",
+      "bytes": 7864054
+    },
+    "apps/bergen-simulator/data-cache/research-2a/bergen-dtm-2m.tif": {
+      "sha256": "23793ed2a48032ed427f833a6a448df99f49d8d961564345e7cce4be08e214e1",
+      "bytes": 10029599
+    },
+    "apps/bergen-simulator/tests/fixtures/r1b-dom.tif": {
+      "sha256": "50080ed26d13ff0079f252f763004d5468b506dbc2d7f9667a64588a7c521ed9",
+      "bytes": 787662
+    },
+    "docs/bergen-simulator/missing-buildings-research-2026-10-19/microsoft.geojson.gz": {
+      "sha256": "a83d09c8cbfe12a535ff73e74b7a1b482797fbfe2b6e9a046d53697420e1e511",
+      "bytes": 517652
+    },
+    "docs/bergen-simulator/missing-buildings-research-2026-10-19/overture.geojson.gz": {
+      "sha256": "7bb7a5b52fbc45430133f8018d15d793439f1718f978ff4fda5ac5f107f237a6",
+      "bytes": 739301
+    },
+    "docs/bergen-simulator/missing-buildings-research-2026-10-19/registry-probes.json": {
+      "sha256": "0336b67dbaecb81ed14fbd03735ec8afc1fdd81f8d6023a52195489a56f0f8fe",
+      "bytes": 7088
+    },
+    "docs/bergen-simulator/missing-buildings-research-2026-10-19/registry-metadata.json": {
+      "sha256": "7d218a37d0f120423f4630a12a1d54cde4cad60f6f1f1599fb3d58a941cde5af",
+      "bytes": 1434
+    }
+  },
+  "upstreamFiles": {
+    "ms-links.csv": {
+      "sha256": "9371e9fd27f1e82856b2ed7a3c0397c685ee0396b1078a0af77dbe91269f9be6",
+      "bytes": 7171802
+    },
+    "ms-readme.md": {
+      "sha256": "1d0d93f6696611940628e98a79378cc632e72172ff25f412d51dd21553492850",
+      "bytes": 20819
+    },
+    "ms-LICENSE": {
+      "sha256": "24903c0990deb68027170143067d680302cfa0056f71020a905dccba21f815a1",
+      "bytes": 81
+    },
+    "ms-120020133.gz": {
+      "sha256": "99cf7f94be97c7bc82bf82b08ce75b3449c6ee17f84987c2fb4049a56fbd959b",
+      "bytes": 15417975
+    },
+    "overture-collections.parquet": {
+      "sha256": "f1c036050dea1a689456c5e95382b0665fc3afc8750892ee5f8e5e9ead9089df",
+      "bytes": 182960
+    },
+    "overture-catalog.json": {
+      "sha256": "5336b76af0b630f05c51c8c8bf3106a2466f7a5110df28081202c7c1775bd7f3",
+      "bytes": 6529
+    },
+    "overture-licensing.html": {
+      "sha256": "505d216b53064565c917110999e215fb04cbdabdf85b9332ef84c367792c57b2",
+      "bytes": 125952
+    },
+    "laser-doc.pdf": {
+      "sha256": "86abb36403c7ea1375fd498ae988a2ed1883e2962b8787f9d9cdcd2b40c38b62",
+      "bytes": 124854
+    },
+    "3dfier-options.html": {
+      "sha256": "77d5118ea4d46f2185b665797109a11a2f2030456e1dabfd59c3dcf2fe6bfbd2",
+      "bytes": 38293
+    }
+  },
+  "microsoftTile": {
+    "Location": "Norway",
+    "QuadKey": "120020133",
+    "Url": "https://minedbuildings.z5.web.core.windows.net/global-buildings/2026-02-03/global-buildings.geojsonl/RegionName=Norway/quadkey=120020133/part-00034-4feead82-d499-422b-94cb-c036c212127a.c000.csv.gz",
+    "Size": "14.7MB",
+    "UploadDate": "2026-02-23"
+  },
+  "microsoftLimitation": "Accessible legacy index/tile dated 2026-02-23; README August 2026 index host denied by session proxy. Not labelled latest.",
+  "overtureRelease": "2026-09-23.1",
+  "overtureRanges": {
+    "source": {
+      "href": "https://overturemaps-us-west-2.s3.us-west-2.amazonaws.com/release/2026-09-23.1/theme=buildings/type=building/part-00239-7b19d6a6-a507-5b78-b7e9-b3dd0cf487e7-c000.zstd.parquet",
+      "title": "GeoParquet on AWS S3",
+      "description": "Zstd-compressed GeoParquet in the overturemaps-us-west-2 bucket, served over HTTPS.",
+      "type": "application/vnd.apache.parquet",
+      "roles": [
+        "data"
+      ],
+      "storage:refs": [
+        "aws"
+      ],
+      "file:size": 682644373,
+      "alternate:name": "HTTPS",
+      "alternate": {
+        "s3": {
+          "href": "s3://overturemaps-us-west-2/release/2026-09-23.1/theme=buildings/type=building/part-00239-7b19d6a6-a507-5b78-b7e9-b3dd0cf487e7-c000.zstd.parquet",
+          "alternate:name": "S3",
+          "description": "Access the files via regular Amazon AWS S3 tooling.",
+          "roles": [
+            "data"
+          ]
+        }
+      }
+    },
+    "requests": [
+      {
+        "start": 682578837,
+        "end": 682644372,
+        "bytes": 65536,
+        "sha256": "5c0b6a66aa32dfacdd0b96ab4ded563887e3761c92feddc546cebea0ec42305f"
+      },
+      {
+        "start": 681174695,
+        "end": 682644364,
+        "bytes": 1469670,
+        "sha256": "5f396262e9c530bf470b8019054e88525b7ffef3a6be12da9ca354c782a6e676"
+      },
+      {
+        "start": 186205267,
+        "end": 188894892,
+        "bytes": 2689626,
+        "sha256": "f094ecd2535f84555460a753a3b6d0a12c57f27cc8fe2bbc304d771fca444c91"
+      },
+      {
+        "start": 188895007,
+        "end": 191911202,
+        "bytes": 3016196,
+        "sha256": "841184b51ac51eb7443e0dead058c1593512cb209caa6aac9d1512840aac431c"
+      },
+      {
+        "start": 202038481,
+        "end": 204592397,
+        "bytes": 2553917,
+        "sha256": "8cbc8888dc6750548923bf549bf3861524f377d42b3d35d995f4bb601c9c8342"
+      }
+    ],
+    "totalBytes": 9794945,
+    "rowGroups": [
+      66,
+      67,
+      72
+    ],
+    "features": 6764
+  },
+  "laserAcquisition": "Not ordered. Official export API requires email or BAAT identity; no authorized recipient or new credentials. Main API documentation returned 503; public test-host official PDF read only. Raster test uses existing pinned licensed DOM/DTM, never called raw LiDAR."
+}

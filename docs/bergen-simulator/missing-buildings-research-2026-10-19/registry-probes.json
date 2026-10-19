@@ -1,0 +1,174 @@
+{
+  "accessedAt": "2026-10-19",
+  "licence": "CC-BY-4.0",
+  "probes": [
+    {
+      "candidateId": "overture:bf8cda4a-2d01-48cc-b7d2-0e2e1eb639c1",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&version=2.0.0&request=GetFeature&typeNames=app%3ABygning&srsName=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&bbox=296721.6151892092%2C6701047.687069094%2C296742.6017652408%2C6701070.355886303%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&count=50&propertyName=app%3Arepresentasjonspunkt%2Capp%3Abygningsnummer%2Capp%3Abygningsstatus%2Capp%3AuuidBygning%2Capp%3AstedfestingVerifisert%2Capp%3Aoppdateringsdato",
+      "bboxUtm32": [
+        296721.6151892092,
+        6701047.687069094,
+        296742.6017652408,
+        6701070.355886303
+      ],
+      "rawSha256": "aee6be9951725238ab38dbe627c49a67a6879388b74b796e74fce8a84a1ee656",
+      "rawBytes": 6473,
+      "points": [
+        {
+          "id": "bygning.4971388",
+          "pointUtm32": [
+            296734.0,
+            6701054.0
+          ],
+          "properties": {
+            "bygningsnummer": "301429597",
+            "bygningsstatus": "IG",
+            "uuidBygning": "2902702a-cf0d-5206-bfb6-3af45c3aa9f0",
+            "stedfestingVerifisert": "true",
+            "oppdateringsdato": "2026-09-01T11:40:01.627"
+          }
+        }
+      ]
+    },
+    {
+      "candidateId": "overture:16c376e2-ddb8-4054-be8d-42a577771af0",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&version=2.0.0&request=GetFeature&typeNames=app%3ABygning&srsName=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&bbox=296807.3341985507%2C6700965.350572339%2C296839.5295136273%2C6700997.511941136%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&count=50&propertyName=app%3Arepresentasjonspunkt%2Capp%3Abygningsnummer%2Capp%3Abygningsstatus%2Capp%3AuuidBygning%2Capp%3AstedfestingVerifisert%2Capp%3Aoppdateringsdato",
+      "bboxUtm32": [
+        296807.3341985507,
+        6700965.350572339,
+        296839.5295136273,
+        6700997.511941136
+      ],
+      "rawSha256": "d3889390d2fd79e10e93d8f4a27f99b53d8cf3902d3c45ea27079dfa4ce4f5ff",
+      "rawBytes": 16354,
+      "points": [
+        {
+          "id": "bygning.4972561",
+          "pointUtm32": [
+            296835.6,
+            6700980.7
+          ],
+          "properties": {
+            "bygningsnummer": "301391933",
+            "bygningsstatus": "IG",
+            "uuidBygning": "3b69a9b6-7ecd-590e-af91-ee7ab32a8ee1",
+            "stedfestingVerifisert": "true",
+            "oppdateringsdato": "2025-09-16T10:08:29.235"
+          }
+        },
+        {
+          "id": "bygning.4971743",
+          "pointUtm32": [
+            296808.2,
+            6700997.0
+          ],
+          "properties": {
+            "bygningsnummer": "301430519",
+            "bygningsstatus": "IG",
+            "uuidBygning": "c64f0ad2-ca40-5a18-9ab1-69bd57ea50aa",
+            "stedfestingVerifisert": "true",
+            "oppdateringsdato": "2025-11-19T08:51:54.376"
+          }
+        },
+        {
+          "id": "bygning.4956596",
+          "pointUtm32": [
+            296830.0,
+            6700974.6
+          ],
+          "properties": {
+            "bygningsnummer": "301391821",
+            "bygningsstatus": "IG",
+            "uuidBygning": "2484ad05-1d93-5fcf-8c69-e6e8522e9329",
+            "stedfestingVerifisert": "true",
+            "oppdateringsdato": "2025-09-16T10:07:10.307"
+          }
+        },
+        {
+          "id": "bygning.3764184",
+          "pointUtm32": [
+            296827.0,
+            6700982.0
+          ],
+          "properties": {
+            "bygningsnummer": "139289331",
+            "bygningsstatus": "GR",
+            "uuidBygning": "9131efe3-d476-51c3-a63c-b2e980e4e570",
+            "stedfestingVerifisert": "false",
+            "oppdateringsdato": "2024-04-18T07:56:24.795"
+          }
+        }
+      ]
+    },
+    {
+      "candidateId": "overture:7eb0b26f-0b54-4ca4-8b51-6c22120175f9",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&version=2.0.0&request=GetFeature&typeNames=app%3ABygning&srsName=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&bbox=296787.7375217369%2C6700939.501613103%2C296823.15485897445%2C6700974.210515708%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&count=50&propertyName=app%3Arepresentasjonspunkt%2Capp%3Abygningsnummer%2Capp%3Abygningsstatus%2Capp%3AuuidBygning%2Capp%3AstedfestingVerifisert%2Capp%3Aoppdateringsdato",
+      "bboxUtm32": [
+        296787.7375217369,
+        6700939.501613103,
+        296823.15485897445,
+        6700974.210515708
+      ],
+      "rawSha256": "a31d5ac478fc2a08225558317686bc2ab4dc018eed4771624fabdf4e5e81e74f",
+      "rawBytes": 11024,
+      "points": [
+        {
+          "id": "bygning.3764185",
+          "pointUtm32": [
+            296811.0,
+            6700962.0
+          ],
+          "properties": {
+            "bygningsnummer": "139289358",
+            "bygningsstatus": "GR",
+            "uuidBygning": "88b70a3f-f0d6-5098-b0a9-699b69d77c12",
+            "stedfestingVerifisert": "false",
+            "oppdateringsdato": "2024-04-18T07:55:46.100"
+          }
+        },
+        {
+          "id": "bygning.4956597",
+          "pointUtm32": [
+            296807.2,
+            6700943.3
+          ],
+          "properties": {
+            "bygningsnummer": "301391878",
+            "bygningsstatus": "IG",
+            "uuidBygning": "3bb0d615-4b34-53d7-8e41-2fe0d134241d",
+            "stedfestingVerifisert": "true",
+            "oppdateringsdato": "2025-09-16T11:44:13.700"
+          }
+        },
+        {
+          "id": "bygning.4972504",
+          "pointUtm32": [
+            296805.8,
+            6700971.9
+          ],
+          "properties": {
+            "bygningsnummer": "301391919",
+            "bygningsstatus": "IG",
+            "uuidBygning": "3166f8c0-e6fb-5dfe-880a-0159685f6c1e",
+            "stedfestingVerifisert": "true",
+            "oppdateringsdato": "2025-09-16T10:09:35.667"
+          }
+        }
+      ]
+    },
+    {
+      "candidateId": "microsoft:120020133:line-105626:7f1f9bdc1472d040",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&version=2.0.0&request=GetFeature&typeNames=app%3ABygning&srsName=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&bbox=297485.836464392%2C6701205.80002807%2C297498.6991109942%2C6701218.97737027%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&count=50&propertyName=app%3Arepresentasjonspunkt%2Capp%3Abygningsnummer%2Capp%3Abygningsstatus%2Capp%3AuuidBygning%2Capp%3AstedfestingVerifisert%2Capp%3Aoppdateringsdato",
+      "bboxUtm32": [
+        297485.836464392,
+        6701205.80002807,
+        297498.6991109942,
+        6701218.97737027
+      ],
+      "rawSha256": "2afa186fd81bef1d34710d076e21cc83c2df5164fba8dcb6cce664219b9974c5",
+      "rawBytes": 1143,
+      "points": []
+    }
+  ],
+  "warning": "Source WFS ignores property projection and reports unreliable numberReturned; parse actual bounded members. Retain only selected non-personal building fields. Not a complete central-Bergen register extraction."
+}

@@ -1,0 +1,2437 @@
+{
+  "dom": "Existing 0.5 m DOM, project 6266; raster derived from aerial laser, not raw points",
+  "dtm": "Existing 2 m DTM, project 6266/6282 mosaic; ground registration/epoch uncertainty retained",
+  "records": [
+    {
+      "id": "way/292320260",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 14.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 354,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.218,
+      "q50AboveGroundM": 10.827,
+      "q90AboveGroundM": 12.436,
+      "groundRangeM": 0.751,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.6508,
+            "heldoutWithin065m": 0.3681
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.4127,
+            "heldoutWithin065m": 0.7527
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320261",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 14.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 336,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.419,
+      "q50AboveGroundM": 11.457,
+      "q90AboveGroundM": 12.975,
+      "groundRangeM": 0.723,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.1262,
+            "heldoutWithin065m": 0.4451
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.9754,
+            "heldoutWithin065m": 0.2561
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274536",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 477,
+      "insetM": 0.75,
+      "q10AboveGroundM": 8.969,
+      "q50AboveGroundM": 10.933,
+      "q90AboveGroundM": 12.531,
+      "groundRangeM": 0.299,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.2439,
+            "heldoutWithin065m": 0.3205
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6281,
+            "heldoutWithin065m": 0.9274
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          14.51308,
+          0.00548,
+          -1.10169
+        ],
+        "pitchDegreesEstimated": 47.77,
+        "ridgeNN2000EstimatedM": 14.513,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274541",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 12.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 211,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.455,
+      "q50AboveGroundM": 10.573,
+      "q90AboveGroundM": 11.743,
+      "groundRangeM": 0.218,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.8296,
+            "heldoutWithin065m": 0.4327
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.213,
+            "heldoutWithin065m": 1.0
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          13.02898,
+          -0.03363,
+          -1.10634
+        ],
+        "pitchDegreesEstimated": 47.89,
+        "ridgeNN2000EstimatedM": 13.029,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274546",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 467,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.218,
+      "q50AboveGroundM": 11.063,
+      "q90AboveGroundM": 12.545,
+      "groundRangeM": 0.228,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.18,
+            "heldoutWithin065m": 0.2768
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6237,
+            "heldoutWithin065m": 0.875
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          14.63318,
+          0.01525,
+          -0.95325
+        ],
+        "pitchDegreesEstimated": 43.63,
+        "ridgeNN2000EstimatedM": 14.633,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274552",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 954,
+      "insetM": 0.75,
+      "q10AboveGroundM": 12.968,
+      "q50AboveGroundM": 15.629,
+      "q90AboveGroundM": 17.29,
+      "groundRangeM": 1.784,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.682,
+            "heldoutWithin065m": 0.805
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 2.3647,
+            "heldoutWithin065m": 0.3753
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274560",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 13.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 288,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.857,
+      "q50AboveGroundM": 10.925,
+      "q90AboveGroundM": 11.717,
+      "groundRangeM": 0.8,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 2.0163,
+            "heldoutWithin065m": 0.5714
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.9522,
+            "heldoutWithin065m": 0.9116
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274562",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 479,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.522,
+      "q50AboveGroundM": 11.097,
+      "q90AboveGroundM": 12.481,
+      "groundRangeM": 0.541,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.0341,
+            "heldoutWithin065m": 0.4583
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.9198,
+            "heldoutWithin065m": 0.8625
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274567",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 16.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 469,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.557,
+      "q50AboveGroundM": 11.983,
+      "q90AboveGroundM": 13.83,
+      "groundRangeM": 0.816,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.8562,
+            "heldoutWithin065m": 0.3233
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.7206,
+            "heldoutWithin065m": 0.181
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274569",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 627,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.325,
+      "q50AboveGroundM": 11.248,
+      "q90AboveGroundM": 12.704,
+      "groundRangeM": 0.318,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.234,
+            "heldoutWithin065m": 0.3301
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.8081,
+            "heldoutWithin065m": 0.7628
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274574",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 13.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 283,
+      "insetM": 0.75,
+      "q10AboveGroundM": 14.107,
+      "q50AboveGroundM": 14.67,
+      "q90AboveGroundM": 15.221,
+      "groundRangeM": 0.222,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.3864,
+            "heldoutWithin065m": 0.9853
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.0509,
+            "heldoutWithin065m": 1.0
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          16.51069,
+          -0.01724,
+          -0.35269
+        ],
+        "pitchDegreesEstimated": 19.43,
+        "ridgeNN2000EstimatedM": 16.511,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274575",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 383,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.608,
+      "q50AboveGroundM": 11.22,
+      "q90AboveGroundM": 13.041,
+      "groundRangeM": 0.315,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "complex-or-nonrectangular-no-simple-roof"
+      }
+    },
+    {
+      "id": "way/331274578",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 16.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 543,
+      "insetM": 0.75,
+      "q10AboveGroundM": 10.293,
+      "q50AboveGroundM": 12.183,
+      "q90AboveGroundM": 13.952,
+      "groundRangeM": 0.863,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.4051,
+            "heldoutWithin065m": 0.321
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6965,
+            "heldoutWithin065m": 0.8229
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274582",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 14.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 454,
+      "insetM": 0.75,
+      "q10AboveGroundM": 10.803,
+      "q50AboveGroundM": 12.37,
+      "q90AboveGroundM": 13.946,
+      "groundRangeM": 0.533,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.1207,
+            "heldoutWithin065m": 0.3684
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.3417,
+            "heldoutWithin065m": 0.9211
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          15.22698,
+          0.03984,
+          -1.11746
+        ],
+        "pitchDegreesEstimated": 48.18,
+        "ridgeNN2000EstimatedM": 15.227,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274583",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 298,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.418,
+      "q50AboveGroundM": 11.799,
+      "q90AboveGroundM": 13.317,
+      "groundRangeM": 0.276,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.7953,
+            "heldoutWithin065m": 0.3289
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.261,
+            "heldoutWithin065m": 0.5921
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274591",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 211,
+      "insetM": 0.75,
+      "q10AboveGroundM": 12.798,
+      "q50AboveGroundM": 16.247,
+      "q90AboveGroundM": 17.566,
+      "groundRangeM": 0.071,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 3.1003,
+            "heldoutWithin065m": 0.54
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 3.1605,
+            "heldoutWithin065m": 0.29
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274604",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 9.0,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 1807,
+      "insetM": 0.75,
+      "q10AboveGroundM": 14.329,
+      "q50AboveGroundM": 16.074,
+      "q90AboveGroundM": 17.393,
+      "groundRangeM": 2.172,
+      "groundSlopeOrRegistrationReview": true,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.9423,
+            "heldoutWithin065m": 0.4956
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.7403,
+            "heldoutWithin065m": 0.7949
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/488690088",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 13.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 292,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.873,
+      "q50AboveGroundM": 11.36,
+      "q90AboveGroundM": 12.699,
+      "groundRangeM": 0.466,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.98,
+            "heldoutWithin065m": 0.4056
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.4033,
+            "heldoutWithin065m": 0.9441
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          13.98661,
+          0.03393,
+          -1.16846
+        ],
+        "pitchDegreesEstimated": 49.44,
+        "ridgeNN2000EstimatedM": 13.987,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274528",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 257,
+      "insetM": 0.75,
+      "q10AboveGroundM": 17.296,
+      "q50AboveGroundM": 19.201,
+      "q90AboveGroundM": 20.304,
+      "groundRangeM": 0.186,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.3551,
+            "heldoutWithin065m": 0.448
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.0929,
+            "heldoutWithin065m": 0.808
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274555",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 116,
+      "insetM": 0.75,
+      "q10AboveGroundM": 4.458,
+      "q50AboveGroundM": 15.512,
+      "q90AboveGroundM": 17.281,
+      "groundRangeM": 0.148,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 3.2972,
+            "heldoutWithin065m": 0.1455
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 4.6751,
+            "heldoutWithin065m": 0.2727
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274563",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 110,
+      "insetM": 0.75,
+      "q10AboveGroundM": 5.696,
+      "q50AboveGroundM": 15.679,
+      "q90AboveGroundM": 17.39,
+      "groundRangeM": 0.117,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 5.2949,
+            "heldoutWithin065m": 0.2742
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 5.4068,
+            "heldoutWithin065m": 0.2903
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274586",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 145,
+      "insetM": 0.75,
+      "q10AboveGroundM": 3.283,
+      "q50AboveGroundM": 15.876,
+      "q90AboveGroundM": 18.224,
+      "groundRangeM": 0.103,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 5.5988,
+            "heldoutWithin065m": 0.2083
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 6.1438,
+            "heldoutWithin065m": 0.2639
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/488690084",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 16.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 743,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.97,
+      "q50AboveGroundM": 11.948,
+      "q90AboveGroundM": 13.652,
+      "groundRangeM": 1.077,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.4127,
+            "heldoutWithin065m": 0.2857
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6674,
+            "heldoutWithin065m": 0.9353
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          16.01928,
+          -0.00057,
+          -1.10697
+        ],
+        "pitchDegreesEstimated": 47.91,
+        "ridgeNN2000EstimatedM": 16.019,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/292242383",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 3.0,
+      "osmRoofShape": "hipped",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 581,
+      "insetM": 0.75,
+      "q10AboveGroundM": 1.432,
+      "q50AboveGroundM": 5.673,
+      "q90AboveGroundM": 8.354,
+      "groundRangeM": 3.793,
+      "groundSlopeOrRegistrationReview": true,
+      "roof": {
+        "status": "complex-or-nonrectangular-no-simple-roof"
+      }
+    },
+    {
+      "id": "way/292242388",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 415,
+      "insetM": 0.75,
+      "q10AboveGroundM": 3.199,
+      "q50AboveGroundM": 7.158,
+      "q90AboveGroundM": 9.119,
+      "groundRangeM": 2.531,
+      "groundSlopeOrRegistrationReview": true,
+      "roof": {
+        "status": "complex-or-nonrectangular-no-simple-roof"
+      }
+    },
+    {
+      "id": "way/292320263",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 359,
+      "insetM": 0.75,
+      "q10AboveGroundM": 6.962,
+      "q50AboveGroundM": 8.619,
+      "q90AboveGroundM": 10.366,
+      "groundRangeM": 0.658,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.2087,
+            "heldoutWithin065m": 0.3536
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.8843,
+            "heldoutWithin065m": 0.8232
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320264",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 219,
+      "insetM": 0.75,
+      "q10AboveGroundM": 4.485,
+      "q50AboveGroundM": 6.404,
+      "q90AboveGroundM": 8.415,
+      "groundRangeM": 0.239,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.3316,
+            "heldoutWithin065m": 0.2636
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.339,
+            "heldoutWithin065m": 0.2727
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320265",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 365,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.952,
+      "q50AboveGroundM": 11.451,
+      "q90AboveGroundM": 12.716,
+      "groundRangeM": 0.357,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.0059,
+            "heldoutWithin065m": 0.4088
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.8296,
+            "heldoutWithin065m": 0.6188
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320266",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 14.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 566,
+      "insetM": 0.75,
+      "q10AboveGroundM": 10.028,
+      "q50AboveGroundM": 11.823,
+      "q90AboveGroundM": 13.544,
+      "groundRangeM": 0.541,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.2403,
+            "heldoutWithin065m": 0.3028
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.5018,
+            "heldoutWithin065m": 0.9507
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          15.17624,
+          -0.01534,
+          -1.14849
+        ],
+        "pitchDegreesEstimated": 48.95,
+        "ridgeNN2000EstimatedM": 15.176,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/292320267",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 419,
+      "insetM": 0.75,
+      "q10AboveGroundM": 4.226,
+      "q50AboveGroundM": 5.553,
+      "q90AboveGroundM": 7.43,
+      "groundRangeM": 0.7,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.1628,
+            "heldoutWithin065m": 0.3476
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.8121,
+            "heldoutWithin065m": 0.7905
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320268",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 13.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 392,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.503,
+      "q50AboveGroundM": 11.26,
+      "q90AboveGroundM": 12.736,
+      "groundRangeM": 0.258,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.2083,
+            "heldoutWithin065m": 0.3763
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.8641,
+            "heldoutWithin065m": 0.8918
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320269",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 219,
+      "insetM": 0.75,
+      "q10AboveGroundM": 7.244,
+      "q50AboveGroundM": 8.853,
+      "q90AboveGroundM": 10.521,
+      "groundRangeM": 0.624,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.1621,
+            "heldoutWithin065m": 0.3394
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.3754,
+            "heldoutWithin065m": 1.0
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          14.14894,
+          0.00848,
+          -1.18516
+        ],
+        "pitchDegreesEstimated": 49.84,
+        "ridgeNN2000EstimatedM": 14.149,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/292320271",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 409,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.794,
+      "q50AboveGroundM": 11.649,
+      "q90AboveGroundM": 13.226,
+      "groundRangeM": 0.352,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.1639,
+            "heldoutWithin065m": 0.4208
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.7508,
+            "heldoutWithin065m": 0.5099
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320272",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 761,
+      "insetM": 0.75,
+      "q10AboveGroundM": 7.042,
+      "q50AboveGroundM": 8.773,
+      "q90AboveGroundM": 10.268,
+      "groundRangeM": 0.591,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.0912,
+            "heldoutWithin065m": 0.3422
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6554,
+            "heldoutWithin065m": 0.7109
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320273",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 172,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.119,
+      "q50AboveGroundM": 10.942,
+      "q90AboveGroundM": 12.257,
+      "groundRangeM": 0.24,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.2235,
+            "heldoutWithin065m": 0.3133
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.1881,
+            "heldoutWithin065m": 0.3735
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320274",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 149,
+      "insetM": 0.75,
+      "q10AboveGroundM": 8.628,
+      "q50AboveGroundM": 10.636,
+      "q90AboveGroundM": 11.843,
+      "groundRangeM": 0.244,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.2819,
+            "heldoutWithin065m": 0.3194
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.2715,
+            "heldoutWithin065m": 0.3472
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320275",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 13.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 516,
+      "insetM": 0.75,
+      "q10AboveGroundM": 10.113,
+      "q50AboveGroundM": 11.696,
+      "q90AboveGroundM": 13.137,
+      "groundRangeM": 0.531,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.1113,
+            "heldoutWithin065m": 0.332
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.7278,
+            "heldoutWithin065m": 0.7606
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/292320276",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 359,
+      "insetM": 0.75,
+      "q10AboveGroundM": 7.91,
+      "q50AboveGroundM": 9.705,
+      "q90AboveGroundM": 10.977,
+      "groundRangeM": 0.566,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.0048,
+            "heldoutWithin065m": 0.3708
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6067,
+            "heldoutWithin065m": 0.9045
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          13.63051,
+          -0.01663,
+          -1.05646
+        ],
+        "pitchDegreesEstimated": 46.57,
+        "ridgeNN2000EstimatedM": 13.631,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/292320278",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 279,
+      "insetM": 0.75,
+      "q10AboveGroundM": 8.869,
+      "q50AboveGroundM": 10.214,
+      "q90AboveGroundM": 11.463,
+      "groundRangeM": 0.396,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.0171,
+            "heldoutWithin065m": 0.4245
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.5209,
+            "heldoutWithin065m": 0.9568
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          13.85852,
+          0.0034,
+          -0.92666
+        ],
+        "pitchDegreesEstimated": 42.82,
+        "ridgeNN2000EstimatedM": 13.859,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274526",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 589,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.546,
+      "q50AboveGroundM": 11.022,
+      "q90AboveGroundM": 12.402,
+      "groundRangeM": 0.632,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "complex-or-nonrectangular-no-simple-roof"
+      }
+    },
+    {
+      "id": "way/331274527",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 15.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 2448,
+      "insetM": 0.75,
+      "q10AboveGroundM": 16.1,
+      "q50AboveGroundM": 18.538,
+      "q90AboveGroundM": 22.274,
+      "groundRangeM": 2.935,
+      "groundSlopeOrRegistrationReview": true,
+      "roof": {
+        "status": "complex-or-nonrectangular-no-simple-roof"
+      }
+    },
+    {
+      "id": "way/331274539",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 275,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.282,
+      "q50AboveGroundM": 11.389,
+      "q90AboveGroundM": 13.124,
+      "groundRangeM": 0.065,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.4258,
+            "heldoutWithin065m": 0.3212
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.4429,
+            "heldoutWithin065m": 0.3066
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274540",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 280,
+      "insetM": 0.75,
+      "q10AboveGroundM": 4.102,
+      "q50AboveGroundM": 5.361,
+      "q90AboveGroundM": 6.899,
+      "groundRangeM": 2.428,
+      "groundSlopeOrRegistrationReview": true,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.9058,
+            "heldoutWithin065m": 0.4786
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.7877,
+            "heldoutWithin065m": 0.7071
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274543",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 625,
+      "insetM": 0.75,
+      "q10AboveGroundM": 7.285,
+      "q50AboveGroundM": 9.439,
+      "q90AboveGroundM": 11.125,
+      "groundRangeM": 1.293,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.2978,
+            "heldoutWithin065m": 0.3077
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.2904,
+            "heldoutWithin065m": 0.3237
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274548",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 234,
+      "insetM": 0.75,
+      "q10AboveGroundM": 4.565,
+      "q50AboveGroundM": 5.88,
+      "q90AboveGroundM": 7.149,
+      "groundRangeM": 0.273,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.9435,
+            "heldoutWithin065m": 0.3729
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.3592,
+            "heldoutWithin065m": 0.9831
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          8.84472,
+          -0.00896,
+          -0.96126
+        ],
+        "pitchDegreesEstimated": 43.87,
+        "ridgeNN2000EstimatedM": 8.845,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274556",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 553,
+      "insetM": 0.75,
+      "q10AboveGroundM": 6.239,
+      "q50AboveGroundM": 8.149,
+      "q90AboveGroundM": 9.811,
+      "groundRangeM": 0.622,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "complex-or-nonrectangular-no-simple-roof"
+      }
+    },
+    {
+      "id": "way/331274570",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 132,
+      "insetM": 0.75,
+      "q10AboveGroundM": 6.973,
+      "q50AboveGroundM": 7.759,
+      "q90AboveGroundM": 8.647,
+      "groundRangeM": 0.169,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.6307,
+            "heldoutWithin065m": 0.7188
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6775,
+            "heldoutWithin065m": 0.7188
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274572",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 119,
+      "insetM": 0.75,
+      "q10AboveGroundM": 10.338,
+      "q50AboveGroundM": 12.426,
+      "q90AboveGroundM": 13.073,
+      "groundRangeM": 0.169,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.6352,
+            "heldoutWithin065m": 0.6774
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6372,
+            "heldoutWithin065m": 0.6774
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274573",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 205,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.628,
+      "q50AboveGroundM": 10.94,
+      "q90AboveGroundM": 12.291,
+      "groundRangeM": 0.185,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.0701,
+            "heldoutWithin065m": 0.3491
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.2191,
+            "heldoutWithin065m": 0.9906
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          14.08452,
+          0.01588,
+          -0.98842
+        ],
+        "pitchDegreesEstimated": 44.67,
+        "ridgeNN2000EstimatedM": 14.085,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274577",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 113,
+      "insetM": 0.75,
+      "q10AboveGroundM": 7.148,
+      "q50AboveGroundM": 8.27,
+      "q90AboveGroundM": 9.452,
+      "groundRangeM": 0.139,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.8858,
+            "heldoutWithin065m": 0.4407
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.8835,
+            "heldoutWithin065m": 0.4237
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274580",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 238,
+      "insetM": 0.75,
+      "q10AboveGroundM": 4.094,
+      "q50AboveGroundM": 5.224,
+      "q90AboveGroundM": 6.255,
+      "groundRangeM": 0.348,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.7192,
+            "heldoutWithin065m": 0.6957
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.3973,
+            "heldoutWithin065m": 0.9739
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          8.62008,
+          0.01742,
+          -0.95179
+        ],
+        "pitchDegreesEstimated": 43.59,
+        "ridgeNN2000EstimatedM": 8.62,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274581",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 67,
+      "insetM": 0.75,
+      "q10AboveGroundM": 4.219,
+      "q50AboveGroundM": 5.429,
+      "q90AboveGroundM": 6.111,
+      "groundRangeM": 0.092,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "insufficient-roof-samples"
+      }
+    },
+    {
+      "id": "way/331274587",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 13.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 878,
+      "insetM": 0.75,
+      "q10AboveGroundM": 8.206,
+      "q50AboveGroundM": 10.517,
+      "q90AboveGroundM": 13.23,
+      "groundRangeM": 0.763,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.3391,
+            "heldoutWithin065m": 0.3524
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.8212,
+            "heldoutWithin065m": 0.6476
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274594",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 267,
+      "insetM": 0.75,
+      "q10AboveGroundM": 8.806,
+      "q50AboveGroundM": 10.242,
+      "q90AboveGroundM": 11.535,
+      "groundRangeM": 0.19,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.9834,
+            "heldoutWithin065m": 0.4219
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.4077,
+            "heldoutWithin065m": 0.9453
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          13.54244,
+          -0.00854,
+          -1.02368
+        ],
+        "pitchDegreesEstimated": 45.67,
+        "ridgeNN2000EstimatedM": 13.542,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274596",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 265,
+      "insetM": 0.75,
+      "q10AboveGroundM": 6.561,
+      "q50AboveGroundM": 8.424,
+      "q90AboveGroundM": 10.415,
+      "groundRangeM": 0.575,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.9469,
+            "heldoutWithin065m": 0.4341
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6908,
+            "heldoutWithin065m": 0.6512
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274599",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 467,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.34,
+      "q50AboveGroundM": 11.006,
+      "q90AboveGroundM": 12.5,
+      "groundRangeM": 0.256,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.1798,
+            "heldoutWithin065m": 0.359
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.4357,
+            "heldoutWithin065m": 0.953
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          14.72173,
+          -0.01773,
+          -1.15544
+        ],
+        "pitchDegreesEstimated": 49.12,
+        "ridgeNN2000EstimatedM": 14.722,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274605",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 471,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.902,
+      "q50AboveGroundM": 12.904,
+      "q90AboveGroundM": 16.007,
+      "groundRangeM": 0.31,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 2.1753,
+            "heldoutWithin065m": 0.1522
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 2.1737,
+            "heldoutWithin065m": 0.1435
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/393025479",
+      "kind": "existing",
+      "name": "Skur 11",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 3.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 818,
+      "insetM": 0.75,
+      "q10AboveGroundM": 6.79,
+      "q50AboveGroundM": 7.236,
+      "q90AboveGroundM": 7.677,
+      "groundRangeM": 0.289,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.3219,
+            "heldoutWithin065m": 1.0
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.0437,
+            "heldoutWithin065m": 1.0
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          9.605,
+          -0.0002,
+          -0.31581
+        ],
+        "pitchDegreesEstimated": 17.53,
+        "ridgeNN2000EstimatedM": 9.605,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/396054150",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 3.0,
+      "osmRoofShape": "hipped",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 199,
+      "insetM": 0.75,
+      "q10AboveGroundM": 3.87,
+      "q50AboveGroundM": 4.995,
+      "q90AboveGroundM": 5.951,
+      "groundRangeM": 0.101,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "mapped-roof-conflict-review",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.7569,
+            "heldoutWithin065m": 0.604
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.5251,
+            "heldoutWithin065m": 0.8515
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          8.09342,
+          0.03463,
+          -0.77128
+        ],
+        "pitchDegreesEstimated": 37.64,
+        "ridgeNN2000EstimatedM": 8.093,
+        "warning": "Rejected for promotion: simple raster hypothesis conflicts with mapped roof. Preserve source geometry.",
+        "mappedRoofShape": "hipped"
+      }
+    },
+    {
+      "id": "way/416421844",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 177,
+      "insetM": 0.75,
+      "q10AboveGroundM": 8.408,
+      "q50AboveGroundM": 9.892,
+      "q90AboveGroundM": 10.947,
+      "groundRangeM": 0.327,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.7657,
+            "heldoutWithin065m": 0.4891
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6211,
+            "heldoutWithin065m": 0.6413
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/418057357",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 15.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 1212,
+      "insetM": 0.75,
+      "q10AboveGroundM": 7.343,
+      "q50AboveGroundM": 18.407,
+      "q90AboveGroundM": 22.129,
+      "groundRangeM": 1.046,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "complex-or-nonrectangular-no-simple-roof"
+      }
+    },
+    {
+      "id": "way/418057369",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 15.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 1319,
+      "insetM": 0.75,
+      "q10AboveGroundM": 17.325,
+      "q50AboveGroundM": 20.406,
+      "q90AboveGroundM": 22.823,
+      "groundRangeM": 2.063,
+      "groundSlopeOrRegistrationReview": true,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 2.5549,
+            "heldoutWithin065m": 0.1879
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 2.001,
+            "heldoutWithin065m": 0.5288
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/488690087",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "osm-height",
+      "baselineHeightM": 13.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 253,
+      "insetM": 0.75,
+      "q10AboveGroundM": 10.315,
+      "q50AboveGroundM": 11.455,
+      "q90AboveGroundM": 12.493,
+      "groundRangeM": 0.449,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.8397,
+            "heldoutWithin065m": 0.4419
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.5694,
+            "heldoutWithin065m": 0.907
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          13.74577,
+          -0.03335,
+          -1.08743
+        ],
+        "pitchDegreesEstimated": 47.4,
+        "ridgeNN2000EstimatedM": 13.746,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/984917585",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 147,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.219,
+      "q50AboveGroundM": 10.439,
+      "q90AboveGroundM": 11.584,
+      "groundRangeM": 0.196,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "complex-or-nonrectangular-no-simple-roof"
+      }
+    },
+    {
+      "id": "way/292242381",
+      "kind": "existing",
+      "name": "Bryggen Tracteursted",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 200,
+      "insetM": 0.75,
+      "q10AboveGroundM": 7.028,
+      "q50AboveGroundM": 8.435,
+      "q90AboveGroundM": 9.616,
+      "groundRangeM": 0.585,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "complex-or-nonrectangular-no-simple-roof"
+      }
+    },
+    {
+      "id": "way/292242384",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 6.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 421,
+      "insetM": 0.75,
+      "q10AboveGroundM": 4.155,
+      "q50AboveGroundM": 6.001,
+      "q90AboveGroundM": 7.769,
+      "groundRangeM": 1.394,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.3057,
+            "heldoutWithin065m": 0.3146
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.6378,
+            "heldoutWithin065m": 0.6244
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274535",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 90,
+      "insetM": 0.75,
+      "q10AboveGroundM": 4.237,
+      "q50AboveGroundM": 5.64,
+      "q90AboveGroundM": 6.846,
+      "groundRangeM": 0.405,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.9189,
+            "heldoutWithin065m": 0.4375
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.9484,
+            "heldoutWithin065m": 0.4583
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274542",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 565,
+      "insetM": 0.75,
+      "q10AboveGroundM": 6.309,
+      "q50AboveGroundM": 8.139,
+      "q90AboveGroundM": 9.808,
+      "groundRangeM": 1.411,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.3294,
+            "heldoutWithin065m": 0.3262
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.5744,
+            "heldoutWithin065m": 0.9043
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          13.24642,
+          -0.02492,
+          -1.21553
+        ],
+        "pitchDegreesEstimated": 50.56,
+        "ridgeNN2000EstimatedM": 13.246,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274545",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "levels-estimate",
+      "baselineHeightM": 3.0,
+      "osmRoofShape": "gabled",
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 202,
+      "insetM": 0.75,
+      "q10AboveGroundM": 4.617,
+      "q50AboveGroundM": 5.592,
+      "q90AboveGroundM": 6.758,
+      "groundRangeM": 0.888,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 0.8062,
+            "heldoutWithin065m": 0.53
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.4463,
+            "heldoutWithin065m": 0.94
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          11.62326,
+          0.07789,
+          -0.91192
+        ],
+        "pitchDegreesEstimated": 42.36,
+        "ridgeNN2000EstimatedM": 11.623,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274547",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 256,
+      "insetM": 0.75,
+      "q10AboveGroundM": 9.779,
+      "q50AboveGroundM": 11.651,
+      "q90AboveGroundM": 12.895,
+      "groundRangeM": 0.704,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.1728,
+            "heldoutWithin065m": 0.3967
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 1.1395,
+            "heldoutWithin065m": 0.4298
+          }
+        ]
+      }
+    },
+    {
+      "id": "way/331274559",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 581,
+      "insetM": 0.75,
+      "q10AboveGroundM": 8.813,
+      "q50AboveGroundM": 10.624,
+      "q90AboveGroundM": 12.123,
+      "groundRangeM": 1.116,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "shape-hypothesis-passes-raster-screen",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.2279,
+            "heldoutWithin065m": 0.3048
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.5445,
+            "heldoutWithin065m": 0.9384
+          }
+        ],
+        "hypothesis": "symmetric-gable",
+        "coefficients": [
+          15.01857,
+          -0.01968,
+          -0.98688
+        ],
+        "pitchDegreesEstimated": 44.62,
+        "ridgeNN2000EstimatedM": 15.019,
+        "warning": "Spatial holdout is not an independent survey. Ridge axis, symmetry and planar faces are hypotheses; facade unknown."
+      }
+    },
+    {
+      "id": "way/331274566",
+      "kind": "existing",
+      "name": "Mapped building",
+      "baselineHeightStatus": "unknown",
+      "baselineHeightM": null,
+      "osmRoofShape": null,
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 524,
+      "insetM": 0.75,
+      "q10AboveGroundM": 5.182,
+      "q50AboveGroundM": 7.175,
+      "q90AboveGroundM": 8.651,
+      "groundRangeM": 2.87,
+      "groundSlopeOrRegistrationReview": true,
+      "roof": {
+        "status": "no-simple-shape-supported",
+        "models": [
+          {
+            "hypothesis": "plane",
+            "heldoutRmseM": 1.1712,
+            "heldoutWithin065m": 0.4084
+          },
+          {
+            "hypothesis": "symmetric-gable",
+            "heldoutRmseM": 0.7118,
+            "heldoutWithin065m": 0.6641
+          }
+        ]
+      }
+    },
+    {
+      "id": "microsoft:120020133:line-23673:aeac40e78d856b3d",
+      "kind": "gap-candidate",
+      "quarantineReasons": [
+        "mapped-road-review-corridor"
+      ],
+      "status": "raised-surface-height-candidate-not-building-verification",
+      "samples": 53,
+      "insetM": 0.75,
+      "q10AboveGroundM": 0.034,
+      "q50AboveGroundM": 3.073,
+      "q90AboveGroundM": 3.674,
+      "groundRangeM": 0.161,
+      "groundSlopeOrRegistrationReview": false,
+      "roof": {
+        "status": "insufficient-roof-samples"
+      }
+    },
+    {
+      "id": "microsoft:120020133:line-39315:7208163b07228078",
+      "kind": "gap-candidate",
+      "quarantineReasons": [
+        "mapped-road-review-corridor"
+      ],
+      "status": "no-bounded-raised-surface",
+      "samples": 69,
+      "q90AboveGroundM": 1.029
+    },
+    {
+      "id": "microsoft:120020133:line-47416:d033afefa82d28bd",
+      "kind": "gap-candidate",
+      "quarantineReasons": [
+        "mapped-road-review-corridor"
+      ],
+      "status": "no-bounded-raised-surface",
+      "samples": 55,
+      "q90AboveGroundM": 0.794
+    },
+    {
+      "id": "microsoft:120020133:line-65314:b91c1efe73481860",
+      "kind": "gap-candidate",
+      "quarantineReasons": [
+        "mapped-road-review-corridor"
+      ],
+      "status": "no-bounded-raised-surface",
+      "samples": 44,
+      "q90AboveGroundM": 0.055
+    },
+    {
+      "id": "microsoft:120020133:line-75089:a74c75ca78cbf982",
+      "kind": "gap-candidate",
+      "quarantineReasons": [
+        "area-outside-research-range",
+        "mapped-road-review-corridor"
+      ],
+      "status": "too-few-dom-cells",
+      "samples": 4
+    },
+    {
+      "id": "microsoft:120020133:line-86257:37b36634ae4c8e53",
+      "kind": "gap-candidate",
+      "quarantineReasons": [
+        "outside-rendered-terrain-or-sea",
+        "coastline-review-buffer"
+      ],
+      "status": "no-bounded-raised-surface",
+      "samples": 50,
+      "q90AboveGroundM": 0.778
+    },
+    {
+      "id": "microsoft:120020133:line-105626:7f1f9bdc1472d040",
+      "kind": "gap-candidate",
+      "quarantineReasons": [],
+      "status": "no-bounded-raised-surface",
+      "samples": 41,
+      "q90AboveGroundM": 0.158
+    },
+    {
+      "id": "microsoft:120020133:line-130568:101ad18febe96992",
+      "kind": "gap-candidate",
+      "quarantineReasons": [
+        "area-outside-research-range"
+      ],
+      "status": "too-few-dom-cells",
+      "samples": 4
+    },
+    {
+      "id": "microsoft:120020133:line-142206:dc901d95c638386f",
+      "kind": "gap-candidate",
+      "quarantineReasons": [
+        "mapped-road-review-corridor"
+      ],
+      "status": "no-bounded-raised-surface",
+      "samples": 44,
+      "q90AboveGroundM": 0.875
+    },
+    {
+      "id": "overture:f3ed5a79-327d-496d-9bee-ec762c5312ab",
+      "kind": "gap-candidate",
+      "quarantineReasons": [
+        "area-outside-research-range"
+      ],
+      "status": "too-narrow-after-edge-inset"
+    }
+  ],
+  "counts": {
+    "existing:raised-surface-height-candidate-not-building-verification": 72,
+    "gap-candidate:raised-surface-height-candidate-not-building-verification": 1,
+    "gap-candidate:no-bounded-raised-surface": 6,
+    "gap-candidate:too-few-dom-cells": 2,
+    "gap-candidate:too-narrow-after-edge-inset": 1
+  },
+  "roofHypotheses": {
+    "not-supported-or-conflict": 51,
+    "symmetric-gable": 21
+  },
+  "roofSourceConflicts": 1,
+  "timing": {
+    "seconds": 1.5837,
+    "peakRssMiB": 172.26
+  }
+}

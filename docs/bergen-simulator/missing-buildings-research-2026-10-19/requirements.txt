@@ -1,0 +1,9 @@
+# Isolated authoring/research environment; no application or runtime dependencies.
+numpy==2.5.4
+shapely==2.1.2
+pyproj==3.7.2
+rasterio==1.4.4
+affine==3.0.1
+pyarrow==26.0.0
+matplotlib==3.11.2
+Pillow==11.3.0

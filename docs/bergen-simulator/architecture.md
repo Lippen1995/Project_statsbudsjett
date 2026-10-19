@@ -332,3 +332,8 @@ and [source register](r1c-source-register.md). Scenario versions 1–6 and origi
 The [19 October reconstruction-method study](architectural-reconstruction-strategy.md)
 compares existing models, roof/facade reconstruction and isolated delivery experiments.
 It proposes a source-gated hybrid pipeline; no runtime asset or scenario format changes.
+
+The [missing-buildings extension](missing-buildings-reconstruction.md) compares
+Microsoft/Overture coverage, tests pinned DOM/DTM height and roof hypotheses, and
+checks four public-register candidate sites. Every new footprint remains quarantined;
+neither observed geography nor saved scenarios are changed.

@@ -1,0 +1,38 @@
+{
+  "algorithm": "SHA-256",
+  "excluded": [
+    "manifest.json",
+    "__pycache__/"
+  ],
+  "files": {
+    "01-coverage.png": "c58d18b693e50a464a83c1a92ae3cbba6d2d8bff0ac8fb83cee5795d51b4ff1b",
+    "02-bryggen-screen.png": "92496e779c0e2f277e3e1521ec831ad30f7123c47b41e2f0db6ed3ba66e7156b",
+    "03-skur-roof-profile.png": "5ff9beb378aa797ee50db473b57996f3cfb3a245dbf2b9e08e3e573672b9be5a",
+    "NOTICE.md": "9f36853faedce7b93d3ee0646fb7230c970097c5a54944664fdafd08bb97da67",
+    "README.md": "a2d839e186bde93d9d984779bc9c38193e74bb9b2ab66db5e733fe6218313f11",
+    "acquire.py": "891ceb3a7a6a69db2f4480787bb5e791a7d8b799bacbada263ddc1d8d56ebb6c",
+    "audit.py": "e8fd837bfc7c5e866a6d0b3dbebb51b070740c9a95139f1cc6d6f0b73451ddf3",
+    "browser-report.json": "6583c3a00c7b965f4c2677900021fca491894c8df1c17a0e74f1fc8f43d23215",
+    "candidate-triage.json.gz": "ab2652804e1a039d4b87fb66f2cd79295a9aa32587024f97c319958438f5f06d",
+    "candidates.geojson.gz": "a943b7a9ed93157afb7691f364b52bb2a0fa0d13b3b0fe50ae432d0abcbdde7a",
+    "coverage-results.json": "ddb36ed7577a08e77277d388cbfa7d8d87d984139b2a1c8160f1be99f8923ee9",
+    "detail-results.json": "d95b5f3de266c5eb6b2f99c14df0ecea16a74fd518feab41803eb4d52d8485da",
+    "details.py": "c7779bec36f425c311369b3a2294b7d949cf922e5f9c914a93cba04e75e0f7c9",
+    "figures.py": "ed433401cb12e04086c4a08fe162451520cf93cd8e1157434b037b37f5b54ae4",
+    "height-attribute-candidates.json.gz": "dcd9e6b56ea8f16e8b1a157fc09d927b00db0387c9640ce6d556d027f114b7cb",
+    "height-results.json": "628e4d2bfae701f85fe4c399fba2f720e0f38a9edd7a24d2606b3aa4be6c9918",
+    "heights.py": "492f0d4c6a013e47657c532fadb97d8f241d6dc6d3f43a33e491400639c58c4b",
+    "inputs.json": "6c2b33ea8f4132d6bb8213c096d5af5cc1e2cae2e108e4ef27548dfe1a74dedb",
+    "matches.json.gz": "dcc3cddb1ee7cf4327ac7d06a2c956456afe5da4630249d06568adaec316fa37",
+    "microsoft.geojson.gz": "a83d09c8cbfe12a535ff73e74b7a1b482797fbfe2b6e9a046d53697420e1e511",
+    "overture.geojson.gz": "7bb7a5b52fbc45430133f8018d15d793439f1718f978ff4fda5ac5f107f237a6",
+    "registry-metadata.json": "7d218a37d0f120423f4630a12a1d54cde4cad60f6f1f1599fb3d58a941cde5af",
+    "registry-probes.json": "0336b67dbaecb81ed14fbd03735ec8afc1fdd81f8d6023a52195489a56f0f8fe",
+    "registry-results.json": "67bb7f7a77161657fc542d5db10feafe1d5710ff0bbf3d9f0b54cf5d189ca996",
+    "registry.py": "4309acf69dae63ad11991581a2afa7d4ad0a1acc8f098d0fd829f9ff0f6821c7",
+    "requirements.txt": "4bf29c04460c12f4c8b507d7adf40fc8779a339a4f2c0001efdb636cdb080240",
+    "source-register.md": "5a4fb5445358fa61088bc44551193869d637c4a1a4736652d2bbf3b98f4aa890",
+    "test_audit.py": "10924403b4dc91b00f9b9d955b67a382aac12c456849f36c2948d90964830c14",
+    "validation.json": "618da644d70c6db2644a0673ebb2fa9f7769af2a94c26a76b943f29fbc47b1a3"
+  }
+}

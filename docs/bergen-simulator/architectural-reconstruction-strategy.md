@@ -185,3 +185,8 @@ dokumentmappe. Applikasjon, avhengigheter, snapshots, lagrede scenarier, workflo
 `main`, Fellestall og Vercel-konfigurasjon er urørt. Ingen ny utrulling er nødvendig
 for denne undersøkelsen. Faktisk utførte kontroller registreres i
 undersøkelsens `validation.json`; fraværende fysiske målinger regnes ikke som bestått.
+
+Tilleggsundersøkelsen [Missing Buildings Reconstruction Pipeline](missing-buildings-reconstruction.md)
+måler OSM/Microsoft/Overture-dekning, tester høyde-/takhypoteser på 72 eksisterende
+bygg og undersøker bygningspunkter ved konkrete hullkandidater. Den foreslår en
+karantenebasert utvidelse uten å erstatte bedre eksisterende geometri.
