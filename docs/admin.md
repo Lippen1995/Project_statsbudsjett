@@ -26,8 +26,11 @@ Skjult adresse og indekseringsregler er ikke tilgangskontrollen.
 
 ## Serveroppsett
 
-Dette er **ikke aktivert i produksjon av kildekodeendringen alene**.
-Vercel-prosjektets miljøvariabler var tomme da oppsettet ble kontrollert.
+Adminområdet ble aktivert på **https://fellestall.no/admin/** 19. oktober 2026.
+Den faktiske kontoen `info@fjordinsight.com` er opprettet, og innlogging,
+serververn, GitHub-lagring, vedvarende økt, mobilmeny og utlogging er kontrollert
+på produksjonsdomenet. Innloggingshemmelighet, kanonisk URL, databaseforbindelse
+og dedikert GitHub-tilgang er konfigurert bare i Vercel Production.
 Den eksisterende Neon-databasen brukes med separate `ft_admin_*`-tabeller;
 snapshot- og analysetabeller endres ikke.
 
@@ -71,10 +74,11 @@ uautentiserte kvote. Lagring er eksplisitt deaktivert i grensesnittet.
 Branch-regler som krever PR vil også avvise direkte lagring til main;
 tokenen skal ikke ha omgåelsesrettigheter.
 
-I dette arbeidsområdet er det avtalte startpassordet allerede klargjort som
-hash i den ignorerte filen `.env.admin.local`. Når databaseforbindelsen er
-tilgjengelig i miljøet, oppretter `npm run admin:setup` kontoen fra denne hashen.
-Filen skal ikke legges i Git eller publiseringspakken.
+Det avtalte startpassordet ble tilført som en midlertidig Better Auth-hash ved
+første produksjonsoppstart. Etter verifisert innlogging er verdien av
+`FELLESTALL_ADMIN_PASSWORD_HASH` tømt i Vercel; oppstartsoppsettet er deaktivert
+for nye utrullinger. Konto og passordhash ligger i databasen. Innloggings-
+hemmeligheten `BETTER_AUTH_SECRET` beholdes ved vanlige utrullinger.
 
 For et nytt arbeidsområde: kjør den idempotente migreringen og opprett `info@fjordinsight.com` med det
 avtalte startpassordet. Passordet oppgis skjult, lagres som scrypt-hash, og
@@ -93,7 +97,7 @@ Alternativt kan en allerede generert Better Auth-hash tilføres som
 også støttet som en midlertidig Production Secret ved første utrulling:
 første API-oppstart oppretter skjema og konto i én transaksjon, med en
 database-lås som beskytter samtidige funksjonsinstanser. Gjenkjøring bevarer
-eksisterende konto og passord. Fjern bootstrap-hashen fra Vercel etter verifisert
+eksisterende konto og passord. Tøm eller slett bootstrap-hashen fra Vercel etter verifisert
 innlogging og utrull på nytt; den er ikke nødvendig i vanlig drift.
 Offentlig kontoregistrering er deaktivert.
 
@@ -153,4 +157,29 @@ Nettleserflyten er kontrollert mot et isolert lokalt API og lokal testkonto:
 innlogging, feil passord, vedvarende økt, navigasjon, periodevalg, Sven-lagring,
 mobil uten horisontal sideflyt og utlogging. Skriving mot GitHub var erstattet
 med et isolert testlager. Ingen produksjonskonto, GitHub-instruks eller
-produksjonsmåling er opprettet av denne kontrollen.
+produksjonsmåling er opprettet av disse isolerte kontrollene.
+
+## Produksjonskontroll 19. oktober 2026
+
+[Første produksjonsutrulling](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/39294688494)
+passerte bygg, Neon-oppsett, identiske statiske filer, admin-API-kontroll,
+aktivering og HTTPS/domene-kontroll. På det faktiske domenet ble følgende bekreftet:
+
+- Faktisk innlogging gir 200 og Secure/HttpOnly/SameSite-cookie; økten overlever
+  oppdatering, og utlogging avviser den videre.
+- Fem anonyme admin-endepunkter gir 401 og `no-store`. Fremmed origin avvises
+  med 403, og en foreldet pipelineversjon med 409.
+- Sven-instruks og pipeline er lagret via den dedikerte GitHub-tilgangen med
+  uendret innhold og kø. Kontrollen la ikke til et testtema eller nye føringer.
+- Den kommende køen har ett Sven-forslag til 26. oktober; ingen demotemaer
+  er overført fra forhåndsvisningen.
+- Desktop, mobilmeny og utlogging fungerer uten JavaScript- eller CSP-feil.
+  Offentlig navigasjon og sitemap inneholder ingen adminlenke.
+
+[Siste utrulling uten bootstrap-hash](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/39295713923)
+passerte de samme publiserings- og domenekontrollene. Hashverdien er tømt i
+Vercel, og den midlertidige lokale hashfilen er slettet.
+
+Det er ikke registrert en faktisk gjennomført daglig analyseplanlegging med
+den nye køflyten; første planlagte kontroll er 20. oktober kl. 09.00 norsk tid.
+Eksisterende krav om menneskelig godkjenning av analyser er uendret.
