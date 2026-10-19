@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "scope": "u-02",
+  "checkedAt": "2026-10-19",
+  "sources": [
+    {
+      "name": "Regjeringens tilleggsforslag: flytting av integreringsområdet",
+      "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-tillegg-1-20212022/id2885048/?ch=2",
+      "description": "Avsnittet om flytting av Integreringsavdelingen og tabell 2.2 er lest. Kapitlene 290–292 foreslås flyttet til 670–672. Administrasjonsmidler inne i kapittel 200 er ikke isolert som regnskapsført delserie."
+    },
+    {
+      "name": "Arbeids- og inkluderingsdepartementet: bekreftet overføring i 2022",
+      "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20222023/id2930910/?ch=2",
+      "description": "Proposisjonen bekrefter at integreringsområdet ble overført fra Kunnskapsdepartementet i 2022."
+    },
+    {
+      "name": "SSB: definisjon av registrerte studenter",
+      "url": "https://www.ssb.no/utdanning/hoyere-utdanning/statistikk/studenter-i-universitets-og-hogskoleutdanning",
+      "description": "Personer registrert 1. oktober; permisjon og doktorgradsprogram inngår ikke. Lærestedsutvalget i uttrekket omfatter statlige universiteter og høyskoler, med begge Innlandet-kodene for å bevare historikken."
+    }
+  ]
+}

@@ -55,3 +55,6 @@ Dette er en instruksjonsbasert arbeidsflyt: en agent må lese filene og utføre 
 Første utvalg har tre VG-referanser: én lesbar nyhetstekst og to begrensede åpningsreferanser. Utvid mot 15–25 gjennomarbeidede eksempler over flere sjangre og redaksjoner, men vurder kvalitet og tilgjengelighet individuelt. Søk spesielt etter fullstendig forklarende datajournalistikk og kritiske saker med dokumentert imøtegåelse; dette dekkes ikke godt av startutvalget.
 
 Bevar URL, dato, opphav, faktisk lest omfang og egne korte læringsnotater. Ikke bygg et fulltekstarkiv eller treningsdatasett av VG-artikler uten avklart bruk. Ingen scraping, betalingsmuromgåelse eller løpende innhenting er satt opp.
+
+### Erfaring 19. oktober 2026
+Brukeren ba uttrykkelig om at en interessant observasjon følges videre med beregninger og søk i tilgjengelige primærkilder. P007 er derfor aktiv, ikke en AI-utledet preferanse. Eksemplene er omorganiseringsjustert utvikling og bevilgning per student. Databasen er et utgangspunkt; analysearbeidet skal ikke begrenses til allerede lagrede fakta. Dette gir ikke adgang til ubekreftede tall eller til å gjenbruke en gammel publiseringsgodkjenning.

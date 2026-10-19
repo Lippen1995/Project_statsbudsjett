@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18",
+  "updatedAt": "2026-10-19",
   "mechanism": "instruction-based; no model fine-tuning",
   "rules": [
     {
@@ -67,6 +67,17 @@
         "kind": "explicit-current-user-instruction",
         "source": "Samtale 18. oktober 2026",
         "note": "Brukeren godkjente oppstart. Ingen GitHub-feedback-ID eller publiseringsgodkjenning opprettes av dette."
+      }
+    },
+    {
+      "id": "P007",
+      "status": "active",
+      "scope": "article-and-research",
+      "rule": "Følg interessante funn frem til et svar. Søk i relevante eksterne primærkilder før data erklæres manglende, og beregn relevante sammenlignbare størrelser, som omorganiseringsjustert utvikling og bevilgning per student. Databasen er et utgangspunkt, ikke en avgrensning av analysen. Dokumenter utvalg, formler, nevner, usikkerhet og kildeversjon.",
+      "provenance": {
+        "kind": "explicit-current-user-instruction",
+        "source": "Brukerens tilbakemelding i oppgavens chat 19. oktober 2026",
+        "note": "Ingen GitHub-feedback-ID eller publiseringsgodkjenning opprettes av dette."
       }
     }
   ],

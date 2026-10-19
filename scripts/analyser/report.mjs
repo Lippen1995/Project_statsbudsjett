@@ -1,5 +1,6 @@
+import { calculateResearch } from '../../web/src/analyser/research-calculations.js'
 import { attachSsbEvidence } from './ssb-research.mjs'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { calculateFacts } from './facts.mjs'
 import { selectEventEvidence, eventEvidenceFacts } from './event-evidence.mjs'
@@ -7,7 +8,7 @@ import { topicKey } from '../../web/src/analyser/topics.js'
 
 export function buildReport(
   dataDir,
-  { start, end, departmentId = null, question, detailSelections } = {},
+  { start, end, departmentId = null, question, detailSelections, researchPlan } = {},
 ) {
   const names = ['meta', 'utgifter', 'befolkning', 'kpi']
   const raw = Object.fromEntries(
@@ -62,9 +63,10 @@ export function buildReport(
     ...calculateFacts(first, last, rows),
     ...eventEvidenceFacts(eventEvidence, rows),
   }
-  return attachSsbEvidence(dataDir, {
+  const report = attachSsbEvidence(dataDir, {
     kind: 'real-expenditure-per-capita',
     factsVersion: 2,
+    ...(researchPlan ? { researchPlan: structuredClone(researchPlan) } : {}),
     scopeId: departmentId ?? 'state',
     scopeName,
     ...(question ? { question } : {}),
@@ -140,4 +142,22 @@ export function buildReport(
       'Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse.',
     ],
   })
+  if (!researchPlan) return report
+  const derived = calculateResearch(report)
+  const referencePath = `${dataDir}/analysis-research/${report.scopeId}.json`
+  const rawReferences = existsSync(referencePath) ? readFileSync(referencePath, 'utf8') : null
+  const references = rawReferences ? JSON.parse(rawReferences) : null
+  if (references && (references.version !== 1 || references.scope !== report.scopeId || !Array.isArray(references.sources))) throw Error('Ugyldig forskningskilderegister')
+  return { ...report, facts: { ...report.facts, ...derived.facts },
+    sources: [...report.sources, ...(references?.sources ?? [])],
+    ...(rawReferences ? {researchSources:{sha256:createHash('sha256').update(rawReferences).digest('hex'),...references}} : {}),
+    dataHash: createHash('sha256').update(JSON.stringify({base:report.dataHash,researchPlan,rawReferences})).digest('hex'),
+    methodology: [...report.methodology,
+      'Tilleggsberegninger gjentas fra frosne kapittel/post-serier og eksplisitte SSB-utvalg. Kapitteljustering trekker samme navngitte kapitler fra departementet i hvert år; ingen nasjonal nullutgift antas når ansvaret flyttes.',
+      'Bevilgning per registrert student er valgt regnskapspost delt på eksplisitt valgte læresteders SSB-studenttall. Det er ikke institusjonenes totale kostnader per heltidsstudent. KPI-justering bruker sluttårets konsumpriser.'],
+    limitations: [...report.limitations,
+      'Kapitteljusteringen er avgrenset til oppgitte kapitler. Andre ansvarsendringer og integreringsrelatert administrasjon inne i andre kapitler er ikke omregnet.',
+      'Studenttall er SSBs personer per 1. oktober, uten doktorgradsstudenter og permisjoner. Deltid, forskning og andre institusjonsoppgaver påvirker tolkningen; bevilgning per student er ikke ren undervisningskostnad.'],
+  }
+
 }

@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import requests
 
-BASE = 'https://data.ssb.no/api/pxwebapi/v2-beta/tables'
+BASE = 'https://data.ssb.no/api/pxwebapi/v2/tables'
 MAX_CELLS = 200
 
 
@@ -39,7 +39,7 @@ def codes(dimension):
     return list(index) if isinstance(index, list) else [k for k, v in sorted(index.items(), key=lambda x: x[1])]
 
 
-def selection_params(md, selections):
+def selection_params(md, selections, aggregation=None):
     ids = md['id']
     if not isinstance(selections, dict) or set(ids) != set(selections):
         raise ValueError('Select every dimension explicitly; no automatic totals or first category')
@@ -47,6 +47,15 @@ def selection_params(md, selections):
     if len(time_ids) != 1 or time_ids[0] not in ids:
         raise ValueError('Exactly one time dimension is required')
     time_id = time_ids[0]
+    if aggregation is not None:
+        if (not isinstance(aggregation, dict) or set(aggregation) != {'dimension', 'method'}
+                or aggregation['method'] != 'sum' or aggregation['dimension'] not in ids
+                or aggregation['dimension'] in [time_id, *md.get('role', {}).get('metric', ['ContentsCode'])]):
+            raise ValueError('Explicit sum of one non-time category dimension required')
+        dim = aggregation['dimension']
+        labels = md['dimension'][dim]['category'].get('label', {})
+        if len(selections[dim]) < 2 or any('i alt' in labels.get(v, '').lower() or v == '000' for v in selections[dim]):
+            raise ValueError('Aggregation cannot include a total or an implicit selection')
     cells = 1
     params = {'lang': 'no', 'outputFormat': 'json-stat2'}
     for code in ids:
@@ -55,7 +64,7 @@ def selection_params(md, selections):
             raise ValueError('Nonempty explicit unique category codes are required')
         if any(not isinstance(v, str) or v not in codes(md['dimension'][code]) for v in values):
             raise ValueError('Unknown SSB category')
-        if code != time_id and len(values) != 1:
+        if code != time_id and len(values) != 1 and (not aggregation or code != aggregation['dimension']):
             raise ValueError('One measure and one category per non-time dimension; fetch separate series')
         if code == time_id and any(not re.fullmatch(r'\d{4}', v) for v in values):
             raise ValueError('Only annual observations are supported; do not mix months or quarters')
@@ -66,8 +75,8 @@ def selection_params(md, selections):
     return params, time_id
 
 
-def normalize(md, data, selections):
-    _, time_id = selection_params(md, selections)
+def normalize(md, data, selections, aggregation=None):
+    _, time_id = selection_params(md, selections, aggregation)
     if data.get('class') != 'dataset' or set(data.get('id', [])) != set(md['id']):
         raise ValueError('Unexpected SSB data dimensions')
     if len(data.get('size', [])) != len(data['id']):
@@ -84,11 +93,21 @@ def normalize(md, data, selections):
     if not isinstance(unit, dict) or not isinstance(unit.get('base'), str) or not unit['base']:
         raise ValueError('Missing official SSB unit; do not guess it')
     years = codes(data['dimension'][time_id]);values = data.get('value')
-    if not isinstance(values, (list, dict)) or isinstance(values, list) and len(values) != len(years):
+    if not isinstance(values, (list, dict)) or isinstance(values, list) and len(values) != math.prod(data['size']):
         raise ValueError('Invalid SSB values')
     rows = []
-    for index, year in enumerate(years):
-        value = values[index] if isinstance(values, list) else values.get(str(index))
+    def cell(year, member=None):
+        offset = 0
+        for dim, size in zip(data['id'], data['size']):
+            observed = codes(data['dimension'][dim])
+            code = year if dim == time_id else member if aggregation and dim == aggregation['dimension'] else selections[dim][0]
+            offset = offset * size + observed.index(code)
+        value = values[offset] if isinstance(values, list) else values.get(str(offset))
+        if type(value) not in [int, float] or not math.isfinite(value):
+            raise ValueError('Missing or confidential values cannot be treated as zero')
+        return value
+    for year in years:
+        value = sum(cell(year, member) for member in selections[aggregation['dimension']]) if aggregation else cell(year)
         if type(value) not in [int, float] or not math.isfinite(value):
             raise ValueError('Missing or confidential values cannot be treated as zero')
         rows.append({'year': int(year), 'value': value})
@@ -96,13 +115,16 @@ def normalize(md, data, selections):
     if len(rows) < 2 or [r['year'] for r in rows] != list(range(rows[0]['year'], rows[-1]['year'] + 1)):
         raise ValueError('At least two consecutive annual observations are required')
     categories = {code: {'code': selections[code][0], 'label': md['dimension'][code]['category'].get('label', {}).get(selections[code][0], selections[code][0])} for code in md['id'] if code != time_id}
+    if aggregation:
+        dim = aggregation['dimension']
+        categories[dim] = {'codes': selections[dim], 'labels': [md['dimension'][dim]['category'].get('label', {}).get(v, v) for v in selections[dim]], 'aggregation': 'sum'}
     return {'unit': unit['base'], 'rows': rows, 'categories': categories, 'updated': data.get('updated') or md.get('updated')}
 
 
-def fetch_snapshot(table, selections):
-    md = metadata(table);params, _ = selection_params(md, selections)
+def fetch_snapshot(table, selections, aggregation=None):
+    md = metadata(table);params, _ = selection_params(md, selections, aggregation)
     data = get('/' + table + '/data', params)
-    return {'version': 1, 'table': table, 'url': f'https://www.ssb.no/statbank/table/{table}/', 'api': BASE + '/' + table, 'title': md.get('label', table), 'retrievedAt': datetime.now(timezone.utc).isoformat(), 'selections': selections, 'metadata': md, 'data': data, 'series': normalize(md, data, selections)}
+    return {'version': 1, 'table': table, 'url': f'https://www.ssb.no/statbank/table/{table}/', 'api': BASE + '/' + table, 'title': md.get('label', table), 'retrievedAt': datetime.now(timezone.utc).isoformat(), 'selections': selections, 'metadata': md, 'data': data, 'series': normalize(md, data, selections, aggregation), **({'aggregation': aggregation} if aggregation else {})}
 
 
 def archive(data_dir, request):
@@ -110,7 +132,8 @@ def archive(data_dir, request):
             or not re.fullmatch(r'(?:state|u-\d{2}|budget:20\d{2})', request.get('scope', ''))
             or not isinstance(request.get('purpose'), str) or not 10 <= len(request['purpose']) <= 500):
         raise ValueError('Explicit research ID, scope and purpose are required')
-    snapshot = fetch_snapshot(table_id(request.get('table')), request.get('selections'))
+    snapshot = (fetch_snapshot(table_id(request.get('table')), request.get('selections'), request['aggregation'])
+                if request.get('aggregation') else fetch_snapshot(table_id(request.get('table')), request.get('selections')))
     raw = encode(snapshot);digest = hashlib.sha256(raw).hexdigest()
     path = data_dir / 'ssb-research' / (digest + '.json');path.parent.mkdir(parents=True, exist_ok=True)
     if path.exists() and path.read_bytes() != raw:raise ValueError('Immutable SSB archive conflict')
@@ -134,7 +157,7 @@ def main():
         result=get('', {'lang':'no', 'query':args.argument, 'pageSize':20})
     elif args.command == 'metadata':result=metadata(args.argument)
     else:
-        request=json.loads(Path(args.argument).read_text());result=fetch_snapshot(table_id(request['table']),request['selections'])
+        request=json.loads(Path(args.argument).read_text());result=fetch_snapshot(table_id(request['table']),request['selections'],request.get('aggregation'))
     raw=json.dumps(result,ensure_ascii=False,indent=2)
     if args.output:Path(args.output).write_text(raw+'\n')
     else:print(raw)
