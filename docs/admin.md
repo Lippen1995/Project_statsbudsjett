@@ -90,8 +90,12 @@ unset admin_start_password
 
 Alternativt kan en allerede generert Better Auth-hash tilføres som
 `FELLESTALL_ADMIN_PASSWORD_HASH` i migreringsmiljøet. Denne variabelen er
-ikke nødvendig i det kjørende API-et. Gjenkjøring bevarer eksisterende
-konto og passord. Offentlig kontoregistrering er deaktivert.
+også støttet som en midlertidig Production Secret ved første utrulling:
+første API-oppstart oppretter skjema og konto i én transaksjon, med en
+database-lås som beskytter samtidige funksjonsinstanser. Gjenkjøring bevarer
+eksisterende konto og passord. Fjern bootstrap-hashen fra Vercel etter verifisert
+innlogging og utrull på nytt; den er ikke nødvendig i vanlig drift.
+Offentlig kontoregistrering er deaktivert.
 
 `npm run dev` starter frontend og Node-API i Vite. Vanlig statisk preview
 betjener bare de bygde sidene og har ikke innloggings-API.
@@ -101,7 +105,12 @@ betjener bare de bygde sidene og har ikke innloggings-API.
 Den eksisterende `deploy.yml` bygger fortsatt nettstedet én gang.
 `vercel-mirror.yml` installerer nå også rotavhengighetene og pakker det
 samme statiske resultatet sammen med Node 24-funksjonen gjennom Build Output
-API. Admin-API-et får en egen rute; manglende JSON og ukjente offentlige
+API. Når admininngangen finnes i bygget, bruker den beskyttede main-jobben
+eksisterende Neon- og Vercel-legitimasjon til å konfigurere `DATABASE_URL`
+direkte som Vercel Production Secret hvis den mangler. En eksisterende verdi
+bevares. Innloggingsvariabler og dedikert GitHub-token må finnes før utrulling;
+mangler stopper jobben før produksjonen endres. Midlertidige miljøfiler og
+Neon-logger slettes uten opplasting. Admin-API-et får en egen rute; manglende JSON og ukjente offentlige
 adresser skal fortsatt gi 404. GitHub Pages er bare reserve for offentlige
 statiske sider og kan ikke kjøre admin-API-et.
 

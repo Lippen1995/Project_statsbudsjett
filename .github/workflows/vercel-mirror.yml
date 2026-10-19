@@ -52,6 +52,32 @@ jobs:
           npm ci
           npm install --global vercel@63.1.2
 
+      - name: Installer Neon-verktøy for administratorens database
+        if: hashFiles('published-site/admin/index.html') != ''
+        run: npm install --global neon@8.4.5
+
+      - name: Hent eksisterende Neon production-forbindelse
+        if: hashFiles('published-site/admin/index.html') != ''
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: |
+          test -n "$NEON_API_KEY" || { echo 'NEON_API_KEY mangler i vercel-migration'; exit 1; }
+          if ! neon env pull --project-id bitter-firefly-21339346 --branch production --service postgres --file .env.local > "$RUNNER_TEMP/admin-neon.log" 2>&1; then
+            echo 'Administratorens databaseforbindelse kunne ikke klargjøres. Gjeldende nettsted beholdes.'
+            exit 1
+          fi
+          chmod 600 .env.local
+
+      - name: Klargjør administratorens produksjonsforbindelse i Vercel
+        if: hashFiles('published-site/admin/index.html') != ''
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node --use-env-proxy --env-file=.env.local scripts/admin/provision.mjs
+
+      - name: Slett midlertidige databasehemmeligheter
+        if: always()
+        run: rm -f .env.local "$RUNNER_TEMP/admin-neon.log"
+
       - name: Pakk statiske filer uten nytt frontendbygg
         run: |
           node scripts/deploy/vercel-static.mjs pack published-site

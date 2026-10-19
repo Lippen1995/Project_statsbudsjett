@@ -29,4 +29,5 @@ test('produksjonspakken skiller API fra statikk og beskytter admin-cache og inde
   assert.equal(matching('/data/mangler.json').at(-1).status, 404)
   assert.equal(matching('/admin').find(r => r.status === 308).headers.Location, '/admin/')
   assert.equal(typeof (await import(pathToFileURL(resolve(output, 'functions/admin-api.func/index.mjs')).href)).default, 'function')
+  assert.equal(await readFile(resolve(output, 'functions/admin-api.func/schema.sql'), 'utf8'), await readFile(new URL('../../server/admin/schema.sql', import.meta.url), 'utf8'))
 })
