@@ -242,7 +242,7 @@ export function createHandler({
         error.status >= 400 && error.status <= 599 ? error.status : 503
       if (status >= 500) {
         try {
-          const path = new URL(request.url).pathname
+          const path = new URL(request.url).pathname.replace(/(\/reset-password\/)[^/]+/,'$1token')
             .replace(/[^a-zA-Z0-9/_-]/g, '')
             .slice(0, 180)
           await sql.query(
