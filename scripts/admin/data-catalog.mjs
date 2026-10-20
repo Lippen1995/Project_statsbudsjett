@@ -242,6 +242,18 @@ export async function buildDataCatalog(dataDir) {
               : meta?.bnp_enhet,
       })
   }
+  const oil = await read('oljepengebruk.json')
+  if (oil)
+    datasets.push({
+      id: 'oljepengebruk.json',
+      label: 'Oljepengebruk',
+      path: '/data/oljepengebruk.json',
+      years: Object.keys(oil.serier || {})
+        .map(Number)
+        .sort(),
+      updated: oil.oppdatert || null,
+      unit: oil.enhet || 'mill_kr',
+    })
   const kostra = await read('kostra/index.json')
   if (kostra)
     datasets.push({

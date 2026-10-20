@@ -801,9 +801,28 @@ export function DataQuality() {
         <RecordPanel
           collection="sourcePolicies"
           title="Forventede kildeoppdateringer"
-          initial={{ source: '', expectedDays: 30, nextExpected: '', note: '' }}
+          initial={{
+            source: 'all',
+            expectedDays: 30,
+            nextExpected: '',
+            note: '',
+          }}
           fields={[
-            { key: 'source', label: 'Kilde eller datasett' },
+            {
+              key: 'source',
+              label: 'Datasett',
+              options: [
+                ['all', 'Hele datagrunnlaget'],
+                ['utgifter.json', 'Statsutgifter'],
+                ['inntekter.json', 'Statsinntekter'],
+                ['kpi.json', 'Konsumprisindeks'],
+                ['befolkning.json', 'Folkemengde'],
+                ['bnp.json', 'Bruttonasjonalprodukt'],
+                ['oljepengebruk.json', 'Oljepengebruk'],
+                ['kostra/index.json', 'KOSTRA kommunetall'],
+                ['budsjettarkiv/index.json', 'Budsjettarkiv'],
+              ],
+            },
             {
               key: 'expectedDays',
               label: 'Forventet intervall (dager)',
@@ -1672,8 +1691,9 @@ export function Backups() {
         <p>
           Kopiene omfatter private admininnstillinger, tilbakemeldinger,
           hendelser og mottakere. Kontoer, økter og publiserte analyser
-          håndteres separat. Oppbevar også nedlastede kopier sikkert;
-          prosjektets servernøkkel kreves ved åpning.
+          håndteres separat. Det lages en automatisk døgnkopi når innholdet
+          finnes; de 40 siste kopiene beholdes. Oppbevar også nedlastede kopier
+          sikkert; prosjektets servernøkkel kreves ved åpning.
         </p>
         <form
           className="ad-form-inline"

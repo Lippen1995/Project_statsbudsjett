@@ -14,8 +14,8 @@ og går videre gjennom prosjektets eksisterende kontroller og utrulling.
 | --- | --- |
 | Nettleser og innlogging | Alle 18 menyområder åpnet med ekte Better Auth-innlogging mot isolert PostgreSQL. Ingen nettleserfeil; mobilbredde 390 px uten sideveis rulling. |
 | Nettleser → API → database | Tema opprettet, lagret og pauset; kalender åpnet. Ny utkasttekst lagret. Kryptert kopi opprettet og faktisk gjenoppretting testet i separat databaseskjema via nettleseren. |
-| Roller og sesjoner | Lesere avvises ved skriving og private mottakerregistre. Redaktører kan ikke godkjenne publisering eller gjenopprette data. Offentlige Better Auth-administrasjonsruter er sperret. |
-| Tofaktor | Appkode må bekreftes før aktivering; senere innlogging krever utfordringen. Reservekode forbrukes én gang. |
+| Roller og sesjoner | Leserens skriveknapper er deaktivert, og redaktøren har ingen publiseringsknapp; dette er kontrollert i nettleseren. Lesere avvises ved skriving og private mottakerregistre. Redaktører kan ikke godkjenne publisering eller gjenopprette data. Offentlige Better Auth-administrasjonsruter er sperret. |
+| Tofaktor | QR-kode på canvas, aktivering og senere innlogging med reservekode er også kontrollert i nettleseren. Appkode må bekreftes før aktivering; senere innlogging krever utfordringen. Reservekode forbrukes én gang. |
 | Konto og gjenoppretting | Invitasjon oppretter faktisk redaktørkonto. Engangslenke setter passord. Innlogging får korrekt rolle. Brukt lenke avvises. Testleverandør brukt; ingen testmail sendes til ekte mottaker. |
 | Konfliktvern og historikk | Gamle revisjoner avvises. Før/etter lagres atomisk. Tilbakeføring gir nye versjonsnumre slik at eldre klienter fortsatt avvises. |
 | Sikkerhetskopi | AES-256-GCM, kontrollsum, import av kryptert eksport og faktisk isolert gjenopprettingstest. Produksjonstilbakeføring krever gjeldende versjon og ferskt passord. |
