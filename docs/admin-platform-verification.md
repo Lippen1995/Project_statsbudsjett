@@ -50,7 +50,8 @@ levering av e-post.
   Faktisk aktivitet rapporteres av `scripts/admin/sven-job.mjs` når oppgaven
   selv kjører. Ingen historiske kjøringer fylles inn.
 
-Produksjonsresultater og utrullingsreferanser føyes til etter publisering.
+Gjenstående kontooppsett er beskrevet i
+[admin-external-setup.md](admin-external-setup.md).
 
 Publiseringssperren kontrolleres også ved eksplisitt bygg fra repository-data.
 Tilbakeføring til en verifisert Neon-versjon bruker egne SHA-256-referanser og
@@ -80,3 +81,49 @@ Eksisterende Sven-oppgave `6ac269abcdac8191a5828572d4d04cf1` er oppdatert til
 faktisk arbeidsstatus og pause-/hasteprioritet. Oppdateringen bekrefter aktiv
 oppgave og uendret daglig tidsplan kl. 09.00 Europe/Oslo. Ingen ny analyse
 eller historisk arbeidsstatus er skrevet av implementeringen.
+
+## Siste produksjonskontroll, 20. oktober 2026 kl. 17.16 UTC
+
+Oppfølgingen i [PR #71](https://github.com/Lippen1995/Project_statsbudsjett/pull/71)
+ble slått sammen som `070b1fda49e4f2ae47ddb23a18f1b38337489b12`.
+[CI 39427863565](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/39427863565)
+bestod 38 backend-/plattformtester og 191 nettstedstester, frontendbygg og
+SEO-kontroll. [Publisering 39428178909](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/39428178909)
+fullførte bygg, innholdskontroll, promotering og HTTPS-/domenekontroll.
+Aktiv utrulling er `dpl_RKLbFFrXNdzvQw16VigbeBHY9utp`, tilgjengelig på
+https://fellestall.no/admin/.
+
+Eksisterende eierkonto logget inn på nytt. Alle de 19 undersøkte
+admin-endepunktene svarte 200; ingen nettleserfeil eller mobiloverflyt.
+Produksjonsbevisene er oppdatert i `artifacts/fellestall-platform/`.
+Helsekontrollens `x-vercel-id` inneholder funksjonsregion `fra1`, og siste
+Checkly-resultat er vellykket med 433 ms svartid. Loggsøk for siste utrulling
+fant ingen feil eller advarsler i kontrollvinduet.
+
+En egen autentisert infrastrukturkontroll svarte også 200. TLS-sertifikatet er
+verifisert mot Let's Encrypt og gyldig til 11. januar 2027. Domeneregisteret
+oppgir ingen utløpsdato; datoen vises som ukjent inntil registraren eller en
+administrator oppgir den. Det er ikke lagt inn en antatt fornyelsesdato.
+
+Checkly-registeret viser 131 resultater og 131 utførelser inkludert første
+forsøk, med full dekning fra kontrollens opprettelse. Eldre dobbelttelling er
+reparert, og prognosen er 8928 planlagte utførelser for en måned på 31 dager,
+før eventuelle nye forsøk og manuelle kjøringer. Leverandøren rapporterer
+fortsatt «Trial» uten numerisk API-kvote eller sluttdato. Entitlement-listen
+bekrefter at ingen separat grense for API-utførelser er oppgitt; en nullverdi
+for antall API-kontroller skal ikke tolkes som en månedlig kjøringskvote.
+
+Checkly-kontrollen er aktiv, udempet og har ferske resultater. Varslingskanalen
+til info@fjordinsight.com er bekreftet for feil, nedsatt ytelse og gjenoppretting.
+Svens nye arbeidsstatus har ennå ingen historisk kjøring; dette vises som
+manglende rapport, uten å fylle inn konstruert aktivitet.
+
+Åtte datasett, 1145 filer og fem dataversjoner er tilgjengelige. ID-, tall- og
+sumkontroller består. Faglige avvik og hull i tidsseriene vises til vurdering.
+Det er ikke utført tilbakeføring, publiseringsgodkjenning, distribusjon eller
+ekstern testsending mot produksjon i denne kontrollen.
+
+Resend er fortsatt ikke tilkoblet; serveren rapporterer `emailReady: false`.
+Invitasjoner, passordgjenoppretting og samlemail skal derfor ikke regnes som
+operative før avsenderoppsettet er bekreftet. GitHub-tokenens nye
+skriverettigheter må fortsatt bekreftes av kontoeieren.
