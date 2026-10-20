@@ -389,6 +389,8 @@ export function Monitoring() {
                 ['neon', 'Neon'],
                 ['email', 'E-post'],
                 ['linkedin', 'LinkedIn'],
+                ['domain', 'Domene'],
+                ['ssl', 'TLS-sertifikat'],
               ],
             },
             {
@@ -513,7 +515,10 @@ function Infrastructure() {
               <dt>Domenefornyelse</dt>
               <dd>
                 {d.domain?.expiresAt
-                  ? date(d.domain.expiresAt)
+                  ? date(d.domain.expiresAt) +
+                    (d.domain.source === 'admin'
+                      ? ' (oppgitt av administrator)'
+                      : '')
                   : 'Registeret oppgir ikke en offentlig utløpsdato. Fornyelse må følges hos domeneforhandleren.'}
               </dd>
             </div>
@@ -2332,7 +2337,7 @@ function IntegrationStatus() {
                   name: 'GitHub',
                   ready: d.github,
                   scope:
-                    'Arbeidsfiler og analysepipeline. Publisering trenger Contents, Pull requests, Issues og Actions med skriveadgang.',
+                    'Arbeidsfiler og analysepipeline. Publisering trenger Contents, Pull requests og Actions med skriveadgang.',
                 },
                 {
                   name: 'Checkly',

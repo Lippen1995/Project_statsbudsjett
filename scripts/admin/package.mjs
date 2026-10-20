@@ -18,6 +18,6 @@ export async function packageAdmin(output, { dataDir } = {}) {
     minify: true,
   })
   await writeFile(resolve(directory, '.vc-config.json'), JSON.stringify({
-    runtime: 'nodejs24.x', handler: 'index.mjs', launcherType: 'Nodejs',
+    runtime: 'nodejs24.x', handler: 'index.mjs', launcherType: 'Nodejs', regions: ['fra1'], maxDuration: 300,
   }, null, 2) + '\n')
 }

@@ -401,6 +401,13 @@ test('anonyme fordelinger, faktisk providerforbruk, kvotevarsler og idempotent e
     return Response.json({
       entries: [
         {
+          id: 'initial-only',
+          startedAt: at,
+          attempts: 1,
+          responseTime: 200,
+          hasFailures: false,
+        },
+        {
           id: 'result-one',
           startedAt: at,
           attempts: 8,
@@ -611,5 +618,48 @@ test('invitasjon og passordgjenoppretting gir faktisk redaktørtilgang uten å �
   assert.equal(
     (await db.sql.query('SELECT count(*)::int AS n FROM ft_admin_user'))[0].n,
     2,
+  )
+})
+
+test('produksjonsmigrering retter tidligere Checkly-telling én gang og bevarer resultatene', async (t) => {
+  const db = await testDatabase()
+  t.after(() => db.engine.close())
+  const { migrateAdmin } = await import('../../server/admin/migrations.mjs')
+  await db.sql.query('INSERT INTO ft_admin_schema(id,version) VALUES(1,4)')
+  for (const [id, runs] of [
+    ['initial', 2],
+    ['retried', 3],
+    ['zero-legacy', 1],
+  ])
+    await db.sql.query(
+      "INSERT INTO ft_admin_checkly_results(id,check_id,check_name,checked_at,runs,failed,degraded) VALUES($1,'check','Test',now(),$2,false,false)",
+      [id, runs],
+    )
+  await db.sql.query(
+    "INSERT INTO ft_admin_provider_cache(provider,data) VALUES('checkly','{}'::jsonb)",
+  )
+  await migrateAdmin(db.pool)
+  const rows = await db.sql.query(
+    'SELECT id,runs,attempts FROM ft_admin_checkly_results ORDER BY id',
+  )
+  assert.deepEqual(rows, [
+    { id: 'initial', runs: 1, attempts: 1 },
+    { id: 'retried', runs: 2, attempts: 2 },
+    { id: 'zero-legacy', runs: 1, attempts: 0 },
+  ])
+  assert.equal(
+    (
+      await db.sql.query(
+        "SELECT * FROM ft_admin_provider_cache WHERE provider='checkly'",
+      )
+    ).length,
+    0,
+  )
+  await migrateAdmin(db.pool)
+  assert.deepEqual(
+    await db.sql.query(
+      'SELECT id,runs,attempts FROM ft_admin_checkly_results ORDER BY id',
+    ),
+    rows,
   )
 })

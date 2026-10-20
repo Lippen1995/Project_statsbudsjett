@@ -40,7 +40,7 @@ levering av e-post.
   `FELLESTALL_EMAIL_FROM` er servervariabler. Invitasjoner, gjenopprettingsmail,
   samlet varsling og oppsummeringer er tilgjengelige først etter tilkobling.
   Checklys eksisterende varsling er separat.
-- Den dedikerte GitHub-tokenen trenger Contents, Pull requests, Issues og
+- Den dedikerte GitHub-tokenen trenger Contents, Pull requests og
   Actions med skriveadgang i bare `Lippen1995/Project_statsbudsjett` for hele
   den nye arbeidsflyten. Eksisterende token kan få oppdaterte rettigheter;
   agentens sesjonstilgang kopieres aldri til applikasjonen.
@@ -55,3 +55,28 @@ Produksjonsresultater og utrullingsreferanser føyes til etter publisering.
 Publiseringssperren kontrolleres også ved eksplisitt bygg fra repository-data.
 Tilbakeføring til en verifisert Neon-versjon bruker egne SHA-256-referanser og
 kontrollerer gjeldende aktiv versjon på nytt før aktivering.
+
+## Første produksjonskontroll, 20. oktober 2026
+
+PR #70 ble slått sammen som `0a4b7e75db4d5026f8441be110e29a8516624a6e`.
+Workflow `39425848500` publiserte og promoterte kontrollert utrulling
+`dpl_6cnoRBchugsSrnUvYz5zHPGLnu2p`. Eksisterende eierkonto logget inn, og
+19 admin-endepunkter svarte 200. Ingen nettleserfeil eller mobiloverflyt.
+Checkly bekrefter aktive kontroller hvert femte minutt, vekselvis Frankfurt og
+London, og aktiv varslingskanal til info@fjordinsight.com for feil, nedsatt
+ytelse og normal drift. Kontoen rapporterer «Trial» og oppgir ingen numerisk
+API-kvote eller utløpsdato; disse vises derfor som ukjente.
+
+Dataversjonsregisteret er tilgjengelig med fem lagrede versjoner og åtte
+datasett / 1145 filer. Tekniske ID-, tall- og sumkontroller består; hull i
+årserier og store årsendringer markeres separat for faglig vurdering.
+
+Produksjonskontrollen viste også at funksjonen kjørte i San Francisco, og at
+Checklys FINAL-resultat bruker `attempts` inkludert første utførelse. En
+oppfølging flytter funksjonen nær Neon i Frankfurt, angir TLS-verifisering
+eksplisitt og retter tellingen uten å forkaste tidligere resultater.
+
+Eksisterende Sven-oppgave `6ac269abcdac8191a5828572d4d04cf1` er oppdatert til
+faktisk arbeidsstatus og pause-/hasteprioritet. Oppdateringen bekrefter aktiv
+oppgave og uendret daglig tidsplan kl. 09.00 Europe/Oslo. Ingen ny analyse
+eller historisk arbeidsstatus er skrevet av implementeringen.

@@ -33,10 +33,17 @@ export function monitoringService({
         reason: 'Checkly-tilgangen mangler på serveren.',
         checkedAt: null,
       }
+    await sql.query(
+      'UPDATE ft_admin_checkly_results SET attempts=GREATEST(runs-1,0),runs=GREATEST(runs-1,1) WHERE attempts IS NULL',
+    )
     const [cached] = await sql.query(
       "SELECT data,checked_at FROM ft_admin_provider_cache WHERE provider='checkly'",
     )
-    if (cached && Date.now() - new Date(cached.checked_at).getTime() < 240000)
+    if (
+      cached &&
+      cached.data.version === 2 &&
+      Date.now() - new Date(cached.checked_at).getTime() < 240000
+    )
       return cached.data
     try {
       const [account, entitlements, checks, channels] = await Promise.all([
@@ -60,10 +67,15 @@ export function monitoringService({
         )
         const oldestAllowed = Date.now() - 6 * 86400000
         const created = Date.parse(check.created_at || '')
+        const coverageStart = Math.max(
+          month.getTime(),
+          Number.isFinite(created) ? created : month.getTime(),
+        )
+        const tolerance = Math.max(120000, (check.frequency || 5) * 120000)
         if (
-          (!last?.oldest ||
-            new Date(last.oldest).getTime() > month.getTime() + 86400000) &&
-          (!Number.isFinite(created) || created < oldestAllowed)
+          last?.oldest
+            ? new Date(last.oldest).getTime() > coverageStart + tolerance
+            : coverageStart < oldestAllowed
         )
           complete = false
         const from = Math.max(
@@ -86,14 +98,14 @@ export function monitoringService({
             const at = entry.startedAt || entry.created_at
             if (!entry.id || !Number.isFinite(Date.parse(at))) continue
             newest ??= entry
-            const runs =
-              1 +
-              (Number.isInteger(entry.attempts)
-                ? Math.max(0, entry.attempts)
-                : 0)
+            // The live FINAL payload counts the initial execution in `attempts`.
+            const attempts = Number.isInteger(entry.attempts)
+              ? Math.max(0, entry.attempts)
+              : 1
+            const runs = Math.max(1, attempts)
             await sql.query(
-              `INSERT INTO ft_admin_checkly_results(id,check_id,check_name,checked_at,runs,failed,degraded,response_ms)
-              VALUES($1,$2,$3,$4,$5,$6,$7,$8) ON CONFLICT(id) DO NOTHING`,
+              `INSERT INTO ft_admin_checkly_results(id,check_id,check_name,checked_at,runs,failed,degraded,response_ms,attempts)
+              VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT(id) DO NOTHING`,
               [
                 entry.id,
                 check.id,
@@ -103,6 +115,7 @@ export function monitoringService({
                 Boolean(entry.hasFailures || entry.hasErrors),
                 Boolean(entry.isDegraded),
                 entry.responseTime ?? null,
+                attempts,
               ],
             )
           }
@@ -111,7 +124,7 @@ export function monitoringService({
         } while (cursor && pages < 10)
         if (cursor) complete = false
         const [lastResult] = await sql.query(
-          'SELECT checked_at,failed,degraded,response_ms FROM ft_admin_checkly_results WHERE check_id=$1 ORDER BY checked_at DESC LIMIT 1',
+          'SELECT checked_at,failed,degraded,response_ms,attempts FROM ft_admin_checkly_results WHERE check_id=$1 ORDER BY checked_at DESC LIMIT 1',
           [check.id],
         )
         const expected = Math.max(60000, (check.frequency || 5) * 60000)
@@ -207,6 +220,7 @@ export function monitoringService({
         Math.ceil((used / daysElapsed) * daysInMonth),
       )
       const data = {
+        version: 2,
         available: true,
         checkedAt: now.toISOString(),
         account: {
@@ -216,6 +230,13 @@ export function monitoringService({
             entitlements.planDisplayName ||
             account.plan ||
             null,
+          limits: (entitlements.entitlements || []).map((e) => ({
+            key: e.key,
+            name: e.name,
+            type: e.type,
+            quantity: e.quantity ?? null,
+            enabled: e.enabled ?? null,
+          })),
           trialEnd:
             account.settings?.trialEnd || account.settings?.trialEndsAt || null,
         },

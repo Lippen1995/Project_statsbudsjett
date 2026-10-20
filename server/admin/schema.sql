@@ -148,3 +148,7 @@ CREATE TABLE IF NOT EXISTS ft_admin_tasks (
   name text PRIMARY KEY, owner text NOT NULL, lease_until timestamptz NOT NULL,
   last_finished_at timestamptz
 );
+
+ALTER TABLE ft_admin_checkly_results ADD COLUMN IF NOT EXISTS attempts integer;
+UPDATE ft_admin_checkly_results SET attempts=GREATEST(runs-1,0),runs=GREATEST(runs-1,1) WHERE attempts IS NULL;
+DELETE FROM ft_admin_provider_cache WHERE provider='checkly';

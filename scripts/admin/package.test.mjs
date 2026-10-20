@@ -22,6 +22,8 @@ test('produksjonspakken skiller API fra statikk og beskytter admin-cache og inde
   await promisify(execFile)(process.execPath, [fileURLToPath(new URL('../deploy/vercel-static.mjs', import.meta.url)), 'pack', source], { cwd: directory })
   const output = resolve(directory, '.vercel/output')
   const config = JSON.parse(await readFile(resolve(output, 'config.json'), 'utf8'))
+  const functionConfig=JSON.parse(await readFile(resolve(output,'functions/admin-api.func/.vc-config.json'),'utf8'))
+  assert.deepEqual(functionConfig.regions,['fra1']);assert.equal(functionConfig.maxDuration,300)
   const matching = path => config.routes.filter(r => r.src && new RegExp(`^${r.src}$`).test(path))
   assert.equal(matching('/api/admin/session')[0].dest, '/admin-api')
   assert.equal(matching('/api/auth/sign-in/email')[0].dest, '/admin-api')

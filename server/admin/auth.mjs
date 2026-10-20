@@ -112,8 +112,10 @@ export function createAuth(
 
 export function authPool() {
   if (!process.env.DATABASE_URL) throw Error('DATABASE_URL mangler på serveren')
+  const connection = new URL(process.env.DATABASE_URL)
+  connection.searchParams.set('sslmode', 'verify-full')
   return new pg.Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: connection.href,
     max: 3,
     connectionTimeoutMillis: 10000,
     query_timeout: 8000,
