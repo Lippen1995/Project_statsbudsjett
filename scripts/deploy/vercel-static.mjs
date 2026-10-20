@@ -64,6 +64,7 @@ if (command === 'pack') {
   })
   const config = {
     version: 3,
+    ...(paths.includes('admin/index.html') ? { crons: [{ path: '/api/admin/cron', schedule: '17 7 * * *' }] } : {}),
     routes: [
       ...(paths.includes('admin/index.html') ? [{ src: '/api/(admin(?:/.*)?|auth(?:/.*)?|telemetry|health)', dest: '/admin-api' }] : []),
       { src: '/(.*)', headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' }, continue: true },
@@ -73,7 +74,7 @@ if (command === 'pack') {
       { src: '/', dest: '/index.html' },
       ...directoryRoutes,
       { handle: 'filesystem' },
-      { src: '/(.*)', status: 404 },
+      { src: '/(.*)', ...(paths.includes('404.html') ? { dest: '/404.html' } : {}), status: 404 },
     ],
   }
   if (paths.includes('admin/index.html')) await packageAdmin(output, { dataDir: resolve(source, 'data') })

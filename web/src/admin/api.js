@@ -15,6 +15,7 @@ export function useResource(path) {
   const [state, setState] = useState({ loading: true })
   const [revision, reload] = useState(0)
   useEffect(() => {
+    if (!path) { setState({ data: null, loading: false }); return }
     const controller = new AbortController()
     setState({ loading: true })
     api(path, { signal: controller.signal }).then(data => setState({ data })).catch(error => {

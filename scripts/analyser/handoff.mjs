@@ -84,6 +84,7 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
         throw Error('Utkast eller endringsønsker ble endret etter at revisjonen ble skrevet')
       return article.copy
     },
+    ...(article.presentation ? { presentation:article.presentation } : {}),
   })
   if (queued && result?.waiting && result.pipelineMatch) {
     // Gjenoppta hvis PR-en ble opprettet, men review request feilet før kvittering.

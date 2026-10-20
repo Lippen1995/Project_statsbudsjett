@@ -184,3 +184,19 @@ test('delvis botfeil kan gjenopptas uten duplikat eller en fastlåst pipeline', 
   assert.equal(f.current().items.length, 1)
   assert.notEqual(f.current().items[0].id, f.entry.id)
 })
+
+test('pausede temaer tas ikke, hasteprioritet gjelder bare klare datoer og omprioritering ugyldiggjør gammelt grunnlag',async()=>{
+  const {mutatePipeline,emptyPipeline,dueEntry,entryFingerprint,assertCurrentEntry}=await import('../../scripts/analyser/pipeline-model.mjs')
+  const at='2026-10-20T08:00:00Z'
+  let doc=emptyPipeline()
+  for(const [topic,scheduledDate] of [['Første tema i køen','2026-10-20'],['Andre tema som haster','2026-10-20'],['Fremtidig tema som haster','2026-10-21']])doc=mutatePipeline(doc,{action:'add',topic,scheduledDate,instructions:''},at)
+  const original=dueEntry(doc,at),reference={id:original.id,fingerprint:entryFingerprint(original)}
+  doc=mutatePipeline(doc,{action:'priority',id:doc.items[2].id,priority:'urgent'},at)
+  assert.equal(dueEntry(doc,at).id,original.id)
+  doc=mutatePipeline(doc,{action:'priority',id:doc.items[1].id,priority:'urgent'},at)
+  assert.equal(dueEntry(doc,at).id,doc.items[1].id)
+  assert.throws(()=>assertCurrentEntry(doc,reference,at),/endret|omprioritert/)
+  doc=mutatePipeline(doc,{action:'pause',id:doc.items[1].id,paused:true},at)
+  assert.equal(dueEntry(doc,at).id,original.id)
+  assert.throws(()=>mutatePipeline(doc,{action:'reorder',ids:[original.id,original.id]}),/nøyaktig/)
+})

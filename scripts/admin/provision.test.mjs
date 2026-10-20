@@ -4,7 +4,7 @@ import { provisionAdmin, projectId, teamId } from './provision.mjs'
 
 const connection = 'postgresql://preview:fixture@ep-fixture.eu-central-1.aws.neon.tech/fellestall?sslmode=require'
 const env = key => ({ key, target: ['production'], type: 'sensitive' })
-const configured = ['BETTER_AUTH_SECRET', 'BETTER_AUTH_URL', 'FELLESTALL_GITHUB_TOKEN'].map(env)
+const configured = ['BETTER_AUTH_SECRET', 'BETTER_AUTH_URL', 'FELLESTALL_GITHUB_TOKEN', 'CRON_SECRET'].map(env)
 
 test('produksjonsoppsett sender eksisterende Neon-forbindelse direkte til riktig Vercel Secret og bevarer den ved gjenkjøring', async () => {
   const calls = []
@@ -36,4 +36,11 @@ test('produksjonsoppsett stopper ved manglende nøkler, usikkert mål og API-fei
       return (options.method || 'GET') === failureAt ? Response.json({ detail: connection + 'test-only' }, { status: 403 }) : Response.json({ envs: configured })
     } }), error => /HTTP 403/.test(error.message) && !error.message.includes('preview:fixture') && !error.message.includes('test-only'))
   }
+})
+
+test('vedlikehold får en stabil separat hemmelighet uten å bytte eksisterende innlogging eller token', async () => {
+  const calls=[]
+  const configured=['BETTER_AUTH_SECRET','BETTER_AUTH_URL','FELLESTALL_GITHUB_TOKEN','DATABASE_URL'].map(env)
+  await provisionAdmin({connection,token:'test-only',fetcher:async (_url,options)=>{if(options.method==='POST'){calls.push(JSON.parse(options.body));return Response.json({created:true})}return Response.json({envs:configured})}})
+  assert.equal(calls.length,1);assert.equal(calls[0].key,'CRON_SECRET');assert.equal(calls[0].type,'sensitive');assert.match(calls[0].value,/^[a-f0-9]{64}$/)
 })

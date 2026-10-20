@@ -4,6 +4,30 @@ Brukeren viste 4. oktober 2026 bekreftelsen på at **«Ukentlig Fellestall-analy
 
 Kjør med abonnementspålogging og prosjektets vanlige tilganger. Bruk ingen OpenAI API-nøkkel til tekstproduksjon. Bruken inngår i kvotene for appen og modellen som utfører oppgaven. GitHub- og LinkedIn-integrasjoner er separate fra valg av AI-produksjon.
 
+## Faktisk arbeidsstatus i admin, 20. oktober 2026
+
+Når `scripts/admin/sven-job.mjs` finnes på fersk main, rapporterer den planlagte
+oppgaven sin faktiske aktivitet. Dette er statusrapportering for eksisterende
+oppgave; ikke opprett en ny analyseplan eller en parallell tidsplan.
+
+1. Ved start: `node scripts/admin/sven-job.mjs start --note 'Kontrollerer kø og åpne gjennomganger'`.
+   Behold kjørings-ID-en fra JSON-svaret.
+2. Oppdater samme ID med `update --id <id> --state researching|writing|delivering --note '<faktisk steg>'`
+   når arbeidet skifter steg. Ta med reell kilde- eller datablokkering i notatet.
+3. Avslutt med `finish --id <id> --state review --review <faktisk PR-adresse> --note '<resultat>'`
+   først etter bekreftet levering. Hvis ingen oppgave er klar: bruk `waiting`.
+   En avsluttet revisjon eller gjennomført køkontroll kan bruke `completed`.
+   Ved feil brukes `failed` med konkret årsak. Skriv ingen hemmeligheter,
+   private meldinger eller oppdiktede aktiviteter i denne offentlige statusfilen.
+4. Feil ved statusrapportering gir ikke rett til å merke et tema som levert,
+   publisere eller omgå godkjenning. Rapporter den konkrete blokkeringen.
+
+Pausede temaer skal alltid vente. Blant temaer som har nådd skrivedatoen,
+tas `priority: urgent` først, deretter ordinær rekkefølge. Bruk den delte
+`dueEntry`-funksjonen og eksisterende `prepare.mjs`; ikke skriv en separat
+utvelger. Åpne `references`-lenker er kildebestillinger, og må kontrolleres før
+påstander brukes. Publiseringsdato avgjøres fortsatt etter menneskelig godkjenning.
+
 ## Datert analysepipeline, 19. oktober 2026
 
 Brukerens nye føring er en redigerbar kø i adminområdet. Les **fersk main-versjon**
@@ -18,7 +42,7 @@ godkjenningsvern består. Ikke opprett en ny parallell tidsplan.
   administrasjonens forslagsknapp. Flere slike temaer kan ligge i køen samtidig.
   Behold valgt dato og rekkefølge; dette gir ingen adgang til å fylle køen
   automatisk. Et erstattet tema i historikken skal ikke gjenoppstå.
-- Datoer tolkes i `Europe/Oslo`. Velg det øverste temaet som har nådd datoen sin.
+- Datoer tolkes i `Europe/Oslo`. Velg det første upausede temaet som har nådd datoen sin, med hasteprioritet før normal rekkefølge.
   Et fremtidig tema sperrer ikke en senere plassert bestilling som er klar.
   Start aldri før datoen. Høyst ett nytt utkast per kjøring; vent på en åpen
   gjennomgang. En dato er ingen automatisk godkjenning eller publiseringsdato.

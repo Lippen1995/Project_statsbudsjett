@@ -101,6 +101,7 @@ export async function runWorkflow({
   oilYear,
   pipelinePlan,
   pipelineReference,
+  presentation,
   beforeDraftWrite = async () => {},
 }) {
   const draftPrefix = 'editorial/drafts/'
@@ -214,6 +215,7 @@ export async function runWorkflow({
       generatedAt: createdAt,
       report,
       copy: await generateCopy(report),
+      ...(presentation ? { presentation } : {}),
     })
     await beforeDraftWrite()
     const main = await g.api(`${g.root}/git/ref/heads/main`)

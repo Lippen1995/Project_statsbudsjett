@@ -23,6 +23,7 @@ export const contentHash = (article) =>
         report: article.report,
         copy: article.copy,
         ...(article.replaces ? { replaces: article.replaces } : {}),
+        ...(article.presentation ? { presentation: article.presentation } : {}),
       }),
     )
     .digest('hex')
@@ -81,6 +82,13 @@ export function validateCopy(copy, report) {
   return copy
 }
 export function validateArticle(article, { published = false } = {}) {
+  if(article.presentation) {
+    const p=article.presentation
+    if(Object.keys(p).some(k=>!['image','imageAlt','tags'].includes(k))||
+      (p.image&&!/^\/bilder\/[a-zA-Z0-9/_-]+\.(webp|png|jpg|jpeg)$/.test(p.image))||
+      (p.image&&p.image.includes('..'))||typeof p.imageAlt!=='string'||p.imageAlt.length>300||
+      (p.image&&!p.imageAlt.trim())||!Array.isArray(p.tags)||p.tags.length>15||p.tags.some(t=>typeof t!=='string'||!t.trim()||t.length>60))throw Error('Ugyldig delingsbilde, bildebeskrivelse eller emneord')
+  }
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.slug) || article.slug === 'forhandsvisning')
     throw Error('Ugyldig analyseadresse')
   if (!Number.isFinite(Date.parse(article.createdAt))) throw Error('Ugyldig opprettelsesdato')

@@ -21,6 +21,7 @@
     "@neon/config": "^1.9.1",
     "@neon/env": "^1.6.2",
     "@neondatabase/serverless": "1.2.0",
+    "@vercel/functions": "^3.10.1",
     "better-auth": "^1.7.11",
     "pg": "^8.23.1"
   },
