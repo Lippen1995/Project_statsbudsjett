@@ -39,7 +39,11 @@ export function monitoringService({
     const [cached] = await sql.query(
       "SELECT data,checked_at FROM ft_admin_provider_cache WHERE provider='checkly'",
     )
-    if (cached && Date.now() - new Date(cached.checked_at).getTime() < 240000)
+    if (
+      cached &&
+      cached.data.version === 2 &&
+      Date.now() - new Date(cached.checked_at).getTime() < 240000
+    )
       return cached.data
     try {
       const [account, entitlements, checks, channels] = await Promise.all([

@@ -16,10 +16,10 @@ ukjente, og tilganger eller e-postlevering skal ikke simuleres i produksjon.
 | Svens arbeid | Aktivitet, siste/neste kjøring, arbeidssteg, stoppårsak, kilder, instruksversjon, leveringer og revisjonsbestilling | Publisert; server- og nettleserkontroll bestått |
 | Læring | Strukturert tilbakemelding, enkeltrettelse/regelforslag, eksplisitt regelgodkjenning, opphav, versjonsdiff, deaktivering/gjenoppretting og kvalitet | Publisert; server- og nettleserkontroll bestått |
 | Pipeline | Kalender, dra/slipp, pause, hasteprioritet, duplikatvarsel, begrunnelse, kildelenker, forsinkelser og skrivedato/publiseringsdato | Publisert; server- og nettleserkontroll bestått |
-| Gjennomgang | Innboks, forhåndsvisning, kommentarer/revisjon, tekstdiff, sjekkliste, eksakt godkjenning, publiseringsstatus, retting/tilbaketrekking og aktørlogg | Publisert; server- og nettleserkontroll bestått |
-| Innhold/distribusjon | Metadata, ingress, tema, delingsbilde, sosial forhåndsvisning, lenke-/bildekontroll, LinkedIn-forhåndsvisning, sending/feil/retry og duplikatvern | Publisert; server- og nettleserkontroll bestått |
+| Gjennomgang | Innboks, forhåndsvisning, kommentarer/revisjon, tekstdiff, sjekkliste, eksakt godkjenning, publiseringsstatus, retting/tilbaketrekking og aktørlogg | Publisert; GitHub-skrivetilgang må avklares |
+| Innhold/distribusjon | Metadata, ingress, tema, delingsbilde, sosial forhåndsvisning, lenke-/bildekontroll, LinkedIn-forhåndsvisning, sending/feil/retry og duplikatvern | Publisert; GitHub-skrivetilgang må avklares |
 | Kontoer | Passordendring, gjenoppretting, tofaktor/reservekoder, økter, invitasjoner, administrator/redaktør/leser og sikkerhetslogg | Publisert; e-postoppsett gjenstår |
-| Varsler | Innboks, mottakere/type, alvorlighet, testmail, leveringsresultat, samling, daglig/ukentlig oppsummering og gjenoppretting | Publisert; server- og nettleserkontroll bestått |
+| Varsler | Innboks, mottakere/type, alvorlighet, testmail, leveringsresultat, samling, daglig/ukentlig oppsummering og gjenoppretting | Publisert; Checkly bekreftet, øvrig e-post avventer |
 | Historikk/backup | Søk/filter, aktør, før/etter, reversering, krypterte kopier, dataversjoner, faktisk isolert gjenopprettingstest og integrasjonenes tilgang/utløp | Publisert; server- og nettleserkontroll bestått |
 | Rapporter/hjelp | Månedsrapport, CSV/delbar utskrift, begreper, kilder/metode, oppgaveveiledning og kjente feil/forbedringer | Publisert; server- og nettleserkontroll bestått |
 
