@@ -69,6 +69,13 @@ export function infrastructureService({ sql, notifications, fetcher = fetch }) {
             domain.expiresAt = new Date(expiry.eventDate).toISOString()
         }
       } catch {}
+      if (!domain.expiresAt) {
+        const [policy] = await sql.query(
+          "SELECT data FROM ft_admin_records WHERE collection='integrationPolicies' AND data->>'integration'='domain' AND data->>'expiresAt' IS NOT NULL ORDER BY updated_at DESC LIMIT 1",
+        )
+        if (policy?.data?.expiresAt)
+          domain = { expiresAt: policy.data.expiresAt, source: 'admin' }
+      }
       if (notifications && ssl.available)
         await notifications.publish({
           key: 'infrastructure:ssl',

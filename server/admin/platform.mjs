@@ -137,6 +137,35 @@ export function createPlatform({
           resource: 'ytelse',
           resolved: !insights.deteriorated.includes(metric),
         })
+      const expiries = await records.list('integrationPolicies')
+      for (const record of expiries) {
+        if (!record.data.expiresAt) continue
+        const remaining = Date.parse(record.data.expiresAt) - Date.now(),
+          names = {
+            github: 'GitHub-tilgang',
+            checkly: 'Checkly-tilgang',
+            neon: 'Databasetilgang',
+            email: 'E-posttilgang',
+            linkedin: 'LinkedIn-tilgang',
+            domain: 'Domene',
+            ssl: 'TLS-sertifikat',
+          }
+        await notifications.publish({
+          key: 'integration:expiry:' + record.id,
+          type: ['domain', 'ssl'].includes(record.data.integration)
+            ? 'operations'
+            : 'security',
+          severity: remaining < 0 ? 'critical' : 'warning',
+          title:
+            names[record.data.integration] +
+            (remaining < 0
+              ? ' har passert oppgitt utløpsdato.'
+              : ' nærmer seg oppgitt utløpsdato.'),
+          detail: 'Oppgitt av administrator: ' + record.data.expiresAt,
+          resource: 'overvaking',
+          resolved: remaining > 30 * 86400000,
+        })
+      }
       const [recentBackup] = await sql.query(
         "SELECT id FROM ft_admin_backups WHERE created_at>now()-interval '24 hours' LIMIT 1",
       )
