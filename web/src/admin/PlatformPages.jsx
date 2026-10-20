@@ -2332,7 +2332,7 @@ function IntegrationStatus() {
                   name: 'GitHub',
                   ready: d.github,
                   scope:
-                    'Arbeidsfiler og analysepipeline. Publisering trenger Contents, Pull requests, Issues og Actions med skriveadgang.',
+                    'Arbeidsfiler og analysepipeline. Publisering trenger Contents, Pull requests og Actions med skriveadgang.',
                 },
                 {
                   name: 'Checkly',

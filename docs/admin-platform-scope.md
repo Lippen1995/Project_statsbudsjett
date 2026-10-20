@@ -7,21 +7,21 @@ ukjente, og tilganger eller e-postlevering skal ikke simuleres i produksjon.
 
 | Område | Funksjoner som skal leveres | Status |
 | --- | --- | --- |
-| Oversikt | Samlet drift, oppgaver, neste analyse, gjennomganger, dataalder, siste jobb og snarveier | Implementert; til produksjonskontroll |
-| Drift | Faktisk ekstern kontroll, pauset overvåking, tjenester, manglende jobber, hendelser/notater, vedlikehold, domene/SSL | Implementert; til produksjonskontroll |
-| Forbruk | Checkly-kvote, prognose, 80/90 %-varsler, forbruk per kontroll, stanset overvåking, abonnement/prøveperiode | Implementert; til produksjonskontroll |
-| Ytelse | Trender, enheter, sider, måleantall, P75, utrullingssammenligning, JS/API-feil og vedvarende forverring | Implementert; til produksjonskontroll |
-| Trafikk | Analyse-/sidebruk, kilder, periodesammenligning, funksjonsbruk, 404/lenker, robotfilter og CSV uten besøks-ID | Implementert; til produksjonskontroll |
-| Datakvalitet | Kilder, oppdateringer, dekning, innhentingsjobber, mangler/duplikater/avvik, summer, enheter, versjonsdiff, tilbakeholding og tilbakeføring | Implementert; til produksjonskontroll |
-| Svens arbeid | Aktivitet, siste/neste kjøring, arbeidssteg, stoppårsak, kilder, instruksversjon, leveringer og revisjonsbestilling | Implementert; til produksjonskontroll |
-| Læring | Strukturert tilbakemelding, enkeltrettelse/regelforslag, eksplisitt regelgodkjenning, opphav, versjonsdiff, deaktivering/gjenoppretting og kvalitet | Implementert; til produksjonskontroll |
-| Pipeline | Kalender, dra/slipp, pause, hasteprioritet, duplikatvarsel, begrunnelse, kildelenker, forsinkelser og skrivedato/publiseringsdato | Implementert; til produksjonskontroll |
-| Gjennomgang | Innboks, forhåndsvisning, kommentarer/revisjon, tekstdiff, sjekkliste, eksakt godkjenning, publiseringsstatus, retting/tilbaketrekking og aktørlogg | Implementert; til produksjonskontroll |
-| Innhold/distribusjon | Metadata, ingress, tema, delingsbilde, sosial forhåndsvisning, lenke-/bildekontroll, LinkedIn-forhåndsvisning, sending/feil/retry og duplikatvern | Implementert; til produksjonskontroll |
-| Kontoer | Passordendring, gjenoppretting, tofaktor/reservekoder, økter, invitasjoner, administrator/redaktør/leser og sikkerhetslogg | Implementert; til produksjonskontroll |
-| Varsler | Innboks, mottakere/type, alvorlighet, testmail, leveringsresultat, samling, daglig/ukentlig oppsummering og gjenoppretting | Implementert; til produksjonskontroll |
-| Historikk/backup | Søk/filter, aktør, før/etter, reversering, krypterte kopier, dataversjoner, faktisk isolert gjenopprettingstest og integrasjonenes tilgang/utløp | Implementert; til produksjonskontroll |
-| Rapporter/hjelp | Månedsrapport, CSV/delbar utskrift, begreper, kilder/metode, oppgaveveiledning og kjente feil/forbedringer | Implementert; til produksjonskontroll |
+| Oversikt | Samlet drift, oppgaver, neste analyse, gjennomganger, dataalder, siste jobb og snarveier | Publisert; server- og nettleserkontroll bestått |
+| Drift | Faktisk ekstern kontroll, pauset overvåking, tjenester, manglende jobber, hendelser/notater, vedlikehold, domene/SSL | Publisert; server- og nettleserkontroll bestått |
+| Forbruk | Checkly-kvote, prognose, 80/90 %-varsler, forbruk per kontroll, stanset overvåking, abonnement/prøveperiode | Publisert; server- og nettleserkontroll bestått |
+| Ytelse | Trender, enheter, sider, måleantall, P75, utrullingssammenligning, JS/API-feil og vedvarende forverring | Publisert; server- og nettleserkontroll bestått |
+| Trafikk | Analyse-/sidebruk, kilder, periodesammenligning, funksjonsbruk, 404/lenker, robotfilter og CSV uten besøks-ID | Publisert; server- og nettleserkontroll bestått |
+| Datakvalitet | Kilder, oppdateringer, dekning, innhentingsjobber, mangler/duplikater/avvik, summer, enheter, versjonsdiff, tilbakeholding og tilbakeføring | Publisert; server- og nettleserkontroll bestått |
+| Svens arbeid | Aktivitet, siste/neste kjøring, arbeidssteg, stoppårsak, kilder, instruksversjon, leveringer og revisjonsbestilling | Publisert; server- og nettleserkontroll bestått |
+| Læring | Strukturert tilbakemelding, enkeltrettelse/regelforslag, eksplisitt regelgodkjenning, opphav, versjonsdiff, deaktivering/gjenoppretting og kvalitet | Publisert; server- og nettleserkontroll bestått |
+| Pipeline | Kalender, dra/slipp, pause, hasteprioritet, duplikatvarsel, begrunnelse, kildelenker, forsinkelser og skrivedato/publiseringsdato | Publisert; server- og nettleserkontroll bestått |
+| Gjennomgang | Innboks, forhåndsvisning, kommentarer/revisjon, tekstdiff, sjekkliste, eksakt godkjenning, publiseringsstatus, retting/tilbaketrekking og aktørlogg | Publisert; server- og nettleserkontroll bestått |
+| Innhold/distribusjon | Metadata, ingress, tema, delingsbilde, sosial forhåndsvisning, lenke-/bildekontroll, LinkedIn-forhåndsvisning, sending/feil/retry og duplikatvern | Publisert; server- og nettleserkontroll bestått |
+| Kontoer | Passordendring, gjenoppretting, tofaktor/reservekoder, økter, invitasjoner, administrator/redaktør/leser og sikkerhetslogg | Publisert; e-postoppsett gjenstår |
+| Varsler | Innboks, mottakere/type, alvorlighet, testmail, leveringsresultat, samling, daglig/ukentlig oppsummering og gjenoppretting | Publisert; server- og nettleserkontroll bestått |
+| Historikk/backup | Søk/filter, aktør, før/etter, reversering, krypterte kopier, dataversjoner, faktisk isolert gjenopprettingstest og integrasjonenes tilgang/utløp | Publisert; server- og nettleserkontroll bestått |
+| Rapporter/hjelp | Månedsrapport, CSV/delbar utskrift, begreper, kilder/metode, oppgaveveiledning og kjente feil/forbedringer | Publisert; server- og nettleserkontroll bestått |
 
 ## Føringer
 
