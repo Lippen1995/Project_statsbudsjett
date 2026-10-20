@@ -212,6 +212,8 @@ const validators = {
       'neon',
       'email',
       'linkedin',
+      'domain',
+      'ssl',
     ]),
     expiresAt: isoDate(v.expiresAt, true),
     note: text(v.note || '', 0, 1000),
