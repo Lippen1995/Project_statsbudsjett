@@ -12,7 +12,7 @@ export function adminPlugin() {
       for (const key of ['DATABASE_URL', 'BETTER_AUTH_SECRET', 'BETTER_AUTH_URL', 'FELLESTALL_GITHUB_TOKEN']) {
         if (!process.env[key] && local[key]) process.env[key] = local[key]
       }
-      return { build: { rollupOptions: { input: { main: resolve('index.html'), admin: resolve('admin/index.html') } } } }
+      return { build: { rollupOptions: { input: { main: resolve('index.html'), admin: resolve('admin/index.html'), notfound: resolve('404.html') } } } }
     },
     configureServer(server) {
       let admin

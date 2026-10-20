@@ -22,6 +22,9 @@ function validateEntry(entry) {
       typeof entry.topic !== 'string' || entry.topic.trim().length < 5 || entry.topic.length > 180 ||
       typeof entry.instructions !== 'string' || entry.instructions.length > 12000 || !validDate(entry.scheduledDate) ||
       (entry.requestedBy !== undefined && (entry.requestedBy !== 'admin' || entry.source !== 'sven')) ||
+      (entry.paused !== undefined && typeof entry.paused !== 'boolean') ||
+      (entry.priority !== undefined && !['normal', 'urgent'].includes(entry.priority)) ||
+      (entry.references !== undefined && (!Array.isArray(entry.references) || entry.references.length > 20 || entry.references.some(url => { try { const u = new URL(url); return u.protocol !== 'https:' || u.username || u.password || url.length > 1000 } catch { return true } }))) ||
       !Number.isFinite(Date.parse(entry.createdAt)) || !Number.isFinite(Date.parse(entry.updatedAt)) ||
       (entry.source === 'sven' && ((!entry.reportPlan && entry.editedBy !== 'admin') || typeof entry.topicKey !== 'string'))) fail('Pipeline inneholder et ugyldig tema.')
 }
@@ -40,7 +43,8 @@ function retainHistory(document) {
 }
 export function dueEntry(document, at = new Date().toISOString()) {
   validatePipeline(document)
-  return document.items.find(item => item.scheduledDate <= osloDate(at)) ?? null
+  const ready = document.items.filter(item => !item.paused && item.scheduledDate <= osloDate(at))
+  return ready.find(item => item.priority === 'urgent') ?? ready[0] ?? null
 }
 export function ensureAutomatic(document, suggestion, { at = new Date().toISOString(), includeToday = false } = {}) {
   validatePipeline(document)
@@ -53,11 +57,18 @@ export function ensureAutomatic(document, suggestion, { at = new Date().toISOStr
 }
 export function mutatePipeline(document, action, at = new Date().toISOString()) {
   validatePipeline(document)
-  if (!action || !['add', 'edit', 'delete', 'move'].includes(action.action)) fail('Ukjent pipelinehandling.')
+  if (!action || !['add', 'edit', 'delete', 'move', 'pause', 'priority', 'reorder'].includes(action.action)) fail('Ukjent pipelinehandling.')
   const next = structuredClone(document)
+  if (action.action === 'reorder') {
+    if (!Array.isArray(action.ids) || action.ids.length !== next.items.length || new Set(action.ids).size !== next.items.length || action.ids.some(id => !next.items.some(i => i.id === id))) fail('Rekkefølgen må inneholde alle temaene nøyaktig én gang.')
+    next.items = action.ids.map(id => next.items.find(i => i.id === id))
+    return validatePipeline(next)
+  }
   if (action.action === 'add' || action.action === 'edit') {
     if (typeof action.topic !== 'string' || action.topic.trim().length < 5 || action.topic.length > 180 || typeof action.instructions !== 'string' || action.instructions.length > 12000 || !validDate(action.scheduledDate)) fail('Skriv et tema på 5–180 tegn, en gyldig dato og høyst 12 000 tegn med instrukser.')
     const fields = { topic: action.topic.trim(), instructions: action.instructions.trim(), scheduledDate: action.scheduledDate, updatedAt: at }
+    if (action.references !== undefined) fields.references = action.references
+    if (action.priority !== undefined) fields.priority = action.priority
     if (action.action === 'add') {
       if (next.items.length >= 100) fail('Pipeline kan ha høyst 100 kommende temaer.')
       next.items.push({ ...fields, id: randomUUID(), source: 'admin', createdAt: at, reportPlan: null })
@@ -71,7 +82,13 @@ export function mutatePipeline(document, action, at = new Date().toISOString()) 
   } else {
     const index = next.items.findIndex(i => i.id === action.id)
     if (index < 0) fail('Temaet finnes ikke lenger. Last inn oppdatert pipeline.', 409)
-    if (action.action === 'delete') {
+    if (action.action === 'pause') {
+      if (typeof action.paused !== 'boolean') fail('Velg om temaet skal settes på pause.')
+      Object.assign(next.items[index], { paused: action.paused, updatedAt: at })
+    } else if (action.action === 'priority') {
+      if (!['normal', 'urgent'].includes(action.priority)) fail('Velg en gyldig prioritet.')
+      Object.assign(next.items[index], { priority: action.priority, updatedAt: at })
+    } else if (action.action === 'delete') {
       const [entry] = next.items.splice(index, 1)
       next.history = [...next.history, { entry, status: 'deleted', at }].slice(-200)
     } else {
@@ -102,6 +119,7 @@ export function applySvenSuggestion(document, { id, suggestion, scheduledDate },
     topic: suggestion.topic, instructions: suggestion.instructions, scheduledDate,
     reportPlan: structuredClone(suggestion.reportPlan), topicKey: suggestion.topicKey,
     createdAt: index < 0 ? at : next.items[index].createdAt, updatedAt: at,
+    ...(index<0?{}:{paused:next.items[index].paused || false,priority:next.items[index].priority || 'normal',references:next.items[index].references || []}),
   }
   if (index < 0) next.items.push(entry)
   else {

@@ -20,7 +20,7 @@ export async function testDatabase() {
   const auth = createAuth(pool, { secret, baseURL: 'http://localhost:5173' })
   const password = randomBytes(16).toString('hex')
   const userId = randomUUID()
-  await sql.query('INSERT INTO ft_admin_user(id, name, email, "emailVerified") VALUES ($1, $2, $3, true)', [userId, 'Testadmin', adminEmail])
+  await sql.query('INSERT INTO ft_admin_user(id, name, email, "emailVerified", role) VALUES ($1, $2, $3, true, \'admin\')', [userId, 'Testadmin', adminEmail])
   await sql.query('INSERT INTO ft_admin_account(id, "accountId", "providerId", "userId", password) VALUES ($1, $2, $3, $2, $4)', [randomUUID(), userId, 'credential', await hashPassword(password)])
-  return { engine, sql, auth, secret, password }
+  return { engine, sql, pool, auth, secret, password }
 }

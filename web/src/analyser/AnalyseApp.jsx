@@ -185,7 +185,7 @@ function Archive({ articles }) {
     </>
   )
 }
-function Article({ article, preview, review, successor }) {
+export function Article({ article, preview, review, successor }) {
   const { report: r, copy: c } = article
   const t = (text) => factText(text, r)
   const budget = r.kind === 'budget-comparison'
@@ -672,6 +672,7 @@ export default function AnalyseApp({
   successor = null,
 }) {
   useEffect(() => {
+    if(notFound)window.dispatchEvent(new CustomEvent('fellestall-feature',{detail:'404'}))
     document.body.classList.add('ft-body')
     return () => document.body.classList.remove('ft-body')
   }, [])

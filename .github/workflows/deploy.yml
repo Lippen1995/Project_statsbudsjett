@@ -6,8 +6,16 @@ on:
       data_source:
         description: Datakilde for bygg (repository brukes ved tilbakeføring)
         type: choice
-        options: [neon, repository]
+        options: [neon, repository, snapshot]
         default: neon
+      data_snapshot:
+        description: Verifisert dataversjon ved eksplisitt tilbakeføring
+        type: string
+        default: ''
+      expected_snapshot:
+        description: Forventet gjeldende dataversjon ved tilbakeføring
+        type: string
+        default: ''
       verify_only:
         description: Bygg og kontroller uten å publisere, aktivere data eller sende varsler
         type: boolean
@@ -59,6 +67,8 @@ jobs:
       cancel-in-progress: false
     env:
       DATA_SOURCE: ${{ inputs.data_source || 'neon' }}
+      DATA_SNAPSHOT: ${{ inputs.data_snapshot || '' }}
+      EXPECTED_SNAPSHOT: ${{ inputs.expected_snapshot || '' }}
     steps:
       - name: Sjekk ut siste versjon av branchen (inkl. ev. ETL-datacommit)
         uses: actions/checkout@v4
@@ -74,16 +84,14 @@ jobs:
 
       - name: Kontroller valg av datakilde
         run: |
-          case "$DATA_SOURCE" in neon|repository) ;; *) echo 'Ugyldig datakilde'; exit 1 ;; esac
+          case "$DATA_SOURCE" in neon|repository|snapshot) ;; *) echo 'Ugyldig datakilde'; exit 1 ;; esac
 
       - name: Installer Neon-verktøy for datagrunnlaget
-        if: env.DATA_SOURCE == 'neon'
         run: |
           npm ci --omit=dev
           npm install --global neon@8.4.5
 
       - name: Hent production-forbindelsen til Neon
-        if: env.DATA_SOURCE == 'neon'
         env:
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
         run: |
@@ -93,6 +101,24 @@ jobs:
             exit 1
           fi
           chmod 600 .env.local
+
+      - name: Kontroller administratorens publiseringssperre og tilbakeføringsversjon
+        run: node --use-env-proxy --env-file=.env.local scripts/admin/data-gate.mjs
+
+      - name: Eksporter eksplisitt valgt og verifisert dataversjon
+        if: env.DATA_SOURCE == 'snapshot'
+        run: |
+          node --use-env-proxy --env-file=.env.local scripts/neon/data-cli.mjs export --snapshot "$DATA_SNAPSHOT" --output "$RUNNER_TEMP/neon-publish-data" --report "$RUNNER_TEMP/neon-publish-report.json"
+          node --input-type=module <<'JS'
+          import {readFileSync,writeFileSync} from 'node:fs'
+          const path=process.env.RUNNER_TEMP+'/neon-publish-report.json'
+          const report=JSON.parse(readFileSync(path))
+          if(report.snapshot!==process.env.DATA_SNAPSHOT)throw Error('Feil dataversjon')
+          report.previous=process.env.EXPECTED_SNAPSHOT
+          writeFileSync(path,JSON.stringify(report)+'\n')
+          JS
+          mv web/public/data "$RUNNER_TEMP/repository-data"
+          cp -a "$RUNNER_TEMP/neon-publish-data" web/public/data
 
       - name: Importer ETL-grunnlaget til Neon og kontroller full eksport før bygg
         if: env.DATA_SOURCE == 'neon'
@@ -128,8 +154,9 @@ jobs:
           cp -an "$RUNNER_TEMP/previous-site/assets/." dist/assets/
 
       - name: Registrer godkjent dataversjon etter bestått bygg
-        if: env.DATA_SOURCE == 'neon' && inputs.verify_only != true
+        if: env.DATA_SOURCE != 'repository' && inputs.verify_only != true
         run: |
+          node --use-env-proxy --env-file=.env.local scripts/admin/data-gate.mjs
           node --use-env-proxy --env-file=.env.local scripts/neon/data-cli.mjs activate --report "$RUNNER_TEMP/neon-publish-report.json"
           node --input-type=module <<'JS'
           import { readFileSync, appendFileSync } from 'node:fs'

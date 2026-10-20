@@ -90,6 +90,7 @@ function seo() {
 }
 
 export default defineConfig({
+  define: { __FT_RELEASE__: JSON.stringify(process.env.GITHUB_SHA || 'ukjent') },
   plugins: [react(), seo(), analysesPlugin(), adminPlugin()],
   base: './',
 })

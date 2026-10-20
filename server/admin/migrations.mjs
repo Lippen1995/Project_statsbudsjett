@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises'
 
-export const adminSchemaVersion = 3
+export const adminSchemaVersion = 4
 
 // Independent of the removed account-bootstrap secret. Existing installations
 // receive additive schema changes once, serialized across cold starts.

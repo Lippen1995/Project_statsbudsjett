@@ -1,4 +1,5 @@
 import { pathToFileURL } from 'node:url'
+import { randomBytes } from 'node:crypto'
 
 export const projectId = 'prj_UCZp0PnkkoWMO6EJsLHW3y787ALp'
 export const teamId = 'team_zBf9uUPGwDQKfB9fElKD876W'
@@ -20,6 +21,11 @@ export async function provisionAdmin({ connection = process.env.DATABASE_URL, to
   const production = envs.filter(e => e.target?.includes('production'))
   for (const key of ['BETTER_AUTH_SECRET', 'BETTER_AUTH_URL', 'FELLESTALL_GITHUB_TOKEN']) {
     if (!production.some(e => e.key === key)) throw Error(`${key} må konfigureres i Vercel Production før publisering`)
+  }
+  if (hiddenProductionEnvCount && !production.some(e => e.key === 'CRON_SECRET')) throw Error('Vercel skjuler produksjonsvariabler; cron-oppsettet må avklares før endring')
+  if (!production.some(e => e.key === 'CRON_SECRET')) {
+    const cron = await fetcher(endpoint, { method: 'POST', headers, signal: AbortSignal.timeout(30000), body: JSON.stringify({ key: 'CRON_SECRET', value: randomBytes(32).toString('hex'), type: 'sensitive', target: ['production'], comment: 'Authentication for the daily admin maintenance cron; generated without logging the value.' }) })
+    if (!cron.ok) throw Error(`Cron-oppsett feilet (HTTP ${cron.status})`)
   }
   if (production.some(e => e.key === 'DATABASE_URL')) return { created: false }
   if (hiddenProductionEnvCount) throw Error('Vercel skjuler produksjonsvariabler; databaseoppsettet må avklares før endring')

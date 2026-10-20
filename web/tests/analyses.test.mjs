@@ -671,3 +671,11 @@ test('overføring sender et eksisterende utkast til ny godkjenner uten å genere
     },
   ])
 })
+
+test('delingsmetadata omfattes av versjonshashen og avviser eksterne bilder og katalogtraversering',async()=>{
+  const {readFile}=await import('node:fs/promises'),{contentHash,validateArticle}=await import('../../scripts/analyser/schema.mjs')
+  const article=JSON.parse(await readFile(new URL('../src/analyser/publications.json',import.meta.url),'utf8'))[0]
+  const before=contentHash(article),next={...article,presentation:{image:'/bilder/test.jpg',imageAlt:'Beskrivelse av åpent datagrunnlag',tags:['Statsbudsjett']}}
+  assert.notEqual(contentHash(next),before);validateArticle(next)
+  for(const image of ['https://example.com/tracker.png','/bilder/../privat.png','/bilder/test.svg'])assert.throws(()=>validateArticle({...next,presentation:{...next.presentation,image}}),/delingsbilde/)
+})

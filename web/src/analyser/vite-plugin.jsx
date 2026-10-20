@@ -60,6 +60,8 @@ export function analysesPlugin() {
         ? factText(article.copy.description, article.report)
         : 'Les grundige analyser av statens og kommunenes pengebruk. Finn temaer, sammenligninger og utvikling over tid, med grafer, metode og åpne kilder.'
     const url = `https://fellestall.no${props.meetSven ? '/analyser/mot-sven/' : path}`
+    const image='https://fellestall.no'+(article?.presentation?.image || '/delingsbilde.png')
+    const imageAlt=article?.presentation?.imageAlt || 'Fellestall.no – offentlige tall og analyser'
     const structured = article
       ? {
           '@context': 'https://schema.org',
@@ -71,7 +73,8 @@ export function analysesPlugin() {
           author: { '@type': 'Organization', name: 'Fellestall.no', url: 'https://fellestall.no/' },
           publisher: { '@type': 'Organization', name: 'Fellestall.no' },
           mainEntityOfPage: url,
-          image: 'https://fellestall.no/delingsbilde.png',
+          image,
+          ...(article.presentation?.tags?.length?{keywords:article.presentation.tags.join(', ')}:{}),
           inLanguage: 'nb-NO',
         }
       : {
@@ -93,6 +96,8 @@ export function analysesPlugin() {
         /(<meta (?:property|name)="(?:og:description|twitter:description)" content=")[^"]*/g,
         `$1${escape(description)}`,
       )
+      .replace(/(<meta (?:property|name)="(?:og:image|twitter:image)" content=")[^"]*/g, `$1${escape(image)}`)
+      .replace(/(<meta (?:property|name)="(?:og:image:alt|twitter:image:alt)" content=")[^"]*/g, `$1${escape(imageAlt)}`)
       .replace(/(<meta property="og:url" content=")[^"]*/, `$1${escape(url)}`)
       .replace(/(<meta property="og:type" content=")[^"]*/, `$1${article ? 'article' : 'website'}`)
       .replace(/(<link rel="(?:canonical|alternate)"[^>]*href=")[^"]*/g, `$1${escape(url)}`)
