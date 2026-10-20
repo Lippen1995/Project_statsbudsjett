@@ -28,7 +28,8 @@ Skjult adresse og indekseringsregler er ikke tilgangskontrollen.
   neste tema når hele køen er tom.
 - **Driftsstatus:** faktiske kontroller av nettstedet, databasen og Svens
   arbeidsgrunnlag, med endringslogg og historikk fra overvåkingen startet.
-  Kontinuerlig bakgrunnsovervåking og e-post avventer Checkly-tilkoblingen.
+  Checkly kontrollerer helsesjekken i bakgrunnen hvert femte minutt og varsler
+  administratoren på e-post ved feil, nedsatt ytelse og gjenoppretting.
 - **Endringshistorikk:** faktiske GitHub-commits og Actions-kjøringer.
 
 ## Serveroppsett
@@ -178,14 +179,34 @@ Dette krever ikke den fjernede passordhashen og endrer ikke eksisterende kontoer
 som nettstedet publiserer; lagring kontrollerer fersk GitHub-historikk og køens SHA.
 Nettleseren kan ikke sende inn en egen analyseplan som et Sven-forslag.
 
-**Bakgrunnsovervåking og e-postvarsler avventer tilkobling av Checkly.** Prosjektet
-har ingen slik integrasjon eller e-posttjeneste konfigurert ved denne kontrollen.
-Mens tilkoblingen mangler, utføres kontroller når adminvisningen eller helsesjekken
-åpnes; det er ikke etablert døgnkontinuerlig overvåking. Grensesnittet viser
-e-postvarslingen som inaktiv. Mottaker skal være `info@fjordinsight.com`.
-`FELLESTALL_STATUS_ALERTS_ENABLED` skal først settes etter at ekstern overvåking og
-faktisk e-postlevering er konfigurert og kontrollert. Ingen varselmail er sendt
-eller merket som levert av de isolerte testene.
+**Checkly-overvåking og e-postvarsling er konfigurert 20. oktober 2026.**
+Integrasjonen er koblet til Fellestall i Vercel Production. Kontrollens navn er
+`Fellestall – driftsstatus`; den gjør `GET https://fellestall.no/api/health`
+og krever HTTP 200. Den kjører hvert femte minutt, med Round-robin mellom
+Frankfurt og London. Dermed fortsetter kontrollene også når ingen har adminområdet
+åpent, og de kan oppdage at hele nettstedet slutter å svare.
+
+Kontrollens terskler er 5 000 ms for nedsatt ytelse og 20 000 ms for feil.
+Ett nytt forsøk etter 60 sekunder fra samme lokasjon bekrefter feil før varsling.
+Eskaleringen er én feilende kjøring, med null gjentatte påminnelser.
+E-postkanalen har `info@fjordinsight.com` som mottaker og er abonnert på denne
+kontrollen. Feil, nedsatt ytelse og gjenoppretting er valgt, sammen med varsel
+30 dager før SSL-sertifikatet utløper. Nye kontroller abonneres ikke automatisk.
+Brukeren bekreftet faktisk mottak av Checklys testmail og deretter lagring av
+kanalen i denne samtalen. En full driftsstans er ikke fremprovosert i produksjon.
+
+Varslene følger Checkly-kontrollens tilstand. Endringer i komponentloggen mens
+Checkly-kontrollen allerede er feilende gir ikke nødvendigvis en ny e-post.
+`FELLESTALL_STATUS_ALERTS_ENABLED=true` i Vercel Production gjenspeiler dette
+bekreftede oppsettet i adminområdet; flagget oppretter ikke kontroller eller
+sender e-post selv. De isolerte utviklingstestene sender fortsatt ingen e-post.
+
+Hobby-planen inkluderer 10 000 API-kjøringer per måned. Én kontroll med dette
+intervallet bruker 8 640 kjøringer på 30 dager eller 8 928 på 31 dager, før nye
+forsøk og manuelle tester. Flere parallelle lokasjoner ville multiplisert
+forbruket; Round-robin gjør ikke det. Hobby stanser kontrollene når kvoten er
+brukt opp. Grensene ble kontrollert mot Vercels Checkly-plan og
+[Checklys prisside](https://www.checklyhq.com/pricing/) 20. oktober 2026.
 
 ## Verifikasjon av implementasjonen
 
@@ -251,6 +272,32 @@ manuell redigering, rekkefølge, datobevaring, konflikter og avvik/gjenopprettin
 Produksjonsloggen viste en advarsel fra PostgreSQL-driveren om fremtidig navngiving
 av SSL-modus; ingen applikasjonsfeil ble observert under kontrollen.
 
-**Checkly-tilkobling, kontinuerlig bakgrunnsovervåking og faktisk varselmail er
-fortsatt ikke aktivert eller verifisert.** Dette vises eksplisitt i adminområdet.
-Ingen av kontrollene sendte e-post eller endret redaksjonelt innhold.
+Ved denne produksjonskontrollen **19. oktober** var Checkly-tilkobling,
+bakgrunnsovervåking og e-post fortsatt ikke aktivert. Det ble eksplisitt vist i
+adminområdet. Ingen av kontrollene den dagen sendte e-post eller endret
+redaksjonelt innhold. Oppsettet 20. oktober er beskrevet ovenfor.
+
+## Aktivert varsling 20. oktober 2026
+
+[Produksjonsutrulling 39380602769](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/39380602769)
+publiserte den eksisterende implementasjonen fra `49f8849` med den nye
+Production-konfigurasjonen. Utrullingen `dpl_DCSS1ygJHFhiJ5g31VPJS3XfQG3w`
+passerte innholds-, tilgangs-, helse-, HTTPS- og domenekontroll før aktivering.
+Det var ikke nødvendig å endre applikasjonskode eller opprette flere kontroller.
+
+Kontrollen på `fellestall.no` kl. 08.32 norsk tid viste:
+
+- Helsesjekken svarte HTTP 200 med normal drift for nettstedet, databasen og
+  Svens arbeidsgrunnlag.
+- Det innloggede status-API-et svarte med `notifications.enabled: true`,
+  `externalMonitoring: true` og mottaker `info@fjordinsight.com`.
+- Adminområdet viste «Aktivert» og riktig mottaker på desktop og mobil, uten
+  JavaScript-/CSP-feil eller horisontal sideflyt.
+- Anonym tilgang til statushistorikken ble avvist med 401; utlogging sperret
+  videre tilgang til den innloggede oversikten.
+
+Mottak av Checklys testmail og lagring av den abonnerte e-postkanalen er
+bekreftet av brukeren. Produksjonskontrollen sendte ikke flere e-poster,
+fremprovoserte ikke driftsfeil og endret ikke analysepipeline eller instrukser.
+Gjennomgangen av runtime-loggen viste bare den tidligere kjente SSL-modus-
+advarselen fra PostgreSQL-driveren; ingen applikasjonsfeil ble observert.
