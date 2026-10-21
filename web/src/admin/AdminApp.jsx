@@ -735,7 +735,7 @@ export default function AdminApp() {
             {section === 'distribusjon' && <Distribution />}
             {section === 'data' && <DataQuality />}
             {section === 'overvaking' && <Monitoring />}
-            {section === 'varsler' && <Notifications />}
+            {section === 'varsler' && <Notifications navigate={navigate} />}
             {section === 'rapporter' && <Reports />}
             {section === 'backup' && <Backups />}
             {section === 'kontoer' && <Accounts />}
