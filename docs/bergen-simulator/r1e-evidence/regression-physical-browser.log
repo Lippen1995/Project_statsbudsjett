@@ -11,32 +11,32 @@
     "Touch polygon placement, landscaped treatment, mobile save/reload and zero idle rendering"
   ],
   "desktop": {
-    "loadMs": 3860.4489380000005,
-    "computeMs": 61.300000071525574,
+    "loadMs": 3979.712646,
+    "computeMs": 65.40000000596046,
     "activeProfile": {
       "calls": 9,
       "triangles": 289358,
       "lines": 34,
       "geometries": 10,
       "sampleCount": 12,
-      "medianCameraLatencyMs": 459.30000001192093,
-      "p95CameraLatencyMs": 977.4000000059605,
-      "medianCpuFrameMs": 0.7000000178813934,
+      "medianCameraLatencyMs": 449.80000001192093,
+      "p95CameraLatencyMs": 557.2000000178814,
+      "medianCpuFrameMs": 0.800000011920929,
       "idleFrames": 0
     }
   },
   "mobile": {
-    "loadMs": 2343.4033510000154,
-    "computeMs": 46.20000013709068,
+    "loadMs": 2492.438162000006,
+    "computeMs": 53.3999999165535,
     "activeProfile": {
       "calls": 9,
       "triangles": 289358,
       "lines": 34,
       "geometries": 10,
       "sampleCount": 12,
-      "medianCameraLatencyMs": 267.5,
-      "p95CameraLatencyMs": 414.40000000596046,
-      "medianCpuFrameMs": 0.6000000238418579,
+      "medianCameraLatencyMs": 210.90000000596046,
+      "p95CameraLatencyMs": 305.2999999821186,
+      "medianCpuFrameMs": 0.699999988079071,
       "idleFrames": 0
     }
   },

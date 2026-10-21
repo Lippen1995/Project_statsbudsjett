@@ -1,0 +1,715 @@
+{
+  "phase": "after",
+  "baselineCommit": "c87db8bfe73e4e73a49bc0160a91116615274893",
+  "driver": "Chromium ANGLE SwiftShader; physical GPU unverified",
+  "browser": "151.0.7922.173",
+  "views": [
+    {
+      "name": "waterfront",
+      "position": [
+        -145,
+        85,
+        -45
+      ],
+      "target": [
+        -12,
+        8,
+        -260
+      ]
+    },
+    {
+      "name": "aerial-pilot",
+      "position": [
+        75,
+        125,
+        -260
+      ],
+      "target": [
+        4,
+        8,
+        -286
+      ]
+    },
+    {
+      "name": "representative-roofs",
+      "position": [
+        70,
+        45,
+        -330
+      ],
+      "target": [
+        8,
+        9,
+        -292
+      ]
+    },
+    {
+      "name": "bryggen-street",
+      "position": [
+        47,
+        12,
+        -225
+      ],
+      "target": [
+        7,
+        6,
+        -272
+      ]
+    },
+    {
+      "name": "bryggen-lane-eye-level",
+      "position": [
+        62.13,
+        4.5,
+        -224.17
+      ],
+      "target": [
+        43.13,
+        2.5,
+        -223.17
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "mobile": false,
+      "enabled": false,
+      "readyMs": 4056.8534059999997,
+      "captures": [
+        {
+          "view": "waterfront",
+          "frames": 2,
+          "attributeArrays": 26,
+          "attributeBytes": 29146950,
+          "cpuFrameMs": 0.9000000059604645,
+          "cameraLatencyMs": 9.5,
+          "calls": 7,
+          "triangles": 288848,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "view": "aerial-pilot",
+          "frames": 3,
+          "attributeArrays": 26,
+          "attributeBytes": 29146950,
+          "cpuFrameMs": 0.5999999940395355,
+          "cameraLatencyMs": 1,
+          "calls": 7,
+          "triangles": 288848,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            74.99999999999999,
+            125,
+            -260
+          ],
+          "target": [
+            4,
+            8,
+            -286
+          ]
+        },
+        {
+          "view": "representative-roofs",
+          "frames": 4,
+          "attributeArrays": 26,
+          "attributeBytes": 29146950,
+          "cpuFrameMs": 0.9000000059604645,
+          "cameraLatencyMs": 15.5,
+          "calls": 7,
+          "triangles": 288848,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            70,
+            44.99999999999999,
+            -330
+          ],
+          "target": [
+            8,
+            9,
+            -292
+          ]
+        },
+        {
+          "view": "bryggen-street",
+          "frames": 5,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 1.199999988079071,
+          "cameraLatencyMs": 6.799999982118607,
+          "calls": 7,
+          "triangles": 291804,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            47,
+            12,
+            -225
+          ],
+          "target": [
+            6.999999999999999,
+            5.999999999999999,
+            -272
+          ]
+        },
+        {
+          "view": "bryggen-lane-eye-level",
+          "frames": 6,
+          "attributeArrays": 26,
+          "attributeBytes": 29466198,
+          "cpuFrameMs": 0.699999988079071,
+          "cameraLatencyMs": 14.699999988079071,
+          "calls": 7,
+          "triangles": 291804,
+          "lines": 0,
+          "geometries": 8,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            62.129999999999995,
+            4.500000000000002,
+            -224.17
+          ],
+          "target": [
+            43.129999999999995,
+            2.4999999999999996,
+            -223.17
+          ]
+        }
+      ],
+      "cameraSamplesMs": [
+        269.40000000596046,
+        295.5,
+        284.89999997615814,
+        352.7999999821186,
+        283.60000002384186,
+        306.40000000596046,
+        287.69999998807907,
+        299.40000000596046,
+        330.2000000178814,
+        355.5,
+        292,
+        311.59999999403954
+      ],
+      "medianMs": 299.40000000596046,
+      "p95Ms": 355.5
+    },
+    {
+      "mobile": false,
+      "enabled": true,
+      "readyMs": 4056.8534059999997,
+      "captures": [
+        {
+          "view": "waterfront",
+          "frames": 25,
+          "attributeArrays": 29,
+          "attributeBytes": 29164038,
+          "cpuFrameMs": 1.300000011920929,
+          "cameraLatencyMs": 32.599999994039536,
+          "calls": 8,
+          "triangles": 288976,
+          "lines": 0,
+          "geometries": 10,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "view": "aerial-pilot",
+          "frames": 26,
+          "attributeArrays": 29,
+          "attributeBytes": 29164038,
+          "cpuFrameMs": 0.5,
+          "cameraLatencyMs": 1.0999999940395355,
+          "calls": 8,
+          "triangles": 288976,
+          "lines": 0,
+          "geometries": 10,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            74.99999999999999,
+            125,
+            -260
+          ],
+          "target": [
+            4,
+            8,
+            -286
+          ]
+        },
+        {
+          "view": "representative-roofs",
+          "frames": 27,
+          "attributeArrays": 29,
+          "attributeBytes": 29164038,
+          "cpuFrameMs": 0.5999999940395355,
+          "cameraLatencyMs": 22.299999982118607,
+          "calls": 8,
+          "triangles": 288976,
+          "lines": 0,
+          "geometries": 10,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            70,
+            44.99999999999999,
+            -330
+          ],
+          "target": [
+            8,
+            9,
+            -292
+          ]
+        },
+        {
+          "view": "bryggen-street",
+          "frames": 28,
+          "attributeArrays": 29,
+          "attributeBytes": 29483286,
+          "cpuFrameMs": 0.800000011920929,
+          "cameraLatencyMs": 3.4000000059604645,
+          "calls": 8,
+          "triangles": 291932,
+          "lines": 0,
+          "geometries": 10,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            47,
+            12,
+            -225
+          ],
+          "target": [
+            6.999999999999999,
+            5.999999999999999,
+            -272
+          ]
+        },
+        {
+          "view": "bryggen-lane-eye-level",
+          "frames": 29,
+          "attributeArrays": 29,
+          "attributeBytes": 29483286,
+          "cpuFrameMs": 0.7000000178813934,
+          "cameraLatencyMs": 10.599999994039536,
+          "calls": 8,
+          "triangles": 291932,
+          "lines": 0,
+          "geometries": 10,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            62.129999999999995,
+            4.500000000000002,
+            -224.17
+          ],
+          "target": [
+            43.129999999999995,
+            2.4999999999999996,
+            -223.17
+          ]
+        }
+      ],
+      "cameraSamplesMs": [
+        300.40000000596046,
+        248,
+        254.80000001192093,
+        301,
+        302.59999999403954,
+        309.2999999821186,
+        349.30000001192093,
+        293.90000000596046,
+        306.5,
+        307.5,
+        286.59999999403954,
+        308.80000001192093
+      ],
+      "medianMs": 302.59999999403954,
+      "p95Ms": 349.30000001192093,
+      "pickingSourceId": "way/331274546",
+      "toggleAllocations": [
+        {
+          "attributeArrays": 30,
+          "attributeBytes": 29164302,
+          "geometries": 11,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 30,
+          "attributeBytes": 29164302,
+          "geometries": 11,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 30,
+          "attributeBytes": 29164302,
+          "geometries": 11,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 30,
+          "attributeBytes": 29164302,
+          "geometries": 11,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 30,
+          "attributeBytes": 29164302,
+          "geometries": 11,
+          "textures": 2
+        }
+      ]
+    },
+    {
+      "mobile": true,
+      "enabled": false,
+      "readyMs": 2333.049218,
+      "captures": [
+        {
+          "view": "waterfront",
+          "frames": 2,
+          "attributeArrays": 26,
+          "attributeBytes": 29146950,
+          "cpuFrameMs": 1,
+          "cameraLatencyMs": 12.299999982118607,
+          "calls": 7,
+          "triangles": 288848,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "view": "aerial-pilot",
+          "frames": 3,
+          "attributeArrays": 26,
+          "attributeBytes": 29146950,
+          "cpuFrameMs": 0.800000011920929,
+          "cameraLatencyMs": 4.199999988079071,
+          "calls": 7,
+          "triangles": 288848,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            74.99999999999999,
+            125,
+            -260
+          ],
+          "target": [
+            4,
+            8,
+            -286
+          ]
+        },
+        {
+          "view": "representative-roofs",
+          "frames": 4,
+          "attributeArrays": 26,
+          "attributeBytes": 29146950,
+          "cpuFrameMs": 0.7999999821186066,
+          "cameraLatencyMs": 4.5,
+          "calls": 7,
+          "triangles": 288848,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            70,
+            44.99999999999999,
+            -330
+          ],
+          "target": [
+            8,
+            9,
+            -292
+          ]
+        },
+        {
+          "view": "bryggen-street",
+          "frames": 5,
+          "attributeArrays": 26,
+          "attributeBytes": 29146950,
+          "cpuFrameMs": 0.5999999940395355,
+          "cameraLatencyMs": 0.7999999821186066,
+          "calls": 7,
+          "triangles": 288848,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            47,
+            12,
+            -225
+          ],
+          "target": [
+            6.999999999999999,
+            5.999999999999999,
+            -272
+          ]
+        },
+        {
+          "view": "bryggen-lane-eye-level",
+          "frames": 6,
+          "attributeArrays": 26,
+          "attributeBytes": 29146950,
+          "cpuFrameMs": 0.5999999940395355,
+          "cameraLatencyMs": 9.699999988079071,
+          "calls": 6,
+          "triangles": 288830,
+          "lines": 0,
+          "geometries": 7,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            62.129999999999995,
+            4.500000000000002,
+            -224.17
+          ],
+          "target": [
+            43.129999999999995,
+            2.4999999999999996,
+            -223.17
+          ]
+        }
+      ],
+      "cameraSamplesMs": [
+        176,
+        179.89999997615814,
+        161,
+        139.5,
+        158.09999999403954,
+        110.30000001192093,
+        159.30000001192093,
+        135.39999997615814,
+        156.69999998807907,
+        114.5,
+        115.59999999403954,
+        129.69999998807907
+      ],
+      "medianMs": 156.69999998807907,
+      "p95Ms": 179.89999997615814
+    },
+    {
+      "mobile": true,
+      "enabled": true,
+      "readyMs": 2333.049218,
+      "captures": [
+        {
+          "view": "waterfront",
+          "frames": 26,
+          "attributeArrays": 29,
+          "attributeBytes": 29164038,
+          "cpuFrameMs": 1,
+          "cameraLatencyMs": 217.80000001192093,
+          "calls": 8,
+          "triangles": 288976,
+          "lines": 0,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            -145,
+            85,
+            -45
+          ],
+          "target": [
+            -12.000000000000002,
+            8,
+            -260
+          ]
+        },
+        {
+          "view": "aerial-pilot",
+          "frames": 27,
+          "attributeArrays": 29,
+          "attributeBytes": 29164038,
+          "cpuFrameMs": 1,
+          "cameraLatencyMs": 14.599999994039536,
+          "calls": 8,
+          "triangles": 288976,
+          "lines": 0,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            74.99999999999999,
+            125,
+            -260
+          ],
+          "target": [
+            4,
+            8,
+            -286
+          ]
+        },
+        {
+          "view": "representative-roofs",
+          "frames": 28,
+          "attributeArrays": 29,
+          "attributeBytes": 29164038,
+          "cpuFrameMs": 0.800000011920929,
+          "cameraLatencyMs": 9,
+          "calls": 8,
+          "triangles": 288976,
+          "lines": 0,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            70,
+            44.99999999999999,
+            -330
+          ],
+          "target": [
+            8,
+            9,
+            -292
+          ]
+        },
+        {
+          "view": "bryggen-street",
+          "frames": 29,
+          "attributeArrays": 29,
+          "attributeBytes": 29164038,
+          "cpuFrameMs": 0.5999999940395355,
+          "cameraLatencyMs": 8.599999994039536,
+          "calls": 8,
+          "triangles": 288976,
+          "lines": 0,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            47,
+            12,
+            -225
+          ],
+          "target": [
+            6.999999999999999,
+            5.999999999999999,
+            -272
+          ]
+        },
+        {
+          "view": "bryggen-lane-eye-level",
+          "frames": 30,
+          "attributeArrays": 29,
+          "attributeBytes": 29164038,
+          "cpuFrameMs": 0.7999999821186066,
+          "cameraLatencyMs": 13.699999988079071,
+          "calls": 7,
+          "triangles": 288958,
+          "lines": 0,
+          "geometries": 9,
+          "textures": 2,
+          "pixelRatio": 1,
+          "position": [
+            62.129999999999995,
+            4.500000000000002,
+            -224.17
+          ],
+          "target": [
+            43.129999999999995,
+            2.4999999999999996,
+            -223.17
+          ]
+        }
+      ],
+      "cameraSamplesMs": [
+        183.80000001192093,
+        174.90000000596046,
+        150.69999998807907,
+        146.10000002384186,
+        148.2000000178814,
+        178.69999998807907,
+        175.40000000596046,
+        179.09999999403954,
+        173.80000001192093,
+        175.80000001192093,
+        143.40000000596046,
+        142.59999999403954
+      ],
+      "medianMs": 174.90000000596046,
+      "p95Ms": 183.80000001192093,
+      "pickingSourceId": "way/331274546",
+      "toggleAllocations": [
+        {
+          "attributeArrays": 30,
+          "attributeBytes": 29164302,
+          "geometries": 10,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 30,
+          "attributeBytes": 29164302,
+          "geometries": 10,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 30,
+          "attributeBytes": 29164302,
+          "geometries": 10,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 30,
+          "attributeBytes": 29164302,
+          "geometries": 10,
+          "textures": 2
+        },
+        {
+          "attributeArrays": 30,
+          "attributeBytes": 29164302,
+          "geometries": 10,
+          "textures": 2
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "failureAndCancellationFallback": "passed; original geometry retained"
+}

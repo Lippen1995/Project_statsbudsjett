@@ -10,14 +10,14 @@
   "cases": [
     {
       "viewport": "1440x1000",
-      "baselineReadyMs": 4965.1,
-      "afterReadyMs": 4056.9,
-      "baselineMedianMs": 299.1,
-      "afterOffMedianMs": 299.4,
-      "afterOnMedianMs": 302.6,
-      "baselineP95Ms": 340.9,
-      "afterOffP95Ms": 355.5,
-      "afterOnP95Ms": 349.3,
+      "baselineReadyMs": 3708.5,
+      "afterReadyMs": 3820.8,
+      "baselineMedianMs": 296.5,
+      "afterOffMedianMs": 297.1,
+      "afterOnMedianMs": 300.7,
+      "baselineP95Ms": 355.8,
+      "afterOffP95Ms": 391,
+      "afterOnP95Ms": 345.7,
       "drawCalls": [
         7,
         8
@@ -38,14 +38,14 @@
     },
     {
       "viewport": "390x844 touch emulation",
-      "baselineReadyMs": 2611.5,
-      "afterReadyMs": 2333.0,
-      "baselineMedianMs": 166,
-      "afterOffMedianMs": 156.7,
-      "afterOnMedianMs": 174.9,
-      "baselineP95Ms": 196.5,
-      "afterOffP95Ms": 179.9,
-      "afterOnP95Ms": 183.8,
+      "baselineReadyMs": 2294.0,
+      "afterReadyMs": 2403.5,
+      "baselineMedianMs": 184.8,
+      "afterOffMedianMs": 166.1,
+      "afterOnMedianMs": 169.7,
+      "baselineP95Ms": 194.2,
+      "afterOffP95Ms": 182.8,
+      "afterOnP95Ms": 200,
       "drawCalls": [
         7,
         8

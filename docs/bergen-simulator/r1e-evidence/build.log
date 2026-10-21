@@ -2,4 +2,29 @@
 > @fellestall/bergen-simulator@0.1.0 build
 > tsc -b && vite build
 
-tests/public-geodata.test.ts(61,5): error TS2532: Object is possibly 'undefined'.
+vite v8.1.0 building client environment for production...
+[2K
+transforming...✓ 103 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                0.97 kB │ gzip:   0.54 kB
+dist/assets/worker-BgmRS1hk.js                 9.17 kB
+dist/assets/worker-D2vg4RNG.js                25.95 kB
+dist/assets/worker-yNbtZJeI.js                50.09 kB
+dist/assets/preparation-worker-DxYyy4DF.js   146.91 kB
+dist/assets/index-CUFye5Ll.css                28.81 kB │ gzip:   7.02 kB
+dist/assets/model-BM4Vlcka.js                  0.96 kB │ gzip:   0.57 kB
+dist/assets/model-BLl-g1mV.js                  1.20 kB │ gzip:   0.64 kB
+dist/assets/load-Byf1r-J7.js                   3.99 kB │ gzip:   1.72 kB
+dist/assets/load-CZ21iFpD.js                   4.27 kB │ gzip:   1.89 kB
+dist/assets/GLTFLoader-wizgIs7W.js            43.36 kB │ gzip:  12.65 kB
+dist/assets/BufferGeometryUtils-Rohs0ajT.js  374.70 kB │ gzip: 100.71 kB
+dist/assets/index-CnDelSGp.js                424.91 kB │ gzip: 130.00 kB
+dist/assets/Scene-BJBkSGfR.js                571.98 kB │ gzip: 155.06 kB
+
+✓ built in 610ms
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

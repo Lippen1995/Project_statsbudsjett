@@ -7,17 +7,17 @@
     "Touch placement, accessible numeric editing, mobile import/reload and viewport fit; bounded draw calls, GPU geometry disposal, zero idle frames"
   ],
   "desktop": {
-    "loadMs": 3862.034635,
-    "computeMs": 56.99999985098839,
+    "loadMs": 3711.398972,
+    "computeMs": 51.400000005960464,
     "compatibilityProfile": {
       "calls": 9,
       "triangles": 289358,
       "lines": 34,
       "geometries": 10,
       "sampleCount": 12,
-      "medianCameraLatencyMs": 487.40000000596046,
-      "p95CameraLatencyMs": 575.5999999940395,
-      "medianCpuFrameMs": 0.699999988079071,
+      "medianCameraLatencyMs": 475,
+      "p95CameraLatencyMs": 497.69999998807907,
+      "medianCpuFrameMs": 0.7000000178813934,
       "idleFrames": 0
     },
     "developedProfile": {
@@ -26,15 +26,15 @@
       "lines": 53,
       "geometries": 12,
       "sampleCount": 12,
-      "medianCameraLatencyMs": 394.5,
-      "p95CameraLatencyMs": 467.40000000596046,
-      "medianCpuFrameMs": 1.5,
+      "medianCameraLatencyMs": 477.69999998807907,
+      "p95CameraLatencyMs": 527.0999999940395,
+      "medianCpuFrameMs": 0.800000011920929,
       "idleFrames": 0
     },
     "resizeCommandLatencyMs": {
       "sampleCount": 8,
-      "median": 272.43309400000726,
-      "p95": 494.9057990000001,
+      "median": 257.1696179999999,
+      "p95": 347.3319849999971,
       "meaning": "Playwright numeric resize command through next observed frame; software renderer and automation overhead, not physical GPU FPS"
     },
     "retainedGeometries": [
@@ -46,22 +46,22 @@
       14
     ],
     "heapRetentionBytes": {
-      "before": 25601680,
-      "after": 25805016,
+      "before": 25602680,
+      "after": 25796660,
       "meaning": "CDP used JavaScript heap after explicit GC before/after six confirmed construction edits; GPU buffers checked separately"
     }
   },
   "mobile": {
-    "loadMs": 2557.6245650000055,
+    "loadMs": 2295.704638999974,
     "compatibilityProfile": {
       "calls": 9,
       "triangles": 289358,
       "lines": 34,
       "geometries": 10,
       "sampleCount": 12,
-      "medianCameraLatencyMs": 255.2000000178814,
-      "p95CameraLatencyMs": 429.7000000178814,
-      "medianCpuFrameMs": 0.699999988079071,
+      "medianCameraLatencyMs": 265.30000001192093,
+      "p95CameraLatencyMs": 317.09999999403954,
+      "medianCpuFrameMs": 0.800000011920929,
       "idleFrames": 0
     },
     "developedProfile": {
@@ -70,9 +70,9 @@
       "lines": 53,
       "geometries": 12,
       "sampleCount": 12,
-      "medianCameraLatencyMs": 215.59999999403954,
-      "p95CameraLatencyMs": 261.30000001192093,
-      "medianCpuFrameMs": 0.5999999940395355,
+      "medianCameraLatencyMs": 211.19999998807907,
+      "p95CameraLatencyMs": 263.59999999403954,
+      "medianCpuFrameMs": 0.6000000238418579,
       "idleFrames": 0
     }
   },

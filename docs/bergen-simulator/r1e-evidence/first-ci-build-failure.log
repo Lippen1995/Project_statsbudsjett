@@ -1,0 +1,14 @@
+validate	Build standalone application	﻿2026-10-21T07:34:57.0186986Z ##[group]Run npm run build
+validate	Build standalone application	2026-10-21T07:34:57.0187305Z [36;1mnpm run build[0m
+validate	Build standalone application	2026-10-21T07:34:57.0238406Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+validate	Build standalone application	2026-10-21T07:34:57.0238768Z env:
+validate	Build standalone application	2026-10-21T07:34:57.0239001Z   VERCEL_ORG_ID: team_zBf9uUPGwDQKfB9fElKD876W
+validate	Build standalone application	2026-10-21T07:34:57.0239521Z   VERCEL_PROJECT_ID: prj_s9Bugj93zirfeEvLLwJvygz9syny
+validate	Build standalone application	2026-10-21T07:34:57.0239837Z   VERCEL_TELEMETRY_DISABLED: 1
+validate	Build standalone application	2026-10-21T07:34:57.0240078Z ##[endgroup]
+validate	Build standalone application	2026-10-21T07:34:57.1353432Z
+validate	Build standalone application	2026-10-21T07:34:57.1354071Z > @fellestall/bergen-simulator@0.1.0 build
+validate	Build standalone application	2026-10-21T07:34:57.1354792Z > tsc -b && vite build
+validate	Build standalone application	2026-10-21T07:34:57.1354984Z
+validate	Build standalone application	2026-10-21T07:35:02.3694279Z ##[error]tests/public-geodata.test.ts(61,5): error TS2532: Object is possibly 'undefined'.
+validate	Build standalone application	2026-10-21T07:35:02.4343050Z ##[error]Process completed with exit code 1.

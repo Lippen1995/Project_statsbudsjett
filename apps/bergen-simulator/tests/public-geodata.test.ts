@@ -58,7 +58,10 @@ describe("R1E reversible public-geodata pilot", () => {
       0.01;
     expect(() => assertEnhancementSnapshot(changed)).toThrow(/mismatch/);
     const groundChanged = structuredClone(city);
-    groundChanged.buildings.find((b) => enhancementIds.has(b.id))!.ground[0][0] += 0.1;
+    const ground = groundChanged.buildings.find((b) => enhancementIds.has(b.id))!
+      .ground;
+    if (!ground) throw new Error("Pinned pilot building must retain source ground");
+    ground[0][0] += 0.1;
     expect(() => assertEnhancementSnapshot(groundChanged)).toThrow(/mismatch/);
     const missing = {
       ...city,

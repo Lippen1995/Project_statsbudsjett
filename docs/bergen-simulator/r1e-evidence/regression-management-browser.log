@@ -7,7 +7,7 @@
     "Touch viewport scheduling/funding, exact local replay, stable geometry retention and zero idle frames under production CSP"
   ],
   "desktop": {
-    "loadMs": 3939.8619639999997,
+    "loadMs": 3743.153693,
     "legacyImmediateSix": {
       "month": "6",
       "households": "6.59048593755636",
@@ -17,20 +17,20 @@
       "balance": "0.4674195723743537"
     },
     "scheduleCommandSamplesMs": [
-      853.8840540000001,
-      354.0948179999996,
-      657.1403290000017,
-      401.04479899999933,
-      699.376111000005,
-      652.6289810000017
+      490.29688799999985,
+      568.6488929999996,
+      358.2256439999983,
+      676.6065630000012,
+      632.1384419999995,
+      616.5777199999939
     ],
     "phaseMetrics": {
       "planned": {
-        "frames": 14,
+        "frames": 15,
         "attributeArrays": 39,
         "attributeBytes": 29214354,
-        "cpuFrameMs": 0.8999999761581421,
-        "cameraLatencyMs": 290,
+        "cpuFrameMs": 0.800000011920929,
+        "cameraLatencyMs": 1.300000011920929,
         "calls": 12,
         "triangles": 289460,
         "lines": 53,
@@ -49,11 +49,11 @@
         ]
       },
       "underConstruction": {
-        "frames": 16,
+        "frames": 17,
         "attributeArrays": 39,
         "attributeBytes": 29214354,
-        "cpuFrameMs": 0.800000011920929,
-        "cameraLatencyMs": 1.2000000178813934,
+        "cpuFrameMs": 0.5999999940395355,
+        "cameraLatencyMs": 203.30000001192093,
         "calls": 12,
         "triangles": 289580,
         "lines": 53,
@@ -72,11 +72,11 @@
         ]
       },
       "operational": {
-        "frames": 21,
+        "frames": 22,
         "attributeArrays": 39,
         "attributeBytes": 29214354,
-        "cpuFrameMs": 0.699999988079071,
-        "cameraLatencyMs": 6.299999982118607,
+        "cpuFrameMs": 1,
+        "cameraLatencyMs": 1.4000000059604645,
         "calls": 12,
         "triangles": 289638,
         "lines": 53,
@@ -111,7 +111,7 @@
       "serviceUnmet": "12.59147377536495",
       "balance": "0"
     },
-    "scheduleEditLatencyMs": 699.376111000005,
+    "scheduleEditLatencyMs": 632.1384419999995,
     "late24": {
       "month": "24",
       "households": "6.522119951889151",
@@ -126,29 +126,29 @@
       "lines": 53,
       "geometries": 12,
       "sampleCount": 12,
-      "medianCameraLatencyMs": 476.90000000596046,
-      "p95CameraLatencyMs": 939.1999999880791,
-      "medianCpuFrameMs": 0.5999999940395355,
+      "medianCameraLatencyMs": 478.7999999821186,
+      "p95CameraLatencyMs": 549.6999999880791,
+      "medianCpuFrameMs": 0.9000000059604645,
       "idleFrames": 0,
       "cameraLatencySamplesMs": [
-        459.19999998807907,
-        569.9000000059605,
-        486.2000000178814,
-        476.90000000596046,
-        487.80000001192093,
-        425.90000000596046,
-        444.89999997615814,
-        424.5,
-        939.1999999880791,
-        4.199999988079071,
-        443.40000000596046,
-        520.2999999821186
+        549.6999999880791,
+        456.69999998807907,
+        390.09999999403954,
+        478.7999999821186,
+        452.10000002384186,
+        483.59999999403954,
+        529.2000000178814,
+        500.19999998807907,
+        422.5,
+        416.69999998807907,
+        465.09999999403954,
+        548.0999999940395
       ]
     },
-    "workerComputeMs": "4.5999999940395355",
+    "workerComputeMs": "42.69999998807907",
     "memory": {
-      "heapBefore": 25493304,
-      "heapAfter": 25819216,
+      "heapBefore": 25504368,
+      "heapAfter": 25829716,
       "retainedGeometries": [
         14,
         14,
@@ -165,9 +165,9 @@
     }
   },
   "mobile": {
-    "loadMs": 2610.4537220000057,
+    "loadMs": 2239.4930129999993,
     "scheduleCommandSamplesMs": [
-      402.5611749999953
+      391.5346509999945
     ],
     "activeProfile": {
       "calls": 11,
@@ -175,23 +175,23 @@
       "lines": 53,
       "geometries": 12,
       "sampleCount": 12,
-      "medianCameraLatencyMs": 232.09999999403954,
-      "p95CameraLatencyMs": 259.59999999403954,
-      "medianCpuFrameMs": 0.7000000178813934,
+      "medianCameraLatencyMs": 240,
+      "p95CameraLatencyMs": 362.69999998807907,
+      "medianCpuFrameMs": 0.800000011920929,
       "idleFrames": 0,
       "cameraLatencySamplesMs": [
-        251.5,
-        237.90000000596046,
-        218.90000000596046,
-        232.09999999403954,
-        258.09999999403954,
-        204.2999999821186,
-        217.90000000596046,
-        259.59999999403954,
-        218.89999997615814,
-        219.5,
-        230,
-        236.5
+        295.90000000596046,
+        362.69999998807907,
+        205.69999998807907,
+        208.40000000596046,
+        235,
+        210,
+        228.09999999403954,
+        268.60000002384186,
+        252,
+        240,
+        223.2000000178814,
+        240.09999999403954
       ]
     }
   },

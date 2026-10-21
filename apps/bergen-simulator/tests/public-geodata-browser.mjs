@@ -47,6 +47,8 @@ const report = {
   baselineCommit: "c87db8bfe73e4e73a49bc0160a91116615274893",
   driver: "Chromium ANGLE SwiftShader; physical GPU unverified",
   browser: browser.version(),
+  measurementProtocol:
+    "v2: await a newer captured frame at the commanded camera, then two RAF callbacks and gl.finish; 56 measured samples after 8 warmups; software driver latency, not physical FPS",
   views,
   cases: [],
   errors: [],
@@ -60,7 +62,21 @@ const quantile = (v, f) =>
 async function setView(page, detail) {
   return page.locator("canvas").evaluate(async (c, v) => {
     const t = performance.now();
+    const before = JSON.parse(c.dataset.capture).frames;
     c.dispatchEvent(new CustomEvent("bergen:capture", { detail: v }));
+    await new Promise((resolve, reject) => {
+      const check = () => {
+        const m = JSON.parse(c.dataset.capture);
+        if (
+          m.frames > before &&
+          m.position.every((n, i) => Math.abs(n - v.position[i]) < 0.01)
+        ) resolve();
+        else if (performance.now() - t > 10000)
+          reject(new Error("No rendered frame at commanded camera"));
+        else requestAnimationFrame(check);
+      };
+      requestAnimationFrame(check);
+    });
     await new Promise((r) =>
       requestAnimationFrame(() => requestAnimationFrame(r)),
     );
@@ -146,7 +162,7 @@ try {
         captures.push({ view: view.name, ...m });
       }
       const samples = [];
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < 64; i++) {
         const v = views[1];
         const ms = await setView(page, {
           ...v,
@@ -156,7 +172,7 @@ try {
             v.position[2],
           ],
         });
-        if (i >= 4) samples.push(ms);
+        if (i >= 8) samples.push(ms);
       }
       await idle(page);
       report.cases.push({

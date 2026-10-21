@@ -4,7 +4,7 @@
 
 ## Sammenlignbare bilder
 
-`before/` er tatt fra uendret gren-HEAD `c87db8bfe73e4e73a49bc0160a91116615274893` før implementasjonen. `after/` viser både originalvisning (`off`) og ny pilot (`on`). Alle fire opprinnelige kamerastillinger og begge viewport-størrelser er **pikselidentiske før/etter når laget er av**, kontrollert etter JPEG-dekoding. Slik dokumenteres at originalbyen kan vises uendret. Den nye lave kamerastillingen har et separat av/på-par fra samme bygg, ikke et oppfunnet gammelt baselinebilde.
+`before/` er tatt fra uendret historisk gren-HEAD `c87db8bfe73e4e73a49bc0160a91116615274893`, bygget fra et separat `git archive` uten grenbytte. Endelig før/etter-kjøring bruker samme korrigerte kameradriver. `after/` viser både originalvisning (`off`) og ny pilot (`on`). Alle fire opprinnelige kamerastillinger og begge viewport-størrelser er **pikselidentiske før/etter når laget er av**, kontrollert etter JPEG-dekoding. Slik dokumenteres at originalbyen kan vises uendret. Den nye lave kamerastillingen har et separat av/på-par fra samme bygg, ikke et oppfunnet gammelt baselinebilde.
 
 | Motiv | Original | Nytt taklag |
 | --- | --- | --- |
@@ -54,13 +54,15 @@ Kjøring: Node 24.19.0, Chromium 151, ANGLE SwiftShader, Balanced, DPR 1, samme 
 | Synlige trekanter i samme bilde | 288 848 | 288 976 |
 | Sceneattributt-/indeksarrayer, byte | 29 146 950 | 29 164 038 |
 | Teksturer | 2 | 2 |
-| Desktop kameradriver, median / P95 | 299,1 / 340,9 ms | 302,6 / 349,3 ms |
-| Mobil viewport kameradriver, median / P95 | 166,0 / 196,5 ms | 174,9 / 183,8 ms |
-| Klar scene, desktop | 4 965 ms | 4 057 ms |
-| Klar scene, mobil viewport | 2 611 ms | 2 333 ms |
+| Desktop kameradriver, median / P95 | 296,5 / 355,8 ms | 300,7 / 345,7 ms |
+| Mobil viewport kameradriver, median / P95 | 184,8 / 194,2 ms | 169,7 / 200,0 ms |
+| Klar scene, desktop | 3 709 ms | 3 821 ms |
+| Klar scene, mobil viewport | 2 294 ms | 2 404 ms |
 | Nye idle-frames etter settling | 0 | 0 |
 
-[Maskinrapport og budsjettutfall](benchmark-summary.json), [før råmålinger](before/report.json), [etter råmålinger](after/report.json), [forhåndsbudsjett](preintegration-budget.md). Tolv målte kameraprøver per variant etter fire oppvarmingsprøver. Median/P95 er driverforsinkelse med to RAF-er og `gl.finish()`, **ikke fysisk FPS eller rene GPU-frame-tider**. Klar scene er venting på geometri/eksisterende teksturer; den valgfrie takflisen lastes først ved aktivering. Lastetidsforskjellen kan skyldes cache/JIT og enkeltkjøringsstøy; ingen påstått ytelsesoptimalisering.
+[Maskinrapport og budsjettutfall](benchmark-summary.json), [før råmålinger](before/report.json), [etter råmålinger](after/report.json), [forhåndsbudsjett](preintegration-budget.md). 56 målte kameraprøver per variant etter åtte oppvarmingsprøver. Protokoll v2 venter eksplisitt på et nytt tegnet bilde ved beordret kamera før to RAF-er og `gl.finish()`. Median/P95 er driverforsinkelse, **ikke fysisk FPS eller rene GPU-frame-tider**. Klar scene er venting på geometri/eksisterende teksturer; den valgfrie takflisen lastes først ved aktivering. Lastetidsforskjellen kan skyldes cache/JIT og enkeltkjøringsstøy; ingen påstått ytelsesoptimalisering.
+
+En tidligere målemetode ventet ikke eksplisitt på det nye kamerabildet og ga en urealistisk prøve på 2,7 ms etterfulgt av 311 ms. Den rå [diagnosekjøringen](after-fresh-first-report.json) og de opprinnelige [før](legacy-driver-before-report.json)/[etter](legacy-driver-after-report.json)-rapportene beholdes for sporbarhet, men brukes ikke i tabellen. Begge historiske og nye bygg er målt på nytt, sekvensielt og uten samtidige nettlesersuiter, med protokoll v2. Rårapporten inkluderer også ny kode med laget av: desktop P95 er 391,0 ms, mot 355,8 ms historisk; begge tilstander er innen forhåndsbudsjettet. Forskjellen illustrerer programvarerendererens variasjon, ikke en påvist optimalisering.
 
 Ekstra fil er **15 160 byte**, 162 trekanter før de gamle fotavtrykkflatene filtreres bort, netto 128 i målt bilde, én draw call, ingen tekstur. CPU-målte sceneattributter øker 17 088 byte. Dette er **ikke målt fysisk VRAM** eller en full JS-heapmåling. Fem av/på-sykluser gir stabile siste geometri-/attributtall; lav effekt, tilbake til Balanced, 404 og avbrutt/stale innlasting beholder eller gjenoppretter originalene. Ingen påstand om langtidslekkasjefrihet eller iPhone-ytelse.
 
@@ -71,6 +73,8 @@ Start samme statiske bygg lokalt og åpne `http://localhost:4180/?capture=1` på
 Gjenta med og uten taklaget og inkluder vanlig orbit/zoom/berøring, valgt objekt og tilbake til byoversikt. Instrumenteringen er fortsatt bare aktiv på localhost/127.0.0.1 og samler ingen brukerdata. **Ikke** åpne privilegerte diagnoseendepunkter eller svekk Vercel Authentication for maskinvaretest.
 
 ## Utførte tester
+
+Første CI-forsøk, [39562912976](https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/39562912976), stoppet i TypeScript før deploy: den nye testen aksesserte et valgfritt `ground`-felt uten eksplisitt kontroll. Testen er rettet med en faktisk tilstedeværelsesvakt. Lokale porter og nettlesere kjøres deretter på nytt mot et ferskt, vellykket TypeScript-bygg; endelige logger i denne mappen gjelder denne omkjøringen. Den første kjøringen gjorde ingen deploy.
 
 - `npm run lint`: bestått, ingen advarsler.
 - `npm test`: **244 Vitest-tester i 16 filer + 10 release-/CI-policytester**, bestått.
@@ -83,6 +87,6 @@ Gjenta med og uten taklaget og inkluder vanlig orbit/zoom/berøring, valgt objek
 - PDAL/roofer på original LAZ: **ikke kjørt**, fordi ingen rå klassifisert kildefil ble levert. Ingen rasterprøve utgis for å være dette forsøket.
 - Ny uavhengig tak-/fasadesurvey og fysisk GPU-test: **ikke tilgjengelig**.
 
-Python GIS: numpy 2.5.4, rasterio 1.4.4, pyproj 3.7.2, shapely 2.1.2; se [prosesseringskode](../../../apps/bergen-simulator/scripts/r1e_geodata.py), [reproduksjon av epoch-kontroll](../../../apps/bergen-simulator/scripts/r1e_compare.py) og [offline-tester](../../../apps/bergen-simulator/tests/public_geodata.py). Rasterio med numpy 2.5.4 gir en kjent deprecation-advarsel ved array-lesing; testene og bit-reproduksjonen består. Ingen ny runtime-avhengighet er introdusert.
+Python GIS: numpy 2.5.4, rasterio 1.4.4, pyproj 3.7.2, shapely 2.1.2, låst i [r1e-requirements.txt](../../../apps/bergen-simulator/scripts/r1e-requirements.txt); se [prosesseringskode](../../../apps/bergen-simulator/scripts/r1e_geodata.py), [reproduksjon av epoch-kontroll](../../../apps/bergen-simulator/scripts/r1e_compare.py) og [offline-tester](../../../apps/bergen-simulator/tests/public_geodata.py). Rasterio med numpy 2.5.4 gir en kjent deprecation-advarsel ved array-lesing; testene og bit-reproduksjonen består. Ingen ny runtime-avhengighet er introdusert.
 
 Utgivelsesstatus og beskyttelseskontroll oppgis i leveringsrapporten etter den godkjente [Bergen-workflowen](https://github.com/Lippen1995/Project_statsbudsjett/actions/workflows/bergen-simulator.yml). Denne evidensen beskriver de faktiske lokale portene før commit; ingen endring av workflows eller beskyttelsesinnstillinger inngår.

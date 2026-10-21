@@ -2,12 +2,12 @@
   "renderer": "SwiftShader; physical GPU performance unverified",
   "viewports": {
     "desktop": {
-      "sceneReadyMs": 3772.4285379999997,
+      "sceneReadyMs": 4196.218353,
       "initial": {
         "frames": 1,
         "attributeArrays": 26,
         "attributeBytes": 29146950,
-        "cpuFrameMs": 90.90000000596046,
+        "cpuFrameMs": 129.2000000178814,
         "cameraLatencyMs": null,
         "calls": 7,
         "triangles": 288848,
@@ -32,15 +32,15 @@
         "routed": "13",
         "unrouted": "0",
         "capped": "0",
-        "computeMs": "178.09999999403954",
+        "computeMs": "164.40000000596046",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD6.83 occupied households · 9.37 filled jobs13 generated = 13 requested + 0 explicitly capped13 routed + 0 unrouted = 13 requested0 missing vehicle access / unusable gateway pairing · rounding 0.55 trip endsRoad-network vehicle time: 1,938.2 → 1,969.6 vehicle-min / periodRoad-network distance: 286.49 → 291.64 vehicle-km; maximum V/C 1.54Additional-only route distance 3.55 km; same trips without street edits 3.55 km. Separate attribution run.Quay homes: 6.83 used equivalents → 7 trips; 0 blockedQuay workspace: 9.37 used equivalents → 6 trips; 0 blockedShow original traffic baselineRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "after": {
         "frames": 31,
         "attributeArrays": 43,
         "attributeBytes": 29260290,
-        "cpuFrameMs": 0.5999999940395355,
-        "cameraLatencyMs": 5.5,
+        "cpuFrameMs": 0.800000011920929,
+        "cameraLatencyMs": 2.800000011920929,
         "calls": 14,
         "triangles": 290276,
         "lines": 53,
@@ -59,20 +59,20 @@
         ]
       },
       "cameraSamplesMs": [
-        527.6999999880791,
-        420.40000000596046,
-        449.69999998807907,
-        487.2000000178814,
-        503.19999998807907,
-        495,
-        475.10000002384186,
-        442.7999999821186,
-        434.80000001192093,
-        506.7999999821186,
+        1.5,
+        527.8999999761581,
+        472.09999999403954,
+        398,
+        812.2000000178814,
+        408,
         470.59999999403954,
-        402.60000002384186
+        3.0999999940395355,
+        403.40000000596046,
+        512.4000000059605,
+        437.40000000596046,
+        442
       ],
-      "heapBefore": 57637442,
+      "heapBefore": 57651518,
       "retention": [
         13,
         13,
@@ -88,20 +88,20 @@
         13
       ],
       "replayMs": [
-        1870.4887219999982,
-        1761.0876019999996,
-        1876.9412359999988,
-        1846.5711139999985,
-        1751.3547840000028
+        1789.3953540000039,
+        1780.2999429999982,
+        1784.985950000002,
+        1736.6803480000017,
+        1854.1496659999975
       ],
-      "heapAfter": 57592115,
+      "heapAfter": 57604747,
       "lessHousing": {
         "generated": "8",
         "requested": "8",
         "routed": "8",
         "unrouted": "0",
         "capped": "0",
-        "computeMs": "339.90000000596046",
+        "computeMs": "286.19999998807907",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD3.90 occupied households · 6.21 filled jobs8 generated = 8 requested + 0 explicitly capped8 routed + 0 unrouted = 8 requested0 missing vehicle access / unusable gateway pairing · rounding 0.37 trip endsRoad-network vehicle time: 1,938.2 → 1,961.1 vehicle-min / periodRoad-network distance: 286.49 → 289.70 vehicle-km; maximum V/C 1.54Additional-only route distance 2.12 km; same trips without street edits 2.12 km. Separate attribution run.Quay homes: 3.90 used equivalents → 4 trips; 0 blockedQuay workspace: 6.21 used equivalents → 4 trips; 0 blockedSaved strategy / same month and rates: 13 generated, 13 routed, 0 unrouted, 0 capped; 1,969.6 vehicle-min.Show original traffic baselineShow saved connected planRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "pedestrian": {
@@ -110,7 +110,7 @@
         "routed": "6",
         "unrouted": "7",
         "capped": "0",
-        "computeMs": "354.69999998807907",
+        "computeMs": "323.10000002384186",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD6.83 occupied households · 9.37 filled jobs13 generated = 13 requested + 0 explicitly capped6 routed + 7 unrouted = 13 requested7 missing vehicle access / unusable gateway pairing · rounding 0.55 trip endsRoad-network vehicle time: 1,938.2 → 1,951.6 vehicle-min / periodRoad-network distance: 286.49 → 287.46 vehicle-km; maximum V/C 1.53Additional-only route distance 0.97 km; same trips without street edits 0.97 km. Separate attribution run.Quay homes: 6.83 used equivalents → 7 trips; 7 blockedQuay workspace: 9.37 used equivalents → 6 trips; 0 blockedSaved strategy / same month and rates: 13 generated, 13 routed, 0 unrouted, 0 capped; 1,969.6 vehicle-min.Show original traffic baselineShow saved connected planRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "undo": {
@@ -119,7 +119,7 @@
         "routed": "13",
         "unrouted": "0",
         "capped": "0",
-        "computeMs": "295",
+        "computeMs": "296.19999998807907",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD6.83 occupied households · 9.37 filled jobs13 generated = 13 requested + 0 explicitly capped13 routed + 0 unrouted = 13 requested0 missing vehicle access / unusable gateway pairing · rounding 0.55 trip endsRoad-network vehicle time: 1,938.2 → 1,969.6 vehicle-min / periodRoad-network distance: 286.49 → 291.64 vehicle-km; maximum V/C 1.54Additional-only route distance 3.55 km; same trips without street edits 3.55 km. Separate attribution run.Quay homes: 6.83 used equivalents → 7 trips; 0 blockedQuay workspace: 9.37 used equivalents → 6 trips; 0 blockedSaved strategy / same month and rates: 13 generated, 13 routed, 0 unrouted, 0 capped; 1,969.6 vehicle-min.Show original traffic baselineShow saved connected planRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "redo": {
@@ -128,89 +128,105 @@
         "routed": "6",
         "unrouted": "7",
         "capped": "0",
-        "computeMs": "292.19999998807907",
+        "computeMs": "369.30000001192093",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD6.83 occupied households · 9.37 filled jobs13 generated = 13 requested + 0 explicitly capped6 routed + 7 unrouted = 13 requested7 missing vehicle access / unusable gateway pairing · rounding 0.55 trip endsRoad-network vehicle time: 1,938.2 → 1,951.6 vehicle-min / periodRoad-network distance: 286.49 → 287.46 vehicle-km; maximum V/C 1.53Additional-only route distance 0.97 km; same trips without street edits 0.97 km. Separate attribution run.Quay homes: 6.83 used equivalents → 7 trips; 7 blockedQuay workspace: 9.37 used equivalents → 6 trips; 0 blockedSaved strategy / same month and rates: 13 generated, 13 routed, 0 unrouted, 0 capped; 1,969.6 vehicle-min.Show original traffic baselineShow saved connected planRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "beforeReloadInstrumentation": {
         "longTasks": [
           {
-            "start": 187.59999999403954,
-            "duration": 95
+            "start": 151.5,
+            "duration": 100
           },
           {
-            "start": 376.40000000596046,
-            "duration": 115
+            "start": 419.7000000178814,
+            "duration": 142
           },
           {
-            "start": 754.8000000119209,
-            "duration": 119
+            "start": 562.4000000059605,
+            "duration": 52
           },
           {
-            "start": 907.8000000119209,
-            "duration": 147
+            "start": 728.0999999940395,
+            "duration": 98
           },
           {
-            "start": 2292.4000000059605,
+            "start": 894.5999999940395,
             "duration": 69
           },
           {
-            "start": 3271.800000011921,
-            "duration": 101
+            "start": 974.5999999940395,
+            "duration": 55
           },
           {
-            "start": 3443.5,
-            "duration": 223
+            "start": 1264.9000000059605,
+            "duration": 79
           },
           {
-            "start": 3666.699999988079,
-            "duration": 92
+            "start": 1437.300000011921,
+            "duration": 58
           },
           {
-            "start": 4392.800000011921,
-            "duration": 108
+            "start": 3405.9000000059605,
+            "duration": 109
           },
           {
-            "start": 10310.199999988079,
-            "duration": 107
+            "start": 3593.7000000178814,
+            "duration": 425
           },
           {
-            "start": 12512.40000000596,
-            "duration": 74
+            "start": 4018.800000011921,
+            "duration": 130
           },
           {
-            "start": 14512.800000011921,
-            "duration": 104
+            "start": 4816.5,
+            "duration": 115
           },
           {
-            "start": 14900,
-            "duration": 89
+            "start": 10803.800000011921,
+            "duration": 126
           },
           {
-            "start": 15987.09999999404,
-            "duration": 89
+            "start": 11162.09999999404,
+            "duration": 63
           },
           {
-            "start": 41616.5,
-            "duration": 481
+            "start": 13082,
+            "duration": 86
           },
           {
-            "start": 42563.69999998808,
+            "start": 15222,
+            "duration": 79
+          },
+          {
+            "start": 15548.200000017881,
+            "duration": 59
+          },
+          {
+            "start": 42159.59999999404,
+            "duration": 70
+          },
+          {
+            "start": 42230.09999999404,
+            "duration": 418
+          },
+          {
+            "start": 43195.5,
             "duration": 103
           },
           {
-            "start": 42667,
-            "duration": 387
+            "start": 43299.30000001192,
+            "duration": 502
           },
           {
-            "start": 43404.09999999404,
-            "duration": 263
+            "start": 43840.90000000596,
+            "duration": 52
           },
           {
-            "start": 49798.5,
-            "duration": 92
+            "start": 44240.20000001788,
+            "duration": 283
           },
           {
-            "start": 60146.30000001192,
+            "start": 61616,
             "duration": 53
           }
         ],
@@ -224,50 +240,50 @@
             "terminated": true,
             "messages": 2,
             "computeMs": [
-              7,
-              9.400000005960464
+              6.799999982118607,
+              14.099999964237213
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              178.09999999403954
+              164.40000000596046
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              251.19999998807907
+              167.09999999403954
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              139.69999998807907
+              163.40000000596046
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              210.2000000178814
+              164.59999999403954
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              191.90000000596046
+              144.2000000178814
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              146.60000002384186
+              241.39999997615814
             ]
           },
           {
@@ -281,58 +297,58 @@
             "terminated": true,
             "messages": 2,
             "computeMs": [
-              3.199999988079071,
-              8.499999970197678
+              6.199999988079071,
+              19.999999970197678
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              339.90000000596046
+              286.19999998807907
             ]
           },
           {
             "terminated": false,
             "messages": 2,
             "computeMs": [
-              7.299999982118607,
-              47.39999997615814
+              7.200000017881393,
+              14.500000029802322
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              432.90000000596046
+              368.59999999403954
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              354.69999998807907
+              323.10000002384186
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              295
+              296.19999998807907
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              292.19999998807907
+              369.30000001192093
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              247.5
+              395.60000002384186
             ]
           }
         ]
@@ -343,15 +359,15 @@
         "routed": "13",
         "unrouted": "0",
         "capped": "0",
-        "computeMs": "129.39999997615814",
+        "computeMs": "192",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD6.83 occupied households · 9.37 filled jobs13 generated = 13 requested + 0 explicitly capped13 routed + 0 unrouted = 13 requested0 missing vehicle access / unusable gateway pairing · rounding 0.55 trip endsRoad-network vehicle time: 1,938.2 → 1,969.6 vehicle-min / periodRoad-network distance: 286.49 → 291.64 vehicle-km; maximum V/C 1.54Additional-only route distance 3.55 km; same trips without street edits 3.55 km. Separate attribution run.Quay homes: 6.83 used equivalents → 7 trips; 0 blockedQuay workspace: 9.37 used equivalents → 6 trips; 0 blockedShow original traffic baselineRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "reset": {
-        "frames": 22,
+        "frames": 18,
         "attributeArrays": 28,
         "attributeBytes": 29190006,
-        "cpuFrameMs": 268.7999999821186,
-        "cameraLatencyMs": 1197.199999988079,
+        "cpuFrameMs": 253.40000000596046,
+        "cameraLatencyMs": 1149.2000000178814,
         "calls": 8,
         "triangles": 289446,
         "lines": 0,
@@ -372,48 +388,40 @@
       "instrumentation": {
         "longTasks": [
           {
-            "start": 591.5,
-            "duration": 78
+            "start": 573.0999999940395,
+            "duration": 80
           },
           {
-            "start": 979.9000000059605,
-            "duration": 52
+            "start": 964.6999999880791,
+            "duration": 51
           },
           {
-            "start": 1861.800000011921,
-            "duration": 87
+            "start": 1890,
+            "duration": 101
           },
           {
-            "start": 2004.199999988079,
-            "duration": 50
+            "start": 2053.2999999821186,
+            "duration": 54
           },
           {
-            "start": 2054.199999988079,
-            "duration": 79
+            "start": 2107.399999976158,
+            "duration": 73
           },
           {
-            "start": 2723.0999999940395,
-            "duration": 161
+            "start": 2765.199999988079,
+            "duration": 155
           },
           {
-            "start": 7002.199999988079,
-            "duration": 61
+            "start": 6850.5999999940395,
+            "duration": 86
           },
           {
-            "start": 7607.699999988079,
-            "duration": 578
+            "start": 11236.699999988079,
+            "duration": 524
           },
           {
-            "start": 11320.199999988079,
-            "duration": 559
-          },
-          {
-            "start": 13784.699999988079,
-            "duration": 571
-          },
-          {
-            "start": 14707.09999999404,
-            "duration": 270
+            "start": 12131.59999999404,
+            "duration": 254
           }
         ],
         "workers": [
@@ -426,44 +434,15 @@
             "terminated": true,
             "messages": 2,
             "computeMs": [
-              2.699999988079071,
-              9.5
+              5.0999999940395355,
+              12.599999994039536
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              129.39999997615814
-            ]
-          },
-          {
-            "terminated": true,
-            "messages": 1,
-            "computeMs": [
-              1.5999999940395355
-            ]
-          },
-          {
-            "terminated": true,
-            "messages": 2,
-            "computeMs": [
-              2,
-              4.4000000059604645
-            ]
-          },
-          {
-            "terminated": true,
-            "messages": 1,
-            "computeMs": [
-              166.69999998807907
-            ]
-          },
-          {
-            "terminated": true,
-            "messages": 1,
-            "computeMs": [
-              1.5999999940395355
+              192
             ]
           },
           {
@@ -475,42 +454,69 @@
           },
           {
             "terminated": true,
-            "messages": 1,
+            "messages": 2,
             "computeMs": [
-              2.2000000178813934
+              2,
+              4.9000000059604645
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              2
+              161.19999998807907
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              4.800000011920929
+              1
+            ]
+          },
+          {
+            "terminated": true,
+            "messages": 1,
+            "computeMs": [
+              1
+            ]
+          },
+          {
+            "terminated": true,
+            "messages": 0,
+            "computeMs": []
+          },
+          {
+            "terminated": true,
+            "messages": 1,
+            "computeMs": [
+              1.699999988079071
+            ]
+          },
+          {
+            "terminated": true,
+            "messages": 1,
+            "computeMs": [
+              3.7999999821186066
             ]
           },
           {
             "terminated": false,
             "messages": 1,
             "computeMs": [
-              1.300000011920929
+              1.199999988079071
             ]
           }
         ]
       }
     },
     "mobile": {
-      "sceneReadyMs": 2377.6535779999977,
+      "sceneReadyMs": 2271.9526130000013,
       "initial": {
         "frames": 1,
         "attributeArrays": 26,
         "attributeBytes": 29146950,
-        "cpuFrameMs": 84.09999999403954,
+        "cpuFrameMs": 75.90000000596046,
         "cameraLatencyMs": null,
         "calls": 7,
         "triangles": 288848,
@@ -535,15 +541,15 @@
         "routed": "13",
         "unrouted": "0",
         "capped": "0",
-        "computeMs": "173.5",
+        "computeMs": "199.5",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD6.83 occupied households · 9.37 filled jobs13 generated = 13 requested + 0 explicitly capped13 routed + 0 unrouted = 13 requested0 missing vehicle access / unusable gateway pairing · rounding 0.55 trip endsRoad-network vehicle time: 1,938.2 → 1,969.6 vehicle-min / periodRoad-network distance: 286.49 → 291.64 vehicle-km; maximum V/C 1.54Additional-only route distance 3.55 km; same trips without street edits 3.55 km. Separate attribution run.Quay homes: 6.83 used equivalents → 7 trips; 0 blockedQuay workspace: 9.37 used equivalents → 6 trips; 0 blockedShow original traffic baselineRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "after": {
-        "frames": 43,
+        "frames": 45,
         "attributeArrays": 43,
         "attributeBytes": 29260290,
-        "cpuFrameMs": 0.699999988079071,
-        "cameraLatencyMs": 58.69999998807907,
+        "cpuFrameMs": 0.5999999940395355,
+        "cameraLatencyMs": 373,
         "calls": 14,
         "triangles": 290276,
         "lines": 53,
@@ -562,20 +568,20 @@
         ]
       },
       "cameraSamplesMs": [
-        292.5,
-        265.09999999403954,
-        213.80000001192093,
-        220.2000000178814,
-        239.80000001192093,
-        220.59999999403954,
-        254.80000001192093,
-        282.80000001192093,
-        278.39999997615814,
-        256.19999998807907,
-        207.89999997615814,
-        161
+        291.90000000596046,
+        282.10000002384186,
+        228.2000000178814,
+        262.40000000596046,
+        264.2999999821186,
+        290.80000001192093,
+        246.5,
+        237.09999999403954,
+        246.09999999403954,
+        308.7000000178814,
+        279.19999998807907,
+        212.59999999403954
       ],
-      "heapBefore": 57859650,
+      "heapBefore": 57871224,
       "retention": [
         13,
         13,
@@ -591,20 +597,20 @@
         13
       ],
       "replayMs": [
-        1736.1438639999978,
-        1741.3336160000035,
-        1777.217918999988,
-        1732.741874000014,
-        1762.3460719999857
+        1869.4331590000074,
+        1774.1955199999938,
+        1780.5286980000092,
+        1750.423616999993,
+        1858.695728000006
       ],
-      "heapAfter": 57753607,
+      "heapAfter": 57758437,
       "lessHousing": {
         "generated": "8",
         "requested": "8",
         "routed": "8",
         "unrouted": "0",
         "capped": "0",
-        "computeMs": "196.80000001192093",
+        "computeMs": "198.89999997615814",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD3.90 occupied households · 6.21 filled jobs8 generated = 8 requested + 0 explicitly capped8 routed + 0 unrouted = 8 requested0 missing vehicle access / unusable gateway pairing · rounding 0.37 trip endsRoad-network vehicle time: 1,938.2 → 1,961.1 vehicle-min / periodRoad-network distance: 286.49 → 289.70 vehicle-km; maximum V/C 1.54Additional-only route distance 2.12 km; same trips without street edits 2.12 km. Separate attribution run.Quay homes: 3.90 used equivalents → 4 trips; 0 blockedQuay workspace: 6.21 used equivalents → 4 trips; 0 blockedSaved strategy / same month and rates: 13 generated, 13 routed, 0 unrouted, 0 capped; 1,969.6 vehicle-min.Show original traffic baselineShow saved connected planRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "pedestrian": {
@@ -613,7 +619,7 @@
         "routed": "6",
         "unrouted": "7",
         "capped": "0",
-        "computeMs": "259",
+        "computeMs": "316.90000000596046",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD6.83 occupied households · 9.37 filled jobs13 generated = 13 requested + 0 explicitly capped6 routed + 7 unrouted = 13 requested7 missing vehicle access / unusable gateway pairing · rounding 0.55 trip endsRoad-network vehicle time: 1,938.2 → 1,951.6 vehicle-min / periodRoad-network distance: 286.49 → 287.46 vehicle-km; maximum V/C 1.53Additional-only route distance 0.97 km; same trips without street edits 0.97 km. Separate attribution run.Quay homes: 6.83 used equivalents → 7 trips; 7 blockedQuay workspace: 9.37 used equivalents → 6 trips; 0 blockedSaved strategy / same month and rates: 13 generated, 13 routed, 0 unrouted, 0 capped; 1,969.6 vehicle-min.Show original traffic baselineShow saved connected planRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "undo": {
@@ -622,7 +628,7 @@
         "routed": "13",
         "unrouted": "0",
         "capped": "0",
-        "computeMs": "274.7999999821186",
+        "computeMs": "346.19999998807907",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD6.83 occupied households · 9.37 filled jobs13 generated = 13 requested + 0 explicitly capped13 routed + 0 unrouted = 13 requested0 missing vehicle access / unusable gateway pairing · rounding 0.55 trip endsRoad-network vehicle time: 1,938.2 → 1,969.6 vehicle-min / periodRoad-network distance: 286.49 → 291.64 vehicle-km; maximum V/C 1.54Additional-only route distance 3.55 km; same trips without street edits 3.55 km. Separate attribution run.Quay homes: 6.83 used equivalents → 7 trips; 0 blockedQuay workspace: 9.37 used equivalents → 6 trips; 0 blockedSaved strategy / same month and rates: 13 generated, 13 routed, 0 unrouted, 0 capped; 1,969.6 vehicle-min.Show original traffic baselineShow saved connected planRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "redo": {
@@ -631,58 +637,66 @@
         "routed": "6",
         "unrouted": "7",
         "capped": "0",
-        "computeMs": "275.59999999403954",
+        "computeMs": "272",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD6.83 occupied households · 9.37 filled jobs13 generated = 13 requested + 0 explicitly capped6 routed + 7 unrouted = 13 requested7 missing vehicle access / unusable gateway pairing · rounding 0.55 trip endsRoad-network vehicle time: 1,938.2 → 1,951.6 vehicle-min / periodRoad-network distance: 286.49 → 287.46 vehicle-km; maximum V/C 1.53Additional-only route distance 0.97 km; same trips without street edits 0.97 km. Separate attribution run.Quay homes: 6.83 used equivalents → 7 trips; 7 blockedQuay workspace: 9.37 used equivalents → 6 trips; 0 blockedSaved strategy / same month and rates: 13 generated, 13 routed, 0 unrouted, 0 capped; 1,969.6 vehicle-min.Show original traffic baselineShow saved connected planRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "beforeReloadInstrumentation": {
         "longTasks": [
           {
-            "start": 686.8000000119209,
-            "duration": 82
+            "start": 102.80000001192093,
+            "duration": 92
           },
           {
-            "start": 1097.2000000178814,
-            "duration": 57
+            "start": 278.7000000178814,
+            "duration": 69
           },
           {
-            "start": 2006.2000000178814,
-            "duration": 123
-          },
-          {
-            "start": 2191.5999999940395,
-            "duration": 85
-          },
-          {
-            "start": 2277.300000011921,
-            "duration": 86
-          },
-          {
-            "start": 2815.9000000059605,
+            "start": 639.1000000238419,
             "duration": 89
           },
           {
-            "start": 12289.300000011921,
-            "duration": 65
+            "start": 757.8000000119209,
+            "duration": 55
           },
           {
-            "start": 33678.5,
-            "duration": 238
+            "start": 1057.9000000059605,
+            "duration": 54
           },
           {
-            "start": 33956.80000001192,
-            "duration": 51
+            "start": 1961.7000000178814,
+            "duration": 106
           },
           {
-            "start": 34009.20000001788,
-            "duration": 706
+            "start": 2128.2000000178814,
+            "duration": 58
           },
           {
-            "start": 34973.80000001192,
-            "duration": 145
+            "start": 2186.800000011921,
+            "duration": 77
           },
           {
-            "start": 40785.09999999404,
-            "duration": 108
+            "start": 2656.5,
+            "duration": 98
+          },
+          {
+            "start": 5821.5,
+            "duration": 157
+          },
+          {
+            "start": 8135.300000011921,
+            "duration": 63
+          },
+          {
+            "start": 12136.700000017881,
+            "duration": 52
+          },
+          {
+            "start": 34431.90000000596,
+            "duration": 208
+          },
+          {
+            "start": 35831.20000001788,
+            "duration": 216
           }
         ],
         "workers": [
@@ -695,115 +709,115 @@
             "terminated": true,
             "messages": 2,
             "computeMs": [
-              1.9000000059604645,
-              6.0999999940395355
+              3.9000000059604645,
+              6.9000000059604645
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              173.5
+              199.5
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              113.60000002384186
+              225.59999999403954
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              119.69999998807907
+              153.40000000596046
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              86.7999999821186
+              148.2000000178814
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              166.5
+              130.19999998807907
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              117.7000000178814
+              164.60000002384186
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              2
+              2.5999999940395355
             ]
           },
           {
             "terminated": true,
             "messages": 2,
             "computeMs": [
-              17.799999982118607,
-              21.999999970197678
+              2.199999988079071,
+              8.199999988079071
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              196.80000001192093
+              198.89999997615814
             ]
           },
           {
             "terminated": false,
             "messages": 2,
             "computeMs": [
-              2.0999999940395355,
-              10.899999976158142
+              2.800000011920929,
+              8.100000023841858
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              423.09999999403954
+              256.90000000596046
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              259
+              316.90000000596046
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              274.7999999821186
+              346.19999998807907
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              275.59999999403954
+              272
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              319.40000000596046
+              211.2999999821186
             ]
           }
         ]
@@ -814,15 +828,15 @@
         "routed": "13",
         "unrouted": "0",
         "capped": "0",
-        "computeMs": "201.90000000596046",
+        "computeMs": "149.30000001192093",
         "text": "MONTH 24 → ONE SYNTHETIC 30-MINUTE PERIOD6.83 occupied households · 9.37 filled jobs13 generated = 13 requested + 0 explicitly capped13 routed + 0 unrouted = 13 requested0 missing vehicle access / unusable gateway pairing · rounding 0.55 trip endsRoad-network vehicle time: 1,938.2 → 1,969.6 vehicle-min / periodRoad-network distance: 286.49 → 291.64 vehicle-km; maximum V/C 1.54Additional-only route distance 3.55 km; same trips without street edits 3.55 km. Separate attribution run.Quay homes: 6.83 used equivalents → 7 trips; 0 blockedQuay workspace: 9.37 used equivalents → 6 trips; 0 blockedShow original traffic baselineRoad legs begin at explicitly proposed attachment nodes. Private-link travel time/capacity, turning design, walking flows and congestion feedback to district growth are not simulated. All missing vehicle access remains visible as unrouted demand. Original baseline: 960 synthetic trips; street-only uses the same base demand. Original roads never change."
       },
       "reset": {
-        "frames": 27,
+        "frames": 26,
         "attributeArrays": 28,
         "attributeBytes": 29190006,
-        "cpuFrameMs": 166,
-        "cameraLatencyMs": 1098,
+        "cpuFrameMs": 154.40000000596046,
+        "cameraLatencyMs": 961.5,
         "calls": 8,
         "triangles": 289446,
         "lines": 0,
@@ -843,32 +857,40 @@
       "instrumentation": {
         "longTasks": [
           {
-            "start": 557.4000000059605,
+            "start": 552.7999999821186,
+            "duration": 90
+          },
+          {
+            "start": 1791.0999999940395,
             "duration": 89
           },
           {
-            "start": 1892.699999988079,
-            "duration": 100
+            "start": 1987.5,
+            "duration": 78
           },
           {
-            "start": 2109.9000000059605,
-            "duration": 80
+            "start": 2462.7999999821186,
+            "duration": 144
           },
           {
-            "start": 2606.199999988079,
-            "duration": 118
+            "start": 6037,
+            "duration": 78
           },
           {
-            "start": 6341.699999988079,
-            "duration": 190
+            "start": 6231.899999976158,
+            "duration": 756
           },
           {
-            "start": 10754.300000011921,
-            "duration": 367
+            "start": 9592.199999988079,
+            "duration": 290
           },
           {
-            "start": 11343.300000011921,
-            "duration": 166
+            "start": 10531.59999999404,
+            "duration": 314
+          },
+          {
+            "start": 11052,
+            "duration": 155
           }
         ],
         "workers": [
@@ -881,77 +903,79 @@
             "terminated": true,
             "messages": 2,
             "computeMs": [
-              2,
-              6.100000023841858
+              3.800000011920929,
+              5.800000011920929
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              201.90000000596046
+              149.30000001192093
             ]
           },
           {
             "terminated": true,
-            "messages": 0,
-            "computeMs": []
+            "messages": 1,
+            "computeMs": [
+              1.300000011920929
+            ]
           },
           {
             "terminated": true,
             "messages": 2,
             "computeMs": [
-              2.5999999940395355,
-              5.5
+              5.5999999940395355,
+              7.800000011920929
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              120.2000000178814
+              145.80000001192093
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              1.300000011920929
+              0.7999999821186066
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              1.5
+              1.100000023841858
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              1.300000011920929
+              1.199999988079071
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              1.4000000059604645
+              1
             ]
           },
           {
             "terminated": true,
             "messages": 1,
             "computeMs": [
-              4.0999999940395355
+              3
             ]
           },
           {
             "terminated": false,
             "messages": 1,
             "computeMs": [
-              1.7999999821186066
+              2.4000000059604645
             ]
           }
         ]

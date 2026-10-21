@@ -2,33 +2,33 @@
   "phase": "after",
   "cases": {
     "desktop-balanced": {
-      "readyMs": 3557.2011970000003,
-      "medianCameraMs": 365.90000000596046,
-      "p95CameraMs": 445.69999998807907,
+      "readyMs": 3290.6272580000004,
+      "medianCameraMs": 319,
+      "p95CameraMs": 385.40000000596046,
       "calls": 7,
       "triangles": 288848,
       "idleFrames": 0
     },
     "desktop-low": {
-      "readyMs": 3557.2011970000003,
-      "medianCameraMs": 282.30000001192093,
-      "p95CameraMs": 298.39999997615814,
+      "readyMs": 3290.6272580000004,
+      "medianCameraMs": 275,
+      "p95CameraMs": 307,
       "calls": 5,
       "triangles": 288140,
       "idleFrames": 0
     },
     "mobile-balanced": {
-      "readyMs": 2417.732349999991,
-      "medianCameraMs": 177,
-      "p95CameraMs": 195.09999999403954,
+      "readyMs": 2365.2627219999995,
+      "medianCameraMs": 181,
+      "p95CameraMs": 232.90000000596046,
       "calls": 7,
       "triangles": 288848,
       "idleFrames": 0
     },
     "mobile-low": {
-      "readyMs": 2417.732349999991,
+      "readyMs": 2365.2627219999995,
       "medianCameraMs": 112,
-      "p95CameraMs": 161.90000000596046,
+      "p95CameraMs": 171.19999998807907,
       "calls": 5,
       "triangles": 288140,
       "idleFrames": 0
