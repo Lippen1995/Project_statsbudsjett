@@ -1,0 +1,601 @@
+{
+ "currentVersion": 11.5,
+ "cimVersion": "3.5.0",
+ "id": 0,
+ "name": "Bygning_Flate",
+ "type": "Feature Layer",
+ "parentLayer": null,
+ "defaultVisibility": true,
+ "minScale": 0,
+ "maxScale": 0,
+ "canScaleSymbols": false,
+ "geometryType": "esriGeometryPolygon",
+ "description": "FKB-Bygning inneholder detaljert bygningsinformasjon. Dataene omfatter beskrivelse av alle typer bygninger, takoverbygg, beskrivende bygningslinjer (for eksempel mønelinje) samt bygningsvedheng (for eksempel veranda).FKB-Bygning benytter samme definisjon/inndeling av en bygning som matrikkelen og har en 1:1 kobling mot matrikkelen ved at bygningsnummer fra matrikkelen legges inn på bygningene i FKB-Bygning.FKB-Bygning bygger på en 2.5D bygningsmodell. Det innebærer at dataene ikke inneholder volum/3D-objekter, men at høydeverdiene til toppen av objektene registreres. Enkle 3D-modeller kan dermed lages ved å projisere FKB-dataene ned på en terrengmodell.FKB-data er ikke-sensistive og åpne data. FKB-dataene er finansiert gjennom Geovekst-samarbeidet, eller kommunene alene for kommuner som står utenfor Geovekst. FKB-dataene er fritt tilgjengelige for Norge digitalt parter og kan lastes ned gjennom nedlastingsløsningen på Geonorge. Private aktører må kjøpe tilgang til dataene gjennom en forhandler.FKB-Bygning inneholder detaljert bygningsinformasjon. Dataene omfatter beskrivelse av alle typer bygninger, takoverbygg, beskrivende bygningslinjer (for eksempel mønelinje) samt bygningsvedheng (for eksempel veranda).",
+ "copyrightText": "",
+ "editFieldsInfo": null,
+ "ownershipBasedAccessControlForFeatures": null,
+ "syncCanReturnChanges": false,
+ "relationships": [],
+ "isDataVersioned": false,
+ "isDataArchived": false,
+ "infoInEstimates": [
+  "extent",
+  "count"
+ ],
+ "isDataBranchVersioned": false,
+ "isDataReplicaTracked": false,
+ "isCoGoEnabled": false,
+ "supportsRollbackOnFailureParameter": true,
+ "archivingInfo": {
+  "supportsQueryWithHistoricMoment": false,
+  "startArchivingMoment": -1
+ },
+ "supportsStatistics": true,
+ "supportsExceedsLimitStatistics": true,
+ "supportsAdvancedQueries": true,
+ "supportsValidateSQL": true,
+ "supportsCoordinatesQuantization": true,
+ "supportsQuantizationEditMode": true,
+ "supportsCalculate": true,
+ "supportsASyncCalculate": true,
+ "hasContingentValuesDefinition": false,
+ "supportsDatumTransformation": true,
+ "advancedQueryCapabilities": {
+  "supportsPagination": true,
+  "supportsQueryWithDistance": true,
+  "supportsReturningQueryExtent": true,
+  "supportsStatistics": true,
+  "supportsPercentileStatistics": true,
+  "supportsHavingClause": true,
+  "supportsOrderBy": true,
+  "supportsDistinct": true,
+  "supportsCountDistinct": true,
+  "supportsAdvancedQueryRelated": true,
+  "supportsQueryRelatedPagination": true,
+  "supportsCurrentUserQueries": true,
+  "supportsFullTextSearch": true,
+  "fullTextSearchCapabilities": {
+   "supportsSearchOperator": true,
+   "supportsOperator": false,
+   "supportsSqlExpressionInFullText": true
+  },
+  "fullTextSearchableFields": [],
+  "supportsQueryWithResultType": true,
+  "supportsReturningGeometryCentroid": true,
+  "supportsReturningGeometryEnvelope": true,
+  "supportsSqlExpression": true,
+  "supportsQueryWithDatumTransformation": true,
+  "supportsLod": false,
+  "supportsQueryWithLodSR": false,
+  "supportsQueryAnalytic": true,
+  "supportsTrueCurve": true,
+  "supportedCurveTypes": [
+   "esriGeometryCircularArc",
+   "esriGeometryEllipticArc",
+   "esriGeometryBezier3Curve"
+  ],
+  "supportsQueryWithCacheHint": false
+ },
+ "advancedQueryAnalyticCapabilities": {
+  "supportsLinearRegression": true,
+  "supportsAsync": true,
+  "supportsPercentileAnalytic": true
+ },
+ "advancedEditingCapabilities": {
+  "supportedSqlFormatsInCalculate": [
+   "standard"
+  ],
+  "supportsAsyncApplyEdits": true,
+  "supportsApplyEditsbyUploadID": true,
+  "supportedApplyEditsUploadIDFormats": "JSON,PBF"
+ },
+ "hasGeometryProperties": true,
+ "geometryProperties": {
+  "shapeAreaFieldName": "Shape__Area",
+  "shapeLengthFieldName": "Shape__Length",
+  "units": "esriMeters"
+ },
+ "hasMetadata": true,
+ "extent": {
+  "xmin": 287981.0800000001,
+  "ymin": 6680052.039999999,
+  "xmax": 317367.79000000004,
+  "ymax": 6715761.539999999,
+  "spatialReference": {
+   "wkid": 25832,
+   "latestWkid": 25832,
+   "xyTolerance": 0.001,
+   "zTolerance": 0.001,
+   "mTolerance": 0.001,
+   "falseX": -5120900,
+   "falseY": -9998100,
+   "xyUnits": 10000,
+   "falseZ": -100000,
+   "zUnits": 10000,
+   "falseM": -100000,
+   "mUnits": 10000
+  }
+ },
+ "spatialReference": {
+  "wkid": 25832,
+  "latestWkid": 25832,
+  "xyTolerance": 0.001,
+  "zTolerance": 0.001,
+  "mTolerance": 0.001,
+  "falseX": -5120900,
+  "falseY": -9998100,
+  "xyUnits": 10000,
+  "falseZ": -100000,
+  "zUnits": 10000,
+  "falseM": -100000,
+  "mUnits": 10000
+ },
+ "sourceSpatialReference": {
+  "wkid": 25832,
+  "latestWkid": 25832,
+  "xyTolerance": 0.002,
+  "zTolerance": 0.002,
+  "mTolerance": 0.002,
+  "falseX": -5120900,
+  "falseY": -9998100,
+  "xyUnits": 1000,
+  "falseZ": 0,
+  "zUnits": 1,
+  "falseM": 0,
+  "mUnits": 1
+ },
+ "drawingInfo": {
+  "renderer": {
+   "type": "simple",
+   "symbol": {
+    "type": "esriSFS",
+    "style": "esriSFSSolid",
+    "color": [
+     252,
+     179,
+     241,
+     255
+    ],
+    "outline": {
+     "type": "esriSLS",
+     "style": "esriSLSSolid",
+     "color": [
+      110,
+      110,
+      110,
+      255
+     ],
+     "width": 0.7
+    }
+   }
+  },
+  "scaleSymbols": true,
+  "transparency": 0,
+  "labelingInfo": null
+ },
+ "hasM": false,
+ "hasZ": false,
+ "allowGeometryUpdates": true,
+ "allowTrueCurvesUpdates": true,
+ "onlyAllowTrueCurveUpdatesByTrueCurveClients": true,
+ "hasAttachments": false,
+ "supportsApplyEditsWithGlobalIds": false,
+ "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+ "objectIdField": "OBJECTID",
+ "globalIdField": "",
+ "displayField": "OBJTYPE",
+ "typeIdField": "",
+ "subtypeField": "",
+ "fields": [
+  {
+   "name": "OBJECTID",
+   "type": "esriFieldTypeOID",
+   "alias": "OBJECTID",
+   "domain": null,
+   "editable": false,
+   "nullable": false,
+   "defaultValue": null,
+   "modelName": "OBJECTID"
+  },
+  {
+   "name": "OBJTYPE",
+   "type": "esriFieldTypeString",
+   "alias": "OBJTYPE",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 32,
+   "defaultValue": null,
+   "modelName": "OBJTYPE"
+  },
+  {
+   "name": "FTEMA",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "FTEMA",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "FTEMA"
+  },
+  {
+   "name": "BYGGNR",
+   "type": "esriFieldTypeInteger",
+   "alias": "BYGGNR",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "BYGGNR"
+  },
+  {
+   "name": "BYGGTYP_NBR",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "BYGGTYP_NBR",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "BYGGTYP_NBR"
+  },
+  {
+   "name": "MEDIUM",
+   "type": "esriFieldTypeString",
+   "alias": "MEDIUM",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 1,
+   "defaultValue": null,
+   "modelName": "MEDIUM"
+  },
+  {
+   "name": "MALEMETODE",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "MALEMETODE",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "MALEMETODE"
+  },
+  {
+   "name": "NOYAKTIGHET",
+   "type": "esriFieldTypeInteger",
+   "alias": "NOYAKTIGHET",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "NOYAKTIGHET"
+  },
+  {
+   "name": "DATAFANGSTDATO",
+   "type": "esriFieldTypeDate",
+   "alias": "DATAFANGSTDATO",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 8,
+   "defaultValue": null,
+   "modelName": "DATAFANGSTDATO"
+  },
+  {
+   "name": "VERIFISERINGSDATO",
+   "type": "esriFieldTypeDate",
+   "alias": "VERIFISERINGSDATO",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 8,
+   "defaultValue": null,
+   "modelName": "VERIFISERINGSDATO"
+  },
+  {
+   "name": "OPPDATERINGSDATO",
+   "type": "esriFieldTypeDate",
+   "alias": "OPPDATERINGSDATO",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 8,
+   "defaultValue": null,
+   "modelName": "OPPDATERINGSDATO"
+  },
+  {
+   "name": "PRODUKT",
+   "type": "esriFieldTypeString",
+   "alias": "PRODUKT",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 20,
+   "defaultValue": null,
+   "modelName": "PRODUKT"
+  },
+  {
+   "name": "VERSJON",
+   "type": "esriFieldTypeString",
+   "alias": "VERSJON",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 50,
+   "defaultValue": null,
+   "modelName": "VERSJON"
+  },
+  {
+   "name": "BYGGSTAT",
+   "type": "esriFieldTypeString",
+   "alias": "BYGGSTAT",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 2,
+   "defaultValue": null,
+   "modelName": "BYGGSTAT"
+  },
+  {
+   "name": "PROSESS_HISTORIE",
+   "type": "esriFieldTypeString",
+   "alias": "PROSESS_HISTORIE",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 255,
+   "defaultValue": null,
+   "modelName": "PROSESS_HISTORIE"
+  },
+  {
+   "name": "SEFRAKKOMMUNE",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "SEFRAKKOMMUNE",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "SEFRAKKOMMUNE"
+  },
+  {
+   "name": "REGISTRERINGSKRETSNR",
+   "type": "esriFieldTypeInteger",
+   "alias": "REGISTRERINGSKRETSNR",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "REGISTRERINGSKRETSNR"
+  },
+  {
+   "name": "HUSLOPENR",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "HUSLOPENR",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "HUSLOPENR"
+  },
+  {
+   "name": "BYGGTYPE",
+   "type": "esriFieldTypeString",
+   "alias": "BYGGTYPE",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 60,
+   "defaultValue": null,
+   "modelName": "BYGGTYPE"
+  },
+  {
+   "name": "STATUS",
+   "type": "esriFieldTypeString",
+   "alias": "STATUS",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 50,
+   "defaultValue": null,
+   "modelName": "STATUS"
+  },
+  {
+   "name": "STATUSAAR",
+   "type": "esriFieldTypeDouble",
+   "alias": "STATUSAAR",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "STATUSAAR"
+  },
+  {
+   "name": "ANTALL_ETASJER",
+   "type": "esriFieldTypeDouble",
+   "alias": "ANTALL_ETASJER",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "ANTALL_ETASJER"
+  },
+  {
+   "name": "BRUKSAREAL",
+   "type": "esriFieldTypeDouble",
+   "alias": "BRUKSAREAL",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "BRUKSAREAL"
+  },
+  {
+   "name": "ANTALL_BOENHETER",
+   "type": "esriFieldTypeDouble",
+   "alias": "ANTALL_BOENHETER",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "ANTALL_BOENHETER"
+  },
+  {
+   "name": "SEFRAK",
+   "type": "esriFieldTypeString",
+   "alias": "SEFRAK",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "length": 3,
+   "defaultValue": null,
+   "modelName": "SEFRAK"
+  },
+  {
+   "name": "ANT_H_U_ETASJER",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "ANT_H_U_ETASJER",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "ANT_H_U_ETASJER"
+  },
+  {
+   "name": "ANT_K_ETASJER",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "ANT_K_ETASJER",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "ANT_K_ETASJER"
+  },
+  {
+   "name": "ANT_L_ETASJER",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "ANT_L_ETASJER",
+   "domain": null,
+   "editable": true,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "ANT_L_ETASJER"
+  },
+  {
+   "name": "Shape__Area",
+   "type": "esriFieldTypeDouble",
+   "alias": "Shape.STArea()",
+   "domain": null,
+   "editable": false,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "Shape.STArea()",
+   "required": true
+  },
+  {
+   "name": "Shape__Length",
+   "type": "esriFieldTypeDouble",
+   "alias": "Shape.STLength()",
+   "domain": null,
+   "editable": false,
+   "nullable": true,
+   "defaultValue": null,
+   "modelName": "Shape.STLength()",
+   "required": true
+  }
+ ],
+ "geometryField": {
+  "name": "Shape",
+  "type": "esriFieldTypeGeometry",
+  "alias": "Shape",
+  "domain": null,
+  "editable": true,
+  "nullable": true,
+  "defaultValue": null,
+  "modelName": "Shape"
+ },
+ "indexes": [
+  {
+   "name": "R1121_pk",
+   "isAscending": true,
+   "isUnique": true,
+   "description": "",
+   "fields": "OBJECTID"
+  },
+  {
+   "name": "S851_idx",
+   "isAscending": true,
+   "isUnique": true,
+   "description": "",
+   "fields": "Shape"
+  }
+ ],
+ "datesInUnknownTimezone": false,
+ "dateFieldsTimeReference": {
+  "timeZone": "UTC",
+  "timeZoneIANA": "Etc/UTC",
+  "respectsDaylightSaving": false
+ },
+ "preferredTimeReference": null,
+ "types": [],
+ "templates": [
+  {
+   "name": "Bygning_Flate",
+   "description": "",
+   "prototype": {
+    "attributes": {
+     "ANT_L_ETASJER": null,
+     "ANT_K_ETASJER": null,
+     "OBJTYPE": null,
+     "FTEMA": null,
+     "BYGGNR": null,
+     "BYGGTYP_NBR": null,
+     "MEDIUM": null,
+     "MALEMETODE": null,
+     "NOYAKTIGHET": null,
+     "DATAFANGSTDATO": null,
+     "VERIFISERINGSDATO": null,
+     "OPPDATERINGSDATO": null,
+     "PRODUKT": null,
+     "VERSJON": null,
+     "BYGGSTAT": null,
+     "PROSESS_HISTORIE": null,
+     "SEFRAKKOMMUNE": null,
+     "REGISTRERINGSKRETSNR": null,
+     "HUSLOPENR": null,
+     "BYGGTYPE": null,
+     "STATUS": null,
+     "STATUSAAR": null,
+     "ANTALL_ETASJER": null,
+     "BRUKSAREAL": null,
+     "ANTALL_BOENHETER": null,
+     "SEFRAK": null,
+     "ANT_H_U_ETASJER": null
+    }
+   },
+   "drawingTool": "esriFeatureEditToolPolygon"
+  }
+ ],
+ "maxRecordCount": 2000,
+ "supportedQueryFormats": "JSON, geoJSON, PBF",
+ "supportedExportFormats": "sqlite,filegdb,shapefile,csv,geojson",
+ "capabilities": "Query,Create,Update,Delete,Uploads,Editing",
+ "useStandardizedQueries": true,
+ "bigIntegerRestrictedTo53Bits": true,
+ "supportedSpatialRelationships": [
+  "esriSpatialRelIntersects",
+  "esriSpatialRelContains",
+  "esriSpatialRelCrosses",
+  "esriSpatialRelEnvelopeIntersects",
+  "esriSpatialRelIndexIntersects",
+  "esriSpatialRelOverlaps",
+  "esriSpatialRelTouches",
+  "esriSpatialRelWithin",
+  "esriSpatialRelRelation"
+ ],
+ "supportsAppend": true,
+ "supportedAppendFormats": "FILEGDB,PBF",
+ "standardMaxRecordCount": 4000,
+ "tileMaxRecordCount": 4000,
+ "standardMaxRecordCountNoGeometry": 32000,
+ "maxRecordCountFactor": 1,
+ "serviceItemId": "2b15f0d2c7064dbe95eb9702742c7a40"
+}

@@ -1,0 +1,73 @@
+{
+  "accessedAt": "2026-10-21",
+  "licence": "CC-BY-4.0",
+  "probes": [
+    {
+      "sourceId": "way/331274546",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&version=2.0.0&request=GetFeature&typeNames=app%3ABygning&srsName=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&bbox=297465.3934442451%2C6701336.493734818%2C297487.7434149719%2C6701358.291755584%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&count=50&propertyName=app%3Arepresentasjonspunkt%2Capp%3Abygningsnummer%2Capp%3Abygningsstatus%2Capp%3Abygningstype%2Capp%3AstedfestingVerifisert%2Capp%3Aoppdateringsdato",
+      "bbox": [
+        297465.3934442451,
+        6701336.493734818,
+        297487.7434149719,
+        6701358.291755584
+      ],
+      "error": "HTTP Error 504: Gateway Timeout"
+    },
+    {
+      "sourceId": "way/331274548",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&version=2.0.0&request=GetFeature&typeNames=app%3ABygning&srsName=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&bbox=297501.06515023013%2C6701268.183056558%2C297518.33523123345%2C6701284.951204167%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&count=50&propertyName=app%3Arepresentasjonspunkt%2Capp%3Abygningsnummer%2Capp%3Abygningsstatus%2Capp%3Abygningstype%2Capp%3AstedfestingVerifisert%2Capp%3Aoppdateringsdato",
+      "bbox": [
+        297501.06515023013,
+        6701268.183056558,
+        297518.33523123345,
+        6701284.951204167
+      ],
+      "error": "HTTP Error 504: Gateway Timeout"
+    },
+    {
+      "sourceId": "way/331274573",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&version=2.0.0&request=GetFeature&typeNames=app%3ABygning&srsName=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&bbox=297467.08579668467%2C6701306.693031467%2C297483.4879765513%2C6701322.898251147%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&count=50&propertyName=app%3Arepresentasjonspunkt%2Capp%3Abygningsnummer%2Capp%3Abygningsstatus%2Capp%3Abygningstype%2Capp%3AstedfestingVerifisert%2Capp%3Aoppdateringsdato",
+      "bbox": [
+        297467.08579668467,
+        6701306.693031467,
+        297483.4879765513,
+        6701322.898251147
+      ],
+      "error": "HTTP Error 504: Gateway Timeout"
+    },
+    {
+      "sourceId": "way/331274580",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&version=2.0.0&request=GetFeature&typeNames=app%3ABygning&srsName=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&bbox=297497.01328395243%2C6701326.918714062%2C297515.14911923255%2C6701345.149470383%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&count=50&propertyName=app%3Arepresentasjonspunkt%2Capp%3Abygningsnummer%2Capp%3Abygningsstatus%2Capp%3Abygningstype%2Capp%3AstedfestingVerifisert%2Capp%3Aoppdateringsdato",
+      "bbox": [
+        297497.01328395243,
+        6701326.918714062,
+        297515.14911923255,
+        6701345.149470383
+      ],
+      "error": "HTTP Error 504: Gateway Timeout"
+    },
+    {
+      "sourceId": "way/331274594",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&version=2.0.0&request=GetFeature&typeNames=app%3ABygning&srsName=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&bbox=297473.40669629147%2C6701313.564041498%2C297491.3255668274%2C6701331.468676261%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&count=50&propertyName=app%3Arepresentasjonspunkt%2Capp%3Abygningsnummer%2Capp%3Abygningsstatus%2Capp%3Abygningstype%2Capp%3AstedfestingVerifisert%2Capp%3Aoppdateringsdato",
+      "bbox": [
+        297473.40669629147,
+        6701313.564041498,
+        297491.3255668274,
+        6701331.468676261
+      ],
+      "error": "HTTP Error 504: Gateway Timeout"
+    },
+    {
+      "sourceId": "way/331274542",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&version=2.0.0&request=GetFeature&typeNames=app%3ABygning&srsName=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&bbox=297490.48225136416%2C6701347.046123973%2C297515.69608907064%2C6701372.299814042%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25832&count=50&propertyName=app%3Arepresentasjonspunkt%2Capp%3Abygningsnummer%2Capp%3Abygningsstatus%2Capp%3Abygningstype%2Capp%3AstedfestingVerifisert%2Capp%3Aoppdateringsdato",
+      "bbox": [
+        297490.48225136416,
+        6701347.046123973,
+        297515.69608907064,
+        6701372.299814042
+      ],
+      "error": "HTTP Error 504: Gateway Timeout"
+    }
+  ],
+  "rawPolicy": "Raw GML not retained: service may ignore property projection. Only necessary non-personal building fields retained with raw SHA/byte count."
+}

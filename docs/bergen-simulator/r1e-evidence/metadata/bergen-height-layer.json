@@ -1,0 +1,258 @@
+{
+ "currentVersion": 11.5,
+ "cimVersion": "3.5.0",
+ "id": 0,
+ "name": "Bygningshoyde",
+ "type": "Feature Layer",
+ "description": "",
+ "geometryType": "esriGeometryPoint",
+ "sourceSpatialReference": {
+  "wkid": 25832,
+  "latestWkid": 25832,
+  "xyTolerance": 0.002,
+  "zTolerance": 0.002,
+  "mTolerance": 0.002,
+  "falseX": -5120900,
+  "falseY": -9998100,
+  "xyUnits": 1000,
+  "falseZ": -100000,
+  "zUnits": 1000,
+  "falseM": 0,
+  "mUnits": 1
+ },
+ "spatialReference": {
+  "wkid": 25832,
+  "latestWkid": 25832,
+  "xyTolerance": 0.001,
+  "zTolerance": 0.001,
+  "mTolerance": 0.001,
+  "falseX": -5120900,
+  "falseY": -9998100,
+  "xyUnits": 10000,
+  "falseZ": -100000,
+  "zUnits": 10000,
+  "falseM": -100000,
+  "mUnits": 10000
+ },
+ "copyrightText": "",
+ "parentLayer": null,
+ "subLayers": [],
+ "minScale": 500,
+ "maxScale": 0,
+ "referenceScale": 0.0,
+ "drawingInfo": {
+  "renderer": {
+   "type": "simple",
+   "symbol": {
+    "type": "esriPMS",
+    "url": "b63bf4ef0e115712e880cc992ef71c44",
+    "imageData": "iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAArUlEQVQokZWQMQ5CIQyG2wT0hYXBSQ/BHbyDh2Fi5jDewdu4MRA2GTC/sS9IyFP/hFDKX/haRRO11k5EVJi5jHdqZo4x3qy1iM/MfN8sgHLOrzWToj+lOmbRUWu9k7i1tl4ATwmzIMDsnNsbY0oI4VprfSAvPeGHgkPPDPOyLMkYc5C87AqjQ2WPhJdh9t5fiCh9IEkgSTAD4/1i+mmsX6c0auxpswAI0tOIA8MTEttZ8a5IFQwAAAAASUVORK5CYII=",
+    "contentType": "image/png",
+    "width": 9,
+    "height": 9,
+    "angle": 0,
+    "xoffset": 0,
+    "yoffset": 0
+   }
+  },
+  "scaleSymbols": true,
+  "transparency": 0,
+  "labelingInfo": [
+   {
+    "labelExpressionInfo": {"expression": "$feature.KOORDH"},
+    "labelPlacement": "esriServerPointLabelPlacementAboveRight",
+    "deconflictionStrategy": "dynamic",
+    "stackLabel": true,
+    "stackAlignment": "dynamic",
+    "removeDuplicates": "none",
+    "stackRowLength": 24,
+    "useCodedValues": true,
+    "maxScale": 0,
+    "minScale": 0,
+    "name": "Class 1",
+    "priority": -1,
+    "symbol": {
+     "type": "esriTS",
+     "color": [
+      0,
+      0,
+      0,
+      255
+     ],
+     "backgroundColor": null,
+     "borderLineColor": null,
+     "borderLineSize": null,
+     "verticalAlignment": "bottom",
+     "horizontalAlignment": "left",
+     "rightToLeft": false,
+     "angle": 0,
+     "xoffset": 0,
+     "yoffset": 0,
+     "kerning": true,
+     "haloColor": null,
+     "haloSize": null,
+     "font": {
+      "family": "Tahoma",
+      "size": 10,
+      "style": "normal",
+      "weight": "normal",
+      "decoration": "none"
+     }
+    }
+   }
+  ]
+ },
+ "defaultVisibility": true,
+ "extent": {
+  "xmin": 287981.0800000001,
+  "ymin": 6680052.039999999,
+  "xmax": 317367.79000000004,
+  "ymax": 6715761.539999999,
+  "zmin": -999,
+  "zmax": 962.2799999999988,
+  "spatialReference": {
+   "wkid": 25832,
+   "latestWkid": 25832,
+   "xyTolerance": 0.001,
+   "zTolerance": 0.001,
+   "mTolerance": 0.001,
+   "falseX": -5120900,
+   "falseY": -9998100,
+   "xyUnits": 10000,
+   "falseZ": -100000,
+   "zUnits": 10000,
+   "falseM": -100000,
+   "mUnits": 10000
+  }
+ },
+ "hasAttachments": false,
+ "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+ "displayField": "OBJTYPE",
+ "typeIdField": null,
+ "subtypeFieldName": null,
+ "subtypeField": null,
+ "defaultSubtypeCode": null,
+ "fields": [
+  {
+   "name": "OBJECTID",
+   "type": "esriFieldTypeOID",
+   "alias": "OBJECTID",
+   "domain": null
+  },
+  {
+   "name": "OBJTYPE",
+   "type": "esriFieldTypeString",
+   "alias": "OBJTYPE",
+   "length": 32,
+   "domain": null
+  },
+  {
+   "name": "LTEMA",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "LTEMA",
+   "domain": null
+  },
+  {
+   "name": "KOORDH",
+   "type": "esriFieldTypeString",
+   "alias": "KOORDH",
+   "length": 200,
+   "domain": null
+  },
+  {
+   "name": "SHAPE",
+   "type": "esriFieldTypeGeometry",
+   "alias": "SHAPE",
+   "domain": null
+  }
+ ],
+ "geometryField": {
+  "name": "SHAPE",
+  "type": "esriFieldTypeGeometry",
+  "alias": "SHAPE"
+ },
+ "indexes": [
+  {
+   "name": "R214_pk",
+   "fields": "OBJECTID",
+   "isAscending": true,
+   "isUnique": true,
+   "description": ""
+  },
+  {
+   "name": "S205_idx",
+   "fields": "SHAPE",
+   "isAscending": true,
+   "isUnique": true,
+   "description": ""
+  }
+ ],
+ "subtypes": [],
+ "relationships": [],
+ "canModifyLayer": true,
+ "canScaleSymbols": false,
+ "hasLabels": true,
+ "capabilities": "Map,Query,Data",
+ "maxRecordCount": 2000,
+ "maxSelectionCount": 2000,
+ "supportsStatistics": true,
+ "supportsExceedsLimitStatistics": true,
+ "supportsAdvancedQueries": true,
+ "hasZ": true,
+ "supportedQueryFormats": "JSON, geoJSON, PBF",
+ "isDataVersioned": false,
+ "ownershipBasedAccessControlForFeatures": {"allowOthersToQuery": true},
+ "useStandardizedQueries": true,
+ "supportedSpatialRelationships": [
+  "esriSpatialRelIntersects",
+  "esriSpatialRelContains",
+  "esriSpatialRelCrosses",
+  "esriSpatialRelEnvelopeIntersects",
+  "esriSpatialRelIndexIntersects",
+  "esriSpatialRelOverlaps",
+  "esriSpatialRelTouches",
+  "esriSpatialRelWithin",
+  "esriSpatialRelRelation"
+ ],
+ "advancedQueryCapabilities": {
+  "useStandardizedQueries": true,
+  "supportsStatistics": true,
+  "supportsPercentileStatistics": true,
+  "supportsHavingClause": true,
+  "supportsOrderBy": true,
+  "supportsDistinct": true,
+  "supportsCountDistinct": true,
+  "supportsAdvancedQueryRelated": true,
+  "supportsQueryRelatedPagination": true,
+  "supportsPagination": true,
+  "supportsLod": false,
+  "supportsQueryWithLodSR": false,
+  "supportsTrueCurve": true,
+  "supportsQueryWithDatumTransformation": true,
+  "supportsReturningQueryExtent": true,
+  "supportsQueryWithDistance": true,
+  "supportsSqlExpression": true,
+  "supportsTimeRelation": true,
+  "supportsSqlFormat": false,
+  "supportsQueryAnalytic": true,
+  "supportsCurrentUserQueries": true
+ },
+ "supportsDatumTransformation": true,
+ "advancedQueryAnalyticCapabilities": {
+  "supportsLinearRegression": true,
+  "supportsAsync": false,
+  "supportsPercentileAnalytic": true
+ },
+ "dateFieldsTimeReference": null,
+ "preferredTimeReference": null,
+ "datesInUnknownTimezone": false,
+ "hasMetadata": true,
+ "isDataArchived": false,
+ "archivingInfo": {
+  "supportsQueryWithHistoricMoment": false,
+  "startArchivingMoment": -1
+ },
+ "supportsCoordinatesQuantization": true,
+ "supportsDynamicLegends": true,
+ "serviceItemId": "c0411033d3bd4ff893984912a6aeb365"
+}

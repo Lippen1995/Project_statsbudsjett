@@ -1,0 +1,6 @@
+importer PASS
+architectural-importer PASS
+reconstruction-importer PASS
+connectivity-audit PASS
+research-probes PASS
+missing-buildings PASS

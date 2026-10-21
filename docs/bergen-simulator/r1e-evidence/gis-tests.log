@@ -1,0 +1,8 @@
+/workspace/Project_statsbudsjett/apps/bergen-simulator/tests/public_geodata.py:26: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+  cls.dv, cls.tv = cls.dom.read(1), cls.dtm.read(1)
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.544s
+
+OK

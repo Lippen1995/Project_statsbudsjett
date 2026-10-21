@@ -3,6 +3,9 @@ import ArchitecturalBuildings, {
   ArchitecturalLod,
 } from "./ArchitecturalBuildings";
 import type { ArchitecturalTile } from "../architecture/load";
+import type { EnhancementTile } from "../enhancements/load";
+import { withoutEnhancements } from "../enhancements/model";
+import { useEnhancementTile, EnhancementShadows } from "./EnhancedBuildings";
 import {
   clearInspectionPosition,
   LANDMARK_VIEWS,
@@ -315,10 +318,12 @@ function CityGeometry({
   data,
   prepared,
   architecture,
+  enhancement,
 }: {
   data: CityData;
   prepared: PreparedCity;
   architecture: ArchitecturalTile | null;
+  enhancement: EnhancementTile | null;
 }) {
   const layers = useCity((s) => s.layers);
   const select = useCity((s) => s.select);
@@ -338,12 +343,29 @@ function CityGeometry({
     [buildings],
   );
   useEffect(() => () => filtered.geometry.dispose(), [filtered]);
-  const visibleBuildings = architecture ? filtered : buildings;
+  const originalBuildings = architecture ? filtered : buildings;
+  const enhancedFallback = useMemo(
+    () =>
+      enhancement
+        ? preparation("public-geodata.fallback-index", () =>
+            withoutEnhancements(originalBuildings),
+          )
+        : null,
+    [enhancement, originalBuildings],
+  );
+  useEffect(
+    () => () => enhancedFallback?.geometry.dispose(),
+    [enhancedFallback],
+  );
+  const visibleBuildings = enhancedFallback ?? originalBuildings;
   const highlight = useMemo(() => {
     if (selected?.kind === "building") {
       // Ground perimeter keeps selection legible without x-raying internal LOD
       // edges across the architecture being inspected.
-      if (selected.id === "way/393025479") {
+      if (
+        selected.id === "way/393025479" ||
+        enhancement?.ranges.some((r) => r.feature.id === selected.id)
+      ) {
         const b = selected as Building;
         const points: number[] = [];
         for (let i = 0; i < b.rings[0].length - 1; i++)
@@ -379,7 +401,7 @@ function CityGeometry({
     return selected?.kind === "road" && !selectedSegmentId
       ? roadGeometry(selected as Road, surface)
       : null;
-  }, [selected, selectedSegmentId, surface, architecture]);
+  }, [selected, selectedSegmentId, surface, architecture, enhancement]);
   // Static batches are owned/disposed by the preparation worker client.
   useEffect(
     () => () => {
@@ -431,6 +453,15 @@ function CityGeometry({
       </mesh>
       {architecture ? (
         <ArchitecturalBuildings tile={architecture} pick={pick} />
+      ) : null}
+      {enhancement ? (
+        <mesh
+          geometry={enhancement.geometry}
+          castShadow
+          onClick={(e) => pick(e, enhancement)}
+        >
+          <meshLambertMaterial vertexColors side={THREE.DoubleSide} />
+        </mesh>
       ) : null}
       <RoofAccents
         geometry={prepared.roofEdges}
@@ -594,6 +625,10 @@ export default function Scene({ data }: { data: CityData }) {
     data,
     buildingsEnabled && quality === "balanced",
   );
+  const enhancement = useEnhancementTile(
+    data,
+    buildingsEnabled && quality === "balanced" && architectural.near,
+  );
   const [prepared, setPrepared] = useState<{
     source: CityData;
     city: PreparedCity;
@@ -648,7 +683,9 @@ export default function Scene({ data }: { data: CityData }) {
         data={data}
         prepared={prepared.city}
         architecture={architectural.tile}
+        enhancement={enhancement}
       />
+      <EnhancementShadows tile={enhancement} />
       <CameraControls data={data} />
       <StaticShadows />
     </Canvas>

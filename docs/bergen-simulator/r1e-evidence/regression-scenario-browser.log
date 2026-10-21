@@ -1,0 +1,242 @@
+{
+  "browserVersion": "151.0.7922.173",
+  "renderer": "Chromium / ANGLE SwiftShader; software only, not physical-device performance",
+  "checks": [
+    "direct 3D selection of two connected mapped sections",
+    "hypothetical access and capacity edits",
+    "worker pause/resume and deterministic outcomes",
+    "changed intensity at fixed camera",
+    "baseline comparison",
+    "undo and rerun",
+    "save/name/duplicate",
+    "two saved configurations recalculated in worker",
+    "reload and reopen",
+    "actual JSON download/import roundtrip",
+    "incompatible import preserves current results",
+    "challenge solution calculated by common engine",
+    "accessibility loss is prominent and penalized",
+    "non-editable street explicitly identified",
+    "heatmap toggle and overlay disposal",
+    "zero idle frames",
+    "390px touch editing and local restore",
+    "missing transport data fails explicitly",
+    "same-origin static runtime under unchanged Vercel CSP"
+  ],
+  "desktop": {
+    "loadMs": 4038.5983330000004,
+    "explorerProfile": {
+      "calls": 5,
+      "triangles": 288140,
+      "geometries": 6,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 431.69999998807907,
+      "p95CameraLatencyMs": 1017.7999999821186,
+      "medianCpuFrameMs": 0.7000000178813934,
+      "idleFrames": 0
+    },
+    "twoEdits": {
+      "wallMs": 10280,
+      "workerComputeMs": 57.100000113248825,
+      "table": "Model outcome\tBaseline\tYour plan\nBryggen passages\t940 veh\t360 veh\n-61.7%\n\nThrough on Bryggen\t640 veh\t40 veh\n-93.8%\n\nVehicle travel time\t1,938 veh·min\t10,318 veh·min\n+432.4%\n\nThrough-trip distance\t337 m/trip\t937 m/trip\n+178.2%\n\nHighest road V/C¹\t1.53\t3.52\nratio\n\nEmissions proxy²\t100 index\t273 index\n+172.9%\n\nUnrouted trips\t0 / 960\t0 / 960\nsynthetic trips",
+      "metrics": {
+        "frames": 36,
+        "attributeArrays": 23,
+        "attributeBytes": 27142482,
+        "cpuFrameMs": 0.800000011920929,
+        "cameraLatencyMs": 10939,
+        "calls": 7,
+        "triangles": 289336,
+        "lines": 0,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "position": [
+          -450.00000000000006,
+          620.0000000000001,
+          600
+        ],
+        "target": [
+          30.000000000000004,
+          0,
+          -200.00000000000003
+        ]
+      }
+    },
+    "activeProfile": {
+      "calls": 7,
+      "triangles": 289336,
+      "geometries": 8,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 472.5,
+      "p95CameraLatencyMs": 539.2000000178814,
+      "medianCpuFrameMs": 0.5999999940395355,
+      "idleFrames": 0
+    },
+    "oneEdit": {
+      "wallMs": 8912,
+      "workerComputeMs": 67.30000001192093,
+      "table": "Model outcome\tBaseline\tYour plan\nBryggen passages\t940 veh\t360 veh\n-61.7%\n\nThrough on Bryggen\t640 veh\t40 veh\n-93.8%\n\nVehicle travel time\t1,938 veh·min\t10,286 veh·min\n+430.7%\n\nThrough-trip distance\t337 m/trip\t937 m/trip\n+178.2%\n\nHighest road V/C¹\t1.53\t3.52\nratio\n\nEmissions proxy²\t100 index\t272 index\n+172.3%\n\nUnrouted trips\t0 / 960\t0 / 960\nsynthetic trips",
+      "metrics": {
+        "frames": 67,
+        "attributeArrays": 23,
+        "attributeBytes": 27142482,
+        "cpuFrameMs": 0.5999999940395355,
+        "cameraLatencyMs": 12985.700000017881,
+        "calls": 7,
+        "triangles": 289336,
+        "lines": 0,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "position": [
+          -420,
+          620,
+          600
+        ],
+        "target": [
+          30.000000000000004,
+          0,
+          -200.00000000000003
+        ]
+      }
+    },
+    "savedComparison": {
+      "wallMs": 8990,
+      "workerComputeMs": 108.40000000596046,
+      "table": "Model outcome\tBaseline\tYour plan\nBryggen passages\t940 veh\t360 veh\n-61.7%\n\nThrough on Bryggen\t640 veh\t40 veh\n-93.8%\n\nVehicle travel time\t1,938 veh·min\t10,318 veh·min\n+432.4%\n\nThrough-trip distance\t337 m/trip\t937 m/trip\n+178.2%\n\nHighest road V/C¹\t1.53\t3.52\nratio\n\nEmissions proxy²\t100 index\t273 index\n+172.9%\n\nUnrouted trips\t0 / 960\t0 / 960\nsynthetic trips",
+      "metrics": {
+        "frames": 87,
+        "attributeArrays": 23,
+        "attributeBytes": 27142482,
+        "cpuFrameMs": 0.5,
+        "cameraLatencyMs": 9020.90000000596,
+        "calls": 7,
+        "triangles": 289336,
+        "lines": 0,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "position": [
+          -450.00000000000006,
+          620.0000000000001,
+          600
+        ],
+        "target": [
+          30.000000000000004,
+          0,
+          -200.00000000000003
+        ]
+      }
+    },
+    "challenge": {
+      "wallMs": 8898,
+      "workerComputeMs": 53.800000101327896,
+      "table": "Model outcome\tBaseline\tYour plan\nBryggen passages\t940 veh\t720 veh\n-23.4%\n\nThrough on Bryggen\t640 veh\t400 veh\n-37.5%\n\nVehicle travel time\t1,938 veh·min\t3,132 veh·min\n+61.6%\n\nThrough-trip distance\t337 m/trip\t629 m/trip\n+86.9%\n\nHighest road V/C¹\t1.53\t2.40\nratio\n\nEmissions proxy²\t100 index\t168 index\n+67.9%\n\nUnrouted trips\t0 / 960\t0 / 960\nsynthetic trips",
+      "metrics": {
+        "frames": 48,
+        "attributeArrays": 23,
+        "attributeBytes": 27142482,
+        "cpuFrameMs": 0.699999988079071,
+        "cameraLatencyMs": 27330.80000001192,
+        "calls": 7,
+        "triangles": 289336,
+        "lines": 0,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "position": [
+          1049.9999999999998,
+          1950,
+          2149.9999999999995
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "accessLoss": {
+      "wallMs": 8784,
+      "workerComputeMs": 81.89999997615814,
+      "table": "Model outcome\tBaseline\tYour plan\nBryggen passages\t940 veh\t0 veh\n-100.0%\n\nThrough on Bryggen\t640 veh\t0 veh\n-100.0%\n\nVehicle travel time\t1,938 veh·min\t0 veh·min\n-100.0%\n\nThrough-trip distance\t337 m/trip\t— m/trip\n—\n\nHighest road V/C¹\t1.53\t0.00\nratio\n\nEmissions proxy²\t100 index\t0 index\n-100.0%\n\nUnrouted trips\t0 / 960\t960 / 960\nsynthetic trips",
+      "metrics": {
+        "frames": 63,
+        "attributeArrays": 23,
+        "attributeBytes": 27142482,
+        "cpuFrameMs": 0.800000011920929,
+        "cameraLatencyMs": 7703.700000017881,
+        "calls": 7,
+        "triangles": 289336,
+        "lines": 0,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "position": [
+          -450.00000000000006,
+          620.0000000000001,
+          600
+        ],
+        "target": [
+          30.000000000000004,
+          0,
+          -200.00000000000003
+        ]
+      }
+    }
+  },
+  "mobile": {
+    "loadMs": 2431.099264000004,
+    "explorerProfile": {
+      "calls": 5,
+      "triangles": 288140,
+      "geometries": 6,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 173.90000000596046,
+      "p95CameraLatencyMs": 198.5,
+      "medianCpuFrameMs": 0.5,
+      "idleFrames": 0
+    },
+    "twoEdits": {
+      "wallMs": 8466,
+      "workerComputeMs": 47.199999928474426,
+      "table": "Model outcome\tBaseline\tYour plan\nBryggen passages\t940 veh\t360 veh\n-61.7%\n\nThrough on Bryggen\t640 veh\t40 veh\n-93.8%\n\nVehicle travel time\t1,938 veh·min\t10,318 veh·min\n+432.4%\n\nThrough-trip distance\t337 m/trip\t937 m/trip\n+178.2%\n\nHighest road V/C¹\t1.53\t3.52\nratio\n\nEmissions proxy²\t100 index\t273 index\n+172.9%\n\nUnrouted trips\t0 / 960\t0 / 960\nsynthetic trips",
+      "metrics": {
+        "frames": 37,
+        "attributeArrays": 23,
+        "attributeBytes": 27142482,
+        "cpuFrameMs": 0.5,
+        "cameraLatencyMs": 7185.699999988079,
+        "calls": 7,
+        "triangles": 289336,
+        "lines": 0,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "position": [
+          -450.00000000000006,
+          620.0000000000001,
+          600
+        ],
+        "target": [
+          30.000000000000004,
+          0,
+          -200.00000000000003
+        ]
+      }
+    },
+    "activeProfile": {
+      "calls": 7,
+      "triangles": 289336,
+      "geometries": 8,
+      "sampleCount": 12,
+      "medianCameraLatencyMs": 146.19999998807907,
+      "p95CameraLatencyMs": 219.5,
+      "medianCpuFrameMs": 0.5,
+      "idleFrames": 0
+    }
+  },
+  "passed": true,
+  "errors": [],
+  "baselineCommit": "54c65318a3a82af51d36e196c2cc313148703efc"
+}

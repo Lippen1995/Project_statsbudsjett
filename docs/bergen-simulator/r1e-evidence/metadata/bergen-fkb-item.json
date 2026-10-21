@@ -1,0 +1,35 @@
+{
+ "culture": "nb-NO",
+ "name": "Bygning_Flate",
+ "guid": "CB22AB6E-191A-4A51-8556-B36821E1B54E",
+ "catalogPath": "",
+ "snippet": "FKB kan brukes til:\n- å kjenne seg igjen ute i terrenget\n- forvaltningsmessig saksbehandling i kommuner, statlige etater og ledningsetater\n- saksbehandling knyttet til plan- og bygningsloven med forskrifter\n- prosjekteringsformål\n- analyse og presentasjon i et integrert informasjonssystem (GIS-system)\n- produksjon av kart og avledede produkter med forskjellig krav til innhold, detaljering og stedfestingsnøyaktighet\n- sammen med gode terrengdata kan FKB-Bygning brukes til å lage 3D-modeller av bygninger (gjelder FKB-Aog FKB-B).",
+ "description": "<DIV STYLE=\"text-align:Left;\"><DIV><DIV><P><SPAN>FKB-Bygning inneholder detaljert bygningsinformasjon. Dataene omfatter beskrivelse av alle typer bygninger, takoverbygg, beskrivende bygningslinjer (for eksempel mønelinje) samt bygningsvedheng (for eksempel veranda).<\/SPAN><\/P><P><SPAN>FKB-Bygning benytter samme definisjon/inndeling av en bygning som matrikkelen og har en 1:1 kobling mot matrikkelen ved at bygningsnummer fra matrikkelen legges inn på bygningene i FKB-Bygning.<\/SPAN><\/P><P><SPAN>FKB-Bygning bygger på en 2.5D bygningsmodell. Det innebærer at dataene ikke inneholder volum/3D-objekter, men at høydeverdiene til toppen av objektene registreres. Enkle 3D-modeller kan dermed lages ved å projisere FKB-dataene ned på en terrengmodell.<\/SPAN><\/P><P><SPAN>FKB-data er ikke-sensistive og åpne data. FKB-dataene er finansiert gjennom Geovekst-samarbeidet, eller kommunene alene for kommuner som står utenfor Geovekst. FKB-dataene er fritt tilgjengelige for Norge digitalt parter og kan lastes ned gjennom nedlastingsløsningen på Geonorge. Private aktører må kjøpe tilgang til dataene gjennom en forhandler.<\/SPAN><\/P><P><SPAN>FKB-Bygning inneholder detaljert bygningsinformasjon. Dataene omfatter beskrivelse av alle typer bygninger, takoverbygg, beskrivende bygningslinjer (for eksempel mønelinje) samt bygningsvedheng (for eksempel veranda).<\/SPAN><\/P><\/DIV><\/DIV><\/DIV>",
+ "summary": "FKB kan brukes til:\n- &aring; kjenne seg igjen ute i terrenget\n- forvaltningsmessig saksbehandling i kommuner, statlige etater og ledningsetater\n- saksbehandling knyttet til plan- og bygningsloven med forskrifter\n- prosjekteringsform&aring;l\n- analyse og presentasjon i et integrert informasjonssystem (GIS-system)\n- produksjon av kart og avledede produkter med forskjellig krav til innhold, detaljering og stedfestingsn&oslash;yaktighet\n- sammen med gode terrengdata kan FKB-Bygning brukes til &aring; lage 3D-modeller av bygninger (gjelder FKB-Aog FKB-B).",
+ "title": "Bygning_Flate",
+ "tags": [],
+ "type": "Map Service",
+ "typeKeywords": [
+  "Data",
+  "Service",
+  "Map Service",
+  "ArcGIS Server"
+ ],
+ "thumbnail": "thumbnail/thumbnail.png",
+ "url": "",
+ "extent": [
+  [
+   5,
+   60
+  ],
+  [
+   5,
+   60
+  ]
+ ],
+ "minScale": 0,
+ "maxScale": 1,
+ "spatialReference": "ETRS_1989_UTM_Zone_32N",
+ "accessInformation": "",
+ "licenseInfo": "<DIV STYLE=\"text-align:Left;\"><DIV><DIV><P><SPAN>Norge digitalt begrenset<\/SPAN><\/P><\/DIV><\/DIV><\/DIV>"
+}

@@ -1,0 +1,1 @@
+{"phase":"after","status":"passed","cases":[{"mobile":false,"view":"northern-group","calls":7,"triangles":288848},{"mobile":false,"view":"skur-gable","calls":7,"triangles":291804},{"mobile":true,"view":"northern-group","calls":7,"triangles":288848},{"mobile":true,"view":"skur-gable","calls":7,"triangles":288848}]}

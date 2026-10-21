@@ -1,0 +1,969 @@
+{
+  "browser": "151.0.7922.173",
+  "renderer": "SwiftShader; physical GPU performance unverified",
+  "phase": "after",
+  "viewports": {
+    "desktop": {
+      "sceneReadyMs": 3819.075857,
+      "initial": {
+        "frames": 1,
+        "attributeArrays": 26,
+        "attributeBytes": 29146950,
+        "cpuFrameMs": 100.5,
+        "cameraLatencyMs": null,
+        "calls": 7,
+        "triangles": 288848,
+        "lines": 0,
+        "geometries": 7,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          -145,
+          85,
+          -45
+        ],
+        "target": [
+          -12.000000000000002,
+          8,
+          -260
+        ]
+      },
+      "startup": {
+        "longTasks": [
+          {
+            "start": 190.2000000178814,
+            "duration": 62
+          },
+          {
+            "start": 602.5,
+            "duration": 119
+          },
+          {
+            "start": 751.8000000119209,
+            "duration": 108
+          },
+          {
+            "start": 901,
+            "duration": 95
+          },
+          {
+            "start": 1216.5,
+            "duration": 80
+          },
+          {
+            "start": 3169.7000000178814,
+            "duration": 222
+          },
+          {
+            "start": 3464.300000011921,
+            "duration": 237
+          },
+          {
+            "start": 3701.800000011921,
+            "duration": 102
+          }
+        ],
+        "resources": [
+          {
+            "name": "/assets/index-CilcYEoa.js",
+            "duration": 80,
+            "bytes": 128702
+          },
+          {
+            "name": "/assets/index-CUFye5Ll.css",
+            "duration": 84.5,
+            "bytes": 7227
+          },
+          {
+            "name": "/data/bergen.json",
+            "duration": 469.40000000596046,
+            "bytes": 1819378
+          },
+          {
+            "name": "/assets/Scene-CMtxA1uO.js",
+            "duration": 64.7999999821186,
+            "bytes": 154064
+          },
+          {
+            "name": "/assets/BufferGeometryUtils-Rohs0ajT.js",
+            "duration": 64.40000000596046,
+            "bytes": 100069
+          },
+          {
+            "name": "/assets/model-ZSGhkazD.js",
+            "duration": 15.5,
+            "bytes": 1269
+          },
+          {
+            "name": "/assets/model-iMGC9ZWj.js",
+            "duration": 23,
+            "bytes": 893
+          },
+          {
+            "name": "/assets/load-CXo7lbMr.js",
+            "duration": 90.09999999403954,
+            "bytes": 2192
+          },
+          {
+            "name": "/assets/GLTFLoader-wizgIs7W.js",
+            "duration": 92.39999997615814,
+            "bytes": 12868
+          },
+          {
+            "name": "/assets/preparation-worker-DxYyy4DF.js",
+            "duration": -63,
+            "bytes": 43565
+          },
+          {
+            "name": "/architecture/bryggen-e5943b20bcfb86bb.glb",
+            "duration": 39.19999998807907,
+            "bytes": 675580
+          }
+        ],
+        "preparation": [
+          {
+            "name": "geography.validate",
+            "durationMs": 25.5
+          },
+          {
+            "name": "architecture.fetch-decode-batch",
+            "durationMs": 184.30000001192093
+          },
+          {
+            "name": "geometry.hydrate-main",
+            "durationMs": 217.09999999403954
+          },
+          {
+            "name": "geometry.worker-roundtrip",
+            "durationMs": 2173.2999999821186
+          },
+          {
+            "name": "worker.terrain.index",
+            "durationMs": 53.900000005960464
+          },
+          {
+            "name": "worker.geometry.buildings",
+            "durationMs": 1200.199999988079
+          },
+          {
+            "name": "worker.geometry.roads",
+            "durationMs": 287.30000001192093
+          },
+          {
+            "name": "worker.geometry.terrain",
+            "durationMs": 47
+          },
+          {
+            "name": "worker.geometry.water",
+            "durationMs": 4.700000017881393
+          },
+          {
+            "name": "worker.geometry.coast",
+            "durationMs": 3.5
+          },
+          {
+            "name": "worker.geometry.roof-edges",
+            "durationMs": 4.799999982118607
+          },
+          {
+            "name": "terrain.index",
+            "durationMs": 21.099999994039536
+          },
+          {
+            "name": "architecture.fallback-index",
+            "durationMs": 6.700000017881393
+          }
+        ]
+      },
+      "advanceSixMs": 380.76133299999947,
+      "monthSix": {
+        "workerMs": "4.799999982118607",
+        "month": "6",
+        "households": "5.0766352875",
+        "jobs": "5.853270575000001",
+        "serviceDemand": "11.168597632500001",
+        "serviceUnmet": "0",
+        "balance": "0.30806687236842106"
+      },
+      "editMs": 972.6497330000002,
+      "undoMs": 511.16127199999937,
+      "redoMs": 719.241465000001,
+      "playbackPaused": {
+        "frames": 14,
+        "attributeArrays": 39,
+        "attributeBytes": 29214354,
+        "cpuFrameMs": 0.800000011920929,
+        "cameraLatencyMs": null,
+        "calls": 10,
+        "triangles": 289624,
+        "lines": 29,
+        "geometries": 10,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          -50.00000000000001,
+          104.99999999999999,
+          -207
+        ],
+        "target": [
+          -95,
+          0,
+          -317
+        ]
+      },
+      "scenarioSwitchMs": [
+        416.11899099999937,
+        436.83643999999913
+      ],
+      "cameraSamplesMs": [
+        558.3000000119209,
+        501.40000000596046,
+        494.80000001192093,
+        479.90000000596046,
+        439,
+        437.40000000596046,
+        411.5,
+        400.90000000596046,
+        821,
+        58,
+        417.5,
+        407
+      ],
+      "cameraMedianMs": 439,
+      "cameraP95Ms": 821,
+      "retention": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "heapBefore": 57001462,
+      "heapAfter": 57033014,
+      "diagnostics": {
+        "longTasks": [
+          {
+            "start": 190.2000000178814,
+            "duration": 62
+          },
+          {
+            "start": 602.5,
+            "duration": 119
+          },
+          {
+            "start": 751.8000000119209,
+            "duration": 108
+          },
+          {
+            "start": 901,
+            "duration": 95
+          },
+          {
+            "start": 1216.5,
+            "duration": 80
+          },
+          {
+            "start": 3169.7000000178814,
+            "duration": 222
+          },
+          {
+            "start": 3464.300000011921,
+            "duration": 237
+          },
+          {
+            "start": 3701.800000011921,
+            "duration": 102
+          },
+          {
+            "start": 5471,
+            "duration": 113
+          },
+          {
+            "start": 6228.4000000059605,
+            "duration": 57
+          },
+          {
+            "start": 7611.700000017881,
+            "duration": 52
+          },
+          {
+            "start": 7990.700000017881,
+            "duration": 62
+          },
+          {
+            "start": 8469.59999999404,
+            "duration": 88
+          },
+          {
+            "start": 14613.300000011921,
+            "duration": 50
+          }
+        ],
+        "workers": [
+          {
+            "createdAt": 1219,
+            "firstReplyMs": 1950.9000000059605,
+            "terminated": true,
+            "messages": 1,
+            "processingMs": [],
+            "roundTripsMs": [
+              1955.4000000059605
+            ]
+          },
+          {
+            "createdAt": 6810.200000017881,
+            "firstReplyMs": 73.69999998807907,
+            "terminated": true,
+            "messages": 2,
+            "processingMs": [
+              3.0999999940395355,
+              4.799999982118607
+            ],
+            "roundTripsMs": [
+              73.5,
+              15.299999982118607
+            ]
+          },
+          {
+            "createdAt": 7998.700000017881,
+            "firstReplyMs": 108.09999999403954,
+            "terminated": true,
+            "messages": 1,
+            "processingMs": [
+              2
+            ],
+            "roundTripsMs": [
+              104.5
+            ]
+          },
+          {
+            "createdAt": 8470.40000000596,
+            "firstReplyMs": 142.80000001192093,
+            "terminated": true,
+            "messages": 1,
+            "processingMs": [
+              3
+            ],
+            "roundTripsMs": [
+              139.5
+            ]
+          },
+          {
+            "createdAt": 9205.90000000596,
+            "firstReplyMs": 77.69999998807907,
+            "terminated": true,
+            "messages": 4,
+            "processingMs": [
+              3.2000000178813934,
+              4.500000029802322,
+              4.700000017881393,
+              5.100000023841858
+            ],
+            "roundTripsMs": [
+              77.5,
+              34.599999994039536,
+              3.100000023841858,
+              2.5999999940395355
+            ]
+          },
+          {
+            "createdAt": 14189.40000000596,
+            "firstReplyMs": 63.599999994039536,
+            "terminated": true,
+            "messages": 1,
+            "processingMs": [
+              1.4000000059604645
+            ],
+            "roundTripsMs": [
+              63
+            ]
+          },
+          {
+            "createdAt": 14648.700000017881,
+            "firstReplyMs": 41.19999998807907,
+            "terminated": true,
+            "messages": 1,
+            "processingMs": [
+              6.199999988079071
+            ],
+            "roundTripsMs": [
+              40.900000005960464
+            ]
+          },
+          {
+            "createdAt": 23904.90000000596,
+            "firstReplyMs": 22.900000005960464,
+            "terminated": true,
+            "messages": 5,
+            "processingMs": [
+              1.899999976158142,
+              3.1999999582767487,
+              3.599999964237213,
+              4.299999952316284,
+              4.999999940395355
+            ],
+            "roundTripsMs": [
+              22.700000017881393,
+              86.59999999403954,
+              13.200000017881393,
+              13.099999994039536,
+              32.30000001192093
+            ]
+          },
+          {
+            "createdAt": 28122.40000000596,
+            "firstReplyMs": 23,
+            "terminated": true,
+            "messages": 5,
+            "processingMs": [
+              3.100000023841858,
+              4.800000011920929,
+              5.300000011920929,
+              5.800000011920929,
+              6.199999988079071
+            ],
+            "roundTripsMs": [
+              22.799999982118607,
+              58.80000001192093,
+              7.299999982118607,
+              10.100000023841858,
+              13.5
+            ]
+          },
+          {
+            "createdAt": 32354.59999999404,
+            "firstReplyMs": 23.30000001192093,
+            "terminated": true,
+            "messages": 5,
+            "processingMs": [
+              1.800000011920929,
+              3.4000000059604645,
+              4,
+              4.4000000059604645,
+              4.9000000059604645
+            ],
+            "roundTripsMs": [
+              23,
+              53.60000002384186,
+              14.400000005960464,
+              12.700000017881393,
+              5.5999999940395355
+            ]
+          },
+          {
+            "createdAt": 36503.59999999404,
+            "firstReplyMs": 35.900000005960464,
+            "terminated": true,
+            "messages": 5,
+            "processingMs": [
+              4.199999988079071,
+              6.199999988079071,
+              6.5999999940395355,
+              7.0999999940395355,
+              7.5999999940395355
+            ],
+            "roundTripsMs": [
+              35.69999998807907,
+              6.699999988079071,
+              55.5,
+              13.799999982118607,
+              6.0999999940395355
+            ]
+          },
+          {
+            "createdAt": 41070.70000001788,
+            "firstReplyMs": 24.5,
+            "terminated": false,
+            "messages": 5,
+            "processingMs": [
+              1.7999999821186066,
+              3.199999988079071,
+              3.699999988079071,
+              4.0999999940395355,
+              4.5999999940395355
+            ],
+            "roundTripsMs": [
+              24.30000001192093,
+              54.900000005960464,
+              11.399999976158142,
+              15.599999994039536,
+              13
+            ]
+          }
+        ],
+        "supported": true
+      },
+      "mainThread": {
+        "Nodes": 1119,
+        "LayoutDuration": 0.402268,
+        "ScriptDuration": 1.536035,
+        "TaskDuration": 4.156551,
+        "JSHeapUsedSize": 25619816
+      }
+    },
+    "mobile": {
+      "sceneReadyMs": 2530.9871979999953,
+      "initial": {
+        "frames": 1,
+        "attributeArrays": 26,
+        "attributeBytes": 29146950,
+        "cpuFrameMs": 86.7999999821186,
+        "cameraLatencyMs": null,
+        "calls": 7,
+        "triangles": 288848,
+        "lines": 0,
+        "geometries": 7,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          -145,
+          85,
+          -45
+        ],
+        "target": [
+          -12.000000000000002,
+          8,
+          -260
+        ]
+      },
+      "startup": {
+        "longTasks": [
+          {
+            "start": 122.59999999403954,
+            "duration": 96
+          },
+          {
+            "start": 764.5999999940395,
+            "duration": 93
+          },
+          {
+            "start": 1185.699999988079,
+            "duration": 53
+          },
+          {
+            "start": 2184.5,
+            "duration": 117
+          },
+          {
+            "start": 2364.199999988079,
+            "duration": 70
+          },
+          {
+            "start": 2435.0999999940395,
+            "duration": 88
+          }
+        ],
+        "resources": [
+          {
+            "name": "/assets/index-CilcYEoa.js",
+            "duration": 68.5,
+            "bytes": 128702
+          },
+          {
+            "name": "/assets/index-CUFye5Ll.css",
+            "duration": 21.200000017881393,
+            "bytes": 7227
+          },
+          {
+            "name": "/data/bergen.json",
+            "duration": 503.90000000596046,
+            "bytes": 1819378
+          },
+          {
+            "name": "/assets/Scene-CMtxA1uO.js",
+            "duration": 32.5,
+            "bytes": 154064
+          },
+          {
+            "name": "/assets/BufferGeometryUtils-Rohs0ajT.js",
+            "duration": 30.30000001192093,
+            "bytes": 100069
+          },
+          {
+            "name": "/assets/model-ZSGhkazD.js",
+            "duration": 14.5,
+            "bytes": 1269
+          },
+          {
+            "name": "/assets/model-iMGC9ZWj.js",
+            "duration": 14.5,
+            "bytes": 893
+          },
+          {
+            "name": "/assets/load-CXo7lbMr.js",
+            "duration": 65.09999999403954,
+            "bytes": 2192
+          },
+          {
+            "name": "/assets/GLTFLoader-wizgIs7W.js",
+            "duration": 76.30000001192093,
+            "bytes": 12868
+          },
+          {
+            "name": "/assets/preparation-worker-DxYyy4DF.js",
+            "duration": -54.599999994039536,
+            "bytes": 43565
+          },
+          {
+            "name": "/architecture/bryggen-e5943b20bcfb86bb.glb",
+            "duration": 12.099999994039536,
+            "bytes": 675580
+          }
+        ],
+        "preparation": [
+          {
+            "name": "geography.validate",
+            "durationMs": 14.799999982118607
+          },
+          {
+            "name": "architecture.fetch-decode-batch",
+            "durationMs": 131.90000000596046
+          },
+          {
+            "name": "geometry.hydrate-main",
+            "durationMs": 112.2000000178814
+          },
+          {
+            "name": "geometry.worker-roundtrip",
+            "durationMs": 1114
+          },
+          {
+            "name": "worker.terrain.index",
+            "durationMs": 16.099999994039536
+          },
+          {
+            "name": "worker.geometry.buildings",
+            "durationMs": 557.7000000178814
+          },
+          {
+            "name": "worker.geometry.roads",
+            "durationMs": 158.59999999403954
+          },
+          {
+            "name": "worker.geometry.terrain",
+            "durationMs": 33.400000005960464
+          },
+          {
+            "name": "worker.geometry.water",
+            "durationMs": 5.5
+          },
+          {
+            "name": "worker.geometry.coast",
+            "durationMs": 1.9000000059604645
+          },
+          {
+            "name": "worker.geometry.roof-edges",
+            "durationMs": 3.5999999940395355
+          },
+          {
+            "name": "terrain.index",
+            "durationMs": 15.199999988079071
+          },
+          {
+            "name": "architecture.fallback-index",
+            "durationMs": 6.9000000059604645
+          }
+        ]
+      },
+      "advanceSixMs": 227.53725799999665,
+      "monthSix": {
+        "workerMs": "4.299999982118607",
+        "month": "6",
+        "households": "5.0766352875",
+        "jobs": "5.853270575000001",
+        "serviceDemand": "11.168597632500001",
+        "serviceUnmet": "0",
+        "balance": "0.30806687236842106"
+      },
+      "editMs": 847.6606210000027,
+      "undoMs": 395.24810800000705,
+      "redoMs": 273.09111600000324,
+      "playbackPaused": {
+        "frames": 19,
+        "attributeArrays": 39,
+        "attributeBytes": 29214354,
+        "cpuFrameMs": 0.5999999940395355,
+        "cameraLatencyMs": null,
+        "calls": 10,
+        "triangles": 289624,
+        "lines": 29,
+        "geometries": 10,
+        "textures": 2,
+        "pixelRatio": 1,
+        "position": [
+          -50.00000000000001,
+          104.99999999999999,
+          -207
+        ],
+        "target": [
+          -95,
+          0,
+          -317
+        ]
+      },
+      "scenarioSwitchMs": [
+        191.8056030000007,
+        209.32343100000435
+      ],
+      "cameraSamplesMs": [
+        377.30000001192093,
+        234.60000002384186,
+        247.5,
+        208.7000000178814,
+        193.80000001192093,
+        204.40000000596046,
+        226.2000000178814,
+        226.09999999403954,
+        218.30000001192093,
+        248.59999999403954,
+        218.09999999403954,
+        205.5
+      ],
+      "cameraMedianMs": 226.09999999403954,
+      "cameraP95Ms": 377.30000001192093,
+      "retention": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "heapBefore": 57164019,
+      "heapAfter": 57201707,
+      "diagnostics": {
+        "longTasks": [
+          {
+            "start": 122.59999999403954,
+            "duration": 96
+          },
+          {
+            "start": 764.5999999940395,
+            "duration": 93
+          },
+          {
+            "start": 1185.699999988079,
+            "duration": 53
+          },
+          {
+            "start": 2184.5,
+            "duration": 117
+          },
+          {
+            "start": 2364.199999988079,
+            "duration": 70
+          },
+          {
+            "start": 2435.0999999940395,
+            "duration": 88
+          },
+          {
+            "start": 4123.699999988079,
+            "duration": 130
+          }
+        ],
+        "workers": [
+          {
+            "createdAt": 1187.9000000059605,
+            "firstReplyMs": 996.9000000059605,
+            "terminated": true,
+            "messages": 1,
+            "processingMs": [],
+            "roundTripsMs": [
+              1001.2000000178814
+            ]
+          },
+          {
+            "createdAt": 4794.5999999940395,
+            "firstReplyMs": 57,
+            "terminated": true,
+            "messages": 2,
+            "processingMs": [
+              3,
+              4.299999982118607
+            ],
+            "roundTripsMs": [
+              56.80000001192093,
+              11.800000011920929
+            ]
+          },
+          {
+            "createdAt": 5965.800000011921,
+            "firstReplyMs": 30.69999998807907,
+            "terminated": true,
+            "messages": 1,
+            "processingMs": [
+              2.5999999940395355
+            ],
+            "roundTripsMs": [
+              30.5
+            ]
+          },
+          {
+            "createdAt": 6494.9000000059605,
+            "firstReplyMs": 51.79999998211861,
+            "terminated": true,
+            "messages": 1,
+            "processingMs": [
+              3.199999988079071
+            ],
+            "roundTripsMs": [
+              51.60000002384186
+            ]
+          },
+          {
+            "createdAt": 6910.300000011921,
+            "firstReplyMs": 55.79999998211861,
+            "terminated": true,
+            "messages": 4,
+            "processingMs": [
+              2.9000000059604645,
+              47.10000002384186,
+              47.30000004172325,
+              47.500000059604645
+            ],
+            "roundTripsMs": [
+              55.400000005960464,
+              96.10000002384186,
+              2.800000011920929,
+              2.4000000059604645
+            ]
+          },
+          {
+            "createdAt": 11303.40000000596,
+            "firstReplyMs": 45,
+            "terminated": true,
+            "messages": 1,
+            "processingMs": [
+              1.5
+            ],
+            "roundTripsMs": [
+              44.80000001192093
+            ]
+          },
+          {
+            "createdAt": 11499.800000011921,
+            "firstReplyMs": 62.39999997615814,
+            "terminated": true,
+            "messages": 1,
+            "processingMs": [
+              7.0999999940395355
+            ],
+            "roundTripsMs": [
+              61.5
+            ]
+          },
+          {
+            "createdAt": 17058.69999998808,
+            "firstReplyMs": 19.900000005960464,
+            "terminated": true,
+            "messages": 5,
+            "processingMs": [
+              2,
+              3.800000011920929,
+              4.4000000059604645,
+              4.9000000059604645,
+              5.4000000059604645
+            ],
+            "roundTripsMs": [
+              19.799999982118607,
+              38.19999998807907,
+              9.199999988079071,
+              43.099999994039536,
+              7.200000017881393
+            ]
+          },
+          {
+            "createdAt": 19958.09999999404,
+            "firstReplyMs": 26.80000001192093,
+            "terminated": true,
+            "messages": 5,
+            "processingMs": [
+              6.700000017881393,
+              8.300000041723251,
+              9.400000035762787,
+              9.700000017881393,
+              10.000000029802322
+            ],
+            "roundTripsMs": [
+              26.69999998807907,
+              13.300000011920929,
+              53.599999994039536,
+              14.200000017881393,
+              13.900000005960464
+            ]
+          },
+          {
+            "createdAt": 22857.80000001192,
+            "firstReplyMs": 24.5,
+            "terminated": true,
+            "messages": 5,
+            "processingMs": [
+              3.9000000059604645,
+              6.9000000059604645,
+              7.5,
+              7.800000011920929,
+              8.199999988079071
+            ],
+            "roundTripsMs": [
+              24.100000023841858,
+              13.599999994039536,
+              62,
+              13.699999988079071,
+              9.400000005960464
+            ]
+          },
+          {
+            "createdAt": 25823.90000000596,
+            "firstReplyMs": 25.299999982118607,
+            "terminated": true,
+            "messages": 5,
+            "processingMs": [
+              2.800000011920929,
+              4.100000023841858,
+              4.500000029802322,
+              4.900000035762787,
+              5.100000023841858
+            ],
+            "roundTripsMs": [
+              25.200000017881393,
+              11.400000005960464,
+              55.19999998807907,
+              5.299999982118607,
+              13.399999976158142
+            ]
+          },
+          {
+            "createdAt": 28674.80000001192,
+            "firstReplyMs": 23.299999982118607,
+            "terminated": false,
+            "messages": 5,
+            "processingMs": [
+              5.4000000059604645,
+              7,
+              7.5999999940395355,
+              8.299999982118607,
+              8.599999994039536
+            ],
+            "roundTripsMs": [
+              23.19999998807907,
+              4.700000017881393,
+              54.80000001192093,
+              8.400000005960464,
+              14.300000011920929
+            ]
+          }
+        ],
+        "supported": true
+      },
+      "mainThread": {
+        "Nodes": 1119,
+        "LayoutDuration": 0.170613,
+        "ScriptDuration": 1.074924,
+        "TaskDuration": 3.021461,
+        "JSHeapUsedSize": 25742936
+      }
+    }
+  },
+  "errors": [],
+  "passed": true
+}

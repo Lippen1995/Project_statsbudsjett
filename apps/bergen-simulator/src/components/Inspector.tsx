@@ -4,9 +4,12 @@ import { useCity } from "../state/store";
 import type { Building } from "../geo/types";
 import { gableProfile } from "../geo/roofs";
 import { inHeroBlock } from "../geo/benchmark";
+import enhancements from "../enhancements/catalogue.json";
+import { useEnhancements } from "../enhancements/state";
 
 export default function Inspector() {
   const assetStatus = useArchitecture((s) => s.status);
+  const enhanced = useEnhancements((s) => s.enabled && s.status === "ready");
   const selected = useCity((s) => s.selected);
   const select = useCity((s) => s.select);
   const inspectLandmark = useCity((s) => s.inspectLandmark);
@@ -14,6 +17,7 @@ export default function Inspector() {
   const building =
     selected?.kind === "building" ? (selected as Building) : null;
   const asset = catalogue.buildings.find((b) => b.id === building?.id);
+  const enhancement = enhancements.buildings.find((b) => b.id === building?.id);
   const roof = building ? gableProfile(building) : null;
   return (
     <section
@@ -39,6 +43,27 @@ export default function Inspector() {
         <>
           <span className="eyebrow">{selected.kind} · OpenStreetMap</span>
           <h3>{selected.name}</h3>
+          {enhancement ? (
+            <p className="data-note benchmark-note">
+              R1E source-derived roof ·{" "}
+              {enhanced ? "Render pilot active." : "Original snapshot shown."}{" "}
+              Kartverket / Bergen 10pkt 2022, 0.25 m DOM/DTM; last project
+              flight 18 April 2022. Estimated ridge{" "}
+              {enhancement.roof.coefficients[0].toFixed(2)} m NN2000; held-out
+              surface fit RMSE {enhancement.roof.holdoutRmseM.toFixed(2)} m.
+              This is not a building survey or independent validation. Facades
+              and materials remain schematic. Original OSM height remains
+              unknown. Geometry and source IDs are unchanged.
+              <a
+                href="/enhancements/NOTICE.md"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {" "}
+                Sources and method ↗
+              </a>
+            </p>
+          ) : null}
           {asset ? (
             <p className="data-note benchmark-note">
               R1B architectural study · {asset.label}.{" "}
@@ -111,11 +136,13 @@ export default function Inspector() {
               <div>
                 <dt>Rendered height</dt>
                 <dd>
-                  {building.height === null
-                    ? "Unknown · footprint only"
-                    : asset && assetStatus === "ready"
-                      ? `${(asset.roof.ridgeNN2000 - building.elevation).toFixed(1)} m render envelope; ${building.height.toFixed(1)} m original snapshot`
-                      : `${building.height.toFixed(1)} m`}
+                  {enhancement && enhanced
+                    ? `${(enhancement.roof.coefficients[0] - building.elevation).toFixed(1)} m estimated envelope; original height unknown`
+                    : building.height === null
+                      ? "Unknown · footprint only"
+                      : asset && assetStatus === "ready"
+                        ? `${(asset.roof.ridgeNN2000 - building.elevation).toFixed(1)} m render envelope; ${building.height.toFixed(1)} m original snapshot`
+                        : `${building.height.toFixed(1)} m`}
                 </dd>
               </div>
             ) : null}
@@ -129,7 +156,7 @@ export default function Inspector() {
                     (building.heightStatus === "osm-height" ? "observed" : "")
                   }
                 />
-                {asset ? "Original snapshot fallback: " : null}
+                {asset || enhancement ? "Original snapshot fallback: " : null}
                 {building.heightStatus === "osm-height"
                   ? "Height reported in OSM; not survey verified."
                   : building.heightStatus === "levels-estimate"

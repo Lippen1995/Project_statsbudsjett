@@ -1,0 +1,9 @@
+./tmp/bergen-r1-geo/lib/python3.12/site-packages/rasterio/transform.py:178: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+  return Affine.translation(west, north) * Affine.scale(xsize, -ysize)
+/workspace/Project_statsbudsjett/apps/bergen-simulator/scripts/refine-geography.py:52: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+  col, row = ~transform * (easting, northing)
+..
+----------------------------------------------------------------------
+Ran 3 tests in 0.034s
+
+OK

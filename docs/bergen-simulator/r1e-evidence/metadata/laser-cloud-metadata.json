@@ -1,0 +1,26 @@
+{
+    "version": "1.7",
+    "octreeDir": "data",
+    "projection": "",
+    "points": 1699655838,
+    "boundingBox": {
+        "lx": 288537.32,
+        "ly": 6692579.69,
+        "lz": -19.31,
+        "ux": 303457.6199999998,
+        "uy": 6707499.99,
+        "uz": 14900.989999999814
+    },
+    "tightBoundingBox": {
+        "lx": 288537.32,
+        "ly": 6692579.69,
+        "lz": -19.31,
+        "ux": 300100.0,
+        "uy": 6707499.99,
+        "uz": 519.04
+    },
+    "pointAttributes": "LAZ",
+    "spacing": 129.21359252929688,
+    "scale": 0.01,
+    "hierarchyStepSize": 5
+}

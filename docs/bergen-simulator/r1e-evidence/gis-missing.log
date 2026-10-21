@@ -1,0 +1,25 @@
+test_all_candidate_results_stay_in_quarantine_including_clear_masks (__main__.Integrity.test_all_candidate_results_stay_in_quarantine_including_clear_masks) ... ok
+test_input_drift_fails_before_outputs (__main__.Integrity.test_input_drift_fails_before_outputs) ... ok
+test_missing_heights_are_not_relabelled_observed (__main__.Integrity.test_missing_heights_are_not_relabelled_observed) ... ok
+test_real_snapshot_and_all_source_ids_remain_intact (__main__.Integrity.test_real_snapshot_and_all_source_ids_remain_intact) ... ok
+test_disjoint_gap_and_near_touch_are_separate (__main__.Matching.test_disjoint_gap_and_near_touch_are_separate) ... ok
+test_identical_and_split_merge_do_not_become_missing_buildings (__main__.Matching.test_identical_and_split_merge_do_not_become_missing_buildings) ... ok
+test_invalid_topology_rejected_without_repair (__main__.Matching.test_invalid_topology_rejected_without_repair) ... ok
+test_original_identity_not_reassigned_by_changed_geometry (__main__.Matching.test_original_identity_not_reassigned_by_changed_geometry) ... ok
+test_screens_water_road_coast_coverage_and_existing_footprint (__main__.Matching.test_screens_water_road_coast_coverage_and_existing_footprint) ... ok
+test_shared_osm_lineage_and_attribute_only_sources (__main__.Matching.test_shared_osm_lineage_and_attribute_only_sources) ... ok
+test_complex_and_inadequate_roofs_do_not_get_invented_geometry (__main__.Raster.test_complex_and_inadequate_roofs_do_not_get_invented_geometry) ... ok
+test_good_fit_cannot_override_a_different_mapped_roof (__main__.Raster.test_good_fit_cannot_override_a_different_mapped_roof) ... ok
+test_pixel_centre_bilinear_sampling_and_outside_failure (__main__.Raster.test_pixel_centre_bilinear_sampling_and_outside_failure) ... /workspace/Project_statsbudsjett/docs/bergen-simulator/missing-buildings-research-2026-10-19/heights.py:21: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+  c, r = ~affine * (np.asarray(x), np.asarray(y))
+ok
+test_roof_shapes_are_deterministic_hypotheses_and_flat_is_not_gabled (__main__.Raster.test_roof_shapes_are_deterministic_hypotheses_and_flat_is_not_gabled) ... ok
+test_live_reacquisition_refuses_to_overwrite_the_locked_extract (__main__.Register.test_live_reacquisition_refuses_to_overwrite_the_locked_extract) ... ok
+test_planned_and_demolition_status_are_not_completed_building_evidence (__main__.Register.test_planned_and_demolition_status_are_not_completed_building_evidence) ... ok
+test_registry_points_do_not_promote_candidates_or_override_geometry (__main__.Register.test_registry_points_do_not_promote_candidates_or_override_geometry) ... ok
+test_wrong_crs_and_outside_points_fail_closed (__main__.Register.test_wrong_crs_and_outside_points_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 2.643s
+
+OK

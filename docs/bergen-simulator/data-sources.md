@@ -281,3 +281,14 @@ the inspector identify the original snapshot versus the separate inferred render
 
 R1C adds dated, licensed Skur 11 photographic evidence for inferred render relief,
 without refreshing the source snapshot. See [R1C source register](r1c-source-register.md).
+## R1E supplement — 21 October 2026
+
+The [R1E acquisition report](r1e-public-geodata-acquisition.md),
+[machine-readable inventory](r1e-source-inventory.json) and
+[rights register](r1e-license-and-access-register.md) document new bounded
+public samples and an opt-in roof comparison layer. Six existing OSM buildings
+with unknown source height receive explicitly estimated 2022 surface-derived
+render volumes. Original snapshots, source heights, R1B/R1C assets and all
+scenario contracts remain unchanged. No missing-building candidate, municipal
+restricted model or new transport graph is promoted. Native raster originals
+and rejected 2026 terrain response are retained for reproducible validation.

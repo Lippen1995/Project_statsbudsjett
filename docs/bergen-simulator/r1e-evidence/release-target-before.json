@@ -1,0 +1,25 @@
+{
+  "observedAt": "2026-10-21",
+  "phase": "Before runtime commit/push; not a claim about the future release",
+  "project": {
+    "id": "prj_s9Bugj93zirfeEvLLwJvygz9syny",
+    "name": "bergen-reimagined",
+    "accountId": "team_zBf9uUPGwDQKfB9fElKD876W",
+    "ssoProtection": {
+      "enabled": true,
+      "deploymentType": "all"
+    }
+  },
+  "domains": [
+    {
+      "name": "bergen-reimagined.vercel.app",
+      "projectId": "prj_s9Bugj93zirfeEvLLwJvygz9syny"
+    }
+  ],
+  "stableAlias": "bergen-reimagined.vercel.app",
+  "previousDeployment": {
+    "id": "dpl_5fWqvZ76pG1WBWD71R6Rneuo6wTW",
+    "url": "bergen-reimagined-4bmdwlzfh-fjord-insight.vercel.app"
+  },
+  "releaseMethod": "Existing GitHub Actions workflow only; no project, domain, environment or authentication mutations"
+}

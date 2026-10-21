@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "baselineCommit": "c87db8bfe73e4e73a49bc0160a91116615274893",
+  "renderer": "Chromium 151 ANGLE SwiftShader, no physical GPU",
+  "quality": "Balanced",
+  "devicePixelRatio": 1,
+  "budget": "preintegration-budget.md",
+  "matchedOriginalImagePixels": "PASS: all eight original cameras/viewport images pixel-identical with pilot disabled",
+  "failureAndCancellationFallback": "passed; original geometry retained",
+  "cases": [
+    {
+      "viewport": "1440x1000",
+      "baselineReadyMs": 4965.1,
+      "afterReadyMs": 4056.9,
+      "baselineMedianMs": 299.1,
+      "afterOffMedianMs": 299.4,
+      "afterOnMedianMs": 302.6,
+      "baselineP95Ms": 340.9,
+      "afterOffP95Ms": 355.5,
+      "afterOnP95Ms": 349.3,
+      "drawCalls": [
+        7,
+        8
+      ],
+      "triangles": [
+        288848,
+        288976
+      ],
+      "attributeBytes": [
+        29146950,
+        29164038
+      ],
+      "textures": [
+        2,
+        2
+      ],
+      "toggleAllocationsStable": true
+    },
+    {
+      "viewport": "390x844 touch emulation",
+      "baselineReadyMs": 2611.5,
+      "afterReadyMs": 2333.0,
+      "baselineMedianMs": 166,
+      "afterOffMedianMs": 156.7,
+      "afterOnMedianMs": 174.9,
+      "baselineP95Ms": 196.5,
+      "afterOffP95Ms": 179.9,
+      "afterOnP95Ms": 183.8,
+      "drawCalls": [
+        7,
+        8
+      ],
+      "triangles": [
+        288848,
+        288976
+      ],
+      "attributeBytes": [
+        29146950,
+        29164038
+      ],
+      "textures": [
+        2,
+        2
+      ],
+      "toggleAllocationsStable": true
+    }
+  ]
+}

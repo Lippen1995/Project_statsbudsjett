@@ -1,0 +1,2328 @@
+{
+  "snapshotSha256": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812",
+  "records": [
+    {
+      "id": "way/292320260",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 14.0,
+      "originalElevationM": 2.01,
+      "status": "height-only",
+      "samples": 1416,
+      "q10AboveGroundM": 9.367,
+      "q50AboveGroundM": 10.87,
+      "q90AboveGroundM": 12.454,
+      "groundRangeM": 0.752,
+      "roofDiagnostic": {
+        "center": [
+          -43.77881661959114,
+          -278.53469678728806
+        ],
+        "along": [
+          -0.6310874674160366,
+          0.775711678699253
+        ],
+        "across": [
+          -0.775711678699253,
+          -0.6310874674160366
+        ],
+        "coefficients": [
+          14.495987144772123,
+          -0.000824138090462875,
+          -1.2573513072823825
+        ],
+        "holdoutRmseM": 1.1301,
+        "planeHoldoutRmseM": 1.4819,
+        "within065m": 0.9593,
+        "pitchDegrees": 51.5
+      }
+    },
+    {
+      "id": "way/292320261",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 14.0,
+      "originalElevationM": 1.82,
+      "status": "height-only",
+      "samples": 1353,
+      "q10AboveGroundM": 9.674,
+      "q50AboveGroundM": 11.434,
+      "q90AboveGroundM": 13.039,
+      "groundRangeM": 0.824,
+      "roofDiagnostic": {
+        "center": [
+          -38.01358059914408,
+          -273.8490521477255
+        ],
+        "along": [
+          -0.6312276855091851,
+          0.7755975818984465
+        ],
+        "across": [
+          -0.7755975818984465,
+          -0.6312276855091851
+        ],
+        "coefficients": [
+          14.94682944613404,
+          -0.004374318711824367,
+          -1.3531173074678664
+        ],
+        "holdoutRmseM": 0.9861,
+        "planeHoldoutRmseM": 1.3973,
+        "within065m": 0.69,
+        "pitchDegrees": 53.53
+      }
+    },
+    {
+      "id": "way/331274536",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.72,
+      "status": "height-only",
+      "samples": 1902,
+      "q10AboveGroundM": 9.029,
+      "q50AboveGroundM": 10.943,
+      "q90AboveGroundM": 12.541,
+      "groundRangeM": 0.305,
+      "roofDiagnostic": {
+        "center": [
+          1.552563971145564,
+          -267.66768340552943
+        ],
+        "along": [
+          0.6378486789147517,
+          -0.7701617121142195
+        ],
+        "across": [
+          0.7701617121142195,
+          0.6378486789147517
+        ],
+        "coefficients": [
+          14.428550826573096,
+          0.002073121855004668,
+          -1.0461691880825892
+        ],
+        "holdoutRmseM": 0.847,
+        "planeHoldoutRmseM": 1.4917,
+        "within065m": 0.9248,
+        "pitchDegrees": 46.29
+      }
+    },
+    {
+      "id": "way/331274541",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 12.0,
+      "originalElevationM": 1.2,
+      "status": "supported-gable-hypothesis",
+      "samples": 843,
+      "q10AboveGroundM": 9.404,
+      "q50AboveGroundM": 10.575,
+      "q90AboveGroundM": 11.765,
+      "groundRangeM": 0.218,
+      "roof": {
+        "center": [
+          -10.283578508577154,
+          -249.75025178927368
+        ],
+        "along": [
+          0.6234546236679128,
+          -0.7818595348443999
+        ],
+        "across": [
+          0.7818595348443999,
+          0.6234546236679128
+        ],
+        "coefficients": [
+          13.01058209138224,
+          0.04390591999434336,
+          -1.0897474531308002
+        ],
+        "holdoutRmseM": 0.2451,
+        "planeHoldoutRmseM": 0.8612,
+        "within065m": 0.9954,
+        "pitchDegrees": 47.46
+      }
+    },
+    {
+      "id": "way/331274546",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.16,
+      "status": "supported-gable-hypothesis",
+      "samples": 1879,
+      "q10AboveGroundM": 9.199,
+      "q50AboveGroundM": 11.054,
+      "q90AboveGroundM": 12.525,
+      "groundRangeM": 0.236,
+      "roof": {
+        "center": [
+          6.242822551848696,
+          -291.9419700294728
+        ],
+        "along": [
+          -0.6923198671108084,
+          0.7215907438456184
+        ],
+        "across": [
+          -0.7215907438456184,
+          -0.6923198671108084
+        ],
+        "coefficients": [
+          14.773665745476412,
+          0.01128126523469305,
+          -1.0370602849287585
+        ],
+        "holdoutRmseM": 0.5523,
+        "planeHoldoutRmseM": 1.2704,
+        "within065m": 0.9402,
+        "pitchDegrees": 46.04
+      }
+    },
+    {
+      "id": "way/331274552",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 3.43,
+      "status": "height-only",
+      "samples": 3803,
+      "q10AboveGroundM": 14.026,
+      "q50AboveGroundM": 15.846,
+      "q90AboveGroundM": 17.582,
+      "groundRangeM": 1.81,
+      "roofDiagnostic": {
+        "center": [
+          -2.2670770141196637,
+          -302.9749706456513
+        ],
+        "along": [
+          0.6472668447507902,
+          -0.7622634922953849
+        ],
+        "across": [
+          0.7622634922953849,
+          0.6472668447507902
+        ],
+        "coefficients": [
+          18.180612041041133,
+          0.0013762389513728242,
+          0.1938746042156867
+        ],
+        "holdoutRmseM": 2.5302,
+        "planeHoldoutRmseM": 2.1792,
+        "within065m": 0.3613,
+        "pitchDegrees": -10.97
+      }
+    },
+    {
+      "id": "way/331274560",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 13.0,
+      "originalElevationM": 2.09,
+      "status": "height-only",
+      "samples": 1150,
+      "q10AboveGroundM": 10.025,
+      "q50AboveGroundM": 10.978,
+      "q90AboveGroundM": 11.714,
+      "groundRangeM": 0.843,
+      "roofDiagnostic": {
+        "center": [
+          -55.540000000000006,
+          -288.935
+        ],
+        "along": [
+          0.6310933669294234,
+          -0.7757068790578592
+        ],
+        "across": [
+          0.7757068790578592,
+          0.6310933669294234
+        ],
+        "coefficients": [
+          13.633308552293371,
+          0.009572486875685108,
+          -0.899285785513097
+        ],
+        "holdoutRmseM": 1.7071,
+        "planeHoldoutRmseM": 1.8162,
+        "within065m": 0.9245,
+        "pitchDegrees": 41.96
+      }
+    },
+    {
+      "id": "way/331274562",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.65,
+      "status": "height-only",
+      "samples": 1925,
+      "q10AboveGroundM": 9.372,
+      "q50AboveGroundM": 11.005,
+      "q90AboveGroundM": 12.45,
+      "groundRangeM": 0.561,
+      "roofDiagnostic": {
+        "center": [
+          -25.033014120286584,
+          -267.9238652270679
+        ],
+        "along": [
+          0.6217445328941071,
+          -0.7832201068769166
+        ],
+        "across": [
+          0.7832201068769166,
+          0.6217445328941071
+        ],
+        "coefficients": [
+          13.844707743212531,
+          -0.04202015743318192,
+          -1.2110796484669317
+        ],
+        "holdoutRmseM": 0.9771,
+        "planeHoldoutRmseM": 1.1764,
+        "within065m": 0.916,
+        "pitchDegrees": 50.45
+      }
+    },
+    {
+      "id": "way/331274567",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 16.0,
+      "originalElevationM": 2.08,
+      "status": "height-only",
+      "samples": 1879,
+      "q10AboveGroundM": 9.943,
+      "q50AboveGroundM": 12.06,
+      "q90AboveGroundM": 13.852,
+      "groundRangeM": 0.909,
+      "roofDiagnostic": {
+        "center": [
+          -49.75503409318946,
+          -284.23000621531935
+        ],
+        "along": [
+          -0.6310933669293223,
+          0.7757068790579414
+        ],
+        "across": [
+          -0.7757068790579414,
+          -0.6310933669293223
+        ],
+        "coefficients": [
+          15.835049139330875,
+          0.002200947279041268,
+          -1.0746268422409038
+        ],
+        "holdoutRmseM": 1.6137,
+        "planeHoldoutRmseM": 1.8865,
+        "within065m": 0.6438,
+        "pitchDegrees": 47.06
+      }
+    },
+    {
+      "id": "way/331274569",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.95,
+      "status": "height-only",
+      "samples": 2522,
+      "q10AboveGroundM": 9.258,
+      "q50AboveGroundM": 11.248,
+      "q90AboveGroundM": 12.718,
+      "groundRangeM": 0.324,
+      "roofDiagnostic": {
+        "center": [
+          -5.656902643151368,
+          -278.28009643973223
+        ],
+        "along": [
+          0.6281153922344535,
+          -0.7781202053912741
+        ],
+        "across": [
+          0.7781202053912741,
+          0.6281153922344535
+        ],
+        "coefficients": [
+          14.680402948344787,
+          -0.006335896040465209,
+          -1.083784073176144
+        ],
+        "holdoutRmseM": 1.0355,
+        "planeHoldoutRmseM": 1.4082,
+        "within065m": 0.8609,
+        "pitchDegrees": 47.3
+      }
+    },
+    {
+      "id": "way/331274574",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 13.0,
+      "originalElevationM": 1.32,
+      "status": "supported-gable-hypothesis",
+      "samples": 1132,
+      "q10AboveGroundM": 14.058,
+      "q50AboveGroundM": 14.671,
+      "q90AboveGroundM": 15.224,
+      "groundRangeM": 0.226,
+      "roof": {
+        "center": [
+          -21.827139154747346,
+          -257.93890766357765
+        ],
+        "along": [
+          -0.622574466213904,
+          0.7825605625243789
+        ],
+        "across": [
+          -0.7825605625243789,
+          -0.622574466213904
+        ],
+        "coefficients": [
+          16.497717334730257,
+          0.015484655233394205,
+          -0.3485408855491623
+        ],
+        "holdoutRmseM": 0.1437,
+        "planeHoldoutRmseM": 0.4122,
+        "within065m": 1.0,
+        "pitchDegrees": 19.22
+      }
+    },
+    {
+      "id": "way/331274575",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.39,
+      "status": "height-only",
+      "samples": 1539,
+      "q10AboveGroundM": 9.628,
+      "q50AboveGroundM": 11.402,
+      "q90AboveGroundM": 13.226,
+      "groundRangeM": 0.322
+    },
+    {
+      "id": "way/331274578",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 16.0,
+      "originalElevationM": 2.16,
+      "status": "height-only",
+      "samples": 2174,
+      "q10AboveGroundM": 10.305,
+      "q50AboveGroundM": 12.232,
+      "q90AboveGroundM": 13.992,
+      "groundRangeM": 0.863,
+      "roofDiagnostic": {
+        "center": [
+          -61.13539815727398,
+          -294.2964894751601
+        ],
+        "along": [
+          -0.6306325930501593,
+          0.7760815244436837
+        ],
+        "across": [
+          -0.7760815244436837,
+          -0.6306325930501593
+        ],
+        "coefficients": [
+          16.171764334860768,
+          -0.010647152129063892,
+          -1.149808538075196
+        ],
+        "holdoutRmseM": 1.0667,
+        "planeHoldoutRmseM": 1.6247,
+        "within065m": 0.911,
+        "pitchDegrees": 48.99
+      }
+    },
+    {
+      "id": "way/331274582",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 14.0,
+      "originalElevationM": 1.4,
+      "status": "height-only",
+      "samples": 1826,
+      "q10AboveGroundM": 10.677,
+      "q50AboveGroundM": 12.339,
+      "q90AboveGroundM": 13.947,
+      "groundRangeM": 0.538,
+      "roofDiagnostic": {
+        "center": [
+          -1.7134066056783321,
+          -248.50766819671637
+        ],
+        "along": [
+          -0.6129720181103024,
+          0.7901046164994754
+        ],
+        "across": [
+          -0.7901046164994754,
+          -0.6129720181103024
+        ],
+        "coefficients": [
+          15.1906891036151,
+          -0.024712516386305696,
+          -1.0585827090081739
+        ],
+        "holdoutRmseM": 0.6598,
+        "planeHoldoutRmseM": 1.1215,
+        "within065m": 0.5633,
+        "pitchDegrees": 46.63
+      }
+    },
+    {
+      "id": "way/331274583",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.51,
+      "status": "height-only",
+      "samples": 1208,
+      "q10AboveGroundM": 9.317,
+      "q50AboveGroundM": 11.818,
+      "q90AboveGroundM": 13.393,
+      "groundRangeM": 0.277,
+      "roofDiagnostic": {
+        "center": [
+          -15.094174266531928,
+          -265.93308149691717
+        ],
+        "along": [
+          -0.609558116390057,
+          0.79274138452777
+        ],
+        "across": [
+          -0.79274138452777,
+          -0.609558116390057
+        ],
+        "coefficients": [
+          14.905676444187208,
+          -0.051662025257131344,
+          -1.12932535564641
+        ],
+        "holdoutRmseM": 1.3694,
+        "planeHoldoutRmseM": 1.5902,
+        "within065m": 0.7403,
+        "pitchDegrees": 48.48
+      }
+    },
+    {
+      "id": "way/331274591",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.36,
+      "status": "height-only",
+      "samples": 851,
+      "q10AboveGroundM": 12.759,
+      "q50AboveGroundM": 16.281,
+      "q90AboveGroundM": 17.652,
+      "groundRangeM": 0.065,
+      "roofDiagnostic": {
+        "center": [
+          -29.616476374134773,
+          -292.2729596296622
+        ],
+        "along": [
+          0.6472804484391022,
+          -0.7622519406787198
+        ],
+        "across": [
+          0.7622519406787198,
+          0.6472804484391022
+        ],
+        "coefficients": [
+          20.03834517548404,
+          0.009502697812023052,
+          -0.9157111821967312
+        ],
+        "holdoutRmseM": 3.2595,
+        "planeHoldoutRmseM": 3.3395,
+        "within065m": 0.8209,
+        "pitchDegrees": 42.48
+      }
+    },
+    {
+      "id": "way/331274604",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 9.0,
+      "originalElevationM": 3.88,
+      "status": "height-only",
+      "samples": 7235,
+      "q10AboveGroundM": 14.121,
+      "q50AboveGroundM": 16.017,
+      "q90AboveGroundM": 17.418,
+      "groundRangeM": 2.179,
+      "roofDiagnostic": {
+        "center": [
+          -6.301584448037903,
+          -309.447670894733
+        ],
+        "along": [
+          -0.6476633604459007,
+          0.7619266182093413
+        ],
+        "across": [
+          -0.7619266182093413,
+          -0.6476633604459007
+        ],
+        "coefficients": [
+          20.258365541394934,
+          0.0007743220123360491,
+          -1.0334920563811343
+        ],
+        "holdoutRmseM": 2.0413,
+        "planeHoldoutRmseM": 2.1752,
+        "within065m": 0.8539,
+        "pitchDegrees": 45.94
+      }
+    },
+    {
+      "id": "way/488690088",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 13.0,
+      "originalElevationM": 1.34,
+      "status": "height-only",
+      "samples": 1159,
+      "q10AboveGroundM": 9.685,
+      "q50AboveGroundM": 11.315,
+      "q90AboveGroundM": 12.708,
+      "groundRangeM": 0.467,
+      "roofDiagnostic": {
+        "center": [
+          2.853869914598968,
+          -242.0281104166412
+        ],
+        "along": [
+          -0.6197553014696763,
+          0.7847951110323196
+        ],
+        "across": [
+          -0.7847951110323196,
+          -0.6197553014696763
+        ],
+        "coefficients": [
+          13.69490867572316,
+          -0.03602630147803752,
+          -0.9863632277980028
+        ],
+        "holdoutRmseM": 0.7397,
+        "planeHoldoutRmseM": 1.4825,
+        "within065m": 0.4189,
+        "pitchDegrees": 44.61
+      }
+    },
+    {
+      "id": "way/331274528",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.71,
+      "status": "height-only",
+      "samples": 1036,
+      "q10AboveGroundM": 17.394,
+      "q50AboveGroundM": 19.178,
+      "q90AboveGroundM": 20.312,
+      "groundRangeM": 0.196,
+      "roofDiagnostic": {
+        "center": [
+          -38.66831967095446,
+          -316.2497633243208
+        ],
+        "along": [
+          0.6483353271381608,
+          -0.7613549130232589
+        ],
+        "across": [
+          0.7613549130232589,
+          0.6483353271381608
+        ],
+        "coefficients": [
+          23.22803176630172,
+          -0.003523234510317853,
+          -1.0688425676994089
+        ],
+        "holdoutRmseM": 0.9766,
+        "planeHoldoutRmseM": 1.3192,
+        "within065m": 0.8438,
+        "pitchDegrees": 46.91
+      }
+    },
+    {
+      "id": "way/331274555",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.69,
+      "status": "height-only",
+      "samples": 451,
+      "q10AboveGroundM": 3.104,
+      "q50AboveGroundM": 15.783,
+      "q90AboveGroundM": 17.387,
+      "groundRangeM": 0.15,
+      "roofDiagnostic": {
+        "center": [
+          -51.555,
+          -314.54999999999995
+        ],
+        "along": [
+          0.7622060083636069,
+          0.6473345354717429
+        ],
+        "across": [
+          -0.6473345354717429,
+          0.7622060083636069
+        ],
+        "coefficients": [
+          18.612551752285537,
+          0.18564017304865593,
+          0.04696738022764932
+        ],
+        "holdoutRmseM": 5.042,
+        "planeHoldoutRmseM": 4.9046,
+        "within065m": 0.327,
+        "pitchDegrees": -2.69
+      }
+    },
+    {
+      "id": "way/331274563",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.59,
+      "status": "height-only",
+      "samples": 454,
+      "q10AboveGroundM": 2.913,
+      "q50AboveGroundM": 15.858,
+      "q90AboveGroundM": 17.439,
+      "groundRangeM": 0.117,
+      "roofDiagnostic": {
+        "center": [
+          -45.902011290017846,
+          -309.7441683293541
+        ],
+        "along": [
+          -0.761906161830205,
+          -0.6476874250478895
+        ],
+        "across": [
+          0.6476874250478895,
+          -0.761906161830205
+        ],
+        "coefficients": [
+          18.593733733128065,
+          0.01172330058164262,
+          0.0019134939076679892
+        ],
+        "holdoutRmseM": 6.5599,
+        "planeHoldoutRmseM": 6.5197,
+        "within065m": 0.2936,
+        "pitchDegrees": -0.11
+      }
+    },
+    {
+      "id": "way/331274586",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.49,
+      "status": "height-only",
+      "samples": 568,
+      "q10AboveGroundM": 2.697,
+      "q50AboveGroundM": 16.166,
+      "q90AboveGroundM": 18.332,
+      "groundRangeM": 0.104,
+      "roofDiagnostic": {
+        "center": [
+          -39.62933367966234,
+          -304.41238777184896
+        ],
+        "along": [
+          -0.76197906398739,
+          -0.647601656919515
+        ],
+        "across": [
+          0.647601656919515,
+          -0.76197906398739
+        ],
+        "coefficients": [
+          19.272644131410775,
+          0.07676874434349756,
+          0.03258518721401759
+        ],
+        "holdoutRmseM": 6.5944,
+        "planeHoldoutRmseM": 6.5158,
+        "within065m": 0.2492,
+        "pitchDegrees": -1.87
+      }
+    },
+    {
+      "id": "way/488690084",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 16.0,
+      "originalElevationM": 2.34,
+      "status": "height-only",
+      "samples": 2976,
+      "q10AboveGroundM": 9.886,
+      "q50AboveGroundM": 11.934,
+      "q90AboveGroundM": 13.71,
+      "groundRangeM": 1.099,
+      "roofDiagnostic": {
+        "center": [
+          -68.60141047251653,
+          -303.5813472735845
+        ],
+        "along": [
+          0.5427823265961971,
+          -0.8398734106606894
+        ],
+        "across": [
+          0.8398734106606894,
+          0.5427823265961971
+        ],
+        "coefficients": [
+          15.988604196438214,
+          0.0003199228041333982,
+          -1.1144276516156066
+        ],
+        "holdoutRmseM": 0.9366,
+        "planeHoldoutRmseM": 1.5411,
+        "within065m": 0.9351,
+        "pitchDegrees": 48.1
+      }
+    },
+    {
+      "id": "way/292242383",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 3.0,
+      "originalElevationM": 8.06,
+      "status": "height-only",
+      "samples": 2322,
+      "q10AboveGroundM": 1.464,
+      "q50AboveGroundM": 5.638,
+      "q90AboveGroundM": 8.404,
+      "groundRangeM": 3.815
+    },
+    {
+      "id": "way/292242388",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 6.48,
+      "status": "height-only",
+      "samples": 1670,
+      "q10AboveGroundM": 3.137,
+      "q50AboveGroundM": 7.181,
+      "q90AboveGroundM": 9.131,
+      "groundRangeM": 2.582
+    },
+    {
+      "id": "way/292320263",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 2.95,
+      "status": "height-only",
+      "samples": 1442,
+      "q10AboveGroundM": 6.963,
+      "q50AboveGroundM": 8.636,
+      "q90AboveGroundM": 10.377,
+      "groundRangeM": 0.68,
+      "roofDiagnostic": {
+        "center": [
+          61.81969660542276,
+          -260.00811226330376
+        ],
+        "along": [
+          0.7872921561976718,
+          -0.6165801333076025
+        ],
+        "across": [
+          0.6165801333076025,
+          0.7872921561976718
+        ],
+        "coefficients": [
+          13.70777975606734,
+          0.0010199695793714576,
+          -1.2349705057963094
+        ],
+        "holdoutRmseM": 1.048,
+        "planeHoldoutRmseM": 1.3002,
+        "within065m": 0.8182,
+        "pitchDegrees": 51.0
+      }
+    },
+    {
+      "id": "way/292320264",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 2.41,
+      "status": "height-only",
+      "samples": 876,
+      "q10AboveGroundM": 4.483,
+      "q50AboveGroundM": 6.383,
+      "q90AboveGroundM": 8.374,
+      "groundRangeM": 0.244,
+      "roofDiagnostic": {
+        "center": [
+          51.52471529299259,
+          -252.47343356206437
+        ],
+        "along": [
+          0.6558320439073358,
+          0.7549068354335695
+        ],
+        "across": [
+          -0.7549068354335695,
+          0.6558320439073358
+        ],
+        "coefficients": [
+          8.627991533170261,
+          -0.04952102500780877,
+          0.03782201254627987
+        ],
+        "holdoutRmseM": 1.3836,
+        "planeHoldoutRmseM": 1.3899,
+        "within065m": 0.3068,
+        "pitchDegrees": -2.17
+      }
+    },
+    {
+      "id": "way/292320265",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 1.88,
+      "status": "height-only",
+      "samples": 1470,
+      "q10AboveGroundM": 10.1,
+      "q50AboveGroundM": 11.463,
+      "q90AboveGroundM": 12.719,
+      "groundRangeM": 0.371,
+      "roofDiagnostic": {
+        "center": [
+          25.36609217937679,
+          -245.74499152821534
+        ],
+        "along": [
+          -0.657204915004763,
+          0.7537119474265896
+        ],
+        "across": [
+          -0.7537119474265896,
+          -0.657204915004763
+        ],
+        "coefficients": [
+          14.542810149246948,
+          0.0033311855731428947,
+          -0.7846702865468163
+        ],
+        "holdoutRmseM": 0.892,
+        "planeHoldoutRmseM": 1.2145,
+        "within065m": 0.8115,
+        "pitchDegrees": 38.12
+      }
+    },
+    {
+      "id": "way/292320266",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 14.0,
+      "originalElevationM": 1.56,
+      "status": "height-only",
+      "samples": 2278,
+      "q10AboveGroundM": 10.008,
+      "q50AboveGroundM": 11.822,
+      "q90AboveGroundM": 13.567,
+      "groundRangeM": 0.554,
+      "roofDiagnostic": {
+        "center": [
+          22.84676976709828,
+          -228.15287817456598
+        ],
+        "along": [
+          -0.7026299815288997,
+          0.7115554153097974
+        ],
+        "across": [
+          -0.7115554153097974,
+          -0.7026299815288997
+        ],
+        "coefficients": [
+          15.42062696614698,
+          -0.05419929266783678,
+          -1.1824082520149402
+        ],
+        "holdoutRmseM": 0.6256,
+        "planeHoldoutRmseM": 1.2911,
+        "within065m": 0.809,
+        "pitchDegrees": 49.78
+      }
+    },
+    {
+      "id": "way/292320267",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 3.01,
+      "status": "height-only",
+      "samples": 1676,
+      "q10AboveGroundM": 4.255,
+      "q50AboveGroundM": 5.554,
+      "q90AboveGroundM": 7.427,
+      "groundRangeM": 0.701,
+      "roofDiagnostic": {
+        "center": [
+          55.65889133995227,
+          -267.053464373285
+        ],
+        "along": [
+          -0.7641424827237612,
+          0.6450474913498744
+        ],
+        "across": [
+          -0.6450474913498744,
+          -0.7641424827237612
+        ],
+        "coefficients": [
+          10.895196782725018,
+          -0.042598417083039575,
+          -1.2256027005864147
+        ],
+        "holdoutRmseM": 0.8252,
+        "planeHoldoutRmseM": 1.1582,
+        "within065m": 0.8142,
+        "pitchDegrees": 50.79
+      }
+    },
+    {
+      "id": "way/292320268",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 13.0,
+      "originalElevationM": 1.52,
+      "status": "height-only",
+      "samples": 1574,
+      "q10AboveGroundM": 9.593,
+      "q50AboveGroundM": 11.285,
+      "q90AboveGroundM": 12.769,
+      "groundRangeM": 0.251,
+      "roofDiagnostic": {
+        "center": [
+          33.52176262870561,
+          -214.3807151786322
+        ],
+        "along": [
+          -0.7417039045319477,
+          0.6707274543375004
+        ],
+        "across": [
+          -0.6707274543375004,
+          -0.7417039045319477
+        ],
+        "coefficients": [
+          14.289439561582594,
+          -0.006975565323291931,
+          -1.1799500142080424
+        ],
+        "holdoutRmseM": 0.7571,
+        "planeHoldoutRmseM": 1.2262,
+        "within065m": 0.9243,
+        "pitchDegrees": 49.72
+      }
+    },
+    {
+      "id": "way/292320269",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 3.86,
+      "status": "supported-gable-hypothesis",
+      "samples": 883,
+      "q10AboveGroundM": 7.241,
+      "q50AboveGroundM": 8.846,
+      "q90AboveGroundM": 10.535,
+      "groundRangeM": 0.631,
+      "roof": {
+        "center": [
+          71.61126604307918,
+          -267.3978904494006
+        ],
+        "along": [
+          -0.7982443448002229,
+          0.6023337662745322
+        ],
+        "across": [
+          -0.6023337662745322,
+          -0.7982443448002229
+        ],
+        "coefficients": [
+          14.240726784168686,
+          -0.004885841158945668,
+          -1.2313373743690506
+        ],
+        "holdoutRmseM": 0.5056,
+        "planeHoldoutRmseM": 1.3199,
+        "within065m": 0.9955,
+        "pitchDegrees": 50.92
+      }
+    },
+    {
+      "id": "way/292320271",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 2.18,
+      "status": "supported-gable-hypothesis",
+      "samples": 1624,
+      "q10AboveGroundM": 10.048,
+      "q50AboveGroundM": 11.636,
+      "q90AboveGroundM": 13.247,
+      "groundRangeM": 0.37,
+      "roof": {
+        "center": [
+          33.98657577979426,
+          -256.0361732604165
+        ],
+        "along": [
+          -0.6445739486029317,
+          0.7645419705826655
+        ],
+        "across": [
+          -0.7645419705826655,
+          -0.6445739486029317
+        ],
+        "coefficients": [
+          15.497066555964647,
+          -0.0028657130725188943,
+          -0.9146068782745914
+        ],
+        "holdoutRmseM": 0.4437,
+        "planeHoldoutRmseM": 1.1446,
+        "within065m": 0.9334,
+        "pitchDegrees": 42.45
+      }
+    },
+    {
+      "id": "way/292320272",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 2.14,
+      "status": "supported-gable-hypothesis",
+      "samples": 3037,
+      "q10AboveGroundM": 7.006,
+      "q50AboveGroundM": 8.781,
+      "q90AboveGroundM": 10.277,
+      "groundRangeM": 0.605,
+      "roof": {
+        "center": [
+          39.27737590963396,
+          -243.2427305844419
+        ],
+        "along": [
+          -0.7772968836672751,
+          0.6291339719337549
+        ],
+        "across": [
+          -0.6291339719337549,
+          -0.7772968836672751
+        ],
+        "coefficients": [
+          12.507143187837453,
+          -0.005687435089393786,
+          -0.9167490011248896
+        ],
+        "holdoutRmseM": 0.5345,
+        "planeHoldoutRmseM": 1.1558,
+        "within065m": 0.9457,
+        "pitchDegrees": 42.51
+      }
+    },
+    {
+      "id": "way/292320273",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 2.4,
+      "status": "height-only",
+      "samples": 693,
+      "q10AboveGroundM": 9.222,
+      "q50AboveGroundM": 11.038,
+      "q90AboveGroundM": 12.323,
+      "groundRangeM": 0.261,
+      "roofDiagnostic": {
+        "center": [
+          40.944334718348614,
+          -265.1474948248493
+        ],
+        "along": [
+          0.7592566023653055,
+          0.6507913734559582
+        ],
+        "across": [
+          -0.6507913734559582,
+          0.7592566023653055
+        ],
+        "coefficients": [
+          13.400710061549121,
+          0.3400254532113534,
+          -0.028086352618763227
+        ],
+        "holdoutRmseM": 1.2432,
+        "planeHoldoutRmseM": 1.2558,
+        "within065m": 0.4428,
+        "pitchDegrees": 1.61
+      }
+    },
+    {
+      "id": "way/292320274",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 3.02,
+      "status": "height-only",
+      "samples": 600,
+      "q10AboveGroundM": 8.692,
+      "q50AboveGroundM": 10.623,
+      "q90AboveGroundM": 11.866,
+      "groundRangeM": 0.266,
+      "roofDiagnostic": {
+        "center": [
+          53.1355215245031,
+          -276.989218654019
+        ],
+        "along": [
+          0.6913762270720808,
+          0.7224949222240767
+        ],
+        "across": [
+          -0.7224949222240767,
+          0.6913762270720808
+        ],
+        "coefficients": [
+          13.65366307378376,
+          0.32169460818174606,
+          -0.19207019377102097
+        ],
+        "holdoutRmseM": 1.1601,
+        "planeHoldoutRmseM": 1.1841,
+        "within065m": 0.468,
+        "pitchDegrees": 10.87
+      }
+    },
+    {
+      "id": "way/292320275",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 13.0,
+      "originalElevationM": 1.52,
+      "status": "supported-gable-hypothesis",
+      "samples": 2084,
+      "q10AboveGroundM": 10.253,
+      "q50AboveGroundM": 11.707,
+      "q90AboveGroundM": 13.165,
+      "groundRangeM": 0.538,
+      "roof": {
+        "center": [
+          15.278387976981621,
+          -233.9791484051729
+        ],
+        "along": [
+          0.6204176772040377,
+          -0.7842715765681849
+        ],
+        "across": [
+          0.7842715765681849,
+          0.6204176772040377
+        ],
+        "coefficients": [
+          14.80870322681811,
+          0.004251309966739465,
+          -1.0828092350352674
+        ],
+        "holdoutRmseM": 0.6117,
+        "planeHoldoutRmseM": 1.057,
+        "within065m": 0.8768,
+        "pitchDegrees": 47.28
+      }
+    },
+    {
+      "id": "way/292320276",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 2.76,
+      "status": "supported-gable-hypothesis",
+      "samples": 1429,
+      "q10AboveGroundM": 8.089,
+      "q50AboveGroundM": 9.741,
+      "q90AboveGroundM": 11.039,
+      "groundRangeM": 0.59,
+      "roof": {
+        "center": [
+          42.9843932146516,
+          -277.7694004186288
+        ],
+        "along": [
+          0.6790594240603048,
+          -0.7340833049422164
+        ],
+        "across": [
+          0.7340833049422164,
+          0.6790594240603048
+        ],
+        "coefficients": [
+          13.802126087786078,
+          0.017694712899846598,
+          -1.1517954202482064
+        ],
+        "holdoutRmseM": 0.5597,
+        "planeHoldoutRmseM": 1.1527,
+        "within065m": 0.9442,
+        "pitchDegrees": 49.04
+      }
+    },
+    {
+      "id": "way/292320278",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 2.51,
+      "status": "supported-gable-hypothesis",
+      "samples": 1121,
+      "q10AboveGroundM": 8.844,
+      "q50AboveGroundM": 10.207,
+      "q90AboveGroundM": 11.468,
+      "groundRangeM": 0.405,
+      "roof": {
+        "center": [
+          58.93467610935509,
+          -246.9884589055181
+        ],
+        "along": [
+          -0.7852238432296833,
+          0.6192120121764481
+        ],
+        "across": [
+          -0.6192120121764481,
+          -0.7852238432296833
+        ],
+        "coefficients": [
+          13.952449136585406,
+          -0.012800370439634553,
+          -1.0035796283718432
+        ],
+        "holdoutRmseM": 0.5127,
+        "planeHoldoutRmseM": 1.0399,
+        "within065m": 0.9644,
+        "pitchDegrees": 45.1
+      }
+    },
+    {
+      "id": "way/331274526",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.05,
+      "status": "height-only",
+      "samples": 2368,
+      "q10AboveGroundM": 9.452,
+      "q50AboveGroundM": 11.041,
+      "q90AboveGroundM": 12.422,
+      "groundRangeM": 0.632
+    },
+    {
+      "id": "way/331274527",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 15.0,
+      "originalElevationM": 4.15,
+      "status": "height-only",
+      "samples": 9808,
+      "q10AboveGroundM": 16.159,
+      "q50AboveGroundM": 18.529,
+      "q90AboveGroundM": 22.283,
+      "groundRangeM": 2.997
+    },
+    {
+      "id": "way/331274539",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.81,
+      "status": "height-only",
+      "samples": 1106,
+      "q10AboveGroundM": 9.326,
+      "q50AboveGroundM": 11.406,
+      "q90AboveGroundM": 13.084,
+      "groundRangeM": 0.064,
+      "roofDiagnostic": {
+        "center": [
+          9.651796209531922,
+          -277.75035876818436
+        ],
+        "along": [
+          0.7951908390007988,
+          0.6063592413488936
+        ],
+        "across": [
+          -0.6063592413488936,
+          0.7951908390007988
+        ],
+        "coefficients": [
+          13.312164835621218,
+          -0.20296873181732372,
+          -0.06640621116539548
+        ],
+        "holdoutRmseM": 1.3792,
+        "planeHoldoutRmseM": 1.413,
+        "within065m": 0.3471,
+        "pitchDegrees": 3.8
+      }
+    },
+    {
+      "id": "way/331274540",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 7.48,
+      "status": "height-only",
+      "samples": 1122,
+      "q10AboveGroundM": 3.983,
+      "q50AboveGroundM": 5.384,
+      "q90AboveGroundM": 6.937,
+      "groundRangeM": 2.433,
+      "roofDiagnostic": {
+        "center": [
+          73.65008381876004,
+          -295.76479445336776
+        ],
+        "along": [
+          -0.7889950725709485,
+          0.6143995242989401
+        ],
+        "across": [
+          -0.6143995242989401,
+          -0.7889950725709485
+        ],
+        "coefficients": [
+          12.699210032725567,
+          -0.021174952161807713,
+          -1.137224510386758
+        ],
+        "holdoutRmseM": 0.8109,
+        "planeHoldoutRmseM": 0.919,
+        "within065m": 0.7774,
+        "pitchDegrees": 48.67
+      }
+    },
+    {
+      "id": "way/331274543",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 3.58,
+      "status": "height-only",
+      "samples": 2489,
+      "q10AboveGroundM": 7.387,
+      "q50AboveGroundM": 9.455,
+      "q90AboveGroundM": 11.15,
+      "groundRangeM": 1.286,
+      "roofDiagnostic": {
+        "center": [
+          71.19020592323449,
+          -251.1383828175765
+        ],
+        "along": [
+          0.5955686468208697,
+          0.8033044173437354
+        ],
+        "across": [
+          -0.8033044173437354,
+          0.5955686468208697
+        ],
+        "coefficients": [
+          12.310954491240535,
+          -0.06386515346883494,
+          -0.08725362881467663
+        ],
+        "holdoutRmseM": 1.3486,
+        "planeHoldoutRmseM": 1.3587,
+        "within065m": 0.3011,
+        "pitchDegrees": 4.99
+      }
+    },
+    {
+      "id": "way/331274548",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.96,
+      "status": "supported-gable-hypothesis",
+      "samples": 938,
+      "q10AboveGroundM": 4.553,
+      "q50AboveGroundM": 5.853,
+      "q90AboveGroundM": 7.154,
+      "groundRangeM": 0.28,
+      "roof": {
+        "center": [
+          43.130161113542314,
+          -223.16750471694726
+        ],
+        "along": [
+          -0.7442422836946845,
+          0.6679097417772262
+        ],
+        "across": [
+          -0.6679097417772262,
+          -0.7442422836946845
+        ],
+        "coefficients": [
+          8.907334374182273,
+          -0.0058883853158527176,
+          -0.987536018236004
+        ],
+        "holdoutRmseM": 0.1215,
+        "planeHoldoutRmseM": 0.9109,
+        "within065m": 0.9978,
+        "pitchDegrees": 44.64
+      }
+    },
+    {
+      "id": "way/331274556",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.45,
+      "status": "height-only",
+      "samples": 2199,
+      "q10AboveGroundM": 6.29,
+      "q50AboveGroundM": 8.175,
+      "q90AboveGroundM": 9.818,
+      "groundRangeM": 0.655
+    },
+    {
+      "id": "way/331274570",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.71,
+      "status": "height-only",
+      "samples": 530,
+      "q10AboveGroundM": 6.819,
+      "q50AboveGroundM": 7.739,
+      "q90AboveGroundM": 8.639,
+      "groundRangeM": 0.173,
+      "roofDiagnostic": {
+        "center": [
+          13.843950997351943,
+          -256.0083251286304
+        ],
+        "along": [
+          -0.6210652414977166,
+          0.7837588696808367
+        ],
+        "across": [
+          -0.7837588696808367,
+          -0.6210652414977166
+        ],
+        "coefficients": [
+          10.220080290264201,
+          0.050317115814000224,
+          -0.5070986056242123
+        ],
+        "holdoutRmseM": 0.6077,
+        "planeHoldoutRmseM": 0.7995,
+        "within065m": 0.8014,
+        "pitchDegrees": 26.89
+      }
+    },
+    {
+      "id": "way/331274572",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.54,
+      "status": "height-only",
+      "samples": 482,
+      "q10AboveGroundM": 10.017,
+      "q50AboveGroundM": 12.432,
+      "q90AboveGroundM": 13.074,
+      "groundRangeM": 0.173,
+      "roofDiagnostic": {
+        "center": [
+          9.399764364268053,
+          -250.41766953459927
+        ],
+        "along": [
+          0.7883157834850706,
+          0.6152708554029837
+        ],
+        "across": [
+          -0.6152708554029837,
+          0.7883157834850706
+        ],
+        "coefficients": [
+          13.263876341776127,
+          0.5819722839346294,
+          0.030168036601964345
+        ],
+        "holdoutRmseM": 0.5718,
+        "planeHoldoutRmseM": 0.5727,
+        "within065m": 0.658,
+        "pitchDegrees": -1.73
+      }
+    },
+    {
+      "id": "way/331274573",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.65,
+      "status": "supported-gable-hypothesis",
+      "samples": 827,
+      "q10AboveGroundM": 9.478,
+      "q50AboveGroundM": 10.909,
+      "q90AboveGroundM": 12.328,
+      "groundRangeM": 0.193,
+      "roof": {
+        "center": [
+          6.782360605728298,
+          -259.3845819883228
+        ],
+        "along": [
+          -0.627611975460558,
+          0.7785263054377133
+        ],
+        "across": [
+          -0.7785263054377133,
+          -0.627611975460558
+        ],
+        "coefficients": [
+          14.064343931791624,
+          0.007467666441529302,
+          -0.9784553914690742
+        ],
+        "holdoutRmseM": 0.4583,
+        "planeHoldoutRmseM": 1.0518,
+        "within065m": 0.9581,
+        "pitchDegrees": 44.38
+      }
+    },
+    {
+      "id": "way/331274577",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.84,
+      "status": "height-only",
+      "samples": 443,
+      "q10AboveGroundM": 6.915,
+      "q50AboveGroundM": 8.309,
+      "q90AboveGroundM": 9.49,
+      "groundRangeM": 0.138,
+      "roofDiagnostic": {
+        "center": [
+          18.252393688700984,
+          -261.51500540090734
+        ],
+        "along": [
+          0.7960354045448393,
+          0.6052500596539697
+        ],
+        "across": [
+          -0.6052500596539697,
+          0.7960354045448393
+        ],
+        "coefficients": [
+          10.142721900714985,
+          0.45296268333060036,
+          0.008879238347400304
+        ],
+        "holdoutRmseM": 0.9062,
+        "planeHoldoutRmseM": 0.9063,
+        "within065m": 0.5907,
+        "pitchDegrees": -0.51
+      }
+    },
+    {
+      "id": "way/331274580",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.54,
+      "status": "supported-gable-hypothesis",
+      "samples": 960,
+      "q10AboveGroundM": 4.265,
+      "q50AboveGroundM": 5.267,
+      "q90AboveGroundM": 6.303,
+      "groundRangeM": 0.358,
+      "roof": {
+        "center": [
+          36.23575627832345,
+          -282.1696087574155
+        ],
+        "along": [
+          -0.6571805744360832,
+          0.7537331706803541
+        ],
+        "across": [
+          -0.7537331706803541,
+          -0.6571805744360832
+        ],
+        "coefficients": [
+          8.701350819546326,
+          -0.010687111158189147,
+          -0.9874124741026993
+        ],
+        "holdoutRmseM": 0.1328,
+        "planeHoldoutRmseM": 0.7287,
+        "within065m": 1.0,
+        "pitchDegrees": 44.64
+      }
+    },
+    {
+      "id": "way/331274581",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.9,
+      "status": "height-only",
+      "samples": 267,
+      "q10AboveGroundM": 3.86,
+      "q50AboveGroundM": 5.338,
+      "q90AboveGroundM": 6.129,
+      "groundRangeM": 0.095,
+      "roofDiagnostic": {
+        "center": [
+          21.611634285995237,
+          -266.94740483267765
+        ],
+        "along": [
+          0.6087457539924787,
+          -0.7933653679082096
+        ],
+        "across": [
+          0.7933653679082096,
+          0.6087457539924787
+        ],
+        "coefficients": [
+          7.474343646069709,
+          -0.03967256398612643,
+          -0.576401491872908
+        ],
+        "holdoutRmseM": 0.7886,
+        "planeHoldoutRmseM": 0.3853,
+        "within065m": 0.4173,
+        "pitchDegrees": 29.96
+      }
+    },
+    {
+      "id": "way/331274587",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 13.0,
+      "originalElevationM": 1.95,
+      "status": "height-only",
+      "samples": 3490,
+      "q10AboveGroundM": 8.262,
+      "q50AboveGroundM": 10.545,
+      "q90AboveGroundM": 13.239,
+      "groundRangeM": 0.77,
+      "roofDiagnostic": {
+        "center": [
+          34.28091426010976,
+          -226.97547318207864
+        ],
+        "along": [
+          0.7281660594952231,
+          -0.685400751239156
+        ],
+        "across": [
+          0.685400751239156,
+          0.7281660594952231
+        ],
+        "coefficients": [
+          14.118629679487,
+          -0.11465834259054056,
+          -1.204728143909345
+        ],
+        "holdoutRmseM": 0.831,
+        "planeHoldoutRmseM": 1.4197,
+        "within065m": 0.6715,
+        "pitchDegrees": 50.31
+      }
+    },
+    {
+      "id": "way/331274594",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 1.83,
+      "status": "supported-gable-hypothesis",
+      "samples": 1068,
+      "q10AboveGroundM": 8.819,
+      "q50AboveGroundM": 10.294,
+      "q90AboveGroundM": 11.589,
+      "groundRangeM": 0.193,
+      "roof": {
+        "center": [
+          13.396263774506185,
+          -267.39634971708443
+        ],
+        "along": [
+          -0.6364596124060122,
+          0.771310029609358
+        ],
+        "across": [
+          -0.771310029609358,
+          -0.6364596124060122
+        ],
+        "coefficients": [
+          13.537862135493599,
+          0.01050036132313663,
+          -1.0178737796745572
+        ],
+        "holdoutRmseM": 0.3979,
+        "planeHoldoutRmseM": 1.0616,
+        "within065m": 0.9257,
+        "pitchDegrees": 45.51
+      }
+    },
+    {
+      "id": "way/331274596",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.73,
+      "status": "height-only",
+      "samples": 1072,
+      "q10AboveGroundM": 6.674,
+      "q50AboveGroundM": 8.525,
+      "q90AboveGroundM": 10.428,
+      "groundRangeM": 0.614,
+      "roofDiagnostic": {
+        "center": [
+          34.001912818658404,
+          -291.1514031608608
+        ],
+        "along": [
+          0.6417226326738139,
+          -0.7669368049025872
+        ],
+        "across": [
+          0.7669368049025872,
+          0.6417226326738139
+        ],
+        "coefficients": [
+          12.359945408713429,
+          -0.19375002198586863,
+          -1.145109881359827
+        ],
+        "holdoutRmseM": 0.5195,
+        "planeHoldoutRmseM": 1.0333,
+        "within065m": 0.7891,
+        "pitchDegrees": 48.87
+      }
+    },
+    {
+      "id": "way/331274599",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.2,
+      "status": "height-only",
+      "samples": 1870,
+      "q10AboveGroundM": 9.399,
+      "q50AboveGroundM": 11.0,
+      "q90AboveGroundM": 12.49,
+      "groundRangeM": 0.269,
+      "roofDiagnostic": {
+        "center": [
+          23.096552421309365,
+          -279.0827325374396
+        ],
+        "along": [
+          0.6410720883555919,
+          -0.7674806691581229
+        ],
+        "across": [
+          0.7674806691581229,
+          0.6410720883555919
+        ],
+        "coefficients": [
+          14.685559366967091,
+          0.016353531584771933,
+          -1.1213931500384005
+        ],
+        "holdoutRmseM": 0.7014,
+        "planeHoldoutRmseM": 1.3094,
+        "within065m": 0.9593,
+        "pitchDegrees": 48.28
+      }
+    },
+    {
+      "id": "way/331274605",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.25,
+      "status": "height-only",
+      "samples": 1896,
+      "q10AboveGroundM": 9.91,
+      "q50AboveGroundM": 12.843,
+      "q90AboveGroundM": 15.954,
+      "groundRangeM": 0.321,
+      "roofDiagnostic": {
+        "center": [
+          31.001130138927586,
+          -270.5021275061014
+        ],
+        "along": [
+          0.7780820876299933,
+          0.6281626102446335
+        ],
+        "across": [
+          -0.6281626102446335,
+          0.7780820876299933
+        ],
+        "coefficients": [
+          14.865256575469058,
+          0.09656526977750995,
+          0.03903035617069383
+        ],
+        "holdoutRmseM": 2.225,
+        "planeHoldoutRmseM": 2.2256,
+        "within065m": 0.1842,
+        "pitchDegrees": -2.24
+      }
+    },
+    {
+      "id": "way/393025479",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 3.0,
+      "originalElevationM": 1.88,
+      "status": "supported-gable-hypothesis",
+      "samples": 3275,
+      "q10AboveGroundM": 6.789,
+      "q50AboveGroundM": 7.244,
+      "q90AboveGroundM": 7.684,
+      "groundRangeM": 0.298,
+      "roof": {
+        "center": [
+          51.23499999999999,
+          -142.245
+        ],
+        "along": [
+          -0.714599098284407,
+          -0.699534222701872
+        ],
+        "across": [
+          0.699534222701872,
+          -0.714599098284407
+        ],
+        "coefficients": [
+          9.604766119998526,
+          0.0005053835808084504,
+          -0.3179801904909954
+        ],
+        "holdoutRmseM": 0.0551,
+        "planeHoldoutRmseM": 0.3255,
+        "within065m": 1.0,
+        "pitchDegrees": 17.64
+      }
+    },
+    {
+      "id": "way/396054150",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 3.0,
+      "originalElevationM": 1.74,
+      "status": "height-only",
+      "samples": 797,
+      "q10AboveGroundM": 3.896,
+      "q50AboveGroundM": 4.923,
+      "q90AboveGroundM": 5.974,
+      "groundRangeM": 0.096,
+      "roofDiagnostic": {
+        "center": [
+          76.07542602392589,
+          -110.15204839381154
+        ],
+        "along": [
+          -0.7111956888539771,
+          -0.7029940911241837
+        ],
+        "across": [
+          0.7029940911241837,
+          -0.7111956888539771
+        ],
+        "coefficients": [
+          8.214602286339014,
+          -0.012645854099017648,
+          -0.8108568137512994
+        ],
+        "holdoutRmseM": 0.6268,
+        "planeHoldoutRmseM": 0.7643,
+        "within065m": 0.8175,
+        "pitchDegrees": 39.04
+      }
+    },
+    {
+      "id": "way/416421844",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 2.68,
+      "status": "supported-gable-hypothesis",
+      "samples": 707,
+      "q10AboveGroundM": 8.724,
+      "q50AboveGroundM": 9.869,
+      "q90AboveGroundM": 10.927,
+      "groundRangeM": 0.339,
+      "roof": {
+        "center": [
+          47.083532581299984,
+          -271.065772400921
+        ],
+        "along": [
+          0.7431873331141797,
+          -0.6690833938296731
+        ],
+        "across": [
+          0.6690833938296731,
+          0.7431873331141797
+        ],
+        "coefficients": [
+          13.648730206439986,
+          0.007320336490465414,
+          -0.8556278369949539
+        ],
+        "holdoutRmseM": 0.6271,
+        "planeHoldoutRmseM": 1.0074,
+        "within065m": 0.9745,
+        "pitchDegrees": 40.55
+      }
+    },
+    {
+      "id": "way/418057357",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 15.0,
+      "originalElevationM": 3.38,
+      "status": "height-only",
+      "samples": 4863,
+      "q10AboveGroundM": 7.237,
+      "q50AboveGroundM": 18.294,
+      "q90AboveGroundM": 22.131,
+      "groundRangeM": 1.081
+    },
+    {
+      "id": "way/418057369",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 15.0,
+      "originalElevationM": 3.22,
+      "status": "height-only",
+      "samples": 5273,
+      "q10AboveGroundM": 17.39,
+      "q50AboveGroundM": 20.434,
+      "q90AboveGroundM": 22.831,
+      "groundRangeM": 2.143,
+      "roofDiagnostic": {
+        "center": [
+          51.1008451667081,
+          -193.25414370922542
+        ],
+        "along": [
+          0.7358767176757447,
+          -0.6771155413832799
+        ],
+        "across": [
+          0.6771155413832799,
+          0.7358767176757447
+        ],
+        "coefficients": [
+          26.119769734133367,
+          -0.05221842726767783,
+          -1.0186704681615832
+        ],
+        "holdoutRmseM": 1.9168,
+        "planeHoldoutRmseM": 2.4616,
+        "within065m": 0.5821,
+        "pitchDegrees": 45.53
+      }
+    },
+    {
+      "id": "way/488690087",
+      "originalHeightStatus": "osm-height",
+      "originalHeightM": 13.0,
+      "originalElevationM": 1.37,
+      "status": "height-only",
+      "samples": 1019,
+      "q10AboveGroundM": 10.307,
+      "q50AboveGroundM": 11.494,
+      "q90AboveGroundM": 12.534,
+      "groundRangeM": 0.465,
+      "roofDiagnostic": {
+        "center": [
+          8.011868354287891,
+          -237.7797675353716
+        ],
+        "along": [
+          0.6197553014696574,
+          -0.7847951110323343
+        ],
+        "across": [
+          0.7847951110323343,
+          0.6197553014696574
+        ],
+        "coefficients": [
+          13.715254453043311,
+          0.05421360046609584,
+          -0.9897853829922073
+        ],
+        "holdoutRmseM": 0.7083,
+        "planeHoldoutRmseM": 0.9267,
+        "within065m": 0.7343,
+        "pitchDegrees": 44.71
+      }
+    },
+    {
+      "id": "way/984917585",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 2.1,
+      "status": "height-only",
+      "samples": 594,
+      "q10AboveGroundM": 9.227,
+      "q50AboveGroundM": 10.44,
+      "q90AboveGroundM": 11.616,
+      "groundRangeM": 0.206
+    },
+    {
+      "id": "way/292242381",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 4.47,
+      "status": "height-only",
+      "samples": 814,
+      "q10AboveGroundM": 7.028,
+      "q50AboveGroundM": 8.371,
+      "q90AboveGroundM": 9.64,
+      "groundRangeM": 0.585
+    },
+    {
+      "id": "way/292242384",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 6.0,
+      "originalElevationM": 4.82,
+      "status": "roof-ground-conflict",
+      "samples": 1677,
+      "q10AboveGroundM": 4.217,
+      "q50AboveGroundM": 6.042,
+      "q90AboveGroundM": 7.794,
+      "groundRangeM": 1.389,
+      "roofDiagnostic": {
+        "center": [
+          48.524444786395435,
+          -307.66540157974106
+        ],
+        "along": [
+          0.7437095088347347,
+          -0.6685029292896161
+        ],
+        "across": [
+          0.6685029292896161,
+          0.7437095088347347
+        ],
+        "coefficients": [
+          12.012974942835367,
+          0.02222755510487544,
+          -0.8769547637052958
+        ],
+        "holdoutRmseM": 0.3733,
+        "planeHoldoutRmseM": 1.3236,
+        "within065m": 0.9878,
+        "pitchDegrees": 41.25
+      }
+    },
+    {
+      "id": "way/331274535",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 4.18,
+      "status": "height-only",
+      "samples": 357,
+      "q10AboveGroundM": 4.442,
+      "q50AboveGroundM": 5.624,
+      "q90AboveGroundM": 6.883,
+      "groundRangeM": 0.464,
+      "roofDiagnostic": {
+        "center": [
+          24.00292782858735,
+          -326.1135910216277
+        ],
+        "along": [
+          -0.7450042259740158,
+          -0.6670597449110968
+        ],
+        "across": [
+          0.6670597449110968,
+          -0.7450042259740158
+        ],
+        "coefficients": [
+          9.506251668780015,
+          0.09612556755063424,
+          0.0783594728985081
+        ],
+        "holdoutRmseM": 1.0625,
+        "planeHoldoutRmseM": 1.0656,
+        "within065m": 0.4681,
+        "pitchDegrees": -4.48
+      }
+    },
+    {
+      "id": "way/331274542",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 3.89,
+      "status": "supported-gable-hypothesis",
+      "samples": 2307,
+      "q10AboveGroundM": 6.291,
+      "q50AboveGroundM": 8.157,
+      "q90AboveGroundM": 9.858,
+      "groundRangeM": 1.436,
+      "roof": {
+        "center": [
+          32.06400547644909,
+          -305.52887976717227
+        ],
+        "along": [
+          0.6583951829547148,
+          -0.7526724274623243
+        ],
+        "across": [
+          0.7526724274623243,
+          0.6583951829547148
+        ],
+        "coefficients": [
+          13.343875295663615,
+          0.02603421683893278,
+          -1.2459013218654802
+        ],
+        "holdoutRmseM": 0.5975,
+        "planeHoldoutRmseM": 1.3694,
+        "within065m": 0.9599,
+        "pitchDegrees": 51.25
+      }
+    },
+    {
+      "id": "way/331274545",
+      "originalHeightStatus": "levels-estimate",
+      "originalHeightM": 3.0,
+      "originalElevationM": 5.63,
+      "status": "supported-gable-hypothesis",
+      "samples": 818,
+      "q10AboveGroundM": 4.563,
+      "q50AboveGroundM": 5.579,
+      "q90AboveGroundM": 6.762,
+      "groundRangeM": 0.954,
+      "roof": {
+        "center": [
+          27.219999999999995,
+          -341.12
+        ],
+        "along": [
+          -0.7071067811865475,
+          0.7071067811865475
+        ],
+        "across": [
+          -0.7071067811865475,
+          -0.7071067811865475
+        ],
+        "coefficients": [
+          11.79983862093852,
+          -0.03825090939816721,
+          -0.9869196329765944
+        ],
+        "holdoutRmseM": 0.3615,
+        "planeHoldoutRmseM": 0.7719,
+        "within065m": 0.9391,
+        "pitchDegrees": 44.62
+      }
+    },
+    {
+      "id": "way/331274547",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 3.86,
+      "status": "height-only",
+      "samples": 1033,
+      "q10AboveGroundM": 9.71,
+      "q50AboveGroundM": 11.617,
+      "q90AboveGroundM": 12.919,
+      "groundRangeM": 0.737,
+      "roofDiagnostic": {
+        "center": [
+          27.577418194691475,
+          -316.0935790799529
+        ],
+        "along": [
+          0.7323261634146753,
+          0.6809540295631873
+        ],
+        "across": [
+          -0.6809540295631873,
+          0.7323261634146753
+        ],
+        "coefficients": [
+          15.325504838237705,
+          0.3374959178806122,
+          -0.005044485004414237
+        ],
+        "holdoutRmseM": 1.6289,
+        "planeHoldoutRmseM": 1.6295,
+        "within065m": 0.3962,
+        "pitchDegrees": 0.29
+      }
+    },
+    {
+      "id": "way/331274559",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 3.24,
+      "status": "height-only",
+      "samples": 2318,
+      "q10AboveGroundM": 8.843,
+      "q50AboveGroundM": 10.61,
+      "q90AboveGroundM": 12.119,
+      "groundRangeM": 1.137,
+      "roofDiagnostic": {
+        "center": [
+          17.75200540300857,
+          -305.22039094431835
+        ],
+        "along": [
+          -0.6541123943868528,
+          0.7563973661439458
+        ],
+        "across": [
+          -0.7563973661439458,
+          -0.6541123943868528
+        ],
+        "coefficients": [
+          15.077583310482307,
+          -0.02334966376390133,
+          -1.0286540631534553
+        ],
+        "holdoutRmseM": 0.7517,
+        "planeHoldoutRmseM": 1.4412,
+        "within065m": 0.948,
+        "pitchDegrees": 45.81
+      }
+    },
+    {
+      "id": "way/331274566",
+      "originalHeightStatus": "unknown",
+      "originalHeightM": null,
+      "originalElevationM": 6.57,
+      "status": "height-only",
+      "samples": 2100,
+      "q10AboveGroundM": 5.257,
+      "q50AboveGroundM": 7.17,
+      "q90AboveGroundM": 8.658,
+      "groundRangeM": 2.907,
+      "roofDiagnostic": {
+        "center": [
+          47.454334716231024,
+          -320.13547712961184
+        ],
+        "along": [
+          0.7368495085110588,
+          -0.6760568036836928
+        ],
+        "across": [
+          0.6760568036836928,
+          0.7368495085110588
+        ],
+        "coefficients": [
+          13.517119082401713,
+          0.1630117308525924,
+          -1.061895846509945
+        ],
+        "holdoutRmseM": 0.6993,
+        "planeHoldoutRmseM": 1.2011,
+        "within065m": 0.7216,
+        "pitchDegrees": 46.72
+      }
+    }
+  ],
+  "integratedIds": [
+    "way/331274546",
+    "way/331274548",
+    "way/331274573",
+    "way/331274580",
+    "way/331274594",
+    "way/331274542"
+  ],
+  "triangles": 162,
+  "glbBytes": 15160
+}

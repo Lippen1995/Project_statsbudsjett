@@ -1,0 +1,116 @@
+{
+  "label": "after",
+  "quality": "balanced",
+  "baselineCommit": "ab92713a99588dbf2458135e1bf7b41d892088a5",
+  "viewport": [
+    1440,
+    1000
+  ],
+  "renderer": "Chromium / ANGLE SwiftShader (software, not a hardware FPS benchmark)",
+  "browserVersion": "151.0.7922.173",
+  "readyMs": 4071,
+  "medianCpuFrameMs": 0.800000011920929,
+  "p95CpuFrameMs": 4.199999988079071,
+  "medianCameraLatencyMs": 630.8000000119209,
+  "p95CameraLatencyMs": 729.8999999761581,
+  "idleFrames": 0,
+  "views": [
+    {
+      "name": "overview",
+      "frames": 3,
+      "attributeArrays": 19,
+      "attributeBytes": 27056370,
+      "cpuFrameMs": 1,
+      "cameraLatencyMs": 658.5999999940395,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 6,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        1049.9999999999998,
+        1950,
+        2149.9999999999995
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "vagen",
+      "frames": 4,
+      "attributeArrays": 19,
+      "attributeBytes": 27056370,
+      "cpuFrameMs": 7.199999988079071,
+      "cameraLatencyMs": 11,
+      "calls": 6,
+      "triangles": 288140,
+      "lines": 109,
+      "geometries": 7,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -428.02,
+        301.42,
+        229.23999999999995
+      ],
+      "target": [
+        1.98,
+        1.42,
+        -270.76
+      ]
+    },
+    {
+      "name": "bergenhus",
+      "frames": 5,
+      "attributeArrays": 19,
+      "attributeBytes": 27056370,
+      "cpuFrameMs": 1.199999988079071,
+      "cameraLatencyMs": 1.5,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 7,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -663.46,
+        305.2,
+        -80.35999999999996
+      ],
+      "target": [
+        -333.46,
+        5.2,
+        -520.36
+      ]
+    },
+    {
+      "name": "nordnes",
+      "frames": 6,
+      "attributeArrays": 19,
+      "attributeBytes": 27056370,
+      "cpuFrameMs": 0.7999999821186066,
+      "cameraLatencyMs": 1,
+      "calls": 5,
+      "triangles": 288140,
+      "lines": 0,
+      "geometries": 7,
+      "textures": 1,
+      "pixelRatio": 1,
+      "position": [
+        -372.0199999999998,
+        600,
+        -6.079999999999927
+      ],
+      "target": [
+        -822.0199999999999,
+        0,
+        -766.08
+      ]
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,789 @@
+{
+  "accessedAt": "2026-10-21",
+  "scope": "Read-only public metadata and explicitly bounded public file acquisitions; no identity creation, email, export orders or auth retries. HTTP 200 is not a licence or a validity guarantee.",
+  "attempts": [
+    {
+      "name": "bergen-geodata-portal.json",
+      "url": "https://kart.bergen.kommune.no/portal/sharing/rest/search?f=json&q=Bergen+AND+%28type%3A%22Scene+Service%22+OR+type%3A%223D+Tiles%22+OR+type%3A%22CityEngine+Web+Scene%22%29&num=30",
+      "status": 200,
+      "bytes": 58,
+      "sha256": "b8de9b56529e927c85936ada5477e3fb2b6074f9ed709ef423d16e5b19b11d55",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 0.85,
+      "log": "attempts-alternatives.json"
+    },
+    {
+      "name": "arcgis-bergen-3d.json",
+      "url": "https://www.arcgis.com/sharing/rest/search?f=json&q=Bergen+AND+%28type%3A%22Scene+Service%22+OR+type%3A%22Scene+Package%22+OR+type%3A%22CityEngine+Web+Scene%22%29&num=50",
+      "status": 200,
+      "bytes": 58595,
+      "sha256": "639d047a09aa27a1d59508917f4f49a63011c6efe5341b9330b97feff235e56d",
+      "contentType": "application/json;charset=utf-8",
+      "seconds": 0.35,
+      "log": "attempts-alternatives.json"
+    },
+    {
+      "name": "bergen-height-layer.json",
+      "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Basis_kartdata/Bygningshoyde/MapServer/0?f=pjson",
+      "status": 200,
+      "bytes": 6259,
+      "sha256": "47d9192629de27f0c387e62ff77e27995199411fca002814cf265b547ae494b8",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.96,
+      "log": "attempts-alternatives.json"
+    },
+    {
+      "name": "niib-capabilities.xml",
+      "url": "https://services.norgeibilder.no/wms/ortofoto?SERVICE=WMS&REQUEST=GetCapabilities",
+      "status": 499,
+      "error": "HTTP Error 499: Unknown",
+      "seconds": 0.93,
+      "log": "attempts-alternatives.json"
+    },
+    {
+      "name": "niib-project-capabilities.xml",
+      "url": "https://services.norgeibilder.no/wms/prosjekt?SERVICE=WMS&REQUEST=GetCapabilities",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "seconds": 0.88,
+      "log": "attempts-alternatives.json"
+    },
+    {
+      "name": "laser-predeliveries.json",
+      "url": "https://hoydedata.no/LaserServices/REST/GetFileDownloads.ashx",
+      "status": 200,
+      "bytes": 32716,
+      "sha256": "f1a14cd065fd578e2acb2cefee7708b40ef8d516e9464ceac7309ce974a5beee",
+      "contentType": "text/plain; charset=utf-8",
+      "seconds": 0.78,
+      "log": "attempts-alternatives.json"
+    },
+    {
+      "name": "laser-open-3d.html",
+      "url": "https://hoydedata.no/laser3dviewer/index.html?name=https://hoydedata.no/Potree_vol21/6266/6b3c0587-81fb-40a1-aaaa-fb60b3952a32&laserversion=1.0&language=no",
+      "status": 200,
+      "bytes": 3860,
+      "sha256": "1421e887a9d748813457f690de290c6225fcf7720e77d84b9853a1509d42fc45",
+      "contentType": "text/html; charset=UTF-8",
+      "seconds": 0.84,
+      "log": "attempts-alternatives.json"
+    },
+    {
+      "name": "nvdb-v4-pilot.json",
+      "url": "https://nvdbapiles.atlas.vegvesen.no/vegnett/api/v4/veglenkesekvenser/segmentert?kartutsnitt=297372%2C6701150%2C297560%2C6701402&srid=5972&antall=100&inkluderAntall=false",
+      "status": 400,
+      "error": "HTTP Error 400: Bad Request",
+      "seconds": 0.96,
+      "log": "attempts-authoritative-alternatives.json"
+    },
+    {
+      "name": "nvdb-v4-schema.json",
+      "url": "https://nvdbapiles.atlas.vegvesen.no/vegnett/api-docs",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "seconds": 1.12,
+      "log": "attempts-authoritative-alternatives.json"
+    },
+    {
+      "name": "heritage-capabilities.xml",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.kulturminner?service=WFS&version=2.0.0&request=GetCapabilities",
+      "status": 504,
+      "error": "HTTP Error 504: Gateway Timeout",
+      "seconds": 30.91,
+      "log": "attempts-authoritative-alternatives.json"
+    },
+    {
+      "name": "bergen-physical-model.html",
+      "url": "https://www.bergen.kommune.no/hvaskjer/bymiljo/bergen-har-fatt-sin-egen-bymodell-i-3d",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "seconds": 5.87,
+      "log": "attempts-authoritative-alternatives.json"
+    },
+    {
+      "name": "uib-reference.html",
+      "url": "https://marcus.uib.no/instance/photograph/ubb-kk-n-165-017.html",
+      "status": 200,
+      "bytes": 45518,
+      "sha256": "c67d8160eaeebf3c282c78af9680faffd6e036f13da1d038dc682fa6a8e95c2b",
+      "contentType": "text/html;charset=UTF-8",
+      "seconds": 1.54,
+      "log": "attempts-authoritative-alternatives.json"
+    },
+    {
+      "name": "past-reference.html",
+      "url": "https://past.no/bredsgarden/",
+      "status": 200,
+      "bytes": 70785,
+      "sha256": "046db6f7785bd336a7e18d5409626ca1d98533f352f1bfc0d33fe98a41a78a15",
+      "contentType": "text/html; charset=UTF-8",
+      "seconds": 1.34,
+      "log": "attempts-authoritative-alternatives.json"
+    },
+    {
+      "name": "bergen-contacts.html",
+      "url": "https://www.bergen.kommune.no/innbyggerhjelpen/planer-bygg-og-eiendom/bygging/byggesak/saksinnsyn",
+      "status": 200,
+      "bytes": 35982,
+      "sha256": "8c0c3539ffa337cdd1d865e87d5c32e7b892fe73050b749a673810162ec010bf",
+      "contentType": "text/html;charset=UTF-8",
+      "seconds": 3.69,
+      "log": "attempts-authoritative-alternatives.json"
+    },
+    {
+      "name": "comparison-2026-dom-025.tif",
+      "url": "https://hoydedata.no/arcgis/rest/services/DOM/ImageServer/exportImage?f=image&bbox=297372%2C6701150%2C297560%2C6701402&bboxSR=25832&imageSR=25832&size=752%2C1008&format=tiff&pixelType=F32&interpolation=RSP_NearestNeighbor&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicAttribute%22%2C+%22where%22%3A+%22LAS_PROJECT_ID+%3D+6621%22%2C+%22mosaicOperation%22%3A+%22MT_FIRST%22%7D",
+      "basis": "Anonymous public height ImageServer export; Kartverket free-data terms and export FAQ; source project 6621 image matching, not classified raw LiDAR",
+      "status": 200,
+      "bytes": 3147246,
+      "sha256": "63a1d46d6a9b4d648245faa5b1b9229c89394d12d65e2a2f570e507234fcf57b",
+      "seconds": 4.36,
+      "log": "attempts-comparison-acquisition.json"
+    },
+    {
+      "name": "comparison-2026-dtm-025.tif",
+      "url": "https://hoydedata.no/arcgis/rest/services/DTM/ImageServer/exportImage?f=image&bbox=297372%2C6701150%2C297560%2C6701402&bboxSR=25832&imageSR=25832&size=752%2C1008&format=tiff&pixelType=F32&interpolation=RSP_NearestNeighbor&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicAttribute%22%2C+%22where%22%3A+%22LAS_PROJECT_ID+%3D+6621%22%2C+%22mosaicOperation%22%3A+%22MT_FIRST%22%7D",
+      "basis": "Anonymous public height ImageServer export; Kartverket free-data terms and export FAQ; source project 6621 image matching, not classified raw LiDAR",
+      "status": 200,
+      "bytes": 1518,
+      "sha256": "286caf969f41ef2804d04e5d88a40cdffd41f71a3b1d70c902cdf9c5f5ca41f4",
+      "seconds": 0.39,
+      "log": "attempts-comparison-acquisition.json"
+    },
+    {
+      "name": "ra-public.json",
+      "url": "https://kart.ra.no/arcgis/rest/services/Andretjenester?f=pjson",
+      "status": 200,
+      "bytes": 60,
+      "sha256": "4f453a5d70bace15df923ca73737494335ab149f2b0ac53023de383217c88e5b",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.87,
+      "log": "attempts-context-data.json"
+    },
+    {
+      "name": "nvdb-v3-roads.json",
+      "url": "https://nvdbapiles-v3.atlas.vegvesen.no/vegnett/veglenkesekvenser/segmentert?kartutsnitt=297372%2C6701150%2C297560%2C6701402&srid=25832&antall=100&inkluder=geometri",
+      "status": 400,
+      "error": "HTTP Error 400: Bad Request",
+      "seconds": 1.03,
+      "log": "attempts-context-data.json"
+    },
+    {
+      "name": "ortho-catalogue.json",
+      "url": "https://kartkatalog.geonorge.no/api/getdata/d5b180dd-0cef-4c4a-9174-ba5af69c3551",
+      "status": 200,
+      "bytes": 24644,
+      "sha256": "697eefd8cd69e6c56ef8066874ec9b50c25b246a5d9224028e0e0de5ec238f22",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.99,
+      "log": "attempts-context-data.json"
+    },
+    {
+      "name": "niib-projects.json",
+      "url": "https://backend-api.klienter-prod-k8s2.norgeibilder.no/projects",
+      "method": "POST read-only metadata query",
+      "request": {
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.3235,
+            60.397
+          ]
+        },
+        "inputWkid": 4326,
+        "returnMetadata": true,
+        "returnGeometry": false
+      },
+      "bytes": 31675,
+      "sha256": "5950e0d6387faae63e3e85cf92ea72e03d477f474e9f660227d23f5f03537d42",
+      "status": 200,
+      "log": "attempts-context-data.json"
+    },
+    {
+      "name": "registry-delivery-capabilities.json",
+      "url": "https://nedlasting.geonorge.no/api/capabilities/24d7e9d1-87f6-45a0-b38e-3447f8d7f9a1",
+      "status": 200,
+      "bytes": 998,
+      "sha256": "430553e3dbe90d787965240768f40e9d932ef0948bbcc9bea3209ff17a85f56c",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 0.94,
+      "log": "attempts-delivery-alternatives.json"
+    },
+    {
+      "name": "heritage-delivery-capabilities.json",
+      "url": "https://nedlasting.geonorge.no/api/capabilities/c72906a0-2bc2-41d7-bea2-c92d368e3c49",
+      "status": 200,
+      "bytes": 998,
+      "sha256": "4217bb17841090ef72d792d0969e01e39e37f57f91bfe4066173df721b73f839",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 0.94,
+      "log": "attempts-delivery-alternatives.json"
+    },
+    {
+      "name": "heritage-wfs11.xml",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.kulturminner?service=WFS&version=1.1.0&request=GetCapabilities",
+      "status": 504,
+      "error": "HTTP Error 504: Gateway Timeout",
+      "seconds": 30.98,
+      "log": "attempts-delivery-alternatives.json"
+    },
+    {
+      "name": "laser-client.js",
+      "url": "https://hoydedata.no/LaserInnsyn2/assets/index-CHioziIF.js",
+      "status": 200,
+      "error": "metadata byte limit",
+      "seconds": 1.86,
+      "log": "attempts-detail.json"
+    },
+    {
+      "name": "dom.json",
+      "url": "https://hoydedata.no/arcgis/rest/services/DOM/ImageServer?f=pjson",
+      "status": 200,
+      "bytes": 7999,
+      "sha256": "3b7e433fd0709c33de50c23df6dfe26423fd622452e29752700745a57f114a22",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.89,
+      "log": "attempts-detail.json"
+    },
+    {
+      "name": "project-dom.json",
+      "url": "https://hoydedata.no/arcgis/rest/services/Prosjekt_DOM/ImageServer?f=pjson",
+      "status": 200,
+      "bytes": 8023,
+      "sha256": "9f32907d021c0208808ba6ff79080ede097d4b6d1044f9c47c25ba47d78c5611",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.74,
+      "log": "attempts-detail.json"
+    },
+    {
+      "name": "laser-project-catalogue.json",
+      "url": "https://kartkatalog.geonorge.no/api/getdata/7425cd0c-e16f-4ce3-86f5-7ba92108f0e7",
+      "status": 200,
+      "bytes": 12310,
+      "sha256": "410859261a2be71a8f101a7572a5d51bb5e2b249eb69078e2720cdc007ce4b9a",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.46,
+      "log": "attempts-detail.json"
+    },
+    {
+      "name": "bergen-basis.json",
+      "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Basis_kartdata?f=pjson",
+      "status": 200,
+      "bytes": 2176,
+      "sha256": "74b2c877aedcf052b40b9aca71e279a51b503abac991186c0b1d634ecd22e63f",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.65,
+      "log": "attempts-detail.json"
+    },
+    {
+      "name": "bergen-3d.json",
+      "url": "https://kart.bergen.kommune.no/image/rest/services/3D?f=pjson",
+      "status": 200,
+      "bytes": 133,
+      "sha256": "472ca5ff15fc193fa446cec32203bcc8eedd7e6404d56acac522d6175b6e4c0b",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.49,
+      "log": "attempts-detail.json"
+    },
+    {
+      "name": "bergen-solar.json",
+      "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Solkart?f=pjson",
+      "status": 200,
+      "bytes": 139,
+      "sha256": "093c56ff078b97371ad8127fddf98debfe9ea8e2310b08397955821f53c43883",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.35,
+      "log": "attempts-detail.json"
+    },
+    {
+      "name": "bergen-open.html",
+      "url": "https://www.bergen.kommune.no/hvaskjer/tema/apne-data",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "seconds": 3.11,
+      "log": "attempts-detail.json"
+    },
+    {
+      "name": "kartverket-terms.html",
+      "url": "https://www.kartverket.no/api-og-data/vilkar-for-bruk",
+      "status": 200,
+      "bytes": 151626,
+      "sha256": "086efd85f8a0b8fc980172bdeff3ce5bdda6ca91b98c8afd69d4ec676a672054",
+      "contentType": "text/html; charset=utf-8",
+      "seconds": 1.44,
+      "log": "attempts-detail.json"
+    },
+    {
+      "name": "laser-faq.html",
+      "url": "https://test.hoydedata.no/LaserInnsyn2/help_no/topics/idh-topic230.htm",
+      "status": 200,
+      "bytes": 4899,
+      "sha256": "ec53be71cbd792f994cf72121a21c80a3b980c4b25eab28303741817a9ff7595",
+      "contentType": "text/html; charset=UTF-8",
+      "seconds": 0.85,
+      "log": "attempts-detail.json"
+    },
+    {
+      "name": "nvdb-swagger-config.json",
+      "url": "https://nvdbapiles.atlas.vegvesen.no/v3/api-docs/swagger-config",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "seconds": 0.47,
+      "log": "attempts-final-catalogues.json"
+    },
+    {
+      "name": "heritage-catalogue.json",
+      "url": "https://kartkatalog.geonorge.no/api/getdata/c72906a0-2bc2-41d7-bea2-c92d368e3c49",
+      "status": 200,
+      "bytes": 22804,
+      "sha256": "f2b8b319c6c7f8cbc674af084bc7a85a5ae71f477da0a0cfd3e2651be34f2c0d",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.49,
+      "log": "attempts-final-catalogues.json"
+    },
+    {
+      "name": "heritage-buildings-catalogue.json",
+      "url": "https://kartkatalog.geonorge.no/api/getdata/a4bfd879-120f-490e-9907-68ba870664b1",
+      "status": 200,
+      "bytes": 19133,
+      "sha256": "400da1c7d361330c532603c1a96f3392f6389d8c7326bcd148b1f26584382326",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.37,
+      "log": "attempts-final-catalogues.json"
+    },
+    {
+      "name": "laser-other-projects.json",
+      "url": "https://kartkatalog.geonorge.no/api/search?text=Bergen%20laser&limit=10",
+      "status": 200,
+      "bytes": 70091,
+      "sha256": "3b370c8431f0e4e971f952f16759e56241b6fec985b8fd104f521bb24820658f",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.36,
+      "log": "attempts-final-catalogues.json"
+    },
+    {
+      "name": "hoydedata-services.json",
+      "url": "https://hoydedata.no/arcgis/rest/services?f=pjson",
+      "status": 200,
+      "bytes": 2299,
+      "sha256": "1dfe971be94e45f8e3d64b672d7887c6a699495b659164a10d1cf5878823a454",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 1.23,
+      "log": "attempts-initial.json"
+    },
+    {
+      "name": "laser-root.html",
+      "url": "https://hoydedata.no/LaserInnsyn2/",
+      "status": 200,
+      "bytes": 1418,
+      "sha256": "f01ef5c70224342907e871e023b05b2683805ab724543edfe632a134143eae49",
+      "contentType": "text/html; charset=UTF-8",
+      "seconds": 1.18,
+      "log": "attempts-initial.json"
+    },
+    {
+      "name": "laser-rest-test.html",
+      "url": "https://test.hoydedata.no/LaserServices/REST/",
+      "status": 200,
+      "bytes": 5175,
+      "sha256": "a157554fb4578e6e03f64bd1a8872270468bac90214d19ae213f403605366502",
+      "contentType": "text/html; charset=UTF-8",
+      "seconds": 1.27,
+      "log": "attempts-initial.json"
+    },
+    {
+      "name": "bergen-services.json",
+      "url": "https://kart.bergen.kommune.no/arcgis/rest/services?f=pjson",
+      "status": 200,
+      "bytes": 2302,
+      "sha256": "b2006830799aa9a20c2892fa6544a01c9f75a3f636cd345081572b93cdf65bad",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 1.55,
+      "log": "attempts-initial.json"
+    },
+    {
+      "name": "bergen-image-services.json",
+      "url": "https://kart.bergen.kommune.no/image/rest/services?f=pjson",
+      "status": 200,
+      "bytes": 211,
+      "sha256": "128dc5b83f85569122b17efa35c62c3a7ab5b9b728bf902151c613bc6f3e7b3f",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.9,
+      "log": "attempts-initial.json"
+    },
+    {
+      "name": "niib-info.html",
+      "url": "https://www.geonorge.no/nib",
+      "status": 200,
+      "bytes": 15579,
+      "sha256": "bf5094abf436ff4b318484092aac5f18ff70879d643064d1c68032f5e2b505a8",
+      "contentType": "text/html; charset=utf-8",
+      "seconds": 1.01,
+      "log": "attempts-initial.json"
+    },
+    {
+      "name": "laser-catalogue.json",
+      "url": "https://kartkatalog.geonorge.no/api/getdata/8c62e33e-76ba-3c00-9db6-3a10e44135bc",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "seconds": 1.24,
+      "log": "attempts-initial.json"
+    },
+    {
+      "name": "niib-swagger.json",
+      "url": "https://backend-api.klienter-prod-k8s2.norgeibilder.no/swagger/v1/swagger.json",
+      "status": 200,
+      "bytes": 60240,
+      "sha256": "fa7db0e44e3c264178e201fc1bbb40400a9f96c15c2910b6cf45f5edc14ee045",
+      "contentType": "application/json;charset=utf-8",
+      "seconds": 1.25,
+      "log": "attempts-more-sources.json"
+    },
+    {
+      "name": "geonorge-ortho-search.json",
+      "url": "https://kartkatalog.geonorge.no/api/search?text=Digitale+ortofoto&limit=5",
+      "status": 200,
+      "bytes": 67858,
+      "sha256": "4617381eb4b99240fa4b9089f274fc4e8f7c94a701e934508d03cfd6af0a198a",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.49,
+      "log": "attempts-more-sources.json"
+    },
+    {
+      "name": "riksantikvaren-services.json",
+      "url": "https://kart.ra.no/arcgis/rest/services?f=pjson",
+      "status": 200,
+      "bytes": 109,
+      "sha256": "7c709cedca84f74094a3466e3fefa9c1425abcdab78ae83844abd1f96bfb2020",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.84,
+      "log": "attempts-more-sources.json"
+    },
+    {
+      "name": "nibio-open.html",
+      "url": "https://www.nibio.no/tjenester/nedlasting-av-kartdata",
+      "status": 200,
+      "bytes": 34914,
+      "sha256": "9b7a40ef6bea29aad54c9fff40c68754910b2fedccacd747c26146c188d09463",
+      "contentType": "text/html",
+      "seconds": 1.41,
+      "log": "attempts-more-sources.json"
+    },
+    {
+      "name": "nvdb-openapi.json",
+      "url": "https://nvdbapiles.atlas.vegvesen.no/api/v4/vegnett/openapi.json",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "seconds": 1.03,
+      "log": "attempts-more-sources.json"
+    },
+    {
+      "name": "bergen-orth2019.json",
+      "url": "https://kart.bergen.kommune.no/image/rest/services/Ortofoto/Ortofoto2019/ImageServer?f=pjson",
+      "status": 200,
+      "bytes": 6498,
+      "sha256": "fd1509ef245f9483ce91e9548ee96346761ccbd337ed229f4bf56b298dc446ec",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 1.47,
+      "log": "attempts-more-sources.json"
+    },
+    {
+      "name": "bergen-dokken-scene.json",
+      "url": "https://services1.arcgis.com/pCNieVwmAdVi1Tec/arcgis/rest/services/Dokken_arealstrategi_3Dbygg_2022/SceneServer?f=pjson",
+      "status": 200,
+      "bytes": 25710,
+      "sha256": "6d7dc709fc96d18965a8182218bbeca8fd784d899ae7430911d91f33c09ed8e8",
+      "contentType": "text/plain; charset=utf-8",
+      "seconds": 0.52,
+      "log": "attempts-more-sources.json"
+    },
+    {
+      "name": "bergen-3d-item.json",
+      "url": "https://www.arcgis.com/sharing/rest/content/items/3186ee3ed2a047f0a16d5b618a99db1a?f=pjson",
+      "status": 200,
+      "bytes": 1952,
+      "sha256": "bb1d9bd4c1445bf3809f9635c728966fc533b2f17eac8b4ebfbb44094ca32ebc",
+      "contentType": "text/plain;charset=utf-8",
+      "seconds": 0.31,
+      "log": "attempts-more-sources.json"
+    },
+    {
+      "name": "nvdb-v4-utm33.json",
+      "url": "https://nvdbapiles.atlas.vegvesen.no/vegnett/api/v4/veglenkesekvenser/segmentert?kartutsnitt=-32053.436710614595%2C6734700.982847113%2C-31842.603339236695%2C6734935.470721181&srid=5972&antall=100",
+      "headers": {
+        "X-Client": "BergenReimagined-R1E"
+      },
+      "status": 200,
+      "sha256": "01b6316975b9f5fae5fdda1acd8e2a9fbb62a916fdb328cddf3663e67329aeee",
+      "bytes": 128542,
+      "log": "attempts-newer-and-nvdb.json"
+    },
+    {
+      "name": "laser-2023-catalogue.json",
+      "url": "https://kartkatalog.geonorge.no/api/getdata/a067fcbc-260d-4799-8847-14eaa520c6a3",
+      "status": 200,
+      "bytes": 13721,
+      "sha256": "0cffdc178945eedc010c153004a8c8fb92e7a98b619ce48b2fe6fa0c6732e2e9",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.09,
+      "log": "attempts-newer-and-nvdb.json"
+    },
+    {
+      "name": "laser-2024-catalogue.json",
+      "url": "https://kartkatalog.geonorge.no/api/getdata/e88af2cd-5523-4598-85e2-baa1218e2a0e",
+      "status": 200,
+      "bytes": 12308,
+      "sha256": "fc8dbd0a8206107f0b43aca49b794211d8128040524700d12b6638c0328566a3",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.09,
+      "log": "attempts-newer-and-nvdb.json"
+    },
+    {
+      "name": "laser-2026-catalogue.json",
+      "url": "https://kartkatalog.geonorge.no/api/getdata/e71eded5-6cea-45ba-8083-46028acf21e7",
+      "status": 200,
+      "bytes": 11551,
+      "sha256": "2cf59975d02aec95c256fc2ea38875aa302ad37327c275e8993ae5a4190b5d00",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.09,
+      "log": "attempts-newer-and-nvdb.json"
+    },
+    {
+      "name": "height-pilot-projects.json",
+      "url": "https://hoydedata.no/arcgis/rest/services/DOM/ImageServer/query?f=json&where=1%3D1&geometry=297466%2C6701276&geometryType=esriGeometryPoint&inSR=25832&spatialRel=esriSpatialRelIntersects&outFields=%2A&returnGeometry=false",
+      "status": 200,
+      "bytes": 1483201,
+      "sha256": "8c49a349dcb33b8fcc2faf3ae858049fcfa3a7db058b8d779e87dbd72067c5f2",
+      "contentType": "application/json; charset=UTF-8",
+      "seconds": 2.22,
+      "log": "attempts-newer-and-nvdb.json"
+    },
+    {
+      "name": "nvdb-v4-page2.json",
+      "url": "https://nvdbapiles.atlas.vegvesen.no/vegnett/api/v4/veglenkesekvenser/segmentert?kartutsnitt=-32053.436710614595,6734700.982847113,-31842.603339236695,6734935.470721181&srid=5972&start=4601:null:6734932.375:2458436:1:3&antall=100",
+      "headers": {
+        "X-Client": "BergenReimagined-R1E"
+      },
+      "status": 200,
+      "bytes": 63,
+      "sha256": "879e1897fb80899b6f9a8f0fea4efdaf47b166b1e75cec50c5c64dfc798fbdbc",
+      "log": "attempts-nvdb-pages.json"
+    },
+    {
+      "name": "nvdb-v4-pilot.json",
+      "url": "https://nvdbapiles.atlas.vegvesen.no/vegnett/api/v4/veglenkesekvenser/segmentert?kartutsnitt=297372%2C6701150%2C297560%2C6701402&srid=5972&antall=100&inkluderAntall=false",
+      "headers": {
+        "X-Client": "BergenReimagined-R1E"
+      },
+      "status": 200,
+      "bytes": 63,
+      "sha256": "879e1897fb80899b6f9a8f0fea4efdaf47b166b1e75cec50c5c64dfc798fbdbc",
+      "log": "attempts-nvdb-v4.json"
+    },
+    {
+      "name": "laser-cloud-metadata.json",
+      "url": "https://hoydedata.no/Potree_vol21/6266/6b3c0587-81fb-40a1-aaaa-fb60b3952a32/cloud.js",
+      "status": 200,
+      "bytes": 604,
+      "sha256": "823ba85823c58a5123ba458c3470494f3f953fbc1c0da26c02fcaf370fbe0c13",
+      "contentType": "application/javascript",
+      "seconds": 0.76,
+      "log": "attempts-point-metadata.json"
+    },
+    {
+      "name": "niib-ortho-catalogue.json",
+      "url": "https://kartkatalog.geonorge.no/api/getdata/1bbcff4e-d883-3430-9033-e12fd97550ec",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "seconds": 1.16,
+      "log": "attempts-point-metadata.json"
+    },
+    {
+      "name": "matrikkel-metadata.json",
+      "url": "https://kartkatalog.geonorge.no/api/getdata/24d7e9d1-87f6-45a0-b38e-3447f8d7f9a1",
+      "status": 200,
+      "bytes": 21706,
+      "sha256": "66f670c26083cc7ddd184ea686aff0d0789fc4f69517b605ff283a0c06eed43b",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.4,
+      "log": "attempts-point-metadata.json"
+    },
+    {
+      "name": "matrikkel-schema.xsd",
+      "url": "https://wfs.geonorge.no/skwms1/wfs.matrikkelen-bygningspunkt?service=WFS&request=DescribeFeatureType&version=2.0.0&typeNames=app:Bygning",
+      "status": 200,
+      "bytes": 94068,
+      "sha256": "460e7deb3e3193b84fdeebbf0d4ec4a736ac031c438dad46f5ab95eb3ee69cd4",
+      "contentType": "text/xml; subtype=gml/3.2.1;charset=UTF-8",
+      "seconds": 1.29,
+      "log": "attempts-point-metadata.json"
+    },
+    {
+      "name": "project-5895.json",
+      "url": "https://hoydedata.no/laserservices/rest/projectMetadata.ashx?request=%7B%22Projects%22%3A+%22Bergen+havn+mobil+2022%22%2C+%22ReturnMetadata%22%3A+true%7D",
+      "status": 200,
+      "bytes": 1408,
+      "sha256": "063cdf0ebfa0521df83fd1a2430506d5949946f0ed15f7d1716b0735e3be865f",
+      "contentType": "text/plain; charset=utf-8",
+      "seconds": 0.73,
+      "log": "attempts-project-comparison.json"
+    },
+    {
+      "name": "project-6621.json",
+      "url": "https://hoydedata.no/laserservices/rest/projectMetadata.ashx?request=%7B%22Projects%22%3A+%22Bilde+Bergen+Vest+2026%22%2C+%22ReturnMetadata%22%3A+true%7D",
+      "status": 200,
+      "bytes": 1535,
+      "sha256": "51f1619a30fec6b6ac71e210c8e9e835fe9488a6d767b7069a4e2df26afb70a2",
+      "contentType": "text/plain; charset=utf-8",
+      "seconds": 0.93,
+      "log": "attempts-project-comparison.json"
+    },
+    {
+      "name": "project-6091.json",
+      "url": "https://hoydedata.no/laserservices/rest/projectMetadata.ashx?request=%7B%22Projects%22%3A+%22Bergen+10pkt+2023%22%2C+%22ReturnMetadata%22%3A+true%7D",
+      "status": 200,
+      "bytes": 1402,
+      "sha256": "3eac76f8e27186160b0869171905aa0f7e325a5d97be7b4be5d6f1da3f017d3f",
+      "contentType": "text/plain; charset=utf-8",
+      "seconds": 0.79,
+      "log": "attempts-project-comparison.json"
+    },
+    {
+      "name": "project-6266.json",
+      "url": "https://hoydedata.no/laserservices/rest/projectMetadata.ashx?request=%7B%22Projects%22%3A%20%22Bergen%2010pkt%202022%22%2C%20%22ReturnMetadata%22%3A%20true%7D",
+      "status": 200,
+      "bytes": 1395,
+      "sha256": "8ab0652e2297db9d32c58c7bf6b7eb3fa2606d4dc47afb9c38ec8b40c679935b",
+      "contentType": "text/plain; charset=utf-8",
+      "seconds": 0.96,
+      "log": "attempts-projects.json"
+    },
+    {
+      "name": "project-files.json",
+      "url": "https://hoydedata.no/laserservices/rest/GetProjectFiles.ashx?request=%7B%22ProjectID%22%3A%206266%7D",
+      "status": 401,
+      "error": "HTTP Error 401: Unauthorized",
+      "seconds": 1.07,
+      "log": "attempts-projects.json"
+    },
+    {
+      "name": "bergen-fkb-layer.json",
+      "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Basis_kartdata/Bygning_Flate/FeatureServer/0?f=pjson",
+      "status": 200,
+      "bytes": 14896,
+      "sha256": "cd6895775b39f0586f950a9f02b83788f72fbbdaa84d4da9d1e26bdc9ceeb020",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 1.5,
+      "log": "attempts-projects.json"
+    },
+    {
+      "name": "bergen-fkb-item.json",
+      "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Basis_kartdata/Bygning_Flate/FeatureServer/info/iteminfo?f=pjson",
+      "status": 200,
+      "bytes": 3181,
+      "sha256": "5e3ba30ebf11399150f83e6d046f7f1b5f43a893938255db6fe75382c15640ec",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 1.71,
+      "log": "attempts-projects.json"
+    },
+    {
+      "name": "bergen-heights.json",
+      "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Basis_kartdata/Bygningshoyde/MapServer?f=pjson",
+      "status": 200,
+      "bytes": 2816,
+      "sha256": "6aec519bacae037803beefddfe10a41b55eee682c81a99b1ec598f4f04c24f56",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.84,
+      "log": "attempts-projects.json"
+    },
+    {
+      "name": "bergen-roof-solar.json",
+      "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Solkart/Solkart_del_av_Bergen_2/MapServer?f=pjson",
+      "status": 200,
+      "bytes": 7350,
+      "sha256": "4f585cff0961fc15293955b1c0073acdd7117e47afc7ef1299a58168e6b1fd46",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 1.38,
+      "log": "attempts-projects.json"
+    },
+    {
+      "name": "bergen-ortho.json",
+      "url": "https://kart.bergen.kommune.no/image/rest/services/Ortofoto?f=pjson",
+      "status": 200,
+      "bytes": 909,
+      "sha256": "8b09cb33a37a8ff53a23a2c5e7817a581bdd3f8047b8654c5ec536133d4b8ccd",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.77,
+      "log": "attempts-projects.json"
+    },
+    {
+      "name": "bergen-geodata.json",
+      "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Geodata_skydrift?f=pjson",
+      "status": 200,
+      "bytes": 902,
+      "sha256": "15861cc9b1f3e4ae29c58d2f316ffef0711e1ad6ccb3bd97a3994f67a852a314",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 0.92,
+      "log": "attempts-projects.json"
+    },
+    {
+      "name": "bergen-hosted.json",
+      "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Hosted?f=pjson",
+      "status": 200,
+      "bytes": 4884,
+      "sha256": "fabad7d4e6193b62d9e8a5e5e18425c8160e33f8464f3fbb6d1c423d18a9558a",
+      "contentType": "text/plain; charset=UTF-8",
+      "seconds": 1.51,
+      "log": "attempts-projects.json"
+    },
+    {
+      "name": "uib-bredsgarden-1918-1922.jpg",
+      "url": "https://data.ub.uib.no/files/bs/ubb/ubb-kk/ubb-kk-n/ubb-kk-n-165/ubb-kk-n-165-017/jpg/ubb-kk-n-165-017_md.jpg",
+      "status": 200,
+      "bytes": 190275,
+      "sha256": "ca7dfed18a42de5ee930a6055790f86e777b451f5b0c522369e03472796408ce",
+      "rights": "Marcus per-item free use/download/redistribution with credit; Atelier KK / Universitetsbiblioteket i Bergen. Historical 1918–1922 reference only; not present-day facade geometry, no photogrammetry attempted.",
+      "log": "attempts-reference-acquisition.json"
+    },
+    {
+      "name": "registry-formats.json",
+      "url": "https://nedlasting.geonorge.no/api/codelists/format/24d7e9d1-87f6-45a0-b38e-3447f8d7f9a1",
+      "status": 200,
+      "bytes": 1653,
+      "sha256": "eb2dbbb43184263c83b229c72a7e9dbe967516f7893a292746a1af69a963c08f",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.82,
+      "log": "attempts-registry-delivery.json"
+    },
+    {
+      "name": "registry-projections.json",
+      "url": "https://nedlasting.geonorge.no/api/codelists/projection/24d7e9d1-87f6-45a0-b38e-3447f8d7f9a1",
+      "status": 200,
+      "bytes": 839,
+      "sha256": "2366b9c9787961d29d5e8c4f6197bb47e6b39cfc15e5cfcf2bbcc68e1e6d6ba5",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.68,
+      "log": "attempts-registry-delivery.json"
+    },
+    {
+      "name": "registry-areas.json",
+      "url": "https://nedlasting.geonorge.no/api/codelists/area/24d7e9d1-87f6-45a0-b38e-3447f8d7f9a1",
+      "status": 200,
+      "bytes": 501175,
+      "sha256": "365a84a64cbf9744200c2b374e3032dc177136fcb523c9b9a6c05e8ea6458b76",
+      "contentType": "application/json; charset=utf-8",
+      "seconds": 1.67,
+      "log": "attempts-registry-delivery.json"
+    },
+    {
+      "name": "download-openapi.json",
+      "url": "https://nedlasting.geonorge.no/swagger/docs/v1",
+      "status": 200,
+      "bytes": 5621,
+      "sha256": "4325727a0753433002eb67275bfc4a03918fe8f48f1e0ec7a8ce8d913c4bb4c9",
+      "contentType": "text/html; charset=utf-8",
+      "seconds": 1.54,
+      "log": "attempts-registry-delivery.json"
+    }
+  ]
+}

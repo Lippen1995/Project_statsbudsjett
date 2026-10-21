@@ -1,0 +1,5 @@
+
+> @fellestall/bergen-simulator@0.1.0 build
+> tsc -b && vite build
+
+tests/public-geodata.test.ts(61,5): error TS2532: Object is possibly 'undefined'.

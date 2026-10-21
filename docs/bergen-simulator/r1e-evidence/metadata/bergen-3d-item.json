@@ -1,0 +1,71 @@
+{
+  "id": "3186ee3ed2a047f0a16d5b618a99db1a",
+  "owner": "Vegard.Vatle_Bergen",
+  "ownerId": "ebfda15ba1934e84aac2b90833abd2a1",
+  "orgId": "pCNieVwmAdVi1Tec",
+  "created": 1688644103000,
+  "modified": 1741788685000,
+  "guid": null,
+  "name": "Dokken_arealstrategi_3Dbygg_2022",
+  "title": "Dokken arealstrategi 3Dbygg 2022",
+  "type": "Scene Service",
+  "typeKeywords": [
+    "3DObject",
+    "ArcGIS Server",
+    "Data",
+    "Metadata",
+    "Scene Service",
+    "Service",
+    "Hosted Service"
+  ],
+  "description": "",
+  "tags": [
+    "dokken",
+    "puddefjorden",
+    "arealstrategi",
+    "bergen kommune"
+  ],
+  "snippet": "Byggene er lagd i forbidelse med Arealstrategien for Dokken. Produktet er gjort tilgjengelig for kostnadsfri nedlasting for å skape engasjement og forhåpentligvis bidrar til en positiv byutvikling.\n\nGrunnlaget er tegnet i høsten 2022. \nKoordinatsystem: ETRS 1989 UTM Zone 32N\nHøydegrunnlaget: NN2000",
+  "thumbnail": "thumbnail/Thumbnail.png",
+  "documentation": null,
+  "extent": [
+    [
+      5.305308587058095,
+      60.38194950214313
+    ],
+    [
+      5.322760099608623,
+      60.39332459743656
+    ]
+  ],
+  "categories": [],
+  "spatialReference": "25832",
+  "accessInformation": "",
+  "classification": null,
+  "licenseInfo": "",
+  "culture": "nb-no",
+  "properties": null,
+  "advancedSettings": null,
+  "url": "https://services1.arcgis.com/pCNieVwmAdVi1Tec/arcgis/rest/services/Dokken_arealstrategi_3Dbygg_2022/SceneServer",
+  "proxyFilter": null,
+  "access": "public",
+  "size": 94279691,
+  "subInfo": 0,
+  "appCategories": [],
+  "industries": [],
+  "languages": [],
+  "largeThumbnail": null,
+  "banner": null,
+  "screenshots": [],
+  "listed": false,
+  "commentsEnabled": true,
+  "numComments": 0,
+  "numRatings": 0,
+  "avgRating": 0,
+  "numViews": 9574,
+  "scoreCompleteness": 66,
+  "groupDesignations": null,
+  "apiToken1ExpirationDate": -1,
+  "apiToken2ExpirationDate": -1,
+  "lastViewed": 1792490400000
+}

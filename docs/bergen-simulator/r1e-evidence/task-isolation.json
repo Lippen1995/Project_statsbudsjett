@@ -1,0 +1,18 @@
+{
+  "branch": "feature/bergen-simulator",
+  "taskBaseline": "c87db8bfe73e4e73a49bc0160a91116615274893",
+  "originalTrackedFilesChecked": 2152,
+  "changedOriginalFiles": [
+    "apps/bergen-simulator/src/App.tsx",
+    "apps/bergen-simulator/src/components/Inspector.tsx",
+    "apps/bergen-simulator/src/components/Scene.tsx",
+    "apps/bergen-simulator/src/styles.css",
+    "docs/bergen-simulator/data-sources.md"
+  ],
+  "sourceSnapshotsAndR1BCAssetsUnchanged": true,
+  "existingWorkflowsUnchanged": true,
+  "productionFilesUnchanged": true,
+  "remoteMainAtStart": "67fb4ff7bc8f29335203469fb32cfffbffdf5175",
+  "remoteMainLaterObserved": "a945dc08dfe85ddbce7f74fb4143907c76f013ff",
+  "mainNote": "Remote main advanced independently during this task. No checkout, commit, merge or push to main was performed; original working-copy production files still match start hashes."
+}

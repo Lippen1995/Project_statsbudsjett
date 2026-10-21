@@ -1,3 +1,4 @@
+import PublicGeodata from "./components/PublicGeodata";
 import { preparation } from "./geo/diagnostics";
 import { useScenario } from "./state/scenario";
 import { usePhysical } from "./state/physical";
@@ -183,6 +184,7 @@ function Sidebar({ data }: { data: CityData }) {
           <option value="balanced">Balanced</option>
           <option value="low">Low power</option>
         </select>
+        <PublicGeodata />
         <p>
           Independent development prototype
           <br />

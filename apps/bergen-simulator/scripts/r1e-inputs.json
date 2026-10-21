@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "snapshotSha256": "299b130ab55ed53aad274e9483167e8a6350bc32d3ba63b5cad17eae97f39812",
+  "project": 6266,
+  "licence": "CC-BY-4.0",
+  "termsUrl": "https://www.kartverket.no/api-og-data/vilkar-for-bruk",
+  "exportTermsUrl": "https://test.hoydedata.no/LaserInnsyn2/help_no/topics/idh-topic230.htm",
+  "files": [
+    {
+      "path": "tests/fixtures/r1e/dom-025.tif",
+      "url": "https://hoydedata.no/arcgis/rest/services/DOM/ImageServer/exportImage?f=image&bbox=297372%2C6701150%2C297560%2C6701402&bboxSR=25832&imageSR=25832&size=752%2C1008&format=tiff&pixelType=F32&interpolation=RSP_NearestNeighbor&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicAttribute%22%2C+%22where%22%3A+%22LAS_PROJECT_ID+%3D+6266%22%2C+%22mosaicOperation%22%3A+%22MT_FIRST%22%7D",
+      "bytes": 3147246,
+      "sha256": "060dcb76a908e0e0746955257cb213bb2ee59a58b5605bcd3b32634701955287"
+    },
+    {
+      "path": "tests/fixtures/r1e/dtm-025.tif",
+      "url": "https://hoydedata.no/arcgis/rest/services/DTM/ImageServer/exportImage?f=image&bbox=297372%2C6701150%2C297560%2C6701402&bboxSR=25832&imageSR=25832&size=752%2C1008&format=tiff&pixelType=F32&interpolation=RSP_NearestNeighbor&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicAttribute%22%2C+%22where%22%3A+%22LAS_PROJECT_ID+%3D+6266%22%2C+%22mosaicOperation%22%3A+%22MT_FIRST%22%7D",
+      "bytes": 2557422,
+      "sha256": "d8341fdb7fd4059663a7db63dccbc5f884daf45b758f9b1ed0e6293d8b4b93b1"
+    },
+    {
+      "path": "tests/fixtures/r1e/project-6266.json",
+      "url": "https://hoydedata.no/laserservices/rest/projectMetadata.ashx?request=%7B%22Projects%22%3A%20%22Bergen%2010pkt%202022%22%2C%20%22ReturnMetadata%22%3A%20true%7D",
+      "bytes": 1395,
+      "sha256": "8ab0652e2297db9d32c58c7bf6b7eb3fa2606d4dc47afb9c38ec8b40c679935b"
+    }
+  ]
+}

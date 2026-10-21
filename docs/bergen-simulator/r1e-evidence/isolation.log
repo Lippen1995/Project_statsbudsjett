@@ -1,0 +1,5 @@
+
+> @fellestall/bergen-simulator@0.1.0 check:isolation
+> node scripts/check-isolation.mjs
+
+Isolation verified against 3ff897f4a21372b05cd732df54843605bb2e6593: original tracked files unchanged; additions confined to simulator directories and its exact workflow; no database or production service imports; native Git deployment disabled.

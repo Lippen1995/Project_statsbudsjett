@@ -1,0 +1,12 @@
+browser PASS
+visual PASS
+scenario-browser PASS
+physical-browser PASS
+building-browser PASS
+living-browser PASS
+management-browser PASS
+connected-browser PASS
+access-browser PASS
+quality-browser PASS
+architectural-details-browser PASS
+landmark-inspection-browser PASS

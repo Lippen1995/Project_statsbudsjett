@@ -1,0 +1,34 @@
+
+> @fellestall/bergen-simulator@0.1.0 test
+> vitest run && node --test tests/ci-policy.test.mjs
+
+
+ RUN  v5.0.5 /workspace/Project_statsbudsjett/apps/bergen-simulator
+
+
+ Test Files  16 passed (16)
+      Tests  244 passed (244)
+   Start at  07:19:12
+   Duration  23.49s (tests 88%, import 11%, transform 1%)
+
+    Isolate  16 workers spawned · ~93ms startup each (spawn + environment, per file)
+             at least ~1.40s faster with isolate: false — reuses workers across files instead of one per file
+
+✔ prebuilt staging mirrors the remote app root without copying repository source or environment files (6.826021ms)
+✔ CLI diagnostics classify identity failures without reproducing captured credentials or URLs (1.73353ms)
+✔ pinned CLI non-interactive deployment JSON yields only a READY Bergen production URL (1.464397ms)
+✔ exact-SHA detached Actions context is permitted only for the intended branch, repository and events (0.772749ms)
+✔ target guards positively allow only the exact simulator IDs (0.388933ms)
+✔ project protection must positively identify Authentication for All Deployments (0.40686ms)
+✔ only READY production output for the exact repository commit can be promoted (0.562964ms)
+✔ promotion cannot carry an unrelated domain or a changed project domain set (0.6599ms)
+✔ the dedicated environment must allow the exact branch and no wildcard or tags (1.009094ms)
+✔ anonymous checks reject public content, generic failures and unrelated redirects (0.670647ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 78.925846

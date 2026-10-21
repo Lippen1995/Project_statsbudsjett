@@ -1,0 +1,183 @@
+{
+  "purpose": "Separate aerial image matching acquisition compared with pinned 2022 laser surface; temporal diagnostic, not an independent roof survey or current-building confirmation.",
+  "comparisonProject": 6621,
+  "comparisonDTM": "REJECTED: exact-zero raster across 758016 cells despite positive known local terrain; no contemporary terrain model accepted.",
+  "heightModelForFit": "2026 absolute DOM roof fit; 2022 DTM used only for preliminary relative-height screen, not a 2026 terrain observation.",
+  "integrated2026Buildings": 0,
+  "records": [
+    {
+      "id": "way/331274546",
+      "2026Status": "supported-gable-hypothesis",
+      "2026RoofFit": {
+        "center": [
+          6.242822551848696,
+          -291.9419700294728
+        ],
+        "along": [
+          -0.6923198671108084,
+          0.7215907438456184
+        ],
+        "across": [
+          -0.7215907438456184,
+          -0.6923198671108084
+        ],
+        "coefficients": [
+          14.725095335934977,
+          0.013251454428502856,
+          -1.0139038391960087
+        ],
+        "holdoutRmseM": 0.5577,
+        "planeHoldoutRmseM": 1.2441,
+        "within065m": 0.9307,
+        "pitchDegrees": 45.4
+      },
+      "median2026Minus2022SurfaceM": 0.002,
+      "p95AbsoluteSurfaceChangeM": 0.427
+    },
+    {
+      "id": "way/331274548",
+      "2026Status": "height-only",
+      "2026RoofFit": {
+        "center": [
+          43.130161113542314,
+          -223.16750471694726
+        ],
+        "along": [
+          -0.7442422836946845,
+          0.6679097417772262
+        ],
+        "across": [
+          -0.6679097417772262,
+          -0.7442422836946845
+        ],
+        "coefficients": [
+          9.346577873652185,
+          0.004267895813826511,
+          -1.3171017706230885
+        ],
+        "holdoutRmseM": 0.9468,
+        "planeHoldoutRmseM": 1.4703,
+        "within065m": 0.719,
+        "pitchDegrees": 52.79
+      },
+      "median2026Minus2022SurfaceM": -0.06,
+      "p95AbsoluteSurfaceChangeM": 2.377
+    },
+    {
+      "id": "way/331274573",
+      "2026Status": "height-only",
+      "2026RoofFit": {
+        "center": [
+          6.782360605728298,
+          -259.3845819883228
+        ],
+        "along": [
+          -0.627611975460558,
+          0.7785263054377133
+        ],
+        "across": [
+          -0.7785263054377133,
+          -0.627611975460558
+        ],
+        "coefficients": [
+          14.872785462135674,
+          0.02268274248651069,
+          -1.222320648593545
+        ],
+        "holdoutRmseM": 1.5417,
+        "planeHoldoutRmseM": 1.9289,
+        "within065m": 0.5814,
+        "pitchDegrees": 50.71
+      },
+      "median2026Minus2022SurfaceM": 0.151,
+      "p95AbsoluteSurfaceChangeM": 3.131
+    },
+    {
+      "id": "way/331274580",
+      "2026Status": "height-only",
+      "2026RoofFit": {
+        "center": [
+          36.23575627832345,
+          -282.1696087574155
+        ],
+        "along": [
+          -0.6571805744360832,
+          0.7537331706803541
+        ],
+        "across": [
+          -0.7537331706803541,
+          -0.6571805744360832
+        ],
+        "coefficients": [
+          8.699367357937195,
+          -0.00440623255331424,
+          -0.9300163192937858
+        ],
+        "holdoutRmseM": 0.721,
+        "planeHoldoutRmseM": 0.8918,
+        "within065m": 0.9353,
+        "pitchDegrees": 42.92
+      },
+      "median2026Minus2022SurfaceM": 0.078,
+      "p95AbsoluteSurfaceChangeM": 1.703
+    },
+    {
+      "id": "way/331274594",
+      "2026Status": "height-only",
+      "2026RoofFit": {
+        "center": [
+          13.396263774506185,
+          -267.39634971708443
+        ],
+        "along": [
+          -0.6364596124060122,
+          0.771310029609358
+        ],
+        "across": [
+          -0.771310029609358,
+          -0.6364596124060122
+        ],
+        "coefficients": [
+          14.414720276271902,
+          -0.012350175580364777,
+          -1.2657808346185286
+        ],
+        "holdoutRmseM": 1.33,
+        "planeHoldoutRmseM": 1.9967,
+        "within065m": 0.625,
+        "pitchDegrees": 51.69
+      },
+      "median2026Minus2022SurfaceM": 0.443,
+      "p95AbsoluteSurfaceChangeM": 2.955
+    },
+    {
+      "id": "way/331274542",
+      "2026Status": "supported-gable-hypothesis",
+      "2026RoofFit": {
+        "center": [
+          32.06400547644909,
+          -305.52887976717227
+        ],
+        "along": [
+          0.6583951829547148,
+          -0.7526724274623243
+        ],
+        "across": [
+          0.7526724274623243,
+          0.6583951829547148
+        ],
+        "coefficients": [
+          13.287939326035302,
+          0.030237855395998808,
+          -1.230587671567676
+        ],
+        "holdoutRmseM": 0.4795,
+        "planeHoldoutRmseM": 1.2511,
+        "within065m": 0.9443,
+        "pitchDegrees": 50.9
+      },
+      "median2026Minus2022SurfaceM": -0.017,
+      "p95AbsoluteSurfaceChangeM": 0.474
+    }
+  ]
+}

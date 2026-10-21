@@ -1,0 +1,968 @@
+{
+  "serviceName": "Dokken_arealstrategi_3Dbygg_2022",
+  "supportedBindings": [
+    "REST"
+  ],
+  "serviceVersion": "1.7",
+  "name": "Dokken_arealstrategi_3Dbygg_2022",
+  "serviceItemId": "3186ee3ed2a047f0a16d5b618a99db1a",
+  "layers": [
+    {
+      "id": 0,
+      "version": "5BB58445-0532-4B1B-A427-CD36DAC7941A",
+      "name": "Dokken arealstrategi 3Dbygg 2022",
+      "updateEnabled": false,
+      "href": "./layers/0",
+      "associatedLayerID": 0,
+      "layerType": "3DObject",
+      "spatialReference": {
+        "wkid": 25832,
+        "latestWkid": 25832
+      },
+      "ZFactor": 1,
+      "alias": "Multipatches_MultipartToSing1",
+      "capabilities": [
+        "View",
+        "Query"
+      ],
+      "cachedDrawingInfo": {
+        "color": false
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "simple",
+          "symbol": {
+            "type": "MeshSymbol3D",
+            "symbolLayers": [
+              {
+                "type": "Fill",
+                "material": {
+                  "color": [
+                    255,
+                    255,
+                    255
+                  ],
+                  "transparency": 0,
+                  "colorMixMode": "tint"
+                },
+                "edges": {
+                  "type": "solid",
+                  "color": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "size": 1,
+                  "transparency": 60,
+                  "extensionLength": 0
+                }
+              }
+            ]
+          }
+        }
+      },
+      "popupInfo": {
+        "title": "{Name}",
+        "mediaInfos": [],
+        "popupElements": [
+          {
+            "fieldInfos": [
+              {
+                "fieldName": "OBJECTID",
+                "isEditable": false,
+                "format": {
+                  "places": 0,
+                  "digitSeparator": false
+                },
+                "visible": true,
+                "label": "OBJECTID"
+              },
+              {
+                "fieldName": "Name",
+                "isEditable": true,
+                "visible": true,
+                "label": "Name"
+              },
+              {
+                "fieldName": "FolderPath",
+                "isEditable": true,
+                "visible": true,
+                "label": "FolderPath"
+              },
+              {
+                "fieldName": "SymbolID",
+                "isEditable": true,
+                "format": {
+                  "places": 0,
+                  "digitSeparator": false
+                },
+                "visible": true,
+                "label": "SymbolID"
+              },
+              {
+                "fieldName": "AltMode",
+                "isEditable": true,
+                "format": {
+                  "places": 0,
+                  "digitSeparator": false
+                },
+                "visible": true,
+                "label": "AltMode"
+              },
+              {
+                "fieldName": "Snippet",
+                "isEditable": true,
+                "visible": true,
+                "label": "Snippet"
+              },
+              {
+                "fieldName": "PopupInfo",
+                "isEditable": true,
+                "visible": true,
+                "label": "PopupInfo"
+              },
+              {
+                "fieldName": "ORIG_FID",
+                "isEditable": true,
+                "format": {
+                  "places": 0,
+                  "digitSeparator": false
+                },
+                "visible": true,
+                "label": "ORIG_FID"
+              },
+              {
+                "fieldName": "BYSTRUKTUR",
+                "isEditable": true,
+                "visible": true,
+                "label": "NABOLAG"
+              },
+              {
+                "fieldName": "AREALSTRATEGI",
+                "isEditable": true,
+                "visible": true,
+                "label": "AREALSTRATEGI"
+              },
+              {
+                "fieldName": "BYROM",
+                "isEditable": true,
+                "visible": true,
+                "label": "BYROM"
+              },
+              {
+                "fieldName": "DELOMRÅDER",
+                "isEditable": true,
+                "visible": true,
+                "label": "DELOMRÅDER"
+              },
+              {
+                "fieldName": "LANDSKAP",
+                "isEditable": true,
+                "visible": true,
+                "label": "LANDSKAP"
+              },
+              {
+                "fieldName": "MOBILITET",
+                "isEditable": true,
+                "visible": true,
+                "label": "MOBILITET"
+              },
+              {
+                "fieldName": "SJØFRONT",
+                "isEditable": true,
+                "visible": true,
+                "label": "SJØFRONT"
+              }
+            ],
+            "type": "fields"
+          }
+        ],
+        "fieldInfos": [
+          {
+            "fieldName": "OBJECTID",
+            "isEditable": false,
+            "format": {
+              "places": 0,
+              "digitSeparator": false
+            },
+            "visible": true,
+            "label": "OBJECTID"
+          },
+          {
+            "fieldName": "Name",
+            "isEditable": true,
+            "visible": true,
+            "label": "Name"
+          },
+          {
+            "fieldName": "FolderPath",
+            "isEditable": true,
+            "visible": true,
+            "label": "FolderPath"
+          },
+          {
+            "fieldName": "SymbolID",
+            "isEditable": true,
+            "format": {
+              "places": 0,
+              "digitSeparator": false
+            },
+            "visible": true,
+            "label": "SymbolID"
+          },
+          {
+            "fieldName": "AltMode",
+            "isEditable": true,
+            "format": {
+              "places": 0,
+              "digitSeparator": false
+            },
+            "visible": true,
+            "label": "AltMode"
+          },
+          {
+            "fieldName": "Snippet",
+            "isEditable": true,
+            "visible": true,
+            "label": "Snippet"
+          },
+          {
+            "fieldName": "PopupInfo",
+            "isEditable": true,
+            "visible": true,
+            "label": "PopupInfo"
+          },
+          {
+            "fieldName": "ORIG_FID",
+            "isEditable": true,
+            "format": {
+              "places": 0,
+              "digitSeparator": false
+            },
+            "visible": true,
+            "label": "ORIG_FID"
+          },
+          {
+            "fieldName": "BYSTRUKTUR",
+            "isEditable": true,
+            "visible": true,
+            "label": "NABOLAG"
+          },
+          {
+            "fieldName": "AREALSTRATEGI",
+            "isEditable": true,
+            "visible": true,
+            "label": "AREALSTRATEGI"
+          },
+          {
+            "fieldName": "BYROM",
+            "isEditable": true,
+            "visible": true,
+            "label": "BYROM"
+          },
+          {
+            "fieldName": "DELOMRÅDER",
+            "isEditable": true,
+            "visible": true,
+            "label": "DELOMRÅDER"
+          },
+          {
+            "fieldName": "LANDSKAP",
+            "isEditable": true,
+            "visible": true,
+            "label": "LANDSKAP"
+          },
+          {
+            "fieldName": "MOBILITET",
+            "isEditable": true,
+            "visible": true,
+            "label": "MOBILITET"
+          },
+          {
+            "fieldName": "SJØFRONT",
+            "isEditable": true,
+            "visible": true,
+            "label": "SJØFRONT"
+          }
+        ],
+        "expressionInfos": []
+      },
+      "disablePopup": false,
+      "store": {
+        "id": "80116239-715B-481E-895B-1D2D373D2E14",
+        "profile": "meshpyramids",
+        "resourcePattern": [
+          "3dNodeIndexDocument",
+          "Attributes",
+          "SharedResource",
+          "Geometry"
+        ],
+        "rootNode": "./nodes/root",
+        "version": "1.9",
+        "extent": [
+          296439.24789999984,
+          6699656.0054,
+          297334.94529999979,
+          6700875.3603000008
+        ],
+        "indexCRS": "http://www.opengis.net/def/crs/EPSG/0/25832",
+        "vertexCRS": "http://www.opengis.net/def/crs/EPSG/0/25832",
+        "normalReferenceFrame": "vertex-reference-frame",
+        "textureEncoding": [
+          "image/jpeg",
+          "image/vnd-ms.dds"
+        ],
+        "lodType": "MeshPyramid",
+        "lodModel": "node-switching",
+        "defaultGeometrySchema": {
+          "geometryType": "triangles",
+          "header": [
+            {
+              "property": "vertexCount",
+              "type": "UInt32"
+            },
+            {
+              "property": "featureCount",
+              "type": "UInt32"
+            }
+          ],
+          "topology": "PerAttributeArray",
+          "ordering": [
+            "position",
+            "normal",
+            "uv0",
+            "color"
+          ],
+          "vertexAttributes": {
+            "position": {
+              "valueType": "Float32",
+              "valuesPerElement": 3
+            },
+            "normal": {
+              "valueType": "Float32",
+              "valuesPerElement": 3
+            },
+            "uv0": {
+              "valueType": "Float32",
+              "valuesPerElement": 2
+            },
+            "color": {
+              "valueType": "UInt8",
+              "valuesPerElement": 4
+            }
+          },
+          "featureAttributeOrder": [
+            "id",
+            "faceRange"
+          ],
+          "featureAttributes": {
+            "id": {
+              "valueType": "UInt64",
+              "valuesPerElement": 1
+            },
+            "faceRange": {
+              "valueType": "UInt32",
+              "valuesPerElement": 2
+            }
+          }
+        }
+      },
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "OBJECTID"
+        },
+        {
+          "name": "Name",
+          "type": "esriFieldTypeString",
+          "alias": "Name"
+        },
+        {
+          "name": "FolderPath",
+          "type": "esriFieldTypeString",
+          "alias": "FolderPath"
+        },
+        {
+          "name": "SymbolID",
+          "type": "esriFieldTypeInteger",
+          "alias": "SymbolID"
+        },
+        {
+          "name": "AltMode",
+          "type": "esriFieldTypeSmallInteger",
+          "alias": "AltMode"
+        },
+        {
+          "name": "Snippet",
+          "type": "esriFieldTypeString",
+          "alias": "Snippet"
+        },
+        {
+          "name": "PopupInfo",
+          "type": "esriFieldTypeString",
+          "alias": "PopupInfo"
+        },
+        {
+          "name": "ORIG_FID",
+          "type": "esriFieldTypeInteger",
+          "alias": "ORIG_FID"
+        },
+        {
+          "name": "BYSTRUKTUR",
+          "type": "esriFieldTypeString",
+          "alias": "NABOLAG"
+        },
+        {
+          "name": "AREALSTRATEGI",
+          "type": "esriFieldTypeString",
+          "alias": "AREALSTRATEGI"
+        },
+        {
+          "name": "BYROM",
+          "type": "esriFieldTypeString",
+          "alias": "BYROM"
+        },
+        {
+          "name": "DELOMRÅDER",
+          "type": "esriFieldTypeString",
+          "alias": "DELOMRÅDER"
+        },
+        {
+          "name": "LANDSKAP",
+          "type": "esriFieldTypeString",
+          "alias": "LANDSKAP"
+        },
+        {
+          "name": "MOBILITET",
+          "type": "esriFieldTypeString",
+          "alias": "MOBILITET"
+        },
+        {
+          "name": "SJØFRONT",
+          "type": "esriFieldTypeString",
+          "alias": "SJØFRONT"
+        }
+      ],
+      "attributeStorageInfo": [
+        {
+          "key": "f_0",
+          "name": "OBJECTID",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "ObjectIds"
+          ],
+          "objectIds": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_1",
+          "name": "Name",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_2",
+          "name": "FolderPath",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_3",
+          "name": "SymbolID",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeValues"
+          ],
+          "attributeValues": {
+            "valueType": "Int32",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_4",
+          "name": "AltMode",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeValues"
+          ],
+          "attributeValues": {
+            "valueType": "Int16",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_5",
+          "name": "Snippet",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_6",
+          "name": "PopupInfo",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_7",
+          "name": "ORIG_FID",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeValues"
+          ],
+          "attributeValues": {
+            "valueType": "Int32",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_8",
+          "name": "BYSTRUKTUR",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_9",
+          "name": "AREALSTRATEGI",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_10",
+          "name": "BYROM",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_11",
+          "name": "DELOMRÅDER",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_12",
+          "name": "LANDSKAP",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_13",
+          "name": "MOBILITET",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        },
+        {
+          "key": "f_14",
+          "name": "SJØFRONT",
+          "header": [
+            {
+              "property": "count",
+              "valueType": "UInt32"
+            },
+            {
+              "property": "attributeValuesByteCount",
+              "valueType": "UInt32"
+            }
+          ],
+          "ordering": [
+            "attributeByteCounts",
+            "attributeValues"
+          ],
+          "attributeByteCounts": {
+            "valueType": "UInt32",
+            "valuesPerElement": 1
+          },
+          "attributeValues": {
+            "valueType": "String",
+            "encoding": "UTF-8",
+            "valuesPerElement": 1
+          }
+        }
+      ],
+      "statisticsInfo": [
+        {
+          "key": "f_1",
+          "name": "Name",
+          "href": "./statistics/f_1"
+        },
+        {
+          "key": "f_2",
+          "name": "FolderPath",
+          "href": "./statistics/f_2"
+        },
+        {
+          "key": "f_3",
+          "name": "SymbolID",
+          "href": "./statistics/f_3"
+        },
+        {
+          "key": "f_4",
+          "name": "AltMode",
+          "href": "./statistics/f_4"
+        },
+        {
+          "key": "f_5",
+          "name": "Snippet",
+          "href": "./statistics/f_5"
+        },
+        {
+          "key": "f_6",
+          "name": "PopupInfo",
+          "href": "./statistics/f_6"
+        },
+        {
+          "key": "f_7",
+          "name": "ORIG_FID",
+          "href": "./statistics/f_7"
+        },
+        {
+          "key": "f_8",
+          "name": "BYSTRUKTUR",
+          "href": "./statistics/f_8"
+        },
+        {
+          "key": "f_9",
+          "name": "AREALSTRATEGI",
+          "href": "./statistics/f_9"
+        },
+        {
+          "key": "f_10",
+          "name": "BYROM",
+          "href": "./statistics/f_10"
+        },
+        {
+          "key": "f_11",
+          "name": "DELOMRÅDER",
+          "href": "./statistics/f_11"
+        },
+        {
+          "key": "f_12",
+          "name": "LANDSKAP",
+          "href": "./statistics/f_12"
+        },
+        {
+          "key": "f_13",
+          "name": "MOBILITET",
+          "href": "./statistics/f_13"
+        },
+        {
+          "key": "f_14",
+          "name": "SJØFRONT",
+          "href": "./statistics/f_14"
+        }
+      ],
+      "nodePages": {
+        "nodesPerPage": 64,
+        "lodSelectionMetricType": "maxScreenThresholdSQ"
+      },
+      "materialDefinitions": [
+        {
+          "doubleSided": true,
+          "alphaMode": "opaque",
+          "pbrMetallicRoughness": {
+            "metallicFactor": 0
+          }
+        },
+        {
+          "doubleSided": true,
+          "alphaMode": "opaque",
+          "pbrMetallicRoughness": {
+            "metallicFactor": 0
+          }
+        }
+      ],
+      "geometryDefinitions": [
+        {
+          "geometryBuffers": [
+            {
+              "offset": 8,
+              "position": {
+                "type": "Float32",
+                "component": 3
+              },
+              "normal": {
+                "type": "Float32",
+                "component": 3
+              },
+              "uv0": {
+                "type": "Float32",
+                "component": 2
+              },
+              "color": {
+                "type": "UInt8",
+                "component": 4
+              },
+              "featureId": {
+                "type": "UInt64",
+                "component": 1,
+                "binding": "per-feature"
+              },
+              "faceRange": {
+                "type": "UInt32",
+                "component": 2,
+                "binding": "per-feature"
+              }
+            },
+            {
+              "compressedAttributes": {
+                "encoding": "draco",
+                "attributes": [
+                  "position",
+                  "uv0",
+                  "color",
+                  "feature-index"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "fullExtent": {
+        "xmin": 296439.24790062243,
+        "xmax": 297334.94529975613,
+        "ymin": 6699656.0053994674,
+        "ymax": 6700875.3602988711,
+        "spatialReference": {
+          "wkid": 25832,
+          "latestWkid": 25832
+        },
+        "zmin": -4,
+        "zmax": 34.41040089196526
+      },
+      "lastCached": 1688644281,
+      "requiresRebuild": false
+    }
+  ]
+}

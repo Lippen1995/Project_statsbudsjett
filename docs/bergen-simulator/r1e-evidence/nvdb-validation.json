@@ -1,0 +1,29 @@
+{
+  "source": "Statens vegvesen NVDB API Les V4",
+  "records": 93,
+  "distinctSectionReferences": 93,
+  "validLineStrings": 93,
+  "srids": [
+    5972
+  ],
+  "roadTypes": {
+    "Fortau": 13,
+    "Enkel bilveg": 24,
+    "Gangfelt": 13,
+    "Gang- og sykkelveg": 26,
+    "Gangveg": 7,
+    "Trapp": 4,
+    "Kanalisert veg": 6
+  },
+  "sourceDateRange": [
+    "1950-01-01",
+    "2025-01-01"
+  ],
+  "completeWithinRequest": true,
+  "warnings": [
+    "Spatial selection includes full source segments beyond the bbox.",
+    "NVDB kartutsnitt is UTM33; output srid=5972 is UTM32 + NN2000.",
+    "Separate IDs and epochs from OSM; no live network merge, legal-access or turn-restriction equivalence inferred."
+  ],
+  "integratedRoads": 0
+}

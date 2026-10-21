@@ -1,0 +1,167 @@
+[
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/arcgis-bergen-3d.json",
+    "bytes": 58595,
+    "sha256": "639d047a09aa27a1d59508917f4f49a63011c6efe5341b9330b97feff235e56d"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/bergen-3d-item.json",
+    "bytes": 1952,
+    "sha256": "bb1d9bd4c1445bf3809f9635c728966fc533b2f17eac8b4ebfbb44094ca32ebc"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/bergen-dokken-scene.json",
+    "bytes": 25710,
+    "sha256": "6d7dc709fc96d18965a8182218bbeca8fd784d899ae7430911d91f33c09ed8e8"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/bergen-fkb-item.json",
+    "bytes": 3181,
+    "sha256": "5e3ba30ebf11399150f83e6d046f7f1b5f43a893938255db6fe75382c15640ec"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/bergen-fkb-layer.json",
+    "bytes": 14896,
+    "sha256": "cd6895775b39f0586f950a9f02b83788f72fbbdaa84d4da9d1e26bdc9ceeb020"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/bergen-height-layer.json",
+    "bytes": 6259,
+    "sha256": "47d9192629de27f0c387e62ff77e27995199411fca002814cf265b547ae494b8"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/heritage-buildings-catalogue.json",
+    "bytes": 19133,
+    "sha256": "400da1c7d361330c532603c1a96f3392f6389d8c7326bcd148b1f26584382326"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/heritage-catalogue.json",
+    "bytes": 22804,
+    "sha256": "f2b8b319c6c7f8cbc674af084bc7a85a5ae71f477da0a0cfd3e2651be34f2c0d"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/heritage-delivery-capabilities.json",
+    "bytes": 998,
+    "sha256": "4217bb17841090ef72d792d0969e01e39e37f57f91bfe4066173df721b73f839"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/laser-2023-catalogue.json",
+    "bytes": 13721,
+    "sha256": "0cffdc178945eedc010c153004a8c8fb92e7a98b619ce48b2fe6fa0c6732e2e9"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/laser-2024-catalogue.json",
+    "bytes": 12308,
+    "sha256": "fc8dbd0a8206107f0b43aca49b794211d8128040524700d12b6638c0328566a3"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/laser-2026-catalogue.json",
+    "bytes": 11551,
+    "sha256": "2cf59975d02aec95c256fc2ea38875aa302ad37327c275e8993ae5a4190b5d00"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/laser-cloud-metadata.json",
+    "bytes": 604,
+    "sha256": "823ba85823c58a5123ba458c3470494f3f953fbc1c0da26c02fcaf370fbe0c13"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/laser-predeliveries.json",
+    "bytes": 32716,
+    "sha256": "f1a14cd065fd578e2acb2cefee7708b40ef8d516e9464ceac7309ce974a5beee"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/laser-project-catalogue.json",
+    "bytes": 12310,
+    "sha256": "410859261a2be71a8f101a7572a5d51bb5e2b249eb69078e2720cdc007ce4b9a"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/matrikkel-metadata.json",
+    "bytes": 21706,
+    "sha256": "66f670c26083cc7ddd184ea686aff0d0789fc4f69517b605ff283a0c06eed43b"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/matrikkel-schema.xsd",
+    "bytes": 94068,
+    "sha256": "460e7deb3e3193b84fdeebbf0d4ec4a736ac031c438dad46f5ab95eb3ee69cd4"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/niib-projects.json",
+    "bytes": 31675,
+    "sha256": "5950e0d6387faae63e3e85cf92ea72e03d477f474e9f660227d23f5f03537d42"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/niib-swagger.json",
+    "bytes": 60240,
+    "sha256": "fa7db0e44e3c264178e201fc1bbb40400a9f96c15c2910b6cf45f5edc14ee045"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/ortho-catalogue.json",
+    "bytes": 24644,
+    "sha256": "697eefd8cd69e6c56ef8066874ec9b50c25b246a5d9224028e0e0de5ec238f22"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/project-5895.json",
+    "bytes": 1408,
+    "sha256": "063cdf0ebfa0521df83fd1a2430506d5949946f0ed15f7d1716b0735e3be865f"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/project-6091.json",
+    "bytes": 1402,
+    "sha256": "3eac76f8e27186160b0869171905aa0f7e325a5d97be7b4be5d6f1da3f017d3f"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/project-6266.json",
+    "bytes": 1395,
+    "sha256": "8ab0652e2297db9d32c58c7bf6b7eb3fa2606d4dc47afb9c38ec8b40c679935b"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/project-6621.json",
+    "bytes": 1535,
+    "sha256": "51f1619a30fec6b6ac71e210c8e9e835fe9488a6d767b7069a4e2df26afb70a2"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/registry-areas.json",
+    "bytes": 501175,
+    "sha256": "365a84a64cbf9744200c2b374e3032dc177136fcb523c9b9a6c05e8ea6458b76"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/registry-delivery-capabilities.json",
+    "bytes": 998,
+    "sha256": "430553e3dbe90d787965240768f40e9d932ef0948bbcc9bea3209ff17a85f56c"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/registry-formats.json",
+    "bytes": 1653,
+    "sha256": "eb2dbbb43184263c83b229c72a7e9dbe967516f7893a292746a1af69a963c08f"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/metadata/registry-projections.json",
+    "bytes": 839,
+    "sha256": "2366b9c9787961d29d5e8c4f6197bb47e6b39cfc15e5cfcf2bbcc68e1e6d6ba5"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/source-samples/comparison-2026-dom-025.tif",
+    "bytes": 3147246,
+    "sha256": "63a1d46d6a9b4d648245faa5b1b9229c89394d12d65e2a2f570e507234fcf57b"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/source-samples/comparison-2026-dtm-025.tif",
+    "bytes": 1518,
+    "sha256": "286caf969f41ef2804d04e5d88a40cdffd41f71a3b1d70c902cdf9c5f5ca41f4"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/source-samples/nvdb-v4-page2.json",
+    "bytes": 63,
+    "sha256": "879e1897fb80899b6f9a8f0fea4efdaf47b166b1e75cec50c5c64dfc798fbdbc"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/source-samples/nvdb-v4-utm33.json",
+    "bytes": 128542,
+    "sha256": "01b6316975b9f5fae5fdda1acd8e2a9fbb62a916fdb328cddf3663e67329aeee"
+  },
+  {
+    "path": "docs/bergen-simulator/r1e-evidence/source-samples/uib-bredsgarden-1918-1922.jpg",
+    "bytes": 190275,
+    "sha256": "ca7dfed18a42de5ee930a6055790f86e777b451f5b0c522369e03472796408ce"
+  }
+]

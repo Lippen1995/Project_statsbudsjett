@@ -1,0 +1,7 @@
+/workspace/Project_statsbudsjett/apps/bergen-simulator/scripts/r1e_compare.py:34: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+  a, b, c = current.read(1), ground.read(1), old.read(1)
+/workspace/Project_statsbudsjett/apps/bergen-simulator/scripts/r1e_compare.py:35: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+  if not np.equal(empty.read(1), 0).all():
+Reproduced six epoch comparisons; no contemporary geometry promoted.
