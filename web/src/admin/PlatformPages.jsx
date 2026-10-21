@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { api, useResource } from './api.js'
 import ServiceStatus from './ServiceStatus.jsx'
+import { notificationDestination } from './notificationDestination.js'
 import {
   Panel,
   Notice,
@@ -1391,7 +1392,7 @@ export function Insights({ section, days }) {
     </Resource>
   )
 }
-export function Notifications() {
+export function Notifications({ navigate }) {
   const [type, setType] = useState(''),
     [severity, setSeverity] = useState(''),
     state = useResource(
@@ -1433,43 +1434,140 @@ export function Notifications() {
                 </Notice>
               )}
               <div className="ad-records">
-                {d.items.map((n) => (
-                  <article key={n.id}>
-                    <div className="ad-record-heading">
-                      <h3>{n.title}</h3>
-                      <span className="ad-tag">
-                        {n.resolved_at
-                          ? 'Løst'
-                          : n.severity === 'critical'
-                            ? 'Kritisk'
-                            : n.severity === 'warning'
-                              ? 'Advarsel'
-                              : 'Informasjon'}
-                      </span>
-                    </div>
-                    <p>{n.detail}</p>
-                    <small className="ad-muted">
-                      {date(n.created_at)}
-                      {n.resolved_at ? ' · løst ' + date(n.resolved_at) : ''}
-                    </small>
-                    {user.role !== 'viewer' && !n.acknowledged && (
-                      <button
-                        className="ad-text-button"
-                        disabled={action.busy}
-                        onClick={() =>
-                          action.run(
-                            'records/acknowledgements',
-                            { data: { key: n.dedupe_key, acknowledged: true } },
-                            'Varslet er merket som lest.',
-                          )
-                        }
-                      >
-                        Marker som lest
-                      </button>
-                    )}
-                    {n.acknowledged && <span className="ad-tag">Lest</span>}
-                  </article>
-                ))}
+                {d.items.map((n) => {
+                  const destination = notificationDestination(n.resource)
+                  return (
+                    <article key={n.id}>
+                      <details className="ad-notification">
+                        <summary>
+                          <span className="ad-record-heading">
+                            <span className="ad-notification-title">
+                              {n.title}
+                            </span>
+                            <span className="ad-tag">
+                              {n.resolved_at
+                                ? 'Løst'
+                                : n.severity === 'critical'
+                                  ? 'Kritisk'
+                                  : n.severity === 'warning'
+                                    ? 'Advarsel'
+                                    : 'Informasjon'}
+                            </span>
+                          </span>
+                          <span className="ad-notification-preview">
+                            {n.detail}
+                          </span>
+                          <span className="ad-notification-toggle">
+                            <span className="ad-notification-show">
+                              Vis detaljer
+                            </span>
+                            <span className="ad-notification-hide">
+                              Skjul detaljer
+                            </span>
+                            <span aria-hidden="true">⌄</span>
+                          </span>
+                        </summary>
+                        <div className="ad-notification-details">
+                          <dl className="ad-details">
+                            <div>
+                              <dt>Type</dt>
+                              <dd>
+                                {types.find(([id]) => id === n.type)?.[1] ||
+                                  n.type}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt>Status</dt>
+                              <dd>
+                                {n.resolved_at ? 'Løst' : 'Aktivt varsel'}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt>Oppdaget</dt>
+                              <dd>{date(n.created_at)}</dd>
+                            </div>
+                            {n.opened_at && (
+                              <div>
+                                <dt>Siste hendelse</dt>
+                                <dd>{date(n.opened_at)}</dd>
+                              </div>
+                            )}
+                            {n.resolved_at && (
+                              <div>
+                                <dt>Løst</dt>
+                                <dd>{date(n.resolved_at)}</dd>
+                              </div>
+                            )}
+                          </dl>
+                          {destination ? (
+                            <a
+                              className="ad-secondary"
+                              href={destination.href}
+                              target={
+                                destination.external ? '_blank' : undefined
+                              }
+                              rel={
+                                destination.external
+                                  ? 'noopener noreferrer'
+                                  : undefined
+                              }
+                              onClick={(event) => {
+                                if (
+                                  destination.section &&
+                                  navigate &&
+                                  !event.ctrlKey &&
+                                  !event.metaKey &&
+                                  !event.shiftKey &&
+                                  !event.altKey
+                                ) {
+                                  event.preventDefault()
+                                  navigate(destination.section)
+                                }
+                              }}
+                            >
+                              {destination.label}
+                              {destination.external && ' ↗'}
+                            </a>
+                          ) : (
+                            <p className="ad-muted">
+                              Ingen tilknyttet kjøring eller side er registrert
+                              for dette varslet.
+                            </p>
+                          )}
+                        </div>
+                      </details>
+                      <div className="ad-notification-footer">
+                        <small className="ad-muted">
+                          {date(n.created_at)}
+                          {n.resolved_at
+                            ? ' · løst ' + date(n.resolved_at)
+                            : ''}
+                        </small>
+                        {user.role !== 'viewer' && !n.acknowledged && (
+                          <button
+                            className="ad-text-button"
+                            disabled={action.busy}
+                            onClick={() =>
+                              action.run(
+                                'records/acknowledgements',
+                                {
+                                  data: {
+                                    key: n.dedupe_key,
+                                    acknowledged: true,
+                                  },
+                                },
+                                'Varslet er merket som lest.',
+                              )
+                            }
+                          >
+                            Marker som lest
+                          </button>
+                        )}
+                        {n.acknowledged && <span className="ad-tag">Lest</span>}
+                      </div>
+                    </article>
+                  )
+                })}
                 {!d.items.length && <p>Ingen varsler i dette utvalget.</p>}
               </div>
               {user.role === 'admin' && (
