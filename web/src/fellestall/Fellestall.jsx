@@ -1,3 +1,4 @@
+import { productVisibility } from '../products/launch.mjs'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { loadAll, hentDetaljer as hentDetaljerRaa } from '../lib/data'
 import { kompaktData, kompaktDetaljer, verdi, rot, sumRot, sumFondsoverforing, perInnbygger, tellPoster, detaljFil } from './kompakt'
@@ -212,7 +213,7 @@ export default function Fellestall() {
               </a>
             ))}
           </nav>
-          <div className="ft-sidefot">
+          <div className="ft-sidefot">{productVisibility().navigation ? <a href="/hjelper-deg/">Fellestall hjelper deg</a> : null}
             <a href="/analyser/">Analyser</a>
             <a href="#om-tallene">Om tallene</a>
           </div>
@@ -226,7 +227,7 @@ export default function Fellestall() {
                 <span className="ft-stikkord">År</span>
                 {aarVelger}
               </label>
-              <nav className="ft-toppnav" aria-label="Hovedinnhold">
+              <nav className="ft-toppnav" aria-label="Hovedinnhold">{productVisibility().navigation ? <a href="/hjelper-deg/">Fellestall hjelper deg</a> : null}
                 {navLenker.map((n) => (
                   <a key={n.id} href={`#${n.id}`} className={`ft-toppnavlenke ${n.aktiv ? 'aktiv' : ''}`}>
                     {n.navn}
