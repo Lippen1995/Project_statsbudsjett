@@ -39,6 +39,7 @@ jobs:
     needs: sync
     if: needs.sync.outputs.changed == 'true'
     uses: ./.github/workflows/deploy.yml
+    secrets: inherit
     permissions:
       contents: write
       pull-requests: write
