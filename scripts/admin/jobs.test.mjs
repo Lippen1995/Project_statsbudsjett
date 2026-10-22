@@ -70,3 +70,71 @@ test('jobbvarsler lukkes bare med bekreftet vellykket kjøring', async t => {
     assert.equal((await refresh([], Error('GitHub unavailable'))).resolved_at, null)
   })
 })
+
+test('gamle Sven-varsler krever dokumentert fullført køkontroll', async t => {
+  const db = await testDatabase()
+  t.after(() => db.engine.close())
+  t.mock.timers.enable({ apis: ['Date'], now: Date.parse('2026-10-22T08:30:00Z') })
+  const notifications = notificationService(db.sql)
+  const key = 'job:sven:2026-10-20'
+  const completed = {
+    id: 'confirmed-run', state: 'waiting',
+    startedAt: '2026-10-21T07:04:57Z', finishedAt: '2026-10-21T07:08:03Z',
+  }
+  async function refresh(native) {
+    await notifications.publish({key, type: 'editorial', severity: 'warning', title: 'Mangler status', detail: 'Original', resource: 'sven'})
+    const github = {
+      readFile: async () => native ? {content: JSON.stringify(native)} : null,
+      api: async () => ({workflow_runs: []}),
+    }
+    await jobService({...db, github, notifications}).get()
+    return (await db.sql.query('SELECT * FROM ft_admin_notifications WHERE dedupe_key=$1', [key]))[0]
+  }
+  for (const [label, entry] of [
+    ['manglende fil', null],
+    ['eldre kjøring', {...completed, startedAt: '2026-10-19T07:00:00Z', finishedAt: '2026-10-19T07:01:00Z'}],
+    ['feilet kjøring', {...completed, state: 'failed'}],
+    ['pågående kjøring', {...completed, state: 'researching', finishedAt: undefined}],
+    ['manglende slutttid', {...completed, finishedAt: undefined}],
+    ['ugyldig starttid', {...completed, startedAt: 'invalid'}],
+    ['slutt før start', {...completed, finishedAt: '2026-10-20T07:00:00Z'}],
+    ['fremtidig kjøring', {...completed, startedAt: '2026-10-23T07:00:00Z', finishedAt: '2026-10-23T07:01:00Z'}],
+  ]) await t.test(label + ' lar varselet stå åpent', async () => {
+    assert.equal((await refresh(entry ? {current: entry} : null)).resolved_at, null)
+  })
+  await t.test('fullført kontroll i historikken bekrefter gjenoppretting', async () => {
+    const item = await refresh({history: [completed]})
+    assert.ok(item.resolved_at)
+    assert.match(item.detail, /confirmed-run.*2026-10-21T07:08:03Z/)
+    assert.match(item.detail, /ikke etterregistrert/)
+  })
+  await t.test('norsk dato ved midnatt brukes for den opprinnelige varslingsdagen', async () => {
+    const item = await refresh({current: {...completed, startedAt: '2026-10-19T22:30:00Z', finishedAt: '2026-10-19T22:31:00Z'}})
+    assert.ok(item.resolved_at)
+  })
+})
+
+test('planvarsler lukkes bare når forventet main-kjøring finnes', async t => {
+  const db = await testDatabase()
+  t.after(() => db.engine.close())
+  t.mock.timers.enable({apis: ['Date'], now: Date.parse('2026-10-22T07:00:00Z')})
+  const notifications = notificationService(db.sql)
+  const key = 'job:missing:budget-monitor.yml'
+  async function refresh(runs) {
+    await notifications.publish({key, type: 'data', severity: 'warning', title: 'Mangler kjøring', detail: 'Original'})
+    const github = {readFile: async () => null, api: async path => {
+      if (path.startsWith('actions/workflows/budget-monitor.yml')) {
+        assert.match(path, /branch=main/)
+        return {workflow_runs: runs}
+      }
+      return {workflow_runs: []}
+    }}
+    await jobService({...db, github, notifications}).get()
+    return (await db.sql.query('SELECT * FROM ft_admin_notifications WHERE dedupe_key=$1', [key]))[0]
+  }
+  assert.equal((await refresh([])).resolved_at, null, 'ny frist alene er ikke bevis på gjenoppretting')
+  const actual = {...run(2, 'failure'), created_at: '2026-10-22T06:30:00Z'}
+  const item = await refresh([actual])
+  assert.ok(item.resolved_at, 'en utført, men feilet jobb løser bare manglende kjøring')
+  assert.match(item.detail, /Bekreftet kjøring:.*\/2/)
+})

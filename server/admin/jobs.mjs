@@ -23,6 +23,12 @@ function recoveryFor(job, runs) {
   )
 }
 
+const osloDate = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Europe/Oslo', year: 'numeric', month: '2-digit', day: '2-digit',
+})
+const dayOf = (value) => Number.isFinite(Date.parse(value))
+  ? osloDate.format(new Date(value)) : null
+
 export function jobService({ sql, github, notifications }) {
   let cached,
     checked = 0,
@@ -35,12 +41,7 @@ export function jobService({ sql, github, notifications }) {
     ])
     const runs = (response.workflow_runs || []).map(jobRun)
     const native = heartbeat ? JSON.parse(heartbeat.content) : null
-    const today = new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'Europe/Oslo',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).format(new Date())
+    const today = dayOf(new Date().toISOString())
     const hour = Number(
       new Intl.DateTimeFormat('en-GB', {
         timeZone: 'Europe/Oslo',
@@ -48,26 +49,44 @@ export function jobService({ sql, github, notifications }) {
         hourCycle: 'h23',
       }).format(new Date()),
     )
-    const missing =
-      hour >= 10 &&
-      (!native?.current?.startedAt ||
-        new Intl.DateTimeFormat('en-CA', {
-          timeZone: 'Europe/Oslo',
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-        }).format(new Date(native.current.startedAt)) < today)
-    if (notifications)
-      await notifications.publish({
-        key: 'job:sven:' + today,
-        type: 'editorial',
-        severity: 'warning',
-        title: 'Dagens Sven-kjøring mangler bekreftet arbeidsstatus.',
-        detail:
-          'Forventet køkontroll kl. 09.00 i norsk tid. Se arbeidsloggen og kontroller om oppgaven har kjørt.',
-        resource: 'sven',
-        resolved: !missing,
-      })
+    const reportedToday = [native?.current, ...(native?.history || [])].some(
+      (entry) => dayOf(entry?.startedAt) === today && Date.parse(entry.startedAt) <= Date.now(),
+    )
+    const missing = hour >= 10 && !reportedToday
+    if (notifications) {
+      if (missing)
+        await notifications.publish({
+          key: 'job:sven:' + today,
+          type: 'editorial',
+          severity: 'warning',
+          title: 'Dagens Sven-kjøring mangler bekreftet arbeidsstatus.',
+          detail: 'Forventet køkontroll kl. 09.00 i norsk tid. Se arbeidsloggen og kontroller om oppgaven har kjørt.',
+          resource: 'sven',
+        })
+      // En senere fullført køkontroll bekrefter gjenoppretting, men beviser
+      // ikke at kontrollen også ble utført på dagen som opprinnelig manglet.
+      const completed = [native?.current, ...(native?.history || [])].filter(
+        (entry) => entry?.id && ['waiting', 'review', 'completed'].includes(entry.state) &&
+          dayOf(entry.startedAt) && Date.parse(entry.finishedAt) >= Date.parse(entry.startedAt) &&
+          Date.parse(entry.finishedAt) <= Date.now(),
+      ).sort((a, b) => Date.parse(b.finishedAt) - Date.parse(a.finishedAt))
+      const open = await sql.query(
+        "SELECT * FROM ft_admin_notifications WHERE resolved_at IS NULL AND dedupe_key LIKE 'job:sven:%'",
+      )
+      for (const item of open) {
+        const date = item.dedupe_key.slice('job:sven:'.length)
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue
+        const recovery = completed.find((entry) => dayOf(entry.startedAt) >= date)
+        if (recovery)
+          await notifications.publish({
+            key: item.dedupe_key, type: item.type, severity: item.severity,
+            title: item.title, resource: item.resource,
+            detail: 'Bekreftet gjenopprettet av fullført Sven-køkontroll ' + recovery.id +
+              ' (' + recovery.finishedAt + '). Den opprinnelig manglende dagen er ikke etterregistrert.',
+            resolved: true,
+          })
+      }
+    }
     for (const job of runs
       .filter(
         (r) =>
@@ -145,7 +164,7 @@ export function jobService({ sql, github, notifications }) {
     const schedules = []
     for (const definition of deadlines) {
       const response = await github.api(
-          'actions/workflows/' + definition.workflow + '/runs?per_page=5',
+          'actions/workflows/' + definition.workflow + '/runs?per_page=5&branch=main',
         ),
         latest = response.workflow_runs?.[0],
         overdue =
@@ -165,7 +184,8 @@ export function jobService({ sql, github, notifications }) {
           : null,
         overdue,
       })
-      if (notifications)
+      const occurred = latest && Date.parse(latest.created_at) >= Date.parse(definition.expected)
+      if (notifications && (overdue || occurred))
         await notifications.publish({
           key: 'job:missing:' + definition.workflow,
           type: 'data',
@@ -174,9 +194,9 @@ export function jobService({ sql, github, notifications }) {
           detail:
             'Forventet etter ' +
             definition.expected +
-            '. Kontroller Actions-planen.',
+            (occurred ? '. Bekreftet kjøring: ' + latest.html_url : '. Kontroller Actions-planen.'),
           resource: 'drift',
-          resolved: !overdue,
+          resolved: Boolean(occurred),
         })
     }
     cached = {
