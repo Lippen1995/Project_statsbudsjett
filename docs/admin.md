@@ -32,6 +32,13 @@ Skjult adresse og indekseringsregler er ikke tilgangskontrollen.
   administratoren på e-post ved feil, nedsatt ytelse og gjenoppretting.
 - **Endringshistorikk:** faktiske GitHub-commits og Actions-kjøringer.
 
+Jobbvarsler lukkes automatisk etter en bekreftet vellykket omkjøring med
+samme kjørings-ID, eller en nyere vellykket kjøring av samme workflow.
+Avbrutte, hoppede over og mislykkede kjøringer beviser ikke gjenoppretting.
+Lagrede åpne varsler kontrolleres også når den tilhørende kjøringen har falt
+utenfor siste side med jobbhistorikk. Hvis GitHub ikke kan bekrefte resultatet,
+beholdes varselet åpent.
+
 ## Serveroppsett
 
 Adminområdet ble aktivert på **https://fellestall.no/admin/** 19. oktober 2026.

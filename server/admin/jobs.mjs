@@ -1,5 +1,28 @@
 import { audit, fail, requireRole } from './core.mjs'
 
+const jobRun = (r) => ({
+  id: r.id,
+  name: r.name,
+  status: r.status,
+  conclusion: r.conclusion,
+  createdAt: r.created_at,
+  startedAt: r.run_started_at,
+  updatedAt: r.updated_at,
+  url: r.html_url,
+  workflow: r.path?.split('/').at(-1),
+  commit: r.head_sha,
+})
+
+function recoveryFor(job, runs) {
+  return runs.find((run) =>
+    job.workflow && run.workflow === job.workflow &&
+    run.status === 'completed' && run.conclusion === 'success' &&
+    (run.id === job.id ||
+      (Date.parse(run.createdAt) >= Date.parse(job.createdAt) &&
+       Date.parse(run.updatedAt) >= Date.parse(job.updatedAt))),
+  )
+}
+
 export function jobService({ sql, github, notifications }) {
   let cached,
     checked = 0,
@@ -10,18 +33,7 @@ export function jobService({ sql, github, notifications }) {
       github.api('actions/runs?per_page=60&branch=main'),
       github.readFile('editorial/sven-status.json'),
     ])
-    const runs = (response.workflow_runs || []).map((r) => ({
-      id: r.id,
-      name: r.name,
-      status: r.status,
-      conclusion: r.conclusion,
-      createdAt: r.created_at,
-      startedAt: r.run_started_at,
-      updatedAt: r.updated_at,
-      url: r.html_url,
-      workflow: r.path?.split('/').at(-1),
-      commit: r.head_sha,
-    }))
+    const runs = (response.workflow_runs || []).map(jobRun)
     const native = heartbeat ? JSON.parse(heartbeat.content) : null
     const today = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'Europe/Oslo',
@@ -56,10 +68,6 @@ export function jobService({ sql, github, notifications }) {
         resource: 'sven',
         resolved: !missing,
       })
-    const newestByWorkflow = new Map()
-    for (const run of runs.filter((r) => r.status === 'completed'))
-      if (!newestByWorkflow.has(run.workflow))
-        newestByWorkflow.set(run.workflow, run)
     for (const job of runs
       .filter(
         (r) =>
@@ -67,16 +75,50 @@ export function jobService({ sql, github, notifications }) {
           r.conclusion === 'failure',
       )
       .slice(0, 5))
-      if (notifications)
+      if (notifications) {
+        const recovery = recoveryFor(job, runs)
         await notifications.publish({
           key: 'job:failure:' + job.id,
           type: /etl|neon|data/i.test(job.name) ? 'data' : 'operations',
           severity: 'warning',
           title: job.name + ' feilet.',
-          detail: 'Se den faktiske kjøringen for feilsteg og årsak.',
+          detail: recovery
+            ? 'Bekreftet løst av vellykket kjøring: ' + recovery.url
+            : 'Se den faktiske kjøringen for feilsteg og årsak.',
           resource: job.url,
-          resolved: newestByWorkflow.get(job.workflow)?.id !== job.id,
+          resolved: Boolean(recovery),
         })
+      }
+    // En vellykket omkjøring har samme ID og finnes ikke lenger i feillisten.
+    // Kontroller også lagrede varsler som har falt utenfor den siste siden.
+    if (notifications) {
+      const open = await sql.query(
+        "SELECT * FROM ft_admin_notifications WHERE resolved_at IS NULL AND dedupe_key LIKE 'job:failure:%'",
+      )
+      for (const item of open) {
+        const id = item.dedupe_key.slice('job:failure:'.length)
+        if (!/^\d+$/.test(id)) continue
+        let job = runs.find((run) => String(run.id) === id)
+        if (!job) {
+          try {
+            job = jobRun(await github.api('actions/runs/' + id))
+          } catch {
+            continue // Manglende bevis er aldri grunn til å lukke et varsel.
+          }
+        }
+        const recovery = recoveryFor(job, [job, ...runs])
+        if (recovery)
+          await notifications.publish({
+            key: item.dedupe_key,
+            type: item.type,
+            severity: item.severity,
+            title: item.title,
+            detail: 'Bekreftet løst av vellykket kjøring: ' + recovery.url,
+            resource: item.resource,
+            resolved: true,
+          })
+      }
+    }
     const deadlines = [
       {
         workflow: 'etl.yml',
