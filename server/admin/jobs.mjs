@@ -92,8 +92,7 @@ export function jobService({ sql, github, notifications }) {
         (r) =>
           Date.now() - Date.parse(r.updatedAt) < 7 * 86400000 &&
           r.conclusion === 'failure',
-      )
-      .slice(0, 5))
+      ))
       if (notifications) {
         const recovery = recoveryFor(job, runs)
         await notifications.publish({
@@ -109,10 +108,11 @@ export function jobService({ sql, github, notifications }) {
         })
       }
     // En vellykket omkjøring har samme ID og finnes ikke lenger i feillisten.
-    // Kontroller også lagrede varsler som har falt utenfor den siste siden.
+    // Kontroller også lagrede varsler utenfor siden og eldre lukkede varsler
+    // som mangler bevis fra før gjenopprettingskontrollen ble innført.
     if (notifications) {
       const open = await sql.query(
-        "SELECT * FROM ft_admin_notifications WHERE resolved_at IS NULL AND dedupe_key LIKE 'job:failure:%'",
+        "SELECT * FROM ft_admin_notifications WHERE dedupe_key LIKE 'job:failure:%' AND (resolved_at IS NULL OR detail NOT LIKE 'Bekreftet løst av vellykket kjøring:%')",
       )
       for (const item of open) {
         const id = item.dedupe_key.slice('job:failure:'.length)
@@ -122,19 +122,21 @@ export function jobService({ sql, github, notifications }) {
           try {
             job = jobRun(await github.api('actions/runs/' + id))
           } catch {
-            continue // Manglende bevis er aldri grunn til å lukke et varsel.
+            // Manglende tilgang gir ikke bevis for en eldre, ubekreftet løsning.
           }
         }
-        const recovery = recoveryFor(job, [job, ...runs])
-        if (recovery)
+        const recovery = job && recoveryFor(job, [job, ...runs])
+        if (recovery || item.resolved_at)
           await notifications.publish({
             key: item.dedupe_key,
             type: item.type,
             severity: item.severity,
             title: item.title,
-            detail: 'Bekreftet løst av vellykket kjøring: ' + recovery.url,
+            detail: recovery
+              ? 'Bekreftet løst av vellykket kjøring: ' + recovery.url
+              : 'Ingen vellykket kjøring er bekreftet. Se den faktiske kjøringen for feilsteg og årsak.',
             resource: item.resource,
-            resolved: true,
+            resolved: Boolean(recovery),
           })
       }
     }
