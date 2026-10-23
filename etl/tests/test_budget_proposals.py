@@ -173,6 +173,25 @@ def test_daily_dfo_arrival_switches_proposal_and_ignores_superseded_versions(tmp
     assert calls == [True]
 
 
+def test_dfo_outage_does_not_change_published_data_or_proposal_archive(tmp_path, monkeypatch):
+    import download
+    from budget_proposals import sync_dfobudgets
+    seed(tmp_path)
+    archive_proposal(tmp_path, 2027, "initial", workbook(), SOURCE)
+    reconcile(tmp_path)
+    before = {p.relative_to(tmp_path): p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()}
+
+    def unavailable(force):
+        assert force is True
+        raise download.KildeFeil("DFØ unavailable")
+
+    monkeypatch.setattr(download, "download_bevilgning", unavailable)
+    with pytest.raises(download.KildeFeil, match="DFØ unavailable"):
+        sync_dfobudgets(tmp_path)
+    after = {p.relative_to(tmp_path): p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()}
+    assert after == before
+
+
 def test_evidence_archive_fetches_the_quote_and_rejects_invented_party(tmp_path, monkeypatch):
     import requests
     from budget_evidence import archive_evidence

@@ -43,7 +43,7 @@ def _request_med_retry(metode: str, url: str, **kwargs) -> requests.Response:
     for forsok in range(len(RETRY_BACKOFF) + 1):
         try:
             resp = requests.request(metode, url, headers=headers, **kwargs)
-        except requests.exceptions.ConnectionError as e:
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:
             siste_feil = f"tilkoblingsfeil: {e}"
             resp = None
         else:
@@ -58,8 +58,11 @@ def _request_med_retry(metode: str, url: str, **kwargs) -> requests.Response:
                 ra = resp.headers.get("Retry-After")
                 if ra and ra.isdigit():
                     vent = max(vent, int(ra))
+                resp.close()
             _sov(vent, f"{siste_feil}, forsøk {forsok + 1}/{len(RETRY_BACKOFF)}")
         else:
+            if resp is not None:
+                resp.close()
             raise KildeFeil(
                 f"\nFEIL: {metode} {url} feilet etter {len(RETRY_BACKOFF) + 1} forsøk "
                 f"({siste_feil}). Sannsynlig midlertidig utfall eller rate-limiting."
@@ -85,7 +88,9 @@ class KildeFeil(SystemExit):
 
 
 def _get(url: str, timeout: int = 300) -> requests.Response:
-    resp = _request_med_retry("GET", url, timeout=timeout)
+    # En stor historikkfil kan trenge lang lesetid, men en utilgjengelig
+    # server skal ikke bruke fem minutter bare på å opprette forbindelsen.
+    resp = _request_med_retry("GET", url, timeout=(15, timeout))
     if resp.status_code != 200:
         raise KildeFeil(
             f"\nFEIL: HTTP {resp.status_code} fra {url}\n{resp.text[:300]}"

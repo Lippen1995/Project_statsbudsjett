@@ -10,6 +10,7 @@ import argparse
 import hashlib
 import io
 import json
+import logging
 import math
 import re
 from datetime import datetime, timezone
@@ -369,6 +370,7 @@ def sync_dfobudgets(data_dir):
 
 
 def main():
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     parser = argparse.ArgumentParser()
     parser.add_argument("--year", type=int)
     parser.add_argument("--sync-dfo", action="store_true")
