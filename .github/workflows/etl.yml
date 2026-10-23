@@ -192,6 +192,7 @@ jobs:
   deploy:
     needs: etl
     uses: ./.github/workflows/deploy.yml
+    secrets: inherit
     permissions:
       contents: write
       pull-requests: write

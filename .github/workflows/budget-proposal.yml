@@ -48,6 +48,7 @@ jobs:
     needs: import
     if: needs.import.outputs.changed == 'true'
     uses: ./.github/workflows/deploy.yml
+    secrets: inherit
     permissions:
       contents: write
       pull-requests: write
