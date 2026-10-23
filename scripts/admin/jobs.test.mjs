@@ -69,6 +69,34 @@ test('jobbvarsler lukkes bare med bekreftet vellykket kjøring', async t => {
     await alert()
     assert.equal((await refresh([], Error('GitHub unavailable'))).resolved_at, null)
   })
+  async function legacy() {
+    await alert()
+    await db.sql.query("UPDATE ft_admin_notifications SET resolved_at=now(), detail='Se den faktiske kjøringen for feilsteg og årsak.' WHERE dedupe_key='job:failure:1'")
+  }
+  await t.test('eldre lukket varsel uten bevis åpnes igjen etter bekreftet feil', async () => {
+    await legacy()
+    const item = await refresh([], failure)
+    assert.equal(item.resolved_at, null)
+    assert.match(item.detail, /Ingen vellykket kjøring er bekreftet/)
+  })
+  await t.test('eldre lukket varsel får bevis når omkjøringen er vellykket', async () => {
+    await legacy()
+    const item = await refresh([], run(1, 'success'))
+    assert.ok(item.resolved_at)
+    assert.match(item.detail, /Bekreftet løst.*\/1/)
+  })
+  await t.test('utilgjengelig GitHub lar ikke ubekreftet historisk løsning bli stående', async () => {
+    await legacy()
+    assert.equal((await refresh([], Error('GitHub unavailable'))).resolved_at, null)
+  })
+  await t.test('en sjette jobbfeil på historikksiden kan ikke bli oversett', async () => {
+    await legacy()
+    const item = await refresh([...Array.from({length: 5}, (_, i) => run(i + 2, 'failure')), failure])
+    assert.equal(item.resolved_at, null)
+    const items = (await notifications.list()).items.filter(item => item.dedupe_key.startsWith('job:failure:'))
+    assert.equal(items.length, 6)
+    assert.ok(items.every(item => !item.resolved_at))
+  })
 })
 
 test('gamle Sven-varsler krever dokumentert fullført køkontroll', async t => {

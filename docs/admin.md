@@ -39,6 +39,12 @@ Lagrede åpne varsler kontrolleres også når den tilhørende kjøringen har fal
 utenfor siste side med jobbhistorikk. Hvis GitHub ikke kan bekrefte resultatet,
 beholdes varselet åpent.
 
+Alle feil på den hentede historikksiden kontrolleres. Eldre jobbvarsler som
+allerede er lukket uten registrert kjøringsbevis, kontrolleres på nytt. De
+åpnes igjen hvis en vellykket kjøring ikke kan bekreftes, også når GitHub
+ikke er tilgjengelig. Dermed kan ikke den tidligere automatikken etterlate
+en ubekreftet løsning som permanent lukket.
+
 Eldre Sven-varsler kontrolleres mot både gjeldende arbeidsstatus og historikken.
 Bare en fullført køkontroll med gyldige start- og sluttider og status `waiting`,
 `review` eller `completed` bekrefter gjenoppretting. Kjørings-ID og sluttid
