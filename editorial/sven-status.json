@@ -33,8 +33,9 @@
     "id": "c27ed471-86c8-4a7c-a0d4-65a59caf8313",
     "startedAt": "2026-10-24T07:04:03.689Z",
     "instructionCommit": "1522a49413fa487fe041ddbf5e0c695d916a6893",
-    "state": "researching",
-    "note": "Kontrollerer kø og åpne gjennomganger",
-    "updatedAt": "2026-10-24T07:04:03.689Z"
+    "state": "waiting",
+    "note": "Kø og åpne analysegjennomganger kontrollert. Ingen temaer har nådd skrivedatoen. Neste tema er planlagt 26. oktober 2026. Ingen analyse skrevet eller levert.",
+    "updatedAt": "2026-10-24T07:04:56.566Z",
+    "finishedAt": "2026-10-24T07:04:56.566Z"
   }
 }
