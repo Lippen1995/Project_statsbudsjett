@@ -27,15 +27,23 @@
       "note": "Kø og åpne analysegjennomganger kontrollert. Ingen temaer har nådd skrivedatoen. Neste tema er planlagt 26. oktober 2026. Ingen analyse skrevet eller levert.",
       "updatedAt": "2026-10-23T07:01:46.346Z",
       "finishedAt": "2026-10-23T07:01:46.346Z"
+    },
+    {
+      "id": "c27ed471-86c8-4a7c-a0d4-65a59caf8313",
+      "startedAt": "2026-10-24T07:04:03.689Z",
+      "instructionCommit": "1522a49413fa487fe041ddbf5e0c695d916a6893",
+      "state": "waiting",
+      "note": "Kø og åpne analysegjennomganger kontrollert. Ingen temaer har nådd skrivedatoen. Neste tema er planlagt 26. oktober 2026. Ingen analyse skrevet eller levert.",
+      "updatedAt": "2026-10-24T07:04:56.566Z",
+      "finishedAt": "2026-10-24T07:04:56.566Z"
     }
   ],
   "current": {
-    "id": "c27ed471-86c8-4a7c-a0d4-65a59caf8313",
-    "startedAt": "2026-10-24T07:04:03.689Z",
-    "instructionCommit": "1522a49413fa487fe041ddbf5e0c695d916a6893",
-    "state": "waiting",
-    "note": "Kø og åpne analysegjennomganger kontrollert. Ingen temaer har nådd skrivedatoen. Neste tema er planlagt 26. oktober 2026. Ingen analyse skrevet eller levert.",
-    "updatedAt": "2026-10-24T07:04:56.566Z",
-    "finishedAt": "2026-10-24T07:04:56.566Z"
+    "id": "60e9ed40-12ae-4ea0-9e7e-f50983169379",
+    "startedAt": "2026-10-25T08:05:46.155Z",
+    "instructionCommit": "41d73e1d7b04049da5f7947d814526e3002eea56",
+    "state": "researching",
+    "note": "Kontrollerer kø og åpne gjennomganger",
+    "updatedAt": "2026-10-25T08:05:46.155Z"
   }
 }
