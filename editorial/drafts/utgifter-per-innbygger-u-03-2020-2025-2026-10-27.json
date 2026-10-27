@@ -1,0 +1,1365 @@
+{
+  "slug": "utgifter-per-innbygger-u-03-2020-2025-2026-10-27",
+  "topic": "Kultur- og likestillingsdepartementet",
+  "geography": "Staten",
+  "type": "Utvikling over tid",
+  "status": "draft",
+  "createdAt": "2026-10-27T08:19:16.680Z",
+  "generatedAt": "2026-10-27T08:19:16.680Z",
+  "report": {
+    "kind": "real-expenditure-per-capita",
+    "factsVersion": 2,
+    "researchPlan": [
+      {
+        "id": "Utenallmenn",
+        "kind": "exclude-chapters",
+        "evidenceIds": [
+          "allmenn"
+        ]
+      }
+    ],
+    "scopeId": "u-03",
+    "scopeName": "Kultur- og likestillingsdepartementet",
+    "detailSelections": [
+      {
+        "id": "moms",
+        "nodeIds": [
+          "u-03-0315-70"
+        ]
+      },
+      {
+        "id": "museum",
+        "nodeIds": [
+          "u-03-0328-70"
+        ]
+      },
+      {
+        "id": "nrk",
+        "nodeIds": [
+          "u-03-0335-79"
+        ]
+      },
+      {
+        "id": "krise",
+        "nodeIds": [
+          "u-03-0325-77"
+        ]
+      },
+      {
+        "id": "allmenn",
+        "nodeIds": [
+          "u-03-0325"
+        ]
+      }
+    ],
+    "start": 2020,
+    "end": 2025,
+    "dataUpdated": "2026-10-19T13:35:02.778063+00:00",
+    "dataHash": "23e1c8e2503365e49e6bc022de09a110b6ee5bd28f96744acf7148f1b735eb58",
+    "facts": {
+      "startYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Første regnskapsår"
+      },
+      "endYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Siste regnskapsår"
+      },
+      "nominalGrowth": {
+        "value": 12.97250711023008,
+        "text": "13,0 %",
+        "label": "Vekst i løpende utgifter"
+      },
+      "populationGrowth": {
+        "value": 4.224622641860942,
+        "text": "4,2 %",
+        "label": "Befolkningsvekst"
+      },
+      "priceGrowth": {
+        "value": 22.699386503067487,
+        "text": "22,7 %",
+        "label": "Prisvekst målt med KPI"
+      },
+      "realPerCapitaGrowth": {
+        "value": -11.659461112927715,
+        "text": "−11,7 %",
+        "label": "Realvekst per innbygger"
+      },
+      "firstPerCapita": {
+        "value": 4323.363601474035,
+        "text": "4 323 kr",
+        "label": "Per innbygger i startåret, løpende kroner"
+      },
+      "lastPerCapita": {
+        "value": 4686.23644612233,
+        "text": "4 686 kr",
+        "label": "Per innbygger i sluttåret, løpende kroner"
+      },
+      "firstRealPerCapita": {
+        "value": 5304.7406153055645,
+        "text": "5 305 kr",
+        "label": "Startåret i sluttårets priser"
+      },
+      "total": {
+        "value": 26.216399999999993,
+        "text": "26,2 mrd. kr",
+        "label": "Utgifter i sluttåret"
+      },
+      "nominalPerCapitaGrowth": {
+        "value": 8.393299247941455,
+        "text": "8,4 %",
+        "label": "Vekst per innbygger, løpende kroner"
+      },
+      "previousYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Året før største årlige endring"
+      },
+      "largestChangeYear": {
+        "value": 2022,
+        "text": "2022",
+        "label": "År med største årlige endring i absoluttverdi"
+      },
+      "largestAnnualChange": {
+        "value": -14.480681738257061,
+        "text": "−14,5 %",
+        "label": "Største årlige endring, KPI-justert per innbygger"
+      },
+      "growthBeforeChange": {
+        "value": 7.288190401849137,
+        "text": "7,3 %",
+        "label": "KPI-justert vekst per innbygger, 2020–2021"
+      },
+      "growthSinceChange": {
+        "value": -17.6605192461614,
+        "text": "−17,7 %",
+        "label": "KPI-justert vekst per innbygger, 2021–2025"
+      },
+      "growthAfterChange": {
+        "value": -3.718268073854425,
+        "text": "−3,7 %",
+        "label": "KPI-justert vekst per innbygger, 2022–2025"
+      },
+      "momsPeakYear": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): år med høyeste løpende beløp i perioden"
+      },
+      "momsPeakAmount": {
+        "value": 2728.3,
+        "text": "2,7 mrd. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): høyeste løpende beløp, 2024"
+      },
+      "momsLastAmount": {
+        "value": 2650,
+        "text": "2,7 mrd. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): løpende beløp, 2025"
+      },
+      "momsReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): sammenligningsår"
+      },
+      "momsReferenceAmount": {
+        "value": 1685,
+        "text": "1,7 mrd. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): løpende beløp, 2020"
+      },
+      "momsFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): første år med regnskapsføring på denne posten i perioden"
+      },
+      "momsYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): regnskapsår"
+      },
+      "momsAmountA": {
+        "value": 1685,
+        "text": "1,7 mrd. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): løpende beløp, 2020"
+      },
+      "momsYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): regnskapsår"
+      },
+      "momsAmountB": {
+        "value": 1818.7,
+        "text": "1,8 mrd. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): løpende beløp, 2021"
+      },
+      "momsYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): regnskapsår"
+      },
+      "momsAmountC": {
+        "value": 2030.8,
+        "text": "2,0 mrd. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): løpende beløp, 2022"
+      },
+      "momsYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): regnskapsår"
+      },
+      "momsAmountD": {
+        "value": 2451.5,
+        "text": "2,5 mrd. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): løpende beløp, 2023"
+      },
+      "momsYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): regnskapsår"
+      },
+      "momsAmountE": {
+        "value": 2728.3,
+        "text": "2,7 mrd. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): løpende beløp, 2024"
+      },
+      "momsYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): regnskapsår"
+      },
+      "momsAmountF": {
+        "value": 2650,
+        "text": "2,7 mrd. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): løpende beløp, 2025"
+      },
+      "momsFirstRecordedAmount": {
+        "value": 1685,
+        "text": "1,7 mrd. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): første observerte beløp på postutvalget"
+      },
+      "momsChangeSinceFirst": {
+        "value": 965,
+        "text": "965,0 mill. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "momsGrowthSinceFirst": {
+        "value": 57.27002967359051,
+        "text": "57,3 %",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): prosentvis endring fra første observerte år"
+      },
+      "momsContributionAmount": {
+        "value": 965,
+        "text": "965,0 mill. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "momsNetChangeRatio": {
+        "value": 32.0555407919214,
+        "text": "32,1 %",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "momsChangeFromPeak": {
+        "value": -78.30000000000018,
+        "text": "−78,3 mill. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): beløpsendring fra høyeste observerte år"
+      },
+      "momsGrowthFromPeak": {
+        "value": -2.869918997177734,
+        "text": "−2,9 %",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): prosentvis endring fra høyeste observerte år"
+      },
+      "momsLastAnnualChangeAmount": {
+        "value": -78.30000000000018,
+        "text": "−78,3 mill. kr",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "momsGrowthLastYear": {
+        "value": -2.869918997177734,
+        "text": "−2,9 %",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "momsRealGrowthSinceReference": {
+        "value": 22.979648124430607,
+        "text": "23,0 %",
+        "label": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "museumPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): år med høyeste løpende beløp i perioden"
+      },
+      "museumPeakAmount": {
+        "value": 2622.4,
+        "text": "2,6 mrd. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): høyeste løpende beløp, 2025"
+      },
+      "museumLastAmount": {
+        "value": 2622.4,
+        "text": "2,6 mrd. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): løpende beløp, 2025"
+      },
+      "museumReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): sammenligningsår"
+      },
+      "museumReferenceAmount": {
+        "value": 2195.1,
+        "text": "2,2 mrd. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): løpende beløp, 2020"
+      },
+      "museumFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): første år med regnskapsføring på denne posten i perioden"
+      },
+      "museumYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): regnskapsår"
+      },
+      "museumAmountA": {
+        "value": 2195.1,
+        "text": "2,2 mrd. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): løpende beløp, 2020"
+      },
+      "museumYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): regnskapsår"
+      },
+      "museumAmountB": {
+        "value": 2352.6,
+        "text": "2,4 mrd. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): løpende beløp, 2021"
+      },
+      "museumYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): regnskapsår"
+      },
+      "museumAmountC": {
+        "value": 2029.6,
+        "text": "2,0 mrd. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): løpende beløp, 2022"
+      },
+      "museumYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): regnskapsår"
+      },
+      "museumAmountD": {
+        "value": 2393.6,
+        "text": "2,4 mrd. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): løpende beløp, 2023"
+      },
+      "museumYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): regnskapsår"
+      },
+      "museumAmountE": {
+        "value": 2531.8,
+        "text": "2,5 mrd. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): løpende beløp, 2024"
+      },
+      "museumYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): regnskapsår"
+      },
+      "museumAmountF": {
+        "value": 2622.4,
+        "text": "2,6 mrd. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): løpende beløp, 2025"
+      },
+      "museumFirstRecordedAmount": {
+        "value": 2195.1,
+        "text": "2,2 mrd. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): første observerte beløp på postutvalget"
+      },
+      "museumChangeSinceFirst": {
+        "value": 427.3000000000002,
+        "text": "427,3 mill. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "museumGrowthSinceFirst": {
+        "value": 19.466083549724395,
+        "text": "19,5 %",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): prosentvis endring fra første observerte år"
+      },
+      "museumContributionAmount": {
+        "value": 427.3000000000002,
+        "text": "427,3 mill. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "museumNetChangeRatio": {
+        "value": 14.19412702630883,
+        "text": "14,2 %",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "museumChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): beløpsendring fra høyeste observerte år"
+      },
+      "museumGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): prosentvis endring fra høyeste observerte år"
+      },
+      "museumLastAnnualChangeAmount": {
+        "value": 90.59999999999991,
+        "text": "90,6 mill. kr",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "museumGrowthLastYear": {
+        "value": 3.578481712615522,
+        "text": "3,6 %",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "museumRealGrowthSinceReference": {
+        "value": -6.581712051294486,
+        "text": "−6,6 %",
+        "label": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "nrkPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): år med høyeste løpende beløp i perioden"
+      },
+      "nrkPeakAmount": {
+        "value": 7490.7,
+        "text": "7,5 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): høyeste løpende beløp, 2025"
+      },
+      "nrkLastAmount": {
+        "value": 7490.7,
+        "text": "7,5 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): løpende beløp, 2025"
+      },
+      "nrkReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): sammenligningsår"
+      },
+      "nrkReferenceAmount": {
+        "value": 6212.9,
+        "text": "6,2 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): løpende beløp, 2020"
+      },
+      "nrkFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): første år med regnskapsføring på denne posten i perioden"
+      },
+      "nrkYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): regnskapsår"
+      },
+      "nrkAmountA": {
+        "value": 6212.9,
+        "text": "6,2 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): løpende beløp, 2020"
+      },
+      "nrkYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): regnskapsår"
+      },
+      "nrkAmountB": {
+        "value": 6263,
+        "text": "6,3 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): løpende beløp, 2021"
+      },
+      "nrkYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): regnskapsår"
+      },
+      "nrkAmountC": {
+        "value": 6721.7,
+        "text": "6,7 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): løpende beløp, 2022"
+      },
+      "nrkYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): regnskapsår"
+      },
+      "nrkAmountD": {
+        "value": 6965.6,
+        "text": "7,0 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): løpende beløp, 2023"
+      },
+      "nrkYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): regnskapsår"
+      },
+      "nrkAmountE": {
+        "value": 7216.5,
+        "text": "7,2 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): løpende beløp, 2024"
+      },
+      "nrkYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): regnskapsår"
+      },
+      "nrkAmountF": {
+        "value": 7490.7,
+        "text": "7,5 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): løpende beløp, 2025"
+      },
+      "nrkFirstRecordedAmount": {
+        "value": 6212.9,
+        "text": "6,2 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): første observerte beløp på postutvalget"
+      },
+      "nrkChangeSinceFirst": {
+        "value": 1277.8000000000002,
+        "text": "1,3 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "nrkGrowthSinceFirst": {
+        "value": 20.566885029535324,
+        "text": "20,6 %",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): prosentvis endring fra første observerte år"
+      },
+      "nrkContributionAmount": {
+        "value": 1277.8000000000002,
+        "text": "1,3 mrd. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "nrkNetChangeRatio": {
+        "value": 42.44618655328205,
+        "text": "42,4 %",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "nrkChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): beløpsendring fra høyeste observerte år"
+      },
+      "nrkGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): prosentvis endring fra høyeste observerte år"
+      },
+      "nrkLastAnnualChangeAmount": {
+        "value": 274.1999999999998,
+        "text": "274,2 mill. kr",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "nrkGrowthLastYear": {
+        "value": 3.799625857410094,
+        "text": "3,8 %",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "nrkRealGrowthSinceReference": {
+        "value": -5.720923896533092,
+        "text": "−5,7 %",
+        "label": "Norsk rikskringkasting AS - NRK (Mediestøtte): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "krisePeakYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): år med høyeste løpende beløp i perioden"
+      },
+      "krisePeakAmount": {
+        "value": 4426,
+        "text": "4,4 mrd. kr",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): høyeste løpende beløp, 2021"
+      },
+      "kriseReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): sammenligningsår"
+      },
+      "kriseReferenceAmount": {
+        "value": 3003.6,
+        "text": "3,0 mrd. kr",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): løpende beløp, 2020"
+      },
+      "kriseFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): første år med regnskapsføring på denne posten i perioden"
+      },
+      "kriseYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): regnskapsår"
+      },
+      "kriseAmountA": {
+        "value": 3003.6,
+        "text": "3,0 mrd. kr",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): løpende beløp, 2020"
+      },
+      "kriseYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): regnskapsår"
+      },
+      "kriseAmountB": {
+        "value": 4426,
+        "text": "4,4 mrd. kr",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): løpende beløp, 2021"
+      },
+      "kriseYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): regnskapsår"
+      },
+      "kriseAmountC": {
+        "value": 1348.8,
+        "text": "1,3 mrd. kr",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): løpende beløp, 2022"
+      },
+      "kriseYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): regnskapsår"
+      },
+      "kriseAmountD": {
+        "value": 78.4,
+        "text": "78,4 mill. kr",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): løpende beløp, 2023"
+      },
+      "kriseYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): regnskapsår"
+      },
+      "kriseYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): regnskapsår"
+      },
+      "kriseFirstRecordedAmount": {
+        "value": 3003.6,
+        "text": "3,0 mrd. kr",
+        "label": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål): første observerte beløp på postutvalget"
+      },
+      "allmennPeakYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Allmenne kulturformål: år med høyeste løpende beløp i perioden"
+      },
+      "allmennPeakAmount": {
+        "value": 4954.7,
+        "text": "5,0 mrd. kr",
+        "label": "Allmenne kulturformål: høyeste løpende beløp, 2021"
+      },
+      "allmennLastAmount": {
+        "value": 443.7,
+        "text": "443,7 mill. kr",
+        "label": "Allmenne kulturformål: løpende beløp, 2025"
+      },
+      "allmennReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Allmenne kulturformål: sammenligningsår"
+      },
+      "allmennReferenceAmount": {
+        "value": 3387.5,
+        "text": "3,4 mrd. kr",
+        "label": "Allmenne kulturformål: løpende beløp, 2020"
+      },
+      "allmennFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Allmenne kulturformål: første år med regnskapsføring på denne posten i perioden"
+      },
+      "allmennYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Allmenne kulturformål: regnskapsår"
+      },
+      "allmennAmountA": {
+        "value": 3387.5,
+        "text": "3,4 mrd. kr",
+        "label": "Allmenne kulturformål: løpende beløp, 2020"
+      },
+      "allmennYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Allmenne kulturformål: regnskapsår"
+      },
+      "allmennAmountB": {
+        "value": 4954.7,
+        "text": "5,0 mrd. kr",
+        "label": "Allmenne kulturformål: løpende beløp, 2021"
+      },
+      "allmennYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Allmenne kulturformål: regnskapsår"
+      },
+      "allmennAmountC": {
+        "value": 1825.1999999999998,
+        "text": "1,8 mrd. kr",
+        "label": "Allmenne kulturformål: løpende beløp, 2022"
+      },
+      "allmennYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Allmenne kulturformål: regnskapsår"
+      },
+      "allmennAmountD": {
+        "value": 512.6999999999999,
+        "text": "512,7 mill. kr",
+        "label": "Allmenne kulturformål: løpende beløp, 2023"
+      },
+      "allmennYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Allmenne kulturformål: regnskapsår"
+      },
+      "allmennAmountE": {
+        "value": 425.9,
+        "text": "425,9 mill. kr",
+        "label": "Allmenne kulturformål: løpende beløp, 2024"
+      },
+      "allmennYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Allmenne kulturformål: regnskapsår"
+      },
+      "allmennAmountF": {
+        "value": 443.7,
+        "text": "443,7 mill. kr",
+        "label": "Allmenne kulturformål: løpende beløp, 2025"
+      },
+      "allmennFirstRecordedAmount": {
+        "value": 3387.5,
+        "text": "3,4 mrd. kr",
+        "label": "Allmenne kulturformål: første observerte beløp på postutvalget"
+      },
+      "allmennChangeSinceFirst": {
+        "value": -2943.8,
+        "text": "−2,9 mrd. kr",
+        "label": "Allmenne kulturformål: beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "allmennGrowthSinceFirst": {
+        "value": -86.90184501845019,
+        "text": "−86,9 %",
+        "label": "Allmenne kulturformål: prosentvis endring fra første observerte år"
+      },
+      "allmennContributionAmount": {
+        "value": -2943.8,
+        "text": "−2,9 mrd. kr",
+        "label": "Allmenne kulturformål: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "allmennNetChangeRatio": {
+        "value": -97.78766941270283,
+        "text": "−97,8 %",
+        "label": "Allmenne kulturformål: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "allmennChangeFromPeak": {
+        "value": -4511,
+        "text": "−4,5 mrd. kr",
+        "label": "Allmenne kulturformål: beløpsendring fra høyeste observerte år"
+      },
+      "allmennGrowthFromPeak": {
+        "value": -91.04486649040305,
+        "text": "−91,0 %",
+        "label": "Allmenne kulturformål: prosentvis endring fra høyeste observerte år"
+      },
+      "allmennLastAnnualChangeAmount": {
+        "value": 17.80000000000001,
+        "text": "17,8 mill. kr",
+        "label": "Allmenne kulturformål: beløpsendring mellom de siste to regnskapsårene"
+      },
+      "allmennGrowthLastYear": {
+        "value": 4.179384832120214,
+        "text": "4,2 %",
+        "label": "Allmenne kulturformål: prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "allmennRealGrowthSinceReference": {
+        "value": -89.7577021251065,
+        "text": "−89,8 %",
+        "label": "Allmenne kulturformål: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "calcUtenallmennNominalGrowth": {
+        "value": 30.043646088250853,
+        "text": "30 %",
+        "label": "Nominell vekst uten valgte kapitler"
+      },
+      "calcUtenallmennRealGrowth": {
+        "value": 5.985571561924452,
+        "text": "6 %",
+        "label": "KPI-justert samlet vekst uten valgte kapitler"
+      },
+      "calcUtenallmennRealPerCapitaGrowth": {
+        "value": 1.689570924247441,
+        "text": "1,7 %",
+        "label": "KPI-justert vekst per innbygger uten valgte kapitler"
+      },
+      "calcUtenallmennStart": {
+        "value": 19818.5,
+        "text": "19,8 mrd. kr",
+        "label": "Departementsutgifter uten valgte kapitler i første år"
+      },
+      "calcUtenallmennEnd": {
+        "value": 25772.699999999993,
+        "text": "25,8 mrd. kr",
+        "label": "Departementsutgifter uten valgte kapitler i siste år"
+      }
+    },
+    "eventEvidence": {
+      "version": 2,
+      "items": [
+        {
+          "id": "moms",
+          "nodeIds": [
+            "u-03-0315-70"
+          ],
+          "title": "Merverdiavgiftskompensasjon til frivillige organisasjoner (Frivillighetsformål)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-03-0315-70",
+              "name": "Merverdiavgiftskompensasjon til frivillige organisasjoner"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 1685,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 1818.7,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 2030.8,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 2451.5,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 2728.3,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 2650,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "museum",
+          "nodeIds": [
+            "u-03-0328-70"
+          ],
+          "title": "Det nasjonale museumsnettverket (Museums- og andre kulturvernformål)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-03-0328-70",
+              "name": "Det nasjonale museumsnettverket"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 2195.1,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 2352.6,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 2029.6,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 2393.6,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 2531.8,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 2622.4,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "nrk",
+          "nodeIds": [
+            "u-03-0335-79"
+          ],
+          "title": "Norsk rikskringkasting AS - NRK (Mediestøtte)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-03-0335-79",
+              "name": "Norsk rikskringkasting AS - NRK"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 6212.9,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 6263,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 6721.7,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 6965.6,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 7216.5,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 7490.7,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "krise",
+          "nodeIds": [
+            "u-03-0325-77"
+          ],
+          "title": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet (Allmenne kulturformål)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-03-0325-77",
+              "name": "Kompensasjons- og stimuleringsordninger for arrangører på kultur-, frivillighets- og idrettsfeltet"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 3003.6,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 4426,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 1348.8,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 78.4,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 0,
+              "reported": false
+            },
+            {
+              "year": 2025,
+              "expenditure": 0,
+              "reported": false
+            }
+          ]
+        },
+        {
+          "id": "allmenn",
+          "nodeIds": [
+            "u-03-0325"
+          ],
+          "title": "Allmenne kulturformål",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-03-0325",
+              "name": "Allmenne kulturformål"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 3387.5,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 4954.7,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 1825.1999999999998,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 512.6999999999999,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 425.9,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 443.7,
+              "reported": true
+            }
+          ]
+        }
+      ],
+      "hash": "0a5d25abb26c9684c782ba6d41d54ab3f8bf51187b4024f89e8f57ebf1dd895e"
+    },
+    "rows": [
+      {
+        "year": 2020,
+        "expenditure": 23206,
+        "population": 5367580,
+        "cpi": 81.5,
+        "perCapita": 4323.363601474035,
+        "nominalIndex": 100,
+        "priceIndex": 100,
+        "realPerCapita": 5304.7406153055645
+      },
+      {
+        "year": 2021,
+        "expenditure": 25866.800000000003,
+        "population": 5391369,
+        "cpi": 84.3,
+        "perCapita": 4797.816658440556,
+        "nominalIndex": 110.97416504142188,
+        "priceIndex": 103.43558282208589,
+        "realPerCapita": 5691.360211673258
+      },
+      {
+        "year": 2022,
+        "expenditure": 23554.099999999995,
+        "population": 5425270,
+        "cpi": 89.2,
+        "perCapita": 4341.55350793601,
+        "nominalIndex": 100.42073506044629,
+        "priceIndex": 109.44785276073621,
+        "realPerCapita": 4867.2124528430595
+      },
+      {
+        "year": 2023,
+        "expenditure": 24011.100000000002,
+        "population": 5488984,
+        "cpi": 94.1,
+        "perCapita": 4374.416103235135,
+        "nominalIndex": 101.18085144963736,
+        "priceIndex": 115.4601226993865,
+        "realPerCapita": 4648.688738825861
+      },
+      {
+        "year": 2024,
+        "expenditure": 25256.00000000001,
+        "population": 5550203,
+        "cpi": 97.1,
+        "perCapita": 4550.464190228719,
+        "nominalIndex": 105.25286812974176,
+        "priceIndex": 119.14110429447852,
+        "realPerCapita": 4686.368887980144
+      },
+      {
+        "year": 2025,
+        "expenditure": 26216.399999999994,
+        "population": 5594340,
+        "cpi": 100,
+        "perCapita": 4686.23644612233,
+        "nominalIndex": 108.39329924794146,
+        "priceIndex": 122.69938650306749,
+        "realPerCapita": 4686.23644612233
+      }
+    ],
+    "sources": [
+      {
+        "name": "Fellestall: de konkrete regnskapspostene",
+        "url": "https://fellestall.no/data/utgifter.json",
+        "local": "/data/utgifter.json",
+        "description": "Hendelseseksemplene er valgt fra samme DFØ-uttrekk som hovedserien. Navn, post-ID-er og årlige beløp er frosset i artikkelens datagrunnlag. Utvalget er ikke et fullstendig koronaregnskap eller en årsaksfordeling av hele veksten."
+      },
+      {
+        "name": "DFØ Statsregnskapet",
+        "url": "https://statsregnskapet.dfo.no",
+        "local": "/data/utgifter.json",
+        "description": "Regnskapsførte utgifter i mill. kroner. Finansposter og SPU-overføringer er utelatt."
+      },
+      {
+        "name": "SSB folkemengde, tabell 07459",
+        "url": "https://www.ssb.no/statbank/table/07459/",
+        "local": "/data/befolkning.json",
+        "description": "Folkemengde ved inngangen til året, som i resten av Fellestall."
+      },
+      {
+        "name": "SSB konsumprisindeks",
+        "url": "https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen",
+        "local": "/data/kpi.json",
+        "description": "Årsgjennomsnitt for KPI, fra Fellestalls normaliserte serie."
+      },
+      {
+        "name": "Kulturdepartementets rapport om pandemiordningene og museene",
+        "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20222023/id2930765/?ch=2",
+        "description": "Lest avsnittene om kapittel 325, midlertidige kompensasjons- og stimuleringsordninger og museenes rapportering for 2021. Ekstra pandemistøtte ble også gitt utenfor kapittel 325. Å utelate hele kapittelet er derfor en avgrenset følsomhetsberegning, ikke et fullstendig regnskap uten koronatiltak."
+      },
+      {
+        "name": "Kultur- og likestillingsdepartementets regnskapstabeller for 2025",
+        "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20262027/id3176084/?ch=2",
+        "description": "Lest regnskapskolonnen for 2025 på kapitlene 315, 325, 328 og 335, samt beskrivelsen av museumsnettverket og momskompensasjon. Forslagskolonnen for 2027 brukes ikke i den historiske analysen. Avrundede postbeløp er kontrollert mot Fellestalls uttrekk."
+      },
+      {
+        "name": "Lotteri- og stiftelsestilsynet: avkorting og senere tilleggsutbetaling",
+        "url": "https://lottstift.no/for-frivilligheten/momskompensasjon-pa-varer-og-tjenester/avkorting/",
+        "description": "Hele den korte fagteksten er lest. Oppdatert 23. desember 2025: utbetalingen i desember ble avkortet; Stortinget vedtok tilleggsbevilgningen 22. desember, og andre utbetaling var varslet i januar. Dette forklarer hvorfor regnskapsåret 2025 ikke dekker hele etteroppgjøret."
+      },
+      {
+        "name": "Kulturdepartementets budsjettomtale og regnskap 2020",
+        "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20212022/id2874942/?ch=2",
+        "description": "Kontrollerer startårets regnskapskolonner og beskrivelser av tilskuddene. Pandemien påvirket museenes egeninntekter og statlige tilskudd; perioden begynner ikke i et normalår."
+      }
+    ],
+    "methodology": [
+      "Hendelsesgrunnlaget følger et lite, redaksjonelt valgt utvalg regnskapsposter. Beløpene er i løpende mill. kroner; eventuelle KPI-justerte endringer per innbygger bruker samme folketall og prisserie som hovedanalysen. En post uten regnskapsføring i uttrekket er merket som ikke observert, ikke som et komplett mål på alle utgifter til formålet. Postene identifiseres med navn og ID.",
+      "Vi summerer regnskapsførte utgifter på postnivå for Kultur- og likestillingsdepartementet. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.",
+      "Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.",
+      "Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.",
+      "Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.",
+      "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn.",
+      "Tilleggsberegninger gjentas fra frosne kapittel/post-serier og eksplisitte SSB-utvalg. Kapitteljustering trekker samme navngitte kapitler fra departementet i hvert år; ingen nasjonal nullutgift antas når ansvaret flyttes.",
+      "Bevilgning per registrert student er valgt regnskapspost delt på eksplisitt valgte læresteders SSB-studenttall. Det er ikke institusjonenes totale kostnader per heltidsstudent. KPI-justering bruker sluttårets konsumpriser."
+    ],
+    "limitations": [
+      "Departementenes ansvarsområder kan endres over tid. Serien følger Fellestalls normaliserte departementsinndeling, og må ikke alene tolkes som vekst i identiske tjenester.",
+      "KPI måler husholdningenes konsumpriser, ikke statens lønns-, bygge- eller innkjøpskostnader. KPI-justering er et sammenligningsmål, ikke et mål på produksjonsvolum.",
+      "Utgifter sier ikke hvor mye eller hvor god tjenesteproduksjon innbyggerne får. Overføringer, pensjoner og tilskudd inngår også.",
+      "Tallene identifiserer ikke årsakene til endringene. De kan ikke alene brukes til å konkludere om effektivitet, sløsing eller virkningen av politiske beslutninger.",
+      "Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.",
+      "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse.",
+      "Kapitteljusteringen er avgrenset til oppgitte kapitler. Andre ansvarsendringer og integreringsrelatert administrasjon inne i andre kapitler er ikke omregnet.",
+      "Studenttall er SSBs personer per 1. oktober, uten doktorgradsstudenter og permisjoner. Deltid, forskning og andre institusjonsoppgaver påvirker tolkningen; bevilgning per student er ikke ren undervisningskostnad."
+    ],
+    "researchSources": {
+      "sha256": "0aee5405ef4a252997fb096b0453c1ff504509a25c972725dd323881835b378b",
+      "version": 1,
+      "scope": "u-03",
+      "checkedAt": "2026-10-27",
+      "sources": [
+        {
+          "name": "Kulturdepartementets rapport om pandemiordningene og museene",
+          "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20222023/id2930765/?ch=2",
+          "description": "Lest avsnittene om kapittel 325, midlertidige kompensasjons- og stimuleringsordninger og museenes rapportering for 2021. Ekstra pandemistøtte ble også gitt utenfor kapittel 325. Å utelate hele kapittelet er derfor en avgrenset følsomhetsberegning, ikke et fullstendig regnskap uten koronatiltak."
+        },
+        {
+          "name": "Kultur- og likestillingsdepartementets regnskapstabeller for 2025",
+          "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20262027/id3176084/?ch=2",
+          "description": "Lest regnskapskolonnen for 2025 på kapitlene 315, 325, 328 og 335, samt beskrivelsen av museumsnettverket og momskompensasjon. Forslagskolonnen for 2027 brukes ikke i den historiske analysen. Avrundede postbeløp er kontrollert mot Fellestalls uttrekk."
+        },
+        {
+          "name": "Lotteri- og stiftelsestilsynet: avkorting og senere tilleggsutbetaling",
+          "url": "https://lottstift.no/for-frivilligheten/momskompensasjon-pa-varer-og-tjenester/avkorting/",
+          "description": "Hele den korte fagteksten er lest. Oppdatert 23. desember 2025: utbetalingen i desember ble avkortet; Stortinget vedtok tilleggsbevilgningen 22. desember, og andre utbetaling var varslet i januar. Dette forklarer hvorfor regnskapsåret 2025 ikke dekker hele etteroppgjøret."
+        },
+        {
+          "name": "Kulturdepartementets budsjettomtale og regnskap 2020",
+          "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20212022/id2874942/?ch=2",
+          "description": "Kontrollerer startårets regnskapskolonner og beskrivelser av tilskuddene. Pandemien påvirket museenes egeninntekter og statlige tilskudd; perioden begynner ikke i et normalår."
+        }
+      ]
+    }
+  },
+  "copy": {
+    "title": "Frivilligheten har fått mer tilbake – men måtte vente på pengene",
+    "description": "Momskompensasjonen til frivilligheten økte {{fact:momsRealGrowthSinceReference}} per innbygger etter prisjustering fra {{fact:startYear}} til {{fact:endYear}}. Likevel kom ikke hele oppgjøret før årsskiftet.",
+    "lead": "Lag og foreninger har fått mer tilbake gjennom momskompensasjonen. Fra {{fact:startYear}} til {{fact:endYear}} økte utgiftene til ordningen {{fact:momsRealGrowthSinceReference}} per innbygger, også når vi tar hensyn til prisveksten. Men et større beløp på statsbudsjettet ga ikke et ferdig oppgjør før nyttår. Samtidig hang tilskuddene til museumsnettverket og NRK etter både prisene og befolkningsveksten.",
+    "conclusion": "Momskompensasjonen ble vesentlig større gjennom {{fact:startYear}}–{{fact:endYear}}, men det sene etteroppgjøret viser at beløp og forutsigbarhet er ulike sider av støtten. Museumsnettverket og NRK fikk mer i løpende kroner, men mindre per innbygger etter prisjustering. Departementets samlede nedgang må dessuten ses i lys av de store, midlertidige pandemiutgiftene i starten av perioden.",
+    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nFrivillighetens momskompensasjon økte {{fact:momsRealGrowthSinceReference}} per innbygger etter prisjustering fra {{fact:startYear}} til {{fact:endYear}}.\n\nLikevel måtte lag og foreninger vente på resten av oppgjøret over nyttår. Statsbudsjettet og nettbanken var visst ikke helt enige om når året sluttet.\n\nSamtidig holdt tilskuddene til museumsnettverket og NRK ikke følge med prisene og folketallet.\n\nHvor mye hjelper en større pott hvis du ikke vet når resten kommer?\n\nVi har fulgt momspengene, museumsstøtten og koronamilliardene som falt bort. Les analysen ↓",
+    "sections": [
+      {
+        "heading": "Mer tilbake til lag og foreninger",
+        "paragraphs": [
+          "Momskompensasjon er penger frivillige organisasjoner kan søke om for å dekke moms på innkjøp. For et korps, et idrettslag eller en annen forening kan slik støtte gi rom for aktivitet i stedet for at hele kostnaden må dekkes av kontingenter, dugnad og andre inntekter. Ordningen gjelder godkjente søknader etter egne regler, ikke automatisk refusjon av enhver kvittering.",
+          "Regnskapsført støtte økte fra {{fact:momsReferenceAmount}} i {{fact:startYear}} til {{fact:momsLastAmount}} i {{fact:endYear}}. Det tilsvarer {{fact:momsGrowthSinceFirst}} i løpende kroner. Også etter at vi tar hensyn til dyrere varer og flere innbyggere, står en vekst på {{fact:momsRealGrowthSinceReference}} igjen.",
+          "Det er en tydelig styrking av denne ordningen over perioden. Beløpet per innbygger gjør det lettere å sammenligne utviklingen med andre deler av kulturbudsjettet. Det er likevel ikke det samme som støtte per medlem eller mer penger til hvert enkelt lag: Ordningen omfatter mange organisasjoner med ulike innkjøp og søknadsgrunnlag."
+        ],
+        "factIds": [
+          "momsReferenceAmount",
+          "startYear",
+          "momsLastAmount",
+          "endYear",
+          "momsGrowthSinceFirst",
+          "momsRealGrowthSinceReference"
+        ]
+      },
+      {
+        "heading": "Et større beløp ga ikke et ferdig oppgjør før nyttår",
+        "paragraphs": [
+          "Mot slutten av perioden oppstod et problem for dem som ventet på pengene. Lotteri- og stiftelsestilsynet opplyste at utbetalingen i desember {{fact:endYear}} ble redusert fordi budsjettrammen var mindre enn det samlede godkjente søknadsbeløpet. Stortinget vedtok en tilleggsbevilgning sent i desember, og tilsynet varslet resten utbetalt i januar.",
+          "Det gir en viktig forklaring på at regnskapsført beløp i {{fact:endYear}} var {{fact:momsLastAnnualChangeAmount}} lavere enn året før. Årstallene avgrenser når utgiftene ble bokført. De forteller ikke alene hvor mye organisasjonene til slutt fikk for samme søknadsrunde, når en del av oppgjøret krysset årsskiftet.",
+          "For en forening kan tidspunktet ha betydning for om regninger kan betales og aktiviteter planlegges. En økende ordning over tid og usikkerhet om årets utbetaling kan derfor eksistere samtidig. Her er selve utsettelsen dokumentert; regnskapet viser ikke hvilke aktiviteter den eventuelt påvirket."
+        ],
+        "factIds": [
+          "endYear",
+          "momsLastAnnualChangeAmount"
+        ]
+      },
+      {
+        "heading": "Koronamilliardene satte et høyt startnivå",
+        "paragraphs": [
+          "Kultur- og likestillingsdepartementets samlede utgifter økte {{fact:nominalGrowth}} i løpende kroner fra {{fact:startYear}} til {{fact:endYear}}. Etter justering for priser og folketall var endringen {{fact:realPerCapitaGrowth}}. Starten av perioden var imidlertid preget av nedstengninger og ekstra støtte til et kulturliv som mistet publikum og inntekter.",
+          "En egen kompensasjons- og stimuleringspost for kultur, frivillighet og idrett var på {{fact:kriseReferenceAmount}} i {{fact:startYear}}. Den nådde {{fact:krisePeakAmount}} i {{fact:krisePeakYear}}, før bokført beløp falt til {{fact:kriseAmountC}} i {{fact:kriseYearC}} og {{fact:kriseAmountD}} i {{fact:kriseYearD}}. Senere år har ingen regnskapsføring på denne posten i uttrekket.",
+          "Departementets rapportering beskriver disse ordningene som midlertidige tiltak under pandemien. De skulle kompensere tap og stimulere til gjennomføring av arrangementer. Når slike utgifter falt bort, trakk det totalen ned uten at det i seg selv betydde at en vanlig, varig støtteordning ble kuttet tilsvarende."
+        ],
+        "factIds": [
+          "nominalGrowth",
+          "startYear",
+          "endYear",
+          "realPerCapitaGrowth",
+          "kriseReferenceAmount",
+          "krisePeakAmount",
+          "krisePeakYear",
+          "kriseAmountC",
+          "kriseYearC",
+          "kriseAmountD",
+          "kriseYearD"
+        ]
+      },
+      {
+        "heading": "Uten kapittelet som rommet kriseposten ble bildet et annet",
+        "paragraphs": [
+          "For å undersøke hvor mye sammenligningen avhenger av denne delen av regnskapet, har vi også regnet på departementet uten hele kapitlet «Allmenne kulturformål». Det er kapitlet som rommet den store kompensasjons- og stimuleringsposten. Samme kapittel er trukket fra i alle år.",
+          "Da økte de gjenværende utgiftene fra {{fact:calcUtenallmennStart}} til {{fact:calcUtenallmennEnd}}. Etter prisjustering var veksten {{fact:calcUtenallmennRealGrowth}}, og per innbygger {{fact:calcUtenallmennRealPerCapitaGrowth}}. Den samlede nedgangen snudde altså til en liten oppgang når denne avgrensede delen ble holdt utenfor.",
+          "Dette er ikke et ferdig regnskap uten koronastøtte. Kapitlet omfatter også vanlige formål som Kulturtanken, talentutvikling og internasjonalt kultursamarbeid, og ekstra pandemistøtte ble dessuten gitt andre steder. Beregningen viser hvor følsom totalen er for kapittelvalget. Den lille restveksten er heller ikke en garanti for bedre råd i hver institusjon; ansvarsområder og ordninger har endret seg gjennom perioden."
+        ],
+        "factIds": [
+          "calcUtenallmennStart",
+          "calcUtenallmennEnd",
+          "calcUtenallmennRealGrowth",
+          "calcUtenallmennRealPerCapitaGrowth"
+        ]
+      },
+      {
+        "heading": "Museene og NRK hang etter prisene",
+        "paragraphs": [
+          "Museumsnettverkets statlige tilskudd økte fra {{fact:museumReferenceAmount}} til {{fact:museumLastAmount}} gjennom perioden. Veksten var {{fact:museumGrowthSinceFirst}}, mens konsumprisene steg {{fact:priceGrowth}}. Beløpet vokste dermed litt saktere enn prisene. Når også befolkningsveksten tas med, var endringen per innbygger {{fact:museumRealGrowthSinceReference}}.",
+          "Også museene fikk ekstra støtte under pandemien, og regnskapet begynner derfor i et uvanlig år. Serien viser dessuten et samlet tilskudd til nettverket, ikke utviklingen i hvert museum eller museenes samlede inntekter. Det er grunnlag for å si at denne statlige posten ikke holdt følge med den valgte målestokken, men ikke at alle museer fikk samme innstramming.",
+          "NRK-tilskuddet økte {{fact:nrkGrowthSinceFirst}} i løpende kroner og nådde {{fact:nrkLastAmount}} i {{fact:endYear}}. Også her var veksten lavere enn konsumprisveksten. Etter justering for priser og folketall var endringen {{fact:nrkRealGrowthSinceReference}}.",
+          "For publikum er museenes tilbud og NRKs innhold det viktige. Disse beløpene måler ikke kvalitet, åpningstider eller antall programmer, og konsumprisene følger heller ikke institusjonenes lønns- og driftskostnader nøyaktig. Men de avdekker en tydelig forskjell i finansieringen: Momskompensasjonen ble større også med denne målestokken, mens de utvalgte institusjonstilskuddene ikke holdt følge."
+        ],
+        "factIds": [
+          "museumReferenceAmount",
+          "museumLastAmount",
+          "museumGrowthSinceFirst",
+          "priceGrowth",
+          "museumRealGrowthSinceReference",
+          "nrkGrowthSinceFirst",
+          "nrkLastAmount",
+          "endYear",
+          "nrkRealGrowthSinceReference"
+        ]
+      }
+    ],
+    "graphs": [
+      {
+        "kind": "series",
+        "afterSection": 0,
+        "title": "Momskompensasjonen vokste raskere enn institusjonstilskuddene",
+        "description": "Beløp i løpende kroner sammenlignet med konsumprisene. Kurvene viser vekst, ikke størrelsen på de ulike ordningene.",
+        "mode": "index",
+        "series": [
+          {
+            "source": "post",
+            "id": "moms",
+            "label": "Momskompensasjon til frivillige"
+          },
+          {
+            "source": "post",
+            "id": "museum",
+            "label": "Tilskudd til museumsnettverket"
+          },
+          {
+            "source": "post",
+            "id": "nrk",
+            "label": "Tilskudd til NRK"
+          },
+          {
+            "source": "fellestall",
+            "id": "cpi",
+            "label": "Konsumpriser"
+          }
+        ]
+      },
+      {
+        "kind": "series",
+        "afterSection": 2,
+        "title": "Den midlertidige kompensasjons- og stimuleringsposten krympet",
+        "description": "Bare år med faktisk regnskapsføring på den valgte posten vises. Dette er ikke all støtte som ble gitt under pandemien.",
+        "mode": "values",
+        "series": [
+          {
+            "source": "post",
+            "id": "krise",
+            "label": "Kompensasjon og stimulering til arrangører"
+          }
+        ]
+      },
+      {
+        "kind": "series",
+        "afterSection": 3,
+        "title": "Resten av departementet i faste priser",
+        "description": "Hele kapitlet Allmenne kulturformål er trukket fra i alle år. Kurven viser beløp etter prisjustering, uten befolkningsjustering.",
+        "mode": "values",
+        "series": [
+          {
+            "source": "calculation",
+            "id": "UtenallmennReal",
+            "label": "Utgifter uten Allmenne kulturformål"
+          }
+        ]
+      }
+    ]
+  }
+}
