@@ -59,8 +59,10 @@
     "id": "807ca90b-9322-4551-bec8-32f7409b1497",
     "startedAt": "2026-10-27T08:08:34.039Z",
     "instructionCommit": "8f014bd4cc9d525894f0a14e67269f6e673ed8b7",
-    "state": "delivering",
-    "note": "Utkastet er skrevet, skjema- og faktavalidert. Leverer til eksisterende botflyt og kontrollerer PR, review request og forhåndsvisning.",
-    "updatedAt": "2026-10-27T08:16:09.180Z"
+    "state": "review",
+    "note": "Kulturutkastet er levert i PR #80 av github-actions[bot], med review request til Lippen1995. Gjeldende versjonsbundne forhåndsvisning på fellestall.no er åpnet og kontrollert med artikkel, grafer og LinkedIn-utkast. Ingen publisering er godkjent.",
+    "updatedAt": "2026-10-27T08:27:22.650Z",
+    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/80",
+    "finishedAt": "2026-10-27T08:27:22.650Z"
   }
 }
