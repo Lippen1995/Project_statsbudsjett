@@ -59,8 +59,8 @@
     "id": "807ca90b-9322-4551-bec8-32f7409b1497",
     "startedAt": "2026-10-27T08:08:34.039Z",
     "instructionCommit": "8f014bd4cc9d525894f0a14e67269f6e673ed8b7",
-    "state": "writing",
-    "note": "Primærkilder og levende data kontrollert. Skriver om momskompensasjon, museumsstøtte og bortfall av midlertidige pandemiordninger.",
-    "updatedAt": "2026-10-27T08:12:30.217Z"
+    "state": "delivering",
+    "note": "Utkastet er skrevet, skjema- og faktavalidert. Leverer til eksisterende botflyt og kontrollerer PR, review request og forhåndsvisning.",
+    "updatedAt": "2026-10-27T08:16:09.180Z"
   }
 }
