@@ -8,12 +8,53 @@
       "instructions": "Undersøk kultur- og likestillingsdepartementet med det kontrollerte tallgrunnlaget. Skill beløp fra prisvekst og befolkningsutvikling når det er relevant. Følg interessante funn til konkrete poster og primærkilder. Forklar avgrensning og usikkerhet.",
       "scheduledDate": "2026-10-26",
       "createdAt": "2026-10-19T16:31:54.227Z",
-      "updatedAt": "2026-10-19T16:31:54.227Z",
+      "updatedAt": "2026-10-27T08:17:53.556Z",
       "reportPlan": {
         "kind": "expenditure",
         "departmentId": "u-03",
         "start": 2020,
-        "end": 2025
+        "end": 2025,
+        "detailSelections": [
+          {
+            "id": "moms",
+            "nodeIds": [
+              "u-03-0315-70"
+            ]
+          },
+          {
+            "id": "museum",
+            "nodeIds": [
+              "u-03-0328-70"
+            ]
+          },
+          {
+            "id": "nrk",
+            "nodeIds": [
+              "u-03-0335-79"
+            ]
+          },
+          {
+            "id": "krise",
+            "nodeIds": [
+              "u-03-0325-77"
+            ]
+          },
+          {
+            "id": "allmenn",
+            "nodeIds": [
+              "u-03-0325"
+            ]
+          }
+        ],
+        "researchPlan": [
+          {
+            "id": "Utenallmenn",
+            "kind": "exclude-chapters",
+            "evidenceIds": [
+              "allmenn"
+            ]
+          }
+        ]
       },
       "topicKey": "u-03:real-expenditure-growth"
     }
