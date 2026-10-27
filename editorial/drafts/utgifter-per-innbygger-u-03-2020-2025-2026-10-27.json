@@ -1238,7 +1238,7 @@
         "heading": "Et større beløp ga ikke et ferdig oppgjør før nyttår",
         "paragraphs": [
           "Mot slutten av perioden oppstod et problem for dem som ventet på pengene. Lotteri- og stiftelsestilsynet opplyste at utbetalingen i desember {{fact:endYear}} ble redusert fordi budsjettrammen var mindre enn det samlede godkjente søknadsbeløpet. Stortinget vedtok en tilleggsbevilgning sent i desember, og tilsynet varslet resten utbetalt i januar.",
-          "Det gir en viktig forklaring på at regnskapsført beløp i {{fact:endYear}} var {{fact:momsLastAnnualChangeAmount}} lavere enn året før. Årstallene avgrenser når utgiftene ble bokført. De forteller ikke alene hvor mye organisasjonene til slutt fikk for samme søknadsrunde, når en del av oppgjøret krysset årsskiftet.",
+          "Det setter også årsregnskapet i perspektiv: Fra året før til {{fact:endYear}} var endringen i bokført beløp {{fact:momsLastAnnualChangeAmount}}. Årstallene avgrenser når utgiftene ble bokført. De forteller ikke alene hvor mye organisasjonene til slutt fikk for samme søknadsrunde, når en del av oppgjøret krysset årsskiftet.",
           "For en forening kan tidspunktet ha betydning for om regninger kan betales og aktiviteter planlegges. En økende ordning over tid og usikkerhet om årets utbetaling kan derfor eksistere samtidig. Her er selve utsettelsen dokumentert; regnskapet viser ikke hvilke aktiviteter den eventuelt påvirket."
         ],
         "factIds": [
