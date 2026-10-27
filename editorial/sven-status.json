@@ -45,14 +45,22 @@
       "note": "Kø og åpne analysegjennomganger kontrollert. Ingen temaer har nådd skrivedatoen. Neste tema er planlagt 26. oktober 2026. Ingen analyse skrevet eller levert.",
       "updatedAt": "2026-10-25T08:06:53.922Z",
       "finishedAt": "2026-10-25T08:06:53.922Z"
+    },
+    {
+      "id": "4a02466f-c97b-4984-b28f-bc2bbd14b0be",
+      "startedAt": "2026-10-26T08:28:08.007Z",
+      "instructionCommit": "8f102e1d2047290024ea70acc214cc5d8443fcfa",
+      "state": "researching",
+      "note": "Kontrollerer kø og åpne gjennomganger",
+      "updatedAt": "2026-10-26T08:28:08.007Z"
     }
   ],
   "current": {
-    "id": "4a02466f-c97b-4984-b28f-bc2bbd14b0be",
-    "startedAt": "2026-10-26T08:28:08.007Z",
-    "instructionCommit": "8f102e1d2047290024ea70acc214cc5d8443fcfa",
+    "id": "807ca90b-9322-4551-bec8-32f7409b1497",
+    "startedAt": "2026-10-27T08:08:34.039Z",
+    "instructionCommit": "8f014bd4cc9d525894f0a14e67269f6e673ed8b7",
     "state": "researching",
-    "note": "Kontrollerer kø og åpne gjennomganger",
-    "updatedAt": "2026-10-26T08:28:08.007Z"
+    "note": "Kontrollerer kø og åpne gjennomganger. Kulturtemaet står fortsatt ubehandlet i køen.",
+    "updatedAt": "2026-10-27T08:08:34.039Z"
   }
 }
