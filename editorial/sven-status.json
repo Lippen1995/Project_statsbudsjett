@@ -79,8 +79,8 @@
     "id": "2e59dcf1-8d6e-4989-9c5f-39a4252c32d1",
     "startedAt": "2026-10-28T09:00:11.509Z",
     "instructionCommit": "9f21330306728045dc6aaedfd4dd3e02bb1b05ee",
-    "state": "writing",
-    "note": "NAVs forklaringer er kontrollert; reviderer målgruppe, barnehagevilkår og månedlig støtte med uendret tallgrunnlag",
-    "updatedAt": "2026-10-28T09:02:02.663Z"
+    "state": "delivering",
+    "note": "Forklaringene er validert med uendrede beregninger; venter på botens revisjon, ny review request og versjonsbundet forhåndsvisning",
+    "updatedAt": "2026-10-28T09:02:35.352Z"
   }
 }
