@@ -1,0 +1,45 @@
+{
+  "feedbackSource": {
+    "url": "https://github.com/Lippen1995/Project_statsbudsjett/pull/80#pullrequestreview-5664781959",
+    "id": "review-5664781959",
+    "author": "Lippen1995"
+  },
+  "article": {
+    "slug": "utgifter-per-innbygger-u-03-2020-2025-2026-10-27",
+    "beforeCommit": "e185413d82fe9ffd84d926efc40f43638f61e3e4",
+    "afterCommit": "a0fda10fe498c15b07cf258b08e2a797b7dfdd4b",
+    "replacementSlug": "utgifter-per-innbygger-u-08-2020-2025-2026-10-28",
+    "replacementReview": "https://github.com/Lippen1995/Project_statsbudsjett/pull/81"
+  },
+  "rawFeedback": "Kjedelig tema. Skriv noe annet.\nFlyten er også for kjedelig og rotete. Jeg klarer ikke å få med meg hva poenget er. Og hvor er dramatikken? Er dette noe vesentlig å skrive om? Ta en ny vurdering om kom tilbake med noe bedre.",
+  "interpretation": "Temavalget ble forkastet av godkjenneren. Kulturutkastet er lukket uten publisering. Et nytt tema om barnetrygd og kontantstøtte er valgt etter kontroll av regnskap, NAVs forklaring og regelhistorikken, og levert gjennom en ny botgjennomgang. Fortellingen leder med et vesentlig og konkret funn for familier, og følger en tydelig årsakskjede. Dramatikk skal komme fra dokumentert betydning og kontrast; den skal ikke skapes med overdrivelser.",
+  "scope": "article-only",
+  "status": "applied",
+  "ruleId": null,
+  "learningBasis": {
+    "handbookVersion": 1,
+    "activeRules": [
+      "P001",
+      "P002",
+      "P003",
+      "P005",
+      "P007",
+      "P008",
+      "P009",
+      "P010"
+    ],
+    "referenceIds": [
+      "VG-002"
+    ],
+    "referenceReadExtent": "Eksisterende notat om overskrift, ingress og ett åpningsavsnitt; ingen fulltekstgjennomgang hevdes."
+  },
+  "editorialEvaluation": {
+    "relevance": "Ny sak forklarer et sisteårs løft på 3,1 mrd. kroner til barnetrygd tross færre barn, og kortere kontantstøtte.",
+    "explanation": "Knytter endringene til NAVs dokumenterte satser, vilkår og mottakerutvikling, og undersøker skatteomleggingen før netto gevinst omtales.",
+    "clarity": "Fem seksjoner og to grafer. Unngår en ny rundtur mellom departementstotaler og kulturposter."
+  },
+  "globalInference": {
+    "status": "proposed",
+    "text": "Vurder dokumentert betydning og konkret mottakerkonsekvens før et automatisk tema får et publiseringsutkast. P009 gjelder allerede; dette notatet oppretter ingen ny aktiv global regel."
+  }
+}
