@@ -53,16 +53,24 @@
       "state": "researching",
       "note": "Kontrollerer kø og åpne gjennomganger",
       "updatedAt": "2026-10-26T08:28:08.007Z"
+    },
+    {
+      "id": "807ca90b-9322-4551-bec8-32f7409b1497",
+      "startedAt": "2026-10-27T08:08:34.039Z",
+      "instructionCommit": "8f014bd4cc9d525894f0a14e67269f6e673ed8b7",
+      "state": "review",
+      "note": "Kulturutkastet er levert i PR #80 av github-actions[bot], med review request til Lippen1995. Gjeldende versjonsbundne forhåndsvisning på fellestall.no er åpnet og kontrollert med artikkel, grafer og LinkedIn-utkast. Ingen publisering er godkjent.",
+      "updatedAt": "2026-10-27T08:27:22.650Z",
+      "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/80",
+      "finishedAt": "2026-10-27T08:27:22.650Z"
     }
   ],
   "current": {
-    "id": "807ca90b-9322-4551-bec8-32f7409b1497",
-    "startedAt": "2026-10-27T08:08:34.039Z",
-    "instructionCommit": "8f014bd4cc9d525894f0a14e67269f6e673ed8b7",
-    "state": "review",
-    "note": "Kulturutkastet er levert i PR #80 av github-actions[bot], med review request til Lippen1995. Gjeldende versjonsbundne forhåndsvisning på fellestall.no er åpnet og kontrollert med artikkel, grafer og LinkedIn-utkast. Ingen publisering er godkjent.",
-    "updatedAt": "2026-10-27T08:27:22.650Z",
-    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/80",
-    "finishedAt": "2026-10-27T08:27:22.650Z"
+    "id": "eececa11-c103-4a6b-8c29-072ade96058b",
+    "startedAt": "2026-10-28T08:00:34.777Z",
+    "instructionCommit": "f68b78c912a754564bf32ee90545c6696ba0b594",
+    "state": "researching",
+    "note": "Kontrollerer kø og åpne gjennomganger. Behandler autorisert ønske i PR #80 om et annet og mer vesentlig tema.",
+    "updatedAt": "2026-10-28T08:00:34.777Z"
   }
 }
