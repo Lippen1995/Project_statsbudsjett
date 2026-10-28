@@ -5,7 +5,7 @@
   "type": "Utvikling over tid",
   "status": "draft",
   "createdAt": "2026-10-28T08:18:53.674Z",
-  "generatedAt": "2026-10-28T08:18:53.674Z",
+  "generatedAt": "2026-10-28T09:02:49.063Z",
   "report": {
     "kind": "real-expenditure-per-capita",
     "factsVersion": 2,
@@ -903,7 +903,8 @@
       {
         "heading": "Mer barnetrygd uten flere barn",
         "paragraphs": [
-          "For en familie merkes barnetrygden som en fast utbetaling på konto. Når satsen øker, kommer det mer inn hver måned. For staten slår et slikt løft ut på tvers av alle barna som omfattes av endringen, og regningen kan vokse mye selv om antallet barn går ned.",
+          "Barnetrygd er skattefri støtte som betales hver måned til familier med mindreårige barn. Pengene skal bidra til å dekke utgiftene ved å ha barn. Familien kan få barnetrygd også når barnet går i barnehage. Enslige forsørgere kan i tillegg ha rett til utvidet barnetrygd, som gir en høyere samlet utbetaling.",
+          "For familien merkes en høyere sats som mer penger på konto. For staten gjelder satsøkningen alle barna som omfattes, og utgiftene kan derfor vokse selv om antallet barn går ned.",
           "Det skjedde fra {{fact:barnetrygdYearE}} til {{fact:endYear}}. Utgiftene økte {{fact:barnetrygdGrowthLastYear}}, tilsvarende {{fact:barnetrygdLastAnnualChangeAmount}}. NAVs årsrapport forklarer at høyere satser drev hoveddelen av veksten. Færre barn med barnetrygd og lavere etterbetalinger trakk i motsatt retning.",
           "Utviklingen viser dermed en konkret styrking av utbetalingene. Den kan ikke forklares med at stadig flere barn skulle forsørges gjennom ordningen. Satsendringene gjorde utslaget også i et år der færre barn fikk barnetrygd."
         ],
@@ -936,7 +937,8 @@
       {
         "heading": "Samtidig mistet kontantstøtten måneder",
         "paragraphs": [
-          "Kontantstøtten gikk motsatt vei. Den gjelder små barn som ikke bruker fulltidsplass i barnehage med offentlig tilskudd. Fra august {{fact:kontantYearE}} ble retten avviklet for de eldste barna som tidligere var omfattet. Familiene kunne dermed motta støtten i en kortere del av småbarnstiden.",
+          "Kontantstøtte er også en skattefri, månedlig utbetaling, men gjelder en avgrenset del av småbarnstiden. Den kan gis når barnet ikke har fulltidsplass i en barnehage med offentlig tilskudd, og familien oppfyller de øvrige vilkårene. Uten slik barnehageplass kan familien få full kontantstøtte; med deltidsplass kan støtten bli redusert etter avtalt oppholdstid. Familien kan få barnetrygd samtidig.",
+          "Her betyr både barnets alder og barnehageplassen noe for retten til støtte. Fra august {{fact:kontantYearE}} ble kontantstøtten avviklet for de eldste barna som tidligere var omfattet. Familiene kunne dermed motta støtten i en kortere del av småbarnstiden.",
           "I {{fact:endYear}} virket den kortere perioden gjennom et helt regnskapsår. Utgiftene til kontantstøtte var {{fact:kontantLastAmount}}, og endringen fra året før var {{fact:kontantLastAnnualChangeAmount}}, eller {{fact:kontantGrowthLastYear}}. NAV knytter denne nedgangen til regelendringen.",
           "For foreldrene som falt utenfor aldersgrensen, forsvant retten til utbetalingen selv om de fortsatt hadde barnet hjemme. Dette var noe annet enn at alle gjenværende mottakere fikk samme prosentvise reduksjon i månedssatsen. Regnskapet krympet fordi støtten dekket en kortere periode og en mindre aldersgruppe.",
           "Nedgangen hadde begynt før regelendringen. Fra {{fact:startYear}} til {{fact:endYear}} var den samlede endringen {{fact:kontantGrowthSinceFirst}}. Hele dette fallet kan derfor ikke tilskrives innstrammingen mot slutten av perioden."
@@ -1018,5 +1020,13 @@
         ]
       }
     ]
+  },
+  "processedFeedbackIds": [],
+  "researchRevision": {
+    "previousHead": "a0fda10fe498c15b07cf258b08e2a797b7dfdd4b",
+    "actor": "Lippen1995",
+    "sourceCommit": "43ccc5f2ec45867aff80989dcb3a01374d9d97e9",
+    "reason": "Brukeren ber i oppgavens chat 28. oktober 2026 om en kort, forståelig forklaring av hvordan barnetrygd og kontantstøtte fungerer. NAVs regelbeskrivelser er kontrollert på nytt. Behold primærserien, beregningene og eksisterende forskningsutvalg; forklar målgruppe, månedlig utbetaling og betydningen av barnehageplass før endringene drøftes. Ingen publisering eller egen godkjenning.",
+    "generatedAt": "2026-10-28T09:02:49.063Z"
   }
 }
