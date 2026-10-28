@@ -69,8 +69,10 @@
     "id": "eececa11-c103-4a6b-8c29-072ade96058b",
     "startedAt": "2026-10-28T08:00:34.777Z",
     "instructionCommit": "f68b78c912a754564bf32ee90545c6696ba0b594",
-    "state": "delivering",
-    "note": "Erstatningstekst og LinkedIn er skrevet og validert mot uendret, gjenberegnet grunnlag. Leverer familiestøttesaken til boten etter temabytteønsket i PR #80; kulturutkastet er lukket uten publisering.",
-    "updatedAt": "2026-10-28T08:18:11.671Z"
+    "state": "review",
+    "note": "Autorisert temabytte i review-5664781959 er fulgt opp. PR #80 er lukket uten publisering. Ny sak om barnetrygd og kontantstøtte er levert i botens PR #81 med review request til Lippen1995. Gjeldende forhåndsvisning er HTTP 200 og åpnet med artikkel, grafer og LinkedIn-utkast. Ny eksakt godkjenning kreves.",
+    "updatedAt": "2026-10-28T08:26:57.805Z",
+    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/81",
+    "finishedAt": "2026-10-28T08:26:57.805Z"
   }
 }
