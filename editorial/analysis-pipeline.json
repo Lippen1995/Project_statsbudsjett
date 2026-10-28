@@ -16,20 +16,6 @@
         "end": 2025
       },
       "topicKey": "u-04:real-expenditure-growth"
-    },
-    {
-      "topic": "Færre barn, høyere barnetrygd: Hva endret utbetalingene til familiene?",
-      "instructions": "Oppfølging av Lippen1995 sitt autoriserte endringsønske i PR #80, review-5664781959: «Kjedelig tema. Skriv noe annet.» Etter en ny redaksjonell vurdering velges barnetrygd og kontantstøtte: forklar hvorfor utgiftene til barnetrygd økte i 2025 selv om færre barn fikk ytelsen, og hvorfor kontantstøtten falt. Bruk NAVs årsrapport, historiske regler og regnskap 2020–2025. Led med konkret betydning for familier, ha én tydelig fortelling, skill satser, mottakertall og samlede utgifter. Ikke kall større utbetalinger en lik netto gevinst for alle. Dette erstatter det forkastede kulturutkastet; justistemaets fremtidige skrivedato beholdes.",
-      "scheduledDate": "2026-10-28",
-      "updatedAt": "2026-10-28T08:08:45.424Z",
-      "references": [
-        "https://github.com/Lippen1995/Project_statsbudsjett/pull/80#pullrequestreview-5664781959"
-      ],
-      "priority": "urgent",
-      "id": "78bfee40-905c-4ff0-98d2-cfec13f89287",
-      "source": "admin",
-      "createdAt": "2026-10-28T08:08:45.424Z",
-      "reportPlan": null
     }
   ],
   "history": [
@@ -94,6 +80,26 @@
       "status": "delivered",
       "at": "2026-10-27T08:19:15.167Z",
       "reviewUrl": "https://github.com/Lippen1995/Project_statsbudsjett/pull/80"
+    },
+    {
+      "entry": {
+        "topic": "Færre barn, høyere barnetrygd: Hva endret utbetalingene til familiene?",
+        "instructions": "Oppfølging av Lippen1995 sitt autoriserte endringsønske i PR #80, review-5664781959: «Kjedelig tema. Skriv noe annet.» Etter en ny redaksjonell vurdering velges barnetrygd og kontantstøtte: forklar hvorfor utgiftene til barnetrygd økte i 2025 selv om færre barn fikk ytelsen, og hvorfor kontantstøtten falt. Bruk NAVs årsrapport, historiske regler og regnskap 2020–2025. Led med konkret betydning for familier, ha én tydelig fortelling, skill satser, mottakertall og samlede utgifter. Ikke kall større utbetalinger en lik netto gevinst for alle. Dette erstatter det forkastede kulturutkastet; justistemaets fremtidige skrivedato beholdes.",
+        "scheduledDate": "2026-10-28",
+        "updatedAt": "2026-10-28T08:08:45.424Z",
+        "references": [
+          "https://github.com/Lippen1995/Project_statsbudsjett/pull/80#pullrequestreview-5664781959"
+        ],
+        "priority": "urgent",
+        "id": "78bfee40-905c-4ff0-98d2-cfec13f89287",
+        "source": "admin",
+        "createdAt": "2026-10-28T08:08:45.424Z",
+        "reportPlan": null,
+        "topicKey": "u-08:real-expenditure-growth"
+      },
+      "status": "delivered",
+      "at": "2026-10-28T08:18:51.781Z",
+      "reviewUrl": "https://github.com/Lippen1995/Project_statsbudsjett/pull/81"
     }
   ]
 }
