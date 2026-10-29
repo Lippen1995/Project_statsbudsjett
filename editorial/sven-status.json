@@ -73,16 +73,24 @@
       "updatedAt": "2026-10-28T08:26:57.805Z",
       "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/81",
       "finishedAt": "2026-10-28T08:26:57.805Z"
+    },
+    {
+      "id": "2e59dcf1-8d6e-4989-9c5f-39a4252c32d1",
+      "startedAt": "2026-10-28T09:00:11.509Z",
+      "instructionCommit": "9f21330306728045dc6aaedfd4dd3e02bb1b05ee",
+      "state": "review",
+      "note": "Barnetrygd og kontantstøtte er forklart ved første omtale etter innspill i chat. Boten har levert ny head c060df0176a4d90f96f6043e412363af732c9546 og bedt Lippen1995 om ny godkjenning. Handoff og Vercel-kontroll bestått; live forhåndsvisning HTTP 200 og begge nye avsnitt åpnet og kontrollert. Beregningene er uendret. Ikke publisert.",
+      "updatedAt": "2026-10-28T09:09:09.897Z",
+      "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/81",
+      "finishedAt": "2026-10-28T09:09:09.897Z"
     }
   ],
   "current": {
-    "id": "2e59dcf1-8d6e-4989-9c5f-39a4252c32d1",
-    "startedAt": "2026-10-28T09:00:11.509Z",
-    "instructionCommit": "9f21330306728045dc6aaedfd4dd3e02bb1b05ee",
-    "state": "review",
-    "note": "Barnetrygd og kontantstøtte er forklart ved første omtale etter innspill i chat. Boten har levert ny head c060df0176a4d90f96f6043e412363af732c9546 og bedt Lippen1995 om ny godkjenning. Handoff og Vercel-kontroll bestått; live forhåndsvisning HTTP 200 og begge nye avsnitt åpnet og kontrollert. Beregningene er uendret. Ikke publisert.",
-    "updatedAt": "2026-10-28T09:09:09.897Z",
-    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/81",
-    "finishedAt": "2026-10-28T09:09:09.897Z"
+    "id": "0b42f245-799d-40d8-8a03-61896fd04686",
+    "startedAt": "2026-10-29T08:01:20.708Z",
+    "instructionCommit": "297dbcfb80f109d895be64be70bbb6117bae5676",
+    "state": "researching",
+    "note": "Kontrollerer kø, åpne analysegjennomganger og autoriserte endringsønsker",
+    "updatedAt": "2026-10-29T08:01:20.708Z"
   }
 }
