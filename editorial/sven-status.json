@@ -92,15 +92,23 @@
       "note": "Ingen åpen analysegjennomgang eller autorisert endringsforespørsel. PR #81 ble godkjent på eksakt head c060df0176a4d90f96f6043e412363af732c9546 og er publisert. Prepare.mjs bekreftet waiting: neste tema er Justis- og beredskapsdepartementet, planlagt 2. november 2026. Ingen ny analyse eller publisering i denne kjøringen.",
       "updatedAt": "2026-10-29T08:05:59.833Z",
       "finishedAt": "2026-10-29T08:05:59.833Z"
+    },
+    {
+      "id": "d27af659-1889-4621-b69e-ae35701c34a3",
+      "startedAt": "2026-10-30T08:01:19.799Z",
+      "instructionCommit": "d427ad0db1c8eb2457d6b5576b479edde351ef60",
+      "state": "waiting",
+      "note": "Ingen åpen analysegjennomgang eller autorisert endringsforespørsel. Prepare.mjs bekreftet waiting: neste tema er Justis- og beredskapsdepartementet, planlagt 2. november 2026. Ingen ny analyse, revisjon eller publisering i denne kjøringen.",
+      "updatedAt": "2026-10-30T08:02:21.714Z",
+      "finishedAt": "2026-10-30T08:02:21.714Z"
     }
   ],
   "current": {
-    "id": "d27af659-1889-4621-b69e-ae35701c34a3",
-    "startedAt": "2026-10-30T08:01:19.799Z",
-    "instructionCommit": "d427ad0db1c8eb2457d6b5576b479edde351ef60",
-    "state": "waiting",
-    "note": "Ingen åpen analysegjennomgang eller autorisert endringsforespørsel. Prepare.mjs bekreftet waiting: neste tema er Justis- og beredskapsdepartementet, planlagt 2. november 2026. Ingen ny analyse, revisjon eller publisering i denne kjøringen.",
-    "updatedAt": "2026-10-30T08:02:21.714Z",
-    "finishedAt": "2026-10-30T08:02:21.714Z"
+    "id": "82d3814f-c4da-45a6-aefb-aae9b472329b",
+    "startedAt": "2026-10-31T08:05:15.150Z",
+    "instructionCommit": "3b1d3d0d2bc6042063f0abdcef4ed896af6329cd",
+    "state": "researching",
+    "note": "Kontrollerer kø, åpne analysegjennomganger og autoriserte endringsønsker",
+    "updatedAt": "2026-10-31T08:05:15.150Z"
   }
 }
