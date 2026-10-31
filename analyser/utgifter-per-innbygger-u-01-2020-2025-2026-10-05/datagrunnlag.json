@@ -1,0 +1,197 @@
+{
+  "contentHash": "82fb4f03b6ec71bdd3f08b829bd5fb81638d4474d76804facb2646196dbde9ba",
+  "report": {
+    "kind": "real-expenditure-per-capita",
+    "factsVersion": 2,
+    "scopeId": "u-01",
+    "scopeName": "Utenriksdepartementet",
+    "start": 2020,
+    "end": 2025,
+    "dataUpdated": "2026-09-23T18:32:24.776647+00:00",
+    "dataHash": "f1b13cde59cdf86414d04658d10ab5872d6d2e7d586aad03eb021517441d52e1",
+    "facts": {
+      "startYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Første regnskapsår"
+      },
+      "endYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Siste regnskapsår"
+      },
+      "nominalGrowth": {
+        "value": 36.728822363828264,
+        "text": "36,7 %",
+        "label": "Vekst i løpende utgifter"
+      },
+      "populationGrowth": {
+        "value": 4.224622641860942,
+        "text": "4,2 %",
+        "label": "Befolkningsvekst"
+      },
+      "priceGrowth": {
+        "value": 22.699386503067487,
+        "text": "22,7 %",
+        "label": "Prisvekst målt med KPI"
+      },
+      "realPerCapitaGrowth": {
+        "value": 6.917144338753878,
+        "text": "6,9 %",
+        "label": "Realvekst per innbygger"
+      },
+      "firstPerCapita": {
+        "value": 7926.048610360721,
+        "text": "7 926 kr",
+        "label": "Per innbygger i startåret, løpende kroner"
+      },
+      "lastPerCapita": {
+        "value": 10397.920040612476,
+        "text": "10 398 kr",
+        "label": "Per innbygger i sluttåret, løpende kroner"
+      },
+      "firstRealPerCapita": {
+        "value": 9725.213018847511,
+        "text": "9 725 kr",
+        "label": "Startåret i sluttårets priser"
+      },
+      "total": {
+        "value": 58.1695,
+        "text": "58,2 mrd. kr",
+        "label": "Utgifter i sluttåret"
+      },
+      "nominalPerCapitaGrowth": {
+        "value": 31.18668017025017,
+        "text": "31,2 %",
+        "label": "Vekst per innbygger, løpende kroner"
+      },
+      "previousYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Året før største årlige endring"
+      },
+      "largestChangeYear": {
+        "value": 2022,
+        "text": "2022",
+        "label": "År med største årlige endring i absoluttverdi"
+      },
+      "largestAnnualChange": {
+        "value": 17.239216232438913,
+        "text": "17,2 %",
+        "label": "Største årlige endring, KPI-justert per innbygger"
+      },
+      "growthBeforeChange": {
+        "value": -1.8025979912611456,
+        "text": "−1,8 %",
+        "label": "KPI-justert vekst per innbygger, 2020–2021"
+      },
+      "growthSinceChange": {
+        "value": 8.879809599483114,
+        "text": "8,9 %",
+        "label": "KPI-justert vekst per innbygger, 2021–2025"
+      },
+      "growthAfterChange": {
+        "value": -7.130213678998332,
+        "text": "−7,1 %",
+        "label": "KPI-justert vekst per innbygger, 2022–2025"
+      }
+    },
+    "rows": [
+      {
+        "year": 2020,
+        "expenditure": 42543.7,
+        "population": 5367580,
+        "cpi": 81.5,
+        "perCapita": 7926.048610360721,
+        "nominalIndex": 100,
+        "priceIndex": 100,
+        "realPerCapita": 9725.213018847511
+      },
+      {
+        "year": 2021,
+        "expenditure": 43403.6,
+        "population": 5391369,
+        "cpi": 84.3,
+        "perCapita": 8050.571200005045,
+        "nominalIndex": 101.57105508388571,
+        "priceIndex": 103.43558282208589,
+        "realPerCapita": 9549.906524323898
+      },
+      {
+        "year": 2022,
+        "expenditure": 54182.40000000001,
+        "population": 5425270,
+        "cpi": 89.2,
+        "perCapita": 9987.042119562715,
+        "nominalIndex": 126.00278664084799,
+        "priceIndex": 109.44785276073621,
+        "realPerCapita": 11196.235560047888
+      },
+      {
+        "year": 2023,
+        "expenditure": 65439.9,
+        "population": 5488984,
+        "cpi": 94.1,
+        "perCapita": 11922.042403475762,
+        "nominalIndex": 150.4159637362252,
+        "priceIndex": 115.4601226993865,
+        "realPerCapita": 12669.545593491777
+      },
+      {
+        "year": 2024,
+        "expenditure": 58151.499999999985,
+        "population": 5550203,
+        "cpi": 97.1,
+        "perCapita": 10477.364521622,
+        "nominalIndex": 132.18900156537353,
+        "priceIndex": 119.14110429447852,
+        "realPerCapita": 10790.282720516992
+      },
+      {
+        "year": 2025,
+        "expenditure": 58169.5,
+        "population": 5594340,
+        "cpi": 100,
+        "perCapita": 10397.920040612476,
+        "nominalIndex": 131.18668017025016,
+        "priceIndex": 122.69938650306749,
+        "realPerCapita": 10397.920040612476
+      }
+    ],
+    "sources": [
+      {
+        "name": "DFØ Statsregnskapet",
+        "url": "https://statsregnskapet.dfo.no",
+        "local": "/data/utgifter.json",
+        "description": "Regnskapsførte utgifter i mill. kroner. Finansposter og SPU-overføringer er utelatt."
+      },
+      {
+        "name": "SSB folkemengde, tabell 07459",
+        "url": "https://www.ssb.no/statbank/table/07459/",
+        "local": "/data/befolkning.json",
+        "description": "Folkemengde ved inngangen til året, som i resten av Fellestall."
+      },
+      {
+        "name": "SSB konsumprisindeks",
+        "url": "https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen",
+        "local": "/data/kpi.json",
+        "description": "Årsgjennomsnitt for KPI, fra Fellestalls normaliserte serie."
+      }
+    ],
+    "methodology": [
+      "Vi summerer regnskapsførte utgifter på postnivå for Utenriksdepartementet. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.",
+      "Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.",
+      "Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.",
+      "Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.",
+      "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn."
+    ],
+    "limitations": [
+      "Departementenes ansvarsområder kan endres over tid. Serien følger Fellestalls normaliserte departementsinndeling, og må ikke alene tolkes som vekst i identiske tjenester.",
+      "KPI måler husholdningenes konsumpriser, ikke statens lønns-, bygge- eller innkjøpskostnader. KPI-justering er et sammenligningsmål, ikke et mål på produksjonsvolum.",
+      "Utgifter sier ikke hvor mye eller hvor god tjenesteproduksjon innbyggerne får. Overføringer, pensjoner og tilskudd inngår også.",
+      "Tallene identifiserer ikke årsakene til endringene. De kan ikke alene brukes til å konkludere om effektivitet, sløsing eller virkningen av politiske beslutninger.",
+      "Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.",
+      "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse."
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-07T07:48:38Z",
+  "sources": [
+    {
+      "id": "2025-audit",
+      "url": "https://www.riksrevisjonen.no/rapporter-mappe/no-2025-2026/forsvarsdepartementets-forvaltning-av-tilskudd-til-militar-stotte-gjennom-nansen-programmet/",
+      "file": "2025-audit.html",
+      "sha256": "84a89e03a14d7361f57ef907edee58b8b4fb441ca23b4e2631ffe8dcc49a4a87"
+    },
+    {
+      "id": "2026-programme",
+      "url": "https://www.regjeringen.no/no/aktuelt/slik-fordeles-de-sivile-nansen-midlene-for-2026/id3145799/",
+      "file": "2026-programme.html",
+      "sha256": "13cef120aab2b526b32e8aee3b3f9bac7b8413b063d6ad052a3df527b17a7293"
+    },
+    {
+      "id": "2026-rnb",
+      "url": "https://www.regjeringen.no/no/statsbudsjett/2026/rnb/a-til-aa/id3155656/",
+      "file": "2026-rnb.html",
+      "sha256": "4d535ca78488d326fe9037869048b4b51eb55248abb1ce61540a1958405f6cc5"
+    },
+    {
+      "id": "2026-rnb-details",
+      "url": "https://www.regjeringen.no/no/dokumenter/prop.-96-s-20252026/id3159643/?ch=2",
+      "file": "2026-rnb-details.html",
+      "sha256": "528963d63b93cdb29d918e528b61eccc2e4d9bd1e599d0e895cd482712752c69"
+    },
+    {
+      "id": "2025-accounts",
+      "url": "https://www.regjeringen.no/no/dokumenter/meld.-st.-3-20252026/id3157098/?ch=1",
+      "file": "2025-accounts.html",
+      "sha256": "7bad6c3a0a8baf496df0d695b03554856d08adedcb09a8625710e03c89f9339b"
+    },
+    {
+      "id": "2027-programme",
+      "url": "https://www.regjeringen.no/no/aktuelt/regjeringen-vil-viderefore-stotten-til-ukraina-pa-85-milliarder-kroner/id3171073/",
+      "file": "2027-programme.html",
+      "sha256": "b00114e77e716f27452982485e17891e5a46d26c9cd2050a1f48b9902ba01883"
+    }
+  ],
+  "postsSha256": "2249195998e15103770932f84226de13dd2a07ff51e3f8697b2408c6c39eb946"
+}
