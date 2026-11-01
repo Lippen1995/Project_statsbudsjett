@@ -116,8 +116,9 @@
     "id": "e163a4e3-2a68-4327-87d5-aafed42d9b47",
     "startedAt": "2026-11-01T07:57:05.157Z",
     "instructionCommit": "8d6b098c72fdd3c886d437e641f33224b0091d7c",
-    "state": "researching",
-    "note": "Kontrollerer kø, åpne analysegjennomganger og autoriserte endringsønsker",
-    "updatedAt": "2026-11-01T07:57:05.157Z"
+    "state": "waiting",
+    "note": "Ingen åpen analysegjennomgang eller autorisert endringsforespørsel. prepare.mjs bekreftet waiting: neste tema er Justis- og beredskapsdepartementet, planlagt 2. november 2026. Ingen ny analyse, revisjon eller publisering i denne kjøringen.",
+    "updatedAt": "2026-11-01T07:58:16.380Z",
+    "finishedAt": "2026-11-01T07:58:16.380Z"
   }
 }
