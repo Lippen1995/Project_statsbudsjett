@@ -118,3 +118,25 @@ er bakgrunn, ikke automatisk støtte til hele reformen eller dokumentert gjennom
 Vurder hvilke endringer som trenger lov, bevilgning, tariff-/arbeidsgiveravtaler
 eller kommunale beslutninger. Ikke gi reformen en konstruert parlamentarisk
 sannsynlighetsprosent.
+
+### Første kontrollerte reaksjoner, 2. november 2026
+
+Dette er en avgrenset start, ikke en full kartlegging av partiene. Reaksjonene må
+oppdateres før konklusjonene låses.
+
+| Aktør | Dokumentert standpunkt | Betydning for analysen |
+|---|---|---|
+| Helse- og omsorgsdepartementet / Jan Christian Vestre | Utredningen skal inngå i regjeringens reformarbeid. Rapporten sendes på høring; det inviteres til bredt samarbeid på Stortinget og regionale innspillsmøter. | Mottak av utredningen er ikke godkjenning eller vedtak av alle anbefalingene. |
+| KS / Gunn Marit Helgesen | Støtter fortsatt delt ansvar og bedre samarbeid mellom kommuner og sykehus. Mener samarbeid om nærhelsetjenester skal være frivillig. | Støtte til en del av modellen kan sameksistere med innvendinger mot andre deler. |
+| KS | Motsetter seg flytting av legevakt til staten. Begrunner det med sammenheng med fastleger og andre kommunale tjenester, rekruttering og beredskap. | Her finnes allerede konkret, dokumentert motstand; den skal ikke presenteres som en hypotese. |
+| KS | Positiv til digital samhandling og sterkere statlig ansvar for alvorlig psykisk helse og rus. Har ikke konkludert om kommunestruktur, og mener kommunene selv må diskutere løsningen. | Ikke kall KS generelt for eller mot reformen eller kommunesammenslåing. |
+
+Primærkilder, publisert og kontrollert 2. november 2026:
+
+- Helse- og omsorgsdepartementet: https://www.regjeringen.no/no/aktuelt/nytt-skritt-pa-veien-mot-helsereform-vestre-tok-imot-helsereformutvalgets-forslag/id3190681/
+- KS: https://www.ks.no/pressemeldinger/ks-stotter-delt-ansvar-men-vil-beholde-legevakten/
+
+Et innledende nettsøk etter ferske reaksjoner fra Høyre, Senterpartiet og Norsk
+Sykepleierforbund ga ikke en kontrollert reaksjonskilde i dette søkeutvalget.
+Dette er ikke bevis på at aktørene mangler standpunkt eller ikke har uttalt seg.
+Fortsett med direkte partisider, organisasjonssider og dokumenterte høringsinnspill.
