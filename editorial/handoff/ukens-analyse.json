@@ -1,7 +1,7 @@
 {
   "pipeline": {
     "id": "ccd3da91-6ab7-4263-9747-bd8b83079e33",
-    "fingerprint": "2fb2291dc897d96aea2bccec00ff5f99a7e3f2a6d7cb017902685e9c93552d31",
+    "fingerprint": "9944dcd7db46f5a625e98a7d3180aa65a15ab6811969e639f0526ef81970ae56",
     "topic": "Justis- og beredskapsdepartementet: Har det blitt mer eller mindre å rutte med?",
     "instructions": "Undersøk justis- og beredskapsdepartementet med det kontrollerte tallgrunnlaget. Skill beløp fra prisvekst og befolkningsutvikling når det er relevant. Følg interessante funn til konkrete poster og primærkilder. Forklar avgrensning og usikkerhet.",
     "scheduledDate": "2026-11-02",
@@ -82,8 +82,8 @@
     "geography": "Staten",
     "type": "Utvikling over tid",
     "status": "draft",
-    "createdAt": "2026-11-02T08:15:26.140Z",
-    "generatedAt": "2026-11-02T08:15:26.140Z",
+    "createdAt": "2026-11-02T08:20:25.755Z",
+    "generatedAt": "2026-11-02T08:20:25.755Z",
     "report": {
       "kind": "real-expenditure-per-capita",
       "factsVersion": 2,
