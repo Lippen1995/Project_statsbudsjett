@@ -18,7 +18,7 @@ Viktige avgrensninger for den videre analysen:
 
 ## Beregningsopplegg
 
-1. Etabler en SSB-baseline for helseutgifter etter produsent/formål og finansiering, personell/årsverk og lønn, alder/folketall, institusjons- og hjemmetjenester, samt sykehusaktivitet. Les faktisk tabellmetadata før valg. Unngå å summere overlappende helse- og kommuneregnskap.
+1. Etabler en samlet baseline fra Fellestalls database og supplerende SSB-serier. Fellestall skal inngå i beregninger og grafer, ikke bare nevnes som kilde. Etabler deretter en SSB-baseline for helseutgifter etter produsent/formål og finansiering, personell/årsverk og lønn, alder/folketall, institusjons- og hjemmetjenester, samt sykehusaktivitet. Les faktisk tabellmetadata før valg. Unngå å summere overlappende helse- og kommuneregnskap.
 2. Sammenstill historiske observerte data separat fra SSB-framskrivinger. Merk siste år, revisjoner, prisbasis og avgrensning.
 3. Sett opp en transparent scenarioidentitet: netto budsjetteffekt = unngåtte kostnader + faktisk bortfalt administrasjon − nye driftskostnader − årlig omstillingskostnad. Finansieringsoverføringer mellom stat og kommune er ikke en samfunnsøkonomisk gevinst.
 4. Beregn tid separat: frigjorte årsverk = berørte årsverk × tidsbesparelse × faktisk realisering. Fordel mellom mer pasienttid, redusert overtid/innleie og faktisk kostnadsreduksjon. Ikke tell samme gevinst to ganger.
@@ -36,8 +36,6 @@ Neste implementeringssteg er en avgrenset rapporttype for dokumentert policyanal
 API-søk er utført 2. november 2026. Dette er kandidater, ikke ferdige uttrekk eller validerte beregningsserier.
 
 - Tabell 07940: 07940: Utdanningsnivå og kommunefordeling blant sysselsatte i helse- og sosialtjenester. 4. kvartal (K) 2008-2025 (siste oppgitte periode 2025).
-- Tabell 10742: 10742: Avtalte årsverk i familievernet, etter region, utdanning og kjønn 2013-2025 (siste oppgitte periode 2025).
-- Tabell 11650: 11650: Barnevernsinstitusjoner. Avtalte årsverk eksklusive lange fravær, etter personellets utdanning, institusjonens eierskap og institusjonstype 2007-2024 (siste oppgitte periode 2024).
 - Tabell 11918: 11918: Avtalte årsverk i kommunal sektor, etter regnskapsomfang og funksjon (K) 2015-2025 (siste oppgitte periode 2025).
 - Tabell 07941: 07941: Næringsfordeling blant sysselsatte med helse- og sosialfaglig utdanning (19 grupper). 4. kvartal 2008-2025 (siste oppgitte periode 2025).
 - Tabell 12418: 12418: Utvalgte nøkkeltall for helse og omsorg - bydeler (B) 2015-2025 (siste oppgitte periode 2025).
@@ -53,3 +51,70 @@ API-søk er utført 2. november 2026. Dette er kandidater, ikke ferdige uttrekk 
 - Tabell 14533: 14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025 (siste oppgitte periode 2025).
 - Tabell 07944: 07944: Sektor- og kommunefordeling blant sysselsatte i helse- og sosialtjenester med helse- og sosialfaglig utdanning (27 grupper). 4. kvartal (K) 2008-2025 (siste oppgitte periode 2025).
 - Tabell 07935: 07935: Spesialistutdanning for leger, tannleger, optikere og sykepleiere, etter alder og kjønn. 4. kvartal 2008-2025 (siste oppgitte periode 2025).
+
+## Presisering fra administrator, 2. november 2026
+
+Analysen skal bruke **både Fellestalls database og SSB**, og ha en egen seksjon om
+politisk forankring. Dette er en eksplisitt tilleggsføring fra oppgavens chat.
+Bestillingen, ønsket dato og plass i køen beholdes.
+
+### Fellestalls eget tallgrunnlag
+
+Følgende faktiske kapittel-ID-er er kontrollert i `web/public/data/utgifter.json`.
+Dette er kildetilgjengelighet og avgrensning, ikke ferdig reformregnskap:
+
+| Formål | Fellestall-ID | Bruk i analysen |
+|---|---|---|
+| Helse- og omsorgsdepartementet | `u-07` | Overordnet historisk regnskapsramme |
+| Regionale helseforetak | `u-07-0732` | Statlige overføringer til spesialisthelsetjenesten; ikke automatisk RHF-administrasjon |
+| Helsetjenester i kommunene mv. | `u-07-2755` | Refusjoner/folketrygd, med kontroll av postinnhold |
+| Kommunale helse- og omsorgstjenester | `u-07-0760` | Navngitte statlige tilskudd og tiltak; ikke kommunenes totale utgifter |
+| Psykisk helse og rusarbeid | `u-07-0765` | Historiske prioriteringer og relevante tiltak |
+| IKT i helse- og omsorgssektoren | `u-07-0701` | Dokumentert statlig IKT-finansiering; ikke all digitalisering i sektoren |
+| Helsedirektoratet | `u-07-0740` | Forvaltningsoppgaver; kontroller flytting av oppgaver mellom etater |
+
+Fellestalls KOSTRA-arkiv under `web/public/data/kostra/` skal brukes til kommunale
+helse- og omsorgsutgifter, funksjoner/arter, egenbetaling og relevante inntekter.
+Kontroller faktisk dekning, år og regnskapsomfang før beregning. Suppler med
+primærkilder der administrasjon, foretakskostnader eller andre nødvendige detaljer
+ikke finnes som egen serie. Ikke sett overføringer til RHF lik administrative
+kostnader, og ikke kall hele statlige tilskudd reformutgifter.
+
+Lag minst én graf med Fellestalls regnskapsposter og én med kommunalt tallgrunnlag
+når de relevante uttrekkene er avstemt. Koble disse til SSBs aktivitets-, personell-
+og demografiserier med tydelige definisjoner. Vis historiske utgifter og et eget,
+merket scenario for reformen. Historisk vekst er ikke et reformanslag.
+
+### Avstemming før økonomiske scenarioer
+
+- Skill statens overføringer fra mottakernes faktiske ressursbruk.
+- Ikke summer samme krone først i statsregnskapet og deretter i kommune-/foretaksregnskapet.
+- Kontroller konsern/kasse, brutto/netto, finansieringskilde og regnskap/budsjett.
+- Undersøk historiske endringer i departement, etatsansvar og postnummer.
+- Hold administrasjonsinnsparing, bortfalte lokalkostnader og frigjort arbeidstid
+  atskilt. Oppgaver som flyttes til staten har fortsatt en kostnad.
+
+### Egen politisk seksjon
+
+Lag en kildebelagt matrise per hovedforslag: nærhelsetjenester, regional/statlig
+styring, kommunestruktur, legevakt/AMK, finansieringsmodell og digitalisering/KI.
+Oppgi hvem som foreslår, hvem som uttrykkelig støtter eller avviser, begrunnelsen,
+kildedatoen og om standpunktet gjelder akkurat denne utredningen.
+
+Skill mellom utvalgets flertall og mindretall, regjeringens forslag, partienes
+uttalelser/programmer, høringssvar og vedtak i Stortinget. Undersøk ferske primærkilder
+fra regjeringen og alle ni stortingspartier samt relevante kommunale aktører,
+helseforetak og arbeidstakerorganisasjoner. Programstandpunkter som ligner et forslag
+er bakgrunn, ikke automatisk støtte til hele reformen eller dokumentert gjennomslag.
+
+«Hvem vil stritte imot, og hvorfor?» skal besvares i to tydelige deler:
+
+1. **Dokumentert motstand:** navngitt aktør, konkret forslag, kildebelagt begrunnelse.
+2. **Mulige konfliktlinjer:** en eksplisitt analytisk vurdering av blant annet lokal
+   råderett, sentralisering, finansieringsansvar, arbeidsgiverforhold, personvern,
+   pasientsikkerhet og gjennomføringskostnader. Dette er scenarioer, ikke påståtte
+   motiver eller spådde stemmer. Manglende offentlig standpunkt oppgis som uavklart.
+
+Vurder hvilke endringer som trenger lov, bevilgning, tariff-/arbeidsgiveravtaler
+eller kommunale beslutninger. Ikke gi reformen en konstruert parlamentarisk
+sannsynlighetsprosent.

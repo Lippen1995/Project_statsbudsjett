@@ -662,3 +662,7 @@
 .an-bars-scroll { overflow-x: auto; overscroll-behavior-x: contain; margin: 1.25rem 0; }
 .an-bars-scroll svg { display: block; font-family: inherit; }
 .an-bars-scroll:focus-visible { outline: 2px solid #14594F; outline-offset: 4px; }
+
+.an-chart-endpoints { display: grid; gap: .3rem; font-size: .8rem; color: #706A60; font-variant-numeric: tabular-nums; }
+.an-chart-endpoints span { display: block; min-width: 0; overflow-wrap: anywhere; }
+.an-chart-endpoints i { display: inline-block; width: .55rem; height: .55rem; margin-right: .35rem; }

@@ -106,3 +106,16 @@ skal vises på X-aksen. På små skjermer beholdes lesbar bredde med vannrett ru
 inne i grafen. Presise desimaler beholdes i talltabell og punktbeskrivelse;
 akseavrunding endrer ikke beregninger. Anslag vises med lysere stolper og stiplet
 kant, og skal fortsatt skilles tydelig fra observasjoner.
+
+### Presisering av grafvalg, 2. november 2026
+
+Kommentar-6582837520 i PR #82 erstatter den tidligere føringen om stolper i alle
+tidsserier. Velg linjer for forløp og stolper for nivåer eller avgrensede forskjeller.
+Seriegrafer kan nå angi `chartType: "line" | "bar"` og `axis: "zero" | "focused"`.
+Uten eksplisitt valg beholdes tidligere stolpevisning med nullakse.
+`focused` er bare tillatt for linjer: koden beregner et heltallsutsnitt fra de
+frosne observasjonene og merker aksen som avkortet. AI kan ikke oppgi egne
+aksegrenser eller datapunkter. Stolper skal alltid starte fra null. Alle år
+vises; eksakte tall følger tilgjengelig tabell. Start-/sluttverdier og markerte
+punkter gjør endringene tydeligere. Animasjon er valgfritt og skal aldri skjule
+observasjoner eller være nødvendig for å forstå grafen.

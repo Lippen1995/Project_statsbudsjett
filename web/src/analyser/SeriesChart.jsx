@@ -24,14 +24,21 @@ export default function SeriesChart({ graph, report }) {
         ))}
       </div>
       <AnalysisBars years={data.years} label={`${title}. ${data.unit}`}
+        chartType={graph.chartType} axis={graph.axis}
         forecastFrom={report.kind === 'oil-funds' ? report.forecastFrom : undefined}
         series={data.series.map((s, i) => ({ ...s, label: factText(s.label, report), color: colors[i] }))} />
+      <div className="an-chart-endpoints">
+        {data.series.map((s, i) => <span key={i}><i style={{ background: colors[i] }} />
+          <strong>{factText(s.label, report)}</strong>: {number(s.values[0], 1)} → {number(s.values.at(-1), 1)} {data.unit}
+        </span>)}
+      </div>
       <p className="an-chart-note">
         {data.indexed
-          ? 'Seriene er satt til samme startverdi i det første felles året. Stolpene sammenligner vekst, ikke beløp eller størrelser.'
-          : `Y-aksen viser ${data.unit} og inkluderer null.`}{' '}
-        {report.kind === 'oil-funds'
-          ? 'Nøkkeltallene inkluderer anslag og budsjettforslag. Lyse stolper med stiplet kant viser anslagsårene. Faste priser følger Finansdepartementets prisjustering.'
+          ? 'Seriene er satt til samme startverdi i det første felles året. Seriene sammenligner vekst, ikke beløp eller størrelser.'
+          : `Y-aksen viser ${data.unit}.`}{' '}
+        {graph.axis === 'focused' ? 'Y-aksen er avkortet for å vise endringene tydeligere. Les aksens tall; linjens høyde er ikke et mål på vekst fra null. ' : 'Y-aksen inkluderer null. '}
+        {report.kind === 'oil-funds' 
+          ? 'Nøkkeltallene inkluderer anslag og budsjettforslag. Stiplede linjer eller lyse stolper viser anslagsårene. Faste priser følger Finansdepartementets prisjustering.'
           : 'Bare felles observerte år vises.'}{' '}
         Samtidig utvikling dokumenterer ikke årsak.
       </p>
