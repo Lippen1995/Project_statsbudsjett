@@ -165,8 +165,9 @@
     "id": "7cf5650a-6a2a-4c7f-8943-464afd94c218",
     "startedAt": "2026-11-02T20:25:26.587Z",
     "instructionCommit": "38c6623274369c790dc0b33c9f87b1d20e55f6b7",
-    "state": "researching",
-    "note": "Starter helsereformbestillingen med Fellestall, SSB og politiske primærkilder.",
-    "updatedAt": "2026-11-02T20:25:26.587Z"
+    "state": "waiting",
+    "note": "Justisutkastet er godkjent og publisert av boten. Helsereformresearch er lagret med Fellestall, fem uavhengig kontrollerte SSB-serier og testet scenariokjerne. Bestillingen er beholdt; interaktiv rapportintegrasjon, ferdig artikkel og ny menneskelig gjennomgang gjenstår.",
+    "updatedAt": "2026-11-02T20:35:30.239Z",
+    "finishedAt": "2026-11-02T20:35:30.239Z"
   }
 }
