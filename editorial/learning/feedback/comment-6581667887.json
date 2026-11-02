@@ -1,0 +1,23 @@
+{
+  "feedbackSource": {
+    "url": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82#issuecomment-6581667887",
+    "id": "comment-6581667887",
+    "author": "Lippen1995"
+  },
+  "article": {
+    "slug": "utgifter-per-innbygger-u-04-2020-2025-2026-11-02",
+    "beforeCommit": "9125d63ccc05e40b0426012cea6522414e940207",
+    "afterCommit": "c247038ce43245ce66a0a9aa25adea5ec4e77757"
+  },
+  "rawFeedback": "Kan vi bruke data fra SSB for å underbygge analysen? Hvorfor gikk pengene til de nye satsingene? Hvorfor fikk noe mer enn andre? Undersøk også potensielle politiske forankringer. Det er ikke godt nok med  \"AP ønsker\", det må isåfall knyttes til faktiske vedtak.\nGrafene må også forbedres. Bruk stolpediagram istedenfor linjer, Y-aksen skal ikke ha desimaler og vise hele tall. X-aksen skal vise alle årene i tidsserien. Lag gjerne et standarddesign for grafer som passer med designet til fellestall.no. Tanken er å bruke det deisgnet som standard for alle analyser fremover.",
+  "interpretation": "Revisjonen inkluderer kildekontrollerte SSB-serier, skiller registreringer fra faktisk kriminalitet og dokumenterer budsjettforlik og vedtak. Standardiserte tidsseriestolper har nullinje, heltallsakser og alle år. Presise tabellverdier er beholdt.",
+  "scope": "article-and-future-analysis-charts",
+  "status": "active",
+  "ruleId": "P011",
+  "validation": {
+    "ssbWorkflow": "https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/41478973774",
+    "deliveryWorkflow": "https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/41480394763",
+    "tests": "49 relevante eksisterende tester bestått; produksjonsbygg og SEO bestått; SVG-figurer visuelt kontrollert. Full nettleser-/mobiltest ble blokkert av mislykket Chromium-nedlasting.",
+    "approval": "Ingen publiseringsgodkjenning opprettet eller gjenbrukt."
+  }
+}
