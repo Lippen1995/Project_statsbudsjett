@@ -96,3 +96,13 @@ For en fordypning i nye poster, lag en JSON-fil med kontrollerte `detailSelectio
 En uttrykkelig bestilt erstatning av en annen artikkel kan ligge til gjennomgang parallelt med et eksisterende utkast. En annen åpen erstatning av samme kildeartikkel gjenbrukes og dupliseres ikke. Ordinære ukeskjøringer prioriterer fortsatt åpne gjennomganger og endringsønsker.
 
 Etter godkjenning blir erstatningen hovedartikkel i bibliotek og sitemap. Tidligere godkjente tekster og datagrunnlag bevares uendret med en synlig lenke til nyere utgave og noindex; tidligere lenker fungerer fortsatt. Toårsregelen bruker også erstatningens nye publiseringsdato. Den samme bibliotekregelen rydder opp i de to allerede godkjente totalanalysene fra 4. og 6. oktober uten å endre deres godkjente innhold.
+
+### Standard for tidsseriegrafer, 2. november 2026
+
+Autoriserte føringer fra kommentar-6581667887 i PR #82: bruk stolper som standard
+for analysefigurenes tidsserier. Felles `AnalysisBars` bruker Fellestalls eksisterende
+farger og typografi, en synlig nullinje og Y-aksetiketter med hele tall. Alle år
+skal vises på X-aksen. På små skjermer beholdes lesbar bredde med vannrett rulling
+inne i grafen. Presise desimaler beholdes i talltabell og punktbeskrivelse;
+akseavrunding endrer ikke beregninger. Anslag vises med lysere stolper og stiplet
+kant, og skal fortsatt skilles tydelig fra observasjoner.

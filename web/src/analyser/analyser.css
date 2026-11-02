@@ -658,3 +658,7 @@
 }
 
 .an-bridge-heading .an-bridge-rate { display: block; font-size: 14px; font-weight: 500; color: var(--dempet); margin-top: 5px; }
+
+.an-bars-scroll { overflow-x: auto; overscroll-behavior-x: contain; margin: 1.25rem 0; }
+.an-bars-scroll svg { display: block; font-family: inherit; }
+.an-bars-scroll:focus-visible { outline: 2px solid #14594F; outline-offset: 4px; }

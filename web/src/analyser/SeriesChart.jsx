@@ -1,28 +1,10 @@
 import React from 'react'
-import LinjeGraf from '../fellestall/grafer/LinjeGraf'
+import AnalysisBars, { analysisColors as colors } from './AnalysisBars'
 import { seriesGraph } from './chart-plan.js'
 import { factText, number } from './model.js'
-const colors = ['#C5452E', '#14594F', '#858077', '#715196', '#B07712']
 export default function SeriesChart({ graph, report }) {
   const data = seriesGraph(graph, report)
   const title = factText(graph.title ?? 'Utviklingen i de valgte seriene', report)
-  const props = {
-    aar: data.years,
-    ...(report.kind === 'oil-funds' && Number.isInteger(report.forecastFrom)
-      ? { anslagFra: data.years.findIndex((year) => year >= report.forecastFrom) }
-      : {}),
-    fraNull: true,
-    aksefmt: (v) => number(v, 1),
-    akseFont: 12,
-    akseMarg: 64,
-    bunnMarg: 28,
-    beskrivelse: `${title}. ${data.unit}. ${data.series.map((s) => s.label).join(', ')}`,
-    serier: data.series.map((s, i) => ({
-      navn: factText(s.label, report),
-      farge: colors[i],
-      punkter: s.values.map((v) => ({ v })),
-    })),
-  }
   return (
     <figure className="an-figure">
       <figcaption>
@@ -41,18 +23,15 @@ export default function SeriesChart({ graph, report }) {
           </span>
         ))}
       </div>
-      <div className="an-chart-wide">
-        <LinjeGraf {...props} W={680} H={270} />
-      </div>
-      <div className="an-chart-compact">
-        <LinjeGraf {...props} W={400} H={250} akseFont={14} />
-      </div>
+      <AnalysisBars years={data.years} label={`${title}. ${data.unit}`}
+        forecastFrom={report.kind === 'oil-funds' ? report.forecastFrom : undefined}
+        series={data.series.map((s, i) => ({ ...s, label: factText(s.label, report), color: colors[i] }))} />
       <p className="an-chart-note">
         {data.indexed
-          ? 'Seriene er satt til samme startverdi i det første felles året. Kurvene sammenligner vekst, ikke beløp eller størrelser.'
+          ? 'Seriene er satt til samme startverdi i det første felles året. Stolpene sammenligner vekst, ikke beløp eller størrelser.'
           : `Y-aksen viser ${data.unit} og inkluderer null.`}{' '}
         {report.kind === 'oil-funds'
-          ? 'Nøkkeltallene inkluderer anslag og budsjettforslag. Skravert område og stiplede kurver viser anslagsårene. Faste priser følger Finansdepartementets prisjustering.'
+          ? 'Nøkkeltallene inkluderer anslag og budsjettforslag. Lyse stolper med stiplet kant viser anslagsårene. Faste priser følger Finansdepartementets prisjustering.'
           : 'Bare felles observerte år vises.'}{' '}
         Samtidig utvikling dokumenterer ikke årsak.
       </p>
