@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "extracts": [
+    {
+      "id": "Lovbrudd",
+      "scope": "u-04",
+      "purpose": "Se anmeldte lovbrudd opp mot utviklingen i politiets regnskap. Ikke et effektmål eller et mål på all faktisk kriminalitet.",
+      "table": "08484",
+      "selections": {
+        "LovbruddKrim": [
+          "1AAAAA-9ZZZZz"
+        ],
+        "ContentsCode": [
+          "AnmeldteLovbrudd"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "Vold",
+      "scope": "u-04",
+      "purpose": "Undersøk om anmeldt vold og mishandling endret seg i perioden. Anmeldelser påvirkes også av anmeldelsestilbøyelighet og registrering.",
+      "table": "08484",
+      "selections": {
+        "LovbruddKrim": [
+          "4AAAAA-4ZZZZz"
+        ],
+        "ContentsCode": [
+          "AnmeldteLovbrudd"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    }
+  ]
+}
