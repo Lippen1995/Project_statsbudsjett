@@ -125,8 +125,10 @@
     "id": "3b7d3a6a-488c-441a-afb5-9d881458253c",
     "startedAt": "2026-11-02T08:10:23.871Z",
     "instructionCommit": "3061b6ec3dbdf8442e1023652828811c0a16ab15",
-    "state": "delivering",
-    "note": "Artikkel og LinkedIn-utkast er skrevet og schema-validert. Leverer den eksakte versjonen gjennom botens analysis/input-gren og kontrollerer workflow, PR, forhåndsvisning og review request.",
-    "updatedAt": "2026-11-02T08:18:27.061Z"
+    "state": "review",
+    "note": "Utkast levert i PR #82. Versjonsbundet forhåndsvisning er kontrollert med HTTP 200 og korrekt artikkelinnhold. Avventer menneskelig godkjenning.",
+    "updatedAt": "2026-11-02T08:33:37.489Z",
+    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
+    "finishedAt": "2026-11-02T08:33:37.489Z"
   }
 }
