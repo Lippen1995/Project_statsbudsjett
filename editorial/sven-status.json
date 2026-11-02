@@ -139,16 +139,24 @@
       "updatedAt": "2026-11-02T16:29:22.475Z",
       "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
       "finishedAt": "2026-11-02T16:29:22.475Z"
+    },
+    {
+      "id": "0965779e-b0ed-48d9-8a2d-1b59f2d0c6cc",
+      "startedAt": "2026-11-02T16:54:10.736Z",
+      "instructionCommit": "a68fc3851045a30a285192ec0040261078d0c316",
+      "state": "review",
+      "note": "Grafrevisjonen er levert i PR #82 med tre linjegrafer og én stolpegraf. Ny versjonsbundet forhåndsvisning er kontrollert med HTTP 200. Ny godkjenning er bedt om. Helsereformplanen er oppdatert med Fellestall-regnskap, KOSTRA, SSB og politisk forankring; selve reformanalysen er ikke levert.",
+      "updatedAt": "2026-11-02T17:11:25.015Z",
+      "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
+      "finishedAt": "2026-11-02T17:11:25.015Z"
     }
   ],
   "current": {
-    "id": "0965779e-b0ed-48d9-8a2d-1b59f2d0c6cc",
-    "startedAt": "2026-11-02T16:54:10.736Z",
-    "instructionCommit": "a68fc3851045a30a285192ec0040261078d0c316",
-    "state": "review",
-    "note": "Grafrevisjonen er levert i PR #82 med tre linjegrafer og én stolpegraf. Ny versjonsbundet forhåndsvisning er kontrollert med HTTP 200. Ny godkjenning er bedt om. Helsereformplanen er oppdatert med Fellestall-regnskap, KOSTRA, SSB og politisk forankring; selve reformanalysen er ikke levert.",
-    "updatedAt": "2026-11-02T17:11:25.015Z",
-    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
-    "finishedAt": "2026-11-02T17:11:25.015Z"
+    "id": "8ea677a1-f03d-4751-90d6-2b434f892f95",
+    "startedAt": "2026-11-02T19:39:51.730Z",
+    "instructionCommit": "9ecd9116eceb6c21d884c5360c30eb381022b542",
+    "state": "researching",
+    "note": "Forenkler grafene etter direkte brukerønske: mindre tekst og visuell pil for endringen gjennom perioden",
+    "updatedAt": "2026-11-02T19:39:51.730Z"
   }
 }
