@@ -5,7 +5,7 @@
   "type": "Utvikling over tid",
   "status": "draft",
   "createdAt": "2026-11-02T08:21:22.144Z",
-  "generatedAt": "2026-11-02T17:00:57.022Z",
+  "generatedAt": "2026-11-02T19:45:02.076Z",
   "report": {
     "kind": "real-expenditure-per-capita",
     "factsVersion": 2,
@@ -2103,7 +2103,8 @@
           }
         ],
         "chartType": "line",
-        "axis": "focused"
+        "axis": "focused",
+        "annotation": "period-change"
       },
       {
         "kind": "series",
@@ -2124,7 +2125,8 @@
           }
         ],
         "chartType": "line",
-        "axis": "focused"
+        "axis": "focused",
+        "annotation": "period-change"
       },
       {
         "kind": "series",
@@ -2139,7 +2141,8 @@
           }
         ],
         "chartType": "bar",
-        "axis": "zero"
+        "axis": "zero",
+        "annotation": "period-change"
       },
       {
         "kind": "series",
@@ -2170,7 +2173,8 @@
           }
         ],
         "chartType": "line",
-        "axis": "focused"
+        "axis": "focused",
+        "annotation": "period-change"
       }
     ]
   },
@@ -2179,10 +2183,10 @@
     "comment-6582837520"
   ],
   "researchRevision": {
-    "previousHead": "c247038ce43245ce66a0a9aa25adea5ec4e77757",
+    "previousHead": "4ff33677e4a4f833a81801ca7af035fdae2a5a97",
     "actor": "Lippen1995",
-    "sourceCommit": "c48bdd4c153dfe5c939a59d010c5a96e0e0b593d",
-    "reason": "Kontrollert revisjon av grafpresentasjonen etter kommentar-6582837520. Tallgrunnlaget er uendret. Linjer og stolper velges redaksjonelt; avkortede linjeakser merkes tydelig.",
-    "generatedAt": "2026-11-02T17:00:57.022Z"
+    "sourceCommit": "df02e76b88c94fd6254155db4255b381730aab94",
+    "reason": "Direkte bestilling i oppgavens chat: fjern forklaringstekst fra grafene og bruk en pil med beregnet endring fra start til slutt. Uendret tallgrunnlag.",
+    "generatedAt": "2026-11-02T19:45:02.076Z"
   }
 }
