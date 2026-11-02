@@ -5,7 +5,7 @@
   "type": "Utvikling over tid",
   "status": "draft",
   "createdAt": "2026-11-02T08:21:22.144Z",
-  "generatedAt": "2026-11-02T16:20:10.764Z",
+  "generatedAt": "2026-11-02T17:00:57.022Z",
   "report": {
     "kind": "real-expenditure-per-capita",
     "factsVersion": 2,
@@ -2101,7 +2101,9 @@
             "id": "realPerCapita",
             "label": "Justis og beredskap per innbygger"
           }
-        ]
+        ],
+        "chartType": "line",
+        "axis": "focused"
       },
       {
         "kind": "series",
@@ -2120,7 +2122,9 @@
             "id": "Vold",
             "label": "Vold og mishandling"
           }
-        ]
+        ],
+        "chartType": "line",
+        "axis": "focused"
       },
       {
         "kind": "series",
@@ -2133,7 +2137,9 @@
             "id": "udi",
             "label": "Utlendingsdirektoratet"
           }
-        ]
+        ],
+        "chartType": "bar",
+        "axis": "zero"
       },
       {
         "kind": "series",
@@ -2162,18 +2168,21 @@
             "id": "fengsel",
             "label": "Kriminalomsorgen"
           }
-        ]
+        ],
+        "chartType": "line",
+        "axis": "focused"
       }
     ]
   },
   "processedFeedbackIds": [
-    "comment-6581667887"
+    "comment-6581667887",
+    "comment-6582837520"
   ],
   "researchRevision": {
-    "previousHead": "9125d63ccc05e40b0426012cea6522414e940207",
+    "previousHead": "c247038ce43245ce66a0a9aa25adea5ec4e77757",
     "actor": "Lippen1995",
-    "sourceCommit": "8aca97b93202e7d7b2b2eebbc6e5b018baa13b95",
-    "reason": "Autoriserte kommentar-6581667887 bestiller SSB-underbygging, faktiske politiske vedtak og bedre grafer. Hovedserien beholdes, SSB-serier og dokumenterte primærkilder føyes til.",
-    "generatedAt": "2026-11-02T16:20:10.764Z"
+    "sourceCommit": "c48bdd4c153dfe5c939a59d010c5a96e0e0b593d",
+    "reason": "Kontrollert revisjon av grafpresentasjonen etter kommentar-6582837520. Tallgrunnlaget er uendret. Linjer og stolper velges redaksjonelt; avkortede linjeakser merkes tydelig.",
+    "generatedAt": "2026-11-02T17:00:57.022Z"
   }
 }
