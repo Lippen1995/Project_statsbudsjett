@@ -155,8 +155,10 @@
     "id": "8ea677a1-f03d-4751-90d6-2b434f892f95",
     "startedAt": "2026-11-02T19:39:51.730Z",
     "instructionCommit": "9ecd9116eceb6c21d884c5360c30eb381022b542",
-    "state": "delivering",
-    "note": "Forklaringstekst er samlet under Tall og kilder; ny grafversjon med beregnede endringspiler leveres til ny gjennomgang.",
-    "updatedAt": "2026-11-02T19:44:47.005Z"
+    "state": "review",
+    "note": "Revisjonen er levert og ny forhåndsvisning kontrollert med HTTP 200: fire beregnede endringspiler og ingen gamle endepunktblokker. Forklaring og kilder ligger under Tall og kilder. Ny review request er sendt. Kommentartrigger er opprettet; første faktiske hendelseskjøring er ennå ikke verifisert.",
+    "updatedAt": "2026-11-02T19:56:45.199Z",
+    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
+    "finishedAt": "2026-11-02T19:56:45.199Z"
   }
 }
