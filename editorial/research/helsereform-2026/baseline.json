@@ -1,0 +1,874 @@
+{
+  "version": 1,
+  "status": "research-inputs-not-an-approved-article",
+  "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "sourceHashes": {
+    "web/public/data/kpi.json": "aef8b5a18708eeab3efa76d8cf263c9473efca33ce9b43c0e54a93992afc1bbc",
+    "web/public/data/befolkning.json": "2a238938a43b4485666897bfd625568ae0f50def82538e0035af3bdc49223c47",
+    "web/public/data/utgifter.json": "2d80587a970345503a041391b392b9cb4598827ab30e4b6b25ca95df9a036365",
+    "web/public/data/kostra/entities/municipality-0301.json": "137b5a5f9fb953cd4dfd55199ff25cd0accab0d083dd9586fc182735fb4e4db9",
+    "web/public/data/kostra/entities/municipality-4601.json": "18ca1f086ca34fb357ef6153627d442313727c1991978eb7842fe0fad559062c",
+    "web/public/data/kostra/entities/municipality-5001.json": "8e93b2a440bfdb29fe5381b9645ebdccddfada47183260aa680bb93f359effd5",
+    "web/public/data/ssb-research/index.json": "0eac7b46e6e9af99d58e709c7170ab42cc567119b4173c3dbb03458b489f5742",
+    "web/public/data/ssb-research/51f9aa4469dc3468bc4132dfae7ca2c87a5d41e8e0f793d41b08050580294012.json": "51f9aa4469dc3468bc4132dfae7ca2c87a5d41e8e0f793d41b08050580294012",
+    "web/public/data/ssb-research/3401b6b5da59f52853278372ace274be8f38226e473b7b27feb50e73bdc7b019.json": "3401b6b5da59f52853278372ace274be8f38226e473b7b27feb50e73bdc7b019",
+    "web/public/data/ssb-research/7a617b07a65d9cf0fd11265ef709b27337ce360a2e993a5b7e7bd15b7cb1804d.json": "7a617b07a65d9cf0fd11265ef709b27337ce360a2e993a5b7e7bd15b7cb1804d",
+    "web/public/data/ssb-research/11ac61989e1d334300dd5e768f45ef0d98457eabc8f1ab70b9b32ad5712f7ff1.json": "11ac61989e1d334300dd5e768f45ef0d98457eabc8f1ab70b9b32ad5712f7ff1",
+    "web/public/data/ssb-research/4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01.json": "4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01"
+  },
+  "state": [
+    {
+      "id": "u-07",
+      "name": "Helse- og omsorgsdepartementet",
+      "unit": "million NOK, current prices",
+      "nominalGrowthPct": 33.962014526469076,
+      "realPerCapitaGrowthPct": 4.75359763521126,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 225244.0,
+          "realPerCapita": 51489.31289984859
+        },
+        {
+          "year": 2021,
+          "value": 252048.3,
+          "realPerCapita": 55457.0981350567
+        },
+        {
+          "year": 2022,
+          "value": 254124.6,
+          "realPerCapita": 52512.234290155924
+        },
+        {
+          "year": 2023,
+          "value": 272658.8,
+          "realPerCapita": 52788.330942846114
+        },
+        {
+          "year": 2024,
+          "value": 281676.3,
+          "realPerCapita": 52266.35448215715
+        },
+        {
+          "year": 2025,
+          "value": 301741.4,
+          "realPerCapita": 53936.907660242316
+        }
+      ]
+    },
+    {
+      "id": "u-07-0732",
+      "name": "Regionale helseforetak",
+      "unit": "million NOK, current prices",
+      "nominalGrowthPct": 37.20146090511085,
+      "realPerCapitaGrowthPct": 7.286731103744093,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 172222.0,
+          "realPerCapita": 39368.82867573709
+        },
+        {
+          "year": 2021,
+          "value": 186917.2,
+          "realPerCapita": 41126.5836886423
+        },
+        {
+          "year": 2022,
+          "value": 189087.2,
+          "realPerCapita": 39072.92465062246
+        },
+        {
+          "year": 2023,
+          "value": 210329.9,
+          "realPerCapita": 40721.09305980856
+        },
+        {
+          "year": 2024,
+          "value": 217316.8,
+          "realPerCapita": 40324.14833526303
+        },
+        {
+          "year": 2025,
+          "value": 236291.1,
+          "realPerCapita": 42237.529360031745
+        }
+      ]
+    },
+    {
+      "id": "u-07-2755",
+      "name": "Helsetjenester i kommunene mv.",
+      "unit": "million NOK, current prices",
+      "nominalGrowthPct": 30.46317027104779,
+      "realPerCapitaGrowthPct": 2.0176241234942216,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 7994.9,
+          "realPerCapita": 1827.5821229555484
+        },
+        {
+          "year": 2021,
+          "value": 9059.7,
+          "realPerCapita": 1993.366636371573
+        },
+        {
+          "year": 2022,
+          "value": 8943.5,
+          "realPerCapita": 1848.0822689893444
+        },
+        {
+          "year": 2023,
+          "value": 9634.7,
+          "realPerCapita": 1865.3340076866748
+        },
+        {
+          "year": 2024,
+          "value": 10199.8,
+          "realPerCapita": 1892.620580599456
+        },
+        {
+          "year": 2025,
+          "value": 10430.4,
+          "realPerCapita": 1864.4558607449671
+        }
+      ]
+    },
+    {
+      "id": "u-07-0765",
+      "name": "Psykisk helse og rusarbeid",
+      "unit": "million NOK, current prices",
+      "nominalGrowthPct": 21.226803181277987,
+      "realPerCapitaGrowthPct": -5.204891043606974,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 2187.8,
+          "realPerCapita": 500.11684556431584
+        },
+        {
+          "year": 2021,
+          "value": 2622.5,
+          "realPerCapita": 577.0173409588011
+        },
+        {
+          "year": 2022,
+          "value": 2317.0,
+          "realPerCapita": 478.78421392612637
+        },
+        {
+          "year": 2023,
+          "value": 2383.6,
+          "realPerCapita": 461.4788359494284
+        },
+        {
+          "year": 2024,
+          "value": 2595.3,
+          "realPerCapita": 481.5700496901672
+        },
+        {
+          "year": 2025,
+          "value": 2652.2,
+          "realPerCapita": 474.08630866196904
+        }
+      ]
+    },
+    {
+      "id": "u-07-0701",
+      "name": "IKT i helse- og omsorgssektoren",
+      "unit": "million NOK, current prices",
+      "nominalGrowthPct": -65.2725375291001,
+      "realPerCapitaGrowthPct": -72.84434215603885,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 1245.7,
+          "realPerCapita": 284.7589151291107
+        },
+        {
+          "year": 2021,
+          "value": 1370.5,
+          "realPerCapita": 301.5451919100236
+        },
+        {
+          "year": 2022,
+          "value": 722.4,
+          "realPerCapita": 149.27652832983756
+        },
+        {
+          "year": 2023,
+          "value": 419.2,
+          "realPerCapita": 81.15956034150041
+        },
+        {
+          "year": 2024,
+          "value": 566.3,
+          "realPerCapita": 105.07961281529752
+        },
+        {
+          "year": 2025,
+          "value": 432.6,
+          "realPerCapita": 77.328156672637
+        }
+      ]
+    }
+  ],
+  "municipalExamples": [
+    {
+      "id": "municipality:0301",
+      "name": "Oslo - Oslove",
+      "service": "FGK9",
+      "metric": "gross_expenses",
+      "unit": "thousand NOK, current prices",
+      "nominalGrowthPct": 38.00365618807506,
+      "realPerCapitaGrowthPct": 7.5825747183771774,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 16768284.0,
+          "realPerCapita": 29517.791411042945
+        },
+        {
+          "year": 2021,
+          "value": 19991051.0,
+          "realPerCapita": 33886.120996441285
+        },
+        {
+          "year": 2022,
+          "value": 20444354.0,
+          "realPerCapita": 32325.112107623318
+        },
+        {
+          "year": 2023,
+          "value": 21683312.0,
+          "realPerCapita": 32106.269925611054
+        },
+        {
+          "year": 2024,
+          "value": 22041873.0,
+          "realPerCapita": 31340.88568486097
+        },
+        {
+          "year": 2025,
+          "value": 23140845.0,
+          "realPerCapita": 31756.0
+        }
+      ]
+    },
+    {
+      "id": "municipality:0301",
+      "name": "Oslo - Oslove",
+      "service": "FGK9",
+      "metric": "net_expenses",
+      "unit": "thousand NOK, current prices",
+      "nominalGrowthPct": 37.78075909820644,
+      "realPerCapitaGrowthPct": 7.40434997528423,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 14100389.0,
+          "realPerCapita": 24822.085889570553
+        },
+        {
+          "year": 2021,
+          "value": 16929188.0,
+          "realPerCapita": 28696.32265717675
+        },
+        {
+          "year": 2022,
+          "value": 17443046.0,
+          "realPerCapita": 27579.596412556053
+        },
+        {
+          "year": 2023,
+          "value": 18496721.0,
+          "realPerCapita": 27387.885228480343
+        },
+        {
+          "year": 2024,
+          "value": 18607632.0,
+          "realPerCapita": 26458.29042224511
+        },
+        {
+          "year": 2025,
+          "value": 19427623.0,
+          "realPerCapita": 26660.0
+        }
+      ]
+    },
+    {
+      "id": "municipality:4601",
+      "name": "Bergen",
+      "service": "FGK9",
+      "metric": "gross_expenses",
+      "unit": "thousand NOK, current prices",
+      "nominalGrowthPct": 50.16490116260619,
+      "realPerCapitaGrowthPct": 18.542597092059076,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 7405345.0,
+          "realPerCapita": 31814.723926380368
+        },
+        {
+          "year": 2021,
+          "value": 8529723.0,
+          "realPerCapita": 35264.53143534994
+        },
+        {
+          "year": 2022,
+          "value": 9071669.0,
+          "realPerCapita": 35150.224215246635
+        },
+        {
+          "year": 2023,
+          "value": 10035487.0,
+          "realPerCapita": 36530.28692879915
+        },
+        {
+          "year": 2024,
+          "value": 10514660.0,
+          "realPerCapita": 36869.2070030896
+        },
+        {
+          "year": 2025,
+          "value": 11120229.0,
+          "realPerCapita": 37714.0
+        }
+      ]
+    },
+    {
+      "id": "municipality:4601",
+      "name": "Bergen",
+      "service": "FGK9",
+      "metric": "net_expenses",
+      "unit": "thousand NOK, current prices",
+      "nominalGrowthPct": 50.74755241804703,
+      "realPerCapitaGrowthPct": 19.0037944991261,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 6209598.0,
+          "realPerCapita": 26677.300613496933
+        },
+        {
+          "year": 2021,
+          "value": 7256412.0,
+          "realPerCapita": 30000.0
+        },
+        {
+          "year": 2022,
+          "value": 7709357.0,
+          "realPerCapita": 29872.19730941704
+        },
+        {
+          "year": 2023,
+          "value": 8517012.0,
+          "realPerCapita": 31003.188097768332
+        },
+        {
+          "year": 2024,
+          "value": 8800748.0,
+          "realPerCapita": 30858.908341915554
+        },
+        {
+          "year": 2025,
+          "value": 9360817.0,
+          "realPerCapita": 31747.0
+        }
+      ]
+    },
+    {
+      "id": "municipality:5001",
+      "name": "Trondheim - Tråante",
+      "service": "FGK9",
+      "metric": "gross_expenses",
+      "unit": "thousand NOK, current prices",
+      "nominalGrowthPct": 40.199459426601145,
+      "realPerCapitaGrowthPct": 8.579488291413707,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 4787139.0,
+          "realPerCapita": 28294.478527607364
+        },
+        {
+          "year": 2021,
+          "value": 5658953.0,
+          "realPerCapita": 31890.865954922894
+        },
+        {
+          "year": 2022,
+          "value": 5857942.0,
+          "realPerCapita": 30881.16591928251
+        },
+        {
+          "year": 2023,
+          "value": 6473910.0,
+          "realPerCapita": 32063.761955366634
+        },
+        {
+          "year": 2024,
+          "value": 6523302.0,
+          "realPerCapita": 31027.80638516993
+        },
+        {
+          "year": 2025,
+          "value": 6711543.0,
+          "realPerCapita": 30722.0
+        }
+      ]
+    },
+    {
+      "id": "municipality:5001",
+      "name": "Trondheim - Tråante",
+      "service": "FGK9",
+      "metric": "net_expenses",
+      "unit": "thousand NOK, current prices",
+      "nominalGrowthPct": 46.09761545110756,
+      "realPerCapitaGrowthPct": 13.147100760456286,
+      "rows": [
+        {
+          "year": 2020,
+          "value": 3931058.0,
+          "realPerCapita": 23234.355828220858
+        },
+        {
+          "year": 2021,
+          "value": 4617246.0,
+          "realPerCapita": 26020.166073546858
+        },
+        {
+          "year": 2022,
+          "value": 4943507.0,
+          "realPerCapita": 26060.538116591928
+        },
+        {
+          "year": 2023,
+          "value": 5539393.0,
+          "realPerCapita": 27435.706695005316
+        },
+        {
+          "year": 2024,
+          "value": 5580061.0,
+          "realPerCapita": 26541.709577754893
+        },
+        {
+          "year": 2025,
+          "value": 5743182.0,
+          "realPerCapita": 26289.0
+        }
+      ]
+    }
+  ],
+  "ssb": {
+    "Spesialist": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Arsverk",
+          "label": "Avtalte årsverk"
+        },
+        "HelseReg": {
+          "code": "H00",
+          "label": "Hele landet"
+        },
+        "HelseTjenomr": {
+          "code": "TOT",
+          "label": "I alt"
+        },
+        "Yrke": {
+          "code": "TOT",
+          "label": "I alt"
+        }
+      },
+      "rows": [
+        {
+          "value": 131339,
+          "year": 2020
+        },
+        {
+          "value": 133955,
+          "year": 2021
+        },
+        {
+          "value": 136364,
+          "year": 2022
+        },
+        {
+          "value": 138696,
+          "year": 2023
+        },
+        {
+          "value": 140664,
+          "year": 2024
+        },
+        {
+          "value": 142826,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-10-01T06:00:00Z",
+      "sourceHash": "51f9aa4469dc3468bc4132dfae7ca2c87a5d41e8e0f793d41b08050580294012",
+      "table": "13953",
+      "growthPct": 8.746069332033901
+    },
+    "SykehusStotte": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Arsverk",
+          "label": "Avtalte årsverk"
+        },
+        "HelseReg": {
+          "code": "H00",
+          "label": "Hele landet"
+        },
+        "HelseTjenomr": {
+          "code": "AOS",
+          "label": "Administrasjon og service"
+        },
+        "Yrke": {
+          "code": "TOT",
+          "label": "I alt"
+        }
+      },
+      "rows": [
+        {
+          "value": 36083,
+          "year": 2020
+        },
+        {
+          "value": 36941,
+          "year": 2021
+        },
+        {
+          "value": 37548,
+          "year": 2022
+        },
+        {
+          "value": 38564,
+          "year": 2023
+        },
+        {
+          "value": 38967,
+          "year": 2024
+        },
+        {
+          "value": 39674,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-10-01T06:00:00Z",
+      "sourceHash": "3401b6b5da59f52853278372ace274be8f38226e473b7b27feb50e73bdc7b019",
+      "table": "13953",
+      "growthPct": 9.952054984341663
+    },
+    "Omsorg": {
+      "categories": {
+        "ContentsCode": {
+          "code": "KOSARBAARSVERKST0000",
+          "label": "Avtalte årsverk (årsverk)"
+        },
+        "KOKkommuneregion0000": {
+          "code": "EAK",
+          "label": "Landet"
+        },
+        "KOKyrker0000": {
+          "code": "TOT",
+          "label": "I alt"
+        }
+      },
+      "rows": [
+        {
+          "value": 146612,
+          "year": 2020
+        },
+        {
+          "value": 149203,
+          "year": 2021
+        },
+        {
+          "value": 151779,
+          "year": 2022
+        },
+        {
+          "value": 157043,
+          "year": 2023
+        },
+        {
+          "value": 160779,
+          "year": 2024
+        },
+        {
+          "value": 163755,
+          "year": 2025
+        }
+      ],
+      "unit": "årsverk",
+      "updated": "2026-06-15T06:00:00Z",
+      "sourceHash": "7a617b07a65d9cf0fd11265ef709b27337ce360a2e993a5b7e7bd15b7cb1804d",
+      "table": "14533",
+      "growthPct": 11.69276730417701
+    },
+    "EldreMenn": {
+      "categories": {
+        "Alder": {
+          "aggregation": "sum",
+          "codes": [
+            "080",
+            "081",
+            "082",
+            "083",
+            "084",
+            "085",
+            "086",
+            "087",
+            "088",
+            "089",
+            "090",
+            "091",
+            "092",
+            "093",
+            "094",
+            "095",
+            "096",
+            "097",
+            "098",
+            "099",
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "105+"
+          ],
+          "labels": [
+            "80 år",
+            "81 år",
+            "82 år",
+            "83 år",
+            "84 år",
+            "85 år",
+            "86 år",
+            "87 år",
+            "88 år",
+            "89 år",
+            "90 år",
+            "91 år",
+            "92 år",
+            "93 år",
+            "94 år",
+            "95 år",
+            "96 år",
+            "97 år",
+            "98 år",
+            "99 år",
+            "100 år",
+            "101 år",
+            "102 år",
+            "103 år",
+            "104 år",
+            "105 år eller eldre"
+          ]
+        },
+        "ContentsCode": {
+          "code": "Personer1",
+          "label": "Personer"
+        },
+        "Kjonn": {
+          "code": "1",
+          "label": "Menn"
+        },
+        "Region": {
+          "code": "0",
+          "label": "Hele landet"
+        }
+      },
+      "rows": [
+        {
+          "value": 90434,
+          "year": 2020
+        },
+        {
+          "value": 93840,
+          "year": 2021
+        },
+        {
+          "value": 96647,
+          "year": 2022
+        },
+        {
+          "value": 100225,
+          "year": 2023
+        },
+        {
+          "value": 105906,
+          "year": 2024
+        },
+        {
+          "value": 113336,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-02-25T07:00:00Z",
+      "sourceHash": "11ac61989e1d334300dd5e768f45ef0d98457eabc8f1ab70b9b32ad5712f7ff1",
+      "table": "07459",
+      "growthPct": 25.32454607780259
+    },
+    "EldreKvinner": {
+      "categories": {
+        "Alder": {
+          "aggregation": "sum",
+          "codes": [
+            "080",
+            "081",
+            "082",
+            "083",
+            "084",
+            "085",
+            "086",
+            "087",
+            "088",
+            "089",
+            "090",
+            "091",
+            "092",
+            "093",
+            "094",
+            "095",
+            "096",
+            "097",
+            "098",
+            "099",
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "105+"
+          ],
+          "labels": [
+            "80 år",
+            "81 år",
+            "82 år",
+            "83 år",
+            "84 år",
+            "85 år",
+            "86 år",
+            "87 år",
+            "88 år",
+            "89 år",
+            "90 år",
+            "91 år",
+            "92 år",
+            "93 år",
+            "94 år",
+            "95 år",
+            "96 år",
+            "97 år",
+            "98 år",
+            "99 år",
+            "100 år",
+            "101 år",
+            "102 år",
+            "103 år",
+            "104 år",
+            "105 år eller eldre"
+          ]
+        },
+        "ContentsCode": {
+          "code": "Personer1",
+          "label": "Personer"
+        },
+        "Kjonn": {
+          "code": "2",
+          "label": "Kvinner"
+        },
+        "Region": {
+          "code": "0",
+          "label": "Hele landet"
+        }
+      },
+      "rows": [
+        {
+          "value": 140276,
+          "year": 2020
+        },
+        {
+          "value": 142567,
+          "year": 2021
+        },
+        {
+          "value": 143646,
+          "year": 2022
+        },
+        {
+          "value": 146135,
+          "year": 2023
+        },
+        {
+          "value": 150579,
+          "year": 2024
+        },
+        {
+          "value": 157201,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-02-25T07:00:00Z",
+      "sourceHash": "4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01",
+      "table": "07459",
+      "growthPct": 12.065499443953343
+    }
+  },
+  "elderly80Plus": {
+    "rows": [
+      {
+        "year": 2020,
+        "value": 230710
+      },
+      {
+        "year": 2021,
+        "value": 236407
+      },
+      {
+        "year": 2022,
+        "value": 240293
+      },
+      {
+        "year": 2023,
+        "value": 246360
+      },
+      {
+        "year": 2024,
+        "value": 256485
+      },
+      {
+        "year": 2025,
+        "value": 270537
+      }
+    ],
+    "growthPct": 17.262797451345847
+  },
+  "limitations": [
+    "State chapters are recorded chapter totals, including loans where present; not health-account resource consumption or administrative costs.",
+    "Chapter totals and their child posts must not be summed together. State grants and recipients expenditure overlap.",
+    "The municipal sample is Oslo, Bergen and Trondheim, not a national estimate; no extrapolation or aggregation is made.",
+    "KOSTRA FGK9 is health and care in municipal consolidated accounts. Gross and net spending are alternative measures, not additive.",
+    "Municipal series use each source own per-capita denominator. Comparisons with state per-capita indicators need matching population definitions.",
+    "CPI is a consumer price comparison, not a health-sector wage or production deflator.",
+    "Specialist administration and service includes necessary support work; the series does not measure RHF head offices or removable bureaucracy.",
+    "Agreed FTE are not actual worked hours. Elderly population is a stock at the beginning of the year, not care recipients or forecast demand.",
+    "The 2020 pandemic baseline is atypical. Historical growth does not estimate reform effects."
+  ]
+}
