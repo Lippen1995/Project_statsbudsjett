@@ -1,3 +1,4 @@
+import Notice from './PopupNotice.jsx'
 import { useLiveResource } from './useLiveResource.js'
 
 const number = (value, digits = 0) => new Intl.NumberFormat('nb-NO', { maximumFractionDigits: digits }).format(value)
@@ -13,7 +14,7 @@ export default function LivePerformance() {
   const data = resource.data, totals = data?.totals
   return <section className="ad-live-performance" aria-label="Live ytelsesmålinger">
     <header className="ad-live-heading"><div><p className="ad-eyebrow">SISTE 15 MINUTTER</p><h2>Akkurat nå.</h2><p>De siste målingene fra lesernes nettlesere.</p></div><div className="ad-live-meta"><span className={`ad-live-badge ${resource.error ? 'ad-live-offline' : ''}`}><i />{resource.error ? 'Forbindelsen er brutt' : resource.loading ? 'Kobler til' : 'LIVE'}</span><small>{data ? `Oppdatert ${time(data.checkedAt)}` : 'Henter målinger …'}</small><button className="ad-text-button" onClick={resource.reload}>Oppdater nå</button></div></header>
-    {resource.error && <div className="ad-notice ad-notice-error" role="status">{data ? 'Viser sist mottatte målinger. ' : ''}{resource.error} Nye målinger hentes automatisk når forbindelsen er tilbake.</div>}
+    {resource.error && <Notice error>{data ? 'Viser sist mottatte målinger. ' : ''}{resource.error} Nye målinger hentes automatisk når forbindelsen er tilbake.</Notice>}
     <div className="ad-live-metrics">{measures.map(metric => {
       const value = totals?.[metric.key]
       const count = totals?.[metric.key + '_count'] || 0

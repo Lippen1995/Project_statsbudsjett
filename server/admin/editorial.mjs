@@ -1,3 +1,4 @@
+import { feedbackStatuses, isFeedbackReceipt } from '../../scripts/analyser/feedback-status.mjs'
 import { randomUUID } from 'node:crypto'
 import { contentHash, validateArticle } from '../../scripts/analyser/schema.mjs'
 import { assertReviewBranch } from '../../scripts/analyser/review.mjs'
@@ -35,19 +36,28 @@ export function editorialService({ sql, github }) {
       fail('Gjennomgangen inneholder uventede filendringer.', 409)
     const file = await github.readFile(files[0].filename, pr.head.sha)
     const article = validateArticle(JSON.parse(file.content))
+    async function allPages(path) {
+      const rows = []
+      for (let page = 1; page <= 20; page++) {
+        const batch = await github.api(`${path}?per_page=100&page=${page}`)
+        rows.push(...batch)
+        if (batch.length < 100) return rows
+      }
+      fail('Gjennomgangen er for stor til å vise fullstendig kommentarstatus.', 502)
+    }
     const [comments, reviews, commits] = await Promise.all([
-      github.api(`issues/${number}/comments?per_page=100`),
-      github.api(`pulls/${number}/reviews?per_page=100`),
-      github.api(`pulls/${number}/commits?per_page=100`),
+      allPages(`issues/${number}/comments`),
+      allPages(`pulls/${number}/reviews`),
+      allPages(`pulls/${number}/commits`),
     ])
     const processed = new Set(
       (article.processedFeedbackIds || []).map((v) =>
         typeof v === 'number' ? 'comment-' + v : v,
       ),
     )
-    const feedback = [
+    const feedbackRows = [
       ...comments
-        .filter((c) => c.user.type !== 'Bot' && c.body?.trim())
+        .filter((c) => c.user.type !== 'Bot' && c.body?.trim() && !isFeedbackReceipt(c.body))
         .map((c) => ({
           id: 'comment-' + c.id,
           body: c.body,
@@ -67,7 +77,11 @@ export function editorialService({ sql, github }) {
           actor: r.user.login,
           at: r.submitted_at,
         })),
-    ].map((f) => ({ ...f, processed: processed.has(f.id) }))
+    ].sort((a, b) => Date.parse(a.at) - Date.parse(b.at))
+    const feedback = await feedbackStatuses(comments, feedbackRows, processed, async (login) => {
+      const permission = await github.api(`collaborators/${encodeURIComponent(login)}/permission`)
+      return ['admin', 'write', 'maintain'].includes(permission.permission)
+    })
     return {
       number,
       head: pr.head.sha,

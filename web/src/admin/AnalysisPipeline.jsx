@@ -1,3 +1,4 @@
+import Notice from './PopupNotice.jsx'
 import { useEffect, useRef, useState } from 'react'
 import { api } from './api.js'
 
@@ -248,12 +249,12 @@ export default function AnalysisPipeline({ onDirty, onSaving }) {
     )
   if (!data)
     return (
-      <div className="ad-notice ad-notice-error" role="alert">
+      <Notice error>
         {error}
         <button className="ad-text-button" onClick={reload}>
           Prøv igjen
         </button>
-      </div>
+      </Notice>
     )
   const locked = busy || !data.writable
   const ready = data.items.filter(
@@ -306,29 +307,29 @@ export default function AnalysisPipeline({ onDirty, onSaving }) {
         </div>
       </div>
       {duplicates.length > 0 && (
-        <div className="ad-notice" role="status">
+        <Notice>
           Mulig duplikat i køen: {duplicates.map((i) => i.topic).join('; ')}.
           Kontroller avgrensningen før neste kjøring.
-        </div>
+        </Notice>
       )}
       {!data.writable && (
-        <div className="ad-notice" role="status">
+        <Notice>
           Lagring blir tilgjengelig når administratorens skrivetilgang er
           konfigurert.
-        </div>
+        </Notice>
       )}
       {error && (
-        <div className="ad-notice ad-notice-error" role="alert">
+        <Notice error>
           {error}{' '}
           <button type="button" className="ad-text-button" onClick={reload}>
             Hent oppdatert kø
           </button>
-        </div>
+        </Notice>
       )}
       {message && (
-        <div className="ad-notice" role="status">
+        <Notice>
           {message}
-        </div>
+        </Notice>
       )}
       {choosing && (
         <section ref={formRef} className="ad-panel ad-topic-choice">

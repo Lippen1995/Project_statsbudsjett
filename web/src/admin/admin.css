@@ -404,3 +404,12 @@ body { margin: 0; background: #F7F5F0; }
 @media(max-width:850px) { .ad-diff { grid-template-columns: 1fr; } .ad-review-heading { flex-direction: column; } .ad-calendar { grid-template-columns: repeat(3,minmax(0,1fr)); } }
 @media(max-width:650px) { .ad-body { padding: 20px; } .ad-stat-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .ad-stat { padding: 15px; } .ad-stat > strong { font-size: 25px; } .ad-details > div { grid-template-columns: 1fr; gap: 5px; } .ad-article-preview { padding: 15px; } .ad-form-inline { flex-direction: column; align-items: stretch; } .ad-backup-codes { grid-template-columns: 1fr; } }
 @media print { .ad-sidebar,.ad-topbar,.ad-mobile-menu,.ad-footer,.ad-page-heading + .ad-actions,.ad-actions,.ad-primary,.ad-secondary,.ad-text-button { display:none !important; } .ad-workspace { margin:0 !important; width:100% !important; padding:0 !important; } .ad-content { padding:0; } .ad-panel,.ad-stat { break-inside:avoid; box-shadow:none; } .ad { background:white; } }
+
+/* Popups stay in the viewport and stack without covering one another. */
+.ad-popup-stack { position: fixed; top: 20px; right: 20px; z-index: 10000; width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); overflow-y: auto; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
+.ad-popup-stack .ad-popup { flex-shrink: 0; display: flex; align-items: flex-start; gap: 16px; margin: 0; padding: 18px; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5; box-shadow: 0 8px 32px #172b2440; pointer-events: auto; }
+.ad-popup-content { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.ad-popup-content > strong { display: block; margin-bottom: 6px; }
+.ad-popup .ad-popup-close { flex-shrink: 0; margin: 0; border: 1px solid currentColor; background: transparent; color: inherit; border-radius: 4px; width: 36px; height: 36px; font-size: 24px; cursor: pointer; }
+.ad-popup-close:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+@media (max-width: 600px) { .ad-popup-stack { top: 12px; right: 16px; max-height: calc(100dvh - 24px); } }

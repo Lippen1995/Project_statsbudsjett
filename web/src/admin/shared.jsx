@@ -1,3 +1,5 @@
+import Notice from './PopupNotice.jsx'
+export { Notice }
 import { createContext, useContext, useEffect, useId, useState } from 'react'
 import { api, useResource } from './api.js'
 
@@ -38,16 +40,6 @@ export function Panel({ title, children, extra }) {
       </header>
       <div className="ad-body">{children}</div>
     </section>
-  )
-}
-export function Notice({ children, error }) {
-  return (
-    <div
-      className={`ad-notice ${error ? 'ad-notice-error' : ''}`}
-      role={error ? 'alert' : 'status'}
-    >
-      {children}
-    </div>
   )
 }
 export function Resource({ state, children }) {
@@ -183,8 +175,8 @@ export function useAction(onSuccess) {
 export function ActionState({ action }) {
   return (
     <>
-      {action.error && <Notice error>{action.error}</Notice>}
-      {action.message && <Notice>{action.message}</Notice>}
+      {action.error && <Notice key={action.error} error>{action.error}</Notice>}
+      {action.message && <Notice key={action.message}>{action.message}</Notice>}
     </>
   )
 }

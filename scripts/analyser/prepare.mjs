@@ -1,3 +1,4 @@
+import { reportFeedbackStatus } from './feedback-status.mjs'
 import { mkdirSync, writeFileSync, readFileSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { githubClient } from './github.mjs'
@@ -35,6 +36,7 @@ if (process.argv[3] && !budgetDay && !oil && !pipelinePlan) {
   const { pr, article } = await readReviewContext(g, { issue: { number } })
   const feedback = await pendingFeedback(g, number, article)
   if (!feedback.length) throw Error('Ingen ubehandlede endringsønsker')
+  await reportFeedbackStatus(g, number, feedback, 'working')
   packet = {
     article,
     base: {
