@@ -78,11 +78,7 @@ export function AnnualChangeChart({ report }) {
       <div className="an-legend">
         <span>
           <i style={{ background: '#C5452E' }} />
-          Økning
-        </span>
-        <span>
-          <i style={{ background: '#14594F' }} />
-          Nedgang
+          Årlig endring
         </span>
       </div>
       <AnnualPlot rows={report.rows} />
