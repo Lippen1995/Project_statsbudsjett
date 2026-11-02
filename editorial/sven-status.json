@@ -119,16 +119,24 @@
       "note": "Ingen åpen analysegjennomgang eller autorisert endringsforespørsel. prepare.mjs bekreftet waiting: neste tema er Justis- og beredskapsdepartementet, planlagt 2. november 2026. Ingen ny analyse, revisjon eller publisering i denne kjøringen.",
       "updatedAt": "2026-11-01T07:58:16.380Z",
       "finishedAt": "2026-11-01T07:58:16.380Z"
+    },
+    {
+      "id": "3b7d3a6a-488c-441a-afb5-9d881458253c",
+      "startedAt": "2026-11-02T08:10:23.871Z",
+      "instructionCommit": "3061b6ec3dbdf8442e1023652828811c0a16ab15",
+      "state": "review",
+      "note": "Utkast levert i PR #82. Versjonsbundet forhåndsvisning er kontrollert med HTTP 200 og korrekt artikkelinnhold. Avventer menneskelig godkjenning.",
+      "updatedAt": "2026-11-02T08:33:37.489Z",
+      "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
+      "finishedAt": "2026-11-02T08:33:37.489Z"
     }
   ],
   "current": {
-    "id": "3b7d3a6a-488c-441a-afb5-9d881458253c",
-    "startedAt": "2026-11-02T08:10:23.871Z",
-    "instructionCommit": "3061b6ec3dbdf8442e1023652828811c0a16ab15",
-    "state": "review",
-    "note": "Utkast levert i PR #82. Versjonsbundet forhåndsvisning er kontrollert med HTTP 200 og korrekt artikkelinnhold. Avventer menneskelig godkjenning.",
-    "updatedAt": "2026-11-02T08:33:37.489Z",
-    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
-    "finishedAt": "2026-11-02T08:33:37.489Z"
+    "id": "09a10c85-0e9d-427f-b004-b7bcfcb1f24d",
+    "startedAt": "2026-11-02T16:05:39.825Z",
+    "instructionCommit": "ee6617874dc0b607c3eebd37833c0f4b1e5f91f7",
+    "state": "researching",
+    "note": "Behandler autorisert revisjonsønske i PR #82 og kontrollerer bestillingen om helsereformen",
+    "updatedAt": "2026-11-02T16:05:39.825Z"
   }
 }
