@@ -222,3 +222,27 @@ Admin viser «Ferdig – klar til gjennomgang» først når en levert utkastvers
 inneholder kommentar-ID-en i `processedFeedbackIds`. Ikke marker den ferdig før
 revisjonen er levert. Ny menneskelig godkjenning kreves fortsatt. Administrator
 kan også markere et ønske behandlet ved en lagret manuell redigering.
+
+
+## Hendelsesutløste revisjonskommentarer, 2. november 2026
+
+Oppgaven «Fellestall – revisjonskommentarer» er opprettet og aktivert i ChatGPTs
+oppgaveverktøy etter at sammenslåingen av Cadeler-oppgavene frigjorde en plass.
+Konfigurasjonen er bekreftet av verktøyet. Første faktiske kommentarutløste kjøring
+er ennå ikke verifisert. Ikke påstå at ende-til-ende-triggeren er prøvd før en ekte
+kommentar har utløst og fullført den.
+
+Hendelseskilden er nye menneskelige kommentarer på botens analyse-PR-er i dette
+repositoryet, med tittelfilter «Analyse til gjennomgang:». Admin sender allerede
+revisjonsønsker som PR-kommentarer. Den nye oppgaven erstatter ikke den daglige
+pipelinekontrollen og har ingen parallell tidsplan. Eldre beskrivelser av at
+GitHub-kommentarer aldri kan vekke AI-oppgaven er dermed erstattet for denne
+konfigurerte hendelsesoppgaven, med forbeholdet om faktisk første verifikasjon.
+
+Hendelsen er bare en vekker. Les gjeldende PR-head og autoriserte, ubehandlede
+innspill på nytt. Hopp over botmeldinger, tekniske kvitteringer og allerede
+behandlede innspill. Ikke start en konkurrerende revisjon hvis en reell annen
+kjøring allerede arbeider på samme head. Eksakt menneskelig godkjenning,
+botlevering, kildekontroll og versjonsbundet forhåndsvisning gjelder fortsatt.
+Ingen separat AI-API er innført. Ved manglende innspill skal det ikke sendes en
+statusmelding til brukeren. Ikke opprett en ny kopi av kommentaroppgaven.

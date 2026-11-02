@@ -1,0 +1,23 @@
+{
+  "feedbackSource": {
+    "kind": "chat",
+    "date": "2026-11-02",
+    "authorRole": "user",
+    "note": "Direkte beskjed i oppgavens chat; ingen GitHub-kommentar-ID er opprettet eller antatt."
+  },
+  "article": {
+    "slug": "utgifter-per-innbygger-u-04-2020-2025-2026-11-02",
+    "beforeCommit": "4ff33677e4a4f833a81801ca7af035fdae2a5a97",
+    "afterCommit": "5cdd7efbd60fb1f3c7aaba40e799a48db5cb7499"
+  },
+  "rawFeedback": "Du har for mye tekst i grafene. Når jeg sa at du skulle inkludere mer forklaring, så tenkte jeg mer i retningen en trendpil som viser årlig vekst eller en pil som viser utviklingen fra starten av tidsserien til slutten.",
+  "interpretation": "Erstatt synlige tekstblokker med en stiplet start–slutt-pil og kort prosentetikett. Pilene viser samlet periodevekst, ikke årlig vekst eller en estimert trend. Med flere serier velges én pil via serienavnet. Metode og kilder er tilgjengelige i en lukket detaljvisning; enhet, periode og avkortet akse forblir synlig.",
+  "scope": "article-and-future-analysis-charts",
+  "status": "active",
+  "ruleId": "P011",
+  "validation": {
+    "tests": "42 relevante tester, produksjonsbygg og SEO bestått. Fire SVG-figurer kontrollert visuelt; prosentendring kontrolleres også for null og negativ start.",
+    "deliveryWorkflow": "https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/41512767933",
+    "approval": "Ingen publisering. Ny review request er sendt for den reviderte versjonen."
+  }
+}
