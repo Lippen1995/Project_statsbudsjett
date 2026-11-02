@@ -129,16 +129,24 @@
       "updatedAt": "2026-11-02T08:33:37.489Z",
       "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
       "finishedAt": "2026-11-02T08:33:37.489Z"
+    },
+    {
+      "id": "09a10c85-0e9d-427f-b004-b7bcfcb1f24d",
+      "startedAt": "2026-11-02T16:05:39.825Z",
+      "instructionCommit": "ee6617874dc0b607c3eebd37833c0f4b1e5f91f7",
+      "state": "review",
+      "note": "Revisjonen er levert i PR #82 med kontrollert SSB-grunnlag, politiske vedtak og stolpegrafer. Forhåndsvisning av ny head er kontrollert med HTTP 200. Helsereformbestillingen er beholdt i køen; researchplan er lagret, men scenarioformat mangler og åpen gjennomgang sperrer nytt utkast.",
+      "updatedAt": "2026-11-02T16:29:22.475Z",
+      "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
+      "finishedAt": "2026-11-02T16:29:22.475Z"
     }
   ],
   "current": {
-    "id": "09a10c85-0e9d-427f-b004-b7bcfcb1f24d",
-    "startedAt": "2026-11-02T16:05:39.825Z",
-    "instructionCommit": "ee6617874dc0b607c3eebd37833c0f4b1e5f91f7",
-    "state": "review",
-    "note": "Revisjonen er levert i PR #82 med kontrollert SSB-grunnlag, politiske vedtak og stolpegrafer. Forhåndsvisning av ny head er kontrollert med HTTP 200. Helsereformbestillingen er beholdt i køen; researchplan er lagret, men scenarioformat mangler og åpen gjennomgang sperrer nytt utkast.",
-    "updatedAt": "2026-11-02T16:29:22.475Z",
-    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
-    "finishedAt": "2026-11-02T16:29:22.475Z"
+    "id": "0965779e-b0ed-48d9-8a2d-1b59f2d0c6cc",
+    "startedAt": "2026-11-02T16:54:10.736Z",
+    "instructionCommit": "a68fc3851045a30a285192ec0040261078d0c316",
+    "state": "researching",
+    "note": "Behandler nytt grafønske i PR #82 og presiserer helsereformplanens datagrunnlag og politiske analyse",
+    "updatedAt": "2026-11-02T16:54:10.736Z"
   }
 }
