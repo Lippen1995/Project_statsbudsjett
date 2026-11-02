@@ -1,0 +1,22 @@
+{
+  "feedbackSource": {
+    "url": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82#issuecomment-6582837520",
+    "id": "comment-6582837520",
+    "author": "Lippen1995"
+  },
+  "article": {
+    "slug": "utgifter-per-innbygger-u-04-2020-2025-2026-11-02",
+    "beforeCommit": "c247038ce43245ce66a0a9aa25adea5ec4e77757",
+    "afterCommit": "4ff33677e4a4f833a81801ca7af035fdae2a5a97"
+  },
+  "rawFeedback": "Alle grafene trenger ikke å være stolper, du må velge mellom stolper og linjer ettersom hva som passer best. Du starter alltid Y-aksen på 0, det fører til tider at man såvidt ser endringen i grafen. Du kan også ha tydeligere figurer og/eller animasjoner i grafene som viser endringene bedre.",
+  "interpretation": "Tre tidsforløp vises som linjer med tydelig merket avkortet akse, markerte datapunkter og start-/sluttverdier. UDI beholdes som stolper med nullakse. Hele årsetiketter og heltall på aksen beholdes. Tallgrunnlaget er uendret. P011 er oppdatert slik at senere analyser velger figurtype etter budskapet.",
+  "scope": "article-and-future-analysis-charts",
+  "status": "active",
+  "ruleId": "P011",
+  "validation": {
+    "tests": "45 relevante tester bestått; skala-testene er også kjørt etter siste skalaendring. Produksjonsbygg og SEO bestått. SVG-figurer visuelt kontrollert.",
+    "deliveryWorkflow": "https://github.com/Lippen1995/Project_statsbudsjett/actions/runs/41486988943",
+    "approval": "Ny menneskelig godkjenning kreves; ingen publisering."
+  }
+}
