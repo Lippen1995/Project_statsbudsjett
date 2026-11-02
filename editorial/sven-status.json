@@ -145,8 +145,8 @@
     "id": "0965779e-b0ed-48d9-8a2d-1b59f2d0c6cc",
     "startedAt": "2026-11-02T16:54:10.736Z",
     "instructionCommit": "a68fc3851045a30a285192ec0040261078d0c316",
-    "state": "writing",
-    "note": "Grafvalg og akseutforming revidert. Helsereformplanen er presisert med Fellestall-regnskap, KOSTRA og politiske konfliktlinjer.",
-    "updatedAt": "2026-11-02T16:58:58.686Z"
+    "state": "delivering",
+    "note": "Ny grafversjon validert med uendret tallgrunnlag; botlevering og forhåndsvisning kontrolleres.",
+    "updatedAt": "2026-11-02T17:00:41.121Z"
   }
 }
