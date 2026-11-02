@@ -135,8 +135,8 @@
     "id": "09a10c85-0e9d-427f-b004-b7bcfcb1f24d",
     "startedAt": "2026-11-02T16:05:39.825Z",
     "instructionCommit": "ee6617874dc0b607c3eebd37833c0f4b1e5f91f7",
-    "state": "researching",
-    "note": "Behandler autorisert revisjonsønske i PR #82 og kontrollerer bestillingen om helsereformen",
-    "updatedAt": "2026-11-02T16:05:39.825Z"
+    "state": "delivering",
+    "note": "Revisjonen er validert med kontrollerte SSB-serier og vedtak. Botlevering og ny versjonsbundet forhåndsvisning kontrolleres.",
+    "updatedAt": "2026-11-02T16:19:55.147Z"
   }
 }
