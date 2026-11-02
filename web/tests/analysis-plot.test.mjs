@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { plotScale } from '../src/analyser/analysis-plot.js'
+import { plotScale, periodChange } from '../src/analyser/analysis-plot.js'
 import { graphPlan } from '../src/analyser/chart-plan.js'
 import { readFileSync } from 'node:fs'
 
@@ -23,7 +23,18 @@ test('graph selection accepts deliberate line scales but never cropped bars or s
   const articles = JSON.parse(readFileSync(new URL('../src/analyser/publications.json', import.meta.url)))
   const a = articles.find(a => a.report.kind === 'real-expenditure-per-capita')
   const g = { kind:'series', afterSection:0, mode:'values', series:[{source:'fellestall',id:'realPerCapita'}],chartType:'line',axis:'focused' }
-  assert.doesNotThrow(() => graphPlan({...a.copy,graphs:[g]},a.report))
+  assert.doesNotThrow(() => graphPlan({...a.copy,graphs:[{...g,annotation:'period-change'}]},a.report))
+  assert.throws(() => graphPlan({...a.copy,graphs:[{...g,annotation:'annualized'}]},a.report),/Ukjent grafpil/)
   assert.throws(() => graphPlan({...a.copy,graphs:[{...g,chartType:'bar'}]},a.report),/stolper starter i null/)
   assert.throws(() => graphPlan({...a.copy,graphs:[{...g,min:9999}]},a.report),/egne verdier/)
+})
+
+test('period arrows show total growth, and do not invent growth from nonpositive bases', () => {
+  assert.ok(Math.abs(periodChange([100, 110, 90, 120]) - 20) < 1e-10)
+  assert.equal(periodChange([100, 50]), -50)
+  assert.equal(periodChange([100, 100]), 0)
+  assert.equal(periodChange([0, 20]), null)
+  assert.equal(periodChange([-10, 20]), null)
+  assert.equal(periodChange([100]), null)
+  assert.equal(periodChange([100, NaN]), null)
 })

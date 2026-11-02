@@ -12,3 +12,10 @@ export function plotScale(values, includeZero = true) {
   const max = Math.max(min + step, Math.ceil(high / step) * step)
   return { min, max, ticks: Array.from({ length: Math.round((max - min) / step) + 1 }, (_, i) => min + i * step) }
 }
+
+// Total change between the first and last frozen observations, never an
+// annualized rate or a regression trend. A zero/negative base is not a growth rate.
+export function periodChange(values) {
+  if (values.length < 2 || values.some(v => !Number.isFinite(v)) || values[0] <= 0) return null
+  return (values.at(-1) / values[0] - 1) * 100
+}

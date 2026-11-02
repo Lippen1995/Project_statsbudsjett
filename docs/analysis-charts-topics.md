@@ -119,3 +119,14 @@ aksegrenser eller datapunkter. Stolper skal alltid starte fra null. Alle år
 vises; eksakte tall følger tilgjengelig tabell. Start-/sluttverdier og markerte
 punkter gjør endringene tydeligere. Animasjon er valgfritt og skal aldri skjule
 observasjoner eller være nødvendig for å forstå grafen.
+
+### Visuell forklaring med piler, 2. november 2026
+
+Brukeren presiserte i oppgavens chat at «mer forklaring» betyr visuelle grep,
+ikke flere tekstblokker i grafen. `annotation: "period-change"` viser en stiplet
+pil fra første til siste observasjon med kodeberegnet samlet prosentendring.
+Dette er verken en estimert trend eller årlig vekst. Null eller negativ start
+skal ikke gis en prosentvis vekstpil. Med flere serier vises én valgt pil;
+serien velges med forklaringsnøkkelen. Metode, detaljer og kilder er tilgjengelige
+under «Tall og kilder». Behold synlig periode, enhet og merking av avkortet akse.
+Pilen og annotasjonsvalget inngår i den reviderte artikkelversjonens godkjenning.

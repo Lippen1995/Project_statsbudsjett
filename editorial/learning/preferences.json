@@ -117,11 +117,11 @@
       "id": "P011",
       "status": "active",
       "scope": "article-and-charts",
-      "rule": "Underbygg forklaringer med relevante SSB-data og faktiske politiske vedtak. Et partiønske er ikke et vedtak eller dokumentert gjennomslag. Velg linjer eller stolper etter hva som best viser den konkrete sammenligningen. Stolper skal ha null som utgangspunkt; linjegrafer kan ha et tydelig merket utsnitt av Y-aksen når det gjør endringene lettere å lese. Vis hele tall på Y-aksen og alle år på X-aksen. Bruk tydelige datapunkter, start-/sluttverdier og Fellestalls farger og typografi. Presise tabellverdier beholdes.",
+      "rule": "Underbygg forklaringer med relevante SSB-data og faktiske politiske vedtak. Et partiønske er ikke et vedtak eller dokumentert gjennomslag. Velg linjer eller stolper etter hva som best viser den konkrete sammenligningen. Stolper skal ha null som utgangspunkt; linjegrafer kan ha et tydelig merket utsnitt av Y-aksen når det gjør endringene lettere å lese. Vis hele tall på Y-aksen og alle år på X-aksen. Bruk korte etiketter og visuelle piler for beregnet endring fra start til slutt, fremfor mer forklaringstekst i figurene. Lange metode- og kildeforklaringer legges under en åpne/lukke-visning. Periode, enhet og nødvendig merking av avkortet akse forblir synlig. Skill samlet periodevekst fra årlig vekst. Bruk Fellestalls farger og typografi. Presise tabellverdier beholdes.",
       "provenance": {
         "kind": "explicit-current-user-instruction",
         "source": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82#issuecomment-6582837520",
-        "note": "Nyeste grafpresisering 2. november 2026 erstatter kravet om stolper i alle tidsserier. Kravet om politiske vedtak fra kommentar-6581667887 består."
+        "note": "Nyeste grafpresisering 2. november 2026 erstatter kravet om stolper i alle tidsserier. Kravet om politiske vedtak fra kommentar-6581667887 består. Ny presisering i oppgavens chat 2. november 2026: mindre tekst og mer visuell forklaring med piler."
       }
     }
   ],

@@ -41,7 +41,7 @@ export function graphPlan(copy, report) {
     else if (!allowed.includes(graph.kind)) throw Error('Ukjent graf for denne rapporttypen')
     const keys =
       graph.kind === 'series'
-        ? ['kind', 'afterSection', 'title', 'description', 'mode', 'series', 'chartType', 'axis']
+        ? ['kind', 'afterSection', 'title', 'description', 'mode', 'series', 'chartType', 'axis', 'annotation']
         : graph.kind === 'budget-bridge'
           ? ['kind', 'afterSection', 'title', 'description', 'department', 'chapter', 'groupBy', 'groups']
           : ['kind', 'afterSection']
@@ -57,6 +57,8 @@ export function graphPlan(copy, report) {
   return plan
 }
 export function seriesGraph(graph, report) {
+  if (graph.annotation !== undefined && graph.annotation !== 'period-change')
+    throw Error('Ukjent grafpil')
   if (graph.chartType !== undefined && !['bar', 'line'].includes(graph.chartType))
     throw Error('Velg stolper eller linjer')
   if (graph.axis !== undefined && !['zero', 'focused'].includes(graph.axis))

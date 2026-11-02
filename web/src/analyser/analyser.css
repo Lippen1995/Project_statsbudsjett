@@ -666,3 +666,8 @@
 .an-chart-endpoints { display: grid; gap: .3rem; font-size: .8rem; color: #706A60; font-variant-numeric: tabular-nums; }
 .an-chart-endpoints span { display: block; min-width: 0; overflow-wrap: anywhere; }
 .an-chart-endpoints i { display: inline-block; width: .55rem; height: .55rem; margin-right: .35rem; }
+
+.an-legend button { display: inline-flex; align-items: center; gap: 6px; background: none; color: inherit; font: inherit; padding: 5px 0; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
+.an-legend button.is-active { color: var(--ink); border-bottom-color: var(--series-color); font-weight: 600; }
+.an-legend button:focus-visible { outline: 2px solid var(--series-color); outline-offset: 3px; }
+.an-axis-label { font-size: 11px; color: var(--dempet); }
