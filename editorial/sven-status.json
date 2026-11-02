@@ -149,16 +149,24 @@
       "updatedAt": "2026-11-02T17:11:25.015Z",
       "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
       "finishedAt": "2026-11-02T17:11:25.015Z"
+    },
+    {
+      "id": "8ea677a1-f03d-4751-90d6-2b434f892f95",
+      "startedAt": "2026-11-02T19:39:51.730Z",
+      "instructionCommit": "9ecd9116eceb6c21d884c5360c30eb381022b542",
+      "state": "review",
+      "note": "Revisjonen er levert og ny forhåndsvisning kontrollert med HTTP 200: fire beregnede endringspiler og ingen gamle endepunktblokker. Forklaring og kilder ligger under Tall og kilder. Ny review request er sendt. Kommentartrigger er opprettet; første faktiske hendelseskjøring er ennå ikke verifisert.",
+      "updatedAt": "2026-11-02T19:56:45.199Z",
+      "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
+      "finishedAt": "2026-11-02T19:56:45.199Z"
     }
   ],
   "current": {
-    "id": "8ea677a1-f03d-4751-90d6-2b434f892f95",
-    "startedAt": "2026-11-02T19:39:51.730Z",
-    "instructionCommit": "9ecd9116eceb6c21d884c5360c30eb381022b542",
-    "state": "review",
-    "note": "Revisjonen er levert og ny forhåndsvisning kontrollert med HTTP 200: fire beregnede endringspiler og ingen gamle endepunktblokker. Forklaring og kilder ligger under Tall og kilder. Ny review request er sendt. Kommentartrigger er opprettet; første faktiske hendelseskjøring er ennå ikke verifisert.",
-    "updatedAt": "2026-11-02T19:56:45.199Z",
-    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
-    "finishedAt": "2026-11-02T19:56:45.199Z"
+    "id": "7cf5650a-6a2a-4c7f-8943-464afd94c218",
+    "startedAt": "2026-11-02T20:25:26.587Z",
+    "instructionCommit": "38c6623274369c790dc0b33c9f87b1d20e55f6b7",
+    "state": "researching",
+    "note": "Starter helsereformbestillingen med Fellestall, SSB og politiske primærkilder.",
+    "updatedAt": "2026-11-02T20:25:26.587Z"
   }
 }
