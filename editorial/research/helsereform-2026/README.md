@@ -140,3 +140,8 @@ Et innledende nettsøk etter ferske reaksjoner fra Høyre, Senterpartiet og Nors
 Sykepleierforbund ga ikke en kontrollert reaksjonskilde i dette søkeutvalget.
 Dette er ikke bevis på at aktørene mangler standpunkt eller ikke har uttalt seg.
 Fortsett med direkte partisider, organisasjonssider og dokumenterte høringsinnspill.
+
+Lesemåte i denne kontrollen: Departementets pressemelding er åpnet og lest på
+originalsiden. KS-reaksjonen er lest i søkeverktøyets tilgjengelige kildeuttrekk,
+som inneholdt de aktuelle avsnittene. Direkte åpning av KS-siden ble blokkert av
+nettverktøyet; ingen fullstendig side-/arkivkontroll er påstått.
