@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "extracts": [
+    {
+      "id": "Spesialist",
+      "scope": "u-07",
+      "purpose": "Dokumenter avtalte årsverk i spesialisthelsetjenesten. Administrasjon og service er en bred tjenestekategori, ikke bortfallbare RHF-kostnader.",
+      "table": "13953",
+      "selections": {
+        "HelseReg": [
+          "H00"
+        ],
+        "HelseTjenomr": [
+          "TOT"
+        ],
+        "Yrke": [
+          "TOT"
+        ],
+        "ContentsCode": [
+          "Arsverk"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "SykehusStotte",
+      "scope": "u-07",
+      "purpose": "Dokumenter avtalte årsverk i spesialisthelsetjenesten. Administrasjon og service er en bred tjenestekategori, ikke bortfallbare RHF-kostnader.",
+      "table": "13953",
+      "selections": {
+        "HelseReg": [
+          "H00"
+        ],
+        "HelseTjenomr": [
+          "AOS"
+        ],
+        "Yrke": [
+          "TOT"
+        ],
+        "ContentsCode": [
+          "Arsverk"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "Omsorg",
+      "scope": "u-07",
+      "purpose": "Dokumenter avtalte årsverk i kommunale omsorgstjenester. Ikke lik alle kommunale helsetjenester eller utførte timeverk.",
+      "table": "14533",
+      "selections": {
+        "KOKkommuneregion0000": [
+          "EAK"
+        ],
+        "KOKyrker0000": [
+          "TOT"
+        ],
+        "ContentsCode": [
+          "KOSARBAARSVERKST0000"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "EldreMenn",
+      "scope": "u-07",
+      "purpose": "Summer adskilte ettårige aldersgrupper fra 80 år og oppover ved inngangen til året. Menn og kvinner hentes separat og må senere summeres eksplisitt.",
+      "table": "07459",
+      "selections": {
+        "Region": [
+          "0"
+        ],
+        "Kjonn": [
+          "1"
+        ],
+        "Alder": [
+          "080",
+          "081",
+          "082",
+          "083",
+          "084",
+          "085",
+          "086",
+          "087",
+          "088",
+          "089",
+          "090",
+          "091",
+          "092",
+          "093",
+          "094",
+          "095",
+          "096",
+          "097",
+          "098",
+          "099",
+          "100",
+          "101",
+          "102",
+          "103",
+          "104",
+          "105+"
+        ],
+        "ContentsCode": [
+          "Personer1"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "aggregation": {
+        "dimension": "Alder",
+        "method": "sum"
+      }
+    },
+    {
+      "id": "EldreKvinner",
+      "scope": "u-07",
+      "purpose": "Summer adskilte ettårige aldersgrupper fra 80 år og oppover ved inngangen til året. Menn og kvinner hentes separat og må senere summeres eksplisitt.",
+      "table": "07459",
+      "selections": {
+        "Region": [
+          "0"
+        ],
+        "Kjonn": [
+          "2"
+        ],
+        "Alder": [
+          "080",
+          "081",
+          "082",
+          "083",
+          "084",
+          "085",
+          "086",
+          "087",
+          "088",
+          "089",
+          "090",
+          "091",
+          "092",
+          "093",
+          "094",
+          "095",
+          "096",
+          "097",
+          "098",
+          "099",
+          "100",
+          "101",
+          "102",
+          "103",
+          "104",
+          "105+"
+        ],
+        "ContentsCode": [
+          "Personer1"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "aggregation": {
+        "dimension": "Alder",
+        "method": "sum"
+      }
+    }
+  ]
+}
