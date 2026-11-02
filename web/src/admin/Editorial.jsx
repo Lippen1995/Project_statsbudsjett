@@ -304,18 +304,26 @@ export function Reviews() {
 }
 function Review({ number, onBack }) {
   const state = useResource('/api/admin/editorial/review?number=' + number)
+  const commentAction = useAction(state.reload)
   return (
     <>
       <button className="ad-text-button" onClick={onBack}>
         ← Til gjennomgangsinnboksen
       </button>
       <Resource state={state}>
-        {(d) => <ReviewVersion key={d.head} detail={d} reload={state.reload} />}
+        {(d) => (
+          <ReviewVersion
+            key={d.head}
+            detail={d}
+            reload={state.reload}
+            commentAction={commentAction}
+          />
+        )}
       </Resource>
     </>
   )
 }
-function ReviewVersion({ detail: d, reload }) {
+function ReviewVersion({ detail: d, reload, commentAction }) {
   const { user } = useAdmin(),
     [copy, setCopy] = useState(d.article.copy),
     [presentation, setPresentation] = useState(
@@ -463,15 +471,34 @@ function ReviewVersion({ detail: d, reload }) {
         </Panel>
       )}
       <Panel title="Kommentarer og revisjonsønsker">
+        <p className="ad-muted">
+          Sendt inn betyr at kommentaren er lagret. Sven kvitterer når han har
+          oppdaget den og når arbeidet starter. Ferdig betyr at revisjonen er
+          levert til ny gjennomgang og fortsatt krever godkjenning.
+        </p>
+        <button className="ad-secondary" onClick={reload} disabled={commentAction.busy || dirty || Boolean(comment)}>
+          Oppdater kommentarstatus
+        </button>
+        {(dirty || comment) && <small className="ad-muted"> Send kommentaren og lagre endringer før du oppdaterer status.</small>}
         <div className="ad-records">
           {d.feedback.map((f) => (
             <article key={f.id}>
               <strong>{f.actor}</strong>
               <small className="ad-muted"> · {date(f.at)}</small>
               <p className="ad-preserve">{f.body}</p>
-              {f.processed ? (
-                <span className="ad-tag">Behandlet</span>
-              ) : (
+              <p role="status">
+                <span className="ad-tag">
+                  {{
+                    submitted: 'Sendt inn – venter på Sven',
+                    seen: 'Oppdaget av Sven',
+                    working: 'Sven jobber med revisjonen',
+                    failed: 'Arbeidet stoppet – må følges opp',
+                    completed: 'Ferdig – klar til gjennomgang',
+                  }[f.status] || (f.processed ? 'Ferdig – klar til gjennomgang' : 'Sendt inn – venter på Sven')}
+                </span>
+                {f.statusAt && <small className="ad-muted"> · {date(f.statusAt)}</small>}
+              </p>
+              {!f.processed && (
                 user.role !== 'viewer' && (
                   <Check
                     label="Endringsønsket er behandlet i denne redigeringen"
@@ -495,11 +522,11 @@ function ReviewVersion({ detail: d, reload }) {
             className="ad-form"
             onSubmit={(e) => {
               e.preventDefault()
-              action
+              commentAction
                 .run(
                   'editorial/comment',
                   { number: d.number, head: d.head, body: comment },
-                  'Revisjonsønsket er lagt i gjennomgangen.',
+                  'Kommentaren er sendt inn og lagret. Status: venter på at Sven oppdager den.',
                 )
                 .then((r) => {
                   if (r) setComment('')
@@ -518,9 +545,18 @@ function ReviewVersion({ detail: d, reload }) {
                 />
               )}
             </Field>
-            <button className="ad-secondary" disabled={action.busy || dirty}>
-              Bestill revisjon av denne versjonen
+            <button
+              className="ad-secondary"
+              disabled={commentAction.busy || action.busy || dirty}
+            >
+              {commentAction.busy
+                ? 'Sender revisjonsønske …'
+                : 'Bestill revisjon av denne versjonen'}
             </button>
+            <ActionState action={commentAction} />
+            {dirty && (
+              <p role="status">Lagre tekstendringene før du bestiller revisjon.</p>
+            )}
             <small className="ad-muted">
               Kommentarer i GitHub er offentlige. Lagre tekstendringer først.
             </small>

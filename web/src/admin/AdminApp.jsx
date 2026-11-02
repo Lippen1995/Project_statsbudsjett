@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import Login from './Login.jsx'
 import Accounts from './Accounts.jsx'
-import { AdminContext } from './shared.jsx'
+import { AdminContext, Notice } from './shared.jsx'
 import {
   Overview,
   Operations as FullOperations,
@@ -185,16 +185,6 @@ function Logo() {
     <span className="ad-logo">
       Fellestall<span>.no</span>
     </span>
-  )
-}
-function Notice({ children, error = false }) {
-  return (
-    <div
-      className={`ad-notice ${error ? 'ad-notice-error' : ''}`}
-      role={error ? 'alert' : 'status'}
-    >
-      {children}
-    </div>
   )
 }
 function Loading() {

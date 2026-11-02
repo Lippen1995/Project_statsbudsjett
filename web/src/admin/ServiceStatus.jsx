@@ -1,3 +1,4 @@
+import Notice from './PopupNotice.jsx'
 import { useLiveResource } from './useLiveResource.js'
 
 const labels = {
@@ -191,9 +192,9 @@ export default function ServiceStatus({ compact = false, onOpen }) {
         ))}
       </div>
       {resource.error && (
-        <div className="ad-notice ad-notice-error" role="status">
+        <Notice error>
           Forbindelsen er brutt. Statusen over er fra siste vellykkede kontroll.
-        </div>
+        </Notice>
       )}
       {compact ? (
         <div className="ad-status-summary-footer">

@@ -1,3 +1,4 @@
+import {reportFeedbackStatus} from './feedback-status.mjs'
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs'
 import {dirname} from 'node:path'
 import {githubClient} from './github.mjs'
@@ -11,6 +12,7 @@ if(article.report.kind!=='real-expenditure-per-capita'||typeof selection.reason!
 const r=article.report,report=buildReport('web/public/data',{departmentId:r.scopeId==='state'?null:r.scopeId,start:r.start,end:r.end,question:r.question,detailSelections:selection.detailSelections??r.detailSelections,researchPlan:selection.researchPlan})
 if(JSON.stringify(r.rows)!==JSON.stringify(report.rows))throw Error('Primærserien har endret seg')
 const feedback=await pendingFeedback(g,pr.number,article)
+await reportFeedbackStatus(g,pr.number,feedback,'working')
 const next={...article,report,status:'draft',generatedAt:new Date().toISOString()};delete next.approval;delete next.publishedAt
 const packet={mode:'research-revision',reason:selection.reason,base:{number:pr.number,head:pr.head.sha,feedback:feedback.map(f=>`${f.user}: ${f.body}`).join('\n\n')},article:next}
 mkdirSync(dirname(output),{recursive:true});writeFileSync(output,JSON.stringify(packet,null,2)+'\n')

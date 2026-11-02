@@ -198,3 +198,27 @@ Oversett autoriserte menneskelige tilbakemeldinger til konkrete revisjoner og sp
 Bruk håndbokens egenkontroll og `editorial/learning/evaluation.md` ved en særskilt kvalitetsprøve. Ikke la evaluering skape parallelle publiseringsutkast, omgå køprioritet eller endre rapportgrunnlag under ren tekstrevisjon. Læringsfiler og redaksjonelle vurderinger er interne arbeidsinstrukser, ikke brødtekst eller nye felter i artikkelskjemaet.
 
 Dette er instruksjonsbasert læring, ingen finjustering eller ny bakgrunnsjobb. Behold eksisterende native tidsplan og produksjon uten separat AI-API. VG-fulltekster skal ikke massehentes, lagres eller inngå i finjusteringsdatasett uten avklart bruk.
+
+## Status for hvert revisjonsønske i admin
+
+Når du kontrollerer åpne gjennomganger, registrer at du faktisk har lest de
+ubehandlede innspillene med:
+
+```sh
+node scripts/analyser/feedback-status-cli.mjs <gjennomgangsnummer> seen
+```
+
+Dette er en kvittering fra Sven, ikke fra GitHubs mottaksjobb. Ikke kvitter før
+innspillene er lest. `prepare.mjs <utfil> <gjennomgangsnummer>` og
+`prepare-research-revision.mjs` registrerer `working` når du tar revisjonen inn i
+arbeidet. Hvis arbeidet starter uten disse skriptene, bruk samme statuskommando
+med `working`. Hvis revisjonen må avbrytes eller blokkeres, bruk `failed` og
+forklar årsaken i gjennomgangen. Ved gjenopptakelse registreres `working` igjen.
+Kvitteringene gjelder bare de ubehandlede kommentar-ID-ene som leses da; nye
+kommentarer skal ikke få status fra tidligere arbeid. De tekniske kvitteringene
+skal aldri behandles som nye redaksjonelle innspill.
+
+Admin viser «Ferdig – klar til gjennomgang» først når en levert utkastversjon
+inneholder kommentar-ID-en i `processedFeedbackIds`. Ikke marker den ferdig før
+revisjonen er levert. Ny menneskelig godkjenning kreves fortsatt. Administrator
+kan også markere et ønske behandlet ved en lagret manuell redigering.

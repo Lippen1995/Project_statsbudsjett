@@ -1,3 +1,4 @@
+import { isFeedbackReceipt, reportFeedbackStatus } from './feedback-status.mjs'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { nextReport } from './candidates.mjs'
 import { articleMetadata } from './article-metadata.mjs'
@@ -37,7 +38,7 @@ export async function pendingFeedback(g, number, article) {
   const reviews = await g.pages(`/pulls/${number}/reviews`)
   const rows = [
     ...comments
-      .filter((c) => c.user.type !== 'Bot' && c.body?.trim())
+      .filter((c) => c.user.type !== 'Bot' && c.body?.trim() && !isFeedbackReceipt(c.body))
       .map((c) => ({
         id: `comment-${c.id}`,
         user: c.user.login,
@@ -296,41 +297,49 @@ export async function runWorkflow({
       )
       return
     }
-    const copy = await generateCopy(article.report, {
-      previous: article.copy,
-      feedback: feedback.map((f) => `${f.user}: ${f.body}`).join('\n\n'),
-    })
-    const last = feedback.at(-1)
-    const next = reviseArticle(article, copy, {
-      feedbackId: last.id,
-      feedbackAt: last.at,
-      generatedAt: now(),
-    })
-    next.processedFeedbackIds = [
-      ...(article.processedFeedbackIds ?? []),
-      ...feedback.map((f) => f.id),
-    ]
-    const latest = await g.api(`${g.root}/pulls/${number}`)
-    if (latest.head.sha !== pr.head.sha || latest.state !== 'open')
-      throw Error('Utkastet ble endret mens AI arbeidet; ingen endring er skrevet')
-    await g.commit(
-      pr.head.ref,
-      pr.head.sha,
-      { [path]: next },
-      'analysis: revider etter menneskelig tilbakemelding',
-    )
-    await g.api(`${g.root}/pulls/${number}`, {
-      method: 'PATCH',
-      body: {
-        title: `Analyse til gjennomgang: ${factText(next.copy.title, next.report)}`,
-        body: renderReview(next),
-      },
-    })
-    await comment(
-      number,
-      'Utkastet og LinkedIn-teksten er oppdatert etter endringsønskene. Les den nye versjonen øverst. Tidligere godkjenning gjelder ikke denne versjonen. Godkjenn på nytt med «Review changes → Approve».',
-    )
-    await requestReview(number)
+    await reportFeedbackStatus(g, number, feedback, 'working')
+    try {
+      const copy = await generateCopy(article.report, {
+        previous: article.copy,
+        feedback: feedback.map((f) => `${f.user}: ${f.body}`).join('\n\n'),
+      })
+      const last = feedback.at(-1)
+      const next = reviseArticle(article, copy, {
+        feedbackId: last.id,
+        feedbackAt: last.at,
+        generatedAt: now(),
+      })
+      next.processedFeedbackIds = [
+        ...(article.processedFeedbackIds ?? []),
+        ...feedback.map((f) => f.id),
+      ]
+      const latest = await g.api(`${g.root}/pulls/${number}`)
+      if (latest.head.sha !== pr.head.sha || latest.state !== 'open')
+        throw Error('Utkastet ble endret mens AI arbeidet; ingen endring er skrevet')
+      await g.commit(
+        pr.head.ref,
+        pr.head.sha,
+        { [path]: next },
+        'analysis: revider etter menneskelig tilbakemelding',
+      )
+      await g.api(`${g.root}/pulls/${number}`, {
+        method: 'PATCH',
+        body: {
+          title: `Analyse til gjennomgang: ${factText(next.copy.title, next.report)}`,
+          body: renderReview(next),
+        },
+      })
+      await comment(
+        number,
+        'Utkastet og LinkedIn-teksten er oppdatert etter endringsønskene. Les den nye versjonen øverst. Tidligere godkjenning gjelder ikke denne versjonen. Godkjenn på nytt med «Review changes → Approve».',
+      )
+      await requestReview(number)
+    } catch (error) {
+      await reportFeedbackStatus(g, number, feedback, 'failed').catch(() => {
+        console.error('Revisjonen feilet, og feilstatus kunne ikke registreres.')
+      })
+      throw error
+    }
   } else if (command === 'stage' || command === 'publish') {
     assertDesignatedReviewer(event?.review?.user?.login, reviewer)
     if (
