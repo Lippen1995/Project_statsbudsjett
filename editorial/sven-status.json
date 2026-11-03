@@ -159,15 +159,23 @@
       "updatedAt": "2026-11-02T19:56:45.199Z",
       "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82",
       "finishedAt": "2026-11-02T19:56:45.199Z"
+    },
+    {
+      "id": "7cf5650a-6a2a-4c7f-8943-464afd94c218",
+      "startedAt": "2026-11-02T20:25:26.587Z",
+      "instructionCommit": "38c6623274369c790dc0b33c9f87b1d20e55f6b7",
+      "state": "waiting",
+      "note": "Justisutkastet er godkjent og publisert av boten. Helsereformresearch er lagret med Fellestall, fem uavhengig kontrollerte SSB-serier og testet scenariokjerne. Bestillingen er beholdt; interaktiv rapportintegrasjon, ferdig artikkel og ny menneskelig gjennomgang gjenstår.",
+      "updatedAt": "2026-11-02T20:35:30.239Z",
+      "finishedAt": "2026-11-02T20:35:30.239Z"
     }
   ],
   "current": {
-    "id": "7cf5650a-6a2a-4c7f-8943-464afd94c218",
-    "startedAt": "2026-11-02T20:25:26.587Z",
-    "instructionCommit": "38c6623274369c790dc0b33c9f87b1d20e55f6b7",
-    "state": "waiting",
-    "note": "Justisutkastet er godkjent og publisert av boten. Helsereformresearch er lagret med Fellestall, fem uavhengig kontrollerte SSB-serier og testet scenariokjerne. Bestillingen er beholdt; interaktiv rapportintegrasjon, ferdig artikkel og ny menneskelig gjennomgang gjenstår.",
-    "updatedAt": "2026-11-02T20:35:30.239Z",
-    "finishedAt": "2026-11-02T20:35:30.239Z"
+    "id": "96984216-5131-43e8-b983-5321729593e8",
+    "startedAt": "2026-11-03T08:06:32.896Z",
+    "instructionCommit": "8ac4772ea1c34c8f9df1f84dc6acaa1f1367db2b",
+    "state": "researching",
+    "note": "Kontrollerer kø og åpne analysegjennomganger. Fortsetter helsereformbestillingen fra fersk main.",
+    "updatedAt": "2026-11-03T08:06:32.896Z"
   }
 }
