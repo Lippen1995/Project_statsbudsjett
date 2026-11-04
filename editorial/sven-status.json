@@ -168,14 +168,22 @@
       "note": "Justisutkastet er godkjent og publisert av boten. Helsereformresearch er lagret med Fellestall, fem uavhengig kontrollerte SSB-serier og testet scenariokjerne. Bestillingen er beholdt; interaktiv rapportintegrasjon, ferdig artikkel og ny menneskelig gjennomgang gjenstår.",
       "updatedAt": "2026-11-02T20:35:30.239Z",
       "finishedAt": "2026-11-02T20:35:30.239Z"
+    },
+    {
+      "id": "96984216-5131-43e8-b983-5321729593e8",
+      "startedAt": "2026-11-03T08:06:32.896Z",
+      "instructionCommit": "8ac4772ea1c34c8f9df1f84dc6acaa1f1367db2b",
+      "state": "researching",
+      "note": "Kontrollerer kø og åpne analysegjennomganger. Fortsetter helsereformbestillingen fra fersk main.",
+      "updatedAt": "2026-11-03T08:06:32.896Z"
     }
   ],
   "current": {
-    "id": "96984216-5131-43e8-b983-5321729593e8",
-    "startedAt": "2026-11-03T08:06:32.896Z",
-    "instructionCommit": "8ac4772ea1c34c8f9df1f84dc6acaa1f1367db2b",
+    "id": "8178a637-cd15-4c25-93db-657a04fe1e5e",
+    "startedAt": "2026-11-04T08:09:00.000Z",
+    "instructionCommit": "009c5b794d5fa436ae667e7c5d3d266be049e9bb",
     "state": "researching",
     "note": "Kontrollerer kø og åpne analysegjennomganger. Fortsetter helsereformbestillingen fra fersk main.",
-    "updatedAt": "2026-11-03T08:06:32.896Z"
+    "updatedAt": "2026-11-04T08:09:00.000Z"
   }
 }
