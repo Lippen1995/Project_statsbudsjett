@@ -1071,3 +1071,58 @@
     font-size: 9px;
   }
 }
+
+@keyframes cmpHistoryOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes cmpHistoryClose {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+}
+.cmp-row-history {
+  animation: cmpHistoryOpen 280ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+.cmp-row-history.cmp-history-closing {
+  animation: cmpHistoryClose 180ms ease-in both;
+  pointer-events: none;
+}
+.cmp-row-trigger .cmp-bar-track > span {
+  transition:
+    width 420ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    background-color 180ms;
+}
+.cmp-page .cmp-row-trigger {
+  transition: color 180ms;
+}
+.cmp-row-trigger .cmp-row-name > span {
+  display: inline-block;
+  width: 10px;
+  transition: color 180ms;
+}
+.cmp-page .cmp-row-trigger:hover .cmp-row-name > span {
+  color: var(--rust);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cmp-row-history,
+  .cmp-row-history.cmp-history-closing {
+    animation: none;
+    transform: none;
+  }
+  .cmp-row-trigger .cmp-bar-track > span,
+  .cmp-page .cmp-row-trigger {
+    transition: none;
+  }
+}

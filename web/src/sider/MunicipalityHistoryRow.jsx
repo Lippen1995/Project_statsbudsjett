@@ -1,4 +1,4 @@
-import React, { useId, useMemo, useState } from "react";
+import React, { useEffect, useId, useMemo, useState } from "react";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -31,6 +31,39 @@ export default function MunicipalityHistoryRow({
   maximum,
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(media.matches);
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+  useEffect(() => {
+    if (!closing) return;
+    if (reducedMotion) {
+      setExpanded(false);
+      setClosing(false);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setExpanded(false);
+      setClosing(false);
+    }, 180);
+    return () => clearTimeout(timer);
+  }, [closing, reducedMotion]);
+  const toggle = () => {
+    if (closing) {
+      setClosing(false);
+      return;
+    }
+    if (expanded && !reducedMotion) setClosing(true);
+    else setExpanded((v) => !v);
+  };
   const [mode, setMode] = useState("perCapita");
   const [secondary, setSecondary] = useState("none");
   const [from, setFrom] = useState(Math.max(years[0], selectedYear - 5));
@@ -108,13 +141,14 @@ export default function MunicipalityHistoryRow({
     >
       <button
         className="cmp-row-trigger"
-        aria-expanded={expanded}
+        aria-expanded={expanded && !closing}
         aria-controls={id}
-        onClick={() => setExpanded((v) => !v)}
+        onClick={toggle}
       >
         <span className="cmp-row-heading">
           <span className="cmp-row-name">
-            <span aria-hidden="true">{expanded ? "−" : "+"}</span> {row.name}
+            <span aria-hidden="true">{expanded && !closing ? "−" : "+"}</span>{" "}
+            {row.name}
             {own ? " · din kommune" : ""}
           </span>
           <span className="cmp-row-values">
@@ -131,7 +165,10 @@ export default function MunicipalityHistoryRow({
         </span>
       </button>
       {expanded && (
-        <div id={id} className="cmp-row-history">
+        <div
+          id={id}
+          className={`cmp-row-history ${closing ? "cmp-history-closing" : ""}`}
+        >
           <div className="cmp-row-history-title">
             <h4>{row.name} over tid</h4>
             <span>Netto driftsutgifter · løpende kroner</span>
@@ -377,7 +414,9 @@ export default function MunicipalityHistoryRow({
                   name={mode === "amount" ? "Nominelt beløp" : "Per innbygger"}
                   fill={own ? "#14594f" : "#8e9e99"}
                   maxBarSize={34}
-                  isAnimationActive={false}
+                  isAnimationActive={!reducedMotion}
+                  animationDuration={650}
+                  animationEasing="ease-out"
                 />
                 {secondary !== "none" && (
                   <Line
@@ -388,7 +427,9 @@ export default function MunicipalityHistoryRow({
                     strokeWidth={2}
                     dot={{ r: 3 }}
                     connectNulls={false}
-                    isAnimationActive={false}
+                    isAnimationActive={!reducedMotion}
+                    animationDuration={500}
+                    animationEasing="ease-out"
                   />
                 )}
               </ComposedChart>
