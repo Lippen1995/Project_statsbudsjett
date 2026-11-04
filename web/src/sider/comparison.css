@@ -1061,6 +1061,8 @@
 }
 /* The native dialog supplies keyboard focus containment and Escape dismissal. */
 .ft.cmp-axis-popover {
+  bottom: auto;
+  right: auto;
   position: fixed;
   width: 264px;
   max-width: calc(100vw - 20px);
