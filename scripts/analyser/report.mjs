@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto'
 import { calculateFacts } from './facts.mjs'
 import { selectEventEvidence, eventEvidenceFacts } from './event-evidence.mjs'
 import { topicKey } from '../../web/src/analyser/topics.js'
+import { loadHealthReform } from './health-reform.mjs'
 
 export function buildReport(
   dataDir,
@@ -63,7 +64,7 @@ export function buildReport(
     ...calculateFacts(first, last, rows),
     ...eventEvidenceFacts(eventEvidence, rows),
   }
-  const report = attachSsbEvidence(dataDir, {
+  let report = attachSsbEvidence(dataDir, {
     kind: 'real-expenditure-per-capita',
     factsVersion: 2,
     ...(researchPlan ? { researchPlan: structuredClone(researchPlan) } : {}),
@@ -142,6 +143,22 @@ export function buildReport(
       'Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse.',
     ],
   })
+  if (question === 'health-reform') {
+    const health = loadHealthReform()
+    report = {
+      ...report,
+      healthPolicy: health.policy,
+      facts: { ...report.facts, ...health.facts },
+      sources: [...report.sources, ...health.policy.sources],
+      dataHash: createHash('sha256').update(`${report.dataHash}:${health.sha256}`).digest('hex'),
+      methodology: [...report.methodology,
+        'Helseanalysen kobler Fellestalls frosne statsregnskap og KOSTRA-eksempler til eksplisitte SSB-uttrekk. Statslige overføringer, kommunale utgifter og årsverk er ulike mål og summeres ikke.',
+        'Scenariokalkulatoren er en følsomhetsanalyse. Frigjort tid deles mellom tjenestekapasitet og faktisk kontantinnsparing, slik at samme årsverk ikke telles to ganger.'],
+      limitations: [...report.limitations,
+        'Utredningen inneholder ikke et samlet netto kostnads- eller spareanslag. Scenarioene er brukerens antakelser og ikke utvalgets prognose.',
+        'Kommunegrafen viser tre storbyer og kan ikke tolkes som et landsgjennomsnitt. KOSTRA-tallene er kommuneregnskap, ikke statlige overføringer eller sykehusregnskap.'],
+    }
+  }
   if (!researchPlan) return report
   const derived = calculateResearch(report)
   const referencePath = `${dataDir}/analysis-research/${report.scopeId}.json`
