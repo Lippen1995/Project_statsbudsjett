@@ -1086,3 +1086,49 @@ body.ft-body { background: #F7F5F0; }
 
 .ft-flyt-nav { flex-wrap: wrap; justify-content: flex-start; margin-bottom: 18px; }
 .ft-flyt-oppsummering { margin: 12px 0 20px; font-size: 14px; line-height: 1.7; color: var(--tekst); }
+
+/* Navigation for the paid municipal workspace. */
+.ft-pages-nav {
+  margin: 25px 0 0;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--strek);
+}
+.ft-pages-label {
+  margin: 0 12px 10px;
+  color: var(--dempet);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.ft-pages-link {
+  display: block;
+  padding: 10px 12px;
+  border-left: 2px solid transparent;
+  color: var(--tekst);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.ft-pages-link.aktiv {
+  border-color: var(--rust);
+  color: var(--ink);
+  background: var(--flate);
+  font-weight: 600;
+}
+.ft-pages-link small {
+  display: block;
+  color: var(--rust-mork);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.ft.ft-comparison .ft-nav {
+  flex: 0;
+}
+.ft.ft-comparison .ft-sidefot {
+  margin-top: auto;
+}
+
+.ft .ft-nav { flex: 0; }
+.ft .ft-sidefot { margin-top: auto; }
