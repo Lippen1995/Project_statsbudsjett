@@ -205,3 +205,22 @@ export function validateAxisBounds(min, max) {
     return { error: "Nedre grense må være lavere enn øvre grense." };
   return { min: low, max: high };
 }
+
+/** Fit both ends to the visible observations; zero is not a forced baseline. */
+export function autoFitAxis(values) {
+  const finite = values.filter(Number.isFinite);
+  if (!finite.length) return [0, 1];
+  const min = Math.min(...finite),
+    max = Math.max(...finite);
+  if (min === 0 && max === 0) return [-1, 1];
+  const spread = max - min || Math.abs(min) * 0.2;
+  const padding = spread * 0.08;
+  const roughStep = (spread + 2 * padding) / 5;
+  const magnitude = 10 ** Math.floor(Math.log10(roughStep));
+  const ratio = roughStep / magnitude;
+  const step =
+    (ratio <= 1 ? 1 : ratio <= 2 ? 2 : ratio <= 5 ? 5 : 10) * magnitude;
+  const low = Math.floor((min - padding) / step) * step;
+  const high = Math.ceil((max + padding) / step) * step;
+  return [Number(low.toPrecision(12)), Number(high.toPrecision(12))];
+}

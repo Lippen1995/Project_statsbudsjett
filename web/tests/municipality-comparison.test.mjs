@@ -1,5 +1,6 @@
 import test from "node:test";
 import {
+  autoFitAxis,
   municipalityHistory,
   validateAxisBounds,
 } from "../src/sider/comparison.js";
@@ -145,4 +146,16 @@ test("axis bounds support cropped and automatic ranges and reject inverted/non-f
   assert.ok(validateAxisBounds("100", "75").error);
   assert.ok(validateAxisBounds("75", "75").error);
   assert.ok(validateAxisBounds("Infinity", "100").error);
+});
+
+test("automatic axis fits positive, negative, constant and missing observations without forcing zero", () => {
+  const positive = autoFitAxis([80, 90, 100, null]);
+  assert.ok(positive[0] > 0 && positive[0] < 80);
+  assert.ok(positive[1] > 100);
+  const negative = autoFitAxis([-10, -8, -5]);
+  assert.ok(negative[0] < -10 && negative[1] < 0 && negative[1] > -5);
+  const constant = autoFitAxis([50, 50]);
+  assert.ok(constant[0] < 50 && constant[1] > 50);
+  assert.deepEqual(autoFitAxis([0, 0]), [-1, 1]);
+  assert.deepEqual(autoFitAxis([null, undefined]), [0, 1]);
 });

@@ -845,23 +845,29 @@
   }
 }
 
-/* Each municipality has its own expandable, independently configurable history. */
+/* Discreet row histories: chart settings belong to the chart itself. */
 .cmp-page .cmp-row-trigger {
   display: block;
-  width: 100%;
-  border: 0;
-  padding: 4px 0;
-  border-radius: 0;
+  width: calc(100% + 16px);
+  margin: 0 -8px;
+  padding: 8px;
   text-align: left;
-  font-size: 11px;
+  border: 0;
+  border-radius: 4px;
   color: inherit;
+  font-size: 11px;
+  transition:
+    background-color 180ms,
+    box-shadow 180ms;
 }
-.cmp-page .cmp-row-trigger:hover {
-  background: transparent;
+.cmp-page .cmp-row-trigger:hover,
+.cmp-page .cmp-row-trigger:focus-visible {
+  background: #edeae3;
+  box-shadow: inset 2px 0 0 #b7b0a2;
 }
-.cmp-row-trigger:hover .cmp-row-name {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.cmp-page .cmp-bar-row.own .cmp-row-trigger:hover {
+  background: #e8ede7;
+  box-shadow: inset 2px 0 0 var(--gronn);
 }
 .cmp-row-heading {
   display: flex;
@@ -872,11 +878,6 @@
 }
 .cmp-row-name {
   line-height: 1.6;
-}
-.cmp-row-name > span {
-  font-size: 14px;
-  margin-right: 3px;
-  font-weight: 400;
 }
 .cmp-row-values {
   flex-shrink: 0;
@@ -896,6 +897,7 @@
   height: 100%;
   background: #d5cfc3;
   border-radius: 0 2px 2px 0;
+  transition: width 420ms cubic-bezier(0.2, 0.75, 0.25, 1);
 }
 .cmp-bar-row.own .cmp-row-trigger .cmp-bar-track > span {
   background: var(--gronn);
@@ -905,8 +907,9 @@
   font-weight: 400;
   border: 1px solid var(--strek);
   padding: 16px;
-  margin: 12px 0 8px;
+  margin: 8px 0;
   background: var(--papir);
+  animation: cmpHistoryOpen 280ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
 }
 .cmp-row-history-title {
   display: flex;
@@ -914,7 +917,7 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 7px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .cmp-row-history-title h4 {
   font-family: var(--serif);
@@ -924,48 +927,94 @@
   color: var(--dempet);
   font-size: 9px;
 }
-.cmp-history-controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.cmp-page .cmp-history-controls label {
-  font-size: 10px;
-}
-.cmp-page .cmp-history-controls select {
-  padding: 8px;
-  min-height: 36px;
-  font-size: 11px;
-}
-.cmp-axis-toolbar {
+.cmp-history-compact {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  margin: 16px 0 6px;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding-bottom: 9px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--strek);
 }
-.cmp-axis-toolbar > span {
-  font-size: 9px;
-  line-height: 1.7;
+.cmp-view-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.cmp-page .cmp-view-switch button {
+  border: 0;
+  background: transparent;
+  color: var(--dempet);
+  padding: 4px 7px;
+  font-size: 10px;
+  font-weight: 400;
+  min-height: 28px;
+}
+.cmp-page .cmp-view-switch button[aria-pressed="true"] {
+  color: var(--gronn);
+  background: #e4e9e2;
+  font-weight: 600;
+}
+.cmp-page .cmp-history-compact select {
+  width: auto;
+  min-height: 28px;
+  max-width: 150px;
+  padding: 3px 16px 3px 3px;
+  border: 0;
+  background-color: transparent;
+  font-size: 10px;
+  color: var(--dempet);
+  cursor: pointer;
+}
+.cmp-period-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  margin-left: auto;
+}
+.cmp-period-inline > span {
+  font-size: 10px;
   color: var(--dempet);
 }
-.cmp-page .cmp-axis-toolbar button {
-  flex-shrink: 0;
-  padding: 7px 9px;
-  font-size: 10px;
-}
-.cmp-row-chart {
-  height: 260px;
+.cmp-interactive-axes {
+  position: relative;
+  height: 280px;
   width: 100%;
   min-width: 0;
+}
+.cmp-page .cmp-axis-hit {
+  position: absolute;
+  top: 8px;
+  bottom: 38px;
+  width: 80px;
+  border: 1px solid transparent;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 3px;
+  transition:
+    background-color 150ms,
+    border-color 150ms;
+}
+.cmp-axis-hit--left {
+  left: 4px;
+}
+.cmp-axis-hit--right {
+  right: 4px;
+}
+.cmp-page .cmp-axis-hit:hover,
+.cmp-page .cmp-axis-hit:focus-visible {
+  background: #14594f0b;
+  border-color: #14594f50;
+  outline-offset: 1px;
 }
 .cmp-row-chart-legend {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
-  font-size: 10px;
+  font-size: 9px;
   color: var(--dempet);
-  margin-top: 10px;
+  margin-top: 8px;
 }
 .cmp-row-chart-legend > span {
   display: flex;
@@ -986,56 +1035,18 @@
   width: 15px;
   background: var(--rust);
 }
-.cmp-axis-editor {
-  padding: 14px;
-  border: 1px solid var(--strek);
-  background: var(--ark);
-  margin: 12px 0;
-}
-.cmp-axis-editor fieldset {
-  border: 0;
-  margin-bottom: 14px;
-  padding: 0;
-}
-.cmp-axis-editor legend {
-  font-size: 11px;
-  margin-bottom: 10px;
-  color: var(--tekst);
-  font-weight: 600;
-}
-.cmp-axis-editor fieldset > div {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.cmp-axis-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-.cmp-page .cmp-axis-actions button {
-  font-size: 10px;
-  padding: 8px 10px;
-}
-.cmp-axis-editor p {
-  font-size: 11px;
-}
-.cmp-axis-notice {
-  font-size: 10px;
-  line-height: 1.7;
-  color: var(--rust-mork);
-  border-left: 2px solid var(--rust);
-  padding: 7px 10px;
-  margin: 8px 0;
+.cmp-row-chart-legend .cmp-scale-caption {
+  margin-left: auto;
+  color: var(--dempet);
+  font-size: 9px;
 }
 .cmp-history-table {
-  font-size: 10px;
-  margin-top: 14px;
+  font-size: 9px;
+  margin-top: 12px;
 }
 .cmp-history-table summary {
   cursor: pointer;
-  color: var(--gronn);
+  color: var(--dempet);
 }
 .cmp-history-table .cmp-table-wrap {
   margin: 12px 0 0;
@@ -1048,30 +1059,99 @@
 .cmp-history-table th {
   padding: 8px;
 }
-@media (max-width: 700px) {
-  .cmp-row-heading {
-    flex-wrap: wrap;
-    gap: 3px;
-  }
-  .cmp-row-values {
-    margin-left: 19px;
-  }
-  .cmp-row-history {
-    padding: 12px 8px;
-    margin-left: -8px;
-    margin-right: -8px;
-  }
-  .cmp-axis-toolbar {
-    align-items: flex-start;
-  }
-  .cmp-row-history .cmp-footnote {
-    font-size: 9px;
-  }
-  .cmp-page .cmp-history-controls label {
-    font-size: 9px;
-  }
+/* The native dialog supplies keyboard focus containment and Escape dismissal. */
+.ft.cmp-axis-popover {
+  position: fixed;
+  width: 264px;
+  max-width: calc(100vw - 20px);
+  min-height: 0;
+  height: auto;
+  margin: 0;
+  padding: 15px;
+  border: 1px solid #d5d0c6;
+  border-radius: 5px;
+  background: var(--ark);
+  color: var(--ink);
+  box-shadow: 0 8px 30px #14161a24;
+  font-size: 11px;
+  animation: cmpPopoverIn 140ms ease-out;
 }
-
+.cmp-axis-popover::backdrop {
+  background: transparent;
+}
+.cmp-popover-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.cmp-popover-heading span {
+  color: var(--dempet);
+  font-size: 9px;
+}
+.cmp-popover-heading h5 {
+  font: 600 12px/1.5 var(--sans);
+  margin-top: 2px;
+}
+.cmp-axis-popover button,
+.cmp-axis-popover input {
+  font: inherit;
+}
+.cmp-axis-popover .cmp-popover-close {
+  border: 0;
+  background: none;
+  padding: 0 3px;
+  font-size: 19px;
+  line-height: 1;
+  color: var(--dempet);
+  cursor: pointer;
+}
+.cmp-popover-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.cmp-popover-fields label {
+  display: grid;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--dempet);
+}
+.cmp-popover-fields input {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 8px;
+  background: var(--papir);
+  border: 1px solid var(--strek);
+  border-radius: 3px;
+  color: var(--ink);
+}
+.cmp-popover-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+.cmp-popover-actions button {
+  border: 0;
+  padding: 6px 10px;
+  background: none;
+  color: var(--dempet);
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 10px;
+}
+.cmp-popover-actions button[type="submit"] {
+  background: var(--gronn);
+  color: white;
+}
+.cmp-axis-popover p[role="alert"] {
+  color: var(--rust-mork);
+  font-size: 10px;
+  line-height: 1.6;
+  margin-top: 9px;
+}
 @keyframes cmpHistoryOpen {
   from {
     opacity: 0;
@@ -1092,37 +1172,54 @@
     transform: translateY(-7px);
   }
 }
-.cmp-row-history {
-  animation: cmpHistoryOpen 280ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+@keyframes cmpPopoverIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .cmp-row-history.cmp-history-closing {
   animation: cmpHistoryClose 180ms ease-in both;
   pointer-events: none;
 }
-.cmp-row-trigger .cmp-bar-track > span {
-  transition:
-    width 420ms cubic-bezier(0.2, 0.75, 0.25, 1),
-    background-color 180ms;
-}
-.cmp-page .cmp-row-trigger {
-  transition: color 180ms;
-}
-.cmp-row-trigger .cmp-row-name > span {
-  display: inline-block;
-  width: 10px;
-  transition: color 180ms;
-}
-.cmp-page .cmp-row-trigger:hover .cmp-row-name > span {
-  color: var(--rust);
+@media (max-width: 700px) {
+  .cmp-row-heading {
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  .cmp-row-history {
+    padding: 12px 5px;
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  .cmp-history-compact {
+    gap: 5px;
+  }
+  .cmp-page .cmp-history-compact select {
+    max-width: 125px;
+  }
+  .cmp-period-inline {
+    margin-left: 0;
+  }
+  .cmp-page .cmp-view-switch button {
+    padding: 4px 5px;
+    font-size: 9px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .cmp-row-history,
-  .cmp-row-history.cmp-history-closing {
+  .cmp-row-history.cmp-history-closing,
+  .cmp-axis-popover {
     animation: none;
     transform: none;
   }
   .cmp-row-trigger .cmp-bar-track > span,
-  .cmp-page .cmp-row-trigger {
+  .cmp-page .cmp-row-trigger,
+  .cmp-page .cmp-axis-hit {
     transition: none;
   }
 }

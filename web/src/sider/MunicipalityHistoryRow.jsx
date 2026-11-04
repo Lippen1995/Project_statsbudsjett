@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useId, useMemo, useState } from "react";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -9,18 +9,18 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import { municipalityHistory, validateAxisBounds } from "./comparison";
+import { autoFitAxis, municipalityHistory } from "./comparison";
+import AxisPopover from "./AxisPopover";
 
-const number = (value, digits = 0) =>
-  Number.isFinite(value)
+const number = (v, digits = 0) =>
+  Number.isFinite(v)
     ? new Intl.NumberFormat("nb-NO", { maximumFractionDigits: digits }).format(
-        value,
+        v,
       )
     : "–";
 const nominal = (amount) =>
   Number.isFinite(amount) ? `${number(amount / 1000, 1)} mill. kr` : "–";
 const EMPTY = { min: null, max: null };
-
 export default function MunicipalityHistoryRow({
   row,
   own,
@@ -30,8 +30,8 @@ export default function MunicipalityHistoryRow({
   functionCode,
   maximum,
 }) {
-  const [expanded, setExpanded] = useState(false);
-  const [closing, setClosing] = useState(false);
+  const [expanded, setExpanded] = useState(false),
+    [closing, setClosing] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -63,78 +63,68 @@ export default function MunicipalityHistoryRow({
     }
     if (expanded && !reducedMotion) setClosing(true);
     else setExpanded((v) => !v);
+    setAxis(null);
   };
-  const [mode, setMode] = useState("perCapita");
-  const [secondary, setSecondary] = useState("none");
-  const [from, setFrom] = useState(Math.max(years[0], selectedYear - 5));
-  const [to, setTo] = useState(selectedYear);
-  const [axisOpen, setAxisOpen] = useState(false);
-  const [primaryBounds, setPrimaryBounds] = useState(EMPTY);
-  const [secondaryBounds, setSecondaryBounds] = useState(EMPTY);
-  const [draft, setDraft] = useState({
-    min: "",
-    max: "",
-    secondaryMin: "",
-    secondaryMax: "",
-  });
-  const [error, setError] = useState("");
+  const [mode, setMode] = useState("perCapita"),
+    [secondary, setSecondary] = useState("none");
+  const [from, setFrom] = useState(Math.max(years[0], selectedYear - 5)),
+    [to, setTo] = useState(selectedYear);
+  const [axis, setAxis] = useState(null);
+  const [primaryBounds, setPrimaryBounds] = useState(EMPTY),
+    [secondaryBounds, setSecondaryBounds] = useState(EMPTY);
+  const closeAxis = useCallback(() => setAxis(null), []);
   const id = useId();
   const history = useMemo(
     () => municipalityHistory(row.detail, years, sector, functionCode, mode),
     [row.detail, years, sector, functionCode, mode],
   );
   const data = history.filter((p) => p.year >= from && p.year <= to);
-  const costUnit = mode === "amount" ? "mill. kr" : "kr per innbygger";
-  const secondaryLabel =
-    secondary === "growth" ? "År/år-vekst (%)" : "Befolkning (innbyggere)";
-  const openAxis = () => {
-    setDraft({
-      min: primaryBounds.min ?? "",
-      max: primaryBounds.max ?? "",
-      secondaryMin: secondaryBounds.min ?? "",
-      secondaryMax: secondaryBounds.max ?? "",
-    });
-    setError("");
-    setAxisOpen(true);
-  };
-  const applyAxis = (e) => {
-    e.preventDefault();
-    const left = validateAxisBounds(draft.min, draft.max);
-    const right = validateAxisBounds(draft.secondaryMin, draft.secondaryMax);
-    if (left.error || (secondary !== "none" && right.error)) {
-      setError(left.error || right.error);
-      return;
-    }
-    // Resolve automatic ends against visible data so one-sided limits cannot invert the scale.
-    for (const [bounds, key, label] of [
-      [left, "cost", "Venstre akse"],
-      ...(secondary !== "none" ? [[right, secondary, "Høyre akse"]] : []),
-    ]) {
-      const values = data.map((p) => p[key]).filter(Number.isFinite);
-      if (!values.length) continue;
-      const low = bounds.min ?? Math.min(0, ...values);
-      const high = bounds.max ?? Math.max(0, ...values);
-      if (low >= high) {
-        setError(
-          `${label}: grensene gir et tomt eller omvendt intervall. Oppgi både nedre og øvre grense.`,
-        );
-        return;
-      }
-    }
-    setPrimaryBounds({ min: left.min, max: left.max });
-    setSecondaryBounds({ min: right.min, max: right.max });
-    setAxisOpen(false);
-    setError("");
-  };
-  const domain = (bounds) => [
-    bounds.min ?? ((min) => Math.min(0, min)),
-    bounds.max ?? "auto",
+  const costUnit =
+    mode === "amount" ? "Millioner kroner" : "Kroner per innbygger";
+  const secondaryUnit = secondary === "growth" ? "Årsvekst (%)" : "Innbyggere";
+  const primaryFit = autoFitAxis(data.map((p) => p.cost)),
+    secondaryFit = autoFitAxis(data.map((p) => p[secondary]));
+  const primaryDomain = [
+    primaryBounds.min ?? primaryFit[0],
+    primaryBounds.max ?? primaryFit[1],
   ];
-  const cropped =
+  const secondaryDomain = [
+    secondaryBounds.min ?? secondaryFit[0],
+    secondaryBounds.max ?? secondaryFit[1],
+  ];
+  const customized =
     primaryBounds.min !== null ||
     primaryBounds.max !== null ||
     (secondary !== "none" &&
       (secondaryBounds.min !== null || secondaryBounds.max !== null));
+  const openAxis = (side, event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const width = 264,
+      height = 208;
+    const preferred =
+      side === "primary" ? rect.right + 6 : rect.left - width - 6;
+    setAxis({
+      side,
+      left: Math.max(10, Math.min(window.innerWidth - width - 10, preferred)),
+      top: Math.max(
+        10,
+        Math.min(window.innerHeight - height - 10, rect.top + 15),
+      ),
+    });
+  };
+  const changeMode = (value) => {
+    setMode(value);
+    setPrimaryBounds(EMPTY);
+    setSecondaryBounds(EMPTY);
+    closeAxis();
+  };
+  const changePeriod = (side, value) => {
+    if (side === "from") setFrom(value);
+    else setTo(value);
+    setPrimaryBounds(EMPTY);
+    setSecondaryBounds(EMPTY);
+    closeAxis();
+  };
   return (
     <div
       className={`cmp-bar-row ${own ? "own" : ""} ${expanded ? "cmp-row-expanded" : ""}`}
@@ -147,7 +137,6 @@ export default function MunicipalityHistoryRow({
       >
         <span className="cmp-row-heading">
           <span className="cmp-row-name">
-            <span aria-hidden="true">{expanded && !closing ? "−" : "+"}</span>{" "}
             {row.name}
             {own ? " · din kommune" : ""}
           </span>
@@ -173,47 +162,42 @@ export default function MunicipalityHistoryRow({
             <h4>{row.name} over tid</h4>
             <span>Netto driftsutgifter · løpende kroner</span>
           </div>
-          <div className="cmp-history-controls">
-            <label>
-              Visning
-              <select
-                value={mode}
-                onChange={(e) => {
-                  setMode(e.target.value);
-                  setPrimaryBounds(EMPTY);
-                  setSecondaryBounds(EMPTY);
-                  setAxisOpen(false);
-                }}
+          <div
+            className="cmp-history-compact"
+            aria-label={`Grafvalg for ${row.name}`}
+          >
+            <div className="cmp-view-switch" role="group" aria-label="Visning">
+              <button
+                aria-pressed={mode === "perCapita"}
+                onClick={() => changeMode("perCapita")}
               >
-                <option value="perCapita">Per innbygger</option>
-                <option value="amount">Nominelt beløp</option>
-              </select>
-            </label>
-            <label>
-              Sekundærakse
-              <select
-                value={secondary}
-                onChange={(e) => {
-                  setSecondary(e.target.value);
-                  setSecondaryBounds(EMPTY);
-                  setAxisOpen(false);
-                }}
+                Per innbygger
+              </button>
+              <button
+                aria-pressed={mode === "amount"}
+                onClick={() => changeMode("amount")}
               >
-                <option value="none">Ingen</option>
-                <option value="growth">År/år-vekst (%)</option>
-                <option value="population">Befolkning</option>
-              </select>
-            </label>
-            <label>
-              Fra år
+                Nominelt
+              </button>
+            </div>
+            <select
+              aria-label="Sekundærakse"
+              value={secondary}
+              onChange={(e) => {
+                setSecondary(e.target.value);
+                setSecondaryBounds(EMPTY);
+                closeAxis();
+              }}
+            >
+              <option value="none">Ingen tilleggsserie</option>
+              <option value="growth">Årsvekst (%)</option>
+              <option value="population">Befolkning</option>
+            </select>
+            <div className="cmp-period-inline">
               <select
+                aria-label="Fra år"
                 value={from}
-                onChange={(e) => {
-                  setFrom(+e.target.value);
-                  setPrimaryBounds(EMPTY);
-                  setSecondaryBounds(EMPTY);
-                  setAxisOpen(false);
-                }}
+                onChange={(e) => changePeriod("from", +e.target.value)}
               >
                 {years
                   .filter((y) => y <= to)
@@ -221,17 +205,11 @@ export default function MunicipalityHistoryRow({
                     <option key={y}>{y}</option>
                   ))}
               </select>
-            </label>
-            <label>
-              Til år
+              <span aria-hidden="true">–</span>
               <select
+                aria-label="Til år"
                 value={to}
-                onChange={(e) => {
-                  setTo(+e.target.value);
-                  setPrimaryBounds(EMPTY);
-                  setSecondaryBounds(EMPTY);
-                  setAxisOpen(false);
-                }}
+                onChange={(e) => changePeriod("to", +e.target.value)}
               >
                 {years
                   .filter((y) => y >= from)
@@ -239,157 +217,60 @@ export default function MunicipalityHistoryRow({
                     <option key={y}>{y}</option>
                   ))}
               </select>
-            </label>
+            </div>
           </div>
-          <div className="cmp-axis-toolbar">
-            <span>
-              Venstre: {costUnit}
-              {secondary !== "none" ? ` · Høyre: ${secondaryLabel}` : ""}
-            </span>
-            <button onClick={openAxis} aria-expanded={axisOpen}>
-              Juster Y-aksene ↕
-            </button>
-          </div>
-          {axisOpen && (
-            <form className="cmp-axis-editor" onSubmit={applyAxis}>
-              <fieldset>
-                <legend>Venstre akse · {costUnit}</legend>
-                <div>
-                  <label>
-                    Nedre grense
-                    <input
-                      type="number"
-                      step="any"
-                      value={draft.min}
-                      placeholder="Automatisk"
-                      onChange={(e) =>
-                        setDraft((d) => ({ ...d, min: e.target.value }))
-                      }
-                    />
-                  </label>
-                  <label>
-                    Øvre grense
-                    <input
-                      type="number"
-                      step="any"
-                      value={draft.max}
-                      placeholder="Automatisk"
-                      onChange={(e) =>
-                        setDraft((d) => ({ ...d, max: e.target.value }))
-                      }
-                    />
-                  </label>
-                </div>
-              </fieldset>
-              {secondary !== "none" && (
-                <fieldset>
-                  <legend>Høyre akse · {secondaryLabel}</legend>
-                  <div>
-                    <label>
-                      Nedre grense
-                      <input
-                        type="number"
-                        step="any"
-                        value={draft.secondaryMin}
-                        placeholder="Automatisk"
-                        onChange={(e) =>
-                          setDraft((d) => ({
-                            ...d,
-                            secondaryMin: e.target.value,
-                          }))
-                        }
-                      />
-                    </label>
-                    <label>
-                      Øvre grense
-                      <input
-                        type="number"
-                        step="any"
-                        value={draft.secondaryMax}
-                        placeholder="Automatisk"
-                        onChange={(e) =>
-                          setDraft((d) => ({
-                            ...d,
-                            secondaryMax: e.target.value,
-                          }))
-                        }
-                      />
-                    </label>
-                  </div>
-                </fieldset>
-              )}
-              {error && (
-                <p role="alert" className="cmp-rust">
-                  {error}
-                </p>
-              )}
-              <div className="cmp-axis-actions">
-                <button type="submit" className="cmp-primary">
-                  Bruk aksegrenser
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setPrimaryBounds(EMPTY);
-                    setSecondaryBounds(EMPTY);
-                    setAxisOpen(false);
-                    setError("");
-                  }}
-                >
-                  Tilbakestill til automatisk
-                </button>
-                <button type="button" onClick={() => setAxisOpen(false)}>
-                  Avbryt
-                </button>
-              </div>
-            </form>
-          )}
-          {cropped && (
-            <p className="cmp-axis-notice">
-              Tilpasset akseskala · stolper kan være avkortet. Sammenlign
-              verdiene, ikke bare stolpehøyden.
-            </p>
-          )}
-          <div
-            className="cmp-row-chart"
-            onContextMenu={(e) => {
-              e.preventDefault();
-              openAxis();
-            }}
-            aria-label={`Stolpediagram for ${row.name}. Bruk knappen Juster Y-aksene for å endre grensene.`}
-          >
-            <ResponsiveContainer width="100%" height={260}>
+          <div className="cmp-row-chart cmp-interactive-axes">
+            <ResponsiveContainer width="100%" height={280}>
               <ComposedChart
                 data={data}
-                margin={{
-                  top: 12,
-                  right: secondary === "none" ? 8 : 16,
-                  bottom: 8,
-                  left: 4,
-                }}
+                margin={{ top: 12, right: 4, bottom: 8, left: 4 }}
                 accessibilityLayer
               >
                 <CartesianGrid stroke="#e2ddd3" vertical={false} />
                 <XAxis dataKey="year" tick={{ fontSize: 10 }} />
                 <YAxis
                   yAxisId="cost"
-                  domain={domain(primaryBounds)}
+                  domain={primaryDomain}
                   allowDataOverflow
-                  tickFormatter={(v) => number(v, mode === "amount" ? 1 : 0)}
-                  width={65}
+                  width={80}
+                  tickCount={5}
                   tick={{ fontSize: 10 }}
+                  tickFormatter={(v) => number(v, mode === "amount" ? 1 : 0)}
+                  label={{
+                    value: costUnit,
+                    angle: -90,
+                    position: "insideLeft",
+                    offset: 2,
+                    style: {
+                      fontSize: 9,
+                      fill: "#6b6a66",
+                      textAnchor: "middle",
+                    },
+                  }}
                 />
                 {secondary !== "none" && (
                   <YAxis
                     yAxisId="secondary"
                     orientation="right"
-                    domain={domain(secondaryBounds)}
+                    domain={secondaryDomain}
                     allowDataOverflow
-                    width={65}
+                    width={80}
+                    tickCount={5}
                     tick={{ fontSize: 10 }}
                     tickFormatter={(v) =>
                       secondary === "growth" ? `${number(v, 1)} %` : number(v)
                     }
+                    label={{
+                      value: secondaryUnit,
+                      angle: 90,
+                      position: "insideRight",
+                      offset: 2,
+                      style: {
+                        fontSize: 9,
+                        fill: "#6b6a66",
+                        textAnchor: "middle",
+                      },
+                    }}
                   />
                 )}
                 <Tooltip
@@ -399,7 +280,7 @@ export default function MunicipalityHistoryRow({
                       ? `${number(value, 1)} %`
                       : name === "Befolkning"
                         ? `${number(value)} innbyggere`
-                        : `${number(value, mode === "amount" ? 1 : 0)} ${costUnit}`,
+                        : `${number(value, mode === "amount" ? 1 : 0)} ${mode === "amount" ? "mill. kr" : "kr per innbygger"}`,
                     name,
                   ]}
                   contentStyle={{
@@ -434,6 +315,22 @@ export default function MunicipalityHistoryRow({
                 )}
               </ComposedChart>
             </ResponsiveContainer>
+            <button
+              className="cmp-axis-hit cmp-axis-hit--left"
+              aria-label={`Juster venstre Y-akse: ${costUnit.toLocaleLowerCase("nb")}`}
+              title="Klikk for å justere aksen"
+              aria-haspopup="dialog"
+              onClick={(event) => openAxis("primary", event)}
+            />
+            {secondary !== "none" && (
+              <button
+                className="cmp-axis-hit cmp-axis-hit--right"
+                aria-label={`Juster høyre Y-akse: ${secondaryUnit.toLocaleLowerCase("nb")}`}
+                title="Klikk for å justere aksen"
+                aria-haspopup="dialog"
+                onClick={(event) => openAxis("secondary", event)}
+              />
+            )}
           </div>
           <div className="cmp-row-chart-legend">
             <span>
@@ -443,20 +340,27 @@ export default function MunicipalityHistoryRow({
             {secondary !== "none" && (
               <span>
                 <i className="secondary" />
-                {secondary === "growth" ? "År/år-vekst" : "Befolkning"}
+                {secondary === "growth" ? "Årsvekst" : "Befolkning"}
               </span>
             )}
+            <span
+              className="cmp-scale-caption"
+              title="Stolpene starter ved nedre aksegrense. Klikk på en Y-akse for å justere skalaen."
+            >
+              {customized ? "Tilpasset skala" : "Automatisk skala"}
+            </span>
           </div>
-          <p className="cmp-footnote">
-            Høyreklikk i grafen eller bruk «Juster Y-aksene». Årsveksten følger
-            valgt visning og bruker foregående kalenderår.{" "}
-            {secondary === "population"
-              ? "Befolkning er rekonstruert fra inntekter totalt og per innbygger, og kan avvike litt på grunn av avrunding. "
-              : ""}
-            Manglende år vises uten stolpe; linjen brytes ved manglende data.
-          </p>
           <details className="cmp-history-table">
-            <summary>Se tallene bak grafen</summary>
+            <summary>Tall og metode</summary>
+            <p className="cmp-footnote">
+              Skalaen tilpasses de synlige verdiene og starter ikke nødvendigvis
+              på null. Klikk på aksen for å endre grensene. Årsveksten følger
+              valgt visning og bruker foregående kalenderår.{" "}
+              {secondary === "population"
+                ? "Befolkning er rekonstruert fra inntekter totalt og per innbygger og kan avvike litt på grunn av avrunding. "
+                : ""}
+              Manglende år vises uten stolpe; linjen brytes ved manglende data.
+            </p>
             <div className="cmp-table-wrap">
               <table>
                 <caption>{row.name} · historiske verdier</caption>
@@ -464,7 +368,7 @@ export default function MunicipalityHistoryRow({
                   <tr>
                     <th>År</th>
                     <th>{costUnit}</th>
-                    {secondary !== "none" && <th>{secondaryLabel}</th>}
+                    {secondary !== "none" && <th>{secondaryUnit}</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -483,6 +387,22 @@ export default function MunicipalityHistoryRow({
               </table>
             </div>
           </details>
+          {axis && (
+            <AxisPopover
+              axis={axis}
+              unit={axis.side === "primary" ? costUnit : secondaryUnit}
+              bounds={axis.side === "primary" ? primaryBounds : secondaryBounds}
+              values={data.map(
+                (p) => p[axis.side === "primary" ? "cost" : secondary],
+              )}
+              onClose={closeAxis}
+              onApply={(bounds) => {
+                if (axis.side === "primary") setPrimaryBounds(bounds);
+                else setSecondaryBounds(bounds);
+                closeAxis();
+              }}
+            />
+          )}
         </div>
       )}
     </div>
