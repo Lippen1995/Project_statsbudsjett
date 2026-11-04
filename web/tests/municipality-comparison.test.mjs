@@ -1,4 +1,8 @@
 import test from "node:test";
+import {
+  municipalityHistory,
+  validateAxisBounds,
+} from "../src/sider/comparison.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
@@ -106,4 +110,39 @@ test("real Stavanger fixture uses its current peer group and finds traceable sec
     );
   }
   assert.deepEqual(svenFindings(target, peers.slice(0, 2), 2025, "median"), []);
+});
+
+test("municipality history preserves units, calendar-year growth and missing observations", () => {
+  const d = {
+    overview: {
+      net_expenses: {
+        2020: { amount: 100000, perCapita: 1000 },
+        2021: { amount: 120000, perCapita: 1100 },
+        2023: { amount: 150000, perCapita: 1300 },
+      },
+    },
+  };
+  const nominal = municipalityHistory(
+    d,
+    [2020, 2021, 2022, 2023],
+    "",
+    "",
+    "amount",
+  );
+  assert.equal(nominal[0].cost, 100);
+  assert.ok(Math.abs(nominal[1].growth - 20) < 1e-8);
+  assert.equal(nominal[2].cost, null);
+  assert.equal(nominal[3].growth, null);
+  const perPerson = municipalityHistory(d, [2020, 2021], "", "", "perCapita");
+  assert.equal(perPerson[1].cost, 1100);
+  assert.ok(Math.abs(perPerson[1].growth - 10) < 1e-8);
+});
+
+test("axis bounds support cropped and automatic ranges and reject inverted/non-finite ranges", () => {
+  assert.deepEqual(validateAxisBounds("75", "100"), { min: 75, max: 100 });
+  assert.deepEqual(validateAxisBounds("", ""), { min: null, max: null });
+  assert.deepEqual(validateAxisBounds("-5", "10"), { min: -5, max: 10 });
+  assert.ok(validateAxisBounds("100", "75").error);
+  assert.ok(validateAxisBounds("75", "75").error);
+  assert.ok(validateAxisBounds("Infinity", "100").error);
 });

@@ -160,3 +160,48 @@ export function validateScenario(item) {
     item.firstYearShare <= 100
   );
 }
+
+/** Year-on-year growth must use the preceding calendar year, never bridge missing years. */
+export function municipalityHistory(
+  detail,
+  years,
+  sector = "",
+  functionCode = "",
+  mode = "perCapita",
+) {
+  return years.map((year) => {
+    const current = point(detail, year, sector, functionCode)?.[mode];
+    const previous = point(detail, Number(year) - 1, sector, functionCode)?.[
+      mode
+    ];
+    return {
+      year,
+      cost: Number.isFinite(current)
+        ? mode === "amount"
+          ? current / 1000
+          : current
+        : null,
+      growth:
+        Number.isFinite(current) && Number.isFinite(previous) && previous > 0
+          ? (current / previous - 1) * 100
+          : null,
+      population: population(detail, year),
+    };
+  });
+}
+
+export function validateAxisBounds(min, max) {
+  const low = String(min).trim() === "" ? null : Number(min);
+  const high = String(max).trim() === "" ? null : Number(max);
+  if (
+    (low !== null && !Number.isFinite(low)) ||
+    (high !== null && !Number.isFinite(high))
+  )
+    return {
+      error:
+        "Skriv gyldige tall eller la feltet stå tomt for automatisk grense.",
+    };
+  if (low !== null && high !== null && low >= high)
+    return { error: "Nedre grense må være lavere enn øvre grense." };
+  return { min: low, max: high };
+}

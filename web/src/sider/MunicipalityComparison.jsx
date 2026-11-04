@@ -23,6 +23,7 @@ import {
   validateScenario,
 } from "./comparison";
 import "./comparison.css";
+import MunicipalityHistoryRow from "./MunicipalityHistoryRow";
 
 const number = (n, digits = 0) =>
   Number.isFinite(n)
@@ -637,7 +638,10 @@ export default function MunicipalityComparison({ hash }) {
                   <div className="cmp-panel-head">
                     <div>
                       <h3>Hva bruker kommunene?</h3>
-                      <p>Netto driftsutgifter per innbygger</p>
+                      <p>
+                        Netto driftsutgifter per innbygger · totalbeløp i
+                        parentes
+                      </p>
                     </div>
                     <span className="cmp-tag">{year}</span>
                   </div>
@@ -649,27 +653,19 @@ export default function MunicipalityComparison({ hash }) {
                           (a.perCapita ?? -Infinity),
                       )
                       .map((r) => (
-                        <div
-                          className={`cmp-bar-row ${r.detail.entity.code === code ? "own" : ""}`}
-                          key={r.detail.entity.code}
-                        >
-                          <div>
-                            <span>
-                              {r.name}
-                              {r.detail.entity.code === code
-                                ? " · din kommune"
-                                : ""}
-                            </span>
-                            <strong>{number(r.perCapita)} kr</strong>
-                          </div>
-                          <div className="cmp-bar-track">
-                            <div
-                              style={{
-                                width: `${Number.isFinite(r.perCapita) ? Math.min(100, (Math.max(0, r.perCapita) / Math.max(1, ...rows.map((v) => v.perCapita || 0))) * 100) : 0}%`,
-                              }}
-                            />
-                          </div>
-                        </div>
+                        <MunicipalityHistoryRow
+                          key={`${r.detail.entity.code}-${sector}-${functionCode}-${year}`}
+                          row={r}
+                          own={r.detail.entity.code === code}
+                          years={index.years}
+                          selectedYear={year}
+                          sector={sector}
+                          functionCode={functionCode}
+                          maximum={Math.max(
+                            1,
+                            ...rows.map((v) => v.perCapita || 0),
+                          )}
+                        />
                       ))}
                   </div>
                   <p className="cmp-footnote">

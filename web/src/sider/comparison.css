@@ -844,3 +844,230 @@
     font-size: 18px;
   }
 }
+
+/* Each municipality has its own expandable, independently configurable history. */
+.cmp-page .cmp-row-trigger {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 4px 0;
+  border-radius: 0;
+  text-align: left;
+  font-size: 11px;
+  color: inherit;
+}
+.cmp-page .cmp-row-trigger:hover {
+  background: transparent;
+}
+.cmp-row-trigger:hover .cmp-row-name {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cmp-row-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 7px;
+}
+.cmp-row-name {
+  line-height: 1.6;
+}
+.cmp-row-name > span {
+  font-size: 14px;
+  margin-right: 3px;
+  font-weight: 400;
+}
+.cmp-row-values {
+  flex-shrink: 0;
+  text-align: right;
+}
+.cmp-row-values > span {
+  color: var(--dempet);
+  font-size: 10px;
+  font-weight: 400;
+}
+.cmp-row-trigger .cmp-bar-track {
+  display: block;
+  width: 100%;
+}
+.cmp-row-trigger .cmp-bar-track > span {
+  display: block;
+  height: 100%;
+  background: #d5cfc3;
+  border-radius: 0 2px 2px 0;
+}
+.cmp-bar-row.own .cmp-row-trigger .cmp-bar-track > span {
+  background: var(--gronn);
+}
+.cmp-row-history {
+  color: var(--ink);
+  font-weight: 400;
+  border: 1px solid var(--strek);
+  padding: 16px;
+  margin: 12px 0 8px;
+  background: var(--papir);
+}
+.cmp-row-history-title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+.cmp-row-history-title h4 {
+  font-family: var(--serif);
+  font-size: 17px;
+}
+.cmp-row-history-title > span {
+  color: var(--dempet);
+  font-size: 9px;
+}
+.cmp-history-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.cmp-page .cmp-history-controls label {
+  font-size: 10px;
+}
+.cmp-page .cmp-history-controls select {
+  padding: 8px;
+  min-height: 36px;
+  font-size: 11px;
+}
+.cmp-axis-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 6px;
+}
+.cmp-axis-toolbar > span {
+  font-size: 9px;
+  line-height: 1.7;
+  color: var(--dempet);
+}
+.cmp-page .cmp-axis-toolbar button {
+  flex-shrink: 0;
+  padding: 7px 9px;
+  font-size: 10px;
+}
+.cmp-row-chart {
+  height: 260px;
+  width: 100%;
+  min-width: 0;
+}
+.cmp-row-chart-legend {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  font-size: 10px;
+  color: var(--dempet);
+  margin-top: 10px;
+}
+.cmp-row-chart-legend > span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.cmp-row-chart-legend i {
+  width: 10px;
+  height: 8px;
+  background: #8e9e99;
+}
+.cmp-bar-row.own .cmp-row-chart-legend i {
+  background: var(--gronn);
+}
+.cmp-row-chart-legend i.secondary,
+.cmp-bar-row.own .cmp-row-chart-legend i.secondary {
+  height: 2px;
+  width: 15px;
+  background: var(--rust);
+}
+.cmp-axis-editor {
+  padding: 14px;
+  border: 1px solid var(--strek);
+  background: var(--ark);
+  margin: 12px 0;
+}
+.cmp-axis-editor fieldset {
+  border: 0;
+  margin-bottom: 14px;
+  padding: 0;
+}
+.cmp-axis-editor legend {
+  font-size: 11px;
+  margin-bottom: 10px;
+  color: var(--tekst);
+  font-weight: 600;
+}
+.cmp-axis-editor fieldset > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.cmp-axis-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.cmp-page .cmp-axis-actions button {
+  font-size: 10px;
+  padding: 8px 10px;
+}
+.cmp-axis-editor p {
+  font-size: 11px;
+}
+.cmp-axis-notice {
+  font-size: 10px;
+  line-height: 1.7;
+  color: var(--rust-mork);
+  border-left: 2px solid var(--rust);
+  padding: 7px 10px;
+  margin: 8px 0;
+}
+.cmp-history-table {
+  font-size: 10px;
+  margin-top: 14px;
+}
+.cmp-history-table summary {
+  cursor: pointer;
+  color: var(--gronn);
+}
+.cmp-history-table .cmp-table-wrap {
+  margin: 12px 0 0;
+}
+.cmp-history-table table {
+  min-width: 0;
+  font-size: 10px;
+}
+.cmp-history-table td,
+.cmp-history-table th {
+  padding: 8px;
+}
+@media (max-width: 700px) {
+  .cmp-row-heading {
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  .cmp-row-values {
+    margin-left: 19px;
+  }
+  .cmp-row-history {
+    padding: 12px 8px;
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  .cmp-axis-toolbar {
+    align-items: flex-start;
+  }
+  .cmp-row-history .cmp-footnote {
+    font-size: 9px;
+  }
+  .cmp-page .cmp-history-controls label {
+    font-size: 9px;
+  }
+}
