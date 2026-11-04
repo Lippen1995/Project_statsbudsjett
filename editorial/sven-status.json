@@ -182,8 +182,9 @@
     "id": "8178a637-cd15-4c25-93db-657a04fe1e5e",
     "startedAt": "2026-11-04T08:09:00.000Z",
     "instructionCommit": "009c5b794d5fa436ae667e7c5d3d266be049e9bb",
-    "state": "researching",
-    "note": "Kontrollerer kø og åpne analysegjennomganger. Fortsetter helsereformbestillingen fra fersk main.",
-    "updatedAt": "2026-11-04T08:09:00.000Z"
+    "state": "waiting",
+    "note": "Helsereformens kontrollerte rapport- og scenariostøtte er ferdig implementert og verifisert lokalt. Kildekode-PR #84 venter på menneskelig gjennomgang før prepare.mjs og botens analyselevering kan bruke funksjonen fra fersk main. Temaet er beholdt i køen; ingen artikkel er levert eller publisert.",
+    "updatedAt": "2026-11-04T08:13:00.000Z",
+    "finishedAt": "2026-11-04T08:13:00.000Z"
   }
 }
