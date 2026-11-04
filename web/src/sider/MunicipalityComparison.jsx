@@ -534,7 +534,7 @@ export default function MunicipalityComparison({ hash }) {
         </p>
       ) : (
         <>
-          {tab !== "budget" && (
+          {(tab === "compare" || tab === "explain") && (
             <div className="cmp-filters">
               <label>
                 Tjenesteområde
@@ -570,6 +570,20 @@ export default function MunicipalityComparison({ hash }) {
               </label>
               <label>
                 Referanse
+                <select
+                  value={method}
+                  onChange={(e) => setMethod(e.target.value)}
+                >
+                  <option value="median">Median i utvalget</option>
+                  <option value="weighted">Befolkningsvektet snitt</option>
+                </select>
+              </label>
+            </div>
+          )}
+          {tab === "sven" && (
+            <div className="cmp-filters">
+              <label>
+                Referanse for Svens forslag
                 <select
                   value={method}
                   onChange={(e) => setMethod(e.target.value)}
@@ -761,7 +775,10 @@ export default function MunicipalityComparison({ hash }) {
               <div className="cmp-section-title">
                 <h2>Hva ligger bak forskjellen?</h2>
                 <span>
-                  {title} · {year}
+                  {sector
+                    ? SECTORS.find((s) => s[0] === sector)?.[1]
+                    : "Alle tjenesteområder"}{" "}
+                  · {year}
                 </span>
               </div>
               <Sven small>
@@ -775,8 +792,11 @@ export default function MunicipalityComparison({ hash }) {
               <div className="cmp-table-wrap">
                 <table>
                   <caption>
-                    Funksjoner i {sector ? title : "alle tjenesteområder"}.
-                    Avvik beregnet per innbygger.
+                    Funksjoner i{" "}
+                    {sector
+                      ? SECTORS.find((s) => s[0] === sector)?.[1]
+                      : "alle tjenesteområder"}
+                    . Avvik beregnet per innbygger.
                   </caption>
                   <thead>
                     <tr>
