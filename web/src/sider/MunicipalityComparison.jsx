@@ -1,13 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-} from "recharts";
 import { loadKostraIndex, loadKostraDetail } from "../lib/kostra";
 import { formatKostraValue, displayEntityName } from "../kostra/model";
 import {
@@ -16,14 +7,13 @@ import {
   readComparisonRoute,
   defaultPeers,
   point,
-  population,
   comparison,
   svenFindings,
   scenarioTotal,
   validateScenario,
 } from "./comparison";
 import "./comparison.css";
-import MunicipalityHistoryRow from "./MunicipalityHistoryRow";
+import ComparisonWorkspace from "./ComparisonWorkspace";
 
 const number = (n, digits = 0) =>
   Number.isFinite(n)
@@ -32,21 +22,6 @@ const number = (n, digits = 0) =>
       )
     : "–";
 const money = (n) => formatKostraValue(n, "amount");
-const COLORS = [
-  "#14594F",
-  "#C5452E",
-  "#8D6A42",
-  "#657D9E",
-  "#8B7093",
-  "#77844B",
-  "#BB8367",
-  "#455A64",
-  "#A15B70",
-  "#716343",
-  "#486E82",
-  "#8B887A",
-  "#555555",
-];
 const TABS = [
   ["compare", "Sammenlign"],
   ["explain", "Forklar forskjellene"],
@@ -102,11 +77,10 @@ export default function MunicipalityComparison({ hash }) {
     [details, setDetails] = useState({});
   const [loading, setLoading] = useState(true),
     [missing, setMissing] = useState([]);
-  const [sector, setSector] = useState("FGK8b"),
+  const [sector, setSector] = useState(""),
     [functionCode, setFunctionCode] = useState("");
   const [tab, setTab] = useState("compare"),
-    [method, setMethod] = useState("median"),
-    [mode, setMode] = useState("perCapita");
+    [method, setMethod] = useState("median");
   const [editingPeers, setEditingPeers] = useState(false),
     [search, setSearch] = useState(""),
     [message, setMessage] = useState("");
@@ -221,7 +195,6 @@ export default function MunicipalityComparison({ hash }) {
   const peers = selectedPeers.map((c) => details[c]).filter(Boolean);
   const entity = entities.find((e) => e.code === code);
   const ownName = displayEntityName(entity);
-  const stats = comparison(target, peers, year, sector, functionCode, method);
   const functions = (target?.functions || []).filter(
     (f) => sector && f.serviceCodes?.includes(sector),
   );
@@ -250,19 +223,6 @@ export default function MunicipalityComparison({ hash }) {
               ),
             )
           : update,
-    }));
-  const series = (index?.years || [])
-    .filter((y) => y >= 2020)
-    .map((y) => ({
-      year: y,
-      ...Object.fromEntries(
-        [target, ...peers]
-          .filter(Boolean)
-          .map((d) => [
-            d.entity.code,
-            point(d, y, sector, functionCode)?.[mode] ?? null,
-          ]),
-      ),
     }));
   const selectMunicipality = (next) => {
     setCode(next);
@@ -535,7 +495,7 @@ export default function MunicipalityComparison({ hash }) {
         </p>
       ) : (
         <>
-          {(tab === "compare" || tab === "explain") && (
+          {tab === "explain" && (
             <div className="cmp-filters">
               <label>
                 Tjenesteområde
@@ -596,175 +556,20 @@ export default function MunicipalityComparison({ hash }) {
             </div>
           )}
           {tab === "compare" && (
-            <>
-              <div className="cmp-section-title">
-                <h2>{title}</h2>
-                <span>Kommunekonsern · netto driftsutgifter · {year}</span>
-              </div>
-              <div className="cmp-kpis">
-                <div>
-                  <span>{ownName} per innbygger</span>
-                  <strong>
-                    {number(stats.own?.perCapita)} <small>kr</small>
-                  </strong>
-                  <p>{money(stats.own?.amount)} totalt</p>
-                </div>
-                <div>
-                  <span>
-                    {method === "median" ? "Median" : "Vektet snitt"} i utvalget
-                  </span>
-                  <strong>
-                    {number(stats.reference.value)} <small>kr</small>
-                  </strong>
-                  <p>
-                    {stats.reference.count} av {selectedPeers.length} kommuner
-                    med data
-                  </p>
-                </div>
-                <div>
-                  <span>Avvik fra referansen</span>
-                  <strong
-                    className={stats.percent > 0 ? "cmp-rust" : "cmp-green"}
-                  >
-                    {stats.percent > 0 ? "+" : ""}
-                    {number(stats.percent, 1)}
-                    <small> %</small>
-                  </strong>
-                  <p>Per innbygger · uten behovskorrigering</p>
-                </div>
-              </div>
-              <div className="cmp-analysis-grid">
-                <article className="cmp-panel">
-                  <div className="cmp-panel-head">
-                    <div>
-                      <h3>Hva bruker kommunene?</h3>
-                      <p>
-                        Netto driftsutgifter per innbygger · totalbeløp i
-                        parentes
-                      </p>
-                    </div>
-                    <span className="cmp-tag">{year}</span>
-                  </div>
-                  <div className="cmp-bars">
-                    {[...rows]
-                      .sort(
-                        (a, b) =>
-                          (b.perCapita ?? -Infinity) -
-                          (a.perCapita ?? -Infinity),
-                      )
-                      .map((r) => (
-                        <MunicipalityHistoryRow
-                          key={`${r.detail.entity.code}-${sector}-${functionCode}-${year}`}
-                          row={r}
-                          own={r.detail.entity.code === code}
-                          years={index.years}
-                          selectedYear={year}
-                          sector={sector}
-                          functionCode={functionCode}
-                          maximum={Math.max(
-                            1,
-                            ...rows.map((v) => v.perCapita || 0),
-                          )}
-                        />
-                      ))}
-                  </div>
-                  <p className="cmp-footnote">
-                    Manglende verdier vises som «–». Medianen inkluderer ikke{" "}
-                    {ownName}.
-                  </p>
-                </article>
-                <aside className="cmp-sven-aside">
-                  <Sven>
-                    <h3>
-                      Start med forskjellen.
-                      <br />
-                      Undersøk forklaringen.
-                    </h3>
-                    <p>
-                      {stats.percent == null
-                        ? "Velg sammenligningskommuner med tilgjengelige tall for å undersøke avvik."
-                        : `${ownName} ligger ${number(Math.abs(stats.percent), 1)} % ${stats.percent >= 0 ? "over" : "under"} referansen på dette området. Det viser en forskjell i ressursbruk, men sier ikke alene noe om effektiviteten.`}
-                    </p>
-                    <p>
-                      Jeg ville undersøkt tjenestebehov, bemanning og
-                      organisering før jeg foreslår et budsjettkutt.
-                    </p>
-                    <button
-                      className="cmp-primary"
-                      onClick={() => setTab("explain")}
-                    >
-                      Se hva forskjellen kan skyldes →
-                    </button>
-                    <span className="cmp-footnote">
-                      Datadrevet observasjon fra Sven · faste beregningsregler
-                    </span>
-                  </Sven>
-                </aside>
-              </div>
-              <article className="cmp-panel cmp-history">
-                <div className="cmp-panel-head">
-                  <div>
-                    <h3>Utvikling over tid</h3>
-                    <p>Løpende kroner · regnskapsår 2020–{index.latestYear}</p>
-                  </div>
-                  <select
-                    aria-label="Måleenhet i historikk"
-                    value={mode}
-                    onChange={(e) => setMode(e.target.value)}
-                  >
-                    <option value="perCapita">Kr per innbygger</option>
-                    <option value="amount">Totalt (1 000 kr)</option>
-                  </select>
-                </div>
-                <div className="cmp-chart">
-                  <ResponsiveContainer width="100%" height={280}>
-                    <LineChart
-                      data={series}
-                      margin={{ top: 12, right: 24, bottom: 4, left: 12 }}
-                    >
-                      <CartesianGrid stroke="#e2ddd3" vertical={false} />
-                      <XAxis dataKey="year" tick={{ fontSize: 12 }} />
-                      <YAxis
-                        tickFormatter={(n) => number(n / 1000) + "k"}
-                        width={65}
-                        tick={{ fontSize: 12 }}
-                      />
-                      <Tooltip
-                        formatter={(v, name) => [number(v), name]}
-                        contentStyle={{
-                          background: "#fffdf9",
-                          borderColor: "#e2ddd3",
-                        }}
-                      />
-                      {[target, ...peers].map((d, i) => (
-                        <Line
-                          key={d.entity.code}
-                          name={displayEntityName(d.entity)}
-                          dataKey={d.entity.code}
-                          stroke={COLORS[i]}
-                          strokeWidth={i === 0 ? 3 : 1.5}
-                          dot={false}
-                          connectNulls={false}
-                          isAnimationActive={false}
-                        />
-                      ))}
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="cmp-legend">
-                  {[target, ...peers].map((d, i) => (
-                    <span key={d.entity.code}>
-                      <i style={{ background: COLORS[i] }} />
-                      {displayEntityName(d.entity)}
-                    </span>
-                  ))}
-                </div>
-                <p className="cmp-footnote">
-                  Kommunesammenslåinger og endrede funksjonsdefinisjoner kan gi
-                  brudd i tidsseriene. Ingen pris- eller behovskorrigering.
-                </p>
-              </article>
-            </>
+            <ComparisonWorkspace
+              key={`${code}-${year}`}
+              target={target}
+              peers={peers}
+              entities={entities}
+              year={year}
+              years={index.years}
+              sector={sector}
+              onSector={setSector}
+              method={method}
+              onMethod={setMethod}
+              initialFunction={functionCode}
+              onFunction={setFunctionCode}
+            />
           )}
           {tab === "explain" && (
             <>
