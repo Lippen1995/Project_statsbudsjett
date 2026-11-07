@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "scope": "u-03",
+  "checkedAt": "2026-10-27",
+  "sources": [
+    {
+      "name": "Kulturdepartementets rapport om pandemiordningene og museene",
+      "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20222023/id2930765/?ch=2",
+      "description": "Lest avsnittene om kapittel 325, midlertidige kompensasjons- og stimuleringsordninger og museenes rapportering for 2021. Ekstra pandemistøtte ble også gitt utenfor kapittel 325. Å utelate hele kapittelet er derfor en avgrenset følsomhetsberegning, ikke et fullstendig regnskap uten koronatiltak."
+    },
+    {
+      "name": "Kultur- og likestillingsdepartementets regnskapstabeller for 2025",
+      "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20262027/id3176084/?ch=2",
+      "description": "Lest regnskapskolonnen for 2025 på kapitlene 315, 325, 328 og 335, samt beskrivelsen av museumsnettverket og momskompensasjon. Forslagskolonnen for 2027 brukes ikke i den historiske analysen. Avrundede postbeløp er kontrollert mot Fellestalls uttrekk."
+    },
+    {
+      "name": "Lotteri- og stiftelsestilsynet: avkorting og senere tilleggsutbetaling",
+      "url": "https://lottstift.no/for-frivilligheten/momskompensasjon-pa-varer-og-tjenester/avkorting/",
+      "description": "Hele den korte fagteksten er lest. Oppdatert 23. desember 2025: utbetalingen i desember ble avkortet; Stortinget vedtok tilleggsbevilgningen 22. desember, og andre utbetaling var varslet i januar. Dette forklarer hvorfor regnskapsåret 2025 ikke dekker hele etteroppgjøret."
+    },
+    {
+      "name": "Kulturdepartementets budsjettomtale og regnskap 2020",
+      "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20212022/id2874942/?ch=2",
+      "description": "Kontrollerer startårets regnskapskolonner og beskrivelser av tilskuddene. Pandemien påvirket museenes egeninntekter og statlige tilskudd; perioden begynner ikke i et normalår."
+    }
+  ]
+}

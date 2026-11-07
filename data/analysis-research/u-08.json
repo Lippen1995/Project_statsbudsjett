@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "scope": "u-08",
+  "checkedAt": "2026-10-28",
+  "sources": [
+    {
+      "name": "NAVs årsrapport 2025: utgiftsutviklingen bak familieytelsene",
+      "url": "https://www.nav.no/_/en/attachment/inline/b3493af1-037d-4f41-aaa6-631ac4565ca3:5e407ef10e9152cc1d00a940353ce5ab4b9f74e1/%C3%85rsrapport%202025.pdf",
+      "description": "Lest avsnittene på trykt side 120 om barnetrygd, kontantstøtte og foreldrepenger. NAV knytter siste års barnetrygdvekst hovedsakelig til høyere satser, samtidig som barnetallet og etterbetalingene trakk ned. Kontantstøttenedgangen knyttes til kortere støtteperiode fra august 2024."
+    },
+    {
+      "name": "NAV: historiske satser for barnetrygd",
+      "url": "https://www.nav.no/barnetrygd",
+      "description": "Lest historiske satser 2020–2025 og beskrivelsen av ordinær og utvidet barnetrygd. Denne artikkelen sammenligner historiske regnskaper og bruker ikke dagens sats som om den gjaldt hele perioden."
+    },
+    {
+      "name": "NAV: endringer i kontantstøttens målgruppe",
+      "url": "https://www.nav.no/no/nav-og-samfunn/statistikk/familie-statistikk/relatert-informasjon/om-statistikken-kontantstotte",
+      "description": "Lest historikken og hovedtrekkene i regelverket. Fra august 2024 ble retten avviklet for de eldste barna som tidligere var i kontantstøttealder. Kortere støtteperiode og redusert målgruppe må skilles fra lavere månedssats for gjenværende mottakere."
+    },
+    {
+      "name": "Skatteetaten: avviklet særfradrag og økt utvidet barnetrygd",
+      "url": "https://www.skatteetaten.no/en/rettskilder/type/handboker/skatte-abc/2023/s-23-sarfradrag--enslig-forsorger/S-23.001/",
+      "description": "Lest den korte forklaringen av omleggingen fra mars 2023. Økt utvidet barnetrygd erstattet maksimal skattevirkning av særfradraget. Derfor kan ikke hele økningen i utbetalt barnetrygd tolkes som like stor ny netto gevinst for alle enslige forsørgere."
+    },
+    {
+      "name": "Barne- og familiedepartementets regnskap for 2025",
+      "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20262027/id3175032/?ch=2",
+      "description": "Kontrollert regnskapskolonnen for 2025 på kapitlene 844, 845 og 2530. Forslag og prognoser for senere år brukes ikke som observerte historiske tall. Registeret fra NAV er grunnlaget for forklaringen av mottakere og regelendringer."
+    }
+  ]
+}
