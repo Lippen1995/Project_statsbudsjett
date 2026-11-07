@@ -16,7 +16,8 @@ const fields = {
 }
 export function graphPlan(copy, report) {
   const oil = report.kind === 'oil-funds'
-  const allowed = oil ? [] : report.kind === 'budget-comparison' ? budgetKinds : stateKinds
+  const allowed = oil ? [] : report.kind === 'budget-comparison' ? budgetKinds
+    : report.healthPolicy ? [...stateKinds, 'health-scenario'] : stateKinds
   const plan =
     copy.graphs === undefined
       ? oil
@@ -37,6 +38,9 @@ export function graphPlan(copy, report) {
     )
       throw Error('Grafen må plasseres etter en faktisk seksjon')
     if (graph.kind === 'series') seriesGraph(graph, report)
+    else if (graph.kind === 'health-scenario') {
+      if (!report.healthPolicy) throw Error('Scenariografen mangler helsereformgrunnlag')
+    }
     else if (graph.kind === 'budget-bridge') bridgeRows(report, graph)
     else if (!allowed.includes(graph.kind)) throw Error('Ukjent graf for denne rapporttypen')
     const keys =
@@ -44,7 +48,9 @@ export function graphPlan(copy, report) {
         ? ['kind', 'afterSection', 'title', 'description', 'mode', 'series', 'chartType', 'axis', 'annotation']
         : graph.kind === 'budget-bridge'
           ? ['kind', 'afterSection', 'title', 'description', 'department', 'chapter', 'groupBy', 'groups']
-          : ['kind', 'afterSection']
+          : graph.kind === 'health-scenario'
+            ? ['kind', 'afterSection', 'title', 'description']
+            : ['kind', 'afterSection']
     if (Object.keys(graph).some((k) => !keys.includes(k)))
       throw Error('Grafen kan bare inneholde kontrollerte seriehenvisninger, ikke egne verdier')
     for (const key of ['title', 'description'])
@@ -108,6 +114,11 @@ export function seriesGraph(graph, report) {
         rows: evidence.rows,
         source: `SSB, tabell ${evidence.table}`,
       }
+    }
+    if (ref.source === 'health') {
+      const s = report.healthPolicy?.series?.find((x) => x.id === ref.id)
+      if (!s) throw Error('Helseserien finnes ikke i det frosne datagrunnlaget')
+      return { ...s, label: ref.label ?? s.label }
     }
     if (
       ref.source === 'fellestall' &&
