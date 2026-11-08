@@ -218,8 +218,9 @@
     "id": "1ee2f98d-9a58-4b72-8fe6-c0fd12e21ca7",
     "startedAt": "2026-11-08T07:56:30.000Z",
     "instructionCommit": "0904987dfa24b122ada532f9d076d8dafaacd162",
-    "state": "researching",
-    "note": "Kontrollerer fersk main, åpne analysegjennomganger og autoriserte endringsønsker før valg fra køen.",
-    "updatedAt": "2026-11-08T07:56:30.000Z"
+    "state": "waiting",
+    "note": "Ingen åpen analyse-PR eller nytt autorisert endringsønske. Helsereformen er fortsatt første klare hastesak, men kildekode-PR #84 er fremdeles åpen uten review og rapportstøtten finnes ikke på fersk main. Temaet er beholdt; ingen artikkel er skrevet, levert eller publisert.",
+    "updatedAt": "2026-11-08T07:58:00.000Z",
+    "finishedAt": "2026-11-08T07:58:00.000Z"
   }
 }
