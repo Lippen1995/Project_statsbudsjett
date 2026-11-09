@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { loadKostraDetail } from "../lib/kostra";
 import { SECTORS } from "./comparison";
 import CostChart, { CostTable, useReducedMotion } from "./CostChart";
+import AccountingDrill from "./AccountingDrill";
 import {
   comparisonRow,
   peerRows,
@@ -84,7 +85,8 @@ export default function ComparisonDialog({
     ? `${fn} · ${target.functions?.find((f) => f.code === fn)?.name || "Funksjon"}`
     : SECTORS.find((s) => s[0] === sector)?.[1] || "Samlet netto drift";
   const period = years.filter((y) => y >= from && y <= to);
-  const rows = waiting
+  const accounts = view === "accounts";
+  const rows = waiting || accounts
     ? []
     : view === "history"
       ? period.map((y) =>
@@ -158,6 +160,7 @@ export default function ComparisonDialog({
           {[
             ["history", "Historikk"],
             ["peers", "Kommunene"],
+            ...(fn ? [["accounts", "Regnskapsposter"]] : []),
           ].map(([value, label]) => (
             <button
               key={value}
@@ -194,89 +197,93 @@ export default function ComparisonDialog({
           </select>
         </label>
       </div>
-      <div className="cmp-dialog-options">
-        <div className="cmp-view-switch" role="group" aria-label="Måleenhet">
-          {[
-            ["perCapita", "Per innbygger"],
-            ["amount", "Nominelt"],
-          ].map(([value, label]) => (
-            <button
-              key={value}
-              aria-pressed={mode === value}
-              onClick={() => {
-                setMode(value);
-                reset();
-              }}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-        {view === "history" && (
-          <>
-            <select
-              aria-label="Sekundærakse"
-              value={secondary}
-              onChange={(e) => setSecondary(e.target.value)}
-            >
-              <option value="none">Ingen tilleggsserie</option>
-              <option value="growth">År/år-endring (%)</option>
-              <option value="population">Befolkning</option>
-            </select>
-            <div className="cmp-period-inline">
-              <select
-                aria-label="Fra år"
-                value={from}
-                onChange={(e) => {
-                  setFrom(+e.target.value);
-                  reset();
-                }}
-              >
-                {years
-                  .filter((y) => y <= to)
-                  .map((y) => (
-                    <option key={y}>{y}</option>
-                  ))}
-              </select>
-              <span>–</span>
-              <select
-                aria-label="Til år"
-                value={to}
-                onChange={(e) => {
-                  setTo(+e.target.value);
-                  reset();
-                }}
-              >
-                {years
-                  .filter((y) => y >= from)
-                  .map((y) => (
-                    <option key={y}>{y}</option>
-                  ))}
-              </select>
+      {!accounts && (
+        <>
+          <div className="cmp-dialog-options">
+            <div className="cmp-view-switch" role="group" aria-label="Måleenhet">
+              {[
+                ["perCapita", "Per innbygger"],
+                ["amount", "Nominelt"],
+              ].map(([value, label]) => (
+                <button
+                  key={value}
+                  aria-pressed={mode === value}
+                  onClick={() => {
+                    setMode(value);
+                    reset();
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
-          </>
-        )}
-      </div>
-      <div className="cmp-chart-legend">
-        <span>
-          <i />
-          {entityName(target)}
-        </span>
-        <span>
-          <i className="peer" />
-          {other
-            ? entityName(other)
-            : view === "history"
-              ? referenceName(method)
-              : "Sammenligningskommuner"}
-        </span>
-        {view === "history" && secondary !== "none" && (
-          <span>
-            <i className="secondary" />
-            {secondary === "growth" ? "År/år-endring" : "Befolkning"}
-          </span>
-        )}
-      </div>
+            {view === "history" && (
+              <>
+                <select
+                  aria-label="Sekundærakse"
+                  value={secondary}
+                  onChange={(e) => setSecondary(e.target.value)}
+                >
+                  <option value="none">Ingen tilleggsserie</option>
+                  <option value="growth">År/år-endring (%)</option>
+                  <option value="population">Befolkning</option>
+                </select>
+                <div className="cmp-period-inline">
+                  <select
+                    aria-label="Fra år"
+                    value={from}
+                    onChange={(e) => {
+                      setFrom(+e.target.value);
+                      reset();
+                    }}
+                  >
+                    {years
+                      .filter((y) => y <= to)
+                      .map((y) => (
+                        <option key={y}>{y}</option>
+                      ))}
+                  </select>
+                  <span>–</span>
+                  <select
+                    aria-label="Til år"
+                    value={to}
+                    onChange={(e) => {
+                      setTo(+e.target.value);
+                      reset();
+                    }}
+                  >
+                    {years
+                      .filter((y) => y >= from)
+                      .map((y) => (
+                        <option key={y}>{y}</option>
+                      ))}
+                  </select>
+                </div>
+              </>
+            )}
+          </div>
+          <div className="cmp-chart-legend">
+            <span>
+              <i />
+              {entityName(target)}
+            </span>
+            <span>
+              <i className="peer" />
+              {other
+                ? entityName(other)
+                : view === "history"
+                  ? referenceName(method)
+                  : "Sammenligningskommuner"}
+            </span>
+            {view === "history" && secondary !== "none" && (
+              <span>
+                <i className="secondary" />
+                {secondary === "growth" ? "År/år-endring" : "Befolkning"}
+              </span>
+            )}
+          </div>
+        </>
+      )}
       {waiting ? (
         <p role={error ? "alert" : "status"}>
           {error || "Henter sammenligningskommunen…"}
@@ -284,6 +291,8 @@ export default function ComparisonDialog({
             <button onClick={() => setRetry((v) => v + 1)}>Prøv igjen</button>
           )}
         </p>
+      ) : accounts ? (
+        <AccountingDrill target={target} peers={peers} year={year} method={method} functionCode={fn} other={other} />
       ) : (
         <>
           <CostChart

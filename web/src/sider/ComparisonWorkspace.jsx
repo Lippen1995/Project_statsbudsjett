@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { SECTORS, population } from "./comparison";
 import CostChart, { CostTable } from "./CostChart";
 import ComparisonDialog from "./ComparisonDialog";
+import AccountingDrill from "./AccountingDrill";
 import {
   comparisonRow,
   entityName,
@@ -38,6 +39,7 @@ export default function ComparisonWorkspace({
   initialFunction = "",
   onFunction,
 }) {
+  const [detailView, setDetailView] = useState("functions");
   const [popup, setPopup] = useState(
     initialFunction
       ? { detail: target, fn: initialFunction, initialView: "peers" }
@@ -264,42 +266,56 @@ export default function ComparisonWorkspace({
                   </p>
                 </div>
               </div>
-              <div className="cmp-function-labels" aria-label="Velg funksjon">
-                {functions.map((f) => (
-                  <button
-                    key={f.code}
-                    aria-haspopup="dialog"
-                    aria-pressed={popup?.fn === f.code}
-                    onClick={() => inspectFunction(f.code)}
-                  >
-                    {f.code} · {f.name}
-                  </button>
-                ))}
+              <div className="cmp-view-switch cmp-account-switch" role="group" aria-label="Detaljnivå">
+                <button type="button" aria-pressed={detailView === "functions"} onClick={() => setDetailView("functions")}>
+                  Funksjoner
+                </button>
+                <button type="button" aria-pressed={detailView === "accounts"} onClick={() => setDetailView("accounts")}>
+                  Regnskapsposter
+                </button>
               </div>
-              {functions.length ? (
-                <>
-                  <div className="cmp-chart-legend">
-                    <span>
-                      <i />
-                      {entityName(target)}
-                    </span>
-                    <span>
-                      <i className="peer" />
-                      {referenceName(method)}
-                    </span>
-                  </div>
-                  <CostChart
-                    rows={functionRows}
-                    paired
-                    deltas
-                    animate={false}
-                    title={title}
-                    chartKey={`functions-${sector}-${chartKey}`}
-                    onSelect={inspectFunction}
-                  />
-                </>
+              {detailView === "accounts" ? (
+                <AccountingDrill target={target} peers={peers} year={year} method={method} functions={functions} />
               ) : (
-                <p>Ingen funksjonsdata for dette området.</p>
+                <>
+                  <div className="cmp-function-labels" aria-label="Velg funksjon">
+                    {functions.map((f) => (
+                      <button
+                        key={f.code}
+                        aria-haspopup="dialog"
+                        aria-pressed={popup?.fn === f.code}
+                        onClick={() => inspectFunction(f.code)}
+                      >
+                        {f.code} · {f.name}
+                      </button>
+                    ))}
+                  </div>
+                  {functions.length ? (
+                    <>
+                      <div className="cmp-chart-legend">
+                        <span>
+                          <i />
+                          {entityName(target)}
+                        </span>
+                        <span>
+                          <i className="peer" />
+                          {referenceName(method)}
+                        </span>
+                      </div>
+                      <CostChart
+                        rows={functionRows}
+                        paired
+                        deltas
+                        animate={false}
+                        title={title}
+                        chartKey={`functions-${sector}-${chartKey}`}
+                        onSelect={inspectFunction}
+                      />
+                    </>
+                  ) : (
+                    <p>Ingen funksjonsdata for dette området.</p>
+                  )}
+                </>
               )}
             </aside>
           )}

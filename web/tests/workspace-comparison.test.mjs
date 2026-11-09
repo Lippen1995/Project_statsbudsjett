@@ -13,6 +13,7 @@ import {
   point,
   population,
 } from "../src/sider/comparison.js";
+import { ACCOUNT_SECTIONS, accountingComparison } from "../src/sider/accounting-drill.js";
 const read = (code) =>
   JSON.parse(
     readFileSync(
@@ -27,6 +28,26 @@ const index = JSON.parse(
 );
 const target = read("1103"),
   peers = defaultPeers(index.entities, "1103").map(read);
+test("administration accounting drill uses published gross groups and keeps subaccounts separate", () => {
+  const amount = (code) => accountingComparison(target, peers, 2025, "120", code, "median").own.amount;
+  const [, grossPosts] = ACCOUNT_SECTIONS[0];
+  assert.equal(grossPosts.reduce((sum, [code]) => sum + amount(code), 0), 698787);
+  assert.equal(amount("AGD10"), 699246);
+  assert.equal(amount("AG16"), 452233);
+  assert.deepEqual(grossPosts[0][2].map(amount), [78049, 57245, 13973]);
+  assert.equal(amount("A600"), 0);
+  const missing = accountingComparison(target, [], 2025, "190", "AG16", "median");
+  assert.equal(missing.own.amount, null);
+  assert.equal(missing.reported, false);
+});
+test("account references compare the same year, function and art across municipalities", () => {
+  const other = read("1108");
+  const art = other.accountingArts["120"].find(({ code }) => code === "A090");
+  const value = art.values[2024].amount * 1000 / population(other, 2024);
+  const row = accountingComparison(target, peers, 2024, "120", "A090", "weighted", other);
+  assert.equal(row.reference, value);
+  assert.equal(row.count, 1);
+});
 test("aggregate and sector drilldowns use the actual exports rather than summing overlapping services", () => {
   const all = comparisonRow(target, peers, 2025);
   assert.equal(all.own.amount, target.overview.net_expenses[2025].amount);

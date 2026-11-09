@@ -814,3 +814,90 @@
 .cmp-cost-tooltip--hover thead th + th {
   padding-left: 6px;
 }
+
+.cmp-account-switch {
+  margin: 0 0 14px;
+}
+.cmp-account-filter {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 13px;
+  font-size: 11px;
+  color: var(--dempet);
+}
+.cmp-account-filter select {
+  width: 100%;
+  min-width: 0;
+}
+.cmp-account-table {
+  overflow-x: auto;
+}
+.cmp-account-table table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 11px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+.cmp-account-table caption {
+  padding: 0 0 7px;
+  text-align: left;
+  color: var(--dempet);
+}
+.cmp-account-table th,
+.cmp-account-table td {
+  padding: 7px 5px;
+  border-bottom: 1px solid var(--strek);
+  text-align: right;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  font-weight: 400;
+}
+.cmp-account-table th:first-child {
+  text-align: left;
+}
+.cmp-account-table th:first-child:not([colspan]) {
+  width: 43%;
+}
+.cmp-account-table td {
+  white-space: nowrap;
+}
+.cmp-account-table small {
+  display: block;
+  color: var(--dempet);
+  font-size: 10px;
+}
+.cmp-account-table .cmp-account-section th {
+  padding-top: 13px;
+  color: var(--dempet);
+  font-weight: 600;
+}
+.ft .cmp-account-table button {
+  font: inherit;
+  text-align: left;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gronn);
+  cursor: pointer;
+}
+.cmp-account-arts > td {
+  padding: 4px 0;
+  background: var(--flate);
+  white-space: normal;
+}
+.cmp-account-arts p {
+  margin: 6px;
+  text-align: left;
+  color: var(--dempet);
+}
+@media (max-width: 650px) {
+  .cmp-account-table th,
+  .cmp-account-table td {
+    padding-inline: 3px;
+  }
+  .cmp-account-table td {
+    white-space: normal;
+  }
+}

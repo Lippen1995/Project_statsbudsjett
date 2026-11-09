@@ -66,12 +66,13 @@ export function benchmark(
   functionCode = "",
   method = "median",
 ) {
-  const values = details
-    .map((d) => ({
-      p: point(d, year, sector, functionCode),
-      population: population(d, year),
-    }))
-    .filter(({ p }) => Number.isFinite(p?.perCapita));
+  return benchmarkObservations(details.map((d) => ({
+    p: point(d, year, sector, functionCode),
+    population: population(d, year),
+  })), method);
+}
+export function benchmarkObservations(observations, method) {
+  const values = observations.filter(({ p }) => Number.isFinite(p?.perCapita));
   if (!values.length) return { value: null, count: 0 };
   if (method === "weighted") {
     // Exact aggregate expense / reconstructed population, never an average of ratios.
