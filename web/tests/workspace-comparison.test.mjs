@@ -165,3 +165,20 @@ test("axes fit the actual data and produce ticks on the same finite domain, incl
   );
   assert.ok(chartDomain([80, 90], { min: 100, max: null }).domain[0] < 100);
 });
+
+test("art drill keeps the same account in the ranking and historical comparison", () => {
+  const other = read("1108");
+  const [, [payroll]] = ACCOUNT_SECTIONS[0];
+  const [post, , [pension]] = payroll;
+  const row = comparisonRow(target, peers, 2025, "FGK1b", "120", "median", null, "perCapita", pension);
+  const postRow = comparisonRow(target, peers, 2025, "FGK1b", "120", "median", null, "perCapita", post);
+  assert.equal(postRow.own.amount, 452233);
+  assert.equal(row.own.amount, 78049);
+  assert.equal(row.b, accountingComparison(target, peers, 2025, "120", pension, "median").reference);
+
+  const comparison = comparisonRow(target, peers, 2024, "FGK1b", "120", "median", other, "amount", pension);
+  const amount = (detail, year) => detail.accountingArts["120"].find((art) => art.code === pension).values[year].amount;
+  assert.equal(comparison.b, amount(other, 2024) / 1000);
+  assert.equal(comparison.own.growth, (amount(target, 2024) / amount(target, 2023) - 1) * 100);
+  assert.equal(comparison.reference.growth, (amount(other, 2024) / amount(other, 2023) - 1) * 100);
+});

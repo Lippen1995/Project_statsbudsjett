@@ -1,4 +1,5 @@
 import { benchmark, point, population } from "./comparison.js";
+import { accountingBenchmark, accountingObservation } from "./accounting-drill.js";
 
 export const formatNumber = (value, digits = 0) =>
   Number.isFinite(value)
@@ -25,9 +26,10 @@ export function observation(
   sector = "",
   fn = "",
   mode = "perCapita",
+  art = "",
 ) {
-  const current = point(detail, year, sector, fn),
-    previous = point(detail, Number(year) - 1, sector, fn);
+  const read = (y) => art ? accountingObservation(detail, y, fn, art) : point(detail, y, sector, fn);
+  const current = read(year), previous = read(Number(year) - 1);
   return {
     name: entityName(detail),
     year,
@@ -46,14 +48,19 @@ export function comparisonRow(
   method = "median",
   other = null,
   mode = "perCapita",
+  art = "",
 ) {
-  const own = observation(target, year, sector, fn, mode);
+  const own = observation(target, year, sector, fn, mode, art);
+  const readReference = (y) => art
+    ? accountingBenchmark(peers, y, fn, art, method)
+    : benchmark(peers, y, sector, fn, method);
+  const currentReference = other ? null : readReference(year);
   const ref = other
-    ? observation(other, year, sector, fn, mode)
+    ? observation(other, year, sector, fn, mode, art)
     : {
         name: referenceName(method),
         year,
-        perCapita: benchmark(peers, year, sector, fn, method).value,
+        perCapita: currentReference.value,
         amount: null,
         population: null,
         calculated: true,
@@ -63,7 +70,7 @@ export function comparisonRow(
       Number.isFinite(ref.perCapita) && own.population > 0
         ? (ref.perCapita * own.population) / 1000
         : null;
-    const prev = benchmark(peers, year - 1, sector, fn, method).value;
+    const prev = readReference(year - 1).value;
     const prevAmount =
       Number.isFinite(prev) && population(target, year - 1) > 0
         ? (prev * population(target, year - 1)) / 1000
@@ -72,7 +79,7 @@ export function comparisonRow(
       mode === "amount" ? ref.amount : ref.perCapita,
       mode === "amount" ? prevAmount : prev,
     );
-    ref.count = benchmark(peers, year, sector, fn, method).count;
+    ref.count = currentReference.count;
   }
   return {
     code: String(year),
@@ -88,11 +95,11 @@ export function comparisonRow(
     percent: deviation(own.perCapita, ref.perCapita),
   };
 }
-export function peerRows(target, peers, year, sector, fn, method, other, mode) {
+export function peerRows(target, peers, year, sector, fn, method, other, mode, art = "") {
   // Every row uses the same focal municipality's peer reference.
   return (other ? [target, other] : [target, ...peers])
     .map((detail) => ({
-      ...comparisonRow(detail, peers, year, sector, fn, method, other, mode),
+      ...comparisonRow(detail, peers, year, sector, fn, method, other, mode, art),
       code: detail.entity.code,
       label: entityName(detail),
       selected: detail.entity.code === target.entity.code,

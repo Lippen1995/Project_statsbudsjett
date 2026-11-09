@@ -106,6 +106,7 @@ export default function CostChart({
   mode = "perCapita",
   secondary = "none",
   title,
+  categoryLabel = "Tjenesteområde / funksjon",
   onSelect,
   selected,
   deltas = false,
@@ -220,7 +221,7 @@ export default function CostChart({
                     ? "Kommune"
                     : history
                       ? "Regnskapsår"
-                      : "Tjenesteområde / funksjon",
+                      : categoryLabel,
                   position: "insideBottom",
                   offset: -6,
                   style: { fill: "var(--dempet)", fontSize: 11 },

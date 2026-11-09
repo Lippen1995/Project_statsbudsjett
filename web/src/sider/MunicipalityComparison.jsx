@@ -587,7 +587,7 @@ export default function MunicipalityComparison({ hash }) {
               onSector={setSector}
               method={method}
               onMethod={setMethod}
-              initialFunction={functionCode}
+              functionCode={functionCode}
               onFunction={setFunctionCode}
             />
           )}

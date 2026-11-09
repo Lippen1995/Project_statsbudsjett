@@ -19,6 +19,7 @@ export default function ComparisonDialog({
   years,
   sector,
   fn = "",
+  account,
   method,
   onClose,
   initialView = "history",
@@ -81,18 +82,18 @@ export default function ComparisonDialog({
       ? null
       : loaded || (extra?.entity.code === compare ? extra : null);
   const waiting = compare !== "peers" && !other;
-  const name = fn
+  const name = account?.label || (fn
     ? `${fn} · ${target.functions?.find((f) => f.code === fn)?.name || "Funksjon"}`
-    : SECTORS.find((s) => s[0] === sector)?.[1] || "Samlet netto drift";
+    : SECTORS.find((s) => s[0] === sector)?.[1] || "Samlet netto drift");
   const period = years.filter((y) => y >= from && y <= to);
   const accounts = view === "accounts";
   const rows = waiting || accounts
     ? []
     : view === "history"
       ? period.map((y) =>
-          comparisonRow(target, peers, y, sector, fn, method, other, mode),
+          comparisonRow(target, peers, y, sector, fn, method, other, mode, account?.code),
         )
-      : peerRows(target, peers, year, sector, fn, method, other, mode);
+      : peerRows(target, peers, year, sector, fn, method, other, mode, account?.code);
   const row =
     rows.find((r) => r.code === inspected) ||
     (view === "history" ? rows.at(-1) : rows.find((r) => r.selected));
@@ -101,6 +102,7 @@ export default function ComparisonDialog({
     target.entity.code,
     sector,
     fn,
+    account?.code,
     method,
     compare,
     view,
@@ -136,11 +138,11 @@ export default function ComparisonDialog({
             {view === "history" ? `${from}–${to}` : year}
           </div>
           <h2 id="cmp-inspect-title">
-            {fn
+            {fn && !account
               ? name
               : `${entityName(target)} ${view === "history" ? "over tid" : "· sammenligning"}`}
           </h2>
-          {!fn && <p>{name}</p>}
+          {(!fn || account) && <p>{name}</p>}
         </div>
         <button
           autoFocus
@@ -160,7 +162,7 @@ export default function ComparisonDialog({
           {[
             ["history", "Historikk"],
             ["peers", "Kommunene"],
-            ...(fn ? [["accounts", "Regnskapsposter"]] : []),
+            ...(fn && !account ? [["accounts", "Regnskapsposter"]] : []),
           ].map(([value, label]) => (
             <button
               key={value}

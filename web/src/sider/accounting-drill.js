@@ -22,7 +22,7 @@ export const ACCOUNT_SECTIONS = [
   ]],
 ];
 
-function artRecord(detail, year, functionCode, artCode) {
+export function accountingObservation(detail, year, functionCode, artCode) {
   const art = detail?.accountingArts?.[functionCode]?.find(({ code }) => code === artCode);
   const value = accountingArtValue(art, year, detail?.latestYear)
     ?? (artCode === "AGD10" ? detail?.functions?.find(({ code }) => code === functionCode)
@@ -37,10 +37,17 @@ function artRecord(detail, year, functionCode, artCode) {
   };
 }
 
+export function accountingBenchmark(details, year, functionCode, artCode, method) {
+  return benchmarkObservations(details.map((detail) => {
+    const p = accountingObservation(detail, year, functionCode, artCode);
+    return { p, population: p.population };
+  }), method);
+}
+
 export function accountingComparison(target, peers, year, functionCode, artCode, method, other) {
-  const own = artRecord(target, year, functionCode, artCode);
+  const own = accountingObservation(target, year, functionCode, artCode);
   const compared = (other ? [other] : peers).map(
-    (detail) => artRecord(detail, year, functionCode, artCode),
+    (detail) => accountingObservation(detail, year, functionCode, artCode),
   );
   const { value, count } = benchmarkObservations(
     compared.map((p) => ({ p, population: p.population })),
