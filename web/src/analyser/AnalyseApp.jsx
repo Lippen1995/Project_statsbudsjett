@@ -4,6 +4,7 @@ import { GrowthComparison, RealExpenditureChart, AnnualChangeChart } from './Ana
 import { annualChanges } from './insights'
 import { graphPlan } from './chart-plan.js'
 import SeriesChart from './SeriesChart.jsx'
+import { HealthPolitics, HealthScenario } from './HealthReform.jsx'
 import {
   BudgetTotals,
   BudgetChanges,
@@ -200,6 +201,7 @@ export function Article({ article, preview, review, successor }) {
     'budget-totals': BudgetTotals,
     'budget-changes': BudgetChanges,
     'budget-bridge': BudgetBridge,
+    'health-scenario': HealthScenario,
   }
   const changes = new Map(annualChanges(budget || oil ? [] : r.rows).map((row) => [row.year, row.change]))
   const words = c.sections
@@ -341,6 +343,7 @@ export function Article({ article, preview, review, successor }) {
         </React.Fragment>
       ))}
       {r.eventEvidence && <EventEvidence report={r} />}
+      {r.healthPolicy && <HealthPolitics policy={r.healthPolicy} />}
       {budget && <PoliticalEvidence report={r} />}
       {budget && !bridgeLed && <PartyPriorities report={r} />}
       <section id="metode" className="an-method">

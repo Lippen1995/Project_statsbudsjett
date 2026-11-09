@@ -667,6 +667,20 @@
 .an-chart-endpoints span { display: block; min-width: 0; overflow-wrap: anywhere; }
 .an-chart-endpoints i { display: inline-block; width: .55rem; height: .55rem; margin-right: .35rem; }
 
+.an-health-scenario { margin: 2.5rem 0; padding: clamp(1rem, 3vw, 2rem); border: 1px solid #d8d1c6; border-radius: 18px; background: #f7f3ec; }
+.an-health-scenario h3 { margin: 0 0 .4rem; font-size: clamp(1.3rem, 3vw, 1.8rem); }
+.an-health-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; margin: 1.5rem 0; }
+.an-health-controls label > span { display: flex; justify-content: space-between; gap: 1rem; font-size: .9rem; }
+.an-health-controls input { width: 100%; accent-color: #a13c2f; }
+.an-health-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; }
+.an-health-results div { padding: .9rem; background: #fff; border-radius: 12px; }
+.an-health-results span, .an-health-results strong { display: block; }
+.an-health-results span { color: #706a60; font-size: .78rem; }
+.an-health-results strong { margin-top: .25rem; font-size: 1.05rem; }
+@media (max-width: 720px) {
+  .an-health-controls, .an-health-results { grid-template-columns: 1fr; }
+}
+
 .an-legend button { display: inline-flex; align-items: center; gap: 6px; background: none; color: inherit; font: inherit; padding: 5px 0; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
 .an-legend button.is-active { color: var(--ink); border-bottom-color: var(--series-color); font-weight: 600; }
 .an-legend button:focus-visible { outline: 2px solid var(--series-color); outline-offset: 3px; }

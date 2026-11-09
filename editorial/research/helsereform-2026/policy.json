@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "updated": "2026-11-03T08:15:00.000Z",
+  "nou": {
+    "title": "NOU 2026: 12 En helsetjeneste for vår tid",
+    "url": "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf",
+    "pdfSha256": "b3a7c14bb2a21e8f1184de720396a5123415bb414a57e7c4e0635e19925ce51f",
+    "rhfFte2024": 495,
+    "description": "Utredningen oppgir avtalte årsverk i de regionale helseforetakene. Tallet er en historisk observasjon og ikke et forslag om å fjerne like mange stillinger."
+  },
+  "scenario": {
+    "fte": 495,
+    "timeSaving": 0.1,
+    "realization": 0.5,
+    "cashShare": 0,
+    "annualEmployerCost": 1200000,
+    "nonStaffSavings": 0,
+    "upfrontCost": 500000000,
+    "ongoingCost": 50000000,
+    "rampYears": 3,
+    "years": 10,
+    "discountRate": 0.04
+  },
+  "politics": [
+    {
+      "actor": "Helsereformutvalget",
+      "position": "Foreslår blant annet felles nærhelsetjenester, endret statlig og regional styring, ny finansiering og sterkere digital samhandling.",
+      "status": "Forslag fra et offentlig utvalg, ikke vedtatt politikk."
+    },
+    {
+      "actor": "Regjeringen",
+      "position": "Har sendt utredningen på høring og varslet videre reformarbeid og bred dialog på Stortinget.",
+      "status": "Har ikke sluttet seg til alle forslagene."
+    },
+    {
+      "actor": "KS",
+      "position": "Støtter delt ansvar og bedre samarbeid, men vil at nærhelsetjenester skal være frivillige og avviser å flytte legevakten til staten.",
+      "status": "Dokumentert støtte og motstand mot ulike deler."
+    },
+    {
+      "actor": "Legeforeningen",
+      "position": "Støtter retningen for finansiering av store sykehusbygg, men advarer mot sentralisering og store helseforetak.",
+      "status": "Dokumentert støtte og motstand mot ulike deler."
+    },
+    {
+      "actor": "Spekter",
+      "position": "Mener endringer må løse konkrete pasient- og arbeidskraftproblemer, og peker på kommuneøkonomi og kommunestruktur.",
+      "status": "Innspill, ikke støtte til hele reformen."
+    }
+  ],
+  "sources": [
+    {
+      "name": "NOU 2026: 12 En helsetjeneste for vår tid",
+      "url": "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf",
+      "description": "Utvalgets forslag, bakgrunn og vurderinger. Dokumentet inneholder ikke et samlet netto spare- eller kostnadsanslag for reformen."
+    },
+    {
+      "name": "Helse- og omsorgsdepartementet: mottak av utredningen",
+      "url": "https://www.regjeringen.no/no/aktuelt/nytt-skritt-pa-veien-mot-helsereform-vestre-tok-imot-helsereformutvalgets-forslag/id3190681/",
+      "description": "Regjeringens videre prosess med høring, innspillsmøter og ønske om bredt samarbeid."
+    },
+    {
+      "name": "KS: støtte til delt ansvar, motstand mot statlig legevakt",
+      "url": "https://www.ks.no/pressemeldinger/ks-stotter-delt-ansvar-men-vil-beholde-legevakten/",
+      "description": "KS sitt første dokumenterte standpunkt til konkrete deler av utredningen."
+    },
+    {
+      "name": "Legeforeningen: sykehusbygg og lokal innflytelse",
+      "url": "https://api.kommunikasjon.ntb.no/pressemelding/19126148/riktig-retning-for-sykehusbygg-men-makten-ma-flyttes-naermere-pasientene?lang=no&publisherId=17848606",
+      "description": "Legeforeningens reaksjon på finansiering, sentralisering og nærhet til pasientbehandlingen."
+    },
+    {
+      "name": "Spekter: endringer må løse konkrete problemer",
+      "url": "https://api.kommunikasjon.ntb.no/pressemelding/19126458/helseformutvalgets-rapport-endringer-ma-lose-konkrete-problemer-for-pasientene?lang=no&publisherId=89834",
+      "description": "Spekters første reaksjon om kommuneøkonomi, struktur, pasienter og arbeidskraft."
+    }
+  ]
+}
