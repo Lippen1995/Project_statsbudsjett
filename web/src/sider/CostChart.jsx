@@ -40,21 +40,21 @@ export function CostTable({
   if (!row?.own) return null;
   const { own, reference: ref } = row;
   const metrics = [
-    ["Per innbygger", `${n(own.perCapita)} kr`, `${n(ref?.perCapita)} kr`],
-    ["Nominelt beløp", nominal(own.amount), nominal(ref?.amount)],
+    [compact ? "Per innbygger" : "Kr per innb.", `${n(own.perCapita)} kr`, `${n(ref?.perCapita)} kr`],
+    [compact ? "Nominelt beløp" : "Totalt", nominal(own.amount), nominal(ref?.amount)],
     [
       "Folketall",
       own.population > 0 ? `≈ ${n(own.population)}` : "–",
       ref?.population > 0 ? `≈ ${n(ref.population)}` : "–",
     ],
-    ["Avvik per innbygger", percent(row.percent), "–"],
+    [compact ? "Avvik per innbygger" : "Avvik per innb.", percent(row.percent), "–"],
     ...(history
-      ? [["År/år-endring", percent(own.growth), percent(ref?.growth)]]
+      ? [[compact ? "År/år-endring" : "År/år", percent(own.growth), percent(ref?.growth)]]
       : []),
   ];
   return (
     <div
-      className={`cmp-cost-tooltip ${compact ? "cmp-cost-tooltip--inline" : ""}`}
+      className={`cmp-cost-tooltip ${compact ? "cmp-cost-tooltip--inline" : "cmp-cost-tooltip--hover"}`}
     >
       <div className="cmp-tooltip-heading">
         {context || row.context || own.name}
@@ -78,7 +78,7 @@ export function CostTable({
           ))}
         </tbody>
       </table>
-      {ref?.calculated && (
+      {compact && ref?.calculated && (
         <p>
           Referansebeløpet er beregnet ved {own.name}s folketall. Referansen
           bygger på {ref.count} kommuner.
@@ -111,6 +111,7 @@ export default function CostChart({
   deltas = false,
   chartKey,
   onInspect,
+  animate = true,
 }) {
   const reduced = useReducedMotion();
   const [bounds, setBounds] = useState(EMPTY),
@@ -254,8 +255,9 @@ export default function CostChart({
               )}
               <Tooltip
                 content={<ChartTooltip history={history} context={title} />}
+                isAnimationActive={false}
                 cursor={{ fill: "var(--cmp-hover)" }}
-                wrapperStyle={{ outline: "none", zIndex: 20 }}
+                wrapperStyle={{ outline: "none", zIndex: 20, transition: "none" }}
               />
               <Bar
                 yAxisId="cost"
@@ -263,7 +265,7 @@ export default function CostChart({
                 name="Kommune"
                 fill="var(--gronn)"
                 maxBarSize={34}
-                isAnimationActive={!reduced}
+                isAnimationActive={animate && !reduced}
                 animationDuration={850}
                 animationEasing="ease-out"
               >
@@ -287,7 +289,7 @@ export default function CostChart({
                   name="Referanse"
                   fill="var(--cmp-peer)"
                   maxBarSize={34}
-                  isAnimationActive={!reduced}
+                  isAnimationActive={animate && !reduced}
                   animationBegin={90}
                   animationDuration={850}
                   animationEasing="ease-out"
@@ -306,7 +308,7 @@ export default function CostChart({
                   strokeWidth={2}
                   dot={{ r: 3 }}
                   connectNulls={false}
-                  isAnimationActive={!reduced}
+                  isAnimationActive={animate && !reduced}
                   animationDuration={850}
                 />
               )}

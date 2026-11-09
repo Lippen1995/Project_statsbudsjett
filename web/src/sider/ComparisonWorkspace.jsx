@@ -114,9 +114,10 @@ export default function ComparisonWorkspace({
           paired
           deltas
           selected={sector}
+          animate={false}
           title="Tjenesteområder"
           onSelect={selectSector}
-          chartKey={`services-${chartKey}-${sector}`}
+          chartKey={`services-${chartKey}`}
         />
         <label className="cmp-mobile-sector">
           Tjenesteområde
@@ -140,64 +141,53 @@ export default function ComparisonWorkspace({
             </button>
           ))}
         </div>
-        {sector ? (
-          <div
-            className="cmp-selected-facts"
-            key={`${sector}-${chartKey}`}
-            aria-live="polite"
-          >
-            <div className="cmp-facts-head">
-              <div>
-                <h3>{title}</h3>
-                <span>
-                  {entityName(target)} · {year}
-                </span>
-              </div>
-              <button onClick={() => selectSector("")}>
-                Alle tjenesteområder
-              </button>
+        <div className="cmp-selected-facts" aria-live="polite">
+          <div className="cmp-facts-head">
+            <div>
+              <h3>{title}</h3>
+              <span>
+                {entityName(target)} · {year}
+              </span>
             </div>
-            <dl className="cmp-facts-grid">
-              <div>
-                <dt>Per innbygger</dt>
-                <dd>{n(summary.own.perCapita)} kr</dd>
-              </div>
-              <div>
-                <dt>{referenceName(method)} · per innbygger</dt>
-                <dd>{n(summary.reference.perCapita)} kr</dd>
-              </div>
-              <div>
-                <dt>Avvik fra {referenceName(method).toLowerCase()}</dt>
-                <dd>{percent(summary.percent)}</dd>
-              </div>
-              <div className="secondary">
-                <dt>Totale netto driftsutgifter</dt>
-                <dd>{nominal(summary.own.amount)}</dd>
-              </div>
-              <div className="secondary">
-                <dt>Folketall</dt>
-                <dd>
-                  {population(target, year) > 0
-                    ? `≈ ${n(population(target, year))} innbyggere`
-                    : "–"}
-                </dd>
-              </div>
-              <div className="secondary">
-                <dt>Referanse ved samme folketall</dt>
-                <dd>{nominal(summary.reference.amount)}</dd>
-              </div>
-            </dl>
-            <p>
-              Referansebeløpet er beregnet ved {entityName(target)}s folketall.
-              Referansen bygger på {summary.reference.count} kommuner med data.
-            </p>
+            <button onClick={() => selectSector("")} disabled={!sector}>
+              Alle tjenesteområder
+            </button>
           </div>
-        ) : (
-          <div className="cmp-no-selection">
-            <span>Alle tjenesteområder · samlet netto drift</span>
-            <span>Velg en søylegruppe for detaljer.</span>
-          </div>
-        )}
+          <dl className="cmp-facts-grid">
+            <div>
+              <dt>Per innbygger</dt>
+              <dd>{n(summary.own.perCapita)} kr</dd>
+            </div>
+            <div>
+              <dt>{referenceName(method)} · per innbygger</dt>
+              <dd>{n(summary.reference.perCapita)} kr</dd>
+            </div>
+            <div>
+              <dt>Avvik fra {referenceName(method).toLowerCase()}</dt>
+              <dd>{percent(summary.percent)}</dd>
+            </div>
+            <div className="secondary">
+              <dt>Totale netto driftsutgifter</dt>
+              <dd>{nominal(summary.own.amount)}</dd>
+            </div>
+            <div className="secondary">
+              <dt>Folketall</dt>
+              <dd>
+                {population(target, year) > 0
+                  ? `≈ ${n(population(target, year))} innbyggere`
+                  : "–"}
+              </dd>
+            </div>
+            <div className="secondary">
+              <dt>Referanse ved samme folketall</dt>
+              <dd>{nominal(summary.reference.amount)}</dd>
+            </div>
+          </dl>
+          <p>
+            Referansebeløpet er beregnet ved {entityName(target)}s folketall.
+            Referansen bygger på {summary.reference.count} kommuner med data.
+          </p>
+        </div>
       </section>
       <div className="cmp-workspace-meta">
         <span>
@@ -220,12 +210,11 @@ export default function ComparisonWorkspace({
             </div>
             <span>{year}</span>
           </div>
-          <div className="cmp-rankings" key={`${sector}-${chartKey}`}>
-            {ranks.map((r, index) => (
+          <div className="cmp-rankings">
+            {ranks.map((r) => (
               <div
                 key={r.code}
                 className={`cmp-ranking-row ${r.code === target.entity.code ? "own" : ""}`}
-                style={{ "--cmp-order": index }}
               >
                 <button
                   className="cmp-rank-trigger"
@@ -264,54 +253,57 @@ export default function ComparisonWorkspace({
             {entityName(target)}.
           </p>
         </section>
-        {sector && (
-          <aside className="cmp-function-panel" key={`${sector}-${chartKey}`}>
-            <div className="cmp-editorial-head">
-              <div>
-                <h2>Hva ligger bak?</h2>
-                <p>
-                  {title} · {functions.length} KOSTRA-funksjoner
-                </p>
-              </div>
-            </div>
-            <div className="cmp-function-labels" aria-label="Velg funksjon">
-              {functions.map((f) => (
-                <button
-                  key={f.code}
-                  aria-haspopup="dialog"
-                  aria-pressed={popup?.fn === f.code}
-                  onClick={() => inspectFunction(f.code)}
-                >
-                  {f.code} · {f.name}
-                </button>
-              ))}
-            </div>
-            {functions.length ? (
-              <>
-                <div className="cmp-chart-legend">
-                  <span>
-                    <i />
-                    {entityName(target)}
-                  </span>
-                  <span>
-                    <i className="peer" />
-                    {referenceName(method)}
-                  </span>
+        <div className="cmp-function-slot" inert={!sector}>
+          {sector && (
+            <aside className="cmp-function-panel">
+              <div className="cmp-editorial-head">
+                <div>
+                  <h2>Hva ligger bak?</h2>
+                  <p>
+                    {title} · {functions.length} KOSTRA-funksjoner
+                  </p>
                 </div>
-                <CostChart
-                  rows={functionRows}
-                  paired
-                  deltas
-                  title={title}
-                  chartKey={`functions-${sector}-${chartKey}`}
-                  onSelect={inspectFunction}
-                />
-              </>
-            ) : (
-              <p>Ingen funksjonsdata for dette området.</p>
-            )}
-          </aside>
-        )}
+              </div>
+              <div className="cmp-function-labels" aria-label="Velg funksjon">
+                {functions.map((f) => (
+                  <button
+                    key={f.code}
+                    aria-haspopup="dialog"
+                    aria-pressed={popup?.fn === f.code}
+                    onClick={() => inspectFunction(f.code)}
+                  >
+                    {f.code} · {f.name}
+                  </button>
+                ))}
+              </div>
+              {functions.length ? (
+                <>
+                  <div className="cmp-chart-legend">
+                    <span>
+                      <i />
+                      {entityName(target)}
+                    </span>
+                    <span>
+                      <i className="peer" />
+                      {referenceName(method)}
+                    </span>
+                  </div>
+                  <CostChart
+                    rows={functionRows}
+                    paired
+                    deltas
+                    animate={false}
+                    title={title}
+                    chartKey={`functions-${sector}-${chartKey}`}
+                    onSelect={inspectFunction}
+                  />
+                </>
+              ) : (
+                <p>Ingen funksjonsdata for dette området.</p>
+              )}
+            </aside>
+          )}
+        </div>
       </div>
       <details className="cmp-workspace-method">
         <summary>Tallgrunnlag og metode</summary>

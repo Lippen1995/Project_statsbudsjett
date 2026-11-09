@@ -41,7 +41,7 @@ export default function ComparisonDialog({
     element.showModal();
     return () => {
       element.close();
-      if (opener?.isConnected) opener.focus();
+      if (opener?.isConnected) opener.focus({ preventScroll: true });
     };
   }, []);
   useEffect(() => {
