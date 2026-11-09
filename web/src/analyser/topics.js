@@ -6,6 +6,10 @@ export const focusedQuestions = {
     label: 'Midlertidig krisestøtte',
   },
   'military-support': { evidence: ['ukrainastotte'], label: 'Militær støtte til Ukraina' },
+  'health-reform': {
+    evidence: ['rhf', 'kommunehelse', 'psykisk', 'ikt'],
+    label: 'Helsereformen',
+  },
 }
 export function topicKey(report) {
   if (report.kind === 'oil-funds') {

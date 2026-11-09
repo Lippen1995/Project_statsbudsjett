@@ -2,20 +2,6 @@
   "version": 1,
   "items": [
     {
-      "topic": "Analyser den nye helsereformen",
-      "instructions": "Jeg har lagt ved kildelenken til den nye helsereformen. Analyser helsereformen og formuler resultatet og analysen på en måte som får helt vanlige folk til å forstå innholdet. Hva innebærer reformen? Vil vanlige folk bli påvirket? Hvordan? Vil helsepersonell bli påvirket? Hvordan? Vil dette spare penger? Vil dette koste penger? Vil vi løsrive midler til å øke helsetjenestekapasitet ved å redusere administrative og faste kostnader? Vil det påvirke kvaliteten til helsetjenesten? Hvordan vil digitalisering og KI påvirke de ansatte i helsetjenesten?\nLag en fullstendig økonomisk analyse med interaktive scenarioer og grafer. I tillegg til vedlagt kildelenke har SSB masse nyttig informasjon. Bruk mye data fra SSB til å supplere og underbygge analysen din. SSb har mye relevant informasjon som er nyttig i en slik analyse.",
-      "scheduledDate": "2026-11-02",
-      "updatedAt": "2026-11-03T14:13:08.820Z",
-      "references": [
-        "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf"
-      ],
-      "priority": "urgent",
-      "id": "117452e6-471e-4f63-9271-d10fa35dc362",
-      "source": "admin",
-      "createdAt": "2026-11-02T14:14:25.076Z",
-      "reportPlan": null
-    },
-    {
       "id": "51f29f1d-5f85-472c-8e19-55bdd6efdfee",
       "source": "sven",
       "topic": "Kommunal- og distriktsdepartementet: Har det blitt mer eller mindre å rutte med?",
@@ -199,6 +185,26 @@
       "status": "delivered",
       "at": "2026-11-02T08:21:20.570Z",
       "reviewUrl": "https://github.com/Lippen1995/Project_statsbudsjett/pull/82"
+    },
+    {
+      "entry": {
+        "topic": "Analyser den nye helsereformen",
+        "instructions": "Jeg har lagt ved kildelenken til den nye helsereformen. Analyser helsereformen og formuler resultatet og analysen på en måte som får helt vanlige folk til å forstå innholdet. Hva innebærer reformen? Vil vanlige folk bli påvirket? Hvordan? Vil helsepersonell bli påvirket? Hvordan? Vil dette spare penger? Vil dette koste penger? Vil vi løsrive midler til å øke helsetjenestekapasitet ved å redusere administrative og faste kostnader? Vil det påvirke kvaliteten til helsetjenesten? Hvordan vil digitalisering og KI påvirke de ansatte i helsetjenesten?\nLag en fullstendig økonomisk analyse med interaktive scenarioer og grafer. I tillegg til vedlagt kildelenke har SSB masse nyttig informasjon. Bruk mye data fra SSB til å supplere og underbygge analysen din. SSb har mye relevant informasjon som er nyttig i en slik analyse.",
+        "scheduledDate": "2026-11-02",
+        "updatedAt": "2026-11-03T14:13:08.820Z",
+        "references": [
+          "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf"
+        ],
+        "priority": "urgent",
+        "id": "117452e6-471e-4f63-9271-d10fa35dc362",
+        "source": "admin",
+        "createdAt": "2026-11-02T14:14:25.076Z",
+        "reportPlan": null,
+        "topicKey": "posts:rhf,kommunehelse,psykisk,ikt:health-reform"
+      },
+      "status": "delivered",
+      "at": "2026-11-09T10:04:19.653Z",
+      "reviewUrl": "https://github.com/Lippen1995/Project_statsbudsjett/pull/86"
     }
   ]
 }

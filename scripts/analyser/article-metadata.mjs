@@ -1,4 +1,8 @@
 export function articleMetadata(report, date) {
+  if (report.question === 'health-reform') return {
+    slug: `helsereformen-forslag-og-regnestykke-${date}`,
+    topic: 'Helse og omsorg', geography: 'Norge', type: 'Politikk og økonomi',
+  }
   if (report.kind === 'oil-funds') return {
     slug: `oljepengebruk-${report.year}-${date}`, topic: 'Statsfinanser',
     geography: 'Staten', type: 'Budsjettforslag',

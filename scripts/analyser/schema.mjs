@@ -11,6 +11,7 @@ import {
 } from './event-evidence.mjs'
 import { graphPlan } from '../../web/src/analyser/chart-plan.js'
 import { topicKey, focusedQuestions } from '../../web/src/analyser/topics.js'
+import { healthReformFacts, validateHealthReform } from './health-reform.mjs'
 export const contentHash = (article) =>
   createHash('sha256')
     .update(
@@ -189,10 +190,14 @@ export function validateArticle(article, { published = false } = {}) {
         ...calculateFacts(first, last, r.factsVersion === 2 ? r.rows : undefined),
         ...eventEvidenceFacts(r.eventEvidence, r.rows),
         ...ssbEvidenceFacts(r.ssbEvidence),
+        ...(r.healthPolicy ? healthReformFacts(r.healthPolicy) : {}),
         ...calculateResearch(r).facts,
       })
     )
       throw Error('Fakta samsvarer ikke med datagrunnlaget')
+    if ((r.question === 'health-reform') !== Boolean(r.healthPolicy))
+      throw Error('Helsereformspørsmålet mangler kontrollert reformgrunnlag')
+    if (r.healthPolicy) validateHealthReform(r.healthPolicy)
   }
   if (
     !Array.isArray(r.methodology) ||

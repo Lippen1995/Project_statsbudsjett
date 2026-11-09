@@ -18,6 +18,7 @@ export function readComparisonRoute(hash) {
   return {
     code: /^\d{4}$/.test(q.get("kommune") || "") ? q.get("kommune") : "1103",
     year: Number(q.get("aar")) || null,
+    budgetView: q.get("visning") === "budsjett",
     peers: q.has("mot")
       ? q
           .get("mot")
