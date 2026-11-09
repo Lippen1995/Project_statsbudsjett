@@ -1,0 +1,2244 @@
+{
+  "pipeline": {
+    "id": "117452e6-471e-4f63-9271-d10fa35dc362",
+    "fingerprint": "b3b8da46e3f02cffd67d8a645ee8b545dd032ddef8c56742c2bdd1f2203b5dda",
+    "topic": "Analyser den nye helsereformen",
+    "instructions": "Jeg har lagt ved kildelenken til den nye helsereformen. Analyser helsereformen og formuler resultatet og analysen på en måte som får helt vanlige folk til å forstå innholdet. Hva innebærer reformen? Vil vanlige folk bli påvirket? Hvordan? Vil helsepersonell bli påvirket? Hvordan? Vil dette spare penger? Vil dette koste penger? Vil vi løsrive midler til å øke helsetjenestekapasitet ved å redusere administrative og faste kostnader? Vil det påvirke kvaliteten til helsetjenesten? Hvordan vil digitalisering og KI påvirke de ansatte i helsetjenesten?\nLag en fullstendig økonomisk analyse med interaktive scenarioer og grafer. I tillegg til vedlagt kildelenke har SSB masse nyttig informasjon. Bruk mye data fra SSB til å supplere og underbygge analysen din. SSb har mye relevant informasjon som er nyttig i en slik analyse.",
+    "scheduledDate": "2026-11-02",
+    "plan": {
+      "kind": "expenditure",
+      "departmentId": "u-07",
+      "start": 2020,
+      "end": 2025,
+      "question": "health-reform",
+      "detailSelections": [
+        {
+          "id": "rhf",
+          "nodeIds": [
+            "u-07-0732"
+          ]
+        },
+        {
+          "id": "kommunehelse",
+          "nodeIds": [
+            "u-07-0760"
+          ]
+        },
+        {
+          "id": "psykisk",
+          "nodeIds": [
+            "u-07-0765"
+          ]
+        },
+        {
+          "id": "ikt",
+          "nodeIds": [
+            "u-07-0701"
+          ]
+        }
+      ]
+    }
+  },
+  "article": {
+    "slug": "helsereformen-forslag-og-regnestykke-2026-11-09",
+    "topic": "Helse og omsorg",
+    "geography": "Norge",
+    "type": "Politikk og økonomi",
+    "status": "draft",
+    "createdAt": "2026-11-09T10:02:44.214Z",
+    "generatedAt": "2026-11-09T10:02:44.214Z",
+    "report": {
+      "kind": "real-expenditure-per-capita",
+      "factsVersion": 2,
+      "scopeId": "u-07",
+      "scopeName": "Helse- og omsorgsdepartementet",
+      "question": "health-reform",
+      "detailSelections": [
+        {
+          "id": "rhf",
+          "nodeIds": [
+            "u-07-0732"
+          ]
+        },
+        {
+          "id": "kommunehelse",
+          "nodeIds": [
+            "u-07-0760"
+          ]
+        },
+        {
+          "id": "psykisk",
+          "nodeIds": [
+            "u-07-0765"
+          ]
+        },
+        {
+          "id": "ikt",
+          "nodeIds": [
+            "u-07-0701"
+          ]
+        }
+      ],
+      "start": 2020,
+      "end": 2025,
+      "dataUpdated": "2026-11-06T14:24:41.115233+00:00",
+      "dataHash": "087e7bfefdca4e1a02ba75fe1bd43ef54e296c8529f61030b1bc165150530ff7",
+      "facts": {
+        "startYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Første regnskapsår"
+        },
+        "endYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Siste regnskapsår"
+        },
+        "nominalGrowth": {
+          "value": 33.962014526469076,
+          "text": "34,0 %",
+          "label": "Vekst i løpende utgifter"
+        },
+        "populationGrowth": {
+          "value": 4.224622641860942,
+          "text": "4,2 %",
+          "label": "Befolkningsvekst"
+        },
+        "priceGrowth": {
+          "value": 22.699386503067487,
+          "text": "22,7 %",
+          "label": "Prisvekst målt med KPI"
+        },
+        "realPerCapitaGrowth": {
+          "value": 4.7535976352112375,
+          "text": "4,8 %",
+          "label": "Realvekst per innbygger"
+        },
+        "firstPerCapita": {
+          "value": 41963.79001337661,
+          "text": "41 964 kr",
+          "label": "Per innbygger i startåret, løpende kroner"
+        },
+        "lastPerCapita": {
+          "value": 53936.907660242316,
+          "text": "53 937 kr",
+          "label": "Per innbygger i sluttåret, løpende kroner"
+        },
+        "firstRealPerCapita": {
+          "value": 51489.31289984859,
+          "text": "51 489 kr",
+          "label": "Startåret i sluttårets priser"
+        },
+        "total": {
+          "value": 301.7414,
+          "text": "301,7 mrd. kr",
+          "label": "Utgifter i sluttåret"
+        },
+        "nominalPerCapitaGrowth": {
+          "value": 28.532021638296,
+          "text": "28,5 %",
+          "label": "Vekst per innbygger, løpende kroner"
+        },
+        "previousYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Året før største årlige endring"
+        },
+        "largestChangeYear": {
+          "value": 2021,
+          "text": "2021",
+          "label": "År med største årlige endring i absoluttverdi"
+        },
+        "largestAnnualChange": {
+          "value": 7.706036479697875,
+          "text": "7,7 %",
+          "label": "Største årlige endring, KPI-justert per innbygger"
+        },
+        "growthBeforeChange": {
+          "value": 0,
+          "text": "0,0 %",
+          "label": "KPI-justert vekst per innbygger, 2020–2020"
+        },
+        "growthSinceChange": {
+          "value": 4.7535976352112375,
+          "text": "4,8 %",
+          "label": "KPI-justert vekst per innbygger, 2020–2025"
+        },
+        "growthAfterChange": {
+          "value": -2.741200902925389,
+          "text": "−2,7 %",
+          "label": "KPI-justert vekst per innbygger, 2021–2025"
+        },
+        "rhfPeakYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Regionale helseforetak: år med høyeste løpende beløp i perioden"
+        },
+        "rhfPeakAmount": {
+          "value": 236291.09999999998,
+          "text": "236,3 mrd. kr",
+          "label": "Regionale helseforetak: høyeste løpende beløp, 2025"
+        },
+        "rhfLastAmount": {
+          "value": 236291.09999999998,
+          "text": "236,3 mrd. kr",
+          "label": "Regionale helseforetak: løpende beløp, 2025"
+        },
+        "rhfReferenceYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Regionale helseforetak: sammenligningsår"
+        },
+        "rhfReferenceAmount": {
+          "value": 172222,
+          "text": "172,2 mrd. kr",
+          "label": "Regionale helseforetak: løpende beløp, 2020"
+        },
+        "rhfFirstRecordedYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Regionale helseforetak: første år med regnskapsføring på denne posten i perioden"
+        },
+        "rhfYearA": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Regionale helseforetak: regnskapsår"
+        },
+        "rhfAmountA": {
+          "value": 172222,
+          "text": "172,2 mrd. kr",
+          "label": "Regionale helseforetak: løpende beløp, 2020"
+        },
+        "rhfYearB": {
+          "value": 2021,
+          "text": "2021",
+          "label": "Regionale helseforetak: regnskapsår"
+        },
+        "rhfAmountB": {
+          "value": 186917.2,
+          "text": "186,9 mrd. kr",
+          "label": "Regionale helseforetak: løpende beløp, 2021"
+        },
+        "rhfYearC": {
+          "value": 2022,
+          "text": "2022",
+          "label": "Regionale helseforetak: regnskapsår"
+        },
+        "rhfAmountC": {
+          "value": 189087.19999999995,
+          "text": "189,1 mrd. kr",
+          "label": "Regionale helseforetak: løpende beløp, 2022"
+        },
+        "rhfYearD": {
+          "value": 2023,
+          "text": "2023",
+          "label": "Regionale helseforetak: regnskapsår"
+        },
+        "rhfAmountD": {
+          "value": 210329.9,
+          "text": "210,3 mrd. kr",
+          "label": "Regionale helseforetak: løpende beløp, 2023"
+        },
+        "rhfYearE": {
+          "value": 2024,
+          "text": "2024",
+          "label": "Regionale helseforetak: regnskapsår"
+        },
+        "rhfAmountE": {
+          "value": 217316.8,
+          "text": "217,3 mrd. kr",
+          "label": "Regionale helseforetak: løpende beløp, 2024"
+        },
+        "rhfYearF": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Regionale helseforetak: regnskapsår"
+        },
+        "rhfAmountF": {
+          "value": 236291.09999999998,
+          "text": "236,3 mrd. kr",
+          "label": "Regionale helseforetak: løpende beløp, 2025"
+        },
+        "rhfFirstRecordedAmount": {
+          "value": 172222,
+          "text": "172,2 mrd. kr",
+          "label": "Regionale helseforetak: første observerte beløp på postutvalget"
+        },
+        "rhfChangeSinceFirst": {
+          "value": 64069.09999999998,
+          "text": "64,1 mrd. kr",
+          "label": "Regionale helseforetak: beløpsendring fra første observerte år, ikke en årsaksandel"
+        },
+        "rhfGrowthSinceFirst": {
+          "value": 37.201460905110835,
+          "text": "37,2 %",
+          "label": "Regionale helseforetak: prosentvis endring fra første observerte år"
+        },
+        "rhfContributionAmount": {
+          "value": 64069.09999999998,
+          "text": "64,1 mrd. kr",
+          "label": "Regionale helseforetak: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+        },
+        "rhfNetChangeRatio": {
+          "value": 83.75330403386253,
+          "text": "83,8 %",
+          "label": "Regionale helseforetak: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+        },
+        "rhfChangeFromPeak": {
+          "value": 0,
+          "text": "0,0 mill. kr",
+          "label": "Regionale helseforetak: beløpsendring fra høyeste observerte år"
+        },
+        "rhfGrowthFromPeak": {
+          "value": 0,
+          "text": "0,0 %",
+          "label": "Regionale helseforetak: prosentvis endring fra høyeste observerte år"
+        },
+        "rhfLastAnnualChangeAmount": {
+          "value": 18974.29999999999,
+          "text": "19,0 mrd. kr",
+          "label": "Regionale helseforetak: beløpsendring mellom de siste to regnskapsårene"
+        },
+        "rhfGrowthLastYear": {
+          "value": 8.731170346701212,
+          "text": "8,7 %",
+          "label": "Regionale helseforetak: prosentvis endring mellom de siste to regnskapsårene"
+        },
+        "rhfRealGrowthSinceReference": {
+          "value": 7.286731103744071,
+          "text": "7,3 %",
+          "label": "Regionale helseforetak: KPI-justert endring per innbygger, 2020–2025"
+        },
+        "kommunehelsePeakYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Kommunale helse- og omsorgstjenester: år med høyeste løpende beløp i perioden"
+        },
+        "kommunehelsePeakAmount": {
+          "value": 7351.799999999999,
+          "text": "7,4 mrd. kr",
+          "label": "Kommunale helse- og omsorgstjenester: høyeste løpende beløp, 2025"
+        },
+        "kommunehelseLastAmount": {
+          "value": 7351.799999999999,
+          "text": "7,4 mrd. kr",
+          "label": "Kommunale helse- og omsorgstjenester: løpende beløp, 2025"
+        },
+        "kommunehelseReferenceYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Kommunale helse- og omsorgstjenester: sammenligningsår"
+        },
+        "kommunehelseFirstRecordedYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Kommunale helse- og omsorgstjenester: første år med regnskapsføring på denne posten i perioden"
+        },
+        "kommunehelseYearA": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Kommunale helse- og omsorgstjenester: regnskapsår"
+        },
+        "kommunehelseYearB": {
+          "value": 2021,
+          "text": "2021",
+          "label": "Kommunale helse- og omsorgstjenester: regnskapsår"
+        },
+        "kommunehelseYearC": {
+          "value": 2022,
+          "text": "2022",
+          "label": "Kommunale helse- og omsorgstjenester: regnskapsår"
+        },
+        "kommunehelseYearD": {
+          "value": 2023,
+          "text": "2023",
+          "label": "Kommunale helse- og omsorgstjenester: regnskapsår"
+        },
+        "kommunehelseYearE": {
+          "value": 2024,
+          "text": "2024",
+          "label": "Kommunale helse- og omsorgstjenester: regnskapsår"
+        },
+        "kommunehelseYearF": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Kommunale helse- og omsorgstjenester: regnskapsår"
+        },
+        "kommunehelseAmountF": {
+          "value": 7351.799999999999,
+          "text": "7,4 mrd. kr",
+          "label": "Kommunale helse- og omsorgstjenester: løpende beløp, 2025"
+        },
+        "kommunehelseFirstRecordedAmount": {
+          "value": 7351.799999999999,
+          "text": "7,4 mrd. kr",
+          "label": "Kommunale helse- og omsorgstjenester: første observerte beløp på postutvalget"
+        },
+        "kommunehelseChangeSinceFirst": {
+          "value": 0,
+          "text": "0,0 mill. kr",
+          "label": "Kommunale helse- og omsorgstjenester: beløpsendring fra første observerte år, ikke en årsaksandel"
+        },
+        "kommunehelseGrowthSinceFirst": {
+          "value": 0,
+          "text": "0,0 %",
+          "label": "Kommunale helse- og omsorgstjenester: prosentvis endring fra første observerte år"
+        },
+        "kommunehelseContributionAmount": {
+          "value": 7351.799999999999,
+          "text": "7,4 mrd. kr",
+          "label": "Kommunale helse- og omsorgstjenester: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+        },
+        "kommunehelseNetChangeRatio": {
+          "value": 9.610522710575781,
+          "text": "9,6 %",
+          "label": "Kommunale helse- og omsorgstjenester: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+        },
+        "kommunehelseChangeFromPeak": {
+          "value": 0,
+          "text": "0,0 mill. kr",
+          "label": "Kommunale helse- og omsorgstjenester: beløpsendring fra høyeste observerte år"
+        },
+        "kommunehelseGrowthFromPeak": {
+          "value": 0,
+          "text": "0,0 %",
+          "label": "Kommunale helse- og omsorgstjenester: prosentvis endring fra høyeste observerte år"
+        },
+        "psykiskPeakYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Psykisk helse og rusarbeid: år med høyeste løpende beløp i perioden"
+        },
+        "psykiskPeakAmount": {
+          "value": 2652.1999999999994,
+          "text": "2,7 mrd. kr",
+          "label": "Psykisk helse og rusarbeid: høyeste løpende beløp, 2025"
+        },
+        "psykiskLastAmount": {
+          "value": 2652.1999999999994,
+          "text": "2,7 mrd. kr",
+          "label": "Psykisk helse og rusarbeid: løpende beløp, 2025"
+        },
+        "psykiskReferenceYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Psykisk helse og rusarbeid: sammenligningsår"
+        },
+        "psykiskReferenceAmount": {
+          "value": 2187.7999999999997,
+          "text": "2,2 mrd. kr",
+          "label": "Psykisk helse og rusarbeid: løpende beløp, 2020"
+        },
+        "psykiskFirstRecordedYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Psykisk helse og rusarbeid: første år med regnskapsføring på denne posten i perioden"
+        },
+        "psykiskYearA": {
+          "value": 2020,
+          "text": "2020",
+          "label": "Psykisk helse og rusarbeid: regnskapsår"
+        },
+        "psykiskAmountA": {
+          "value": 2187.7999999999997,
+          "text": "2,2 mrd. kr",
+          "label": "Psykisk helse og rusarbeid: løpende beløp, 2020"
+        },
+        "psykiskYearB": {
+          "value": 2021,
+          "text": "2021",
+          "label": "Psykisk helse og rusarbeid: regnskapsår"
+        },
+        "psykiskAmountB": {
+          "value": 2622.4999999999995,
+          "text": "2,6 mrd. kr",
+          "label": "Psykisk helse og rusarbeid: løpende beløp, 2021"
+        },
+        "psykiskYearC": {
+          "value": 2022,
+          "text": "2022",
+          "label": "Psykisk helse og rusarbeid: regnskapsår"
+        },
+        "psykiskAmountC": {
+          "value": 2317,
+          "text": "2,3 mrd. kr",
+          "label": "Psykisk helse og rusarbeid: løpende beløp, 2022"
+        },
+        "psykiskYearD": {
+          "value": 2023,
+          "text": "2023",
+          "label": "Psykisk helse og rusarbeid: regnskapsår"
+        },
+        "psykiskAmountD": {
+          "value": 2383.6000000000004,
+          "text": "2,4 mrd. kr",
+          "label": "Psykisk helse og rusarbeid: løpende beløp, 2023"
+        },
+        "psykiskYearE": {
+          "value": 2024,
+          "text": "2024",
+          "label": "Psykisk helse og rusarbeid: regnskapsår"
+        },
+        "psykiskAmountE": {
+          "value": 2595.2999999999997,
+          "text": "2,6 mrd. kr",
+          "label": "Psykisk helse og rusarbeid: løpende beløp, 2024"
+        },
+        "psykiskYearF": {
+          "value": 2025,
+          "text": "2025",
+          "label": "Psykisk helse og rusarbeid: regnskapsår"
+        },
+        "psykiskAmountF": {
+          "value": 2652.1999999999994,
+          "text": "2,7 mrd. kr",
+          "label": "Psykisk helse og rusarbeid: løpende beløp, 2025"
+        },
+        "psykiskFirstRecordedAmount": {
+          "value": 2187.7999999999997,
+          "text": "2,2 mrd. kr",
+          "label": "Psykisk helse og rusarbeid: første observerte beløp på postutvalget"
+        },
+        "psykiskChangeSinceFirst": {
+          "value": 464.39999999999964,
+          "text": "464,4 mill. kr",
+          "label": "Psykisk helse og rusarbeid: beløpsendring fra første observerte år, ikke en årsaksandel"
+        },
+        "psykiskGrowthSinceFirst": {
+          "value": 21.22680318127798,
+          "text": "21,2 %",
+          "label": "Psykisk helse og rusarbeid: prosentvis endring fra første observerte år"
+        },
+        "psykiskContributionAmount": {
+          "value": 464.39999999999964,
+          "text": "464,4 mill. kr",
+          "label": "Psykisk helse og rusarbeid: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+        },
+        "psykiskNetChangeRatio": {
+          "value": 0.607079456295246,
+          "text": "0,6 %",
+          "label": "Psykisk helse og rusarbeid: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+        },
+        "psykiskChangeFromPeak": {
+          "value": 0,
+          "text": "0,0 mill. kr",
+          "label": "Psykisk helse og rusarbeid: beløpsendring fra høyeste observerte år"
+        },
+        "psykiskGrowthFromPeak": {
+          "value": 0,
+          "text": "0,0 %",
+          "label": "Psykisk helse og rusarbeid: prosentvis endring fra høyeste observerte år"
+        },
+        "psykiskLastAnnualChangeAmount": {
+          "value": 56.899999999999636,
+          "text": "56,9 mill. kr",
+          "label": "Psykisk helse og rusarbeid: beløpsendring mellom de siste to regnskapsårene"
+        },
+        "psykiskGrowthLastYear": {
+          "value": 2.1924247678495545,
+          "text": "2,2 %",
+          "label": "Psykisk helse og rusarbeid: prosentvis endring mellom de siste to regnskapsårene"
+        },
+        "psykiskRealGrowthSinceReference": {
+          "value": -5.204891043606996,
+          "text": "−5,2 %",
+          "label": "Psykisk helse og rusarbeid: KPI-justert endring per innbygger, 2020–2025"
+        },
+        "iktPeakYear": {
+          "value": 2021,
+          "text": "2021",
+          "label": "IKT i helse- og omsorgssektoren: år med høyeste løpende beløp i perioden"
+        },
+        "iktPeakAmount": {
+          "value": 1370.5,
+          "text": "1,4 mrd. kr",
+          "label": "IKT i helse- og omsorgssektoren: høyeste løpende beløp, 2021"
+        },
+        "iktLastAmount": {
+          "value": 432.6,
+          "text": "432,6 mill. kr",
+          "label": "IKT i helse- og omsorgssektoren: løpende beløp, 2025"
+        },
+        "iktReferenceYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "IKT i helse- og omsorgssektoren: sammenligningsår"
+        },
+        "iktReferenceAmount": {
+          "value": 1245.6999999999998,
+          "text": "1,2 mrd. kr",
+          "label": "IKT i helse- og omsorgssektoren: løpende beløp, 2020"
+        },
+        "iktFirstRecordedYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "IKT i helse- og omsorgssektoren: første år med regnskapsføring på denne posten i perioden"
+        },
+        "iktYearA": {
+          "value": 2020,
+          "text": "2020",
+          "label": "IKT i helse- og omsorgssektoren: regnskapsår"
+        },
+        "iktAmountA": {
+          "value": 1245.6999999999998,
+          "text": "1,2 mrd. kr",
+          "label": "IKT i helse- og omsorgssektoren: løpende beløp, 2020"
+        },
+        "iktYearB": {
+          "value": 2021,
+          "text": "2021",
+          "label": "IKT i helse- og omsorgssektoren: regnskapsår"
+        },
+        "iktAmountB": {
+          "value": 1370.5,
+          "text": "1,4 mrd. kr",
+          "label": "IKT i helse- og omsorgssektoren: løpende beløp, 2021"
+        },
+        "iktYearC": {
+          "value": 2022,
+          "text": "2022",
+          "label": "IKT i helse- og omsorgssektoren: regnskapsår"
+        },
+        "iktAmountC": {
+          "value": 722.4,
+          "text": "722,4 mill. kr",
+          "label": "IKT i helse- og omsorgssektoren: løpende beløp, 2022"
+        },
+        "iktYearD": {
+          "value": 2023,
+          "text": "2023",
+          "label": "IKT i helse- og omsorgssektoren: regnskapsår"
+        },
+        "iktAmountD": {
+          "value": 419.19999999999993,
+          "text": "419,2 mill. kr",
+          "label": "IKT i helse- og omsorgssektoren: løpende beløp, 2023"
+        },
+        "iktYearE": {
+          "value": 2024,
+          "text": "2024",
+          "label": "IKT i helse- og omsorgssektoren: regnskapsår"
+        },
+        "iktAmountE": {
+          "value": 566.3000000000001,
+          "text": "566,3 mill. kr",
+          "label": "IKT i helse- og omsorgssektoren: løpende beløp, 2024"
+        },
+        "iktYearF": {
+          "value": 2025,
+          "text": "2025",
+          "label": "IKT i helse- og omsorgssektoren: regnskapsår"
+        },
+        "iktAmountF": {
+          "value": 432.6,
+          "text": "432,6 mill. kr",
+          "label": "IKT i helse- og omsorgssektoren: løpende beløp, 2025"
+        },
+        "iktFirstRecordedAmount": {
+          "value": 1245.6999999999998,
+          "text": "1,2 mrd. kr",
+          "label": "IKT i helse- og omsorgssektoren: første observerte beløp på postutvalget"
+        },
+        "iktChangeSinceFirst": {
+          "value": -813.0999999999998,
+          "text": "−813,1 mill. kr",
+          "label": "IKT i helse- og omsorgssektoren: beløpsendring fra første observerte år, ikke en årsaksandel"
+        },
+        "iktGrowthSinceFirst": {
+          "value": -65.27253752910009,
+          "text": "−65,3 %",
+          "label": "IKT i helse- og omsorgssektoren: prosentvis endring fra første observerte år"
+        },
+        "iktContributionAmount": {
+          "value": -813.0999999999998,
+          "text": "−813,1 mill. kr",
+          "label": "IKT i helse- og omsorgssektoren: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+        },
+        "iktNetChangeRatio": {
+          "value": -1.0629119421052213,
+          "text": "−1,1 %",
+          "label": "IKT i helse- og omsorgssektoren: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+        },
+        "iktChangeFromPeak": {
+          "value": -937.9,
+          "text": "−937,9 mill. kr",
+          "label": "IKT i helse- og omsorgssektoren: beløpsendring fra høyeste observerte år"
+        },
+        "iktGrowthFromPeak": {
+          "value": -68.43487778183145,
+          "text": "−68,4 %",
+          "label": "IKT i helse- og omsorgssektoren: prosentvis endring fra høyeste observerte år"
+        },
+        "iktLastAnnualChangeAmount": {
+          "value": -133.70000000000005,
+          "text": "−133,7 mill. kr",
+          "label": "IKT i helse- og omsorgssektoren: beløpsendring mellom de siste to regnskapsårene"
+        },
+        "iktGrowthLastYear": {
+          "value": -23.60939431396787,
+          "text": "−23,6 %",
+          "label": "IKT i helse- og omsorgssektoren: prosentvis endring mellom de siste to regnskapsårene"
+        },
+        "iktRealGrowthSinceReference": {
+          "value": -72.84434215603885,
+          "text": "−72,8 %",
+          "label": "IKT i helse- og omsorgssektoren: KPI-justert endring per innbygger, 2020–2025"
+        },
+        "ssbSpesialistStartYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: første observasjonsår"
+        },
+        "ssbSpesialistEndYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: siste observasjonsår"
+        },
+        "ssbSpesialistStart": {
+          "value": 131339,
+          "text": "131 339 antall",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: startverdi"
+        },
+        "ssbSpesialistEnd": {
+          "value": 142826,
+          "text": "142 826 antall",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: sluttverdi"
+        },
+        "ssbSpesialistChange": {
+          "value": 11487,
+          "text": "11 487 antall",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: endring i måleenheten"
+        },
+        "ssbSpesialistGrowth": {
+          "value": 8.746069332033901,
+          "text": "8,75 %",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: prosentvis endring, ikke prosentpoeng"
+        },
+        "ssbSykehusStotteStartYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: første observasjonsår"
+        },
+        "ssbSykehusStotteEndYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: siste observasjonsår"
+        },
+        "ssbSykehusStotteStart": {
+          "value": 36083,
+          "text": "36 083 antall",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: startverdi"
+        },
+        "ssbSykehusStotteEnd": {
+          "value": 39674,
+          "text": "39 674 antall",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: sluttverdi"
+        },
+        "ssbSykehusStotteChange": {
+          "value": 3591,
+          "text": "3 591 antall",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: endring i måleenheten"
+        },
+        "ssbSykehusStotteGrowth": {
+          "value": 9.952054984341663,
+          "text": "9,95 %",
+          "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: prosentvis endring, ikke prosentpoeng"
+        },
+        "ssbOmsorgStartYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: første observasjonsår"
+        },
+        "ssbOmsorgEndYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: siste observasjonsår"
+        },
+        "ssbOmsorgStart": {
+          "value": 146612,
+          "text": "146 612 årsverk",
+          "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: startverdi"
+        },
+        "ssbOmsorgEnd": {
+          "value": 163755,
+          "text": "163 755 årsverk",
+          "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: sluttverdi"
+        },
+        "ssbOmsorgChange": {
+          "value": 17143,
+          "text": "17 143 årsverk",
+          "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: endring i måleenheten"
+        },
+        "ssbOmsorgGrowth": {
+          "value": 11.69276730417701,
+          "text": "11,69 %",
+          "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: prosentvis endring, ikke prosentpoeng"
+        },
+        "ssbEldreMennStartYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: første observasjonsår"
+        },
+        "ssbEldreMennEndYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: siste observasjonsår"
+        },
+        "ssbEldreMennStart": {
+          "value": 90434,
+          "text": "90 434 antall",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: startverdi"
+        },
+        "ssbEldreMennEnd": {
+          "value": 113336,
+          "text": "113 336 antall",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: sluttverdi"
+        },
+        "ssbEldreMennChange": {
+          "value": 22902,
+          "text": "22 902 antall",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: endring i måleenheten"
+        },
+        "ssbEldreMennGrowth": {
+          "value": 25.32454607780259,
+          "text": "25,32 %",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: prosentvis endring, ikke prosentpoeng"
+        },
+        "ssbEldreKvinnerStartYear": {
+          "value": 2020,
+          "text": "2020",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: første observasjonsår"
+        },
+        "ssbEldreKvinnerEndYear": {
+          "value": 2025,
+          "text": "2025",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: siste observasjonsår"
+        },
+        "ssbEldreKvinnerStart": {
+          "value": 140276,
+          "text": "140 276 antall",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: startverdi"
+        },
+        "ssbEldreKvinnerEnd": {
+          "value": 157201,
+          "text": "157 201 antall",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: sluttverdi"
+        },
+        "ssbEldreKvinnerChange": {
+          "value": 16925,
+          "text": "16 925 antall",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: endring i måleenheten"
+        },
+        "ssbEldreKvinnerGrowth": {
+          "value": 12.065499443953343,
+          "text": "12,07 %",
+          "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: prosentvis endring, ikke prosentpoeng"
+        },
+        "healthRhfFte": {
+          "value": 495,
+          "text": "495",
+          "label": "Avtalte årsverk i de regionale helseforetakene"
+        },
+        "healthElderlyStart": {
+          "value": 230710,
+          "text": "230 710",
+          "label": "Innbyggere fra åtti år i startåret"
+        },
+        "healthElderlyEnd": {
+          "value": 270537,
+          "text": "270 537",
+          "label": "Innbyggere fra åtti år i sluttåret"
+        },
+        "healthElderlyGrowth": {
+          "value": 17.262797451345847,
+          "text": "17,3 %",
+          "label": "Vekst i innbyggere fra åtti år"
+        },
+        "healthCareFteGrowth": {
+          "value": 11.69276730417701,
+          "text": "11,7 %",
+          "label": "Vekst i årsverk i omsorgstjenestene"
+        },
+        "healthSpecialistFteGrowth": {
+          "value": 8.746069332033901,
+          "text": "8,7 %",
+          "label": "Vekst i årsverk i spesialisthelsetjenesten"
+        },
+        "healthSupportFteGrowth": {
+          "value": 9.952054984341663,
+          "text": "10,0 %",
+          "label": "Vekst i administrasjon og service i spesialisthelsetjenesten"
+        }
+      },
+      "eventEvidence": {
+        "version": 2,
+        "items": [
+          {
+            "id": "rhf",
+            "nodeIds": [
+              "u-07-0732"
+            ],
+            "title": "Regionale helseforetak",
+            "event": "Postvis regnskapssammenligning",
+            "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+            "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+            "nodes": [
+              {
+                "id": "u-07-0732",
+                "name": "Regionale helseforetak"
+              }
+            ],
+            "rows": [
+              {
+                "year": 2020,
+                "expenditure": 172222,
+                "reported": true
+              },
+              {
+                "year": 2021,
+                "expenditure": 186917.2,
+                "reported": true
+              },
+              {
+                "year": 2022,
+                "expenditure": 189087.19999999995,
+                "reported": true
+              },
+              {
+                "year": 2023,
+                "expenditure": 210329.9,
+                "reported": true
+              },
+              {
+                "year": 2024,
+                "expenditure": 217316.8,
+                "reported": true
+              },
+              {
+                "year": 2025,
+                "expenditure": 236291.09999999998,
+                "reported": true
+              }
+            ]
+          },
+          {
+            "id": "kommunehelse",
+            "nodeIds": [
+              "u-07-0760"
+            ],
+            "title": "Kommunale helse- og omsorgstjenester",
+            "event": "Postvis regnskapssammenligning",
+            "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+            "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+            "nodes": [
+              {
+                "id": "u-07-0760",
+                "name": "Kommunale helse- og omsorgstjenester"
+              }
+            ],
+            "rows": [
+              {
+                "year": 2020,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2021,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2022,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2023,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2024,
+                "expenditure": 0,
+                "reported": false
+              },
+              {
+                "year": 2025,
+                "expenditure": 7351.799999999999,
+                "reported": true
+              }
+            ]
+          },
+          {
+            "id": "psykisk",
+            "nodeIds": [
+              "u-07-0765"
+            ],
+            "title": "Psykisk helse og rusarbeid",
+            "event": "Postvis regnskapssammenligning",
+            "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+            "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+            "nodes": [
+              {
+                "id": "u-07-0765",
+                "name": "Psykisk helse og rusarbeid"
+              }
+            ],
+            "rows": [
+              {
+                "year": 2020,
+                "expenditure": 2187.7999999999997,
+                "reported": true
+              },
+              {
+                "year": 2021,
+                "expenditure": 2622.4999999999995,
+                "reported": true
+              },
+              {
+                "year": 2022,
+                "expenditure": 2317,
+                "reported": true
+              },
+              {
+                "year": 2023,
+                "expenditure": 2383.6000000000004,
+                "reported": true
+              },
+              {
+                "year": 2024,
+                "expenditure": 2595.2999999999997,
+                "reported": true
+              },
+              {
+                "year": 2025,
+                "expenditure": 2652.1999999999994,
+                "reported": true
+              }
+            ]
+          },
+          {
+            "id": "ikt",
+            "nodeIds": [
+              "u-07-0701"
+            ],
+            "title": "IKT i helse- og omsorgssektoren",
+            "event": "Postvis regnskapssammenligning",
+            "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+            "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+            "nodes": [
+              {
+                "id": "u-07-0701",
+                "name": "IKT i helse- og omsorgssektoren"
+              }
+            ],
+            "rows": [
+              {
+                "year": 2020,
+                "expenditure": 1245.6999999999998,
+                "reported": true
+              },
+              {
+                "year": 2021,
+                "expenditure": 1370.5,
+                "reported": true
+              },
+              {
+                "year": 2022,
+                "expenditure": 722.4,
+                "reported": true
+              },
+              {
+                "year": 2023,
+                "expenditure": 419.19999999999993,
+                "reported": true
+              },
+              {
+                "year": 2024,
+                "expenditure": 566.3000000000001,
+                "reported": true
+              },
+              {
+                "year": 2025,
+                "expenditure": 432.6,
+                "reported": true
+              }
+            ]
+          }
+        ],
+        "hash": "b30e59d3480feb747cb6223fbe4aa352017abc82cba4b3751480d3ddb2f8b5c8"
+      },
+      "rows": [
+        {
+          "year": 2020,
+          "expenditure": 225244,
+          "population": 5367580,
+          "cpi": 81.5,
+          "perCapita": 41963.79001337661,
+          "nominalIndex": 100,
+          "priceIndex": 100,
+          "realPerCapita": 51489.31289984859
+        },
+        {
+          "year": 2021,
+          "expenditure": 252048.30000000005,
+          "population": 5391369,
+          "cpi": 84.3,
+          "perCapita": 46750.333727852805,
+          "nominalIndex": 111.40636656734392,
+          "priceIndex": 103.43558282208589,
+          "realPerCapita": 55457.09813505671
+        },
+        {
+          "year": 2022,
+          "expenditure": 254124.59999999998,
+          "population": 5425270,
+          "cpi": 89.2,
+          "perCapita": 46840.91298681909,
+          "nominalIndex": 111.62221756397079,
+          "priceIndex": 109.44785276073621,
+          "realPerCapita": 52512.234290155924
+        },
+        {
+          "year": 2023,
+          "expenditure": 272658.80000000005,
+          "population": 5488984,
+          "cpi": 94.1,
+          "perCapita": 49673.819417218205,
+          "nominalIndex": 118.37305305689479,
+          "priceIndex": 115.4601226993865,
+          "realPerCapita": 52788.33094284613
+        },
+        {
+          "year": 2024,
+          "expenditure": 281676.2999999999,
+          "population": 5550203,
+          "cpi": 97.1,
+          "perCapita": 50750.630202174565,
+          "nominalIndex": 120.93910055787862,
+          "priceIndex": 119.14110429447852,
+          "realPerCapita": 52266.35448215713
+        },
+        {
+          "year": 2025,
+          "expenditure": 301741.4,
+          "population": 5594340,
+          "cpi": 100,
+          "perCapita": 53936.907660242316,
+          "nominalIndex": 128.532021638296,
+          "priceIndex": 122.69938650306749,
+          "realPerCapita": 53936.907660242316
+        }
+      ],
+      "sources": [
+        {
+          "name": "Fellestall: de konkrete regnskapspostene",
+          "url": "https://fellestall.no/data/utgifter.json",
+          "local": "/data/utgifter.json",
+          "description": "Hendelseseksemplene er valgt fra samme DFØ-uttrekk som hovedserien. Navn, post-ID-er og årlige beløp er frosset i artikkelens datagrunnlag. Utvalget er ikke et fullstendig koronaregnskap eller en årsaksfordeling av hele veksten."
+        },
+        {
+          "name": "DFØ Statsregnskapet",
+          "url": "https://statsregnskapet.dfo.no",
+          "local": "/data/utgifter.json",
+          "description": "Regnskapsførte utgifter i mill. kroner. Finansposter og SPU-overføringer er utelatt."
+        },
+        {
+          "name": "SSB folkemengde, tabell 07459",
+          "url": "https://www.ssb.no/statbank/table/07459/",
+          "local": "/data/befolkning.json",
+          "description": "Folkemengde ved inngangen til året, som i resten av Fellestall."
+        },
+        {
+          "name": "SSB konsumprisindeks",
+          "url": "https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen",
+          "local": "/data/kpi.json",
+          "description": "Årsgjennomsnitt for KPI, fra Fellestalls normaliserte serie."
+        },
+        {
+          "name": "SSB: 13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025 — Spesialist (tabell 13953)",
+          "url": "https://www.ssb.no/statbank/table/13953/",
+          "description": "Frosset uttrekk hentet 2026-11-02T20:30:49.577955+00:00. Dokumenter avtalte årsverk i spesialisthelsetjenesten. Administrasjon og service er en bred tjenestekategori, ikke bortfallbare RHF-kostnader."
+        },
+        {
+          "name": "Frosset SSB-uttrekk: Spesialist",
+          "url": "https://fellestall.no/data/ssb-research/51f9aa4469dc3468bc4132dfae7ca2c87a5d41e8e0f793d41b08050580294012.json",
+          "local": "/data/ssb-research/51f9aa4469dc3468bc4132dfae7ca2c87a5d41e8e0f793d41b08050580294012.json",
+          "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+        },
+        {
+          "name": "SSB: 13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025 — SykehusStotte (tabell 13953)",
+          "url": "https://www.ssb.no/statbank/table/13953/",
+          "description": "Frosset uttrekk hentet 2026-11-02T20:30:50.510953+00:00. Dokumenter avtalte årsverk i spesialisthelsetjenesten. Administrasjon og service er en bred tjenestekategori, ikke bortfallbare RHF-kostnader."
+        },
+        {
+          "name": "Frosset SSB-uttrekk: SykehusStotte",
+          "url": "https://fellestall.no/data/ssb-research/3401b6b5da59f52853278372ace274be8f38226e473b7b27feb50e73bdc7b019.json",
+          "local": "/data/ssb-research/3401b6b5da59f52853278372ace274be8f38226e473b7b27feb50e73bdc7b019.json",
+          "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+        },
+        {
+          "name": "SSB: 14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025 — Omsorg (tabell 14533)",
+          "url": "https://www.ssb.no/statbank/table/14533/",
+          "description": "Frosset uttrekk hentet 2026-11-02T20:30:51.157997+00:00. Dokumenter avtalte årsverk i kommunale omsorgstjenester. Ikke lik alle kommunale helsetjenester eller utførte timeverk."
+        },
+        {
+          "name": "Frosset SSB-uttrekk: Omsorg",
+          "url": "https://fellestall.no/data/ssb-research/7a617b07a65d9cf0fd11265ef709b27337ce360a2e993a5b7e7bd15b7cb1804d.json",
+          "local": "/data/ssb-research/7a617b07a65d9cf0fd11265ef709b27337ce360a2e993a5b7e7bd15b7cb1804d.json",
+          "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+        },
+        {
+          "name": "SSB: 07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026 — EldreMenn (tabell 07459)",
+          "url": "https://www.ssb.no/statbank/table/07459/",
+          "description": "Frosset uttrekk hentet 2026-11-02T20:30:52.201893+00:00. Summer adskilte ettårige aldersgrupper fra 80 år og oppover ved inngangen til året. Menn og kvinner hentes separat og må senere summeres eksplisitt."
+        },
+        {
+          "name": "Frosset SSB-uttrekk: EldreMenn",
+          "url": "https://fellestall.no/data/ssb-research/11ac61989e1d334300dd5e768f45ef0d98457eabc8f1ab70b9b32ad5712f7ff1.json",
+          "local": "/data/ssb-research/11ac61989e1d334300dd5e768f45ef0d98457eabc8f1ab70b9b32ad5712f7ff1.json",
+          "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+        },
+        {
+          "name": "SSB: 07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026 — EldreKvinner (tabell 07459)",
+          "url": "https://www.ssb.no/statbank/table/07459/",
+          "description": "Frosset uttrekk hentet 2026-11-02T20:30:53.257450+00:00. Summer adskilte ettårige aldersgrupper fra 80 år og oppover ved inngangen til året. Menn og kvinner hentes separat og må senere summeres eksplisitt."
+        },
+        {
+          "name": "Frosset SSB-uttrekk: EldreKvinner",
+          "url": "https://fellestall.no/data/ssb-research/4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01.json",
+          "local": "/data/ssb-research/4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01.json",
+          "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+        },
+        {
+          "name": "NOU 2026: 12 En helsetjeneste for vår tid",
+          "url": "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf",
+          "description": "Utvalgets forslag, bakgrunn og vurderinger. Dokumentet inneholder ikke et samlet netto spare- eller kostnadsanslag for reformen."
+        },
+        {
+          "name": "Helse- og omsorgsdepartementet: mottak av utredningen",
+          "url": "https://www.regjeringen.no/no/aktuelt/nytt-skritt-pa-veien-mot-helsereform-vestre-tok-imot-helsereformutvalgets-forslag/id3190681/",
+          "description": "Regjeringens videre prosess med høring, innspillsmøter og ønske om bredt samarbeid."
+        },
+        {
+          "name": "KS: støtte til delt ansvar, motstand mot statlig legevakt",
+          "url": "https://www.ks.no/pressemeldinger/ks-stotter-delt-ansvar-men-vil-beholde-legevakten/",
+          "description": "KS sitt første dokumenterte standpunkt til konkrete deler av utredningen."
+        },
+        {
+          "name": "Legeforeningen: sykehusbygg og lokal innflytelse",
+          "url": "https://api.kommunikasjon.ntb.no/pressemelding/19126148/riktig-retning-for-sykehusbygg-men-makten-ma-flyttes-naermere-pasientene?lang=no&publisherId=17848606",
+          "description": "Legeforeningens reaksjon på finansiering, sentralisering og nærhet til pasientbehandlingen."
+        },
+        {
+          "name": "Spekter: endringer må løse konkrete problemer",
+          "url": "https://api.kommunikasjon.ntb.no/pressemelding/19126458/helseformutvalgets-rapport-endringer-ma-lose-konkrete-problemer-for-pasientene?lang=no&publisherId=89834",
+          "description": "Spekters første reaksjon om kommuneøkonomi, struktur, pasienter og arbeidskraft."
+        }
+      ],
+      "methodology": [
+        "Hendelsesgrunnlaget følger et lite, redaksjonelt valgt utvalg regnskapsposter. Beløpene er i løpende mill. kroner; eventuelle KPI-justerte endringer per innbygger bruker samme folketall og prisserie som hovedanalysen. En post uten regnskapsføring i uttrekket er merket som ikke observert, ikke som et komplett mål på alle utgifter til formålet. Postene identifiseres med navn og ID.",
+        "Vi summerer regnskapsførte utgifter på postnivå for Helse- og omsorgsdepartementet. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.",
+        "Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.",
+        "Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.",
+        "Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.",
+        "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn.",
+        "SSB-serier er eksplisitte årlige utvalg. Start-/sluttverdier, forskjell og eventuell prosentvis endring beregnes fra arkiverte observasjoner. Prosentvis endring er ikke prosentpoeng.",
+        "Helseanalysen kobler Fellestalls frosne statsregnskap og KOSTRA-eksempler til eksplisitte SSB-uttrekk. Statslige overføringer, kommunale utgifter og årsverk er ulike mål og summeres ikke.",
+        "Scenariokalkulatoren er en følsomhetsanalyse. Frigjort tid deles mellom tjenestekapasitet og faktisk kontantinnsparing, slik at samme årsverk ikke telles to ganger."
+      ],
+      "limitations": [
+        "Departementenes ansvarsområder kan endres over tid. Serien følger Fellestalls normaliserte departementsinndeling, og må ikke alene tolkes som vekst i identiske tjenester.",
+        "KPI måler husholdningenes konsumpriser, ikke statens lønns-, bygge- eller innkjøpskostnader. KPI-justering er et sammenligningsmål, ikke et mål på produksjonsvolum.",
+        "Utgifter sier ikke hvor mye eller hvor god tjenesteproduksjon innbyggerne får. Overføringer, pensjoner og tilskudd inngår også.",
+        "Tallene identifiserer ikke årsakene til endringene. De kan ikke alene brukes til å konkludere om effektivitet, sløsing eller virkningen av politiske beslutninger.",
+        "Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.",
+        "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse.",
+        "SSB-seriene er bakgrunnsvariabler, ikke en dokumentert årsaksfordeling av budsjettveksten. Geografi, definisjoner, tidsperiode, revisjoner og eventuelle prognoser må vurderes før tolkning. Siste observerte år erstatter ikke et fremtidig budsjettår.",
+        "Utredningen inneholder ikke et samlet netto kostnads- eller spareanslag. Scenarioene er brukerens antakelser og ikke utvalgets prognose.",
+        "Kommunegrafen viser tre storbyer og kan ikke tolkes som et landsgjennomsnitt. KOSTRA-tallene er kommuneregnskap, ikke statlige overføringer eller sykehusregnskap."
+      ],
+      "ssbEvidence": [
+        {
+          "id": "Spesialist",
+          "scope": "u-07",
+          "purpose": "Dokumenter avtalte årsverk i spesialisthelsetjenesten. Administrasjon og service er en bred tjenestekategori, ikke bortfallbare RHF-kostnader.",
+          "hash": "51f9aa4469dc3468bc4132dfae7ca2c87a5d41e8e0f793d41b08050580294012",
+          "table": "13953",
+          "title": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025",
+          "retrievedAt": "2026-11-02T20:30:49.577955+00:00",
+          "updated": "2026-10-01T06:00:00Z",
+          "selections": {
+            "ContentsCode": [
+              "Arsverk"
+            ],
+            "HelseReg": [
+              "H00"
+            ],
+            "HelseTjenomr": [
+              "TOT"
+            ],
+            "Tid": [
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024",
+              "2025"
+            ],
+            "Yrke": [
+              "TOT"
+            ]
+          },
+          "categories": {
+            "ContentsCode": {
+              "code": "Arsverk",
+              "label": "Avtalte årsverk"
+            },
+            "HelseReg": {
+              "code": "H00",
+              "label": "Hele landet"
+            },
+            "HelseTjenomr": {
+              "code": "TOT",
+              "label": "I alt"
+            },
+            "Yrke": {
+              "code": "TOT",
+              "label": "I alt"
+            }
+          },
+          "unit": "antall",
+          "rows": [
+            {
+              "value": 131339,
+              "year": 2020
+            },
+            {
+              "value": 133955,
+              "year": 2021
+            },
+            {
+              "value": 136364,
+              "year": 2022
+            },
+            {
+              "value": 138696,
+              "year": 2023
+            },
+            {
+              "value": 140664,
+              "year": 2024
+            },
+            {
+              "value": 142826,
+              "year": 2025
+            }
+          ]
+        },
+        {
+          "id": "SykehusStotte",
+          "scope": "u-07",
+          "purpose": "Dokumenter avtalte årsverk i spesialisthelsetjenesten. Administrasjon og service er en bred tjenestekategori, ikke bortfallbare RHF-kostnader.",
+          "hash": "3401b6b5da59f52853278372ace274be8f38226e473b7b27feb50e73bdc7b019",
+          "table": "13953",
+          "title": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025",
+          "retrievedAt": "2026-11-02T20:30:50.510953+00:00",
+          "updated": "2026-10-01T06:00:00Z",
+          "selections": {
+            "ContentsCode": [
+              "Arsverk"
+            ],
+            "HelseReg": [
+              "H00"
+            ],
+            "HelseTjenomr": [
+              "AOS"
+            ],
+            "Tid": [
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024",
+              "2025"
+            ],
+            "Yrke": [
+              "TOT"
+            ]
+          },
+          "categories": {
+            "ContentsCode": {
+              "code": "Arsverk",
+              "label": "Avtalte årsverk"
+            },
+            "HelseReg": {
+              "code": "H00",
+              "label": "Hele landet"
+            },
+            "HelseTjenomr": {
+              "code": "AOS",
+              "label": "Administrasjon og service"
+            },
+            "Yrke": {
+              "code": "TOT",
+              "label": "I alt"
+            }
+          },
+          "unit": "antall",
+          "rows": [
+            {
+              "value": 36083,
+              "year": 2020
+            },
+            {
+              "value": 36941,
+              "year": 2021
+            },
+            {
+              "value": 37548,
+              "year": 2022
+            },
+            {
+              "value": 38564,
+              "year": 2023
+            },
+            {
+              "value": 38967,
+              "year": 2024
+            },
+            {
+              "value": 39674,
+              "year": 2025
+            }
+          ]
+        },
+        {
+          "id": "Omsorg",
+          "scope": "u-07",
+          "purpose": "Dokumenter avtalte årsverk i kommunale omsorgstjenester. Ikke lik alle kommunale helsetjenester eller utførte timeverk.",
+          "hash": "7a617b07a65d9cf0fd11265ef709b27337ce360a2e993a5b7e7bd15b7cb1804d",
+          "table": "14533",
+          "title": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025",
+          "retrievedAt": "2026-11-02T20:30:51.157997+00:00",
+          "updated": "2026-06-15T06:00:00Z",
+          "selections": {
+            "ContentsCode": [
+              "KOSARBAARSVERKST0000"
+            ],
+            "KOKkommuneregion0000": [
+              "EAK"
+            ],
+            "KOKyrker0000": [
+              "TOT"
+            ],
+            "Tid": [
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024",
+              "2025"
+            ]
+          },
+          "categories": {
+            "ContentsCode": {
+              "code": "KOSARBAARSVERKST0000",
+              "label": "Avtalte årsverk (årsverk)"
+            },
+            "KOKkommuneregion0000": {
+              "code": "EAK",
+              "label": "Landet"
+            },
+            "KOKyrker0000": {
+              "code": "TOT",
+              "label": "I alt"
+            }
+          },
+          "unit": "årsverk",
+          "rows": [
+            {
+              "value": 146612,
+              "year": 2020
+            },
+            {
+              "value": 149203,
+              "year": 2021
+            },
+            {
+              "value": 151779,
+              "year": 2022
+            },
+            {
+              "value": 157043,
+              "year": 2023
+            },
+            {
+              "value": 160779,
+              "year": 2024
+            },
+            {
+              "value": 163755,
+              "year": 2025
+            }
+          ]
+        },
+        {
+          "id": "EldreMenn",
+          "scope": "u-07",
+          "purpose": "Summer adskilte ettårige aldersgrupper fra 80 år og oppover ved inngangen til året. Menn og kvinner hentes separat og må senere summeres eksplisitt.",
+          "hash": "11ac61989e1d334300dd5e768f45ef0d98457eabc8f1ab70b9b32ad5712f7ff1",
+          "table": "07459",
+          "title": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026",
+          "retrievedAt": "2026-11-02T20:30:52.201893+00:00",
+          "updated": "2026-02-25T07:00:00Z",
+          "selections": {
+            "Alder": [
+              "080",
+              "081",
+              "082",
+              "083",
+              "084",
+              "085",
+              "086",
+              "087",
+              "088",
+              "089",
+              "090",
+              "091",
+              "092",
+              "093",
+              "094",
+              "095",
+              "096",
+              "097",
+              "098",
+              "099",
+              "100",
+              "101",
+              "102",
+              "103",
+              "104",
+              "105+"
+            ],
+            "ContentsCode": [
+              "Personer1"
+            ],
+            "Kjonn": [
+              "1"
+            ],
+            "Region": [
+              "0"
+            ],
+            "Tid": [
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024",
+              "2025"
+            ]
+          },
+          "categories": {
+            "Alder": {
+              "aggregation": "sum",
+              "codes": [
+                "080",
+                "081",
+                "082",
+                "083",
+                "084",
+                "085",
+                "086",
+                "087",
+                "088",
+                "089",
+                "090",
+                "091",
+                "092",
+                "093",
+                "094",
+                "095",
+                "096",
+                "097",
+                "098",
+                "099",
+                "100",
+                "101",
+                "102",
+                "103",
+                "104",
+                "105+"
+              ],
+              "labels": [
+                "80 år",
+                "81 år",
+                "82 år",
+                "83 år",
+                "84 år",
+                "85 år",
+                "86 år",
+                "87 år",
+                "88 år",
+                "89 år",
+                "90 år",
+                "91 år",
+                "92 år",
+                "93 år",
+                "94 år",
+                "95 år",
+                "96 år",
+                "97 år",
+                "98 år",
+                "99 år",
+                "100 år",
+                "101 år",
+                "102 år",
+                "103 år",
+                "104 år",
+                "105 år eller eldre"
+              ]
+            },
+            "ContentsCode": {
+              "code": "Personer1",
+              "label": "Personer"
+            },
+            "Kjonn": {
+              "code": "1",
+              "label": "Menn"
+            },
+            "Region": {
+              "code": "0",
+              "label": "Hele landet"
+            }
+          },
+          "unit": "antall",
+          "rows": [
+            {
+              "value": 90434,
+              "year": 2020
+            },
+            {
+              "value": 93840,
+              "year": 2021
+            },
+            {
+              "value": 96647,
+              "year": 2022
+            },
+            {
+              "value": 100225,
+              "year": 2023
+            },
+            {
+              "value": 105906,
+              "year": 2024
+            },
+            {
+              "value": 113336,
+              "year": 2025
+            }
+          ]
+        },
+        {
+          "id": "EldreKvinner",
+          "scope": "u-07",
+          "purpose": "Summer adskilte ettårige aldersgrupper fra 80 år og oppover ved inngangen til året. Menn og kvinner hentes separat og må senere summeres eksplisitt.",
+          "hash": "4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01",
+          "table": "07459",
+          "title": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026",
+          "retrievedAt": "2026-11-02T20:30:53.257450+00:00",
+          "updated": "2026-02-25T07:00:00Z",
+          "selections": {
+            "Alder": [
+              "080",
+              "081",
+              "082",
+              "083",
+              "084",
+              "085",
+              "086",
+              "087",
+              "088",
+              "089",
+              "090",
+              "091",
+              "092",
+              "093",
+              "094",
+              "095",
+              "096",
+              "097",
+              "098",
+              "099",
+              "100",
+              "101",
+              "102",
+              "103",
+              "104",
+              "105+"
+            ],
+            "ContentsCode": [
+              "Personer1"
+            ],
+            "Kjonn": [
+              "2"
+            ],
+            "Region": [
+              "0"
+            ],
+            "Tid": [
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024",
+              "2025"
+            ]
+          },
+          "categories": {
+            "Alder": {
+              "aggregation": "sum",
+              "codes": [
+                "080",
+                "081",
+                "082",
+                "083",
+                "084",
+                "085",
+                "086",
+                "087",
+                "088",
+                "089",
+                "090",
+                "091",
+                "092",
+                "093",
+                "094",
+                "095",
+                "096",
+                "097",
+                "098",
+                "099",
+                "100",
+                "101",
+                "102",
+                "103",
+                "104",
+                "105+"
+              ],
+              "labels": [
+                "80 år",
+                "81 år",
+                "82 år",
+                "83 år",
+                "84 år",
+                "85 år",
+                "86 år",
+                "87 år",
+                "88 år",
+                "89 år",
+                "90 år",
+                "91 år",
+                "92 år",
+                "93 år",
+                "94 år",
+                "95 år",
+                "96 år",
+                "97 år",
+                "98 år",
+                "99 år",
+                "100 år",
+                "101 år",
+                "102 år",
+                "103 år",
+                "104 år",
+                "105 år eller eldre"
+              ]
+            },
+            "ContentsCode": {
+              "code": "Personer1",
+              "label": "Personer"
+            },
+            "Kjonn": {
+              "code": "2",
+              "label": "Kvinner"
+            },
+            "Region": {
+              "code": "0",
+              "label": "Hele landet"
+            }
+          },
+          "unit": "antall",
+          "rows": [
+            {
+              "value": 140276,
+              "year": 2020
+            },
+            {
+              "value": 142567,
+              "year": 2021
+            },
+            {
+              "value": 143646,
+              "year": 2022
+            },
+            {
+              "value": 146135,
+              "year": 2023
+            },
+            {
+              "value": 150579,
+              "year": 2024
+            },
+            {
+              "value": 157201,
+              "year": 2025
+            }
+          ]
+        }
+      ],
+      "healthPolicy": {
+        "version": 1,
+        "updated": "2026-11-03T08:15:00.000Z",
+        "nou": {
+          "title": "NOU 2026: 12 En helsetjeneste for vår tid",
+          "url": "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf",
+          "pdfSha256": "b3a7c14bb2a21e8f1184de720396a5123415bb414a57e7c4e0635e19925ce51f",
+          "rhfFte2024": 495,
+          "description": "Utredningen oppgir avtalte årsverk i de regionale helseforetakene. Tallet er en historisk observasjon og ikke et forslag om å fjerne like mange stillinger."
+        },
+        "scenario": {
+          "fte": 495,
+          "timeSaving": 0.1,
+          "realization": 0.5,
+          "cashShare": 0,
+          "annualEmployerCost": 1200000,
+          "nonStaffSavings": 0,
+          "upfrontCost": 500000000,
+          "ongoingCost": 50000000,
+          "rampYears": 3,
+          "years": 10,
+          "discountRate": 0.04
+        },
+        "politics": [
+          {
+            "actor": "Helsereformutvalget",
+            "position": "Foreslår blant annet felles nærhelsetjenester, endret statlig og regional styring, ny finansiering og sterkere digital samhandling.",
+            "status": "Forslag fra et offentlig utvalg, ikke vedtatt politikk."
+          },
+          {
+            "actor": "Regjeringen",
+            "position": "Har sendt utredningen på høring og varslet videre reformarbeid og bred dialog på Stortinget.",
+            "status": "Har ikke sluttet seg til alle forslagene."
+          },
+          {
+            "actor": "KS",
+            "position": "Støtter delt ansvar og bedre samarbeid, men vil at nærhelsetjenester skal være frivillige og avviser å flytte legevakten til staten.",
+            "status": "Dokumentert støtte og motstand mot ulike deler."
+          },
+          {
+            "actor": "Legeforeningen",
+            "position": "Støtter retningen for finansiering av store sykehusbygg, men advarer mot sentralisering og store helseforetak.",
+            "status": "Dokumentert støtte og motstand mot ulike deler."
+          },
+          {
+            "actor": "Spekter",
+            "position": "Mener endringer må løse konkrete pasient- og arbeidskraftproblemer, og peker på kommuneøkonomi og kommunestruktur.",
+            "status": "Innspill, ikke støtte til hele reformen."
+          }
+        ],
+        "sources": [
+          {
+            "name": "NOU 2026: 12 En helsetjeneste for vår tid",
+            "url": "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf",
+            "description": "Utvalgets forslag, bakgrunn og vurderinger. Dokumentet inneholder ikke et samlet netto spare- eller kostnadsanslag for reformen."
+          },
+          {
+            "name": "Helse- og omsorgsdepartementet: mottak av utredningen",
+            "url": "https://www.regjeringen.no/no/aktuelt/nytt-skritt-pa-veien-mot-helsereform-vestre-tok-imot-helsereformutvalgets-forslag/id3190681/",
+            "description": "Regjeringens videre prosess med høring, innspillsmøter og ønske om bredt samarbeid."
+          },
+          {
+            "name": "KS: støtte til delt ansvar, motstand mot statlig legevakt",
+            "url": "https://www.ks.no/pressemeldinger/ks-stotter-delt-ansvar-men-vil-beholde-legevakten/",
+            "description": "KS sitt første dokumenterte standpunkt til konkrete deler av utredningen."
+          },
+          {
+            "name": "Legeforeningen: sykehusbygg og lokal innflytelse",
+            "url": "https://api.kommunikasjon.ntb.no/pressemelding/19126148/riktig-retning-for-sykehusbygg-men-makten-ma-flyttes-naermere-pasientene?lang=no&publisherId=17848606",
+            "description": "Legeforeningens reaksjon på finansiering, sentralisering og nærhet til pasientbehandlingen."
+          },
+          {
+            "name": "Spekter: endringer må løse konkrete problemer",
+            "url": "https://api.kommunikasjon.ntb.no/pressemelding/19126458/helseformutvalgets-rapport-endringer-ma-lose-konkrete-problemer-for-pasientene?lang=no&publisherId=89834",
+            "description": "Spekters første reaksjon om kommuneøkonomi, struktur, pasienter og arbeidskraft."
+          }
+        ],
+        "series": [
+          {
+            "id": "specialistFte",
+            "label": "Årsverk i spesialisthelsetjenesten",
+            "unit": "årsverk",
+            "rows": [
+              {
+                "value": 131339,
+                "year": 2020
+              },
+              {
+                "value": 133955,
+                "year": 2021
+              },
+              {
+                "value": 136364,
+                "year": 2022
+              },
+              {
+                "value": 138696,
+                "year": 2023
+              },
+              {
+                "value": 140664,
+                "year": 2024
+              },
+              {
+                "value": 142826,
+                "year": 2025
+              }
+            ],
+            "source": "SSB, tabell 13953"
+          },
+          {
+            "id": "supportFte",
+            "label": "Administrasjon og service i spesialisthelsetjenesten",
+            "unit": "årsverk",
+            "rows": [
+              {
+                "value": 36083,
+                "year": 2020
+              },
+              {
+                "value": 36941,
+                "year": 2021
+              },
+              {
+                "value": 37548,
+                "year": 2022
+              },
+              {
+                "value": 38564,
+                "year": 2023
+              },
+              {
+                "value": 38967,
+                "year": 2024
+              },
+              {
+                "value": 39674,
+                "year": 2025
+              }
+            ],
+            "source": "SSB, tabell 13953"
+          },
+          {
+            "id": "careFte",
+            "label": "Årsverk i omsorgstjenestene",
+            "unit": "årsverk",
+            "rows": [
+              {
+                "value": 146612,
+                "year": 2020
+              },
+              {
+                "value": 149203,
+                "year": 2021
+              },
+              {
+                "value": 151779,
+                "year": 2022
+              },
+              {
+                "value": 157043,
+                "year": 2023
+              },
+              {
+                "value": 160779,
+                "year": 2024
+              },
+              {
+                "value": 163755,
+                "year": 2025
+              }
+            ],
+            "source": "SSB, tabell 14533"
+          },
+          {
+            "id": "elderly80plus",
+            "label": "Innbyggere fra åtti år",
+            "unit": "personer",
+            "rows": [
+              {
+                "year": 2020,
+                "value": 230710
+              },
+              {
+                "year": 2021,
+                "value": 236407
+              },
+              {
+                "year": 2022,
+                "value": 240293
+              },
+              {
+                "year": 2023,
+                "value": 246360
+              },
+              {
+                "year": 2024,
+                "value": 256485
+              },
+              {
+                "year": 2025,
+                "value": 270537
+              }
+            ],
+            "source": "SSB, tabell 07459"
+          },
+          {
+            "id": "municipalOslo",
+            "label": "Oslo: netto helse- og omsorgsutgifter per innbygger",
+            "unit": "kr per innbygger i faste priser",
+            "rows": [
+              {
+                "year": 2020,
+                "value": 24822.085889570553
+              },
+              {
+                "year": 2021,
+                "value": 28696.32265717675
+              },
+              {
+                "year": 2022,
+                "value": 27579.596412556053
+              },
+              {
+                "year": 2023,
+                "value": 27387.885228480343
+              },
+              {
+                "year": 2024,
+                "value": 26458.29042224511
+              },
+              {
+                "year": 2025,
+                "value": 26660
+              }
+            ],
+            "source": "Fellestall KOSTRA"
+          },
+          {
+            "id": "municipalBergen",
+            "label": "Bergen: netto helse- og omsorgsutgifter per innbygger",
+            "unit": "kr per innbygger i faste priser",
+            "rows": [
+              {
+                "year": 2020,
+                "value": 26677.300613496933
+              },
+              {
+                "year": 2021,
+                "value": 30000
+              },
+              {
+                "year": 2022,
+                "value": 29872.19730941704
+              },
+              {
+                "year": 2023,
+                "value": 31003.188097768332
+              },
+              {
+                "year": 2024,
+                "value": 30858.908341915554
+              },
+              {
+                "year": 2025,
+                "value": 31747
+              }
+            ],
+            "source": "Fellestall KOSTRA"
+          },
+          {
+            "id": "municipalTrondheim",
+            "label": "Trondheim: netto helse- og omsorgsutgifter per innbygger",
+            "unit": "kr per innbygger i faste priser",
+            "rows": [
+              {
+                "year": 2020,
+                "value": 23234.355828220858
+              },
+              {
+                "year": 2021,
+                "value": 26020.166073546858
+              },
+              {
+                "year": 2022,
+                "value": 26060.538116591928
+              },
+              {
+                "year": 2023,
+                "value": 27435.706695005316
+              },
+              {
+                "year": 2024,
+                "value": 26541.709577754893
+              },
+              {
+                "year": 2025,
+                "value": 26289
+              }
+            ],
+            "source": "Fellestall KOSTRA"
+          }
+        ]
+      }
+    },
+    "copy": {
+      "title": "Helsereformen kan gi mer tid til pasientene. Sparebeløpet er ukjent.",
+      "description": "Utvalget vil at kommuner og sykehus skal gi mer behandling nær hjemmet. Fellestalls regnskap og en interaktiv kalkulator viser hva som må til for at mer tid også skal gi lavere utgifter.",
+      "lead": "Tenk deg at du er ferdigbehandlet på sykehuset, men fortsatt trenger hjelp før du kan dra hjem. Hvem har plass, hvem tar over, og hvem betaler? Helsereformutvalget vil at kommunen og sykehuset skal løse mer av dette sammen. Det kan bety kortere reisevei og færre brudd i behandlingen. Men utvalget har ikke lagt fram et samlet regnestykke for hva endringene vil koste eller spare.",
+      "sections": [
+        {
+          "heading": "Mer behandling nær hjemmet",
+          "factIds": [],
+          "paragraphs": [
+            "Staten skal fortsatt ha ansvar for spesialisthelsetjenesten, og kommunene for sine helse- og omsorgstjenester. Utvalget vil knytte dem tettere sammen gjennom nærhelsetjenester. Der kan sykehuset bidra med spesialister og kommunen med lokal oppfølging. For en pasient som trenger hjelp fra begge, kan det bety at mer av behandlingen skjer nær hjemmet og at færre må forklare den samme sykehistorien på nytt.",
+            "Det avhenger av hva som faktisk kan tilbys lokalt. Et nytt samarbeid gir liten hjelp hvis det mangler fagfolk, eller hvis ingen har ansvar for å følge opp prøvesvar og endringer i medisiner. For de ansatte må det være klart hvem som har vaktansvar, hvem de skal ringe ved forverring, og hva som skjer med arbeidssted og tariffavtaler dersom oppgaver flyttes."
+          ]
+        },
+        {
+          "heading": "Sykehuspengene og kontorjobbene er to ulike regnestykker",
+          "factIds": [
+            "rhfAmountA",
+            "rhfAmountF",
+            "healthRhfFte",
+            "healthSupportFteGrowth",
+            "healthSpecialistFteGrowth"
+          ],
+          "paragraphs": [
+            "Staten eier allerede sykehusene gjennom de regionale helseforetakene. Utvalgets flertall vil flytte administrative oppgaver fra de regionale foretakene til staten. Fellestalls statsregnskap viser at kapittelet for de regionale helseforetakene gikk fra {{fact:rhfAmountA}} i {{fact:startYear}} til {{fact:rhfAmountF}} i {{fact:endYear}}, i løpende kroner. Her ligger finansiering av spesialisthelsetjenesten. Beløpet sier lite om hva som kan spares på ledelse og administrasjon.",
+            "Utredningen oppgir {{fact:healthRhfFte}} avtalte årsverk i de regionale helseforetakene i {{fact:rhfYearE}}. Oppgaver som innkjøp, planlegging og oppfølging av sykehusene må fortsatt utføres. Den bredere kategorien administrasjon og service i spesialisthelsetjenesten steg med {{fact:healthSupportFteGrowth}} fra {{fact:startYear}} til {{fact:endYear}}, mot {{fact:healthSpecialistFteGrowth}} for spesialisthelsetjenesten samlet. Service omfatter blant annet IT, renhold og logistikk. Å telle alt som byråkrati ville blåst opp sparepotensialet."
+          ]
+        },
+        {
+          "heading": "Kommunene trenger folk, også etter en reform",
+          "factIds": [
+            "kommunehelseLastAmount",
+            "psykiskLastAmount",
+            "healthElderlyGrowth",
+            "healthCareFteGrowth"
+          ],
+          "paragraphs": [
+            "Fra {{fact:startYear}} til {{fact:endYear}} økte antallet innbyggere som var åtti år eller eldre med {{fact:healthElderlyGrowth}}. Årsverkene i omsorgstjenestene økte med {{fact:healthCareFteGrowth}}. Det sier noe om hvorfor bemanning betyr så mye i reformen. Det sier ikke hvor mye omsorg hver eldre fikk: tjenestene brukes også av yngre, og behovet varierer mellom personer og kommuner.",
+            "Fellestalls kommuneregnskap viser at netto helse- og omsorgsutgifter per innbygger steg etter prisjustering i Oslo, Bergen og Trondheim. Det er tre storbyer, ikke hele landet. I statsregnskapet ble det i {{fact:endYear}} ført {{fact:kommunehelseLastAmount}} på kapittelet for kommunale helse- og omsorgstjenester og {{fact:psykiskLastAmount}} på kapittelet for psykisk helse og rusarbeid. Det er statlige utgifter. Legger man statlige overføringer oppå kommunenes utgifter, kan samme krone dukke opp to ganger. Når en oppgave flyttes, må finansieringen derfor vurderes sammen med bemanningen som faktisk trengs."
+          ]
+        },
+        {
+          "heading": "Hva skal til for å spare penger?",
+          "factIds": [
+            "healthRhfFte"
+          ],
+          "paragraphs": [
+            "En avdeling kan bruke tiden den frigjør på flere pasienter, mindre overtid eller færre innleide vakter. Det første kan gi bedre kapasitet uten at budsjettet blir mindre. De andre kan gi lavere utgifter, hvis vaktene og innleien faktisk faller bort. Den samme timen kan ikke regnes som både mer pasienttid og spart lønn.",
+            "Prøv kalkulatoren med all frigjort tid satt av til tjenestene. Da blir det ingen kontantinnsparing fra personell, selv om kapasiteten kan øke. Flytt en del av gevinsten over til kontantinnsparing og se hvordan resultatet endres når du også regner med omstilling, nye systemer og årlig drift. Et overskudd oppstår først når de faktiske besparelsene dekker kostnadene. Startverdiene er illustrasjoner. Utvalget har ikke levert et samlet kostnadsanslag som gjør dem til en prognose."
+          ]
+        },
+        {
+          "heading": "Her står den politiske striden",
+          "factIds": [],
+          "paragraphs": [
+            "Helseminister Jan Christian Vestre har sendt utredningen på høring og invitert til bredt samarbeid i Stortinget. Utvalget står bak forslagene. Det finnes allerede et stortingsvedtak om å utrede et skille mellom drift og investering i sykehusene, men det er ikke et vedtak om å innføre modellen. Forslaget kan gjøre det lettere å vurdere store bygg for seg. Regningen for bygg, vedlikehold og drift må fortsatt betales.",
+            "KS støtter delt ansvar og bedre samarbeid, men vil at nærhelsetjenester skal være frivillige og vil beholde legevakten i kommunene. KS peker blant annet på sammenhengen med fastleger, rekruttering og lokal beredskap. Legeforeningen er positiv til retningen for finansiering av store sykehusbygg, men skeptisk til sammenslåinger og mer sentralisert styring. Spekter løfter fram kommuneøkonomi og kommunestruktur. Det er standpunkter om bestemte deler av reformen, ikke ja eller nei til hele pakken.",
+            "En mulig konflikt er hvem som bestemmer hvor akuttjenester skal ligge når fagmiljøer ønsker større enheter, mens kommuner vil sikre kort reisevei og beredskap. En annen er hvem som betaler når mer behandling flyttes ut av sykehuset. Det er foreløpig ikke grunnlag her for å tilskrive partiene et flertall for noen av løsningene."
+          ]
+        },
+        {
+          "heading": "Digital hjelp må gi mindre dobbeltarbeid",
+          "factIds": [
+            "iktLastAmount"
+          ],
+          "paragraphs": [
+            "Fellestall viser {{fact:iktLastAmount}} på statens særskilte IKT-kapittel for helse og omsorg i {{fact:endYear}}. Der ligger bare en del av pengene som brukes på digitale løsninger. Sykehusenes og kommunenes systemer, opplæring og drift kan ligge andre steder i regnskapet. Kapittelet kan derfor ikke brukes som reformens digitale prislapp.",
+            "En journal som følger pasienten, kan spare telefoner og leting etter opplysninger. KI kan for eksempel hjelpe med et førsteutkast til journalnotat. Gevinsten blir mindre hvis ansatte må rette mange feil eller føre opplysningene i flere systemer. Før man regner inn tid spart, bør man måle hvor mye tid som faktisk går til dokumentasjon og kontroll. Følg også med på om ventetiden går ned, om færre må tilbake på sykehus kort tid etter utskriving, og om pasientene får trygg oppfølging hjemme. De målene sier mer om kvaliteten enn et lavere administrasjonsbudsjett."
+          ]
+        }
+      ],
+      "conclusion": "Reformen kan gi pasientene bedre oppfølging nær hjemmet hvis kommunen og sykehuset får folk, penger og tydelig ansvar til å gjøre jobben. For å vite om den også sparer penger, må vi se hvilke oppgaver og kostnader som faktisk faller bort, og hva det koster å legge om.",
+      "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nFlytt en oppgave fra et helseforetak til staten, og du har fått en ny adresse. Regningen har som regel også flyttemelding.\n\nHelsereformutvalget vil gi flere behandling nær hjemmet og endre styringen av sykehusene. Det kan gi ansatte mer tid til pasientene. Utvalget har likevel ikke satt et samlet sparebeløp på reformen.\n\nI Fellestalls analyse kan du skru på tidsgevinsten, omstillingskostnaden og andelen som faktisk blir til lavere utgifter. Hva bør vi bruke en frigjort time til: flere pasienter eller mindre innleie?",
+      "graphs": [
+        {
+          "kind": "series",
+          "afterSection": 1,
+          "title": "Statens utgifter til regionale helseforetak",
+          "mode": "values",
+          "chartType": "line",
+          "annotation": "period-change",
+          "series": [
+            {
+              "source": "post",
+              "id": "rhf"
+            }
+          ]
+        },
+        {
+          "kind": "series",
+          "afterSection": 2,
+          "title": "Flere eldre og flere årsverk",
+          "mode": "index",
+          "chartType": "line",
+          "annotation": "period-change",
+          "series": [
+            {
+              "source": "health",
+              "id": "elderly80plus"
+            },
+            {
+              "source": "health",
+              "id": "careFte"
+            }
+          ]
+        },
+        {
+          "kind": "series",
+          "afterSection": 2,
+          "title": "Helse og omsorg per innbygger i tre byer",
+          "mode": "values",
+          "chartType": "line",
+          "annotation": "period-change",
+          "series": [
+            {
+              "source": "health",
+              "id": "municipalOslo",
+              "label": "Oslo"
+            },
+            {
+              "source": "health",
+              "id": "municipalBergen",
+              "label": "Bergen"
+            },
+            {
+              "source": "health",
+              "id": "municipalTrondheim",
+              "label": "Trondheim"
+            }
+          ]
+        },
+        {
+          "kind": "health-scenario",
+          "afterSection": 3,
+          "title": "Hva skal til for at regnestykket går i pluss?"
+        }
+      ]
+    }
+  }
+}
