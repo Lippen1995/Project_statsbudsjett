@@ -789,6 +789,46 @@
 .cmp-account-switch {
   margin: 0 0 14px;
 }
+.cmp-driver-panel {
+  margin: 24px 0;
+}
+.cmp-driver-panel .cmp-footnote {
+  margin: 7px 0 12px;
+}
+.cmp-driver-table {
+  overflow-x: auto;
+}
+.cmp-driver-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.cmp-driver-table th,
+.cmp-driver-table td {
+  padding: 9px 8px;
+  border-bottom: 1px solid var(--strek);
+  vertical-align: top;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.cmp-driver-table th:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+.cmp-driver-table td {
+  white-space: nowrap;
+}
+.cmp-driver-table small {
+  display: block;
+  margin-top: 3px;
+  color: var(--dempet);
+  font-size: 11px;
+  font-weight: 400;
+}
+.cmp-driver-table th span {
+  color: var(--dempet);
+  font-weight: 400;
+}
 .cmp-account-filter {
   display: grid;
   gap: 5px;

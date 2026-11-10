@@ -516,6 +516,13 @@
 .cmp-sort-heading[aria-sort] button span[aria-hidden] {
   color: var(--gronn);
 }
+.cmp-explain-row {
+  cursor: pointer;
+}
+.cmp-explain-row:hover,
+.cmp-explain-row:focus-within {
+  background: var(--flate);
+}
 .cmp-checks {
   display: grid;
   grid-template-columns: 1fr 1fr;

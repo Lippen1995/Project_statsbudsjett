@@ -4,6 +4,7 @@ import { loadKostraDetail } from "../lib/kostra";
 import { SECTORS } from "./comparison";
 import CostChart, { CostTable, useReducedMotion } from "./CostChart";
 import AccountingDrill from "./AccountingDrill";
+import FunctionDrivers from "./FunctionDrivers";
 import {
   comparisonRow,
   peerRows,
@@ -87,7 +88,8 @@ export default function ComparisonDialog({
     : SECTORS.find((s) => s[0] === sector)?.[1] || "Samlet netto drift");
   const period = years.filter((y) => y >= from && y <= to);
   const accounts = view === "accounts";
-  const rows = waiting || accounts
+  const drivers = view === "drivers";
+  const rows = waiting || accounts || drivers
     ? []
     : view === "history"
       ? period.map((y) =>
@@ -160,6 +162,7 @@ export default function ComparisonDialog({
           aria-label="Sammenligningsvisning"
         >
           {[
+            ...(fn && !account ? [["drivers", "Nøkkeltall og drivere"]] : []),
             ["history", "Historikk"],
             ["peers", "Kommunene"],
             ...(fn && !account ? [["accounts", "Regnskapsposter"]] : []),
@@ -176,30 +179,32 @@ export default function ComparisonDialog({
             </button>
           ))}
         </div>
-        <label className="cmp-inline-label">
-          Sammenlign med
-          <select
-            aria-label="Sammenlign med"
-            value={compare}
-            onChange={(e) => {
-              setCompare(e.target.value);
-              reset();
-            }}
-          >
-            <option value="peers">
-              {referenceName(method)} · sammenligningsgruppen
-            </option>
-            {entities
-              .filter((e) => e.code !== target.entity.code)
-              .map((e) => (
-                <option key={e.code} value={e.code}>
-                  {e.name}
-                </option>
-              ))}
-          </select>
-        </label>
+        {!drivers && (
+          <label className="cmp-inline-label">
+            Sammenlign med
+            <select
+              aria-label="Sammenlign med"
+              value={compare}
+              onChange={(e) => {
+                setCompare(e.target.value);
+                reset();
+              }}
+            >
+              <option value="peers">
+                {referenceName(method)} · sammenligningsgruppen
+              </option>
+              {entities
+                .filter((e) => e.code !== target.entity.code)
+                .map((e) => (
+                  <option key={e.code} value={e.code}>
+                    {e.name}
+                  </option>
+                ))}
+            </select>
+          </label>
+        )}
       </div>
-      {!accounts && (
+      {!accounts && !drivers && (
         <>
           <div className="cmp-dialog-options">
             <div className="cmp-view-switch" role="group" aria-label="Måleenhet">
@@ -286,7 +291,12 @@ export default function ComparisonDialog({
           </div>
         </>
       )}
-      {waiting ? (
+      {drivers ? (
+        <>
+          <CostTable row={comparisonRow(target, peers, year, sector, fn, method)} context="Netto driftsutgifter" compact />
+          <FunctionDrivers key={year} target={target} peers={peers} year={year} fn={fn} />
+        </>
+      ) : waiting ? (
         <p role={error ? "alert" : "status"}>
           {error || "Henter sammenligningskommunen…"}
           {error && (

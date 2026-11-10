@@ -15,6 +15,7 @@ import {
 } from "./comparison";
 import "./comparison.css";
 import ComparisonWorkspace from "./ComparisonWorkspace";
+import ComparisonDialog from "./ComparisonDialog";
 import BudgetWorkspace from "./BudgetWorkspace";
 
 const number = (n, digits = 0) =>
@@ -83,6 +84,7 @@ export default function MunicipalityComparison({ hash }) {
   const [sector, setSector] = useState(""),
     [functionCode, setFunctionCode] = useState("");
   const [functionSort, setFunctionSort] = useState({ key: "code", direction: "asc" });
+  const [explainedFunction, setExplainedFunction] = useState("");
   const [tab, setTab] = useState(route.budgetView ? "publishedBudget" : "compare"),
     [method, setMethod] = useState("median");
   const [editingPeers, setEditingPeers] = useState(false),
@@ -673,20 +675,16 @@ export default function MunicipalityComparison({ hash }) {
                   </thead>
                   <tbody>
                     {sortedFunctionRows.map((f) => (
-                      <tr key={f.code}>
+                      <tr
+                        key={f.code}
+                        className="cmp-explain-row"
+                        onClick={(event) => {
+                          event.currentTarget.querySelector("button").focus({ preventScroll: true });
+                          setExplainedFunction(f.code);
+                        }}
+                      >
                         <th scope="row">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSector(
-                                f.serviceCodes?.find((c) =>
-                                  SECTORS.some((s) => s[0] === c),
-                                ) || sector,
-                              );
-                              setFunctionCode(f.code);
-                              setTab("compare");
-                            }}
-                          >
+                          <button type="button" aria-haspopup="dialog">
                             {f.code} · {f.name} ↗
                           </button>
                         </th>
@@ -704,6 +702,19 @@ export default function MunicipalityComparison({ hash }) {
                   </tbody>
                 </table>
               </div>
+              {explainedFunction && (
+                <ComparisonDialog
+                  target={target}
+                  peers={peers}
+                  entities={entities}
+                  year={year}
+                  years={index.years}
+                  fn={explainedFunction}
+                  method={method}
+                  initialView="drivers"
+                  onClose={() => setExplainedFunction("")}
+                />
+              )}
               <div className="cmp-checks">
                 {[
                   [
@@ -712,7 +723,7 @@ export default function MunicipalityComparison({ hash }) {
                   ],
                   [
                     "Tjenesteomfang og kvalitet",
-                    "Kostnad per elev eller mottaker og kvalitetsindikatorer må supplere tall per innbygger. Disse er ikke tilgjengelige i dette arbeidsområdet ennå.",
+                    "Åpne en funksjon for å se tilgjengelige SSB-tall om tjenesteomfang og bemanning. Kvalitet må også vurderes når kommunene sammenlignes.",
                   ],
                   [
                     "Bemanning og organisering",
