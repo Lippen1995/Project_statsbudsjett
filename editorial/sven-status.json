@@ -221,15 +221,23 @@
       "note": "Ingen åpen analyse-PR eller nytt autorisert endringsønske. Helsereformen er fortsatt første klare hastesak, men kildekode-PR #84 er fremdeles åpen uten review og rapportstøtten finnes ikke på fersk main. Temaet er beholdt; ingen artikkel er skrevet, levert eller publisert.",
       "updatedAt": "2026-11-08T07:58:00.000Z",
       "finishedAt": "2026-11-08T07:58:00.000Z"
+    },
+    {
+      "id": "b0c683a1-0507-4e7a-89d4-d399f69665e0",
+      "startedAt": "2026-11-09T08:05:30.000Z",
+      "instructionCommit": "7f147ed49c9aed1034e459388e43b9e6e948982b",
+      "state": "waiting",
+      "note": "Ingen åpen analyse-PR eller nytt autorisert endringsønske. Helsereformen er fortsatt første klare hastesak, men kildekode-PR #84 er fremdeles åpen uten review og rapportstøtten finnes ikke på fersk main. KDD-temaet har nå nådd skrivedatoen, men starter ikke før hastesaken kan leveres. Begge temaer er beholdt; ingen artikkel er skrevet, levert eller publisert.",
+      "updatedAt": "2026-11-09T08:07:00.000Z",
+      "finishedAt": "2026-11-09T08:07:00.000Z"
     }
   ],
   "current": {
-    "id": "b0c683a1-0507-4e7a-89d4-d399f69665e0",
-    "startedAt": "2026-11-09T08:05:30.000Z",
-    "instructionCommit": "7f147ed49c9aed1034e459388e43b9e6e948982b",
-    "state": "waiting",
-    "note": "Ingen åpen analyse-PR eller nytt autorisert endringsønske. Helsereformen er fortsatt første klare hastesak, men kildekode-PR #84 er fremdeles åpen uten review og rapportstøtten finnes ikke på fersk main. KDD-temaet har nå nådd skrivedatoen, men starter ikke før hastesaken kan leveres. Begge temaer er beholdt; ingen artikkel er skrevet, levert eller publisert.",
-    "updatedAt": "2026-11-09T08:07:00.000Z",
-    "finishedAt": "2026-11-09T08:07:00.000Z"
+    "id": "75495b42-1da7-4bc6-8581-e8db779b9548",
+    "startedAt": "2026-11-10T07:58:12.868Z",
+    "instructionCommit": "52f5a7e1825802ba9a6912ea152fc818fabe67f9",
+    "state": "researching",
+    "note": "Kontrollerer kø og åpne gjennomganger",
+    "updatedAt": "2026-11-10T07:58:12.868Z"
   }
 }
