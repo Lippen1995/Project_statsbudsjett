@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { loadKostraIndex, loadKostraDetail } from "../lib/kostra";
 import { formatKostraValue, displayEntityName } from "../kostra/model";
+import { sortExplorerRows } from "../kostra/explorer";
 import {
   SECTORS,
   COMPARISON_ROUTE,
@@ -81,6 +82,7 @@ export default function MunicipalityComparison({ hash }) {
     [missing, setMissing] = useState([]);
   const [sector, setSector] = useState(""),
     [functionCode, setFunctionCode] = useState("");
+  const [functionSort, setFunctionSort] = useState({ key: "code", direction: "asc" });
   const [tab, setTab] = useState(route.budgetView ? "publishedBudget" : "compare"),
     [method, setMethod] = useState("median");
   const [editingPeers, setEditingPeers] = useState(false),
@@ -202,6 +204,30 @@ export default function MunicipalityComparison({ hash }) {
   const functions = (target?.functions || []).filter(
     (f) => sector && f.serviceCodes?.includes(sector),
   );
+  const functionRows = tab === "explain" && target
+    ? (sector ? functions : target.functions || []).map((f) => {
+        const result = comparison(target, peers, year, "", f.code, method);
+        return {
+          ...f,
+          perCapita: result.own?.perCapita,
+          reference: result.reference.value,
+          percent: result.percent,
+          count: result.reference.count,
+        };
+      })
+    : [];
+  const ascending = functionSort.direction === "asc";
+  const sortedFunctionRows = functionSort.key === "code"
+    ? functionRows.sort((a, b) =>
+        a.code.localeCompare(b.code, "nb", { numeric: true }) * (ascending ? 1 : -1),
+      )
+    : sortExplorerRows(functionRows, functionSort.key, functionSort.direction);
+  const sortFunctions = (key) => setFunctionSort((current) => ({
+    key,
+    direction: current.key === key
+      ? (current.direction === "asc" ? "desc" : "asc")
+      : (key === "code" ? "asc" : "desc"),
+  }));
   const title = functionCode
     ? functions.find((f) => f.code === functionCode)?.name
     : sector
@@ -621,52 +647,60 @@ export default function MunicipalityComparison({ hash }) {
                   </caption>
                   <thead>
                     <tr>
-                      <th>Funksjon</th>
-                      <th>{ownName}, kr/innb.</th>
-                      <th>Referanse, kr/innb.</th>
-                      <th>Avvik</th>
-                      <th>Kommuner med data</th>
+                      {[
+                        ["code", "Funksjon"],
+                        ["perCapita", `${ownName}, kr/innb.`],
+                        ["reference", "Referanse, kr/innb."],
+                        ["percent", "Avvik"],
+                      ].map(([key, label]) => {
+                        const active = functionSort.key === key;
+                        return (
+                          <th
+                            key={key}
+                            scope="col"
+                            className="cmp-sort-heading"
+                            aria-sort={active ? (ascending ? "ascending" : "descending") : undefined}
+                          >
+                            <button type="button" onClick={() => sortFunctions(key)}>
+                              <span>{label}</span>
+                              <span aria-hidden="true">{active ? (ascending ? "↑" : "↓") : "↕"}</span>
+                            </button>
+                          </th>
+                        );
+                      })}
+                      <th scope="col">Kommuner med data</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {(sector ? functions : target.functions || []).map((f) => {
-                      const s = comparison(
-                        target,
-                        peers,
-                        year,
-                        "",
-                        f.code,
-                        method,
-                      );
-                      return (
-                        <tr key={f.code}>
-                          <th>
-                            <button
-                              onClick={() => {
-                                setSector(
-                                  f.serviceCodes?.find((c) =>
-                                    SECTORS.some((s) => s[0] === c),
-                                  ) || sector,
-                                );
-                                setFunctionCode(f.code);
-                                setTab("compare");
-                              }}
-                            >
-                              {f.code} · {f.name} ↗
-                            </button>
-                          </th>
-                          <td>{number(s.own?.perCapita)}</td>
-                          <td>{number(s.reference.value)}</td>
-                          <td className={s.percent > 0 ? "cmp-rust" : ""}>
-                            {s.percent > 0 ? "+" : ""}
-                            {number(s.percent, 1)} %
-                          </td>
-                          <td>
-                            {s.reference.count}/{selectedPeers.length}
-                          </td>
-                        </tr>
-                      );
-                    })}
+                    {sortedFunctionRows.map((f) => (
+                      <tr key={f.code}>
+                        <th scope="row">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSector(
+                                f.serviceCodes?.find((c) =>
+                                  SECTORS.some((s) => s[0] === c),
+                                ) || sector,
+                              );
+                              setFunctionCode(f.code);
+                              setTab("compare");
+                            }}
+                          >
+                            {f.code} · {f.name} ↗
+                          </button>
+                        </th>
+                        <td>{number(f.perCapita)}</td>
+                        <td>{number(f.reference)}</td>
+                        <td className={f.percent > 0 ? "cmp-rust" : ""}>
+                          {f.percent > 0 ? "+" : ""}
+                          {number(f.percent, 1)} %
+                        </td>
+                        <td>
+                          {f.count}/{selectedPeers.length}
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

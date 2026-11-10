@@ -489,6 +489,33 @@
   text-align: left;
   color: var(--gronn);
 }
+.cmp-table-wrap .cmp-sort-heading {
+  padding: 0;
+}
+.cmp-page .cmp-table-wrap .cmp-sort-heading button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 13px;
+  color: inherit;
+  font: inherit;
+  text-align: right;
+}
+.cmp-page .cmp-table-wrap .cmp-sort-heading:first-child button {
+  justify-content: flex-start;
+  text-align: left;
+}
+.cmp-page .cmp-table-wrap .cmp-sort-heading button:hover {
+  background: var(--strek);
+}
+.cmp-sort-heading button span[aria-hidden] {
+  color: var(--dempet);
+}
+.cmp-sort-heading[aria-sort] button span[aria-hidden] {
+  color: var(--gronn);
+}
 .cmp-checks {
   display: grid;
   grid-template-columns: 1fr 1fr;
