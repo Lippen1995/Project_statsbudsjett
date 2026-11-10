@@ -172,7 +172,8 @@ export default function ComparisonWorkspace({
     return {
       ...read(target, sector, fn, code),
       code,
-      label: code,
+      label: source?.name || post.context,
+      axisCode: code,
       context: source?.name ? `${code} · ${source.name}` : code,
     };
   }).filter((row) => Number.isFinite(row.own.amount) || Number.isFinite(row.b));
@@ -191,7 +192,7 @@ export default function ComparisonWorkspace({
   const level = post ? "Artskontoer" : fn ? "Regnskapsposter" : sectorName ? "KOSTRA-funksjoner" : "Tjenesteområder";
   const rows = post ? arts : fn ? posts : sectorName
     ? functions.map(({ code, name }) => ({
-        ...read(target, sector, code), code, label: code, context: `${code} · ${name}`,
+        ...read(target, sector, code), code, label: name, axisCode: code, context: `${code} · ${name}`,
       }))
     : SECTORS.map(([code, name]) => ({
         ...read(target, code, ""), code, label: SERVICE_LABELS[code] || name, context: name,
@@ -269,6 +270,7 @@ export default function ComparisonWorkspace({
             animate={false}
             title={level}
             categoryLabel={level}
+            wrapCategories
             onSelect={selectRow}
             chartKey={[target.entity.code, year, method, sector, fn, post?.code, ...peers.map((peer) => peer.entity.code)].join("-")}
           />

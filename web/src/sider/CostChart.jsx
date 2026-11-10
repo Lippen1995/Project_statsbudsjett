@@ -10,6 +10,8 @@ import {
   CartesianGrid,
   Tooltip,
   LabelList,
+  Text,
+  usePlotArea,
 } from "recharts";
 import AxisPopover from "./AxisPopover";
 import {
@@ -98,6 +100,35 @@ function ChartTooltip({ active, payload, history, context }) {
   );
 }
 const EMPTY = { min: null, max: null };
+
+function CategoryTick({ x, y, payload, index, rows }) {
+  const plot = usePlotArea();
+  const row = rows[index];
+  const width = Math.max(50, (plot?.width ?? 0) / rows.length - 12);
+  return (
+    <g>
+      <Text
+        x={x}
+        y={y}
+        width={width}
+        maxLines={3}
+        lineHeight="13px"
+        verticalAnchor="start"
+        textAnchor="middle"
+        fill="var(--dempet)"
+        style={{ fontSize: 11 }}
+      >
+        {payload.value}
+      </Text>
+      {row?.axisCode && (
+        <text x={x} y={y + 47} textAnchor="middle" fill="var(--dempet)" fontSize={10}>
+          {row.axisCode}
+        </text>
+      )}
+    </g>
+  );
+}
+
 export default function CostChart({
   rows,
   paired = false,
@@ -107,6 +138,7 @@ export default function CostChart({
   secondary = "none",
   title,
   categoryLabel = "Tjenesteområde / funksjon",
+  wrapCategories = false,
   onSelect,
   selected,
   deltas = false,
@@ -133,6 +165,7 @@ export default function CostChart({
       secondaryBounds,
     );
   const unit = mode === "amount" ? "Millioner kroner" : "Kroner per innbygger";
+  const categoryWidth = wrapCategories && rows.some((row) => row.axisCode) ? 138 : 65;
   const secondUnit =
     secondary === "growth" ? "År/år-endring (%)" : "Innbyggere";
   const openAxis = (side, event) => {
@@ -177,13 +210,13 @@ export default function CostChart({
       <div className={paired && !history ? "cmp-category-scroll" : ""}>
         <div
           style={
-            paired && !history ? { minWidth: rows.length * 65 + 82 } : undefined
+            paired && !history ? { minWidth: rows.length * categoryWidth + 82 } : undefined
           }
           className={`cmp-chart-plot ${secondary !== "none" ? "cmp-chart-plot--secondary" : ""}`}
         >
           <ResponsiveContainer
             width="100%"
-            height={vertical ? 390 : 295}
+            height={vertical ? 390 : wrapCategories ? 323 : 295}
             minWidth={0}
           >
             <ComposedChart
@@ -208,12 +241,14 @@ export default function CostChart({
               <CartesianGrid vertical={false} stroke="var(--strek)" />
               <XAxis
                 dataKey="label"
-                interval={vertical ? 0 : "preserveStartEnd"}
+                interval={vertical || wrapCategories ? 0 : "preserveStartEnd"}
                 angle={vertical ? -90 : 0}
                 textAnchor={vertical ? "end" : "middle"}
-                height={vertical ? 135 : 48}
+                height={vertical ? 135 : wrapCategories ? 76 : 48}
                 tickMargin={10}
-                tick={{ fontSize: 11, fill: "var(--dempet)" }}
+                tick={wrapCategories
+                  ? <CategoryTick rows={rows} />
+                  : { fontSize: 11, fill: "var(--dempet)" }}
                 axisLine={false}
                 tickLine={false}
                 label={{
