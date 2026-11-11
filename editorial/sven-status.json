@@ -245,8 +245,9 @@
     "id": "3f88f987-89bf-4543-ac9a-5055d911b71d",
     "startedAt": "2026-11-11T08:05:00.812Z",
     "instructionCommit": "949255afad59bc61557dfe2df207ebb6a9de59fe",
-    "state": "researching",
-    "note": "Kontrollerer kø og åpne gjennomganger",
-    "updatedAt": "2026-11-11T08:05:00.812Z"
+    "state": "waiting",
+    "note": "PR #86 venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. KDD-temaet blir stående i køen.",
+    "updatedAt": "2026-11-11T08:05:18.638Z",
+    "finishedAt": "2026-11-11T08:05:18.638Z"
   }
 }
