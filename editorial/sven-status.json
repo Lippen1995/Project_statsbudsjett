@@ -239,15 +239,23 @@
       "note": "Helsereformutkastet i PR #86 er åpent og venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. Klargjøringen stoppet som forventet; KDD-temaet beholdes i køen. Ingen ny analyse er skrevet eller publisert.",
       "updatedAt": "2026-11-10T07:58:39.702Z",
       "finishedAt": "2026-11-10T07:58:39.702Z"
+    },
+    {
+      "id": "3f88f987-89bf-4543-ac9a-5055d911b71d",
+      "startedAt": "2026-11-11T08:05:00.812Z",
+      "instructionCommit": "949255afad59bc61557dfe2df207ebb6a9de59fe",
+      "state": "waiting",
+      "note": "PR #86 venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. KDD-temaet blir stående i køen.",
+      "updatedAt": "2026-11-11T08:05:18.638Z",
+      "finishedAt": "2026-11-11T08:05:18.638Z"
     }
   ],
   "current": {
-    "id": "3f88f987-89bf-4543-ac9a-5055d911b71d",
-    "startedAt": "2026-11-11T08:05:00.812Z",
-    "instructionCommit": "949255afad59bc61557dfe2df207ebb6a9de59fe",
-    "state": "waiting",
-    "note": "PR #86 venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. KDD-temaet blir stående i køen.",
-    "updatedAt": "2026-11-11T08:05:18.638Z",
-    "finishedAt": "2026-11-11T08:05:18.638Z"
+    "id": "39b601df-9a51-4438-99b7-769aa0dd1fe3",
+    "startedAt": "2026-11-12T08:03:52.409Z",
+    "instructionCommit": "06b7d0ed8592f05f593f31f7f410e96ceb8d4b4e",
+    "state": "researching",
+    "note": "Kontrollerer kø og åpne gjennomganger",
+    "updatedAt": "2026-11-12T08:03:52.409Z"
   }
 }
