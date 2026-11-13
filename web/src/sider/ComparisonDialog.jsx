@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { loadKostraDetail } from "../lib/kostra";
-import { SECTORS } from "./comparison";
+import { benchmarkObservations, population, SECTORS } from "./comparison";
 import CostChart, { CostTable, useReducedMotion } from "./CostChart";
 import AccountingDrill from "./AccountingDrill";
 import FunctionDrivers from "./FunctionDrivers";
@@ -89,6 +89,9 @@ export default function ComparisonDialog({
   const period = years.filter((y) => y >= from && y <= to);
   const accounts = view === "accounts";
   const drivers = view === "drivers";
+  const peerPopulation = drivers ? benchmarkObservations(peers.map((peer) => ({
+    p: { perCapita: population(peer, year) || null },
+  })), "median").value : null;
   const rows = waiting || accounts || drivers
     ? []
     : view === "history"
@@ -293,7 +296,12 @@ export default function ComparisonDialog({
       )}
       {drivers ? (
         <>
-          <CostTable row={comparisonRow(target, peers, year, sector, fn, method)} context="Netto driftsutgifter" compact />
+          <CostTable
+            row={comparisonRow(target, peers, year, sector, fn, method)}
+            context="Netto driftsutgifter"
+            peerPopulation={peerPopulation}
+            compact
+          />
           <FunctionDrivers key={year} target={target} peers={peers} year={year} fn={fn} />
         </>
       ) : waiting ? (

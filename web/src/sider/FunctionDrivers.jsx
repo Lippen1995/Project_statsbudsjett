@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { accountingObservation } from "./accounting-drill";
 import { benchmarkObservations } from "./comparison";
 import { entityName, formatNumber } from "./workspace-model";
 import indicators from "./driver-indicators.json";
@@ -6,7 +7,7 @@ import indicators from "./driver-indicators.json";
 const BY_FUNCTION = {
   100: ["population"],
   110: ["population"],
-  120: ["population", "travel"],
+  120: ["adminEmployed", "adminFte"],
   121: ["buildingArea"],
   130: ["officeArea"],
   201: ["kindergarten", "kindergartenStaff"],
@@ -39,6 +40,12 @@ const BY_FUNCTION = {
   381: ["sportsArea"],
   386: ["cultureArea"],
 };
+
+const ADMIN_COSTS = [
+  ["AG16", "Lønnsutgifter etter sykelønnsrefusjon"],
+  ["AGD50", "Varer og tjenester til egen produksjon"],
+  ["AGD51", "Kjøp av tjenester som erstatter egen produksjon"],
+];
 
 const years = new Map();
 
@@ -80,19 +87,43 @@ export default function FunctionDrivers({ target, peers, year, fn }) {
 
   const keys = BY_FUNCTION[fn];
   const value = (code, key) => dataset?.rows[code]?.[dataset.columns.indexOf(key)];
-  const rows = (keys || ["population"]).map((key) => {
-    const own = value(target.entity.code, key);
-    const reference = benchmarkObservations(peers.map((peer) => ({
-      p: { perCapita: value(peer.entity.code, key) },
-    })), "median");
-    return { key, ...indicators[key], own, reference };
+  const indicatorRow = (key, details, read) => ({
+    key,
+    ...details,
+    own: read(target),
+    reference: benchmarkObservations(peers.map((peer) => ({
+      p: { perCapita: read(peer) },
+    })), "median"),
   });
+  const costRows = fn === "120" ? ADMIN_COSTS.map(([code, label]) =>
+    indicatorRow(code, { label, table: "12367", unit: "kr/innb." }, (detail) =>
+      accountingObservation(detail, year, fn, code).perCapita),
+  ) : [];
+  const staffingRate = fn === "120" ? [indicatorRow("adminFteRate", {
+    label: "Avtalte årsverk i FGK1 per 1 000 innbyggere",
+    table: "11918",
+    unit: "årsverk",
+    note: "Beregnet med SSBs folketall (tabell 11820). Raten tar hensyn til kommunestørrelsen.",
+  }, (detail) => {
+    const code = detail.entity.code;
+    const staff = value(code, "adminFte");
+    const residents = value(code, "population");
+    return Number.isFinite(staff) && residents > 0 ? staff / residents * 1000 : null;
+  })] : [];
+  const rows = [
+    ...costRows,
+    ...staffingRate,
+    ...(keys || ["population"]).map((key) =>
+      indicatorRow(key, indicators[key], (detail) => value(detail.entity.code, key))),
+  ];
 
   return (
     <section className="cmp-driver-panel" aria-labelledby="cmp-driver-heading">
       <h3 id="cmp-driver-heading">Hva kan forklare tallene?</h3>
       <p className="cmp-footnote">
-        {keys
+        {fn === "120"
+          ? "Regnskapspostene gjelder funksjon 120. Bemanningstallene gjelder den bredere gruppen administrasjon, styring og fellesutgifter (FGK1)."
+          : keys
           ? "SSB-indikatorer gir kontekst for kostnadsforskjellen. De viser tjenesteomfang, bemanning eller kostnad per enhet der slike tall finnes."
           : "Denne funksjonen har foreløpig ingen egne indikatorer i Fellestall. SSBs folketall gir generell kontekst."}
         {" "}Tallene kan belyse forskjeller, men viser ikke hvor mye hver faktor forklarer.
