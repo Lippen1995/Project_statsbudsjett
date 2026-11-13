@@ -42,11 +42,10 @@ const BY_FUNCTION = {
 };
 
 const ADMIN_COSTS = [
+  ["AG16", "Lønnsutgifter etter sykelønnsrefusjon"],
   ["AGD50", "Varer og tjenester til egen produksjon"],
   ["AGD51", "Kjøp av tjenester som erstatter egen produksjon"],
 ];
-
-const ADMIN_PAYROLL = ["adminPayrollA", "adminPayrollB"];
 
 const years = new Map();
 
@@ -100,19 +99,6 @@ export default function FunctionDrivers({ target, peers, year, fn }) {
     indicatorRow(code, { label, table: "12367", unit: "kr/innb." }, (detail) =>
       accountingObservation(detail, year, fn, code).perCapita),
   ) : [];
-  const payrollRate = fn === "120" ? [indicatorRow("adminPayrollRate", {
-    label: "Estimert lønnsutgift per årsverk, ekskl. fellesutgifter",
-    table: "12362",
-    additionalTable: "11918",
-    unit: "kr/årsverk",
-    note: "Lønn og sosiale utgifter etter sykelønnsrefusjon i styring og administrasjon (FGK1a + FGK1b), delt på avtalte novemberårsverk i den bredere gruppen FGK1. Fellesutgifter holdes utenfor lønnssummen på grunn av store regnskapsføringer. Referansen er medianen av kommunenes egne estimater.",
-  }, (detail) => {
-    const code = detail.entity.code;
-    const staff = value(code, "adminFte");
-    const payroll = ADMIN_PAYROLL.map((key) => value(code, key));
-    if (!(staff > 0) || !payroll.every(Number.isFinite)) return null;
-    return payroll.reduce((sum, amount) => sum + amount, 0) * 1000 / staff;
-  })] : [];
   const staffingRate = fn === "120" ? [indicatorRow("adminFteRate", {
     label: "Avtalte årsverk i FGK1 per 1 000 innbyggere",
     table: "11918",
@@ -125,7 +111,6 @@ export default function FunctionDrivers({ target, peers, year, fn }) {
     return Number.isFinite(staff) && residents > 0 ? staff / residents * 1000 : null;
   })] : [];
   const rows = [
-    ...payrollRate,
     ...costRows,
     ...staffingRate,
     ...(keys || ["population"]).map((key) =>
@@ -137,7 +122,7 @@ export default function FunctionDrivers({ target, peers, year, fn }) {
       <h3 id="cmp-driver-heading">Hva kan forklare tallene?</h3>
       <p className="cmp-footnote">
         {fn === "120"
-          ? "SSB publiserer bemanning for administrasjon, styring og fellesutgifter (FGK1) samlet. Varer og tjenestekjøp gjelder funksjon 120."
+          ? "Regnskapspostene gjelder funksjon 120. Bemanningstallene gjelder den bredere gruppen administrasjon, styring og fellesutgifter (FGK1)."
           : keys
           ? "SSB-indikatorer gir kontekst for kostnadsforskjellen. De viser tjenesteomfang, bemanning eller kostnad per enhet der slike tall finnes."
           : "Denne funksjonen har foreløpig ingen egne indikatorer i Fellestall. SSBs folketall gir generell kontekst."}
@@ -166,12 +151,7 @@ export default function FunctionDrivers({ target, peers, year, fn }) {
                   <th scope="row">
                     {row.label} <span>({row.unit})</span>
                     <small>{row.note} <a href={`https://www.ssb.no/statbank/table/${row.table}/`}
-                      target="_blank" rel="noreferrer">SSB {row.table} ↗</a>
-                      {row.additionalTable && (
-                        <> · <a href={`https://www.ssb.no/statbank/table/${row.additionalTable}/`}
-                          target="_blank" rel="noreferrer">SSB {row.additionalTable} ↗</a></>
-                      )}
-                    </small>
+                      target="_blank" rel="noreferrer">SSB {row.table} ↗</a></small>
                   </th>
                   <td>{formatNumber(row.own, 1)}</td>
                   <td>
