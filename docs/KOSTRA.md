@@ -296,3 +296,45 @@ cd web && npm test && npm run build
 Første import er størst. Senere kjøringer bruker filcache med mindre `--force`
 er valgt. Detaljfilene er bevisst større enn kartindeksen, men lastes bare når
 en bruker åpner den aktuelle kommunen eller fylkeskommunen.
+
+## Drivere i kommunesammenligningen
+
+Uttrekket til **Forklar forskjellene** henter statistikk fra SSBs PxWebApi v2
+og behovskriterier fra de publiserte E-k-regnearkene i Grønt hefte. Kjør
+`python etl/kostra_drivers.py` for å oppdatere etter at KOSTRA-indeksen er bygget.
+Grønt hefte er en modell for utgiftsbehov. Indeksene som brukes her gjelder
+budsjettårene 2024 og 2025 og tolkes relativt til landsgjennomsnittet (1).
+
+SSBs norskspråklige API-katalog inneholdt 3 774 tabeller i gjennomgangen.
+Av dem hadde 1 208 årstall til minst 2023 og en geografisk variabel. Kandidater
+ble vurdert mot definisjon, regnskapsomfang, enhet, år og faktisk dekning.
+Metadata for over 100 aktuelle tabeller ble kontrollert. [SSBs KOSTRA-katalog](https://www.ssb.no/offentlig-sektor/kostra/statistikk/kostra-kommune-stat-rapportering/kostra-tabeller-etter-emne)
+og [Grønt hefte](https://www.regjeringen.no/id547024/) dokumenterer kildene.
+
+- Katalogen `web/src/sider/driver-indicators.json` bevarer kandidatene og de
+  konkrete tabell- og variabelkodene. `function-driver-selection.js` gir
+  utvalget som prioriteres på hver av de 80 funksjonene.
+- Der relevante mål på tjenestevolum, bemanning eller enhetskostnad finnes,
+  prioriteres de. Regnskapsarter for samme funksjon og år supplerer dem.
+  Artsvalget bruker størrelsen på kroneavviket per innbygger og kan løfte
+  fram en inntektsart for å vise hvorfor nettoutgiften avviker.
+- Hver indikator viser dekningen i utvalget. Verdiene kan gjelde en bredere
+  tjeneste der SSB publiserer dem samlet, for eksempel hjemmetjenestebrukere.
+  Kostnadstall for en funksjon deles bare på en bemanningsserie med
+  sammenfallende avgrensning. FGK1-årsverk er derfor en egen indikator.
+- Premieavvik og premiefond vises gjennom pensjonsføringen, arbeidsgiveravgift
+  og nivået året før. KOSTRA 190, 255, 322 og 392 har begrenset datagrunnlag
+  i Stavanger-sammenligningen for 2025.
+
+### Offentlige kilder vurdert utenfor SSB
+
+| Kilde | Vurdering for funksjonsvisningen |
+| --- | --- |
+| [KDD, Grønt hefte](https://www.regjeringen.no/id547024/) | E-k gir basiskriterium, reiseavstand, kriterier for lav inntekt, rus og psykisk helse og utviklingshemming. Uttrekket leser de originale ODS-filene. |
+| [Udir, åpne data](https://www.udir.no/om-udir/data/) | GSI og Barnehagefakta gir videre detaljer på enhetsnivå. SSBs kommuneuttrekk gir aktivitet og bemanning på sammenlignbart nivå i visningen. |
+| [Bufdir, kommunale barnevernsdata](https://www.bufdir.no/fagstotte/barnevern-oppvekst/rapportering/) | Halvårstall kan utdype aktivitet. Visningen bruker SSBs årstall, funksjonsfordelte årsverk og utgift per barn. |
+| [DSB, Brannstatistikk](https://www.dsb.no/brannsikkerhet/brannstatistikk/) | Oppdragsstatistikk er relevant. SSB har allerede kommunevise utrykninger, branner, tilsyn og årsverk på forebygging og beredskap. |
+| [Helsedirektoratet, øyeblikkelig hjelp døgntilbud](https://www.helsedirektoratet.no/rapporter/status-for-oyeblikkelig-hjelp-dogntilbud) | Det publiserte regnearket har eldre datagrunnlag. SSB gir legeårsverk for 2025, og funksjonen suppleres med regnskapsarter. |
+| [NVE, konsesjonskraft](https://www.nve.no/konsesjon/konsesjonsbehandling-av-vannkraft/konsesjonskraft-og-konsesjonsavgifter/rapporter-om-konsesjonsavgifter-og-konsesjonskraft) | Tildelte MWh er en kandidat for 321. Bruk krever en strukturert, årsfestet eksport med riktig mottaker. Kraftverkets beliggenhet fra NVE-API-et alene gir ikke kommunens kjøpsrettigheter eller inntekter. |
+| [Sikt, Kommunedatabasen](https://kommunedatabasen.sikt.no/about) og [Organisasjonsdatabasen](https://organisasjonsdatabasen.no/) | Organisering, møter og samarbeid kan belyse 100, 110 og 290. Datainnsamlingen er periodisk, så tallene inngår ikke i sammenligningen for 2025. |
+| [IMDi, bosettingstall](https://www.imdi.no/bosetting/bosettingstall/) | Bosetting er en behovsindikator. SSBs antall stønadsmottakere, varighet og utbetaling måler introduksjonsordningen mer direkte. |

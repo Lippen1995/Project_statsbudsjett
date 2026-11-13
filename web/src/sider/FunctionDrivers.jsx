@@ -1,51 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { accountingObservation } from "./accounting-drill";
-import { benchmarkObservations } from "./comparison";
 import { entityName, formatNumber } from "./workspace-model";
 import indicators from "./driver-indicators.json";
-
-const BY_FUNCTION = {
-  100: ["population"],
-  110: ["population"],
-  120: ["adminEmployed", "adminFte"],
-  121: ["buildingArea"],
-  130: ["officeArea"],
-  201: ["kindergarten", "kindergartenStaff"],
-  202: ["pupils", "teacherRatio", "schoolSupport"],
-  211: ["kindergartenSupport", "kindergarten"],
-  221: ["preschoolArea", "kindergartenArea"],
-  222: ["schoolArea", "schools", "schoolSize"],
-  223: ["pupils", "travel"],
-  232: ["healthStaff"],
-  234: ["activity"],
-  241: ["doctor"],
-  242: ["welfareCases", "jobless"],
-  244: ["childProtectionStaff", "childProtection"],
-  251: ["childProtectionOpen"],
-  252: ["childProtectionPlaced"],
-  253: ["institution", "institutionOlder", "institutionCost"],
-  254: ["homeCare", "homeCareYoung", "homeCareOlder"],
-  257: ["homeCare", "homeCareYoung", "homeCareOlder"],
-  258: ["homeCare", "homeCareYoung", "homeCareOlder"],
-  261: ["institutionArea", "institution", "institutionCost"],
-  265: ["housing"],
-  273: ["jobless"],
-  281: ["welfareCases", "longWelfare", "jobless"],
-  283: ["housing"],
-  332: ["roadLength", "roadSurface", "roadLight", "roadCost"],
-  350: ["sewageTreatment", "sewageFee"],
-  353: ["sewageNetwork", "sewageFee"],
-  354: ["sewageFee"],
-  373: ["cinemaVisits"],
-  381: ["sportsArea"],
-  386: ["cultureArea"],
-};
-
-const ADMIN_COSTS = [
-  ["AG16", "Lønnsutgifter etter sykelønnsrefusjon"],
-  ["AGD50", "Varer og tjenester til egen produksjon"],
-  ["AGD51", "Kjøp av tjenester som erstatter egen produksjon"],
-];
+import { FUNCTION_NOTES } from "./function-driver-selection";
+import { functionDriverRows } from "./function-driver-model";
 
 const years = new Map();
 
@@ -85,49 +42,17 @@ export default function FunctionDrivers({ target, peers, year, fn }) {
     return () => { active = false; };
   }, [year, attempt]);
 
-  const keys = BY_FUNCTION[fn];
-  const value = (code, key) => dataset?.rows[code]?.[dataset.columns.indexOf(key)];
-  const indicatorRow = (key, details, read) => ({
-    key,
-    ...details,
-    own: read(target),
-    reference: benchmarkObservations(peers.map((peer) => ({
-      p: { perCapita: read(peer) },
-    })), "median"),
-  });
-  const costRows = fn === "120" ? ADMIN_COSTS.map(([code, label]) =>
-    indicatorRow(code, { label, table: "12367", unit: "kr/innb." }, (detail) =>
-      accountingObservation(detail, year, fn, code).perCapita),
-  ) : [];
-  const staffingRate = fn === "120" ? [indicatorRow("adminFteRate", {
-    label: "Avtalte årsverk i FGK1 per 1 000 innbyggere",
-    table: "11918",
-    unit: "årsverk",
-    note: "Beregnet med SSBs folketall (tabell 11820). Raten tar hensyn til kommunestørrelsen.",
-  }, (detail) => {
-    const code = detail.entity.code;
-    const staff = value(code, "adminFte");
-    const residents = value(code, "population");
-    return Number.isFinite(staff) && residents > 0 ? staff / residents * 1000 : null;
-  })] : [];
-  const rows = [
-    ...costRows,
-    ...staffingRate,
-    ...(keys || ["population"]).map((key) =>
-      indicatorRow(key, indicators[key], (detail) => value(detail.entity.code, key))),
-  ];
+  const { activity, accounts } = functionDriverRows({ target, peers, year, fn, dataset, indicators });
+  const groups = [["Tjeneste, bemanning og behov", activity], ["Regnskap", accounts]];
 
   return (
     <section className="cmp-driver-panel" aria-labelledby="cmp-driver-heading">
       <h3 id="cmp-driver-heading">Hva kan forklare tallene?</h3>
-      <p className="cmp-footnote">
-        {fn === "120"
-          ? "Regnskapspostene gjelder funksjon 120. Bemanningstallene gjelder den bredere gruppen administrasjon, styring og fellesutgifter (FGK1)."
-          : keys
-          ? "SSB-indikatorer gir kontekst for kostnadsforskjellen. De viser tjenesteomfang, bemanning eller kostnad per enhet der slike tall finnes."
-          : "Denne funksjonen har foreløpig ingen egne indikatorer i Fellestall. SSBs folketall gir generell kontekst."}
-        {" "}Tallene kan belyse forskjeller, men viser ikke hvor mye hver faktor forklarer.
-      </p>
+      <p className="cmp-footnote">Forskjellen er kommunens tall minus medianen i utvalget. For prosenttall vises den i prosentpoeng. Regnskapsartene viser hvor forskjellene er bokført.</p>
+      {FUNCTION_NOTES[fn] && <p className="cmp-footnote">{FUNCTION_NOTES[fn]}</p>}
+      {!activity.length && dataset && (
+        <p className="cmp-footnote">Ingen egne tjenesteindikatorer med data i dette utvalget og året.</p>
+      )}
       {error ? (
         <p role="alert">
           Kunne ikke hente SSB-indikatorene for {year}.{" "}
@@ -135,6 +60,8 @@ export default function FunctionDrivers({ target, peers, year, fn }) {
         </p>
       ) : !dataset ? (
         <p role="status">Henter SSB-indikatorer…</p>
+      ) : !activity.length && !accounts.length ? (
+        <p role="status">Ingen sammenlignbare observasjoner for denne funksjonen og året.</p>
       ) : (
         <div className="cmp-driver-table">
           <table>
@@ -143,24 +70,36 @@ export default function FunctionDrivers({ target, peers, year, fn }) {
                 <th scope="col">Indikator · {year}</th>
                 <th scope="col">{entityName(target)}</th>
                 <th scope="col">Median i utvalget</th>
+                <th scope="col">Forskjell</th>
               </tr>
             </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr key={row.key}>
-                  <th scope="row">
-                    {row.label} <span>({row.unit})</span>
-                    <small>{row.note} <a href={`https://www.ssb.no/statbank/table/${row.table}/`}
-                      target="_blank" rel="noreferrer">SSB {row.table} ↗</a></small>
-                  </th>
-                  <td>{formatNumber(row.own, 1)}</td>
-                  <td>
-                    {formatNumber(row.reference.value, 1)}
-                    <small>{row.reference.count}/{peers.length} med data</small>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+            {groups.filter(([, rows]) => rows.length).map(([group, rows]) => (
+              <tbody key={group}>
+                <tr className="cmp-driver-group"><th scope="rowgroup" colSpan={4}>{group}</th></tr>
+                {rows.map((row) => (
+                  <tr key={row.key}>
+                    <th scope="row">
+                      {row.label} <span>({row.unit})</span>
+                      <small>
+                        {row.note}{" "}
+                        {row.source === "KDD" ? (
+                          <a href="https://www.regjeringen.no/id547024/" target="_blank" rel="noreferrer">Grønt hefte, tabell E-k ↗</a>
+                        ) : (
+                          <a href={`https://www.ssb.no/statbank/table/${row.table}/`} target="_blank" rel="noreferrer">SSB {row.table} ↗</a>
+                        )}
+                      </small>
+                    </th>
+                    <td>{formatNumber(row.own, row.unit === "indeks" ? 2 : 1)}</td>
+                    <td>
+                      {formatNumber(row.reference.value, row.unit === "indeks" ? 2 : 1)}
+                      <small>{row.reference.count}/{peers.length} med data</small>
+                    </td>
+                    <td>{formatNumber(Number.isFinite(row.own) && Number.isFinite(row.reference.value)
+                      ? row.own - row.reference.value : null, row.unit === "indeks" ? 2 : 1)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            ))}
           </table>
         </div>
       )}
