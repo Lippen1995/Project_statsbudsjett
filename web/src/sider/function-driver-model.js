@@ -1,5 +1,6 @@
 import { accountingObservation, ACCOUNT_SECTIONS } from "./accounting-drill.js";
 import { benchmarkObservations, point } from "./comparison.js";
+import { DRIVER_RATES, PUBLISHED_RATE_COUNTS } from "./function-driver-rates.js";
 import { FUNCTION_DRIVERS, PENSION_FUNCTIONS } from "./function-driver-selection.js";
 
 const expenseArts = ACCOUNT_SECTIONS[0][1];
@@ -16,23 +17,32 @@ function indicatorRow(key, description, target, peers, read) {
 
 export function functionDriverRows({ target, peers, year, fn, dataset, indicators }) {
   const value = (code, key) => dataset?.rows[code]?.[dataset.columns.indexOf(key)];
-  const readIndicator = (key, detail) => {
-    const code = detail.entity.code;
-    if (key === "adminFteRate") {
-      const staff = value(code, "adminFte");
-      const residents = value(code, "population");
-      return Number.isFinite(staff) && residents > 0 ? staff / residents * 1000 : null;
-    }
-    return value(code, key);
-  };
   const available = (row) => Number.isFinite(row.own) || row.reference.count > 0;
   const activity = (FUNCTION_DRIVERS[fn] || []).map((key) => {
-    const description = key === "adminFteRate"
-      ? { label: "Avtalte årsverk i FGK1 per 1 000 innbyggere", table: "11918", unit: "årsverk",
-          note: "Beregnet med folketall fra SSB 11820 for samme år." }
-      : indicators[key];
-    return indicatorRow(key, description, target, peers, (detail) => readIndicator(key, detail));
-  }).filter(available);
+    const description = indicators[key];
+    const rate = DRIVER_RATES[key];
+    const rawKey = rate ? key : PUBLISHED_RATE_COUNTS[key];
+    const row = indicatorRow(key, description, target, peers, ({ entity: { code } }) => {
+      const amount = value(code, key);
+      if (!rate) return amount;
+      const denominator = value(code, rate.denominator);
+      return Number.isFinite(amount) && Number.isFinite(denominator) && denominator > 0
+        ? amount / denominator * rate.scale
+        : null;
+    });
+    if (rate) {
+      row.unit = rate.unit ?? [description.unit === "antall" ? "" : description.unit, rate.suffix]
+        .filter(Boolean).join(" ");
+      row.note = rate.note ?? row.note;
+      const denominatorTable = indicators[rate.denominator].table;
+      if (denominatorTable !== row.table) row.denominatorTable = denominatorTable;
+    }
+    if (rawKey) {
+      row.rawOwn = value(target.entity.code, rawKey);
+      row.rawUnit = indicators[rawKey].unit;
+    }
+    return row;
+  }).filter((row) => available(row) || Number.isFinite(row.rawOwn));
   const accounting = (arts) => arts
     .map(([code, label]) => indicatorRow(
       code, { label, table: "12367", unit: "kr/innb." }, target, peers,

@@ -3,7 +3,7 @@
 export const FUNCTION_DRIVERS = {
   100: [],
   110: [],
-  120: ["adminFteRate", "adminFte", "needBasis"],
+  120: ["adminFte", "needBasis"],
   121: ["buildingArea", "buildingManagement"],
   130: ["officeArea", "officeUnit", "officeEnergy"],
   170: [],
@@ -19,7 +19,7 @@ export const FUNCTION_DRIVERS = {
   215: ["sfoParticipation", "sfoFte", "sfoUnitCost"],
   221: ["preschoolArea", "preschoolUnit", "preschoolEnergy"],
   222: ["schoolArea", "schoolSize", "schoolUnit", "schoolEnergy"],
-  223: ["schoolTransport", "schoolTransportCount", "needZone", "travel"],
+  223: ["schoolTransport", "needZone", "travel"],
   231: ["youthHours", "youthVisits", "youthFte", "youthGrants"],
   232: ["healthStaff", "newbornVisit", "ageYouth"],
   233: ["physio233"],

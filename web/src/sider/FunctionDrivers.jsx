@@ -48,7 +48,7 @@ export default function FunctionDrivers({ target, peers, year, fn }) {
   return (
     <section className="cmp-driver-panel" aria-labelledby="cmp-driver-heading">
       <h3 id="cmp-driver-heading">Hva kan forklare tallene?</h3>
-      <p className="cmp-footnote">Forskjellen er kommunens tall minus medianen i utvalget. For prosenttall vises den i prosentpoeng. Regnskapsartene viser hvor forskjellene er bokført.</p>
+      <p className="cmp-footnote">Forholdstall beregnes for hver kommune før medianen tas. Kommunens rapporterte antall vises under forholdstallet der det finnes. For prosenttall vises forskjellen i prosentpoeng.</p>
       {FUNCTION_NOTES[fn] && <p className="cmp-footnote">{FUNCTION_NOTES[fn]}</p>}
       {!activity.length && dataset && (
         <p className="cmp-footnote">Ingen egne tjenesteindikatorer med data i dette utvalget og året.</p>
@@ -76,28 +76,40 @@ export default function FunctionDrivers({ target, peers, year, fn }) {
             {groups.filter(([, rows]) => rows.length).map(([group, rows]) => (
               <tbody key={group}>
                 <tr className="cmp-driver-group"><th scope="rowgroup" colSpan={4}>{group}</th></tr>
-                {rows.map((row) => (
-                  <tr key={row.key}>
-                    <th scope="row">
-                      {row.label} <span>({row.unit})</span>
-                      <small>
-                        {row.note}{" "}
-                        {row.source === "KDD" ? (
-                          <a href="https://www.regjeringen.no/id547024/" target="_blank" rel="noreferrer">Grønt hefte, tabell E-k ↗</a>
-                        ) : (
-                          <a href={`https://www.ssb.no/statbank/table/${row.table}/`} target="_blank" rel="noreferrer">SSB {row.table} ↗</a>
+                {rows.map((row) => {
+                  const difference = Number.isFinite(row.own) && Number.isFinite(row.reference.value)
+                    ? row.own - row.reference.value : null;
+                  const digits = row.unit === "indeks" || (row.rawUnit && !row.unit.startsWith("%")) ? 2 : 1;
+                  return (
+                    <tr key={row.key}>
+                      <th scope="row">
+                        {row.label} <span>({row.unit})</span>
+                        <small>
+                          {row.note}{" "}
+                          {row.source === "KDD" ? (
+                            <a href="https://www.regjeringen.no/id547024/" target="_blank" rel="noreferrer">Grønt hefte, tabell E-k ↗</a>
+                          ) : (
+                            <a href={`https://www.ssb.no/statbank/table/${row.table}/`} target="_blank" rel="noreferrer">SSB {row.table} ↗</a>
+                          )}
+                          {row.denominatorTable && (
+                            <> · <a href={`https://www.ssb.no/statbank/table/${row.denominatorTable}/`} target="_blank" rel="noreferrer">Nevner · SSB {row.denominatorTable} ↗</a></>
+                          )}
+                        </small>
+                      </th>
+                      <td>
+                        {formatNumber(row.own, digits)}
+                        {Number.isFinite(row.rawOwn) && (
+                          <small>Rapportert {formatNumber(row.rawOwn, 1)}{row.rawUnit !== "antall" ? ` ${row.rawUnit}` : ""}</small>
                         )}
-                      </small>
-                    </th>
-                    <td>{formatNumber(row.own, row.unit === "indeks" ? 2 : 1)}</td>
-                    <td>
-                      {formatNumber(row.reference.value, row.unit === "indeks" ? 2 : 1)}
-                      <small>{row.reference.count}/{peers.length} med data</small>
-                    </td>
-                    <td>{formatNumber(Number.isFinite(row.own) && Number.isFinite(row.reference.value)
-                      ? row.own - row.reference.value : null, row.unit === "indeks" ? 2 : 1)}</td>
-                  </tr>
-                ))}
+                      </td>
+                      <td>
+                        {formatNumber(row.reference.value, digits)}
+                        <small>{row.reference.count}/{peers.length} med data</small>
+                      </td>
+                      <td>{formatNumber(difference, digits)}{Number.isFinite(difference) && row.unit.startsWith("%") ? " pp." : ""}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             ))}
           </table>

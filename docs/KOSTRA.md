@@ -320,6 +320,10 @@ og [Grønt hefte](https://www.regjeringen.no/id547024/) dokumenterer kildene.
   fram en inntektsart for å vise hvorfor nettoutgiften avviker.
 - Hver indikator viser dekningen i utvalget. Verdiene kan gjelde en bredere
   tjeneste der SSB publiserer dem samlet, for eksempel hjemmetjenestebrukere.
+  Volumtall deles på et relevant befolknings- eller tjenestemål for hver
+  kommune i samme år før medianen beregnes. Kommunens råtall vises som
+  kontekst. Kommuner med manglende teller eller ugyldig nevner utelates fra
+  medianen. Publiserte forholdstall brukes direkte.
   Kostnadstall for en funksjon deles bare på en bemanningsserie med
   sammenfallende avgrensning. FGK1-årsverk er derfor en egen indikator.
 - Premieavvik og premiefond vises gjennom pensjonsføringen, arbeidsgiveravgift
