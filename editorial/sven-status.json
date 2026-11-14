@@ -257,15 +257,23 @@
       "note": "PR #86 venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. KDD-temaet blir stående i køen.",
       "updatedAt": "2026-11-12T08:04:09.080Z",
       "finishedAt": "2026-11-12T08:04:09.080Z"
+    },
+    {
+      "id": "2ce25ec9-4da3-4995-a4f4-0fe66a0c0dc0",
+      "startedAt": "2026-11-13T08:07:19.413Z",
+      "instructionCommit": "11c52a7cfecbe1a8f65880757c3ae2e0497faf33",
+      "state": "waiting",
+      "note": "PR #86 venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. KDD-temaet blir stående i køen.",
+      "updatedAt": "2026-11-13T08:07:38.454Z",
+      "finishedAt": "2026-11-13T08:07:38.454Z"
     }
   ],
   "current": {
-    "id": "2ce25ec9-4da3-4995-a4f4-0fe66a0c0dc0",
-    "startedAt": "2026-11-13T08:07:19.413Z",
-    "instructionCommit": "11c52a7cfecbe1a8f65880757c3ae2e0497faf33",
-    "state": "waiting",
-    "note": "PR #86 venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. KDD-temaet blir stående i køen.",
-    "updatedAt": "2026-11-13T08:07:38.454Z",
-    "finishedAt": "2026-11-13T08:07:38.454Z"
+    "id": "c7d53b74-87df-47db-bfaa-89b878ef5636",
+    "startedAt": "2026-11-14T08:00:52.272Z",
+    "instructionCommit": "bde744f5dfea33a9f168760fc4eb1be237b62d90",
+    "state": "researching",
+    "note": "Kontrollerer kø og åpne gjennomganger",
+    "updatedAt": "2026-11-14T08:00:52.272Z"
   }
 }
