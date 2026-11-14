@@ -39,12 +39,17 @@ export function CostTable({
   context = "",
   compact = false,
   peerPopulation,
+  staffing = false,
 }) {
   if (!row?.own) return null;
   const { own, reference: ref } = row;
   const showPeerPopulation = ref?.calculated && peerPopulation != null;
   const referencePopulation = showPeerPopulation ? peerPopulation : ref?.population;
-  const metrics = [
+  const metrics = staffing ? [
+    ["Årsverk per 1 000 innb.", n(own.perCapita, 2), n(ref?.perCapita, 2)],
+    ["Årsverk totalt", n(own.amount, 1), n(ref?.amount, 1)],
+    ["Avvik per 1 000 innb. (%)", percent(row.percent), "–"],
+  ] : [
     [compact ? "Per innbygger" : "Kr per innb.", `${n(own.perCapita)} kr`, `${n(ref?.perCapita)} kr`],
     [showPeerPopulation ? "Nominelt beløp ved samme folketall" : compact ? "Nominelt beløp" : "Totalt", nominal(own.amount), nominal(ref?.amount)],
     [
@@ -83,7 +88,7 @@ export function CostTable({
           ))}
         </tbody>
       </table>
-      {compact && ref?.calculated && (
+      {compact && !staffing && ref?.calculated && (
         <p>
           Referansebeløpet er beregnet ved {own.name}s folketall. Referansen
           bygger på {ref.count} kommuner.
@@ -92,12 +97,13 @@ export function CostTable({
     </div>
   );
 }
-function ChartTooltip({ active, payload, history, context }) {
+function ChartTooltip({ active, payload, history, context, staffing }) {
   if (!active || !payload?.length) return null;
   return (
     <CostTable
       row={payload[0].payload}
       history={history}
+      staffing={staffing}
       context={payload[0].payload.context || context}
     />
   );
@@ -148,6 +154,7 @@ export default function CostChart({
   chartKey,
   onInspect,
   animate = true,
+  staffing = false,
 }) {
   const reduced = useReducedMotion();
   const [bounds, setBounds] = useState(EMPTY),
@@ -167,7 +174,7 @@ export default function CostChart({
       ),
       secondaryBounds,
     );
-  const unit = mode === "amount" ? "Millioner kroner" : "Kroner per innbygger";
+  const unit = staffing ? "Årsverk per 1 000 innbyggere" : mode === "amount" ? "Millioner kroner" : "Kroner per innbygger";
   const categoryWidth = wrapCategories && rows.some((row) => row.axisCode) ? 138 : 65;
   const secondUnit =
     secondary === "growth" ? "År/år-endring (%)" : "Innbyggere";
@@ -271,7 +278,7 @@ export default function CostChart({
                 ticks={primary.ticks}
                 allowDataOverflow
                 width={72}
-                tickFormatter={(v) => n(v, mode === "amount" ? 1 : 0)}
+                tickFormatter={(v) => n(v, staffing ? 2 : mode === "amount" ? 1 : 0)}
                 tick={{ fontSize: 11, fill: "var(--dempet)" }}
                 axisLine={false}
                 tickLine={false}
@@ -293,7 +300,7 @@ export default function CostChart({
                 />
               )}
               <Tooltip
-                content={<ChartTooltip history={history} context={title} />}
+                content={<ChartTooltip history={history} context={title} staffing={staffing} />}
                 isAnimationActive={false}
                 cursor={{ fill: "var(--cmp-hover)" }}
                 wrapperStyle={{ outline: "none", zIndex: 20, transition: "none" }}

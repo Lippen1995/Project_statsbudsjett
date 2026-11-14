@@ -1,7 +1,8 @@
 import React, { useEffect, useId, useRef, useState } from "react";
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { createPortal } from "react-dom";
+import CostChart, { CostTable, useReducedMotion } from "./CostChart";
 import { benchmarkObservations } from "./comparison";
-import { entityName, formatNumber } from "./workspace-model";
+import { deviation, entityName, formatNumber, percent } from "./workspace-model";
 
 const requests = new Map();
 
@@ -77,10 +78,19 @@ function OccupationHistory({ occupation, target, peers, years, year, current, on
   const heading = useId();
   const { data, error, retry } = useYears(years);
   const [code, label] = occupation;
+  const reduced = useReducedMotion();
+  const [closing, setClosing] = useState(false);
+  const [inspected, setInspected] = useState(String(year));
   const history = data ? years.map((y) => {
     const { own, rate, amount } = compare(data[y], target, peers, y, code);
-    return { year: y, own: own.rate, reference: rate.value, amount: own.amount, referenceAmount: amount };
+    return {
+      code: String(y), label: String(y), a: own.rate, b: rate.value,
+      own: { name: entityName(target), year: y, perCapita: own.rate, amount: own.amount },
+      reference: { name: "Median", perCapita: rate.value, amount },
+      percent: deviation(own.rate, rate.value),
+    };
   }) : [];
+  const selected = history.find((row) => row.code === inspected) ?? history.at(-1);
 
   useEffect(() => {
     const element = dialog.current;
@@ -88,42 +98,46 @@ function OccupationHistory({ occupation, target, peers, years, year, current, on
     element.showModal();
     return () => {
       element.close();
-      opener?.focus({ preventScroll: true });
+      if (opener?.isConnected) opener.focus({ preventScroll: true });
     };
   }, []);
 
-  return (
-    <dialog ref={dialog} className="ft cmp-inspect-modal cmp-occupation-modal" aria-labelledby={heading}
-      onCancel={(event) => { event.preventDefault(); onClose(); }}>
-      <button type="button" className="cmp-dialog-close" aria-label="Lukk" onClick={onClose}>×</button>
-      <p className="cmp-eyebrow">{entityName(target)} · {code === "doctor" ? "Kommunehelsetjenesten" : "Omsorgstjenestene"}</p>
-      <h2 id={heading}>{label}</h2>
-      <h3>Årsverk per 1 000 innbyggere over tid</h3>
+  useEffect(() => {
+    if (!closing) return;
+    if (reduced) { onClose(); return; }
+    const timer = setTimeout(onClose, 210);
+    return () => clearTimeout(timer);
+  }, [closing, reduced, onClose]);
+
+  return createPortal(
+    <dialog ref={dialog} className={`ft cmp-inspect-modal cmp-occupation-modal ${closing ? "cmp-dialog-closing" : ""}`}
+      aria-labelledby={heading} onCancel={(event) => { event.preventDefault(); setClosing(true); }}
+      onClick={(event) => {
+        if (event.target !== event.currentTarget) return;
+        const { left, right, top, bottom } = event.currentTarget.getBoundingClientRect();
+        if (event.clientX < left || event.clientX > right || event.clientY < top || event.clientY > bottom) setClosing(true);
+      }}>
+      <header className="cmp-inspect-head">
+        <div>
+          <div className="cmp-eyebrow">{entityName(target)} · {code === "doctor" ? "Kommunehelsetjenesten" : "Omsorgstjenestene"}</div>
+          <h2 id={heading}>{label}</h2>
+        </div>
+        <button type="button" autoFocus className="cmp-dialog-close" aria-label="Lukk sammenligning" onClick={() => setClosing(true)}>×</button>
+      </header>
       {!data ? <Loading error={error} retry={retry} /> : (
         <>
           <div className="cmp-chart-legend"><span><i />{entityName(target)}</span><span><i className="peer" />Median i utvalget</span></div>
-          <ResponsiveContainer width="100%" height={240} minWidth={0}>
-            <LineChart data={history} margin={{ right: 15 }}>
-              <CartesianGrid vertical={false} stroke="var(--strek)" />
-              <XAxis dataKey="year" tickLine={false} />
-              <YAxis width={45} tickLine={false} tickFormatter={(value) => formatNumber(value, 2)} />
-              <Tooltip isAnimationActive={false} formatter={(value, name, item) => [
-                `${formatNumber(value, 2)} (${formatNumber(item.payload[item.dataKey === "own" ? "amount" : "referenceAmount"], 1)} årsverk)`, name,
-              ]} />
-              <Line dataKey="own" name={entityName(target)} stroke="var(--gronn)" strokeWidth={2} isAnimationActive={false} />
-              <Line dataKey="reference" name="Median i utvalget" stroke="#897e6e" strokeDasharray="5 4" strokeWidth={2} isAnimationActive={false} />
-            </LineChart>
-          </ResponsiveContainer>
-          <details>
-            <summary>Vis årstall i tabell</summary>
-            <div className="cmp-driver-table"><table>
-              <thead><tr><th scope="col">År</th><th scope="col">{entityName(target)}</th><th scope="col">Median</th></tr></thead>
-              <tbody>{history.map((row) => <tr key={row.year}>
-                <th scope="row">{row.year}</th><td><Value rate={row.own} amount={row.amount} /></td>
-                <td><Value rate={row.reference} amount={row.referenceAmount} /></td>
-              </tr>)}</tbody>
-            </table></div>
-          </details>
+          <CostChart rows={history} paired history staffing title={label} chartKey={code}
+            onInspect={(row) => setInspected(row.code)} />
+          <div className="cmp-inspect-selector">
+            <label className="cmp-inline-label">Tall for
+              <select aria-label="Vis tall for år" value={selected?.code ?? ""} onChange={(event) => setInspected(event.target.value)}>
+                {history.map((row) => <option key={row.code}>{row.label}</option>)}
+              </select>
+            </label>
+            <span>Klikk på Y-aksen for å tilpasse skalaen.</span>
+          </div>
+          <CostTable row={selected} context={label} compact staffing />
         </>
       )}
       <h3>Kommunene i {year}</h3>
@@ -133,17 +147,24 @@ function OccupationHistory({ occupation, target, peers, years, year, current, on
           <th scope="row">{entityName(detail)}</th><td><Value {...observation(current, detail, year, code)} /></td>
         </tr>)}</tbody>
       </table></div>
-    </dialog>
+    </dialog>,
+    document.body,
   );
 }
 
 export default function OccupationComparison({ target, peers, year, years }) {
   const { data, error, retry } = useYears([year]);
   const [selection, setSelection] = useState(null);
+  const [sort, setSort] = useState({ key: null, ascending: false });
+  const columns = [["label", "Yrke"], ["own", entityName(target)], ["median", "Median i utvalget"], ["percent", "Avvik (%)"]];
+  const changeSort = (key) => setSort((previous) => ({
+    key, ascending: previous.key === key ? !previous.ascending : key === "label",
+  }));
   const current = data?.[year];
-  const rows = current?.occupations.map(([code, label]) => ({
-    code, label, ...compare(current, target, peers, year, code),
-  })).filter(({ own, rate, amount }) => Number.isFinite(own.amount) || rate.count || Number.isFinite(amount));
+  const rows = current?.occupations.map(([code, label]) => {
+    const stats = compare(current, target, peers, year, code);
+    return { code, label, ...stats, percent: deviation(stats.own.rate, stats.rate.value) };
+  }).filter(({ own, rate, amount }) => Number.isFinite(own.amount) || rate.count || Number.isFinite(amount));
   return (
     <section className="cmp-occupations" aria-labelledby="cmp-occupation-title">
       <div className="cmp-section-title">
@@ -152,16 +173,32 @@ export default function OccupationComparison({ target, peers, year, years }) {
       <p className="cmp-footnote">Avtalte årsverk per 1 000 innbyggere (totalt antall årsverk i parentes). Klikk på et yrke for historikk og tall for hver kommune.</p>
       {!current ? <Loading error={error} retry={retry} /> : !rows.length ? <p>Ingen rapporterte årsverk i utvalget.</p> : (
         <div className="cmp-driver-table"><table>
-          <thead><tr><th scope="col">Yrke</th><th scope="col">{entityName(target)}</th><th scope="col">Median i utvalget</th><th scope="col">Avvik per 1 000</th></tr></thead>
+          <thead><tr>{columns.map(([key, label]) => (
+            <th key={key} scope="col" className="cmp-sort-heading"
+              aria-sort={sort.key === key ? (sort.ascending ? "ascending" : "descending") : undefined}>
+              <button type="button" onClick={() => changeSort(key)}>
+                <span>{label}</span><span aria-hidden="true">{sort.key === key ? (sort.ascending ? "↑" : "↓") : "↕"}</span>
+              </button>
+            </th>
+          ))}</tr></thead>
           {[[false, "Omsorgstjenestene"], [true, "Kommunehelsetjenesten"]].map(([doctors, title]) => {
             const group = rows.filter((row) => (row.code === "doctor") === doctors);
+            if (sort.key) group.sort((a, b) => {
+              const direction = sort.ascending ? 1 : -1;
+              if (sort.key === "label") return direction * a.label.localeCompare(b.label, "nb");
+              const value = (row) => sort.key === "own" ? row.own.rate : sort.key === "median" ? row.rate.value : row.percent;
+              const left = value(a), right = value(b);
+              if (!Number.isFinite(left)) return Number.isFinite(right) ? 1 : 0;
+              if (!Number.isFinite(right)) return -1;
+              return direction * (left - right);
+            });
             return group.length > 0 && <tbody key={title}>
               <tr className="cmp-driver-group"><th scope="rowgroup" colSpan={4}>{title}</th></tr>
               {group.map((row) => <tr key={row.code}>
                 <th scope="row"><button type="button" aria-haspopup="dialog" onClick={() => setSelection([row.code, row.label])}>{row.label} ↗</button></th>
                 <td><Value {...row.own} /></td>
                 <td><Value rate={row.rate.value} amount={row.amount} /><small>{row.rate.count}/{peers.length} med data</small></td>
-                <td>{formatNumber(row.own.rate != null && row.rate.value != null ? row.own.rate - row.rate.value : null, 2)}</td>
+                <td>{percent(row.percent)}</td>
               </tr>)}
             </tbody>;
           })}
