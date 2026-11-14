@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { validateArticle } from '../../scripts/analyser/schema.mjs'
+import { productVisibility } from '../src/products/launch.mjs'
 import { currentAnalyses } from '../src/analyser/topics.js'
 
 const meta = JSON.parse(readFileSync(new URL('../public/data/meta.json', import.meta.url), 'utf8'))
@@ -14,6 +15,7 @@ const analyses = JSON.parse(
 analyses.forEach((article) => validateArticle(article, { published: true }))
 
 const adresser = [
+  ...productVisibility().sitemap.map(path => ({loc: `https://fellestall.no${path}`})),
   { loc: 'https://fellestall.no/', lastmod: sistEndret },
   { loc: 'https://fellestall.no/personvern.html' },
   { loc: 'https://fellestall.no/vilkar.html' },

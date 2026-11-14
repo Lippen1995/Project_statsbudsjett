@@ -1,3 +1,4 @@
+import { productVisibility } from '../products/launch.mjs'
 import React from 'react'
 import {
   MunicipalLaunchAnnouncement,
@@ -94,14 +95,14 @@ export default function SeoFallback({ forsteAar = 2014, sisteBudsjettAar = 2026,
               </a>
             ))}
           </nav>
-          <div className="ft-sidefot"><a href="/analyser/">Analyser</a><a href="#om-tallene">Om tallene</a></div>
+          <div className="ft-sidefot">{productVisibility().navigation ? <a href="/hjelper-deg/">Fellestall hjelper deg</a> : null}<a href="/analyser/">Analyser</a><a href="#om-tallene">Om tallene</a></div>
         </aside>
 
         <main className="ft-hovedspalte" id="hovedinnhold">
           <div className="ft-toppbar">
             <div className="ft-toppbar-inner">
               <Merke />
-              <nav className="ft-toppnav" aria-label="Hovedinnhold">
+              <nav className="ft-toppnav" aria-label="Hovedinnhold">{productVisibility().navigation ? <a href="/hjelper-deg/">Fellestall hjelper deg</a> : null}
                 {SEKSJONER.map((s) => (
                   <a key={s.id} href={`#${s.id}`}>
                     {s.kortnavn}

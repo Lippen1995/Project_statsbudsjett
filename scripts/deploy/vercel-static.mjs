@@ -3,6 +3,7 @@ import { resolve, relative } from 'node:path'
 import { tmpdir } from 'node:os'
 import { createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
+import { productVisibility } from '../../web/src/products/launch.mjs'
 import { packageAdmin } from '../admin/package.mjs'
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex')
@@ -69,6 +70,7 @@ if (command === 'pack') {
       ...(paths.includes('admin/index.html') ? [{ src: '/api/(admin(?:/.*)?|auth(?:/.*)?|telemetry|health)', dest: '/admin-api' }] : []),
       { src: '/(.*)', headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' }, continue: true },
       { src: '/assets/(.*)', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
+      { src: '/hjelper-deg(?:/.*)?', headers: { 'X-Robots-Tag': productVisibility().robots }, continue: true },
       { src: '/admin(?:/.*)?', headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow', 'X-Frame-Options': 'DENY', 'Referrer-Policy': 'same-origin',
         'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" }, continue: true },
       { src: '/', dest: '/index.html' },
