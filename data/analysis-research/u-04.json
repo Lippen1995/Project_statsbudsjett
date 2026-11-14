@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "scope": "u-04",
+  "checkedAt": "2026-11-02",
+  "sources": [
+    {
+      "name": "Politiets årsrapport 2025",
+      "url": "https://www.politiet.no/globalassets/dokumenter-strategier-og-horinger/pod/arsrapport-2025/politiets-arsrapport-2025.pdf",
+      "description": "Lest årsregnskapet og ledelseskommentarene. Rapporten beskriver disponibel ramme, øremerkede styrkinger mot kriminelle nettverk, hvitvasking og omvendt voldsalarm, samt lønn, eiendom, anskaffelser og mindreforbruk. Den brukes til å tolke politiets regnskap, ikke til å forklare hele departementsveksten."
+    },
+    {
+      "name": "UDI årsrapport 2025",
+      "url": "https://www.udi.no/om-udi/om-udi-og-utlendingsforvaltningen/arsrapporter/arsrapport-2025/",
+      "description": "Lest lederberetningen og omtalen av mottakssystemet. UDI beskriver fortsatt betydelige søknader om midlertidig kollektiv beskyttelse fra Ukraina, usikre ankomsttall og nedbygging og senere oppjustering av mottakskapasitet. Dette støtter koblingen mellom mottaksutgiftene og flyktningsituasjonen, uten å gjøre hele UDI-kapitlet til en ren Ukraina-utgift."
+    },
+    {
+      "name": "Justis- og beredskapsdepartementets budsjettproposisjon for 2025",
+      "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20242025/id3056592/?ch=2",
+      "description": "Kontrollert kapittelomtalene for politiet og UDI. Proposisjonen beskriver styrking av politiets grunnbevilgning og kapasitet mot organiserte kriminelle nettverk, samt utgifter til asylmottak, midlertidig administrativ kapasitet i UDI og høy usikkerhet om ankomster fra Ukraina. Budsjettforslag brukes som dokumentert bakgrunn; artikkelens beløp kommer fra regnskapet."
+    },
+    {
+      "name": "Justis- og beredskapsdepartementets budsjettproposisjon for 2023",
+      "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20222023/id2930712/?ch=2",
+      "description": "Kontrollert kapittel 490 og omtalen av asylmottak. Proposisjonen dokumenterer at høyere oppgavemengde og beredskap etter ankomstene fra Ukraina lå bak flere foreslåtte økninger i UDI og mottakssystemet. Dette er historisk forklaring på vendepunktet rundt 2022, ikke en beregnet årsaksandel."
+    },
+    {
+      "name": "PSTs årsregnskaper",
+      "url": "https://www.pst.no/psts-arsregnskaper/",
+      "description": "Kontrollert at PST publiserer ugraderte årsregnskaper for hele perioden 2020–2025. Regnskapene underbygger at PST er en egen virksomhet med egen regnskapsrapportering. Den graderte delen av virksomheten begrenser hvor detaljert utgiftsveksten kan forklares offentlig."
+    },
+    {
+      "name": "Kriminalomsorgens årsrapporter",
+      "url": "https://www.kriminalomsorgen.no/ressurser?tab=statistikk-og-publikasjoner-%C3%A5rsrapporter",
+      "description": "Kontrollert publiseringssiden for årsrapportene, inkludert 2025. Kilden brukes som primær inngang til virksomhetens mål, kapasitet og årsregnskap. Artikkelen bruker den frosne kapittelserien og unngår å tilskrive veksten én enkelt reform uten en full avstemming."
+    },
+    {
+      "name": "Stortingets justisinnstilling for 2025 – prioriteringer og budsjettforlik",
+      "url": "https://www.stortinget.no/no/Saker-og-publikasjoner/Publikasjoner/Innstillinger/Stortinget/2024-2025/inns-202425-006s/?all=true",
+      "description": "Lest hovedprioriteringer og merknadene til politiet, PST, domstolene og kriminalomsorgen. Ap og Sp begrunner PST-styrkingen med sikkerhetssituasjonen og en områdegjennomgang. Ap, Sp og SVs forlik utvider hurtigsporet til Agder og Øst og øker bemanning i fengslene. Et alternativt partibudsjett er ikke et vedtak. Den graderte PST-rapporten er ikke lest."
+    },
+    {
+      "name": "Stortingets faktiske bevilgningsvedtak for justisbudsjettet 2025",
+      "url": "https://stortinget.no/no/saker-og-publikasjoner/publikasjoner/referater/stortinget/2024-2025/refs-202425-12-13/?m=13",
+      "description": "Kontrollert sak 7: bevilgningene under blant annet kapittel 410, 430, 440, 443 og 444, og vedtaket etter komiteens tilråding. Tilrådingen ble vedtatt. Dette dokumenterer den parlamentariske forankringen, ikke at alle bevilgninger ble brukt nøyaktig som budsjettert eller at ett parti alene skapte regnskapsveksten."
+    },
+    {
+      "name": "SSB: Flere anmeldelser fra foretak i 2025",
+      "url": "https://www.ssb.no/sosiale-forhold-og-kriminalitet/kriminalitet-og-rettsvesen/statistikk/anmeldte-lovbrudd-og-ofre/artikler/flere-anmeldelser-fra-foretak-i-2025",
+      "description": "Lest omtalen av anmeldelsesnivå, digital anmeldelse fra foretak og lovbruddsgrupper. SSB knytter deler av økningen til registreringsmuligheter og normalisering etter pandemien. Anmeldelser er ikke alle faktiske lovbrudd, og serien er ikke et kausalt resultatmål for politibudsjettet."
+    }
+  ]
+}
