@@ -997,3 +997,7 @@
 .cmp-occupations td > small:first-of-type,
 .cmp-occupation-modal td > small:first-of-type { display: inline; margin: 0; }
 .cmp-occupation-modal h3 { margin-top: 20px; }
+.cmp-occupations .cmp-absence-table td:nth-child(3) > small:first-of-type { display: block; }
+@media (max-width: 640px) {
+  .cmp-occupation-controls { justify-content: flex-start; margin-top: 8px; }
+}

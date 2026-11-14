@@ -18,3 +18,13 @@ export function occupationObservation(data, detail, year, occupation) {
   const rate = values?.[index * 2 + 1];
   return { amount, rate: Number.isFinite(rate) ? rate / 10 : null };
 }
+
+export function absenceObservation(data, detail, year, fn) {
+  const index = data?.functions.findIndex(([id]) => id === fn) ?? -1;
+  const values = index >= 0 ? data.rows[historicalMunicipalityCode(detail, year)] : null;
+  const agreed = values?.[index * 2] ?? null;
+  const excluding = values?.[index * 2 + 1] ?? null;
+  const amount = Number.isFinite(agreed) && Number.isFinite(excluding) && agreed >= excluding
+    ? Math.round((agreed - excluding) * 10) / 10 : null;
+  return { agreed, excluding, amount, rate: amount !== null && agreed > 0 ? amount / agreed * 100 : null };
+}

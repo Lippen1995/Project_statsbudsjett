@@ -1,4 +1,4 @@
-"""Hent årsverk i kommunene og nasjonalt sykefravær etter yrke fra SSB."""
+"""Hent årsverk, lengre fravær og nasjonalt sykefravær fra SSB."""
 import argparse
 from pathlib import Path
 from urllib.parse import urlencode
@@ -75,6 +75,38 @@ def export_sickness(client, output):
     })
 
 
+def export_absence(client, output):
+    table = "11918"
+    function_dim = "KOKfunksjon0000"
+    measures = ["KOSarsverkA0000", "KOSarsverkAKOR0000"]
+    meta = client.metadata(table)
+    functions = list(_labels(meta, function_dim).items())
+    positions = {code: i * 2 for i, (code, _) in enumerate(functions)}
+    selection = {
+        REGION: "????", "KOKkostraomfang0000": "A", function_dim: "*",
+        "ContentsCode": ",".join(measures), "Tid": "*",
+    }
+    query = urlencode({
+        "lang": "no", "outputFormat": "json-stat2",
+        **{f"valueCodes[{key}]": value for key, value in selection.items()},
+    })
+    cube = client.json(
+        f"{SSB_API}/tables/{table}/data?{query}",
+        f"{table}-absence-{meta['updated'][:10]}.json",
+    )
+    by_year = {year: {} for year in _labels(meta, "Tid")}
+    for row in iter_jsonstat(cube):
+        code = row[REGION]
+        if row["value"] is None or not code.isdigit():
+            continue
+        values = by_year[row["Tid"]].setdefault(code, [None] * (2 * len(functions)))
+        values[positions[row[function_dim]] + measures.index(row["ContentsCode"])] = row["value"]
+    for year, rows in by_year.items():
+        _write_json(output / f"kostra/occupations/absence-{year}.json", {
+            "functions": functions, "rows": dict(sorted(rows.items())),
+        })
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
@@ -82,3 +114,4 @@ if __name__ == "__main__":
     client = SsbClient()
     export_occupations(client, args.output)
     export_sickness(client, args.output)
+    export_absence(client, args.output)

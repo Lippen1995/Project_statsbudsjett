@@ -2,7 +2,7 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import MunicipalityRankingList from "./MunicipalityRankingList";
 import CostChart, { CostTable, useReducedMotion } from "./CostChart";
-import { occupationObservation as observation } from "./occupation-observation";
+import { absenceObservation, occupationObservation as observation } from "./occupation-observation";
 import { benchmarkObservations } from "./comparison";
 import { deviation, entityName, formatNumber, percent } from "./workspace-model";
 
@@ -40,9 +40,9 @@ function useOccupationAssets(assets) {
   };
 }
 
-function compare(data, target, peers, year, occupation) {
-  const own = observation(data, target, year, occupation);
-  const group = peers.map((peer) => observation(data, peer, year, occupation));
+function compare(data, target, peers, year, occupation, read = observation) {
+  const own = read(data, target, year, occupation);
+  const group = peers.map((peer) => read(data, peer, year, occupation));
   const median = (key) => benchmarkObservations(
     group.map((row) => ({ p: { perCapita: row[key] } })), "median",
   );
@@ -104,27 +104,33 @@ function OccupationDialog({ title, label, onClose, children }) {
   );
 }
 
-function OccupationHistory({ occupation, target, peers, years, year, current, onClose }) {
-  const { data, error, retry } = useOccupationAssets(years);
+function OccupationHistory({ occupation, target, peers, years, year, current, onClose, absence = false }) {
+  const asset = (y) => absence ? `absence-${y}` : y;
+  const read = absence ? absenceObservation : observation;
+  const { data, error, retry } = useOccupationAssets(years.map(asset));
   const [code, label] = occupation;
   const [secondary, setSecondary] = useState("none");
   const [inspected, setInspected] = useState(String(year));
   const history = data ? years.map((y) => {
-    const { own, rate, amount } = compare(data[y], target, peers, y, code);
-    const previous = data[y - 1] ? compare(data[y - 1], target, peers, y - 1, code) : null;
+    const { own, rate, amount } = compare(data[asset(y)], target, peers, y, code, read);
+    // SSB endret inndelingen i funksjonsgrupper fra 2024.
+    const previous = data[asset(y - 1)] && !(absence && Number(y) === 2024)
+      ? compare(data[asset(y - 1)], target, peers, y - 1, code, read) : null;
     return {
       code: String(y), label: String(y), a: own.rate, b: rate.value,
-      own: { name: entityName(target), year: y, perCapita: own.rate, amount: own.amount, growth: deviation(own.rate, previous?.own.rate) },
+      own: { ...own, name: entityName(target), year: y, perCapita: own.rate, growth: deviation(own.rate, previous?.own.rate) },
       reference: { name: "Median", perCapita: rate.value, amount, growth: deviation(rate.value, previous?.rate.value) },
       percent: deviation(own.rate, rate.value),
     };
   }) : [];
   const selected = history.find((row) => row.code === inspected) ?? history.at(-1);
+  const rankingYear = absence && selected ? selected.own.year : year;
+  const rankingData = data?.[asset(rankingYear)] ?? current;
 
   return (
     <OccupationDialog label={label} onClose={onClose}
-      title={`${entityName(target)} · ${code === "doctor" ? "Kommunehelsetjenesten" : "Omsorgstjenestene"}`}>
-      {!data ? <Loading error={error} retry={retry} /> : (
+      title={`${entityName(target)} · ${absence ? "Lengre fravær" : code === "doctor" ? "Kommunehelsetjenesten" : "Omsorgstjenestene"}`}>
+      {!data ? <Loading error={error} retry={retry} label={absence ? "fraværstall" : "årsverk"} /> : (
         <>
           <div className="cmp-dialog-options">
             <select aria-label="Sekundærakse" value={secondary} onChange={(event) => setSecondary(event.target.value)}>
@@ -133,7 +139,7 @@ function OccupationHistory({ occupation, target, peers, years, year, current, on
             </select>
           </div>
           <div className="cmp-chart-legend"><span><i />{entityName(target)}</span><span><i className="peer" />Median i utvalget</span></div>
-          <CostChart rows={history} paired history staffing secondary={secondary} title={label} chartKey={code}
+          <CostChart rows={history} paired history staffing={!absence} absence={absence} secondary={secondary} title={label} chartKey={code}
             onInspect={(row) => setInspected(row.code)} />
           <div className="cmp-inspect-selector">
             <label className="cmp-inline-label">Tall for
@@ -143,22 +149,23 @@ function OccupationHistory({ occupation, target, peers, years, year, current, on
             </label>
             <span>Klikk på Y-aksen for å tilpasse skalaen.</span>
           </div>
-          <CostTable row={selected} context={label} compact staffing history />
+          <CostTable row={selected} context={label} compact staffing={!absence} absence={absence} history />
         </>
       )}
-      <h3>Kommunene i {year}</h3>
-      <p className="cmp-footnote">Årsverk per 1 000 innbyggere (totalt antall årsverk).</p>
+      <h3>Kommunene i {rankingYear}</h3>
+      <p className="cmp-footnote">{absence ? "Andel av avtalte årsverk (antall årsverk berørt i parentes)." : "Årsverk per 1 000 innbyggere (totalt antall årsverk)."}</p>
       <MunicipalityRankingList
         rows={[target, ...peers].map((detail) => {
-          const own = observation(current, detail, year, code);
+          const own = read(rankingData, detail, rankingYear, code);
           return { code: detail.entity.code, a: own.rate, own: { ...own, name: entityName(detail) } };
         }).sort((a, b) => (
           (b.a ?? -Infinity) - (a.a ?? -Infinity) || a.own.name.localeCompare(b.own.name, "nb")
         ))}
         selectedCode={target.entity.code}
-        renderValue={({ own }) => <Value {...own} />}
+        renderValue={({ own }) => absence ? <AbsenceValue {...own} /> : <Value {...own} />}
       />
       <p className="cmp-footnote">Manglende verdier vises som «–». Referansen utelater {entityName(target)}.</p>
+      {absence && <AbsenceNote />}
     </OccupationDialog>
   );
 }
@@ -192,6 +199,53 @@ function sortRows(rows, sort, read) {
     if (!Number.isFinite(right)) return -1;
     return direction * (left - right);
   });
+}
+
+function AbsenceValue({ rate, amount }) {
+  if (!Number.isFinite(rate)) return "–";
+  return <>{formatNumber(rate, 2)} %{Number.isFinite(amount) && <> <small>({formatNumber(amount, 1)} årsverk)</small></>}</>;
+}
+
+function AbsenceNote() {
+  return <p className="cmp-footnote">
+    Andelen beregnes som forskjellen mellom avtalte årsverk med og uten lengre fravær, delt på alle avtalte årsverk. Legemeldt sykefravær og foreldrepermisjon inngår. SSB teller i november. Endret inndeling gir brudd mellom 2023 og 2024.
+    {" "}<a href="https://www.ssb.no/statbank/table/11918/">SSB 11918</a>
+  </p>;
+}
+
+function AbsenceTable({ year, years, target, peers }) {
+  const asset = `absence-${year}`;
+  const { data, error, retry } = useOccupationAssets([asset]);
+  const current = data?.[asset];
+  const [code, setCode] = useState(null);
+  const sorting = useSort();
+  const columns = [["label", "Funksjonsgruppe"], ["own", entityName(target)], ["median", "Median i utvalget"], ["difference", "Avvik (pp)"]];
+  const rows = (current?.functions ?? []).map(([id, label]) => {
+    const { own, rate } = compare(current, target, peers, year, id, absenceObservation);
+    const difference = Number.isFinite(own.rate) && Number.isFinite(rate.value)
+      ? Math.round((own.rate - rate.value) * 100) / 100 : null;
+    return { id, label: label.replace(/, kommune$/, ""), own, median: rate.value, count: rate.count, difference };
+  }).filter((row) => Number.isFinite(row.own.rate) || row.count);
+  const selected = rows.find((row) => row.id === code);
+  return <>
+    <p className="cmp-footnote">Andel av avtalte årsverk berørt av lengre fravær, etter SSBs funksjonsgrupper for kommunekonsern. Klikk på en gruppe for historikk og tall for hver kommune.</p>
+    {!current ? <Loading error={error} retry={retry} label="fraværstall" /> : !rows.length ? (
+      <p>Ingen publiserte fraværstall i utvalget.</p>
+    ) : <div className="cmp-driver-table cmp-absence-table"><table>
+      <SortHeaders columns={columns} {...sorting} />
+      <tbody>{sortRows(rows, sorting.sort, (row, key) => key === "own" ? row.own.rate : row[key]).map((row) => (
+        <tr key={row.id}>
+          <th scope="row"><button type="button" aria-haspopup="dialog" onClick={() => setCode(row.id)}>{row.label} ↗</button></th>
+          <td><AbsenceValue {...row.own} /></td>
+          <td><AbsenceValue rate={row.median} /><small>{row.count}/{peers.length} med data</small></td>
+          <td>{row.difference > 0 ? "+" : ""}{formatNumber(row.difference, 2)}</td>
+        </tr>
+      ))}</tbody>
+    </table></div>}
+    <AbsenceNote />
+    {selected && <OccupationHistory occupation={[selected.id, selected.label]} target={target} peers={peers}
+      year={year} years={years} current={current} absence onClose={() => setCode(null)} />}
+  </>;
 }
 
 function StaffingTable({ target, peers, year, years }) {
@@ -308,7 +362,7 @@ function SicknessTable({ year }) {
         </tbody>
       </table></div>
     )}
-    <p className="cmp-footnote">Avvik vises i prosentpoeng. <a href={SICKNESS_SOURCE}>SSB 14789</a></p>
+    <p className="cmp-footnote">Avvik vises i prosentpoeng. KS publiserer kommunetall etter næring. <a href={SICKNESS_SOURCE}>SSB 14789</a>{" · "}<a href="https://www.ks.no/fagomrader/statistikk-og-analyse/fravar/sykefravarsstatistikk/">KS sykefraværsstatistikk</a></p>
     {selection && index >= 0 && <SicknessHistory occupation={selection} baseline={baseline} years={source.years}
       year={year} onClose={() => setSelection(null)} />}
   </>;
@@ -319,17 +373,19 @@ export default function OccupationComparison({ target, peers, year, years }) {
   return (
     <section className="cmp-occupations" aria-labelledby="cmp-occupation-title">
       <div className="cmp-section-title">
-        <h2 id="cmp-occupation-title">{view === "staffing" ? "Årsverk etter yrke" : "Sykefravær etter yrke"}</h2>
+        <h2 id="cmp-occupation-title">{view === "staffing" ? "Årsverk etter yrke" : view === "sickness" ? "Sykefravær etter yrke" : "Årsverk berørt av lengre fravær"}</h2>
         <div className="cmp-occupation-controls">
-          <div className="cmp-view-switch" role="group" aria-label="Visning etter yrke">
+          <div className="cmp-view-switch" role="group" aria-label="Visning av bemanning og fravær">
             <button type="button" aria-pressed={view === "staffing"} onClick={() => setView("staffing")}>Årsverk</button>
             <button type="button" aria-pressed={view === "sickness"} onClick={() => setView("sickness")}>Sykefravær</button>
+            <button type="button" aria-pressed={view === "absence"} onClick={() => setView("absence")}>Lengre fravær</button>
           </div>
           <span>{year}</span>
         </div>
       </div>
       <div hidden={view !== "staffing"}><StaffingTable target={target} peers={peers} year={year} years={years} /></div>
       {view === "sickness" && <SicknessTable key={year} year={year} />}
+      {view === "absence" && <AbsenceTable key={year} year={year} years={years} target={target} peers={peers} />}
     </section>
   );
 }

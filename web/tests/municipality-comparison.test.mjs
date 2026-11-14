@@ -6,6 +6,7 @@ import {
 } from "../src/sider/comparison.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { absenceObservation } from "../src/sider/occupation-observation.js";
 import {
   benchmark,
   comparison,
@@ -13,6 +14,22 @@ import {
   readComparisonRoute,
   svenFindings,
 } from "../src/sider/comparison.js";
+
+test("longer absence compares shares of contracted FTE and preserves missing values", () => {
+  const data = JSON.parse(readFileSync(new URL("../public/data/kostra/occupations/absence-2025.json", import.meta.url)));
+  const stavanger = { entity: { code: "1103" } };
+  const row = absenceObservation(data, stavanger, 2025, "FGK9");
+  assert.equal(row.agreed, 3855.3);
+  assert.equal(row.excluding, 3406.1);
+  assert.equal(row.amount, 449.2);
+  assert.equal(row.rate.toFixed(2), "11.65");
+  const absent = absenceObservation(data, stavanger, 2025, "253");
+  assert.equal(absent.rate, null);
+  const sparse = { functions: [["1", "Test"]], rows: { "1103": [12, null] } };
+  assert.equal(absenceObservation(sparse, stavanger, 2025, "1").rate, null);
+  sparse.rows["1103"][1] = 12;
+  assert.equal(absenceObservation(sparse, stavanger, 2025, "1").rate, 0);
+});
 const detail = (cost, people) => ({
   overview: {
     revenues: { 2025: { amount: people * 10, perCapita: 10000 } },

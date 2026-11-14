@@ -41,13 +41,19 @@ export function CostTable({
   peerPopulation,
   staffing = false,
   sickness = false,
+  absence = false,
 }) {
   if (!row?.own) return null;
   const { own, reference: ref } = row;
   const showPeerPopulation = ref?.calculated && peerPopulation != null;
   const referencePopulation = showPeerPopulation ? peerPopulation : ref?.population;
   const rate = (value) => Number.isFinite(value) ? `${n(value, 2)} %` : "–";
-  const metrics = sickness ? [
+  const metrics = absence ? [
+    ["Andel av avtalte årsverk", rate(own.perCapita), rate(ref?.perCapita)],
+    ["Årsverk berørt av lengre fravær", n(own.amount, 1), "–"],
+    ["Avtalte årsverk", n(own.agreed, 1), "–"],
+    ["Avtalte årsverk uten lengre fravær", n(own.excluding, 1), "–"],
+  ] : sickness ? [
     ["Legemeldt sykefravær", rate(own.perCapita), rate(ref?.perCapita)],
   ] : staffing ? [
     ["Årsverk per 1 000 innb.", n(own.perCapita, 2), n(ref?.perCapita, 2)],
@@ -99,7 +105,7 @@ export function CostTable({
     </div>
   );
 }
-function ChartTooltip({ active, payload, history, context, staffing, sickness }) {
+function ChartTooltip({ active, payload, history, context, staffing, sickness, absence }) {
   if (!active || !payload?.length) return null;
   return (
     <CostTable
@@ -107,6 +113,7 @@ function ChartTooltip({ active, payload, history, context, staffing, sickness })
       history={history}
       staffing={staffing}
       sickness={sickness}
+      absence={absence}
       context={payload[0].payload.context || context}
     />
   );
@@ -159,6 +166,7 @@ export default function CostChart({
   animate = true,
   staffing = false,
   sickness = false,
+  absence = false,
 }) {
   const reduced = useReducedMotion();
   const [bounds, setBounds] = useState(EMPTY),
@@ -178,7 +186,7 @@ export default function CostChart({
       ),
       secondaryBounds,
     );
-  const unit = sickness ? "Legemeldt sykefravær (%)" : staffing ? "Årsverk per 1 000 innbyggere" : mode === "amount" ? "Millioner kroner" : "Kroner per innbygger";
+  const unit = absence ? "Andel årsverk berørt av lengre fravær (%)" : sickness ? "Legemeldt sykefravær (%)" : staffing ? "Årsverk per 1 000 innbyggere" : mode === "amount" ? "Millioner kroner" : "Kroner per innbygger";
   const categoryWidth = wrapCategories && rows.some((row) => row.axisCode) ? 138 : 65;
   const secondUnit =
     secondary === "growth" ? "År/år-endring (%)" : "Innbyggere";
@@ -269,7 +277,7 @@ export default function CostChart({
                   value: vertical
                     ? "Kommune"
                     : history
-                      ? sickness ? "År" : "Regnskapsår"
+                      ? sickness || absence ? "År" : "Regnskapsår"
                       : categoryLabel,
                   position: "insideBottom",
                   offset: -6,
@@ -282,7 +290,7 @@ export default function CostChart({
                 ticks={primary.ticks}
                 allowDataOverflow
                 width={72}
-                tickFormatter={(v) => n(v, staffing || sickness ? 2 : mode === "amount" ? 1 : 0)}
+                tickFormatter={(v) => n(v, staffing || sickness || absence ? 2 : mode === "amount" ? 1 : 0)}
                 tick={{ fontSize: 11, fill: "var(--dempet)" }}
                 axisLine={false}
                 tickLine={false}
@@ -304,7 +312,7 @@ export default function CostChart({
                 />
               )}
               <Tooltip
-                content={<ChartTooltip history={history} context={title} staffing={staffing} sickness={sickness} />}
+                content={<ChartTooltip history={history} context={title} staffing={staffing} sickness={sickness} absence={absence} />}
                 isAnimationActive={false}
                 cursor={{ fill: "var(--cmp-hover)" }}
                 wrapperStyle={{ outline: "none", zIndex: 20, transition: "none" }}
