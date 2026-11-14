@@ -12,6 +12,7 @@ kostra:
 	python etl/kostra.py
 	python etl/kostra_drivers.py
 	python etl/kostra_purchase_arts.py
+	python etl/kostra_occupations.py
 
 etl-force:
 	python etl/etl.py --force

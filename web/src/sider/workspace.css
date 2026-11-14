@@ -964,3 +964,18 @@
   .cmp-art-layout { transition: none; }
   .cmp-art-explanations { animation: none; }
 }
+
+.cmp-occupations { margin-top: 36px; }
+.cmp-occupations th button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--gronn);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.cmp-occupations th button:hover { text-decoration: underline; }
+.cmp-occupations td > small:first-of-type,
+.cmp-occupation-modal td > small:first-of-type { display: inline; margin: 0; }
+.cmp-occupation-modal h3 { margin-top: 20px; }

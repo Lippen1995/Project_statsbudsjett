@@ -13,6 +13,7 @@ import {
 } from "./comparison";
 import "./comparison.css";
 import ComparisonWorkspace from "./ComparisonWorkspace";
+import OccupationComparison from "./OccupationComparison";
 import ComparisonDialog from "./ComparisonDialog";
 
 const number = (n, digits = 0) =>
@@ -623,32 +624,7 @@ export default function MunicipalityComparison({ hash }) {
                   onClose={() => setExplainedFunction("")}
                 />
               )}
-              <div className="cmp-checks">
-                {[
-                  [
-                    "Behov og befolkning",
-                    "Alderssammensetning, levekår og pleietyngde kan forklare kostnadsforskjeller. Behovskorrigering er ikke koblet inn i denne versjonen.",
-                  ],
-                  [
-                    "Tjenesteomfang og kvalitet",
-                    "Åpne en funksjon for å se tilgjengelige SSB-tall om tjenesteomfang og bemanning. Kvalitet må også vurderes når kommunene sammenlignes.",
-                  ],
-                  [
-                    "Bemanning og organisering",
-                    "Årsverk, vikarbruk, sykefravær, skolestruktur og kjøpte tjenester må vurderes før avvik tolkes som overbemanning.",
-                  ],
-                  [
-                    "Budsjett og gjennomføring",
-                    "Tiltaket må kobles til riktig budsjettpost. Kontroller avtaler, lovkrav og innsparinger som allerede ligger i økonomiplanen.",
-                  ],
-                ].map(([h, p]) => (
-                  <article key={h}>
-                    <span className="cmp-tag">Må undersøkes</span>
-                    <h3>{h}</h3>
-                    <p>{p}</p>
-                  </article>
-                ))}
-              </div>
+              <OccupationComparison key={code} target={target} peers={peers} year={year} years={index.years} />
             </>
           )}
           {tab === "sven" && (
