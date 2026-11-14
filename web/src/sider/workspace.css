@@ -345,7 +345,7 @@
   position: relative;
   min-width: 0;
 }
-.cmp-workspace .cmp-rank-trigger {
+.cmp-rankings .cmp-rank-trigger {
   display: block;
   width: 100%;
   padding: 5px 4px;

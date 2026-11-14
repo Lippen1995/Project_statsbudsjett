@@ -1,5 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import MunicipalityRankingList from "./MunicipalityRankingList";
 import CostChart, { CostTable, useReducedMotion } from "./CostChart";
 import { benchmarkObservations } from "./comparison";
 import { deviation, entityName, formatNumber, percent } from "./workspace-model";
@@ -141,12 +142,18 @@ function OccupationHistory({ occupation, target, peers, years, year, current, on
         </>
       )}
       <h3>Kommunene i {year}</h3>
-      <div className="cmp-driver-table"><table>
-        <thead><tr><th scope="col">Kommune</th><th scope="col">Per 1 000 innbyggere (totalt)</th></tr></thead>
-        <tbody>{[target, ...peers].map((detail) => <tr key={detail.entity.code}>
-          <th scope="row">{entityName(detail)}</th><td><Value {...observation(current, detail, year, code)} /></td>
-        </tr>)}</tbody>
-      </table></div>
+      <p className="cmp-footnote">Årsverk per 1 000 innbyggere (totalt antall årsverk).</p>
+      <MunicipalityRankingList
+        rows={[target, ...peers].map((detail) => {
+          const own = observation(current, detail, year, code);
+          return { code: detail.entity.code, a: own.rate, own: { ...own, name: entityName(detail) } };
+        }).sort((a, b) => (
+          (b.a ?? -Infinity) - (a.a ?? -Infinity) || a.own.name.localeCompare(b.own.name, "nb")
+        ))}
+        selectedCode={target.entity.code}
+        renderValue={({ own }) => <Value {...own} />}
+      />
+      <p className="cmp-footnote">Manglende verdier vises som «–». Referansen utelater {entityName(target)}.</p>
     </dialog>,
     document.body,
   );

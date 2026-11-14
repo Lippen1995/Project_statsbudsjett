@@ -4,6 +4,7 @@ import { SECTORS } from "./comparison";
 import { ACCOUNT_SECTIONS, OWN_PURCHASES, PURCHASE_BREAKDOWN_NOTE, PURCHASE_REMAINDER, accountingObservation } from "./accounting-drill";
 import { usePurchaseArts, withPurchaseArts } from "./use-purchase-arts";
 import CostChart, { CostTable } from "./CostChart";
+import MunicipalityRankingList from "./MunicipalityRankingList";
 import ArtExplanations from "./ArtExplanations";
 import ComparisonDialog from "./ComparisonDialog";
 import {
@@ -98,7 +99,6 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
 }
 
 function MunicipalityRanking({ rows, target, year, title, onOpen }) {
-  const maximum = Math.max(1, ...rows.map((row) => Math.abs(row.a ?? 0)));
   const hasNegative = rows.some((row) => row.a < 0);
   return (
     <section className="cmp-ranking">
@@ -109,26 +109,13 @@ function MunicipalityRanking({ rows, target, year, title, onOpen }) {
         </div>
         <span>{year}</span>
       </div>
-      <div className="cmp-rankings">
-        {rows.map((row) => (
-          <div key={row.code} className={`cmp-ranking-row ${row.code === target.entity.code ? "own" : ""}`}>
-            <button type="button" className="cmp-rank-trigger" aria-haspopup="dialog"
-              aria-label={`${row.own.name}: ${moneyPerPerson(row.a)} per innbygger. Åpne historikk.`}
-              onClick={() => onOpen(row.detail)}>
-              <span className="cmp-rank-heading">
-                <span>{row.own.name}</span>
-                <span>
-                  {moneyPerPerson(row.a)} <small>({nominal(row.own.amount)})</small>
-                </span>
-              </span>
-              <span className="cmp-rank-track">
-                <span style={{ width: `${Math.abs(row.a ?? 0) / maximum * 100}%` }} />
-              </span>
-            </button>
-            <div className="cmp-rank-hover"><CostTable row={row} context={title} /></div>
-          </div>
-        ))}
-      </div>
+      <MunicipalityRankingList
+        rows={rows} selectedCode={target.entity.code}
+        renderValue={(row) => <>{moneyPerPerson(row.a)} <small>({nominal(row.own.amount)})</small></>}
+        onOpen={(row) => onOpen(row.detail)}
+        openLabel={(row) => `${row.own.name}: ${moneyPerPerson(row.a)} per innbygger. Åpne historikk.`}
+        renderHover={(row) => <CostTable row={row} context={title} />}
+      />
       <p className="cmp-footnote">
         Manglende verdier vises som «–». Referansen utelater {entityName(target)}.
         {hasNegative && " Stolpelengden viser beløpets størrelse."}
