@@ -132,3 +132,16 @@
   .cmp-budget-detail th,
   .cmp-budget-detail td { padding: 6px 5px; font-size: 11px; }
 }
+
+.cmp-budget-history {
+  display: block;
+  margin: 14px 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--gronn);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.cmp-budget-history:hover { text-decoration: underline; }

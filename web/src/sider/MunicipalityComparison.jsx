@@ -16,7 +16,7 @@ import {
 import "./comparison.css";
 import ComparisonWorkspace from "./ComparisonWorkspace";
 import ComparisonDialog from "./ComparisonDialog";
-import BudgetWorkspace from "./BudgetWorkspace";
+import BudgetWorkspace, { publishedBudgetYears } from "./BudgetWorkspace";
 
 const number = (n, digits = 0) =>
   Number.isFinite(n)
@@ -27,7 +27,6 @@ const number = (n, digits = 0) =>
 const money = (n) => formatKostraValue(n, "amount");
 const TABS = [
   ["compare", "Sammenlign"],
-  ["publishedBudget", "Budsjett og regnskap"],
   ["explain", "Forklar forskjellene"],
   ["sven", "Svens forslag"],
   ["budget", "Mitt budsjettalternativ"],
@@ -85,7 +84,8 @@ export default function MunicipalityComparison({ hash }) {
     [functionCode, setFunctionCode] = useState("");
   const [functionSort, setFunctionSort] = useState({ key: "code", direction: "asc" });
   const [explainedFunction, setExplainedFunction] = useState("");
-  const [tab, setTab] = useState(route.budgetView ? "publishedBudget" : "compare"),
+  const [budgetYear, setBudgetYear] = useState(route.budgetView ? (publishedBudgetYears.some(({ year }) => year === route.year) ? route.year : 2026) : null);
+  const [tab, setTab] = useState("compare"),
     [method, setMethod] = useState("median");
   const [editingPeers, setEditingPeers] = useState(false),
     [search, setSearch] = useState(""),
@@ -188,17 +188,17 @@ export default function MunicipalityComparison({ hash }) {
     if (!index || !year || !peerCodes) return;
     const q = new URLSearchParams({
       kommune: code,
-      aar: String(year),
+      aar: String(tab === "compare" && budgetYear ? budgetYear : year),
       mot: selectedPeers.join(","),
     });
-    if (tab === "publishedBudget") q.set("visning", "budsjett");
+    if (tab === "compare" && budgetYear) q.set("visning", "budsjett");
     window.history.replaceState(
       null,
       "",
       `${window.location.pathname}${window.location.search}${COMPARISON_ROUTE}?${q}`,
     );
-  }, [index, code, year, peerCodes, selectedPeers, tab]);
-  const publishedBudget = tab === "publishedBudget";
+  }, [index, code, year, peerCodes, selectedPeers, tab, budgetYear]);
+  const publishedBudget = tab === "compare" && budgetYear !== null;
   const target = details[code];
   const peers = selectedPeers.map((c) => details[c]).filter(Boolean);
   const entity = entities.find((e) => e.code === code);
@@ -258,6 +258,7 @@ export default function MunicipalityComparison({ hash }) {
     }));
   const selectMunicipality = (next) => {
     setCode(next);
+    setBudgetYear(next === "1103" ? budgetYear : null);
     setPeerCodes(defaultPeers(index.entities, next));
     setFunctionCode("");
     setMessage("");
@@ -385,20 +386,29 @@ export default function MunicipalityComparison({ hash }) {
             ))}
           </select>
         </label>
-        {!publishedBudget && (
-          <label>
-            Regnskapsår
-            <select
-              value={year || ""}
-              onChange={(e) => setYear(+e.target.value)}
-              disabled={!index}
-            >
-              {[...(index?.years || [])].reverse().map((y) => (
-                <option key={y}>{y}</option>
-              ))}
-            </select>
-          </label>
-        )}
+        <label>
+          År
+          <select
+            value={publishedBudget ? `budget-${budgetYear}` : year || ""}
+            onChange={(event) => {
+              const value = event.target.value;
+              if (value.startsWith("budget-")) setBudgetYear(Number(value.slice(7)));
+              else { setBudgetYear(null); setYear(Number(value)); }
+            }}
+            disabled={!index}
+          >
+            <optgroup label="Regnskap">
+              {[...(index?.years || [])].reverse().map((y) => <option key={y} value={y}>{y}</option>)}
+            </optgroup>
+            {tab === "compare" && code === "1103" && (
+              <optgroup label="Stavanger · kommunekassen">
+                {publishedBudgetYears.map(({ year: y, label }) => (
+                  <option key={y} value={`budget-${y}`}>{y} · {label}</option>
+                ))}
+              </optgroup>
+            )}
+          </select>
+        </label>
         {!publishedBudget && (
           <button
             className="cmp-peer-button"
@@ -530,6 +540,8 @@ export default function MunicipalityComparison({ hash }) {
         <BudgetWorkspace
           code={code}
           name={ownName}
+          year={budgetYear}
+          onYear={setBudgetYear}
           onStavanger={() => index && selectMunicipality("1103")}
         />
       ) : loading ? (

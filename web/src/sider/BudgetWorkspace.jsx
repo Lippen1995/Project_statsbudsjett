@@ -1,4 +1,4 @@
-import React, { useId, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import {
   Bar,
   CartesianGrid,
@@ -27,6 +27,16 @@ const SERIES = [
   ["adoptedPlan", "Vedtatt økonomiplan", "plan"],
   ["proposedPlan", "Foreslått økonomiplan", "plan"],
 ];
+export const publishedBudgetYears = [
+  { year: 2025, label: "Budsjett" },
+  ...data.groups.operations.sources[ADOPTED].columns
+    .filter(({ kind }) => kind === "original")
+    .map(({ year }) => ({ year, label: "Vedtatt budsjett" })),
+  ...data.groups.operations.sources[PROPOSAL].columns
+    .filter(({ kind }) => kind === "proposal" || kind === "proposedPlan")
+    .map(({ year, kind }) => ({ year, label: kind === "proposal" ? "Budsjettforslag" : "Økonomiplan" })),
+];
+
 const CHART_SLOTS = [
   ["actual"],
   ["original", "proposal", "adoptedPlan", "proposedPlan"],
@@ -183,13 +193,21 @@ function BudgetChart({ rows, visible, selectedYear, onYear, metric, perCapita })
   );
 }
 
-export default function BudgetWorkspace({ code, name, onStavanger }) {
+export default function BudgetWorkspace({ code, name, onStavanger, year, onYear }) {
   const [groupKey, setGroup] = useState("operations");
   const [metric, setMetric] = useState(data.groups.operations.default);
   const [version, setVersion] = useState(PROPOSAL);
   const [view, setView] = useState("both");
   const [perCapita, setPerCapita] = useState(false);
-  const [year, setYear] = useState(2025);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const historyTrigger = useRef(null);
+  const [inspection, setInspection] = useState(null);
+  const inspect = (y) => {
+    if (publishedBudgetYears.some(({ year: option }) => option === y)) {
+      setInspection(null);
+      onYear(y);
+    } else setInspection({ budgetYear: year, year: y });
+  };
 
   if (code !== data.municipality) {
     return (
@@ -202,10 +220,12 @@ export default function BudgetWorkspace({ code, name, onStavanger }) {
   }
 
   const group = data.groups[groupKey];
-  const rows = observations(group, metric, version);
+  const effectiveVersion = year > 2029 ? PROPOSAL : version;
+  const rows = observations(group, metric, effectiveVersion);
   const visible = SERIES.filter(([kind]) => view === "both" || (view === "actual" ? kind === "actual" : kind !== "actual"));
   const displayed = rows.filter((row) => visible.some(([kind]) => amounts(row, kind) !== null));
-  const selected = displayed.find((row) => row.year === year) ?? displayed.at(-1);
+  const inspectedYear = inspection?.budgetYear === year ? inspection.year : year;
+  const selected = displayed.find((row) => row.year === inspectedYear) ?? displayed.at(-1);
   const annual = rows.find((row) => row.year === 2025);
   const actual = amounts(annual, "actual");
   const adjusted = amounts(annual, "adjusted");
@@ -218,7 +238,7 @@ export default function BudgetWorkspace({ code, name, onStavanger }) {
         <div>
           <div className="cmp-eyebrow">Stavanger · Kommunekassen</div>
           <h2 id="cmp-budget-title">Budsjett og regnskap</h2>
-          <p>Se årets budsjett mot regnskapet, og følg prioriteringene gjennom økonomiplanen.</p>
+          <p>Stavangers publiserte oppstillinger for kommunekassen. Velg et regnskapsår for å sammenligne kommunekonsern.</p>
         </div>
         <span>Offisielle oppstillinger</span>
       </header>
@@ -246,8 +266,8 @@ export default function BudgetWorkspace({ code, name, onStavanger }) {
         </label>
         <label>
           Økonomiplan
-          <select value={version} onChange={(event) => setVersion(event.target.value)}>
-            {[PROPOSAL, ADOPTED].map((doc) => <option key={doc} value={doc}>{data.documents[doc].label}</option>)}
+          <select value={effectiveVersion} onChange={(event) => setVersion(event.target.value)}>
+            {[PROPOSAL, ADOPTED].map((doc) => <option key={doc} value={doc} disabled={doc === ADOPTED && year > 2029}>{data.documents[doc].label}</option>)}
           </select>
         </label>
       </div>
@@ -269,8 +289,13 @@ export default function BudgetWorkspace({ code, name, onStavanger }) {
 
       <BudgetChart
         rows={displayed} visible={visible} metric={metric} perCapita={perCapita}
-        selectedYear={selected?.year} onYear={setYear}
+        selectedYear={selected?.year} onYear={inspect}
       />
+
+      <button type="button" className="cmp-budget-history" ref={historyTrigger} onClick={() => setHistoryOpen(true)}>Åpne historikk ↗</button>
+      {historyOpen && (
+        <BudgetHistory group={group} metric={metric} rows={rows} onClose={() => { setHistoryOpen(false); historyTrigger.current?.focus(); }} />
+      )}
 
       {perCapita && <p className="cmp-budget-note">
         Alle år er delt på {number(POPULATION)} innbyggere, folketallet 1. januar 2026.
@@ -279,7 +304,7 @@ export default function BudgetWorkspace({ code, name, onStavanger }) {
 
       <div className="cmp-budget-years" aria-label="Velg år">
         {displayed.map((row) => (
-          <button key={row.year} aria-pressed={selected?.year === row.year} onClick={() => setYear(row.year)}>{row.year}</button>
+          <button key={row.year} aria-pressed={selected?.year === row.year} onClick={() => inspect(row.year)}>{row.year}</button>
         ))}
       </div>
       <div aria-live="polite">
@@ -288,7 +313,7 @@ export default function BudgetWorkspace({ code, name, onStavanger }) {
       {view === "both" && selected?.year === 2025 && actual !== null && adjusted !== null && (
         <p className="cmp-budget-note"><strong>Avvik mot justert budsjett</strong> {signed(actual - adjusted)} i 2025, beregnet som regnskap minus budsjett.</p>
       )}
-      {view !== "actual" && version === PROPOSAL && original2026 !== null && proposalReference !== null && original2026 !== proposalReference && (
+      {view !== "actual" && effectiveVersion === PROPOSAL && original2026 !== null && proposalReference !== null && original2026 !== proposalReference && (
         <p className="cmp-budget-note">
           <strong>To publiserte tall for 2026.</strong> Vedtaket viser {number(original2026 / 1000, 3)} mill. kr for denne posten.
           Sammenligningskolonnen i 2027-forslaget viser {number(proposalReference / 1000, 3)} mill. kr. Grafen bruker vedtaket for 2026.
@@ -316,5 +341,51 @@ export default function BudgetWorkspace({ code, name, onStavanger }) {
         </div>
       </details>
     </section>
+  );
+}
+
+
+function BudgetHistory({ group, metric, rows, onClose }) {
+  const dialog = useRef(null);
+  const [year, setYear] = useState(null);
+  const [perCapita, setPerCapita] = useState(false);
+  const lastActual = rows.findLast((row) => Number.isFinite(amounts(row, "actual")))?.year;
+  const history = rows.filter((row) => Number.isFinite(amounts(row, "actual"))
+    || (row.year > lastActual && SERIES.some(([kind]) => kind !== "actual" && Number.isFinite(amounts(row, kind)))));
+  const selected = history.find((row) => row.year === year) ?? history.at(-1);
+  const visible = SERIES.filter(([kind]) => kind !== "adjusted");
+  const points = history.map((row) => row.year <= lastActual
+    ? { ...row, observations: { actual: row.observations.actual } }
+    : row);
+  const selectedPoint = points.find((row) => row.year === selected?.year);
+  useEffect(() => {
+    const modal = dialog.current;
+    modal.showModal();
+    return () => modal.close();
+  }, []);
+  return (
+    <dialog ref={dialog} className="ft cmp-inspect-modal" aria-labelledby="cmp-budget-history-title"
+      onCancel={(event) => { event.preventDefault(); onClose(); }}>
+      <button type="button" className="cmp-dialog-close" aria-label="Lukk" onClick={onClose}>×</button>
+      <p className="cmp-eyebrow">Stavanger · Kommunekassen · {group.section}</p>
+      <h2 id="cmp-budget-history-title">{metric}</h2>
+      <div className="cmp-budget-viewbar">
+        <label className="cmp-budget-units">
+          Måleenhet
+          <select value={perCapita ? "population" : "amount"} onChange={(event) => setPerCapita(event.target.value === "population")}>
+            <option value="amount">Beløp</option>
+            <option value="population">Per innbygger · fast folketall</option>
+          </select>
+        </label>
+      </div>
+      <BudgetChart rows={points} visible={visible} selectedYear={selected?.year} onYear={setYear} metric={metric} perCapita={perCapita} />
+      <label>
+        Tall for{" "}
+        <select value={selected?.year ?? ""} onChange={(event) => setYear(Number(event.target.value))}>
+          {history.map((row) => <option key={row.year}>{row.year}</option>)}
+        </select>
+      </label>
+      <YearDetails row={selectedPoint} visible={visible} group={group} metric={metric} perCapita={perCapita} />
+    </dialog>
   );
 }

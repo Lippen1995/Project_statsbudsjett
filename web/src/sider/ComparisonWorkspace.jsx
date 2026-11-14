@@ -4,6 +4,7 @@ import { SECTORS } from "./comparison";
 import { ACCOUNT_SECTIONS, OWN_PURCHASES, PURCHASE_BREAKDOWN_NOTE, PURCHASE_REMAINDER, accountingObservation } from "./accounting-drill";
 import { usePurchaseArts, withPurchaseArts } from "./use-purchase-arts";
 import CostChart, { CostTable } from "./CostChart";
+import ArtExplanations from "./ArtExplanations";
 import ComparisonDialog from "./ComparisonDialog";
 import {
   comparisonRow,
@@ -265,27 +266,32 @@ export default function ComparisonWorkspace({
             {rows.map((row) => <option key={row.code} value={row.code}>{row.context}</option>)}
           </select>
         </div>
-        {rows.length ? (
-          <CostChart
-            rows={rows}
-            paired
-            deltas
-            selected={art?.code}
-            animate={false}
-            title={level}
-            categoryLabel={level}
-            wrapCategories
-            onSelect={selectRow}
-            chartKey={[target.entity.code, year, method, sector, fn, post?.code, ...peers.map((peer) => peer.entity.code)].join("-")}
-          />
-        ) : purchaseDrill && (pending || error) ? (
-          <p className="cmp-drill-empty" role={error ? "alert" : "status"}>
-            {error ? "Kunne ikke hente artsfordelingen fra SSB. " : "Henter artsfordelingen fra SSB…"}
-            {error && <button type="button" onClick={retry}>Prøv igjen</button>}
-          </p>
-        ) : (
-          <p className="cmp-drill-empty">Ingen rapporterte {level.toLowerCase()} for dette valget og året.</p>
-        )}
+        <div className={`cmp-art-layout ${post ? "cmp-art-layout--open" : ""}`}>
+          <div className="cmp-art-plot">
+            {rows.length ? (
+              <CostChart
+                rows={rows}
+                paired
+                deltas
+                selected={art?.code}
+                animate={false}
+                title={level}
+                categoryLabel={level}
+                wrapCategories
+                onSelect={selectRow}
+                chartKey={[target.entity.code, year, method, sector, fn, post?.code, ...peers.map((peer) => peer.entity.code)].join("-")}
+              />
+            ) : purchaseDrill && (pending || error) ? (
+              <p className="cmp-drill-empty" role={error ? "alert" : "status"}>
+                {error ? "Kunne ikke hente artsfordelingen fra SSB. " : "Henter artsfordelingen fra SSB…"}
+                {error && <button type="button" onClick={retry}>Prøv igjen</button>}
+              </p>
+            ) : (
+              <p className="cmp-drill-empty">Ingen rapporterte {level.toLowerCase()} for dette valget og året.</p>
+            )}
+          </div>
+          <div className="cmp-art-side">{post && rows.length > 0 && <ArtExplanations rows={rows} />}</div>
+        </div>
         <p className="cmp-footnote cmp-drill-note">
           {purchaseDrill
             ? PURCHASE_BREAKDOWN_NOTE
