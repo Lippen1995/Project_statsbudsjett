@@ -966,6 +966,24 @@
 }
 
 .cmp-occupations { margin-top: 36px; }
+.cmp-occupation-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px 12px;
+  color: var(--dempet);
+  font-size: 10px;
+}
+.cmp-page .cmp-occupation-controls .cmp-view-switch button {
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  background: transparent;
+}
+.cmp-page .cmp-occupation-controls .cmp-view-switch button[aria-pressed="true"] {
+  border-color: var(--gronn);
+}
 .cmp-occupations th button {
   border: 0;
   background: transparent;

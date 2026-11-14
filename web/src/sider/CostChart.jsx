@@ -40,12 +40,16 @@ export function CostTable({
   compact = false,
   peerPopulation,
   staffing = false,
+  sickness = false,
 }) {
   if (!row?.own) return null;
   const { own, reference: ref } = row;
   const showPeerPopulation = ref?.calculated && peerPopulation != null;
   const referencePopulation = showPeerPopulation ? peerPopulation : ref?.population;
-  const metrics = staffing ? [
+  const rate = (value) => Number.isFinite(value) ? `${n(value, 2)} %` : "–";
+  const metrics = sickness ? [
+    ["Legemeldt sykefravær", rate(own.perCapita), rate(ref?.perCapita)],
+  ] : staffing ? [
     ["Årsverk per 1 000 innb.", n(own.perCapita, 2), n(ref?.perCapita, 2)],
     ["Årsverk totalt", n(own.amount, 1), n(ref?.amount, 1)],
     ["Avvik per 1 000 innb. (%)", percent(row.percent), "–"],
@@ -95,13 +99,14 @@ export function CostTable({
     </div>
   );
 }
-function ChartTooltip({ active, payload, history, context, staffing }) {
+function ChartTooltip({ active, payload, history, context, staffing, sickness }) {
   if (!active || !payload?.length) return null;
   return (
     <CostTable
       row={payload[0].payload}
       history={history}
       staffing={staffing}
+      sickness={sickness}
       context={payload[0].payload.context || context}
     />
   );
@@ -153,6 +158,7 @@ export default function CostChart({
   onInspect,
   animate = true,
   staffing = false,
+  sickness = false,
 }) {
   const reduced = useReducedMotion();
   const [bounds, setBounds] = useState(EMPTY),
@@ -172,7 +178,7 @@ export default function CostChart({
       ),
       secondaryBounds,
     );
-  const unit = staffing ? "Årsverk per 1 000 innbyggere" : mode === "amount" ? "Millioner kroner" : "Kroner per innbygger";
+  const unit = sickness ? "Legemeldt sykefravær (%)" : staffing ? "Årsverk per 1 000 innbyggere" : mode === "amount" ? "Millioner kroner" : "Kroner per innbygger";
   const categoryWidth = wrapCategories && rows.some((row) => row.axisCode) ? 138 : 65;
   const secondUnit =
     secondary === "growth" ? "År/år-endring (%)" : "Innbyggere";
@@ -263,7 +269,7 @@ export default function CostChart({
                   value: vertical
                     ? "Kommune"
                     : history
-                      ? "Regnskapsår"
+                      ? sickness ? "År" : "Regnskapsår"
                       : categoryLabel,
                   position: "insideBottom",
                   offset: -6,
@@ -276,7 +282,7 @@ export default function CostChart({
                 ticks={primary.ticks}
                 allowDataOverflow
                 width={72}
-                tickFormatter={(v) => n(v, staffing ? 2 : mode === "amount" ? 1 : 0)}
+                tickFormatter={(v) => n(v, staffing || sickness ? 2 : mode === "amount" ? 1 : 0)}
                 tick={{ fontSize: 11, fill: "var(--dempet)" }}
                 axisLine={false}
                 tickLine={false}
@@ -298,7 +304,7 @@ export default function CostChart({
                 />
               )}
               <Tooltip
-                content={<ChartTooltip history={history} context={title} staffing={staffing} />}
+                content={<ChartTooltip history={history} context={title} staffing={staffing} sickness={sickness} />}
                 isAnimationActive={false}
                 cursor={{ fill: "var(--cmp-hover)" }}
                 wrapperStyle={{ outline: "none", zIndex: 20, transition: "none" }}
