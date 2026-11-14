@@ -54,7 +54,6 @@ export function createHandler({
       }
       if (url.pathname === '/api/health' && request.method === 'GET') {
         const report = await health.check()
-        if (platform) background(platform.maintain().catch(() => {}))
         return json(
           {
             status: report.status,
@@ -142,7 +141,6 @@ export function createHandler({
       ) {
         const report = await health.dashboard()
         if (platform) {
-          background(platform.maintain().catch(() => {}))
           const external = await platform.monitoring.peek?.()
           const active =
             external?.available &&

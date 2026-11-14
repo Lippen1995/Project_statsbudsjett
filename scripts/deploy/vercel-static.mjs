@@ -64,7 +64,7 @@ if (command === 'pack') {
   })
   const config = {
     version: 3,
-    ...(paths.includes('admin/index.html') ? { crons: [{ path: '/api/admin/cron', schedule: '17 7 * * *' }] } : {}),
+    ...(paths.includes('admin/index.html') ? { crons: [{ path: '/api/admin/cron', schedule: '17 2 * * *' }] } : {}),
     routes: [
       ...(paths.includes('admin/index.html') ? [{ src: '/api/(admin(?:/.*)?|auth(?:/.*)?|telemetry|health)', dest: '/admin-api' }] : []),
       { src: '/(.*)', headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' }, continue: true },

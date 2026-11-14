@@ -28,7 +28,7 @@ Skjult adresse og indekseringsregler er ikke tilgangskontrollen.
   neste tema når hele køen er tom.
 - **Driftsstatus:** faktiske kontroller av nettstedet, databasen og Svens
   arbeidsgrunnlag, med endringslogg og historikk fra overvåkingen startet.
-  Checkly kontrollerer helsesjekken i bakgrunnen hvert femte minutt og varsler
+  Checkly kontrollerer helsesjekken i bakgrunnen én gang i timen og varsler
   administratoren på e-post ved feil, nedsatt ytelse og gjenoppretting.
 - **Endringshistorikk:** faktiske GitHub-commits og Actions-kjøringer.
 
@@ -207,9 +207,18 @@ Nettleseren kan ikke sende inn en egen analyseplan som et Sven-forslag.
 **Checkly-overvåking og e-postvarsling er konfigurert 20. oktober 2026.**
 Integrasjonen er koblet til Fellestall i Vercel Production. Kontrollens navn er
 `Fellestall – driftsstatus`; den gjør `GET https://fellestall.no/api/health`
-og krever HTTP 200. Den kjører hvert femte minutt, med Round-robin mellom
+og krever HTTP 200. Den kjører én gang i timen, med Round-robin mellom
 Frankfurt og London. Dermed fortsetter kontrollene også når ingen har adminområdet
 åpent, og de kan oppdage at hele nettstedet slutter å svare.
+
+**Intervallet ble endret fra fem minutter til én time 14. november 2026** for å
+kutte databasekostnaden. Helsesjekken leser databasen, og Neon går i dvale først
+etter fem minutter uten aktivitet. Med kontroll hvert femte minutt sto databasen
+på hele døgnet. En driftsstans kan nå gå opptil en time før varselet kommer.
+Vedlikeholdsjobben (varsler, e-postutsending, døgnkopi og opprydding) startes
+ikke lenger av `/api/health` eller live-status, bare av Vercel-cronen
+`/api/admin/cron` kl. 02:17 UTC. Varsel-e-poster fra adminområdet sendes derfor
+én gang i døgnet. Checklys egne feilvarsler går fortsatt direkte.
 
 Kontrollens terskler er 5 000 ms for nedsatt ytelse og 20 000 ms for feil.
 Ett nytt forsøk etter 60 sekunder fra samme lokasjon bekrefter feil før varsling.
@@ -227,7 +236,7 @@ bekreftede oppsettet i adminområdet; flagget oppretter ikke kontroller eller
 sender e-post selv. De isolerte utviklingstestene sender fortsatt ingen e-post.
 
 Hobby-planen inkluderer 10 000 API-kjøringer per måned. Én kontroll med dette
-intervallet bruker 8 640 kjøringer på 30 dager eller 8 928 på 31 dager, før nye
+intervallet bruker 720 kjøringer på 30 dager eller 744 på 31 dager, før nye
 forsøk og manuelle tester. Flere parallelle lokasjoner ville multiplisert
 forbruket; Round-robin gjør ikke det. Hobby stanser kontrollene når kvoten er
 brukt opp. Grensene ble kontrollert mot Vercels Checkly-plan og
