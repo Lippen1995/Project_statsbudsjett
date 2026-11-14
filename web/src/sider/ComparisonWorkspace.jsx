@@ -46,13 +46,13 @@ const POST_LABELS = {
 const EMPTY_PATH = { scope: "", post: "", art: "" };
 const moneyPerPerson = (value) => Number.isFinite(value) ? `${n(value)} kr` : "–";
 
-function ComparisonFacts({ title, summary, method, year, onMethod, account, budget }) {
+function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
   const { own, reference } = summary;
   return (
     <section className="cmp-selected-facts" aria-label="Nøkkeltall">
       <div className="cmp-facts-head" aria-live="polite">
         <h3>{title}</h3>
-        <span>{own.name} · kommunekonsern · {year}{budget && " · budsjett"}</span>
+        <span>{own.name} · kommunekonsern · {year}</span>
       </div>
       <dl className="cmp-facts-grid">
         <div>
@@ -80,10 +80,10 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account, budg
           <dd>{nominal(reference.amount)}</dd>
         </div>
       </dl>
-      {!budget && <p>
+      <p>
         Referansebeløpet er beregnet ved {own.name}s folketall.
         Referansen bygger på {reference.count} kommuner med data.
-      </p>}
+      </p>
       <div className="cmp-workspace-meta">
         <label>
           Referanse
@@ -143,7 +143,6 @@ export default function ComparisonWorkspace({
   entities,
   year,
   years,
-  budgetYear,
   sector,
   onSector,
   method,
@@ -204,17 +203,10 @@ export default function ComparisonWorkspace({
         ...read(target, code, ""), code, label: SERVICE_LABELS[code] || name, context: name,
       }));
 
-  const gross = !budgetYear && fn && !post ? accountingArtBreakdown(target, year, fn).reconciliation : null;
-  // The available local budgets have no documented mapping to these KOSTRA
-  // series. Retain the account hierarchy and replace its observations.
-  const budgetRow = (row) => !budgetYear ? row : {
-    ...row, a: null, b: null, percent: null,
-    own: { ...row.own, year: budgetYear, amount: null, perCapita: null, population: null, growth: null },
-    reference: { ...row.reference, year: budgetYear, amount: null, perCapita: null, count: 0, growth: null },
-  };
-  const summary = budgetRow(read(target, sector, fn, account?.code));
+  const gross = fn && !post ? accountingArtBreakdown(target, year, fn).reconciliation : null;
+  const summary = read(target, sector, fn, account?.code);
   const ranks = [target, ...peers].map((detail) => ({
-    ...budgetRow(read(detail, sector, fn, account?.code)),
+    ...read(detail, sector, fn, account?.code),
     code: detail.entity.code,
     detail,
   })).sort((a, b) =>
@@ -274,14 +266,11 @@ export default function ComparisonWorkspace({
             {rows.map((row) => <option key={row.code} value={row.code}>{row.context}</option>)}
           </select>
         </div>
-        {budgetYear && (
-          <p className="cmp-footnote" role="status">Budsjett {budgetYear}. De publiserte tallene for Stavanger gjelder kommunekassen. Denne KOSTRA-oppstillingen for kommunekonsernet mangler tilsvarende budsjettall.</p>
-        )}
         <div className={`cmp-art-layout ${post ? "cmp-art-layout--open" : ""}`}>
           <div className="cmp-art-plot">
             {rows.length ? (
               <CostChart
-                rows={rows.map(budgetRow)}
+                rows={rows}
                 paired
                 deltas
                 selected={art?.code}
@@ -320,8 +309,8 @@ export default function ComparisonWorkspace({
         </p>
       </section>
       <div className="cmp-detail-layout">
-        <ComparisonFacts title={title} summary={summary} method={method} year={budgetYear ?? year} onMethod={onMethod} account={account} budget={Boolean(budgetYear)} />
-        <MunicipalityRanking rows={ranks} target={target} year={budgetYear ?? year} title={title} onOpen={setPopup} />
+        <ComparisonFacts title={title} summary={summary} method={method} year={year} onMethod={onMethod} account={account} />
+        <MunicipalityRanking rows={ranks} target={target} year={year} title={title} onOpen={setPopup} />
       </div>
       <details className="cmp-workspace-method">
         <summary>Tallgrunnlag og metode</summary>

@@ -268,8 +268,7 @@
   margin: 7px 0;
   letter-spacing: -0.04em;
 }
-.cmp-kpis small,
-.cmp-year-totals small {
+.cmp-kpis small {
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 0;
@@ -588,79 +587,11 @@
 .cmp-finding-value button {
   margin-top: 15px;
 }
-.cmp-budget-tools {
-  display: flex;
-  gap: 12px;
-  align-items: end;
-  margin: 24px 0;
-  flex-wrap: wrap;
-}
-.cmp-year-totals {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  background: #e9eee8;
-  padding: 22px;
-  gap: 20px;
-}
-.cmp-year-totals span {
-  font-size: 11px;
-  color: var(--dempet);
-}
-.cmp-year-totals strong {
-  display: block;
-  font-size: 25px;
-  margin: 8px 0;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-.cmp-year-totals p {
-  font-size: 10px;
-  color: var(--dempet);
-}
-.cmp-budget-item {
-  margin-top: 20px;
-  border: 1px solid var(--strek);
-  padding: 22px;
-  background: var(--ark);
-}
-.cmp-page .cmp-toggle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 12px;
-  color: var(--ink);
-  font-size: 14px;
-}
-.cmp-budget-fields {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  margin: 18px 0;
-}
-.cmp-page textarea {
-  min-height: 85px;
-  resize: vertical;
-}
 .cmp-muted {
   font-size: 10px;
   color: var(--dempet);
   line-height: 1.7;
   margin-top: 12px;
-}
-.cmp-add-form {
-  padding: 25px;
-  border: 1px solid var(--strek);
-  margin-top: 24px;
-}
-.ft .cmp-add-form h3 {
-  font-size: 23px;
-  margin-bottom: 20px;
-}
-.cmp-add-form > div {
-  display: grid;
-  grid-template-columns: 2fr 1fr auto;
-  align-items: end;
-  gap: 15px;
 }
 .cmp-empty {
   padding: 35px 20px;
@@ -857,15 +788,6 @@
   }
   .cmp-peer-actions {
     flex-wrap: wrap;
-  }
-  .cmp-year-totals {
-    grid-template-columns: 1fr 1fr;
-  }
-  .cmp-budget-fields {
-    grid-template-columns: 1fr 1fr;
-  }
-  .cmp-add-form > div {
-    grid-template-columns: 1fr;
   }
   .cmp-sven--small {
     padding: 17px;

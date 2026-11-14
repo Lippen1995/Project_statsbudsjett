@@ -10,13 +10,10 @@ import {
   point,
   comparison,
   svenFindings,
-  scenarioTotal,
-  validateScenario,
 } from "./comparison";
 import "./comparison.css";
 import ComparisonWorkspace from "./ComparisonWorkspace";
 import ComparisonDialog from "./ComparisonDialog";
-import BudgetWorkspace, { publishedBudgetYears } from "./BudgetWorkspace";
 
 const number = (n, digits = 0) =>
   Number.isFinite(n)
@@ -29,19 +26,7 @@ const TABS = [
   ["compare", "Sammenlign"],
   ["explain", "Forklar forskjellene"],
   ["sven", "Svens forslag"],
-  ["budget", "Mitt budsjettalternativ"],
 ];
-const STORAGE = "fellestall-kommune-scenarios-v1";
-function loadSaved() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE) || "{}");
-    return saved && typeof saved === "object" && !Array.isArray(saved)
-      ? saved
-      : {};
-  } catch {
-    return {};
-  }
-}
 function download(filename, value, type) {
   const url = URL.createObjectURL(new Blob(["\uFEFF", value], { type }));
   const a = document.createElement("a");
@@ -84,17 +69,11 @@ export default function MunicipalityComparison({ hash }) {
     [functionCode, setFunctionCode] = useState("");
   const [functionSort, setFunctionSort] = useState({ key: "code", direction: "asc" });
   const [explainedFunction, setExplainedFunction] = useState("");
-  const [budgetYear, setBudgetYear] = useState(route.budgetView ? (publishedBudgetYears.some(({ year }) => year === route.year) ? route.year : 2026) : null);
   const [tab, setTab] = useState("compare"),
     [method, setMethod] = useState("median");
   const [editingPeers, setEditingPeers] = useState(false),
     [search, setSearch] = useState(""),
     [message, setMessage] = useState("");
-  const [saved, setSaved] = useState(loadSaved),
-    [storageError, setStorageError] = useState("");
-  const [newName, setNewName] = useState(""),
-    [newAnnual, setNewAnnual] = useState("");
-  const [budgetStart, setBudgetStart] = useState(2027);
   useEffect(() => {
     let active = true;
     loadKostraIndex()
@@ -175,30 +154,18 @@ export default function MunicipalityComparison({ hash }) {
     };
   }, [index, code, peerCodes, selectedPeers]);
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE, JSON.stringify(saved));
-      setStorageError("");
-    } catch {
-      setStorageError(
-        "Nettleseren kunne ikke lagre. Eksporter tiltakene før du lukker siden.",
-      );
-    }
-  }, [saved]);
-  useEffect(() => {
     if (!index || !year || !peerCodes) return;
     const q = new URLSearchParams({
       kommune: code,
-      aar: String(tab === "compare" && budgetYear ? budgetYear : year),
+      aar: String(year),
       mot: selectedPeers.join(","),
     });
-    if (tab === "compare" && budgetYear) q.set("visning", "budsjett");
     window.history.replaceState(
       null,
       "",
       `${window.location.pathname}${window.location.search}${COMPARISON_ROUTE}?${q}`,
     );
-  }, [index, code, year, peerCodes, selectedPeers, tab, budgetYear]);
-  const publishedBudget = tab === "compare" && budgetYear !== null;
+  }, [index, code, year, peerCodes, selectedPeers]);
   const target = details[code];
   const peers = selectedPeers.map((c) => details[c]).filter(Boolean);
   const entity = entities.find((e) => e.code === code);
@@ -241,30 +208,12 @@ export default function MunicipalityComparison({ hash }) {
     name: displayEntityName(d.entity),
   }));
   const findings = loading ? [] : svenFindings(target, peers, year, method);
-  const items = (Array.isArray(saved[code]) ? saved[code] : []).filter(
-    validateScenario,
-  );
-  const setItems = (update) =>
-    setSaved((previous) => ({
-      ...previous,
-      [code]:
-        typeof update === "function"
-          ? update(
-              (Array.isArray(previous[code]) ? previous[code] : []).filter(
-                validateScenario,
-              ),
-            )
-          : update,
-    }));
   const selectMunicipality = (next) => {
     setCode(next);
-    setBudgetYear(next === "1103" ? budgetYear : null);
     setPeerCodes(defaultPeers(index.entities, next));
     setFunctionCode("");
     setMessage("");
   };
-  const patchItem = (id, patch) =>
-    setItems((old) => old.map((i) => (i.id === id ? { ...i, ...patch } : i)));
   const exportData = () =>
     download(
       `kommunesammenligning-${code}-${year}.csv`,
@@ -296,43 +245,10 @@ export default function MunicipalityComparison({ hash }) {
       ]),
       "text/csv;charset=utf-8",
     );
-  const addCandidate = (finding) => {
-    const id = `sector-${finding.code}`;
-    if (items.some((i) => i.id === id)) {
-      setTab("budget");
-      setMessage(
-        "Dette undersøkelsesområdet ligger allerede i budsjettalternativet.",
-      );
-      return;
-    }
-    setItems((old) => [
-      ...old,
-      {
-        id,
-        name: `Undersøk ${finding.name.toLocaleLowerCase("nb")}`,
-        annual: 0,
-        oneOff: 0,
-        start: budgetStart,
-        firstYearShare: 50,
-        enabled: false,
-        source: `Sven: kostnadsavvik ${money(finding.gapAmount)} mot ${method === "median" ? "medianen" : "vektet snitt"} i ${year}. Ikke behovskorrigert.`,
-        note: "",
-        risk: "Ikke vurdert",
-      },
-    ]);
-    setTab("budget");
-    setMessage(
-      "Svens forslag er lagt til som et undersøkelsesområde. Beløp settes etter vurdering av konkrete tiltak.",
-    );
-  };
   const share = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      setMessage(
-        publishedBudget
-          ? "Lenken til budsjettåret er kopiert."
-          : "Lenken er kopiert. Den deler kommune, år og kommuneutvalg. Dine tiltak blir ikke delt.",
-      );
+      setMessage("Lenken deler kommune, år og kommuneutvalg.");
     } catch {
       setMessage(
         "Kopier adressen fra nettleseren for å dele visningen.",
@@ -389,24 +305,13 @@ export default function MunicipalityComparison({ hash }) {
         <label>
           År
           <select
-            value={publishedBudget ? `budget-${budgetYear}` : year || ""}
-            onChange={(event) => {
-              const value = event.target.value;
-              if (value.startsWith("budget-")) setBudgetYear(Number(value.slice(7)));
-              else { setBudgetYear(null); setYear(Number(value)); }
-            }}
+            value={year || ""}
+            onChange={(event) => setYear(Number(event.target.value))}
             disabled={!index}
           >
             <optgroup label="Regnskap">
               {[...(index?.years || [])].reverse().map((y) => <option key={y} value={y}>{y}</option>)}
             </optgroup>
-            {tab === "compare" && code === "1103" && (
-              <optgroup label="Stavanger · kommunekassen">
-                {publishedBudgetYears.map(({ year: y, label }) => (
-                  <option key={y} value={`budget-${y}`}>{y} · {label}</option>
-                ))}
-              </optgroup>
-            )}
           </select>
         </label>
 
@@ -421,11 +326,9 @@ export default function MunicipalityComparison({ hash }) {
 
         <div className="cmp-tools">
           <button onClick={share}>Del analyse ↗</button>
-          {!publishedBudget && (
-            <button onClick={exportData} disabled={loading || !target}>
-              Eksporter CSV ↓
-            </button>
-          )}
+          <button onClick={exportData} disabled={loading || !target}>
+            Eksporter CSV ↓
+          </button>
         </div>
       </div>
       {editingPeers && (
@@ -532,7 +435,6 @@ export default function MunicipalityComparison({ hash }) {
             onClick={() => setTab(id)}
           >
             {label}
-            {id === "budget" && items.length > 0 ? ` (${items.length})` : ""}
           </button>
         ))}
       </nav>
@@ -616,7 +518,6 @@ export default function MunicipalityComparison({ hash }) {
                 entities={entities}
                 year={year}
                 years={index.years}
-                budgetYear={publishedBudget ? budgetYear : null}
                 sector={sector}
                 onSector={setSector}
                 method={method}
@@ -624,12 +525,6 @@ export default function MunicipalityComparison({ hash }) {
                 functionCode={functionCode}
                 onFunction={setFunctionCode}
               />
-              {publishedBudget && code === "1103" && (
-                <details className="cmp-method">
-                  <summary>Se Stavangers publiserte kommunekassebudsjett</summary>
-                  <BudgetWorkspace code={code} name={ownName} year={budgetYear} onYear={setBudgetYear} />
-                </details>
-              )}
             </>
           )}
           {tab === "explain" && (
@@ -798,9 +693,6 @@ export default function MunicipalityComparison({ hash }) {
                     <div className="cmp-finding-value">
                       <strong>{money(f.gapAmount)}</strong>
                       <span>Kostnadsavvik · ikke innsparing</span>
-                      <button onClick={() => addCandidate(f)}>
-                        Ta med til vurdering +
-                      </button>
                     </div>
                   </article>
                 ))}
@@ -816,280 +708,6 @@ export default function MunicipalityComparison({ hash }) {
                 tjenester. Avvikene summeres derfor ikke til et samlet
                 handlingsrom.
               </p>
-            </>
-          )}
-          {tab === "budget" && (
-            <>
-              <div className="cmp-section-title">
-                <h2>Mitt budsjettalternativ</h2>
-                <span>{ownName} · lagres i denne nettleseren</span>
-              </div>
-              <Sven small>
-                <p>
-                  Her kan du vurdere mine undersøkelsesforslag og legge inn egne
-                  tiltak. Beløpene er <strong>dine forutsetninger</strong>. Jeg
-                  har ikke validert dem mot kommunens budsjett, lovkrav eller
-                  avtaler.
-                </p>
-              </Sven>
-              {storageError && (
-                <p role="alert" className="cmp-warning">
-                  {storageError}
-                </p>
-              )}
-              <div className="cmp-budget-tools">
-                <label>
-                  Første budsjettår
-                  <select
-                    value={budgetStart}
-                    onChange={(e) => setBudgetStart(+e.target.value)}
-                  >
-                    {[2026, 2027, 2028, 2029, 2030, 2031].map((y) => (
-                      <option key={y}>{y}</option>
-                    ))}
-                  </select>
-                </label>
-                <button
-                  onClick={() =>
-                    download(
-                      `budsjettalternativ-${code}.json`,
-                      JSON.stringify({ municipality: code, items }, null, 2),
-                      "application/json",
-                    )
-                  }
-                >
-                  Eksporter tiltak ↓
-                </button>
-                <button
-                  onClick={() =>
-                    download(
-                      `budsjetteffekt-${code}.csv`,
-                      csv([
-                        [
-                          "Tiltak / scenario",
-                          ...Array.from(
-                            { length: 4 },
-                            (_, i) => budgetStart + i,
-                          ),
-                        ],
-                        ...items.map((item) => [
-                          item.name,
-                          ...Array.from({ length: 4 }, (_, i) =>
-                            scenarioTotal([item], budgetStart + i),
-                          ),
-                        ]),
-                        [
-                          "Sum (mill. kr)",
-                          ...Array.from({ length: 4 }, (_, i) =>
-                            scenarioTotal(items, budgetStart + i),
-                          ),
-                        ],
-                        [
-                          "Forbehold",
-                          "Brukerforutsetninger. Ikke validerte innsparinger.",
-                        ],
-                      ]),
-                      "text/csv;charset=utf-8",
-                    )
-                  }
-                >
-                  Eksporter fireårseffekt ↓
-                </button>
-              </div>
-              <div className="cmp-year-totals">
-                {Array.from({ length: 4 }, (_, i) => budgetStart + i).map(
-                  (y) => (
-                    <div key={y}>
-                      <span>{y}</span>
-                      <strong>
-                        {number(scenarioTotal(items, y), 1)}{" "}
-                        <small>mill. kr</small>
-                      </strong>
-                      <p>Netto scenarioeffekt</p>
-                    </div>
-                  ),
-                )}
-              </div>
-              <div className="cmp-budget-list">
-                {items.map((item) => (
-                  <article key={item.id} className="cmp-budget-item">
-                    <div className="cmp-panel-head">
-                      <label className="cmp-toggle">
-                        <input
-                          type="checkbox"
-                          checked={item.enabled}
-                          onChange={(e) =>
-                            patchItem(item.id, { enabled: e.target.checked })
-                          }
-                        />
-                        <strong>{item.name}</strong>
-                      </label>
-                      <button
-                        onClick={() =>
-                          setItems((old) => old.filter((i) => i.id !== item.id))
-                        }
-                      >
-                        Fjern
-                      </button>
-                    </div>
-                    {item.source && (
-                      <p className="cmp-footnote">{item.source}</p>
-                    )}
-                    <div className="cmp-budget-fields">
-                      <label>
-                        Årlig nettoeffekt, mill. kr
-                        <input
-                          type="number"
-                          min="0"
-                          step="0.1"
-                          value={item.annual}
-                          onChange={(e) =>
-                            patchItem(item.id, {
-                              annual: Math.max(0, Number(e.target.value)),
-                            })
-                          }
-                        />
-                      </label>
-                      <label>
-                        Oppstartskostnad, mill. kr
-                        <input
-                          type="number"
-                          min="0"
-                          step="0.1"
-                          value={item.oneOff}
-                          onChange={(e) =>
-                            patchItem(item.id, {
-                              oneOff: Math.max(0, Number(e.target.value)),
-                            })
-                          }
-                        />
-                      </label>
-                      <label>
-                        Oppstartsår
-                        <input
-                          type="number"
-                          min="2026"
-                          max="2100"
-                          value={item.start}
-                          onChange={(e) =>
-                            patchItem(item.id, {
-                              start: Math.max(
-                                2026,
-                                Math.min(2100, Number(e.target.value)),
-                              ),
-                            })
-                          }
-                        />
-                      </label>
-                      <label>
-                        Effekt første år, %
-                        <input
-                          type="number"
-                          min="0"
-                          max="100"
-                          value={item.firstYearShare}
-                          onChange={(e) =>
-                            patchItem(item.id, {
-                              firstYearShare: Math.min(
-                                100,
-                                Math.max(0, Number(e.target.value)),
-                              ),
-                            })
-                          }
-                        />
-                      </label>
-                    </div>
-                    <label>
-                      Dokumentasjon, konsekvenser og mulig overlapp
-                      <textarea
-                        maxLength="4000"
-                        value={item.note || ""}
-                        onChange={(e) =>
-                          patchItem(item.id, { note: e.target.value })
-                        }
-                        placeholder="Hvilken budsjettpost påvirkes? Er effekten allerede innarbeidet? Hvilke konsekvenser får tiltaket?"
-                      />
-                    </label>
-                    <p className="cmp-muted">
-                      {item.enabled
-                        ? "Inkludert i scenarioet."
-                        : "Ikke inkludert i scenarioet."}{" "}
-                      Ingen automatisk kontroll av overlapp eller
-                      gjennomførbarhet.
-                    </p>
-                  </article>
-                ))}
-              </div>
-              {!items.length && (
-                <div className="cmp-empty">
-                  <h3>Bygg alternativet ditt, ett tiltak om gangen.</h3>
-                  <p>
-                    Begynn med Svens forslag, eller legg inn et eget tiltak
-                    nedenfor.
-                  </p>
-                  <button onClick={() => setTab("sven")}>
-                    Se Svens forslag →
-                  </button>
-                </div>
-              )}
-              <form
-                className="cmp-add-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (
-                    !newName.trim() ||
-                    !Number.isFinite(Number(newAnnual)) ||
-                    Number(newAnnual) < 0
-                  )
-                    return;
-                  setItems((old) => [
-                    ...old,
-                    {
-                      id: crypto.randomUUID(),
-                      name: newName.trim(),
-                      annual: Number(newAnnual),
-                      oneOff: 0,
-                      start: budgetStart,
-                      firstYearShare: 100,
-                      enabled: false,
-                      note: "",
-                    },
-                  ]);
-                  setNewName("");
-                  setNewAnnual("");
-                  setMessage(
-                    "Tiltaket er lagt til. Kryss av for å inkludere det i scenarioet.",
-                  );
-                }}
-              >
-                <h3>Legg til eget tiltak</h3>
-                <div>
-                  <label>
-                    Beskriv tiltaket
-                    <input
-                      required
-                      maxLength="180"
-                      value={newName}
-                      onChange={(e) => setNewName(e.target.value)}
-                      placeholder="For eksempel samordne innkjøp"
-                    />
-                  </label>
-                  <label>
-                    Årlig nettoeffekt, mill. kr
-                    <input
-                      required
-                      type="number"
-                      min="0"
-                      step="0.1"
-                      value={newAnnual}
-                      onChange={(e) => setNewAnnual(e.target.value)}
-                    />
-                  </label>
-                  <button className="cmp-primary" type="submit">
-                    Legg til tiltak +
-                  </button>
-                </div>
-              </form>
             </>
           )}
         </>
@@ -1120,17 +738,13 @@ export default function MunicipalityComparison({ hash }) {
           <p>
             <strong>Avgrensning:</strong> Tallene er ikke behovs- eller
             prisjustert. Resultater kan påvirkes av organisering, føring,
-            avskrivninger, endrede kommunegrenser og ulik kvalitet. Historiske
-            tall er ikke et anslag på neste års budsjett. Ingen
-            Framsikt-budsjetter, kvalitetsdata eller ASSS-korreksjoner er koblet
-            til ennå. Svens observasjoner kommer fra åpne, faste
+            avskrivninger, endrede kommunegrenser og ulik kvalitet. Svens observasjoner kommer fra åpne, faste
             beregningsregler, ikke en språkmodell.
           </p>
           <p>
             <strong>Tilgang:</strong> Dette er en åpen forhåndsvisning av en
             planlagt betaltjeneste. Betaling og serverbasert abonnementskontroll
-            er ikke aktivert. Tiltak lagres bare lokalt på denne enheten, per
-            kommune. Bruk eksport for å ta vare på dem.
+            er ikke aktivert.
           </p>
           <div className="cmp-source-links">
             <a

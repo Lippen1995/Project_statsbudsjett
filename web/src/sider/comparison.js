@@ -18,7 +18,6 @@ export function readComparisonRoute(hash) {
   return {
     code: /^\d{4}$/.test(q.get("kommune") || "") ? q.get("kommune") : "1103",
     year: Number(q.get("aar")) || null,
-    budgetView: q.get("visning") === "budsjett",
     peers: q.has("mot")
       ? q
           .get("mot")
@@ -131,38 +130,6 @@ export function svenFindings(target, peers, year, method) {
     )
     .sort((a, b) => b.gapAmount - a.gapAmount);
 }
-export function scenarioTotal(items, year) {
-  return items
-    .filter((i) => i.enabled)
-    .reduce((sum, i) => {
-      if (year < i.start) return sum;
-      const first = year === i.start;
-      return (
-        sum +
-        i.annual * (first ? i.firstYearShare / 100 : 1) -
-        (first ? i.oneOff : 0)
-      );
-    }, 0);
-}
-export function validateScenario(item) {
-  return (
-    item &&
-    typeof item.id === "string" &&
-    typeof item.name === "string" &&
-    item.name.length <= 180 &&
-    typeof item.enabled === "boolean" &&
-    ["annual", "oneOff", "start", "firstYearShare"].every((k) =>
-      Number.isFinite(item[k]),
-    ) &&
-    item.annual >= 0 &&
-    item.oneOff >= 0 &&
-    item.start >= 2026 &&
-    item.start <= 2100 &&
-    item.firstYearShare >= 0 &&
-    item.firstYearShare <= 100
-  );
-}
-
 /** Year-on-year growth must use the preceding calendar year, never bridge missing years. */
 export function municipalityHistory(
   detail,

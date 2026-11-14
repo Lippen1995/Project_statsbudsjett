@@ -11,9 +11,7 @@ import {
   comparison,
   defaultPeers,
   readComparisonRoute,
-  scenarioTotal,
   svenFindings,
-  validateScenario,
 } from "../src/sider/comparison.js";
 const detail = (cost, people) => ({
   overview: {
@@ -44,22 +42,7 @@ test("cost difference converts kroner per inhabitant to NOK thousand exactly onc
   assert.equal(result.gapAmount, 1000);
   assert.equal(comparison({}, [detail(200, 1000)], 2025).gapAmount, null);
 });
-test("scenario accounts for start year, ramp-up, one-off cost and disabled candidates", () => {
-  const items = [
-    { annual: 20, start: 2027, firstYearShare: 50, oneOff: 3, enabled: true },
-    {
-      annual: 900,
-      start: 2027,
-      firstYearShare: 100,
-      oneOff: 0,
-      enabled: false,
-    },
-  ];
-  assert.equal(scenarioTotal(items, 2026), 0);
-  assert.equal(scenarioTotal(items, 2027), 7);
-  assert.equal(scenarioTotal(items, 2028), 20);
-});
-test("route parsing restricts codes and peer count, saved scenario rejects non-finite inputs", () => {
+test("route parsing restricts codes and peer count and ignores legacy budget mode", () => {
   assert.equal(readComparisonRoute("#sider?kommune=xxx").code, "1103");
   assert.deepEqual(readComparisonRoute("#sider?mot=").peers, []);
   assert.equal(
@@ -67,17 +50,9 @@ test("route parsing restricts codes and peer count, saved scenario rejects non-f
       .length,
     12,
   );
-  assert.equal(
-    validateScenario({
-      id: "1",
-      name: "Test",
-      annual: Infinity,
-      oneOff: 0,
-      start: 2027,
-      firstYearShare: 100,
-      enabled: true,
-    }),
-    false,
+  assert.deepEqual(
+    readComparisonRoute("#sider?kommune=1103&aar=2025&visning=budsjett"),
+    { code: "1103", year: 2025, peers: null },
   );
 });
 test("real Stavanger fixture uses its current peer group and finds traceable sector differences", () => {
