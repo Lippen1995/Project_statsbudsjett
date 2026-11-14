@@ -58,10 +58,8 @@ export function CostTable({
       referencePopulation > 0 ? `≈ ${n(referencePopulation)}` : "–",
     ],
     [compact ? "Avvik per innbygger" : "Avvik per innb.", percent(row.percent), "–"],
-    ...(history
-      ? [[compact ? "År/år-endring" : "År/år", percent(own.growth), percent(ref?.growth)]]
-      : []),
   ];
+  if (history) metrics.push([compact ? "År/år-endring" : "År/år", percent(own.growth), percent(ref?.growth)]);
   return (
     <div
       className={`cmp-cost-tooltip ${compact ? "cmp-cost-tooltip--inline" : "cmp-cost-tooltip--hover"}`}

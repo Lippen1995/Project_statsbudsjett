@@ -81,13 +81,15 @@ function OccupationHistory({ occupation, target, peers, years, year, current, on
   const [code, label] = occupation;
   const reduced = useReducedMotion();
   const [closing, setClosing] = useState(false);
+  const [secondary, setSecondary] = useState("none");
   const [inspected, setInspected] = useState(String(year));
   const history = data ? years.map((y) => {
     const { own, rate, amount } = compare(data[y], target, peers, y, code);
+    const previous = data[y - 1] ? compare(data[y - 1], target, peers, y - 1, code) : null;
     return {
       code: String(y), label: String(y), a: own.rate, b: rate.value,
-      own: { name: entityName(target), year: y, perCapita: own.rate, amount: own.amount },
-      reference: { name: "Median", perCapita: rate.value, amount },
+      own: { name: entityName(target), year: y, perCapita: own.rate, amount: own.amount, growth: deviation(own.rate, previous?.own.rate) },
+      reference: { name: "Median", perCapita: rate.value, amount, growth: deviation(rate.value, previous?.rate.value) },
       percent: deviation(own.rate, rate.value),
     };
   }) : [];
@@ -127,8 +129,14 @@ function OccupationHistory({ occupation, target, peers, years, year, current, on
       </header>
       {!data ? <Loading error={error} retry={retry} /> : (
         <>
+          <div className="cmp-dialog-options">
+            <select aria-label="Sekundærakse" value={secondary} onChange={(event) => setSecondary(event.target.value)}>
+              <option value="none">Ingen tilleggsserie</option>
+              <option value="growth">År/år-endring (%)</option>
+            </select>
+          </div>
           <div className="cmp-chart-legend"><span><i />{entityName(target)}</span><span><i className="peer" />Median i utvalget</span></div>
-          <CostChart rows={history} paired history staffing title={label} chartKey={code}
+          <CostChart rows={history} paired history staffing secondary={secondary} title={label} chartKey={code}
             onInspect={(row) => setInspected(row.code)} />
           <div className="cmp-inspect-selector">
             <label className="cmp-inline-label">Tall for
@@ -138,7 +146,7 @@ function OccupationHistory({ occupation, target, peers, years, year, current, on
             </label>
             <span>Klikk på Y-aksen for å tilpasse skalaen.</span>
           </div>
-          <CostTable row={selected} context={label} compact staffing />
+          <CostTable row={selected} context={label} compact staffing history />
         </>
       )}
       <h3>Kommunene i {year}</h3>
