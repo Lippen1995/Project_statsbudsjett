@@ -1181,3 +1181,13 @@
     transition: none;
   }
 }
+
+.cmp-sven-measures { margin-top: 24px; }
+.cmp-sven-measure { border-top: 1px solid var(--strek); padding: 20px 0; }
+.cmp-sven-measure h3 { margin: 6px 0 10px; }
+.cmp-sven-measure > p, .cmp-sven-measure details { max-width: 78ch; }
+.cmp-sven-measure .cmp-footnote a { margin-left: 8px; }
+.cmp-sven-estimates { display: flex; flex-wrap: wrap; gap: 12px 36px; margin: 16px 0; }
+.cmp-sven-estimates dt { color: var(--dempet); font-size: 12px; }
+.cmp-sven-estimates dd { margin: 4px 0 0; font-size: 22px; font-variant-numeric: tabular-nums; }
+.cmp-sven-measure summary { cursor: pointer; color: var(--gronn); }

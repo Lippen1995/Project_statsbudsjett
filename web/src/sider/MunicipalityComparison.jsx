@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { loadKostraIndex, loadKostraDetail } from "../lib/kostra";
-import { formatKostraValue, displayEntityName } from "../kostra/model";
+import { displayEntityName } from "../kostra/model";
 import { sortExplorerRows } from "../kostra/explorer";
 import {
   SECTORS,
@@ -9,11 +9,11 @@ import {
   defaultPeers,
   point,
   comparison,
-  svenFindings,
 } from "./comparison";
 import "./comparison.css";
 import ComparisonWorkspace from "./ComparisonWorkspace";
 import OccupationComparison from "./OccupationComparison";
+import SvenMeasures from "./SvenMeasures";
 import ComparisonDialog from "./ComparisonDialog";
 
 const number = (n, digits = 0) =>
@@ -22,7 +22,6 @@ const number = (n, digits = 0) =>
         n,
       )
     : "–";
-const money = (n) => formatKostraValue(n, "amount");
 const TABS = [
   ["compare", "Sammenlign"],
   ["explain", "Forklar forskjellene"],
@@ -208,7 +207,6 @@ export default function MunicipalityComparison({ hash }) {
     ...point(d, year, sector, functionCode),
     name: displayEntityName(d.entity),
   }));
-  const findings = loading ? [] : svenFindings(target, peers, year, method);
   const selectMunicipality = (next) => {
     setCode(next);
     setPeerCodes(defaultPeers(index.entities, next));
@@ -630,60 +628,17 @@ export default function MunicipalityComparison({ hash }) {
           {tab === "sven" && (
             <>
               <div className="cmp-section-title">
-                <h2>Sven peker ut hvor du kan begynne</h2>
-                <span>{findings.length} områder over referansen</span>
+                <h2>Hvor kan kommunen spare?</h2>
+                <span>{ownName} · {year}</span>
               </div>
               <Sven small>
-                <p>
-                  Jeg har rangert områdene etter størrelsen på kostnadsavviket,
-                  omregnet til {ownName}s befolkning. Dette er{" "}
-                  <strong>
-                    undersøkelsesforslag, ikke ferdige kuttforslag
-                  </strong>
-                  . Jeg trenger minst tre sammenligningskommuner med data for å
-                  foreslå et område.
+                <p><strong>Jeg har for lite informasjon til å gi informerte spareanslag.</strong>{" "}
+                  Regneeksemplene viser hvor det kan være verdt å lete. Jeg mangler lokale avtaler,
+                  lønnskostnader og informasjon om tjenestekvalitet og arbeidsbelastning.
+                  Vurder konsekvensene for innbyggerne og ansatte i tjenestene før dere går videre.
                 </p>
               </Sven>
-              <div className="cmp-findings">
-                {findings.map((f, i) => (
-                  <article className="cmp-finding" key={f.code}>
-                    <div className="cmp-finding-number">
-                      {String(i + 1).padStart(2, "0")}
-                    </div>
-                    <div>
-                      <div className="cmp-eyebrow">
-                        Sven foreslår å undersøke
-                      </div>
-                      <h3>{f.name}</h3>
-                      <p>
-                        {ownName} bruker {number(f.percent, 1)} % mer per
-                        innbygger enn referansen. Undersøk om forskjellen
-                        skyldes behov, tjenestenivå eller organisering.
-                      </p>
-                      <div className="cmp-finding-meta">
-                        <span>Regnskap {year}</span>
-                        <span>{f.reference.count} kommuner med data</span>
-                        <span>Ikke behovskorrigert</span>
-                      </div>
-                    </div>
-                    <div className="cmp-finding-value">
-                      <strong>{money(f.gapAmount)}</strong>
-                      <span>Kostnadsavvik · ikke innsparing</span>
-                    </div>
-                  </article>
-                ))}
-              </div>
-              {!findings.length && (
-                <p className="cmp-empty">
-                  Ingen forslag med dette datagrunnlaget. Velg minst tre
-                  kommuner med tilgjengelige data, eller prøv et annet år.
-                </p>
-              )}
-              <p className="cmp-footnote">
-                Områdene kan overlappe, blant annet eiendomsforvaltning og andre
-                tjenester. Avvikene summeres derfor ikke til et samlet
-                handlingsrom.
-              </p>
+              <SvenMeasures target={target} peers={peers} year={year} method={method} />
             </>
           )}
         </>

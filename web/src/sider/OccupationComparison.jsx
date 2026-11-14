@@ -2,6 +2,7 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import MunicipalityRankingList from "./MunicipalityRankingList";
 import CostChart, { CostTable, useReducedMotion } from "./CostChart";
+import { occupationObservation as observation } from "./occupation-observation";
 import { benchmarkObservations } from "./comparison";
 import { deviation, entityName, formatNumber, percent } from "./workspace-model";
 
@@ -37,21 +38,6 @@ function useYears(years) {
     ...(result?.key === key && result.attempt === attempt ? result : null),
     retry: () => retry((n) => n + 1),
   };
-}
-
-function observation(data, detail, year, occupation) {
-  let code = detail.entity.code;
-  const previous = (detail.boundaryHistory || [])
-    .filter((change) => change.relationType === "exact_successor" && change.changeYear > year)
-    .sort((a, b) => b.changeYear - a.changeYear);
-  for (const change of previous) {
-    if (change.targetCode === code) code = change.sourceCode;
-  }
-  const index = data.occupations.findIndex(([id]) => id === occupation);
-  const values = index >= 0 ? data.rows[code] : null;
-  const amount = values?.[index * 2];
-  const rate = values?.[index * 2 + 1];
-  return { amount, rate: Number.isFinite(rate) ? rate / 10 : null };
 }
 
 function compare(data, target, peers, year, occupation) {
