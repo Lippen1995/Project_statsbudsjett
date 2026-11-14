@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { accountingArtBreakdown } from "../kostra/explorer";
 import { SECTORS } from "./comparison";
-import { ACCOUNT_SECTIONS, accountingObservation } from "./accounting-drill";
+import { ACCOUNT_SECTIONS, OWN_PURCHASES, PURCHASE_BREAKDOWN_NOTE, PURCHASE_REMAINDER, accountingObservation } from "./accounting-drill";
+import { usePurchaseArts, withPurchaseArts } from "./use-purchase-arts";
 import CostChart, { CostTable } from "./CostChart";
 import ComparisonDialog from "./ComparisonDialog";
 import {
@@ -66,7 +67,7 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
           <dd>{percent(summary.percent)}</dd>
         </div>
         <div className="secondary">
-          <dt>{account ? "Rapportert beløp" : "Totale netto driftsutgifter"}</dt>
+          <dt>{account?.code === PURCHASE_REMAINDER ? "Beregnet beløp" : account ? "Rapportert beløp" : "Totale netto driftsutgifter"}</dt>
           <dd>{nominal(own.amount)}</dd>
         </div>
         <div className="secondary">
@@ -155,8 +156,11 @@ export default function ComparisonWorkspace({
   const selectedFunction = functions.find((fn) => fn.code === functionCode);
   const fn = selectedFunction?.code || "";
   const scope = `${sector}/${fn}`;
+  const purchaseDrill = path.scope === scope && path.post === OWN_PURCHASES;
+  const { purchaseArts, pending, error, retry } = usePurchaseArts(purchaseDrill ? fn : "");
+  const benchmarkPeers = peers.map((peer) => withPurchaseArts(peer, purchaseArts));
   const read = (detail, service = sector, func = fn, art = "") =>
-    comparisonRow(detail, peers, year, service, func, method, null, "perCapita", art);
+    comparisonRow(withPurchaseArts(detail, purchaseArts), benchmarkPeers, year, service, func, method, null, "perCapita", art);
   const posts = fn ? ACCOUNT_SECTIONS.flatMap(([, entries]) => entries.map(([code, name, children]) => ({
     ...read(target, sector, fn, code),
     code,
@@ -173,12 +177,12 @@ export default function ComparisonWorkspace({
       ...read(target, sector, fn, code),
       code,
       label: source?.name || post.context,
-      axisCode: code,
-      context: source?.name ? `${code} · ${source.name}` : code,
+      axisCode: code === PURCHASE_REMAINDER ? undefined : code,
+      context: code === PURCHASE_REMAINDER ? source?.name : `${code} · ${source?.name || post.context}`,
     };
   }).filter((row) => Number.isFinite(row.own.amount) || Number.isFinite(row.b));
   const children = post ? reportedArts(post.children) : [];
-  const arts = post && !children.length ? reportedArts([post.code]) : children;
+  const arts = post && !children.length && !purchaseDrill ? reportedArts([post.code]) : children;
   const art = arts.find((row) => row.code === path.art);
   const account = art || post;
   const title = account?.context || selectedFunction?.name || sectorName || "Samlet netto drift";
@@ -187,7 +191,7 @@ export default function ComparisonWorkspace({
     sectorName,
     selectedFunction && `${fn} · ${selectedFunction.name}`,
     post?.label,
-    art?.code,
+    art && (art.axisCode || art.label),
   ].filter(Boolean);
   const level = post ? "Artskontoer" : fn ? "Regnskapsposter" : sectorName ? "KOSTRA-funksjoner" : "Tjenesteområder";
   const rows = post ? arts : fn ? posts : sectorName
@@ -274,13 +278,20 @@ export default function ComparisonWorkspace({
             onSelect={selectRow}
             chartKey={[target.entity.code, year, method, sector, fn, post?.code, ...peers.map((peer) => peer.entity.code)].join("-")}
           />
+        ) : purchaseDrill && (pending || error) ? (
+          <p className="cmp-drill-empty" role={error ? "alert" : "status"}>
+            {error ? "Kunne ikke hente artsfordelingen fra SSB. " : "Henter artsfordelingen fra SSB…"}
+            {error && <button type="button" onClick={retry}>Prøv igjen</button>}
+          </p>
         ) : (
           <p className="cmp-drill-empty">Ingen rapporterte {level.toLowerCase()} for dette valget og året.</p>
         )}
         <p className="cmp-footnote cmp-drill-note">
-          {post && children.length
-            ? "Pensjon og arbeidsgiveravgift inngår i lønnsposten. Sykelønnsrefusjon er allerede trukket fra."
-            : post
+          {purchaseDrill
+            ? PURCHASE_BREAKDOWN_NOTE
+            : post?.code === "AG16" && children.length
+              ? "Pensjon og arbeidsgiveravgift inngår i lønnsposten. Sykelønnsrefusjon er allerede trukket fra."
+              : post
               ? "Dette er det mest detaljerte nivået i KOSTRA-uttrekket for posten. Artsgrupper vises der enkeltarter mangler."
               : fn && (
                 <>

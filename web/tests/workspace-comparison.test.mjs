@@ -13,7 +13,9 @@ import {
   point,
   population,
 } from "../src/sider/comparison.js";
-import { ACCOUNT_SECTIONS, accountingComparison } from "../src/sider/accounting-drill.js";
+import {
+  ACCOUNT_SECTIONS, OWN_PURCHASES, PURCHASE_REMAINDER, accountingComparison, accountingObservation,
+} from "../src/sider/accounting-drill.js";
 const read = (code) =>
   JSON.parse(
     readFileSync(
@@ -28,6 +30,24 @@ const index = JSON.parse(
 );
 const target = read("1103"),
   peers = defaultPeers(index.entities, "1103").map(read);
+test("own production purchases drill into published arts and a reconciled remainder", () => {
+  const data = JSON.parse(readFileSync(
+    new URL("../public/data/kostra/purchase-arts/120.json", import.meta.url),
+  ));
+  const attach = (detail) => ({ ...detail, purchaseArts: { functionCode: "120", data } });
+  const [post] = ACCOUNT_SECTIONS[0][1].filter(([code]) => code === OWN_PURCHASES);
+  const rows = post[2].map((code) => accountingComparison(
+    attach(target), peers.map(attach), 2025, "120", code, "median",
+  ));
+  assert.deepEqual(rows.map(({ own }) => own.amount), [33, 50328, 179143]);
+  assert.equal(rows.reduce((sum, { own }) => sum + own.amount, 0), 229504);
+  assert.deepEqual(rows.map(({ count }) => count), [10, 10, 10]);
+  assert.equal(rows[1].reference.toFixed(1), "133.3");
+  assert.equal(rows[2].reference.toFixed(1), "891.8");
+  assert.equal(accountingObservation(attach(target), 2024, "120", "A270").amount, 52262);
+  assert.equal(accountingObservation(attach(target), 2025, "121", "A270").amount, null);
+  assert.equal(accountingObservation(target, 2025, "120", PURCHASE_REMAINDER).amount, null);
+});
 test("administration accounting drill uses published gross groups and keeps subaccounts separate", () => {
   const amount = (code) => accountingComparison(target, peers, 2025, "120", code, "median").own.amount;
   const [, grossPosts] = ACCOUNT_SECTIONS[0];

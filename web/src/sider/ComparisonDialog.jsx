@@ -5,6 +5,8 @@ import { benchmarkObservations, population, SECTORS } from "./comparison";
 import CostChart, { CostTable, useReducedMotion } from "./CostChart";
 import AccountingDrill from "./AccountingDrill";
 import FunctionDrivers from "./FunctionDrivers";
+import { OWN_PURCHASES, PURCHASE_REMAINDER } from "./accounting-drill";
+import { usePurchaseArts, withPurchaseArts } from "./use-purchase-arts";
 import {
   comparisonRow,
   peerRows,
@@ -89,16 +91,22 @@ export default function ComparisonDialog({
   const period = years.filter((y) => y >= from && y <= to);
   const accounts = view === "accounts";
   const drivers = view === "drivers";
+  const purchaseDrill = ["A260", "A270", PURCHASE_REMAINDER].includes(account?.code);
+  const { purchaseArts, pending: artsPending, error: artsError, retry: retryArts } =
+    usePurchaseArts(purchaseDrill ? fn : "");
+  const chartTarget = withPurchaseArts(target, purchaseArts);
+  const chartPeers = peers.map((peer) => withPurchaseArts(peer, purchaseArts));
+  const chartOther = withPurchaseArts(other, purchaseArts);
   const peerPopulation = drivers ? benchmarkObservations(peers.map((peer) => ({
     p: { perCapita: population(peer, year) || null },
   })), "median").value : null;
-  const rows = waiting || accounts || drivers
+  const rows = waiting || accounts || drivers || artsPending || artsError
     ? []
     : view === "history"
       ? period.map((y) =>
-          comparisonRow(target, peers, y, sector, fn, method, other, mode, account?.code),
+          comparisonRow(chartTarget, chartPeers, y, sector, fn, method, chartOther, mode, account?.code),
         )
-      : peerRows(target, peers, year, sector, fn, method, other, mode, account?.code);
+      : peerRows(chartTarget, chartPeers, year, sector, fn, method, chartOther, mode, account?.code);
   const row =
     rows.find((r) => r.code === inspected) ||
     (view === "history" ? rows.at(-1) : rows.find((r) => r.selected));
@@ -313,6 +321,11 @@ export default function ComparisonDialog({
         </p>
       ) : accounts ? (
         <AccountingDrill target={target} peers={peers} year={year} method={method} functionCode={fn} other={other} />
+      ) : artsPending || artsError ? (
+        <p role={artsError ? "alert" : "status"}>
+          {artsError ? "Kunne ikke hente artsfordelingen fra SSB. " : "Henter artsfordelingen fra SSB…"}
+          {artsError && <button type="button" onClick={retryArts}>Prøv igjen</button>}
+        </p>
       ) : (
         <>
           <CostChart

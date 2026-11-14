@@ -1,23 +1,26 @@
 import React, { useId, useState } from "react";
 import { accountingArtBreakdown } from "../kostra/explorer";
-import { ACCOUNT_SECTIONS, accountingComparison } from "./accounting-drill";
+import { ACCOUNT_SECTIONS, OWN_PURCHASES, PURCHASE_BREAKDOWN_NOTE, PURCHASE_REMAINDER, accountingComparison } from "./accounting-drill";
+import { usePurchaseArts, withPurchaseArts } from "./use-purchase-arts";
 import { entityName, formatNumber as n, nominal, referenceName } from "./workspace-model";
 
-const perPerson = (value) => Number.isFinite(value) ? `${n(value)} kr` : "–";
+const perPerson = (value, digits) => Number.isFinite(value) ? `${n(value, digits)} kr` : "–";
 
-function Values({ row, referenceSize }) {
+function Values({ row, referenceSize, detailed = false }) {
   const gap = Number.isFinite(row.own.perCapita) && Number.isFinite(row.reference)
     ? row.own.perCapita - row.reference : null;
+  const digits = detailed ? 1 : 0;
+  const amount = row.own.amount;
   return <>
     <td>
-      {perPerson(row.own.perCapita)}
-      {Number.isFinite(row.own.amount) && <small>({nominal(row.own.amount)})</small>}
+      {perPerson(row.own.perCapita, digits)}
+      {Number.isFinite(amount) && <small>({detailed && Math.abs(amount) < 100 ? `${n(amount * 1000)} kr` : nominal(amount)})</small>}
     </td>
     <td>
-      {perPerson(row.reference)}
+      {perPerson(row.reference, digits)}
       {row.count > 0 && row.count < referenceSize && <small>{row.count} av {referenceSize}</small>}
     </td>
-    <td>{Number.isFinite(gap) && gap > 0 ? "+" : ""}{perPerson(gap)}</td>
+    <td>{Number.isFinite(gap) && gap > 0 ? "+" : ""}{perPerson(gap, digits)}</td>
   </>;
 }
 
@@ -28,7 +31,12 @@ export default function AccountingDrill({ target, peers, year, method, functions
     || functions.find(({ code }) => code === selection.functionCode)?.code
     || functions[0]?.code;
   const post = selection.functionCode === selected ? selection.post : "";
-  const read = (code) => accountingComparison(target, peers, year, selected, code, method, other);
+  const { purchaseArts, pending, error, retry } = usePurchaseArts(post === OWN_PURCHASES ? selected : "");
+  const benchmarkPeers = peers.map((peer) => withPurchaseArts(peer, purchaseArts));
+  const read = (code) => accountingComparison(
+    withPurchaseArts(target, purchaseArts), benchmarkPeers, year, selected, code, method,
+    withPurchaseArts(other, purchaseArts),
+  );
   const reference = other ? entityName(other) : referenceName(method);
   const referenceSize = other ? 1 : peers.length;
   const gross = read("AGD10");
@@ -103,13 +111,20 @@ export default function AccountingDrill({ target, peers, year, method, functions
                                     const art = artCode === code ? row : read(artCode);
                                     if (!art.reported) return null;
                                     return <tr key={artCode}>
-                                      <th scope="row"><small>{artCode}</small>{art.name}</th>
-                                      <Values row={art} referenceSize={referenceSize} />
+                                      <th scope="row">{artCode !== PURCHASE_REMAINDER && <small>{artCode}</small>}{art.name}</th>
+                                      <Values row={art} referenceSize={referenceSize} detailed={code === OWN_PURCHASES} />
                                     </tr>;
                                   })}
                                 </tbody>
                               </table>
                               {code === "AG16" && <p>090 og 099 inngår i lønnsposten. Sykelønnsrefusjon (710) er allerede trukket fra.</p>}
+                              {code === OWN_PURCHASES && (
+                                pending ? <p role="status">Henter artsfordelingen fra SSB…</p>
+                                  : error ? <p role="alert">Kunne ikke hente artsfordelingen fra SSB.{" "}
+                                    <button type="button" onClick={retry}>Prøv igjen</button>
+                                  </p>
+                                  : <p>{PURCHASE_BREAKDOWN_NOTE}</p>
+                              )}
                             </div>
                           </td>
                         </tr>

@@ -189,6 +189,12 @@ Komponentene avstemmes mot SSBs `AGD10` for valgt funksjon og år. Eventuelle
 publiserte avvik vises i grensesnittet med originalt fortegn og blir aldri
 justert eller skjult. Manglende observasjoner lagres ikke som null kroner.
 
+For AGD50 henter `python etl/kostra_purchase_arts.py` art 260 og 270 fra
+SSB 12367 etter at KOSTRA-eksporten er bygget. `make kostra` kjører også
+dette uttrekket. Sammenligningen laster underartene når brukeren åpner
+posten. Øvrige kjøp beregnes per kommune og år som AGD50 minus de to
+publiserte underartene. Alle tre beløp må finnes for å beregne resten.
+
 Tabell 13202 og 13213 publiserer balansekapitler, men ikke sektor eller
 motpart. Grensesnittet tilbyr derfor ikke en konstruert sektor-dimensjon.
 Begrensningen vises også til brukeren. Resultat og investering hentes for alle

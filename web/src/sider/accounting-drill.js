@@ -1,12 +1,22 @@
 import { accountingArtValue } from "../kostra/explorer.js";
 import { benchmarkObservations, population } from "./comparison.js";
 
+export const OWN_PURCHASES = "AGD50";
+export const PURCHASE_REMAINDER = "purchase-remainder";
+export const PURCHASE_BREAKDOWN_NOTE =
+  "SSB publiserer art 260 og 270 separat. Øvrige kjøp er totalen minus disse to artene. Referansen beregnes for hver rad.";
+const purchaseArtNames = {
+  A260: "Renholds- og vaskeritjenester",
+  A270: "Andre tjenester",
+  [PURCHASE_REMAINDER]: "Øvrige kjøp (beregnet)",
+};
+
 // Each post uses one published main group. Children are disclosures within the
 // group, so they are never added to the group's amount.
 export const ACCOUNT_SECTIONS = [
   ["Brutto driftsutgifter", [
     ["AG16", "Lønn og sosiale utgifter etter sykelønnsrefusjon", ["A090", "A099", "A710"]],
-    ["AGD50", "Varer og tjenester til egen produksjon"],
+    [OWN_PURCHASES, "Varer og tjenester til egen produksjon", ["A260", "A270", PURCHASE_REMAINDER]],
     ["AGD51", "Kjøp av tjenester som erstatter egen produksjon"],
     ["AG34", "Overføringsutgifter ekskl. merverdiavgift"],
     ["A590", "Avskrivninger"],
@@ -23,14 +33,29 @@ export const ACCOUNT_SECTIONS = [
 ];
 
 export function accountingObservation(detail, year, functionCode, artCode) {
-  const art = detail?.accountingArts?.[functionCode]?.find(({ code }) => code === artCode);
+  const arts = detail?.accountingArts?.[functionCode];
+  const art = arts?.find(({ code }) => code === artCode);
+  const purchaseArts = detail?.purchaseArts?.functionCode === functionCode
+    ? detail.purchaseArts.data : null;
+  const publishedAmount = (code) =>
+    accountingArtValue(arts?.find((item) => item.code === code), year, detail?.latestYear)?.amount;
+  const purchaseAmount = (code) => publishedAmount(code)
+    ?? purchaseArts?.rows[detail.entity.code]?.[year]?.[purchaseArts.columns.indexOf(code)];
   const value = accountingArtValue(art, year, detail?.latestYear)
     ?? (artCode === "AGD10" ? detail?.functions?.find(({ code }) => code === functionCode)
       ?.metrics?.gross_expenses?.[year] : null);
-  const amount = value?.amount ?? null;
+  let amount = value?.amount ?? null;
+  if (artCode === PURCHASE_REMAINDER) {
+    const total = publishedAmount(OWN_PURCHASES);
+    const cleaning = purchaseAmount("A260");
+    const other = purchaseAmount("A270");
+    if ([total, cleaning, other].every(Number.isFinite)) amount = total - cleaning - other;
+  } else if (artCode === "A260" || artCode === "A270") {
+    amount ??= purchaseAmount(artCode) ?? null;
+  }
   const inhabitants = population(detail, year);
   return {
-    name: art?.name,
+    name: purchaseArtNames[artCode] ?? art?.name,
     amount,
     perCapita: Number.isFinite(amount) && inhabitants > 0 ? amount * 1000 / inhabitants : null,
     population: inhabitants,
