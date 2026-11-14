@@ -998,6 +998,16 @@
 .cmp-occupation-modal td > small:first-of-type { display: inline; margin: 0; }
 .cmp-occupation-modal h3 { margin-top: 20px; }
 .cmp-occupations .cmp-absence-table td:nth-child(3) > small:first-of-type { display: block; }
+.cmp-occupations .cmp-municipal-sickness td > small:first-of-type { display: block; }
+.cmp-sickness-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 10px;
+}
+.cmp-sickness-controls .cmp-inline-label { color: var(--dempet); font-size: 11px; }
+.cmp-sickness-controls .cmp-inline-label select { width: auto; }
 @media (max-width: 640px) {
   .cmp-occupation-controls { justify-content: flex-start; margin-top: 8px; }
 }

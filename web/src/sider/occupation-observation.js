@@ -28,3 +28,9 @@ export function absenceObservation(data, detail, year, fn) {
     ? Math.round((agreed - excluding) * 10) / 10 : null;
   return { agreed, excluding, amount, rate: amount !== null && agreed > 0 ? amount / agreed * 100 : null };
 }
+
+export function municipalSicknessRate(rows, detail, period, index) {
+  const year = Number(period.slice(0, 4));
+  const code = historicalMunicipalityCode(detail, year);
+  return rows?.[code]?.[index] ?? null;
+}

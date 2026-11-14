@@ -69,6 +69,7 @@ export function CostTable({
     ],
     [compact ? "Avvik per innbygger" : "Avvik per innb.", percent(row.percent), "–"],
   ];
+  if (sickness && row.previous) metrics.push([row.previous.label, rate(row.previous.own), rate(row.previous.reference)]);
   if (history) metrics.push([compact ? "År/år-endring" : "År/år", percent(own.growth), percent(ref?.growth)]);
   return (
     <div

@@ -2,7 +2,7 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import MunicipalityRankingList from "./MunicipalityRankingList";
 import CostChart, { CostTable, useReducedMotion } from "./CostChart";
-import { absenceObservation, occupationObservation as observation } from "./occupation-observation";
+import { absenceObservation, municipalSicknessRate, occupationObservation as observation } from "./occupation-observation";
 import { benchmarkObservations } from "./comparison";
 import { deviation, entityName, formatNumber, percent } from "./workspace-model";
 
@@ -11,7 +11,7 @@ const requests = new Map();
 function loadAsset(key) {
   if (!requests.has(key)) {
     requests.set(key, fetch(`/data/kostra/occupations/${key}.json`).then(async (response) => {
-      if (!response.ok) throw new Error("Mangler SSB-uttrekk");
+      if (!response.ok) throw new Error("Mangler statistikkuttrekk");
       return response.json();
     }).catch((error) => {
       requests.delete(key);
@@ -28,7 +28,7 @@ function useOccupationAssets(assets) {
 
   useEffect(() => {
     let active = true;
-    Promise.all(key.split(",").map((asset) => loadAsset(asset).then((data) => [asset, data])))
+    Promise.all((key ? key.split(",") : []).map((asset) => loadAsset(asset).then((data) => [asset, data])))
       .then((entries) => { if (active) setResult({ key, attempt, data: Object.fromEntries(entries) }); })
       .catch(() => { if (active) setResult({ key, attempt, error: true }); });
     return () => { active = false; };
@@ -54,9 +54,9 @@ function Value({ rate, amount }) {
   return <>{formatNumber(rate, 2)} <small>({formatNumber(amount, 1)})</small></>;
 }
 
-function Loading({ error, retry, label = "årsverk" }) {
+function Loading({ error, retry, label = "årsverk", source = "SSB" }) {
   return <p role={error ? "alert" : "status"}>
-    {error ? <>Kunne ikke hente {label}. <button type="button" onClick={retry}>Prøv igjen</button></> : `Henter ${label} fra SSB…`}
+    {error ? <>Kunne ikke hente {label}. <button type="button" onClick={retry}>Prøv igjen</button></> : `Henter ${label} fra ${source}…`}
   </p>;
 }
 
@@ -290,6 +290,144 @@ function StaffingTable({ target, peers, year, years }) {
 }
 
 const SICKNESS_SOURCE = "https://www.ssb.no/statbank/table/14789/";
+const KS_SOURCE = "https://www.ks.no/fagomrader/statistikk-og-analyse/fravar/sykefravarsstatistikk/";
+const ksAsset = (period) => `ks/${period}`;
+const periodLabel = (period) => period.includes("K") ? `${period.at(-1)}. kvartal ${period.slice(0, 4)}` : period;
+const previousPeriod = (period) => `${Number(period.slice(0, 4)) - 1}${period.slice(4)}`;
+const formatRate = (value) => Number.isFinite(value) ? `${formatNumber(value, 2)} %` : "–";
+
+function pointDifference(value, reference) {
+  return Number.isFinite(value) && Number.isFinite(reference) ? value - reference : null;
+}
+
+function formatDifference(value) {
+  const rounded = Math.round(value * 100) / 100;
+  return Number.isFinite(value) ? `${rounded > 0 ? "+" : ""}${formatNumber(rounded || 0, 2)}` : "–";
+}
+
+function compareSickness(rows, target, peers, period, index) {
+  const own = municipalSicknessRate(rows, target, period, index);
+  const median = benchmarkObservations(peers.map((peer) => ({
+    p: { perCapita: municipalSicknessRate(rows, peer, period, index) },
+  })), "median");
+  return { own, median, difference: pointDifference(own, median.value) };
+}
+
+function MunicipalitySicknessHistory({ label, sectorIndex, period, sources, target, peers, current, onClose }) {
+  const suffix = period.slice(4);
+  const periods = Object.keys(sources).filter((key) => key.slice(4) === suffix).sort();
+  const { data, error, retry } = useOccupationAssets(periods.map(ksAsset));
+  const [inspected, setInspected] = useState(period);
+  const history = data ? periods.map((key) => {
+    const { own, median } = compareSickness(data[ksAsset(key)], target, peers, key, sectorIndex);
+    const priorKey = previousPeriod(key);
+    const prior = compareSickness(data[ksAsset(priorKey)], target, peers, priorKey, sectorIndex);
+    return {
+      code: key, label: key.slice(0, 4), a: own, b: median.value,
+      own: { name: entityName(target), year: periodLabel(key), perCapita: own },
+      reference: { name: "Median i utvalget", perCapita: median.value },
+      previous: sources[priorKey] ? { label: periodLabel(priorKey), own: prior.own, reference: prior.median.value } : null,
+    };
+  }) : [];
+  const selected = history.find((row) => row.code === inspected);
+  const rankingData = data?.[ksAsset(inspected)] ?? current;
+  const ranked = [target, ...peers].map((detail) => ({
+    code: detail.entity.code, a: municipalSicknessRate(rankingData, detail, inspected, sectorIndex),
+    own: { name: entityName(detail) },
+  })).sort((a, b) => (b.a ?? -Infinity) - (a.a ?? -Infinity) || a.own.name.localeCompare(b.own.name, "nb"));
+  return <OccupationDialog label={label} title={`${entityName(target)} · Legemeldt sykefravær`} onClose={onClose}>
+    {!data ? <Loading error={error} retry={retry} label="historikk" source="KS" /> : <>
+      {suffix && <p className="cmp-footnote">Grafen sammenligner {suffix.at(-1)}. kvartal på tvers av år.</p>}
+      <div className="cmp-chart-legend"><span><i />{entityName(target)}</span><span><i className="peer" />Median i utvalget</span></div>
+      <CostChart rows={history} paired history sickness title={label} chartKey={label} onInspect={(row) => setInspected(row.code)} />
+      <div className="cmp-inspect-selector">
+        <label className="cmp-inline-label">Tall for
+          <select aria-label="Vis sykefravær for periode" value={inspected} onChange={(event) => setInspected(event.target.value)}>
+            {periods.map((key) => <option value={key} key={key}>{periodLabel(key)}</option>)}
+          </select>
+        </label>
+        <span>Klikk på Y-aksen for å tilpasse skalaen.</span>
+      </div>
+      <CostTable row={selected} compact sickness />
+    </>}
+    <h3>Kommunene · {periodLabel(inspected)}</h3>
+    <MunicipalityRankingList rows={ranked} selectedCode={target.entity.code} renderValue={({ a }) => formatRate(a)} />
+    <p className="cmp-footnote">Medianen utelater {entityName(target)}. Kommunegrenser og dekningen i utvalget kan endres over tid. <a href={sources[inspected]}>KS · Excel for {periodLabel(inspected)}</a></p>
+  </OccupationDialog>;
+}
+
+function MunicipalitySickness({ year, target, peers }) {
+  const { data, error, retry } = useOccupationAssets([ksAsset("index")]);
+  const [frequency, setFrequency] = useState("annual");
+  const [quarter, setQuarter] = useState(null);
+  const [selection, setSelection] = useState(null);
+  const sorting = useSort();
+  const index = data?.[ksAsset("index")];
+  const quarters = Object.keys(index?.sources ?? {}).filter((key) => key.includes("K")).sort().reverse();
+  const quarterly = frequency === "quarterly";
+  const period = quarterly ? (quarter ?? quarters.find((key) => key.startsWith(String(year))) ?? quarters[0]) : String(year);
+  const previous = period && previousPeriod(period);
+  const assets = [period, quarterly && previous].filter((key) => index?.sources?.[key]).map(ksAsset);
+  const observations = useOccupationAssets(assets);
+  const current = period ? observations.data?.[ksAsset(period)] : null;
+  const earlier = previous ? observations.data?.[ksAsset(previous)] : null;
+  const columns = [["label", "Tjeneste (næring)"], ["own", entityName(target)], ["median", "Median i utvalget"], ["difference", "Avvik (pp)"]];
+  if (quarterly) columns.push(["change", "Fra samme kvartal i fjor (pp)"]);
+  const rows = current ? index.groups.map(([code, label], sectorIndex) => {
+    const values = compareSickness(current, target, peers, period, sectorIndex);
+    const earlierRate = municipalSicknessRate(earlier, target, previous, sectorIndex);
+    return { code, label, sectorIndex, ...values, change: pointDifference(values.own, earlierRate) };
+  }) : [];
+  const active = rows.find(({ code }) => code === selection);
+  const osInGroup = [target, ...peers].some((detail) => detail.entity.code === "0301");
+  return <>
+    <p className="cmp-footnote">Legemeldte fraværsdagsverk i prosent av avtalte dagsverk, etter arbeidsstedskommune og næring i kommuneforvaltningen. Alle yrker i hver næring inngår.</p>
+    {!index ? <Loading error={error} retry={retry} label="sykefravær" source="KS" /> : <>
+      <div className="cmp-sickness-controls">
+        <label className="cmp-inline-label">Periode
+          <select value={frequency} onChange={(event) => { setFrequency(event.target.value); setSelection(null); }}>
+            <option value="annual">År · {year}</option><option value="quarterly">Kvartal</option>
+          </select>
+        </label>
+        {quarterly && <label className="cmp-inline-label">Kvartal
+          <select value={period ?? ""} onChange={(event) => { setQuarter(event.target.value); setSelection(null); }}>
+            {quarters.map((key) => <option key={key} value={key}>{periodLabel(key)}</option>)}
+          </select>
+        </label>}
+      </div>
+      {!index.sources[period] ? <p>KS har ingen publisert tabell for denne perioden.</p> : !current ? (
+        <Loading error={observations.error} retry={observations.retry} label="sykefravær" source="KS" />
+      ) : <div className="cmp-driver-table cmp-municipal-sickness"><table>
+        <SortHeaders columns={columns} {...sorting} />
+        <tbody>{sortRows(rows, sorting.sort, (row, key) => key === "median" ? row.median.value : row[key]).map((row) => (
+          <tr key={row.code}>
+            <th scope="row"><button type="button" aria-haspopup="dialog" onClick={() => setSelection(row.code)}>{row.label} ↗</button></th>
+            <td>{formatRate(row.own)}</td>
+            <td>{formatRate(row.median.value)}<small>{row.median.count}/{peers.length} med data</small></td>
+            <td>{formatDifference(row.difference)}</td>
+            {quarterly && <td>{formatDifference(row.change)}</td>}
+          </tr>
+        ))}</tbody>
+      </table></div>}
+    </>}
+    <p className="cmp-footnote">Manglende og skjermede tall vises som «–».{osInGroup && " Oslo inngår ikke i denne sammenligningen. KS publiserer Oslo separat, med fylkeskommunale oppgaver."} {index?.sources[period] && <><a href={index.sources[period]}>KS · Excel for {periodLabel(period)}</a>{" · "}</>}<a href={KS_SOURCE}>KS sykefraværsstatistikk (SSB)</a></p>
+    {active && <MunicipalitySicknessHistory label={active.label} sectorIndex={active.sectorIndex} period={period}
+      sources={index.sources} target={target} peers={peers} current={current} onClose={() => setSelection(null)} />}
+  </>;
+}
+
+function SicknessComparison({ year, target, peers }) {
+  const [view, setView] = useState("municipal");
+  return <>
+    <div className="cmp-sickness-controls">
+      <div className="cmp-view-switch" role="group" aria-label="Sykefraværsvisning">
+        <button type="button" aria-pressed={view === "municipal"} onClick={() => setView("municipal")}>Kommuner</button>
+        <button type="button" aria-pressed={view === "national"} onClick={() => setView("national")}>Yrker i Norge</button>
+      </div>
+    </div>
+    {view === "municipal" ? <MunicipalitySickness year={year} target={target} peers={peers} /> : <SicknessTable key={year} year={year} />}
+  </>;
+}
 
 function SicknessHistory({ occupation, baseline, years, year, onClose }) {
   const [secondary, setSecondary] = useState("none");
@@ -373,18 +511,18 @@ export default function OccupationComparison({ target, peers, year, years }) {
   return (
     <section className="cmp-occupations" aria-labelledby="cmp-occupation-title">
       <div className="cmp-section-title">
-        <h2 id="cmp-occupation-title">{view === "staffing" ? "Årsverk etter yrke" : view === "sickness" ? "Sykefravær etter yrke" : "Årsverk berørt av lengre fravær"}</h2>
+        <h2 id="cmp-occupation-title">{view === "staffing" ? "Årsverk etter yrke" : view === "sickness" ? "Sykefravær" : "Årsverk berørt av lengre fravær"}</h2>
         <div className="cmp-occupation-controls">
           <div className="cmp-view-switch" role="group" aria-label="Visning av bemanning og fravær">
             <button type="button" aria-pressed={view === "staffing"} onClick={() => setView("staffing")}>Årsverk</button>
             <button type="button" aria-pressed={view === "sickness"} onClick={() => setView("sickness")}>Sykefravær</button>
             <button type="button" aria-pressed={view === "absence"} onClick={() => setView("absence")}>Lengre fravær</button>
           </div>
-          <span>{year}</span>
+          {view !== "sickness" && <span>{year}</span>}
         </div>
       </div>
       <div hidden={view !== "staffing"}><StaffingTable target={target} peers={peers} year={year} years={years} /></div>
-      {view === "sickness" && <SicknessTable key={year} year={year} />}
+      {view === "sickness" && <SicknessComparison year={year} target={target} peers={peers} />}
       {view === "absence" && <AbsenceTable key={year} year={year} years={years} target={target} peers={peers} />}
     </section>
   );

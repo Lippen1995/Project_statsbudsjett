@@ -6,7 +6,7 @@ import {
 } from "../src/sider/comparison.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { absenceObservation } from "../src/sider/occupation-observation.js";
+import { absenceObservation, municipalSicknessRate } from "../src/sider/occupation-observation.js";
 import {
   benchmark,
   comparison,
@@ -29,6 +29,22 @@ test("longer absence compares shares of contracted FTE and preserves missing val
   assert.equal(absenceObservation(sparse, stavanger, 2025, "1").rate, null);
   sparse.rows["1103"][1] = 12;
   assert.equal(absenceObservation(sparse, stavanger, 2025, "1").rate, 0);
+});
+
+test("KS sickness rates use the selected period and follow exact municipal successors", () => {
+  const read = (period) => JSON.parse(readFileSync(new URL(`../public/data/kostra/occupations/ks/${period}.json`, import.meta.url)));
+  const stavanger = { entity: { code: "1103" } };
+  assert.equal(municipalSicknessRate(read("2025"), stavanger, "2025", 4), 8.53846);
+  assert.equal(municipalSicknessRate(read("2026K2"), stavanger, "2026K2", 4), 9.74986);
+  assert.equal(municipalSicknessRate(read("2025K2"), stavanger, "2025K2", 4), 9.03852);
+  assert.equal(municipalSicknessRate(read("2025"), { entity: { code: "0301" } }, "2025", 0), null);
+  const halden = { entity: { code: "3101" }, boundaryHistory: [{
+    relationType: "exact_successor", changeYear: 2024, sourceCode: "3001", targetCode: "3101",
+  }] };
+  const rows = { "3001": [0, null] };
+  assert.equal(municipalSicknessRate(rows, halden, "2023K4", 0), 0);
+  assert.equal(municipalSicknessRate(rows, halden, "2023K4", 1), null);
+  assert.equal(municipalSicknessRate(rows, halden, "2024K1", 0), null);
 });
 const detail = (cost, people) => ({
   overview: {
