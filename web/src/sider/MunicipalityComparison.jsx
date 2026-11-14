@@ -330,7 +330,7 @@ export default function MunicipalityComparison({ hash }) {
       await navigator.clipboard.writeText(window.location.href);
       setMessage(
         publishedBudget
-          ? "Lenken til budsjettfanen er kopiert."
+          ? "Lenken til budsjettåret er kopiert."
           : "Lenken er kopiert. Den deler kommune, år og kommuneutvalg. Dine tiltak blir ikke delt.",
       );
     } catch {
@@ -409,16 +409,16 @@ export default function MunicipalityComparison({ hash }) {
             )}
           </select>
         </label>
-        {!publishedBudget && (
-          <button
-            className="cmp-peer-button"
-            onClick={() => setEditingPeers(!editingPeers)}
-            aria-expanded={editingPeers}
-          >
-            Sammenlign med <strong>{selectedPeers.length} kommuner</strong>
-            <span>Tilpass utvalget ↗</span>
-          </button>
-        )}
+
+        <button
+          className="cmp-peer-button"
+          onClick={() => setEditingPeers(!editingPeers)}
+          aria-expanded={editingPeers}
+        >
+          Sammenlign med <strong>{selectedPeers.length} kommuner</strong>
+          <span>Tilpass utvalget ↗</span>
+        </button>
+
         <div className="cmp-tools">
           <button onClick={share}>Del analyse ↗</button>
           {!publishedBudget && (
@@ -428,7 +428,7 @@ export default function MunicipalityComparison({ hash }) {
           )}
         </div>
       </div>
-      {!publishedBudget && editingPeers && (
+      {editingPeers && (
         <div className="cmp-peer-editor">
           <div className="cmp-panel-head">
             <div>
@@ -493,19 +493,19 @@ export default function MunicipalityComparison({ hash }) {
           </div>
         </div>
       )}
-      {!publishedBudget && (
-        <div className="cmp-peer-strip">
-          <span>Utvalg</span>
-          {selectedPeers.map((c) => (
-            <span key={c}>
-              {displayEntityName(entities.find((e) => e.code === c))}
-            </span>
-          ))}
-          {!selectedPeers.length && (
-            <span>Velg kommuner for å beregne en referanse.</span>
-          )}
-        </div>
-      )}
+
+      <div className="cmp-peer-strip">
+        <span>Utvalg</span>
+        {selectedPeers.map((c) => (
+          <span key={c}>
+            {displayEntityName(entities.find((e) => e.code === c))}
+          </span>
+        ))}
+        {!selectedPeers.length && (
+          <span>Velg kommuner for å beregne en referanse.</span>
+        )}
+      </div>
+
       {message && (
         <div className="cmp-message" role="status">
           {message}
@@ -514,7 +514,7 @@ export default function MunicipalityComparison({ hash }) {
           </button>
         </div>
       )}
-      {!publishedBudget && missing.length > 0 && (
+      {missing.length > 0 && (
         <p className="cmp-warning" role="alert">
           Data kunne ikke lastes for{" "}
           {missing
@@ -536,15 +536,7 @@ export default function MunicipalityComparison({ hash }) {
           </button>
         ))}
       </nav>
-      {publishedBudget ? (
-        <BudgetWorkspace
-          code={code}
-          name={ownName}
-          year={budgetYear}
-          onYear={setBudgetYear}
-          onStavanger={() => index && selectMunicipality("1103")}
-        />
-      ) : loading ? (
+      {loading ? (
         <div className="cmp-loading" role="status">
           Henter kommuneregnskapene…
         </div>
@@ -616,20 +608,29 @@ export default function MunicipalityComparison({ hash }) {
             </div>
           )}
           {tab === "compare" && (
-            <ComparisonWorkspace
-              key={`${code}-${year}`}
-              target={target}
-              peers={peers}
-              entities={entities}
-              year={year}
-              years={index.years}
-              sector={sector}
-              onSector={setSector}
-              method={method}
-              onMethod={setMethod}
-              functionCode={functionCode}
-              onFunction={setFunctionCode}
-            />
+            <>
+              <ComparisonWorkspace
+                key={code}
+                target={target}
+                peers={peers}
+                entities={entities}
+                year={year}
+                years={index.years}
+                budgetYear={publishedBudget ? budgetYear : null}
+                sector={sector}
+                onSector={setSector}
+                method={method}
+                onMethod={setMethod}
+                functionCode={functionCode}
+                onFunction={setFunctionCode}
+              />
+              {publishedBudget && code === "1103" && (
+                <details className="cmp-method">
+                  <summary>Se Stavangers publiserte kommunekassebudsjett</summary>
+                  <BudgetWorkspace code={code} name={ownName} year={budgetYear} onYear={setBudgetYear} />
+                </details>
+              )}
+            </>
           )}
           {tab === "explain" && (
             <>
@@ -1093,70 +1094,70 @@ export default function MunicipalityComparison({ hash }) {
           )}
         </>
       )}
-      {!publishedBudget && (
-        <details className="cmp-method">
-          <summary>Datagrunnlag, metode og begrensninger</summary>
-          <div>
-            <p>
-              <strong>Kilde:</strong> SSB KOSTRA, kommunekonsern. Sektorer: tabell
-              12362. Funksjoner: tabell 12367. Samlet netto drift: tabell 12137.
-              Siste tilgjengelige regnskapsår i dette uttrekket:{" "}
-              {index?.latestYear || "–"}. Uttrekk oppdatert{" "}
-              {index?.updated
-                ? new Date(index.updated).toLocaleDateString("nb-NO")
-                : "–"}
-              .
-            </p>
-            <p>
-              <strong>Beregning:</strong> Referansen utelater din kommune og
-              kommuner uten data. Medianen er midterste verdi (gjennomsnitt av de
-              to midterste ved partall). Vektet snitt er samlede utgifter delt på
-              samlet, rekonstruert befolkning. Befolkning er beregnet fra
-              driftsinntekter totalt og per innbygger og kan avvike litt som følge
-              av avrunding. Kostnadsavvik i kroner er forskjellen per innbygger
-              multiplisert med din kommunes beregnede befolkning.
-            </p>
-            <p>
-              <strong>Avgrensning:</strong> Tallene er ikke behovs- eller
-              prisjustert. Resultater kan påvirkes av organisering, føring,
-              avskrivninger, endrede kommunegrenser og ulik kvalitet. Historiske
-              tall er ikke et anslag på neste års budsjett. Ingen
-              Framsikt-budsjetter, kvalitetsdata eller ASSS-korreksjoner er koblet
-              til ennå. Svens observasjoner kommer fra åpne, faste
-              beregningsregler, ikke en språkmodell.
-            </p>
-            <p>
-              <strong>Tilgang:</strong> Dette er en åpen forhåndsvisning av en
-              planlagt betaltjeneste. Betaling og serverbasert abonnementskontroll
-              er ikke aktivert. Tiltak lagres bare lokalt på denne enheten, per
-              kommune. Bruk eksport for å ta vare på dem.
-            </p>
-            <div className="cmp-source-links">
-              <a
-                href="https://www.ssb.no/statbank/table/12362/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                SSB 12362 ↗
-              </a>
-              <a
-                href="https://www.ssb.no/statbank/table/12367/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                SSB 12367 ↗
-              </a>
-              <a
-                href="https://www.ssb.no/statbank/table/12137/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                SSB 12137 ↗
-              </a>
-            </div>
+
+      <details className="cmp-method">
+        <summary>Datagrunnlag, metode og begrensninger</summary>
+        <div>
+          <p>
+            <strong>Kilde:</strong> SSB KOSTRA, kommunekonsern. Sektorer: tabell
+            12362. Funksjoner: tabell 12367. Samlet netto drift: tabell 12137.
+            Siste tilgjengelige regnskapsår i dette uttrekket:{" "}
+            {index?.latestYear || "–"}. Uttrekk oppdatert{" "}
+            {index?.updated
+              ? new Date(index.updated).toLocaleDateString("nb-NO")
+              : "–"}
+            .
+          </p>
+          <p>
+            <strong>Beregning:</strong> Referansen utelater din kommune og
+            kommuner uten data. Medianen er midterste verdi (gjennomsnitt av de
+            to midterste ved partall). Vektet snitt er samlede utgifter delt på
+            samlet, rekonstruert befolkning. Befolkning er beregnet fra
+            driftsinntekter totalt og per innbygger og kan avvike litt som følge
+            av avrunding. Kostnadsavvik i kroner er forskjellen per innbygger
+            multiplisert med din kommunes beregnede befolkning.
+          </p>
+          <p>
+            <strong>Avgrensning:</strong> Tallene er ikke behovs- eller
+            prisjustert. Resultater kan påvirkes av organisering, føring,
+            avskrivninger, endrede kommunegrenser og ulik kvalitet. Historiske
+            tall er ikke et anslag på neste års budsjett. Ingen
+            Framsikt-budsjetter, kvalitetsdata eller ASSS-korreksjoner er koblet
+            til ennå. Svens observasjoner kommer fra åpne, faste
+            beregningsregler, ikke en språkmodell.
+          </p>
+          <p>
+            <strong>Tilgang:</strong> Dette er en åpen forhåndsvisning av en
+            planlagt betaltjeneste. Betaling og serverbasert abonnementskontroll
+            er ikke aktivert. Tiltak lagres bare lokalt på denne enheten, per
+            kommune. Bruk eksport for å ta vare på dem.
+          </p>
+          <div className="cmp-source-links">
+            <a
+              href="https://www.ssb.no/statbank/table/12362/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              SSB 12362 ↗
+            </a>
+            <a
+              href="https://www.ssb.no/statbank/table/12367/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              SSB 12367 ↗
+            </a>
+            <a
+              href="https://www.ssb.no/statbank/table/12137/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              SSB 12137 ↗
+            </a>
           </div>
-        </details>
-      )}
+        </div>
+      </details>
+
       <footer className="cmp-footer">
         <span>Fellestall Pluss</span>
         <span>Et bedre grunnlag for lokale beslutninger.</span>
