@@ -1,4 +1,4 @@
-import { benchmark, point, population } from "./comparison.js";
+import { benchmark, benchmarkObservations, point, population } from "./comparison.js";
 import { accountingBenchmark, accountingObservation } from "./accounting-drill.js";
 
 export const formatNumber = (value, digits = 0) =>
@@ -62,7 +62,9 @@ export function comparisonRow(
         year,
         perCapita: currentReference.value,
         amount: null,
-        population: null,
+        population: benchmarkObservations(peers.map((peer) => ({
+          p: { perCapita: population(peer, year) || null },
+        })), "median").value,
         calculated: true,
       };
   if (ref.calculated) {

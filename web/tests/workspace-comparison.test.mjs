@@ -85,6 +85,9 @@ test("aggregate and sector drilldowns use the actual exports rather than summing
     (4817.5 * population(target, 2025)) / 1000,
   );
   assert.equal(admin.reference.calculated, true);
+  const populations = peers.map((peer) => population(peer, 2025)).sort((a, b) => a - b);
+  assert.equal(admin.reference.population, (populations[4] + populations[5]) / 2);
+  assert.equal(comparisonRow(target, [], 2025, "FGK1b").reference.population, null);
 });
 test("historical function comparisons retain the selected function for both municipalities and preserve nominal units", () => {
   const other = read("1108");

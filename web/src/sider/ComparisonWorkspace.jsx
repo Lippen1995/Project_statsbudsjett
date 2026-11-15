@@ -266,7 +266,7 @@ export default function ComparisonWorkspace({
                 categoryLabel={level}
                 wrapCategories
                 onSelect={selectRow}
-                chartKey={[target.entity.code, year, method, sector, fn, post?.code, ...peers.map((peer) => peer.entity.code)].join("-")}
+                chartKey={[sector, fn, post?.code].join("-")}
               />
             ) : purchaseDrill && (pending || error) ? (
               <p className="cmp-drill-empty" role={error ? "alert" : "status"}>

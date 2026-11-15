@@ -38,15 +38,13 @@ export function CostTable({
   history = false,
   context = "",
   compact = false,
-  peerPopulation,
   staffing = false,
   sickness = false,
   absence = false,
 }) {
   if (!row?.own) return null;
   const { own, reference: ref } = row;
-  const showPeerPopulation = ref?.calculated && peerPopulation != null;
-  const referencePopulation = showPeerPopulation ? peerPopulation : ref?.population;
+  const showPeerPopulation = ref?.calculated && ref.population > 0;
   const rate = (value) => Number.isFinite(value) ? `${n(value, 2)} %` : "–";
   const metrics = absence ? [
     ["Andel av avtalte årsverk", rate(own.perCapita), rate(ref?.perCapita)],
@@ -61,11 +59,11 @@ export function CostTable({
     ["Avvik per 1 000 innb. (%)", percent(row.percent), "–"],
   ] : [
     [compact ? "Per innbygger" : "Kr per innb.", `${n(own.perCapita)} kr`, `${n(ref?.perCapita)} kr`],
-    [showPeerPopulation ? "Nominelt beløp ved samme folketall" : compact ? "Nominelt beløp" : "Totalt", nominal(own.amount), nominal(ref?.amount)],
+    [ref?.calculated ? "Totalt ved likt folketall" : compact ? "Nominelt beløp" : "Totalt", nominal(own.amount), nominal(ref?.amount)],
     [
-      showPeerPopulation ? "Folketall (median for utvalget)" : "Folketall",
+      showPeerPopulation && ref.name !== "Median" ? "Folketall (median i utvalget)" : "Folketall",
       own.population > 0 ? `≈ ${n(own.population)}` : "–",
-      referencePopulation > 0 ? `≈ ${n(referencePopulation)}` : "–",
+      ref?.population > 0 ? `≈ ${n(ref.population)}` : "–",
     ],
     [compact ? "Avvik per innbygger" : "Avvik per innb.", percent(row.percent), "–"],
   ];

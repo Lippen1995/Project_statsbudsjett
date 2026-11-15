@@ -13,7 +13,7 @@ import {
 import "./comparison.css";
 import ComparisonWorkspace from "./ComparisonWorkspace";
 import OccupationComparison from "./OccupationComparison";
-import SvenMeasures from "./SvenMeasures";
+import SvenMeasures, { useSvenInputs } from "./SvenMeasures";
 import ComparisonDialog from "./ComparisonDialog";
 
 const number = (n, digits = 0) =>
@@ -61,16 +61,17 @@ export default function MunicipalityComparison({ hash }) {
     [indexError, setIndexError] = useState("");
   const [code, setCode] = useState(route.code),
     [year, setYear] = useState(route.year);
-  const [peerCodes, setPeerCodes] = useState(route.peers),
-    [details, setDetails] = useState({});
-  const [loading, setLoading] = useState(true),
-    [missing, setMissing] = useState([]);
+  const [peerCodes, setPeerCodes] = useState(route.peers);
+  const [dataset, setDataset] = useState(null);
+  const [failedRequest, setFailedRequest] = useState(null);
+  const [attempt, setAttempt] = useState(0);
   const [sector, setSector] = useState(""),
     [functionCode, setFunctionCode] = useState("");
   const [functionSort, setFunctionSort] = useState({ key: "code", direction: "asc" });
   const [explainedFunction, setExplainedFunction] = useState("");
   const [tab, setTab] = useState("compare"),
     [method, setMethod] = useState("median");
+  const [waitingForSven, setWaitingForSven] = useState(false);
   const [editingPeers, setEditingPeers] = useState(false),
     [search, setSearch] = useState(""),
     [message, setMessage] = useState("");
@@ -108,7 +109,6 @@ export default function MunicipalityComparison({ hash }) {
       .catch((e) => {
         if (active) {
           setIndexError(e.message);
-          setLoading(false);
         }
       });
     return () => {
@@ -126,33 +126,49 @@ export default function MunicipalityComparison({ hash }) {
     () => (peerCodes || []).filter((c) => c !== code),
     [peerCodes, code],
   );
+  const selection = [code, ...selectedPeers].join(",");
+  const target = dataset?.details[dataset.code];
+  const peers = dataset?.peerCodes.map((c) => dataset.details[c]).filter(Boolean) ?? [];
+  const requestFailed = failedRequest?.selection === selection && failedRequest.attempt === attempt;
+  const loading = !requestFailed && (dataset?.selection !== selection || dataset.attempt !== attempt);
+  const sven = useSvenInputs(year, Boolean(target));
+  const busy = loading || waitingForSven || (tab === "sven" && !sven.ready);
+  useEffect(() => {
+    if (waitingForSven && sven.ready) {
+      setTab("sven");
+      setWaitingForSven(false);
+    }
+  }, [waitingForSven, sven.ready]);
+  const selectTab = (next) => {
+    const wait = next === "sven" && !sven.ready;
+    setWaitingForSven(wait);
+    if (!wait) setTab(next);
+  };
   useEffect(() => {
     if (!index || !peerCodes) return;
     let active = true;
-    setLoading(true);
-    setMissing([]);
-    Promise.allSettled(
-      [code, ...selectedPeers].map(async (c) => [
-        c,
-        await loadKostraDetail("municipality", c),
-      ]),
-    ).then((results) => {
+    const codes = [code, ...selectedPeers];
+    Promise.allSettled(codes.map((c) => loadKostraDetail("municipality", c))).then((results) => {
       if (!active) return;
       const next = {},
         failed = [];
       results.forEach((r, i) => {
-        const c = [code, ...selectedPeers][i];
-        if (r.status === "fulfilled" && r.value[1]) next[c] = r.value[1];
+        const c = codes[i];
+        if (r.status === "fulfilled" && r.value) next[c] = r.value;
         else failed.push(c);
       });
-      setDetails(next);
-      setMissing(failed);
-      setLoading(false);
+      if (!next[code]) {
+        setFailedRequest({ selection, attempt });
+        return;
+      }
+      setFailedRequest(null);
+      setFunctionCode((fn) => next[code].functions?.some((entry) => entry.code === fn) ? fn : "");
+      setDataset({ code, peerCodes: selectedPeers, selection, attempt, details: next, missing: failed });
     });
     return () => {
       active = false;
     };
-  }, [index, code, peerCodes, selectedPeers]);
+  }, [index, code, peerCodes, selectedPeers, selection, attempt]);
   useEffect(() => {
     if (!index || !year || !peerCodes) return;
     const q = new URLSearchParams({
@@ -166,9 +182,9 @@ export default function MunicipalityComparison({ hash }) {
       `${window.location.pathname}${window.location.search}${COMPARISON_ROUTE}?${q}`,
     );
   }, [index, code, year, peerCodes, selectedPeers]);
-  const target = details[code];
-  const peers = selectedPeers.map((c) => details[c]).filter(Boolean);
-  const entity = entities.find((e) => e.code === code);
+  const visiblePeers = dataset?.peerCodes ?? selectedPeers;
+  const missing = dataset?.missing ?? [];
+  const entity = target?.entity ?? entities.find((e) => e.code === code);
   const ownName = displayEntityName(entity);
   const functions = (target?.functions || []).filter(
     (f) => sector && f.serviceCodes?.includes(sector),
@@ -210,7 +226,6 @@ export default function MunicipalityComparison({ hash }) {
   const selectMunicipality = (next) => {
     setCode(next);
     setPeerCodes(defaultPeers(index.entities, next));
-    setFunctionCode("");
     setMessage("");
   };
   const exportData = () =>
@@ -317,8 +332,8 @@ export default function MunicipalityComparison({ hash }) {
         </button>
 
         <div className="cmp-tools">
-          <button onClick={share}>Del analyse ↗</button>
-          <button onClick={exportData} disabled={loading || !target}>
+          <button onClick={share} disabled={loading || requestFailed || !target}>Del analyse ↗</button>
+          <button onClick={exportData} disabled={loading || requestFailed || !target}>
             Eksporter CSV ↓
           </button>
         </div>
@@ -391,12 +406,12 @@ export default function MunicipalityComparison({ hash }) {
 
       <div className="cmp-peer-strip">
         <span>Utvalg</span>
-        {selectedPeers.map((c) => (
+        {visiblePeers.map((c) => (
           <span key={c}>
             {displayEntityName(entities.find((e) => e.code === c))}
           </span>
         ))}
-        {!selectedPeers.length && (
+        {!visiblePeers.length && (
           <span>Velg kommuner for å beregne en referanse.</span>
         )}
       </div>
@@ -409,7 +424,14 @@ export default function MunicipalityComparison({ hash }) {
           </button>
         </div>
       )}
-      {missing.length > 0 && (
+      {requestFailed && (
+        <p className="cmp-warning" role="alert">
+          Regnskapet for {displayEntityName(entities.find((e) => e.code === code))} kunne ikke lastes.
+          {target && ` Viser fortsatt ${ownName}.`}{" "}
+          <button type="button" onClick={() => setAttempt((n) => n + 1)}>Prøv igjen</button>
+        </p>
+      )}
+      {!requestFailed && missing.length > 0 && (
         <p className="cmp-warning" role="alert">
           Data kunne ikke lastes for{" "}
           {missing
@@ -418,28 +440,25 @@ export default function MunicipalityComparison({ hash }) {
           . Disse er utelatt fra beregningen.
         </p>
       )}
-      <nav className="cmp-tabs" aria-label="Analysevisning">
+      <nav className={`cmp-tabs ${busy ? "cmp-tabs--busy" : ""}`} aria-label="Analysevisning">
         {TABS.map(([id, label]) => (
           <button
             key={id}
             aria-current={tab === id ? "page" : undefined}
             className={tab === id ? "active" : ""}
-            onClick={() => setTab(id)}
+            onClick={() => selectTab(id)}
           >
             {label}
           </button>
         ))}
       </nav>
-      {loading ? (
+      <span className="ft-skjult" role="status">{busy ? "Oppdaterer analysen…" : ""}</span>
+      <div aria-busy={busy}>
+      {!target && loading ? (
         <div className="cmp-loading" role="status">
           Henter kommuneregnskapene…
         </div>
-      ) : !target ? (
-        <p role="alert">
-          Kommuneregnskapet mangler. Velg en annen kommune eller last siden på
-          nytt.
-        </p>
-      ) : (
+      ) : target && (
         <>
           {tab === "explain" && (
             <div className="cmp-filters">
@@ -504,7 +523,6 @@ export default function MunicipalityComparison({ hash }) {
           {tab === "compare" && (
             <>
               <ComparisonWorkspace
-                key={code}
                 target={target}
                 peers={peers}
                 entities={entities}
@@ -595,7 +613,7 @@ export default function MunicipalityComparison({ hash }) {
                           {number(f.percent, 1)} %
                         </td>
                         <td>
-                          {f.count}/{selectedPeers.length}
+                          {f.count}/{visiblePeers.length}
                         </td>
                       </tr>
                     ))}
@@ -615,14 +633,14 @@ export default function MunicipalityComparison({ hash }) {
                   onClose={() => setExplainedFunction("")}
                 />
               )}
-              <OccupationComparison key={code} target={target} peers={peers} year={year} years={index.years} />
+              <OccupationComparison target={target} peers={peers} year={year} years={index.years} />
             </>
           )}
           {tab === "sven" && (
             <>
               <div className="cmp-section-title">
                 <h2>Hvor kan kommunen spare?</h2>
-                <span>{ownName} · {year}</span>
+                <span>{ownName} · {sven.year}</span>
               </div>
               <Sven small>
                 <p><strong>Jeg har for lite informasjon til å gi informerte spareanslag.</strong>{" "}
@@ -631,11 +649,12 @@ export default function MunicipalityComparison({ hash }) {
                   Vurder konsekvensene for innbyggerne og ansatte i tjenestene før dere går videre.
                 </p>
               </Sven>
-              <SvenMeasures target={target} peers={peers} year={year} method={method} />
+              <SvenMeasures target={target} peers={peers} year={sven.year} method={method} data={sven} />
             </>
           )}
         </>
       )}
+      </div>
 
       <details className="cmp-method">
         <summary>Datagrunnlag, metode og begrensninger</summary>

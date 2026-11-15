@@ -67,11 +67,12 @@ function Measure({ item, method, peerCount }) {
   );
 }
 
-export default function SvenMeasures({ target, peers, year, method }) {
-  const purchase = usePurchaseArts("120");
+export function useSvenInputs(year, enabled) {
+  const purchase = usePurchaseArts(enabled ? "120" : "");
   const [state, setState] = useState(null);
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
+    if (!enabled) return;
     let active = true;
     Promise.allSettled([load(`/data/kostra/occupations/${year}.json`), load(`/data/kostra/sven/${year}.json`)])
       .then(([occupations, inputs]) => {
@@ -81,21 +82,28 @@ export default function SvenMeasures({ target, peers, year, method }) {
         });
       });
     return () => { active = false; };
-  }, [year, attempt]);
-  const ready = state?.year === year && state.attempt === attempt && !purchase.pending;
-  if (!ready) return <p role="status">Henter datagrunnlaget for Svens forslag …</p>;
+  }, [year, attempt, enabled]);
+  return {
+    ready: state?.year === year && state.attempt === attempt && !purchase.pending,
+    year: state?.year,
+    occupations: state?.occupations, inputs: state?.inputs, purchaseArts: purchase.purchaseArts,
+    error: state?.error || purchase.error,
+    retry: () => { setAttempt((n) => n + 1); if (purchase.error) purchase.retry(); },
+  };
+}
 
+export default function SvenMeasures({ target, peers, year, method, data }) {
   const rows = svenMeasures({
-    target: withPurchaseArts(target, purchase.purchaseArts),
-    peers: peers.map((peer) => withPurchaseArts(peer, purchase.purchaseArts)),
-    year, method, occupations: state.occupations, inputs: state.inputs,
+    target: withPurchaseArts(target, data.purchaseArts),
+    peers: peers.map((peer) => withPurchaseArts(peer, data.purchaseArts)),
+    year, method, occupations: data.occupations, inputs: data.inputs,
   });
   const candidates = rows.filter(({ status }) => status === "review" || status === "unpriced");
   return (
     <div className="cmp-sven-measures">
-      {(state.error || purchase.error) && (
+      {data.error && (
         <p role="alert">Deler av SSB-uttrekket kunne ikke lastes.{" "}
-          <button type="button" onClick={() => { setAttempt((n) => n + 1); if (purchase.error) purchase.retry(); }}>Prøv igjen</button>
+          <button type="button" onClick={data.retry}>Prøv igjen</button>
         </p>
       )}
       {!candidates.length && <p><strong>Jeg anbefaler ingen kutt ut fra tilgjengelige tall for {entityName(target)}.</strong></p>}

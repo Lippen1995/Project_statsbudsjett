@@ -170,11 +170,29 @@
   font-size: 12px;
 }
 .cmp-tabs {
+  position: relative;
   display: flex;
   gap: 26px;
   border-bottom: 1px solid var(--strek);
   margin-bottom: 25px;
   overflow: auto;
+}
+.cmp-tabs--busy::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 32px;
+  height: 2px;
+  background: var(--gronn);
+  animation: cmp-progress 1.1s ease-in-out infinite alternate;
+}
+@keyframes cmp-progress {
+  from { opacity: .25; transform: scaleX(.45); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cmp-tabs--busy::after { animation: none; }
 }
 .cmp-page .cmp-tabs button {
   border: 0;
@@ -614,6 +632,7 @@
   font-weight: 600;
 }
 .cmp-loading {
+  min-height: 22rem;
   padding: 90px 15px;
   text-align: center;
   color: var(--dempet);

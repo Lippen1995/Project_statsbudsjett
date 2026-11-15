@@ -31,6 +31,12 @@ export function loadKostraDetail(kind, code) {
     return Promise.reject(new Error('Ugyldig region-id'))
   }
   const key = `${kind}-${code}`
-  if (!details.has(key)) details.set(key, json(`./data/kostra/entities/${key}.json`, true))
+  if (!details.has(key)) details.set(key, json(`./data/kostra/entities/${key}.json`, true).then((detail) => {
+    if (!detail) details.delete(key)
+    return detail
+  }).catch((error) => {
+    details.delete(key)
+    throw error
+  }))
   return details.get(key)
 }

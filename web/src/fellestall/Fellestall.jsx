@@ -23,7 +23,9 @@ import Kostra from '../kostra/Kostra'
 import { COMPARISON_ROUTE } from '../sider/comparison.js'
 import './fellestall.css'
 
-const MunicipalityComparison = lazy(() => import('../sider/MunicipalityComparison.jsx'))
+const loadMunicipalityComparison = () => import('../sider/MunicipalityComparison.jsx')
+const MunicipalityComparison = lazy(loadMunicipalityComparison)
+const preloadMunicipalityComparison = () => { void loadMunicipalityComparison().catch(() => {}) }
 
 const SEKSJON_IDER = SEKSJONER.map((s) => s.id)
 
@@ -61,11 +63,11 @@ export default function Fellestall() {
   useEffect(() => {
     const oppdater = () => {
       setHash(window.location.hash)
-      if (window.location.hash.startsWith('#sider')) window.scrollTo({ top: 0 })
+      if (!comparisonPage && window.location.hash.startsWith('#sider')) window.scrollTo({ top: 0 })
     }
     window.addEventListener('hashchange', oppdater)
     return () => window.removeEventListener('hashchange', oppdater)
-  }, [])
+  }, [comparisonPage])
 
   useEffect(() => {
     if (comparisonPage || !/^#[a-z-]+$/.test(hash)) return
@@ -201,6 +203,7 @@ export default function Fellestall() {
 
   const sammenlignLenke = (
     <a href={COMPARISON_ROUTE} className={`ft-sammenlign-lenke ${comparisonPage ? 'aktiv' : ''}`}
+      onPointerEnter={preloadMunicipalityComparison} onFocus={preloadMunicipalityComparison}
       aria-current={comparisonPage ? 'page' : undefined}>
       Sammenlign kommuner <span className="ft-kommuneny-merke">NY</span>
     </a>
