@@ -201,7 +201,9 @@ export default function Fellestall() {
 
   const sammenlignLenke = (
     <a href={COMPARISON_ROUTE} className={`ft-sammenlign-lenke ${comparisonPage ? 'aktiv' : ''}`}
-      aria-current={comparisonPage ? 'page' : undefined}>Sammenlign kommuner</a>
+      aria-current={comparisonPage ? 'page' : undefined}>
+      Sammenlign kommuner <span className="ft-kommuneny-merke">NY</span>
+    </a>
   )
 
   const aarVelger = (

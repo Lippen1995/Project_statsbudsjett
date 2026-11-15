@@ -1120,7 +1120,11 @@ body.ft-body { background: #F7F5F0; }
   border: 0;
   border-top: 1px solid var(--strek);
 }
-.ft .ft-sammenlign-lenke.aktiv { color: var(--rust-mork); }
+.ft .ft-sammenlign-lenke.aktiv { font-weight: 700; }
+.ft .ft-sammenlign-lenke .ft-kommuneny-merke {
+  margin-left: 3px;
+  vertical-align: super;
+}
 .ft-toppnav { align-items: baseline; }
 .ft-toppnav-seksjoner { order: 1; width: 100%; display: flex; gap: 7px 16px; flex-wrap: wrap; }
 .ft-nav[hidden], .ft-toppnav-seksjoner[hidden] { display: none; }
