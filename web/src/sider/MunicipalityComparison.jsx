@@ -711,7 +711,7 @@ export default function MunicipalityComparison({ hash }) {
       </details>
 
       <footer className="cmp-footer">
-        <span>Fellestall Pluss</span>
+        <span>Fellestall</span>
         <span>Et bedre grunnlag for lokale beslutninger.</span>
       </footer>
     </section>
