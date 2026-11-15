@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { flushSync } from "react-dom";
 import { accountingArtBreakdown } from "../kostra/explorer";
 import { SECTORS } from "./comparison";
 import { ACCOUNT_SECTIONS, OWN_PURCHASES, PURCHASE_BREAKDOWN_NOTE, PURCHASE_REMAINDER, accountingObservation } from "./accounting-drill";
@@ -46,6 +47,16 @@ const POST_LABELS = {
 
 const EMPTY_PATH = { scope: "", post: "", art: "" };
 const moneyPerPerson = (value) => Number.isFinite(value) ? `${n(value)} kr` : "–";
+
+function transitionDrill(update) {
+  if (!document.startViewTransition ||
+      !CSS.supports("selector(:active-view-transition-type(municipal-drill))") ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    update();
+    return;
+  }
+  document.startViewTransition({ update: () => flushSync(update), types: ["municipal-drill"] });
+}
 
 function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
   const { own, reference } = summary;
@@ -205,23 +216,30 @@ export default function ComparisonWorkspace({
   function selectRow(code) {
     if (post) {
       setPath({ scope, post: post.code, art: code });
-    } else if (fn) {
-      setPath({ scope, post: code, art: "" });
-    } else if (sectorName) {
-      onFunction(code);
-      setPath(EMPTY_PATH);
-    } else {
-      onSector(code);
-      onFunction("");
-      setPath(EMPTY_PATH);
+      return;
     }
+    transitionDrill(() => {
+      if (fn) {
+        setPath({ scope, post: code, art: "" });
+      } else {
+        if (!sectorName) onSector(code);
+        onFunction(sectorName ? code : "");
+        setPath(EMPTY_PATH);
+      }
+    });
   }
 
   function returnTo(step) {
     if (step === breadcrumbs.length - 1) return;
-    if (step === 0) onSector("");
-    if (step < 2) onFunction("");
-    setPath(step === 3 ? { scope, post: post.code, art: "" } : EMPTY_PATH);
+    if (step === 3) {
+      setPath({ scope, post: post.code, art: "" });
+      return;
+    }
+    transitionDrill(() => {
+      if (step === 0) onSector("");
+      if (step < 2) onFunction("");
+      setPath(EMPTY_PATH);
+    });
   }
 
   return (

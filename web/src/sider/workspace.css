@@ -936,11 +936,43 @@
   min-height: var(--cmp-drill-height);
 }
 .cmp-drill-view {
-  animation: cmp-drill-in 300ms var(--mykt);
+  animation: cmp-drill-in 420ms ease-out;
 }
 @keyframes cmp-drill-in {
-  from { opacity: .35; transform: translateY(4px); }
+  from { opacity: .18; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@supports selector(:active-view-transition-type(municipal-drill)) {
+  :root:active-view-transition-type(municipal-drill) {
+    view-transition-name: none;
+  }
+  :active-view-transition-type(municipal-drill) .cmp-art-layout {
+    view-transition-name: municipal-chart;
+  }
+  :active-view-transition-type(municipal-drill) .cmp-drill-view {
+    animation: none;
+  }
+  :active-view-transition-type(municipal-drill) .cmp-art-plot .recharts-tooltip-wrapper {
+    visibility: hidden !important;
+  }
+  :root:active-view-transition-type(municipal-drill)::view-transition {
+    pointer-events: none;
+  }
+  ::view-transition-group(municipal-chart),
+  ::view-transition-old(municipal-chart),
+  ::view-transition-new(municipal-chart) {
+    animation-duration: 440ms;
+    animation-timing-function: ease-in-out;
+  }
+  ::view-transition-old(municipal-chart) {
+    animation-name: cmp-drill-out;
+  }
+  ::view-transition-new(municipal-chart) {
+    animation-name: cmp-drill-in;
+  }
+}
+@keyframes cmp-drill-out {
+  to { opacity: 0; transform: translateY(-8px); }
 }
 .cmp-art-explanations {
   margin: 12px 0 0 18px;
