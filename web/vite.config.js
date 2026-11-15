@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { readFileSync } from 'node:fs'
 import SeoFallback from './src/fellestall/SeoFallback.jsx'
 import { analysesPlugin } from './src/analyser/vite-plugin.jsx'
+import { productsPlugin } from './src/products/vite-plugin.jsx'
 import { adminPlugin } from './src/admin/vite-plugin.mjs'
 
 const NETTSTED = 'https://fellestall.no/'
@@ -91,6 +92,6 @@ function seo() {
 
 export default defineConfig({
   define: { __FT_RELEASE__: JSON.stringify(process.env.GITHUB_SHA || 'ukjent') },
-  plugins: [react(), seo(), analysesPlugin(), adminPlugin()],
+  plugins: [react(), seo(), analysesPlugin(), adminPlugin(), productsPlugin()],
   base: './',
 })
