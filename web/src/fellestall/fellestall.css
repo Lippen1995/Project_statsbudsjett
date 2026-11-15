@@ -157,7 +157,7 @@ body.ft-body { background: #F7F5F0; }
   background-position: right center;
 }
 
-.ft-nav { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+.ft-nav { display: flex; flex-direction: column; gap: 1px; }
 .ft-navlenke {
   border: 0;
   display: flex;
@@ -1087,48 +1087,41 @@ body.ft-body { background: #F7F5F0; }
 .ft-flyt-nav { flex-wrap: wrap; justify-content: flex-start; margin-bottom: 18px; }
 .ft-flyt-oppsummering { margin: 12px 0 20px; font-size: 14px; line-height: 1.7; color: var(--tekst); }
 
-/* Navigation for the paid municipal workspace. */
-.ft-pages-nav {
-  margin: 25px 0 0;
-  padding: 20px 0 0;
+.ft-hovedmeny { min-height: 0; overflow-y: auto; }
+.ft .ft-navgruppe-knapp,
+.ft .ft-sammenlign-lenke {
+  color: var(--ink);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.ft .ft-navgruppe-knapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 0;
+  padding: 7px 0;
+  cursor: pointer;
+}
+.ft-navgruppe-knapp::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(-45deg);
+}
+.ft-navgruppe-knapp[aria-expanded="true"]::after { transform: rotate(45deg); }
+.ft-hovedmeny .ft-sammenlign-lenke {
+  display: block;
+  padding: 13px 0 7px;
+  margin-top: 8px;
+  border: 0;
   border-top: 1px solid var(--strek);
 }
-.ft-pages-label {
-  margin: 0 12px 10px;
-  color: var(--dempet);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.ft-pages-link {
-  display: block;
-  padding: 10px 12px;
-  border-left: 2px solid transparent;
-  color: var(--tekst);
-  font-size: 13px;
-  line-height: 1.5;
-}
-.ft-pages-link.aktiv {
-  border-color: var(--rust);
-  color: var(--ink);
-  background: var(--flate);
-  font-weight: 600;
-}
-.ft-pages-link small {
-  display: block;
-  color: var(--rust-mork);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-top: 4px;
-}
-.ft.ft-comparison .ft-nav {
-  flex: 0;
-}
-.ft.ft-comparison .ft-sidefot {
-  margin-top: auto;
-}
-
-.ft .ft-nav { flex: 0; }
+.ft .ft-sammenlign-lenke.aktiv { color: var(--rust-mork); }
+.ft-toppnav { align-items: baseline; }
+.ft-toppnav-seksjoner { order: 1; width: 100%; display: flex; gap: 7px 16px; flex-wrap: wrap; }
+.ft-nav[hidden], .ft-toppnav-seksjoner[hidden] { display: none; }
 .ft .ft-sidefot { margin-top: auto; }

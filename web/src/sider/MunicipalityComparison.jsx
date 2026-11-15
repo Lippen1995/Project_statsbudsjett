@@ -263,17 +263,14 @@ export default function MunicipalityComparison({ hash }) {
       </section>
     );
   return (
-    <section className="cmp-page" aria-label="Sammenlign din kommune">
+    <section className="cmp-page" aria-label="Sammenlign kommuner">
       <div className="cmp-topline">
         <a href="#kommuner">← Kommuner og fylker</a>
-        <span className="cmp-premium">
-          ◇ Felles­tall Pluss · Betalt tjeneste
-        </span>
       </div>
       <header className="cmp-header">
-        <div className="cmp-eyebrow">Sider / Kommuneanalyse</div>
+        <div className="cmp-eyebrow">Kommuneanalyse</div>
         <h1>
-          Sammenlign din kommune<span>.</span>
+          Sammenlign kommuner<span>.</span>
         </h1>
         <p>
           Se forskjellene. Still bedre spørsmål.
@@ -281,10 +278,6 @@ export default function MunicipalityComparison({ hash }) {
           Finn rom for nye prioriteringer – sammen med Sven.
         </p>
       </header>
-      <div className="cmp-preview">
-        <span>FORHÅNDSVISNING</span> Du prøver arbeidsområdet for vår kommende
-        betaltjeneste. Ingen betaling eller abonnement aktiveres her.
-      </div>
       <div className="cmp-toolbar">
         <label>
           Din kommune
@@ -671,11 +664,6 @@ export default function MunicipalityComparison({ hash }) {
             prisjustert. Resultater kan påvirkes av organisering, føring,
             avskrivninger, endrede kommunegrenser og ulik kvalitet. Svens observasjoner kommer fra åpne, faste
             beregningsregler, ikke en språkmodell.
-          </p>
-          <p>
-            <strong>Tilgang:</strong> Dette er en åpen forhåndsvisning av en
-            planlagt betaltjeneste. Betaling og serverbasert abonnementskontroll
-            er ikke aktivert.
           </p>
           <div className="cmp-source-links">
             <a

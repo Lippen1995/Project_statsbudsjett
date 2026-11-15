@@ -20,6 +20,7 @@ import {
   useMunicipalLaunchNewsVisibility,
 } from './MunicipalLaunchNews.jsx'
 import Kostra from '../kostra/Kostra'
+import { COMPARISON_ROUTE } from '../sider/comparison.js'
 import './fellestall.css'
 
 const MunicipalityComparison = lazy(() => import('../sider/MunicipalityComparison.jsx'))
@@ -43,6 +44,7 @@ export default function Fellestall() {
   const [utforsk, setUtforsk] = useState(START_UTFORSK)
   const [detaljer, setDetaljer] = useState({})
   const [hash, setHash] = useState(() => window.location.hash)
+  const [hovedsidenApen, setHovedsidenApen] = useState(true)
   const lasterRef = useRef({})
 
   const comparisonPage = hash.startsWith('#sider')
@@ -190,6 +192,18 @@ export default function Fellestall() {
     aktiv: !comparisonPage && aktivSeksjon === s.id,
   }))
 
+  const hovedsideKnapp = (id) => (
+    <button type="button" className="ft-navgruppe-knapp" aria-expanded={hovedsidenApen}
+      aria-controls={id} onClick={() => setHovedsidenApen((apen) => !apen)}>
+      Hovedsiden
+    </button>
+  )
+
+  const sammenlignLenke = (
+    <a href={COMPARISON_ROUTE} className={`ft-sammenlign-lenke ${comparisonPage ? 'aktiv' : ''}`}
+      aria-current={comparisonPage ? 'page' : undefined}>Sammenlign kommuner</a>
+  )
+
   const aarVelger = (
     <select className="ft-select" value={aar} onChange={(e) => setAar(+e.target.value)} aria-label="Regnskapsår">
       {aarListe.map((y) => <option key={y} value={y}>{y}</option>)}
@@ -213,22 +227,20 @@ export default function Fellestall() {
             <span className="ft-aarlabel">Regnskapsår</span>
             {aarVelger}
           </label>
-          <nav className="ft-nav" aria-label="Hovedinnhold">
-            {navLenker.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className={`ft-navlenke ${n.aktiv ? 'aktiv' : ''}`}>
-                <span className="ft-navnr num">{n.nr}</span>
-                <span className="ft-navtekst">
-                  {n.navn}
-                  {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
-                </span>
-              </a>
-            ))}
-          </nav>
-          <nav className="ft-pages-nav" aria-label="Sider">
-            <div className="ft-pages-label">Sider</div>
-            <a href="#sider/sammenlign-din-kommune" className={`ft-pages-link ${comparisonPage ? 'aktiv' : ''}`} aria-current={comparisonPage ? 'page' : undefined}>
-              Sammenlign din kommune<small>◇ Pluss · Betalt tjeneste</small>
-            </a>
+          <nav className="ft-hovedmeny" aria-label="Hovedinnhold">
+            {hovedsideKnapp('ft-sidenavigasjon')}
+            <div id="ft-sidenavigasjon" className="ft-nav" hidden={!hovedsidenApen}>
+              {navLenker.map((n) => (
+                <a key={n.id} href={`#${n.id}`} className={`ft-navlenke ${n.aktiv ? 'aktiv' : ''}`}>
+                  <span className="ft-navnr num">{n.nr}</span>
+                  <span className="ft-navtekst">
+                    {n.navn}
+                    {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
+                  </span>
+                </a>
+              ))}
+            </div>
+            {sammenlignLenke}
           </nav>
           <div className="ft-sidefot">
             <a href="/analyser/">Analyser</a>
@@ -245,13 +257,16 @@ export default function Fellestall() {
                 {aarVelger}
               </label>
               <nav className="ft-toppnav" aria-label="Hovedinnhold">
-                {navLenker.map((n) => (
-                  <a key={n.id} href={`#${n.id}`} className={`ft-toppnavlenke ${n.aktiv ? 'aktiv' : ''}`}>
-                    {n.navn}
-                    {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
-                  </a>
-                ))}
-                <a href="#sider/sammenlign-din-kommune">Sider · Sammenlign din kommune ◇ Pluss</a>
+                {hovedsideKnapp('ft-toppnavigasjon')}
+                {sammenlignLenke}
+                <div id="ft-toppnavigasjon" className="ft-toppnav-seksjoner" hidden={!hovedsidenApen}>
+                  {navLenker.map((n) => (
+                    <a key={n.id} href={`#${n.id}`} className={`ft-toppnavlenke ${n.aktiv ? 'aktiv' : ''}`}>
+                      {n.navn}
+                      {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
+                    </a>
+                  ))}
+                </div>
                 <a href="#om-tallene">Om tallene</a>
                 <a href="/analyser/">Analyser</a>
               </nav>
@@ -367,7 +382,7 @@ export default function Fellestall() {
             <div className="ft-stikkord">Innhold</div>
             <div className="ft-fot-lenker">
               {SEKSJONER.map((s) => <a key={s.id} href={`#${s.id}`}>{s.navn}</a>)}
-              <a href="#sider/sammenlign-din-kommune">Sammenlign din kommune · Pluss</a>
+              <a href={COMPARISON_ROUTE}>Sammenlign kommuner</a>
               <a href="/analyser/">Analyser</a>
             </div>
           </div>

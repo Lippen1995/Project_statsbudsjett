@@ -314,10 +314,11 @@ function compareSickness(rows, target, peers, period, index) {
 }
 
 function MunicipalitySicknessHistory({ label, sectorIndex, period, sources, target, peers, current, onClose }) {
-  const suffix = period.slice(4);
-  const periods = Object.keys(sources).filter((key) => key.slice(4) === suffix).sort();
-  const { data, error, retry } = useOccupationAssets(periods.map(ksAsset));
   const [inspected, setInspected] = useState(period);
+  const suffix = inspected.slice(4);
+  const available = Object.keys(sources).sort();
+  const periods = available.filter((key) => key.slice(4) === suffix);
+  const { data, error, retry } = useOccupationAssets(periods.map(ksAsset));
   const history = data ? periods.map((key) => {
     const { own, median } = compareSickness(data[ksAsset(key)], target, peers, key, sectorIndex);
     const priorKey = previousPeriod(key);
@@ -330,12 +331,26 @@ function MunicipalitySicknessHistory({ label, sectorIndex, period, sources, targ
     };
   }) : [];
   const selected = history.find((row) => row.code === inspected);
-  const rankingData = data?.[ksAsset(inspected)] ?? current;
+  const rankingData = data?.[ksAsset(inspected)] ?? (inspected === period ? current : null);
   const ranked = [target, ...peers].map((detail) => ({
     code: detail.entity.code, a: municipalSicknessRate(rankingData, detail, inspected, sectorIndex),
     own: { name: entityName(detail) },
   })).sort((a, b) => (b.a ?? -Infinity) - (a.a ?? -Infinity) || a.own.name.localeCompare(b.own.name, "nb"));
   return <OccupationDialog label={label} title={`${entityName(target)} · Legemeldt sykefravær`} onClose={onClose}>
+    <div className="cmp-dialog-options">
+      <label className="cmp-inline-label">Historikk
+        <select value={suffix} onChange={(event) => {
+          const nextSuffix = event.target.value;
+          const matchingPeriod = inspected.slice(0, 4) + nextSuffix;
+          setInspected(sources[matchingPeriod] ? matchingPeriod : available.findLast((key) => key.slice(4) === nextSuffix));
+        }}>
+          <option value="">År</option>
+          {[...new Set(available.map((key) => key.slice(4)).filter(Boolean))].map((key) => (
+            <option key={key} value={key}>{key.at(-1)}. kvartal</option>
+          ))}
+        </select>
+      </label>
+    </div>
     {!data ? <Loading error={error} retry={retry} label="historikk" source="KS" /> : <>
       {suffix && <p className="cmp-footnote">Grafen sammenligner {suffix.at(-1)}. kvartal på tvers av år.</p>}
       <div className="cmp-chart-legend"><span><i />{entityName(target)}</span><span><i className="peer" />Median i utvalget</span></div>
@@ -358,44 +373,22 @@ function MunicipalitySicknessHistory({ label, sectorIndex, period, sources, targ
 
 function MunicipalitySickness({ year, target, peers }) {
   const { data, error, retry } = useOccupationAssets([ksAsset("index")]);
-  const [frequency, setFrequency] = useState("annual");
-  const [quarter, setQuarter] = useState(null);
   const [selection, setSelection] = useState(null);
   const sorting = useSort();
   const index = data?.[ksAsset("index")];
-  const quarters = Object.keys(index?.sources ?? {}).filter((key) => key.includes("K")).sort().reverse();
-  const quarterly = frequency === "quarterly";
-  const period = quarterly ? (quarter ?? quarters.find((key) => key.startsWith(String(year))) ?? quarters[0]) : String(year);
-  const previous = period && previousPeriod(period);
-  const assets = [period, quarterly && previous].filter((key) => index?.sources?.[key]).map(ksAsset);
-  const observations = useOccupationAssets(assets);
-  const current = period ? observations.data?.[ksAsset(period)] : null;
-  const earlier = previous ? observations.data?.[ksAsset(previous)] : null;
+  const period = String(year);
+  const observations = useOccupationAssets(index?.sources[period] ? [ksAsset(period)] : []);
+  const current = observations.data?.[ksAsset(period)];
   const columns = [["label", "Tjeneste (næring)"], ["own", entityName(target)], ["median", "Median i utvalget"], ["difference", "Avvik (pp)"]];
-  if (quarterly) columns.push(["change", "Fra samme kvartal i fjor (pp)"]);
-  const rows = current ? index.groups.map(([code, label], sectorIndex) => {
-    const values = compareSickness(current, target, peers, period, sectorIndex);
-    const earlierRate = municipalSicknessRate(earlier, target, previous, sectorIndex);
-    return { code, label, sectorIndex, ...values, change: pointDifference(values.own, earlierRate) };
-  }) : [];
+  const rows = current ? index.groups.map(([code, label], sectorIndex) => ({
+    code, label, sectorIndex, ...compareSickness(current, target, peers, period, sectorIndex),
+  })) : [];
   const active = rows.find(({ code }) => code === selection);
   const osInGroup = [target, ...peers].some((detail) => detail.entity.code === "0301");
   return <>
     <p className="cmp-footnote">Legemeldte fraværsdagsverk i prosent av avtalte dagsverk, etter arbeidsstedskommune og næring i kommuneforvaltningen. Alle yrker i hver næring inngår.</p>
-    {!index ? <Loading error={error} retry={retry} label="sykefravær" source="KS" /> : <>
-      <div className="cmp-sickness-controls">
-        <label className="cmp-inline-label">Periode
-          <select value={frequency} onChange={(event) => { setFrequency(event.target.value); setSelection(null); }}>
-            <option value="annual">År · {year}</option><option value="quarterly">Kvartal</option>
-          </select>
-        </label>
-        {quarterly && <label className="cmp-inline-label">Kvartal
-          <select value={period ?? ""} onChange={(event) => { setQuarter(event.target.value); setSelection(null); }}>
-            {quarters.map((key) => <option key={key} value={key}>{periodLabel(key)}</option>)}
-          </select>
-        </label>}
-      </div>
-      {!index.sources[period] ? <p>KS har ingen publisert tabell for denne perioden.</p> : !current ? (
+    {!index ? <Loading error={error} retry={retry} label="sykefravær" source="KS" />
+      : !index.sources[period] ? <p>KS har ingen publisert tabell for {year}.</p> : !current ? (
         <Loading error={observations.error} retry={observations.retry} label="sykefravær" source="KS" />
       ) : <div className="cmp-driver-table cmp-municipal-sickness"><table>
         <SortHeaders columns={columns} {...sorting} />
@@ -405,13 +398,11 @@ function MunicipalitySickness({ year, target, peers }) {
             <td>{formatRate(row.own)}</td>
             <td>{formatRate(row.median.value)}<small>{row.median.count}/{peers.length} med data</small></td>
             <td>{formatDifference(row.difference)}</td>
-            {quarterly && <td>{formatDifference(row.change)}</td>}
           </tr>
         ))}</tbody>
       </table></div>}
-    </>}
     <p className="cmp-footnote">Manglende og skjermede tall vises som «–».{osInGroup && " Oslo inngår ikke i denne sammenligningen. KS publiserer Oslo separat, med fylkeskommunale oppgaver."} {index?.sources[period] && <><a href={index.sources[period]}>KS · Excel for {periodLabel(period)}</a>{" · "}</>}<a href={KS_SOURCE}>KS sykefraværsstatistikk (SSB)</a></p>
-    {active && <MunicipalitySicknessHistory label={active.label} sectorIndex={active.sectorIndex} period={period}
+    {active && <MunicipalitySicknessHistory key={period} label={active.label} sectorIndex={active.sectorIndex} period={period}
       sources={index.sources} target={target} peers={peers} current={current} onClose={() => setSelection(null)} />}
   </>;
 }
@@ -518,7 +509,7 @@ export default function OccupationComparison({ target, peers, year, years }) {
             <button type="button" aria-pressed={view === "sickness"} onClick={() => setView("sickness")}>Sykefravær</button>
             <button type="button" aria-pressed={view === "absence"} onClick={() => setView("absence")}>Lengre fravær</button>
           </div>
-          {view !== "sickness" && <span>{year}</span>}
+          <span>{year}</span>
         </div>
       </div>
       <div hidden={view !== "staffing"}><StaffingTable target={target} peers={peers} year={year} years={years} /></div>
