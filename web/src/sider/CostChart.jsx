@@ -44,7 +44,7 @@ export function CostTable({
 }) {
   if (!row?.own) return null;
   const { own, reference: ref } = row;
-  const showPeerPopulation = ref?.calculated && ref.population > 0;
+  const weightedReference = ref?.calculated && ref.name !== "Median";
   const rate = (value) => Number.isFinite(value) ? `${n(value, 2)} %` : "–";
   const metrics = absence ? [
     ["Andel av avtalte årsverk", rate(own.perCapita), rate(ref?.perCapita)],
@@ -59,16 +59,19 @@ export function CostTable({
     ["Avvik per 1 000 innb. (%)", percent(row.percent), "–"],
   ] : [
     [compact ? "Per innbygger" : "Kr per innb.", `${n(own.perCapita)} kr`, `${n(ref?.perCapita)} kr`],
-    [ref?.calculated ? "Totalt ved likt folketall" : compact ? "Nominelt beløp" : "Totalt", nominal(own.amount), nominal(ref?.amount)],
+    [weightedReference ? "Nominelt beløp (median)" : "Nominelt beløp", nominal(own.amount), nominal(ref?.amount)],
     [
-      showPeerPopulation && ref.name !== "Median" ? "Folketall (median i utvalget)" : "Folketall",
+      weightedReference ? "Folketall (median)" : "Folketall",
       own.population > 0 ? `≈ ${n(own.population)}` : "–",
       ref?.population > 0 ? `≈ ${n(ref.population)}` : "–",
     ],
-    [compact ? "Avvik per innbygger" : "Avvik per innb.", percent(row.percent), "–"],
+    [compact ? "Avvik per innbygger" : "Avvik per innb.", percent(row.percent, ref?.calculated ? 2 : 1), "–"],
   ];
   if (sickness && row.previous) metrics.push([row.previous.label, rate(row.previous.own), rate(row.previous.reference)]);
-  if (history) metrics.push([compact ? "År/år-endring" : "År/år", percent(own.growth), percent(ref?.growth)]);
+  if (history) metrics.push([
+    weightedReference && row.mode === "amount" ? "År/år (medianbeløp)" : compact ? "År/år-endring" : "År/år",
+    percent(own.growth), percent(ref?.growth),
+  ]);
   return (
     <div
       className={`cmp-cost-tooltip ${compact ? "cmp-cost-tooltip--inline" : "cmp-cost-tooltip--hover"}`}
@@ -97,8 +100,7 @@ export function CostTable({
       </table>
       {compact && !staffing && ref?.calculated && (
         <p>
-          Referansebeløpet er beregnet ved {own.name}s folketall. Referansen
-          bygger på {ref.count} kommuner.
+          Referansen per innbygger bygger på {ref.count} kommuner med data.
         </p>
       )}
     </div>

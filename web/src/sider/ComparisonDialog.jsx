@@ -287,7 +287,7 @@ export default function ComparisonDialog({
               {other
                 ? entityName(other)
                 : view === "history"
-                  ? referenceName(method)
+                  ? referenceName(mode === "amount" ? "median" : method)
                   : "Sammenligningskommuner"}
             </span>
             {view === "history" && secondary !== "none" && (

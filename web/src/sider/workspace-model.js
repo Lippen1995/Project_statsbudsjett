@@ -9,9 +9,9 @@ export const formatNumber = (value, digits = 0) =>
     : "–";
 export const nominal = (value) =>
   Number.isFinite(value) ? `${formatNumber(value / 1000, 1)} mill. kr` : "–";
-export const percent = (value) =>
+export const percent = (value, digits = 1) =>
   Number.isFinite(value)
-    ? `${value > 0 ? "+" : ""}${formatNumber(value, 1)} %`
+    ? `${value > 0 ? "+" : ""}${formatNumber(value, digits)} %`
     : "–";
 export const deviation = (value, reference) =>
   Number.isFinite(value) && Number.isFinite(reference) && reference > 0
@@ -20,6 +20,9 @@ export const deviation = (value, reference) =>
 export const referenceName = (method) =>
   method === "weighted" ? "Vektet snitt" : "Median";
 export const entityName = (detail) => detail?.entity?.name || "Ukjent kommune";
+const peerMedian = (peers, read) => benchmarkObservations(
+  peers.map((peer) => ({ p: { perCapita: read(peer) } })), "median",
+).value;
 export function observation(
   detail,
   year,
@@ -54,6 +57,9 @@ export function comparisonRow(
   const readReference = (y) => art
     ? accountingBenchmark(peers, y, fn, art, method)
     : benchmark(peers, y, sector, fn, method);
+  const medianAmount = (y) => peerMedian(peers, (peer) => (art
+    ? accountingObservation(peer, y, fn, art)
+    : point(peer, y, sector, fn))?.amount);
   const currentReference = other ? null : readReference(year);
   const ref = other
     ? observation(other, year, sector, fn, mode, art)
@@ -61,25 +67,14 @@ export function comparisonRow(
         name: referenceName(method),
         year,
         perCapita: currentReference.value,
-        amount: null,
-        population: benchmarkObservations(peers.map((peer) => ({
-          p: { perCapita: population(peer, year) || null },
-        })), "median").value,
+        amount: medianAmount(year),
+        population: peerMedian(peers, (peer) => population(peer, year) || null),
         calculated: true,
       };
   if (ref.calculated) {
-    ref.amount =
-      Number.isFinite(ref.perCapita) && own.population > 0
-        ? (ref.perCapita * own.population) / 1000
-        : null;
-    const prev = readReference(year - 1).value;
-    const prevAmount =
-      Number.isFinite(prev) && population(target, year - 1) > 0
-        ? (prev * population(target, year - 1)) / 1000
-        : null;
     ref.growth = deviation(
-      mode === "amount" ? ref.amount : ref.perCapita,
-      mode === "amount" ? prevAmount : prev,
+      ref[mode],
+      mode === "amount" ? medianAmount(year - 1) : readReference(year - 1).value,
     );
     ref.count = currentReference.count;
   }
@@ -87,6 +82,7 @@ export function comparisonRow(
     code: String(year),
     label: String(year),
     own,
+    mode,
     reference: ref,
     a: Number.isFinite(own[mode])
       ? own[mode] / (mode === "amount" ? 1000 : 1)

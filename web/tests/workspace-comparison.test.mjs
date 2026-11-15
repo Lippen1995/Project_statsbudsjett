@@ -80,14 +80,17 @@ test("aggregate and sector drilldowns use the actual exports rather than summing
   assert.equal(admin.own.perCapita, 5414);
   assert.equal(admin.reference.perCapita, 4817.5);
   assert.ok(Math.abs(admin.percent - 12.381941) < 0.00001);
-  assert.equal(
-    admin.reference.amount,
-    (4817.5 * population(target, 2025)) / 1000,
-  );
+  assert.equal(admin.reference.amount, 519311.5);
   assert.equal(admin.reference.calculated, true);
   const populations = peers.map((peer) => population(peer, 2025)).sort((a, b) => a - b);
   assert.equal(admin.reference.population, (populations[4] + populations[5]) / 2);
   assert.equal(comparisonRow(target, [], 2025, "FGK1b").reference.population, null);
+});
+test("nominal history tracks the peer median even with the weighted per-capita reference", () => {
+  const row = comparisonRow(target, peers, 2025, "FGK1b", "", "weighted", null, "amount");
+  assert.equal(row.reference.perCapita, benchmark(peers, 2025, "FGK1b", "", "weighted").value);
+  assert.equal(row.b, 519.3115);
+  assert.equal(row.reference.growth, (519311.5 / 503436 - 1) * 100);
 });
 test("historical function comparisons retain the selected function for both municipalities and preserve nominal units", () => {
   const other = read("1108");

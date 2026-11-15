@@ -66,7 +66,7 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
         </div>
         <div>
           <dt>Avvik fra {referenceName(method).toLowerCase()}</dt>
-          <dd>{percent(summary.percent)}</dd>
+          <dd>{percent(summary.percent, 2)}</dd>
         </div>
         <div className="secondary">
           <dt>{account?.code === PURCHASE_REMAINDER ? "Beregnet beløp" : account ? "Rapportert beløp" : "Totale netto driftsutgifter"}</dt>
@@ -74,20 +74,22 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
         </div>
         <div className="secondary">
           <dt>Folketall</dt>
-          <dd>{own.population > 0 ? `≈ ${n(own.population)}` : "–"}</dd>
+          <dd className="cmp-facts-population">
+            <small>{own.name}/Median</small>
+            <span>{own.population > 0 ? n(own.population) : "–"} / {reference.population > 0 ? n(reference.population) : "–"}</span>
+          </dd>
         </div>
         <div className="secondary">
-          <dt>Referanse ved samme folketall</dt>
+          <dt>Nominelt beløp · median</dt>
           <dd>{nominal(reference.amount)}</dd>
         </div>
       </dl>
       <p>
-        Referansebeløpet er beregnet ved {own.name}s folketall.
-        Referansen bygger på {reference.count} kommuner med data.
+        Referansen per innbygger bygger på {reference.count} kommuner med data. Folketall og nominelt beløp vises som medianer i utvalget. Utvalget utelater {own.name}.
       </p>
       <div className="cmp-workspace-meta">
         <label>
-          Referanse
+          Referanse per innbygger
           <select value={method} onChange={(e) => onMethod(e.target.value)}>
             <option value="median">Median i utvalget</option>
             <option value="weighted">Befolkningsvektet snitt</option>
