@@ -222,7 +222,7 @@
 .cmp-drill-empty {
   display: grid;
   align-content: center;
-  min-height: 316px;
+  min-height: var(--cmp-drill-height);
   margin: 0;
   border-block: 1px solid var(--strek);
   text-align: center;
@@ -662,11 +662,17 @@
   .cmp-detail-layout {
     grid-template-columns: minmax(0, 1fr);
   }
-  .cmp-drill-controls {
-    flex-wrap: wrap;
-  }
 }
 @media (max-width: 650px) {
+  .cmp-service-overview > .cmp-editorial-head,
+  .cmp-drill-controls {
+    display: grid;
+    justify-content: stretch;
+    gap: 8px;
+  }
+  .cmp-drill-controls select {
+    justify-self: start;
+  }
   .cmp-page {
     padding: 24px 16px 40px;
   }
@@ -925,6 +931,17 @@
 }
 .cmp-art-layout--open { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
 .cmp-art-plot, .cmp-art-side { min-width: 0; }
+.cmp-art-plot {
+  --cmp-drill-height: 348px;
+  min-height: var(--cmp-drill-height);
+}
+.cmp-drill-view {
+  animation: cmp-drill-in 300ms var(--mykt);
+}
+@keyframes cmp-drill-in {
+  from { opacity: .35; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .cmp-art-explanations {
   margin: 12px 0 0 18px;
   padding-left: 16px;
@@ -961,6 +978,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .cmp-art-layout { transition: none; }
+  .cmp-drill-view,
   .cmp-art-explanations { animation: none; }
 }
 

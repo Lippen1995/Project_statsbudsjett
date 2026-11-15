@@ -258,18 +258,19 @@ export default function ComparisonWorkspace({
         <div className={`cmp-art-layout ${post ? "cmp-art-layout--open" : ""}`}>
           <div className="cmp-art-plot">
             {rows.length ? (
-              <CostChart
-                rows={rows}
-                paired
-                deltas
-                selected={art?.code}
-                animate={false}
-                title={level}
-                categoryLabel={level}
-                wrapCategories
-                onSelect={selectRow}
-                chartKey={[sector, fn, post?.code].join("-")}
-              />
+              <div className="cmp-drill-view" key={[sector, fn, post?.code].join("-")}>
+                <CostChart
+                  rows={rows}
+                  paired
+                  deltas
+                  selected={art?.code}
+                  animate={false}
+                  title={level}
+                  categoryLabel={level}
+                  wrapCategories
+                  onSelect={selectRow}
+                />
+              </div>
             ) : purchaseDrill && (pending || error) ? (
               <p className="cmp-drill-empty" role={error ? "alert" : "status"}>
                 {error ? "Kunne ikke hente artsfordelingen fra SSB. " : "Henter artsfordelingen fra SSB…"}
