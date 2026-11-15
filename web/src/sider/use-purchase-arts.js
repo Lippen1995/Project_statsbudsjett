@@ -7,31 +7,37 @@ export function usePurchaseArts(functionCode) {
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     if (!functionCode) return;
+    let request = requests.get(functionCode);
+    if (request?.result) return;
     let active = true;
-    if (!requests.has(functionCode)) {
-      requests.set(functionCode, fetch(`/data/kostra/purchase-arts/${functionCode}.json`)
+    if (!request) {
+      request = {};
+      request.promise = fetch(`/data/kostra/purchase-arts/${functionCode}.json`)
         .then((response) => {
           if (!response.ok) throw new Error("Mangler KOSTRA-uttrekk");
           return response.json();
         })
         .then((data) => {
           if (!Array.isArray(data?.columns) || !data.rows) throw new Error("Ugyldig KOSTRA-uttrekk");
-          return data;
+          request.result = { functionCode, data };
+          return request.result;
         })
         .catch((error) => {
           requests.delete(functionCode);
           throw error;
-        }));
+        });
+      requests.set(functionCode, request);
     }
-    requests.get(functionCode).then((data) => {
-      if (active) setResult({ functionCode, data });
+    request.promise.then((result) => {
+      if (active) setResult(result);
     }).catch(() => {
       if (active) setResult({ functionCode, error: true });
     });
     return () => { active = false; };
   }, [functionCode, attempt]);
 
-  const current = result?.functionCode === functionCode ? result : null;
+  const cached = requests.get(functionCode)?.result;
+  const current = cached ?? (result?.functionCode === functionCode ? result : null);
   return {
     purchaseArts: current?.data ? current : null,
     pending: Boolean(functionCode && !current),

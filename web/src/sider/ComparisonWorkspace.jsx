@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { flushSync } from "react-dom";
 import { accountingArtBreakdown } from "../kostra/explorer";
 import { SECTORS } from "./comparison";
 import { ACCOUNT_SECTIONS, OWN_PURCHASES, PURCHASE_BREAKDOWN_NOTE, PURCHASE_REMAINDER, accountingObservation } from "./accounting-drill";
@@ -47,16 +46,6 @@ const POST_LABELS = {
 
 const EMPTY_PATH = { scope: "", post: "", art: "" };
 const moneyPerPerson = (value) => Number.isFinite(value) ? `${n(value)} kr` : "–";
-
-function transitionDrill(update) {
-  if (!document.startViewTransition ||
-      !CSS.supports("selector(:active-view-transition-type(municipal-drill))") ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    update();
-    return;
-  }
-  document.startViewTransition({ update: () => flushSync(update), types: ["municipal-drill"] });
-}
 
 function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
   const { own, reference } = summary;
@@ -185,6 +174,7 @@ export default function ComparisonWorkspace({
   const children = post ? reportedArts(post.children) : [];
   const arts = post && !children.length && !purchaseDrill ? reportedArts([post.code]) : children;
   const art = arts.find((row) => row.code === path.art);
+  const loadingArts = purchaseDrill && pending;
   const account = art || post;
   const title = account?.context || selectedFunction?.name || sectorName || "Samlet netto drift";
   const breadcrumbs = [
@@ -216,30 +206,20 @@ export default function ComparisonWorkspace({
   function selectRow(code) {
     if (post) {
       setPath({ scope, post: post.code, art: code });
-      return;
+    } else if (fn) {
+      setPath({ scope, post: code, art: "" });
+    } else {
+      if (!sectorName) onSector(code);
+      onFunction(sectorName ? code : "");
+      setPath(EMPTY_PATH);
     }
-    transitionDrill(() => {
-      if (fn) {
-        setPath({ scope, post: code, art: "" });
-      } else {
-        if (!sectorName) onSector(code);
-        onFunction(sectorName ? code : "");
-        setPath(EMPTY_PATH);
-      }
-    });
   }
 
   function returnTo(step) {
     if (step === breadcrumbs.length - 1) return;
-    if (step === 3) {
-      setPath({ scope, post: post.code, art: "" });
-      return;
-    }
-    transitionDrill(() => {
-      if (step === 0) onSector("");
-      if (step < 2) onFunction("");
-      setPath(EMPTY_PATH);
-    });
+    if (step === 0) onSector("");
+    if (step < 2) onFunction("");
+    setPath(step === 3 ? { scope, post: post.code, art: "" } : EMPTY_PATH);
   }
 
   return (
@@ -267,7 +247,7 @@ export default function ComparisonWorkspace({
               </React.Fragment>
             ))}
           </nav>
-          <select aria-label={`Velg fra ${level.toLowerCase()}`} value={art?.code || ""} disabled={!rows.length}
+          <select aria-label={`Velg fra ${level.toLowerCase()}`} value={art?.code || ""} disabled={loadingArts || !rows.length}
             onChange={(event) => event.target.value && selectRow(event.target.value)}>
             <option value="">{post ? "Velg art" : fn ? "Velg regnskapspost" : sectorName ? "Velg funksjon" : "Velg tjenesteområde"}</option>
             {rows.map((row) => <option key={row.code} value={row.code}>{row.context}</option>)}
@@ -275,21 +255,20 @@ export default function ComparisonWorkspace({
         </div>
         <div className={`cmp-art-layout ${post ? "cmp-art-layout--open" : ""}`}>
           <div className="cmp-art-plot">
-            {rows.length ? (
-              <div className="cmp-drill-view" key={[sector, fn, post?.code].join("-")}>
-                <CostChart
-                  rows={rows}
-                  paired
-                  deltas
-                  selected={art?.code}
-                  animate={false}
-                  title={level}
-                  categoryLabel={level}
-                  wrapCategories
-                  onSelect={selectRow}
-                />
-              </div>
-            ) : purchaseDrill && (pending || error) ? (
+            {rows.length && !loadingArts ? (
+              <CostChart
+                rows={rows}
+                paired
+                deltas
+                selected={art?.code}
+                animate={false}
+                title={level}
+                categoryLabel={level}
+                wrapCategories
+                onSelect={selectRow}
+                chartKey={[sector, fn, post?.code].join("-")}
+              />
+            ) : purchaseDrill && (loadingArts || error) ? (
               <p className="cmp-drill-empty" role={error ? "alert" : "status"}>
                 {error ? "Kunne ikke hente artsfordelingen fra SSB. " : "Henter artsfordelingen fra SSB…"}
                 {error && <button type="button" onClick={retry}>Prøv igjen</button>}
@@ -298,7 +277,7 @@ export default function ComparisonWorkspace({
               <p className="cmp-drill-empty">Ingen rapporterte {level.toLowerCase()} for dette valget og året.</p>
             )}
           </div>
-          <div className="cmp-art-side">{post && rows.length > 0 && <ArtExplanations rows={rows} />}</div>
+          <div className="cmp-art-side">{post && !loadingArts && rows.length > 0 && <ArtExplanations rows={rows} />}</div>
         </div>
         <p className="cmp-footnote cmp-drill-note">
           {purchaseDrill
