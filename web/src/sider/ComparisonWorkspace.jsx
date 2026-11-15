@@ -85,7 +85,7 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
         </div>
       </dl>
       <p>
-        Referansen per innbygger bygger på {reference.count} kommuner med data.
+        Referansene utelater {own.name}. Referansen per innbygger bygger på {reference.count} kommuner med data.
       </p>
       <div className="cmp-workspace-meta">
         <label>
