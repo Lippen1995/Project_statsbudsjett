@@ -10,6 +10,11 @@ etl:
 
 kostra:
 	python etl/kostra.py
+	python etl/kostra_drivers.py
+	python etl/kostra_purchase_arts.py
+	python etl/kostra_occupations.py
+	python etl/kostra_sickness_ks.py
+	python etl/kostra_sven.py
 
 etl-force:
 	python etl/etl.py --force

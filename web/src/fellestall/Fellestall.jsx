@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { loadAll, hentDetaljer as hentDetaljerRaa } from '../lib/data'
 import { kompaktData, kompaktDetaljer, verdi, rot, sumRot, sumFondsoverforing, perInnbygger, tellPoster, detaljFil } from './kompakt'
 import { SEKSJONER, PETRO, RUST, INK, kapNr } from './design'
@@ -20,7 +20,12 @@ import {
   useMunicipalLaunchNewsVisibility,
 } from './MunicipalLaunchNews.jsx'
 import Kostra from '../kostra/Kostra'
+import { COMPARISON_ROUTE } from '../sider/comparison.js'
 import './fellestall.css'
+
+const loadMunicipalityComparison = () => import('../sider/MunicipalityComparison.jsx')
+const MunicipalityComparison = lazy(loadMunicipalityComparison)
+const preloadMunicipalityComparison = () => { void loadMunicipalityComparison().catch(() => {}) }
 
 const SEKSJON_IDER = SEKSJONER.map((s) => s.id)
 
@@ -41,8 +46,10 @@ export default function Fellestall() {
   const [utforsk, setUtforsk] = useState(START_UTFORSK)
   const [detaljer, setDetaljer] = useState({})
   const [hash, setHash] = useState(() => window.location.hash)
+  const [hovedsidenApen, setHovedsidenApen] = useState(true)
   const lasterRef = useRef({})
 
+  const comparisonPage = hash.startsWith('#sider')
   const aktivSeksjon = useAktivSeksjon(SEKSJON_IDER)
   useAvslor(data)
 
@@ -54,10 +61,19 @@ export default function Fellestall() {
   }, [])
 
   useEffect(() => {
-    const oppdater = () => setHash(window.location.hash)
+    const oppdater = () => {
+      setHash(window.location.hash)
+      if (!comparisonPage && window.location.hash.startsWith('#sider')) window.scrollTo({ top: 0 })
+    }
     window.addEventListener('hashchange', oppdater)
     return () => window.removeEventListener('hashchange', oppdater)
-  }, [])
+  }, [comparisonPage])
+
+  useEffect(() => {
+    if (comparisonPage || !/^#[a-z-]+$/.test(hash)) return
+    const frame = requestAnimationFrame(() => document.getElementById(hash.slice(1))?.scrollIntoView())
+    return () => cancelAnimationFrame(frame)
+  }, [comparisonPage, hash])
 
   useEffect(() => {
     loadAll()
@@ -175,8 +191,23 @@ export default function Fellestall() {
   const navLenker = SEKSJONER.map((s, i) => ({
     ...s,
     nr: String(i + 1).padStart(2, '0'),
-    aktiv: aktivSeksjon === s.id,
+    aktiv: !comparisonPage && aktivSeksjon === s.id,
   }))
+
+  const hovedsideKnapp = (id) => (
+    <button type="button" className="ft-navgruppe-knapp" aria-expanded={hovedsidenApen}
+      aria-controls={id} onClick={() => setHovedsidenApen((apen) => !apen)}>
+      Hovedsiden
+    </button>
+  )
+
+  const sammenlignLenke = (
+    <a href={COMPARISON_ROUTE} className={`ft-sammenlign-lenke ${comparisonPage ? 'aktiv' : ''}`}
+      onPointerEnter={preloadMunicipalityComparison} onFocus={preloadMunicipalityComparison}
+      aria-current={comparisonPage ? 'page' : undefined}>
+      Sammenlign kommuner <span className="ft-kommuneny-merke">NY</span>
+    </a>
+  )
 
   const aarVelger = (
     <select className="ft-select" value={aar} onChange={(e) => setAar(+e.target.value)} aria-label="Regnskapsår">
@@ -192,7 +223,7 @@ export default function Fellestall() {
   )
 
   return (
-    <div className="ft">
+    <div className={`ft ${comparisonPage ? 'ft-comparison' : ''}`}>
       <a className="ft-hopp" href="#hovedinnhold">Hopp til innholdet</a>
       <div className="ft-layout">
         <aside className="ft-sidemeny" aria-label="Innholdsoversikt">
@@ -201,16 +232,20 @@ export default function Fellestall() {
             <span className="ft-aarlabel">Regnskapsår</span>
             {aarVelger}
           </label>
-          <nav className="ft-nav" aria-label="Hovedinnhold">
-            {navLenker.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className={`ft-navlenke ${n.aktiv ? 'aktiv' : ''}`}>
-                <span className="ft-navnr num">{n.nr}</span>
-                <span className="ft-navtekst">
-                  {n.navn}
-                  {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
-                </span>
-              </a>
-            ))}
+          <nav className="ft-hovedmeny" aria-label="Hovedinnhold">
+            {hovedsideKnapp('ft-sidenavigasjon')}
+            <div id="ft-sidenavigasjon" className="ft-nav" hidden={!hovedsidenApen}>
+              {navLenker.map((n) => (
+                <a key={n.id} href={`#${n.id}`} className={`ft-navlenke ${n.aktiv ? 'aktiv' : ''}`}>
+                  <span className="ft-navnr num">{n.nr}</span>
+                  <span className="ft-navtekst">
+                    {n.navn}
+                    {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
+                  </span>
+                </a>
+              ))}
+            </div>
+            {sammenlignLenke}
           </nav>
           <div className="ft-sidefot">
             <a href="/analyser/">Analyser</a>
@@ -227,18 +262,27 @@ export default function Fellestall() {
                 {aarVelger}
               </label>
               <nav className="ft-toppnav" aria-label="Hovedinnhold">
-                {navLenker.map((n) => (
-                  <a key={n.id} href={`#${n.id}`} className={`ft-toppnavlenke ${n.aktiv ? 'aktiv' : ''}`}>
-                    {n.navn}
-                    {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
-                  </a>
-                ))}
+                {hovedsideKnapp('ft-toppnavigasjon')}
+                {sammenlignLenke}
+                <div id="ft-toppnavigasjon" className="ft-toppnav-seksjoner" hidden={!hovedsidenApen}>
+                  {navLenker.map((n) => (
+                    <a key={n.id} href={`#${n.id}`} className={`ft-toppnavlenke ${n.aktiv ? 'aktiv' : ''}`}>
+                      {n.navn}
+                      {showMunicipalLaunchNews && n.id === 'kommuner' ? <> <MunicipalLaunchBadge /></> : null}
+                    </a>
+                  ))}
+                </div>
                 <a href="#om-tallene">Om tallene</a>
                 <a href="/analyser/">Analyser</a>
               </nav>
             </div>
           </div>
 
+          {comparisonPage ? (
+            <Suspense fallback={<div role="status" style={{ padding: 40 }}>Åpner kommuneanalysen…</div>}>
+              <MunicipalityComparison hash={hash} />
+            </Suspense>
+          ) : <>
           <header className="ft-hero">
             <div className="ft-kicker">
               {`Statsbudsjettet og statsregnskapet · ${aarListe[0]}–${meta.siste_budsjett_aar}`}
@@ -325,6 +369,7 @@ export default function Fellestall() {
           <Kostra hash={hash} />
 
           <OmTallene meta={meta} antallPoster={avledet.antallPoster} />
+          </>}
         </main>
       </div>
 
@@ -342,6 +387,7 @@ export default function Fellestall() {
             <div className="ft-stikkord">Innhold</div>
             <div className="ft-fot-lenker">
               {SEKSJONER.map((s) => <a key={s.id} href={`#${s.id}`}>{s.navn}</a>)}
+              <a href={COMPARISON_ROUTE}>Sammenlign kommuner</a>
               <a href="/analyser/">Analyser</a>
             </div>
           </div>

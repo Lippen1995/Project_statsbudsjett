@@ -35,7 +35,7 @@ function row(code, name, value, kind, clickable = true) {
   }
 }
 
-function accountingArtValue(item, year, latestYear) {
+export function accountingArtValue(item, year, latestYear) {
   if (item?.values) return item.values?.[year] ?? null
   // Leser gamle, lokalt genererte filer fram til neste ETL-kjøring. Disse
   // inneholder bare siste år og skal aldri brukes som historiske verdier.
