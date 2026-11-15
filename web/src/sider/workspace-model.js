@@ -9,9 +9,9 @@ export const formatNumber = (value, digits = 0) =>
     : "–";
 export const nominal = (value) =>
   Number.isFinite(value) ? `${formatNumber(value / 1000, 1)} mill. kr` : "–";
-export const percent = (value) =>
+export const percent = (value, digits = 1) =>
   Number.isFinite(value)
-    ? `${value > 0 ? "+" : ""}${formatNumber(value, 1)} %`
+    ? `${value > 0 ? "+" : ""}${formatNumber(value, digits)} %`
     : "–";
 export const deviation = (value, reference) =>
   Number.isFinite(value) && Number.isFinite(reference) && reference > 0

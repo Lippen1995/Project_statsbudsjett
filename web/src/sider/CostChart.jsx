@@ -58,14 +58,14 @@ export function CostTable({
     ["Årsverk totalt", n(own.amount, 1), n(ref?.amount, 1)],
     ["Avvik per 1 000 innb. (%)", percent(row.percent), "–"],
   ] : [
-    [compact ? "Per innbygger" : "Kr per innb.", `${n(own.perCapita)} kr`, `${n(ref?.perCapita)} kr`],
+    [compact ? "Per innbygger" : "Kr per innb.", `${n(own.perCapita)} kr`, `${n(ref?.perCapita, ref?.calculated ? 2 : 0)} kr`],
     [weightedReference ? "Nominelt beløp (median)" : "Nominelt beløp", nominal(own.amount), nominal(ref?.amount)],
     [
       weightedReference ? "Folketall (median)" : "Folketall",
       own.population > 0 ? `≈ ${n(own.population)}` : "–",
       ref?.population > 0 ? `≈ ${n(ref.population)}` : "–",
     ],
-    [compact ? "Avvik per innbygger" : "Avvik per innb.", percent(row.percent), "–"],
+    [compact ? "Avvik per innbygger" : "Avvik per innb.", percent(row.percent, ref?.calculated ? 2 : 1), "–"],
   ];
   if (sickness && row.previous) metrics.push([row.previous.label, rate(row.previous.own), rate(row.previous.reference)]);
   if (history) metrics.push([

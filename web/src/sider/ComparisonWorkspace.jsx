@@ -45,7 +45,7 @@ const POST_LABELS = {
 };
 
 const EMPTY_PATH = { scope: "", post: "", art: "" };
-const moneyPerPerson = (value) => Number.isFinite(value) ? `${n(value)} kr` : "–";
+const moneyPerPerson = (value, digits = 0) => Number.isFinite(value) ? `${n(value, digits)} kr` : "–";
 
 function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
   const { own, reference } = summary;
@@ -62,11 +62,11 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
         </div>
         <div>
           <dt>{referenceName(method)} per innbygger</dt>
-          <dd>{moneyPerPerson(reference.perCapita)}</dd>
+          <dd>{moneyPerPerson(reference.perCapita, 2)}</dd>
         </div>
         <div>
           <dt>Avvik fra {referenceName(method).toLowerCase()}</dt>
-          <dd>{percent(summary.percent)}</dd>
+          <dd>{percent(summary.percent, 2)}</dd>
         </div>
         <div className="secondary">
           <dt>{account?.code === PURCHASE_REMAINDER ? "Beregnet beløp" : account ? "Rapportert beløp" : "Totale netto driftsutgifter"}</dt>
@@ -85,11 +85,11 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
         </div>
       </dl>
       <p>
-        Referansene utelater {own.name}. Referansen per innbygger bygger på {reference.count} kommuner med data.
+        Referansen per innbygger bygger på {reference.count} kommuner med data. Folketall og nominelt beløp vises som medianer i utvalget. Utvalget utelater {own.name}.
       </p>
       <div className="cmp-workspace-meta">
         <label>
-          Referanse
+          Referanse per innbygger
           <select value={method} onChange={(e) => onMethod(e.target.value)}>
             <option value="median">Median i utvalget</option>
             <option value="weighted">Befolkningsvektet snitt</option>
