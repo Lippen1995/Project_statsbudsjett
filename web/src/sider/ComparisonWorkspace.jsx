@@ -75,8 +75,8 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
         <div className="secondary">
           <dt>Folketall</dt>
           <dd className="cmp-facts-population">
-            <span><small>{own.name}</small>{own.population > 0 ? `≈ ${n(own.population)}` : "–"}</span>
-            <span><small>Median i utvalget</small>{reference.population > 0 ? `≈ ${n(reference.population)}` : "–"}</span>
+            <small>{own.name}/Median</small>
+            <span>{own.population > 0 ? n(own.population) : "–"} / {reference.population > 0 ? n(reference.population) : "–"}</span>
           </dd>
         </div>
         <div className="secondary">
