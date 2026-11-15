@@ -58,7 +58,7 @@ export function CostTable({
     ["Årsverk totalt", n(own.amount, 1), n(ref?.amount, 1)],
     ["Avvik per 1 000 innb. (%)", percent(row.percent), "–"],
   ] : [
-    [compact ? "Per innbygger" : "Kr per innb.", `${n(own.perCapita)} kr`, `${n(ref?.perCapita, ref?.calculated ? 2 : 0)} kr`],
+    [compact ? "Per innbygger" : "Kr per innb.", `${n(own.perCapita)} kr`, `${n(ref?.perCapita)} kr`],
     [weightedReference ? "Nominelt beløp (median)" : "Nominelt beløp", nominal(own.amount), nominal(ref?.amount)],
     [
       weightedReference ? "Folketall (median)" : "Folketall",

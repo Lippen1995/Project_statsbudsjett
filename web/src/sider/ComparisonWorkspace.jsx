@@ -45,7 +45,7 @@ const POST_LABELS = {
 };
 
 const EMPTY_PATH = { scope: "", post: "", art: "" };
-const moneyPerPerson = (value, digits = 0) => Number.isFinite(value) ? `${n(value, digits)} kr` : "–";
+const moneyPerPerson = (value) => Number.isFinite(value) ? `${n(value)} kr` : "–";
 
 function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
   const { own, reference } = summary;
@@ -62,7 +62,7 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
         </div>
         <div>
           <dt>{referenceName(method)} per innbygger</dt>
-          <dd>{moneyPerPerson(reference.perCapita, 2)}</dd>
+          <dd>{moneyPerPerson(reference.perCapita)}</dd>
         </div>
         <div>
           <dt>Avvik fra {referenceName(method).toLowerCase()}</dt>
