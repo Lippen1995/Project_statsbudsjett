@@ -283,6 +283,16 @@
   font: 13px var(--sans);
   letter-spacing: 0;
 }
+.cmp-facts-population {
+  display: grid;
+  gap: 7px;
+}
+.cmp-facts-population small {
+  display: block;
+  color: var(--dempet);
+  font-size: 10px;
+  margin-bottom: 2px;
+}
 .cmp-selected-facts > p {
   font-size: 11px;
   line-height: 1.7;

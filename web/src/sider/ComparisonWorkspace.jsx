@@ -74,16 +74,18 @@ function ComparisonFacts({ title, summary, method, year, onMethod, account }) {
         </div>
         <div className="secondary">
           <dt>Folketall</dt>
-          <dd>{own.population > 0 ? `≈ ${n(own.population)}` : "–"}</dd>
+          <dd className="cmp-facts-population">
+            <span><small>{own.name}</small>{own.population > 0 ? `≈ ${n(own.population)}` : "–"}</span>
+            <span><small>Median i utvalget</small>{reference.population > 0 ? `≈ ${n(reference.population)}` : "–"}</span>
+          </dd>
         </div>
         <div className="secondary">
-          <dt>Referanse ved samme folketall</dt>
+          <dt>Nominelt beløp · median</dt>
           <dd>{nominal(reference.amount)}</dd>
         </div>
       </dl>
       <p>
-        Referansebeløpet er beregnet ved {own.name}s folketall.
-        Referansen bygger på {reference.count} kommuner med data.
+        Referansen per innbygger bygger på {reference.count} kommuner med data.
       </p>
       <div className="cmp-workspace-meta">
         <label>
