@@ -7,6 +7,8 @@ import SeoFallback from './src/fellestall/SeoFallback.jsx'
 import { analysesPlugin } from './src/analyser/vite-plugin.jsx'
 import { adminPlugin } from './src/admin/vite-plugin.mjs'
 
+import { startupIntroPlugin } from './src/fellestall/startup-intro.mjs'
+
 const NETTSTED = 'https://fellestall.no/'
 
 function seo() {
@@ -91,6 +93,6 @@ function seo() {
 
 export default defineConfig({
   define: { __FT_RELEASE__: JSON.stringify(process.env.GITHUB_SHA || 'ukjent') },
-  plugins: [react(), seo(), analysesPlugin(), adminPlugin()],
+  plugins: [react(), seo(), startupIntroPlugin(), analysesPlugin(), adminPlugin()],
   base: './',
 })
