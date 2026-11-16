@@ -36,3 +36,18 @@ jobs:
           npm test
           npm --prefix web test
           npm --prefix web run build
+      - name: Installer Chromium for nettlesertester
+        working-directory: web
+        run: |
+          npm install --prefix "$RUNNER_TEMP/fellestall-browser" --no-audit --no-fund playwright@1.62.1
+          node "$RUNNER_TEMP/fellestall-browser/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Kontroller åpning, mobil, refresh og tilgjengelighet
+        working-directory: web
+        run: PLAYWRIGHT_MODULE_PATH="$RUNNER_TEMP/fellestall-browser/node_modules/playwright/index.mjs" npm run test:browser
+      - name: Behold visuelle kontroller
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: startup-intro-browser
+          path: web/browser-artifacts/
+          if-no-files-found: ignore

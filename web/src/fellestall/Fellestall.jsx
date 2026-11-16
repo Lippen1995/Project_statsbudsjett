@@ -170,6 +170,25 @@ export default function Fellestall() {
     }
   }, [data, aar, skjulFin])
 
+  // Reveal only after the real first view has committed and fonts have settled.
+  useEffect(() => {
+    if (!feil && (!data || !avledet)) return
+    let cancelled = false
+    let frame
+    let timer
+    const reveal = () => {
+      if (cancelled) return
+      frame = requestAnimationFrame(() => window.dispatchEvent(new Event('fellestall:ready')))
+    }
+    timer = window.setTimeout(reveal, 500)
+    Promise.resolve(document.fonts?.ready).then(() => {
+      if (cancelled) return
+      window.clearTimeout(timer)
+      reveal()
+    })
+    return () => { cancelled = true; window.clearTimeout(timer); cancelAnimationFrame(frame) }
+  }, [data, avledet, feil])
+
   if (feil) {
     return (
       <div className="ft-melding">
