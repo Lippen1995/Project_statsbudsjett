@@ -29,3 +29,18 @@ test('gir feil ved spørsmål uten støttet kildegrunnlag', async () => {
   await assert.rejects(resolveSvenSources('Hvor mye kostet den nye kraftlinjen?', dataDir), /Legg ved kilder/)
   await assert.rejects(resolveSvenSources('Hva var netto driftsutgifter i kommunen?', dataDir), /Oppgi kommunenavn/)
 })
+
+test('kommuneoppslag gir separate kilder for hvert etterspurt nøkkeltall', async () => {
+  const sources = await resolveSvenSources('Netto lånegjeld og investeringsutgifter i Stavanger i 2025', dataDir)
+  assert.deepEqual(sources.map(s => s.id), ['kostra-debt-1103', 'kostra-investments-1103'])
+  assert.deepEqual(sources.map(s => JSON.parse(s.text).data[0].amountNokPerCapita), [79012, 13136])
+})
+
+test('oljepengeoppslag skiller mellom budsjettfaser og beholder primærkilden', async () => {
+  const sources = await resolveSvenSources('Hva var oljepengebruken i 2026 og 2027?', dataDir)
+  const rows = sources.flatMap(s => JSON.parse(s.text).data)
+  assert.deepEqual(rows.filter(r => r.year === 2026).map(r => r.phase).sort(), ['forslag', 'revidert', 'saldert'])
+  const proposal = sources.find(s => JSON.parse(s.text).data.some(r => r.year === 2027))
+  assert.match(proposal.url, /^https:\/\/www\.regjeringen\.no\//)
+  assert.equal(rows.find(r => r.year === 2027).structuralMillionNok, 608430)
+})

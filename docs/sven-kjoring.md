@@ -30,7 +30,7 @@ node scripts/sven/analyse.mjs sources 'Hvor mye brukte staten i 2024 og 2025 if�
 
 Send bare `question` i JSON-filen for å bruke samme oppslag før et modellkall. Svaret får en kildeoversikt med ID, primærkilde og URL til Fellestall-uttrekket. Regnskapsårene hentes fra spørsmålet. Uten år brukes det siste kommuneåret eller de to siste statsregnskapsårene i uttrekket. Et uoppgitt kommunetall beholdes som en manglende verdi.
 
-Første oppslag dekker samlet statsregnskap og netto driftsutgifter for navngitte kommuner. Statssummen bruker den eksisterende rapportberegningen og samme avgrensning som Fellestall. Kommuneoppslaget bruker KOSTRA-serien for kommunekonsern. Andre spørsmål trenger fortsatt et eksplisitt kildegrunnlag.
+Oppslaget dekker samlet statsregnskap og følgende mål for navngitte kommuner: netto driftsutgifter, netto driftsresultat, driftsinntekter, netto lånegjeld og investeringsutgifter. Statssummen bruker den eksisterende rapportberegningen og samme avgrensning som Fellestall. Kommuneoppslaget bruker KOSTRA-serien for kommunekonsern. Andre spørsmål trenger fortsatt et eksplisitt kildegrunnlag.
 
 ## Koble til mobilprototypen lokalt
 
@@ -42,4 +42,22 @@ node scripts/sven/mobile-preview.mjs /sti/til/mobilprototypen/dist
 
 Åpne `http://127.0.0.1:4176/?sven=local#sven`, åpne testkontoen og spør om for eksempel netto driftsutgifter i Stavanger i 2025. Nettleseren sender spørsmålet til den lokale serveren. Serveren henter Fellestall-uttrekket, kaller Claude og returnerer henvisningene som er brukt i svaret. Nøkkelen blir på serveren.
 
-Serveren lytter bare på loopback og behandler én forespørsel av gangen. Bare lokale forespørsler fra samme origin får bruke chatendepunktet. Korte årsoppfølginger som «Hva med 2024?» bruker sist vellykkede oppslag i samme samtale. Klienten sender bare gjeldende spørsmål og regnskapstype med eventuelle kommunenavn. Historikk, kvoteberegning og tilgang i mobilprototypen er fortsatt lokale. Testen kjører med faktiske regnskapsdata og en deterministisk erstatning for Claude.
+Serveren lytter bare på loopback og behandler én forespørsel av gangen. Bare lokale forespørsler fra samme origin får bruke chatendepunktet. Korte årsoppfølginger som «Hva med 2024?» bruker sist vellykkede oppslag i samme samtale. Klienten sender bare gjeldende spørsmål og regnskapstype, kommunenavn og nøkkeltall fra forrige oppslag. Historikk, kvoteberegning og tilgang i mobilprototypen er fortsatt lokale. Testen kjører med faktiske regnskapsdata og en deterministisk erstatning for Claude.
+
+Oljepengeoppslaget henter strukturelt og ordinært oljekorrigert underskudd fra Fellestalls arkiv. Det returnerer hver tilgjengelige budsjettfase for etterspurt år og knytter verdiene til Finansdepartementets originaldokument. Oppslaget dekker ikke faktisk overføring fra fondet.
+
+```sh
+node scripts/sven/analyse.mjs sources 'Hvor stor var oljepengebruken i 2026 og 2027?'
+node scripts/sven/analyse.mjs sources 'Netto lånegjeld og investeringsutgifter i Stavanger i 2025'
+```
+
+## Gjennomføring av produktplanen
+
+| Arbeidsspor | Status og neste verifikasjon |
+| --- | --- |
+| Analyse og redaksjonell metode | Felles analysekjerne og regel for eksplisitt bestilt anbefaling. Kjør og fagvurder faktiske svar i begge moduser. |
+| Kildegrunnlag | Regnskapsoppslag fra Fellestall og oljepengebruk er koblet inn. Utvid deretter til datert regelverk, formelle politiske dokumenter og voteringer med stabile kilde-ID-er. |
+| Mobil og konto | Lokal mobilchat med kilder og korte årsoppfølginger. Videre arbeid krever kundeautentisering og bruksmåling på server, før integrert forhåndsvisning med reelle modellkall. |
+| Dype analyser | Bygg private analyseprosjekter og gjenopptakbare jobber, med lagret kildegrunnlag og beregninger. |
+| Evaluering og læring | Integrasjonstester for kildeoppslag og redaksjonell regel. Sett opp et adskilt evalueringssett før kandidatkjøring, automatisk avgrenset utrulling og tilbakeføring. |
+| Abonnement | Koble faktisk modellforbruk til kvote og betaling etter at kunde- og forbrukslaget er verifisert. |

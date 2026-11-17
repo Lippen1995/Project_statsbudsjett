@@ -37,7 +37,7 @@ test('lokal mobilchat henter reelt KOSTRA-grunnlag og returnerer kilder over HTT
     const body = await response.json()
     assert.equal(body.findings[0].text, '80909 kroner per innbygger')
     assert.match(body.sources[0].url, /12137/)
-    assert.deepEqual(body.context, { topic:'municipal', municipalities:['Stavanger'] })
+    assert.deepEqual(body.context, { topic:'municipal', municipalities:['Stavanger'], metrics:['net_expenses'] })
     assert.equal((await send('Hva med 2024?')).status, 422)
     const followUp = await send('Hva med 2024?', origin, body.context)
     assert.equal(followUp.status, 200)

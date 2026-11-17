@@ -48,7 +48,7 @@ export function mobilePreview({ root, generate }) {
           let sources
           try { sources = await resolveSvenSources(expanded.question, dataDir) }
           catch {
-            return reply(res, 422, { error:'Jeg finner ikke et egnet regnskapsgrunnlag. Spør om samlede statsutgifter eller netto driftsutgifter i en navngitt kommune.' })
+            return reply(res, 422, { error:'Jeg finner ikke et egnet regnskapsgrunnlag. Spør om samlede statsutgifter, oljepengebruk eller et kommunalt nøkkeltall i en navngitt kommune.' })
           }
           const answer = await analyzeWithSven({ question:expanded.question, sources, surface:'chat' }, generate)
           return reply(res, 200, {
