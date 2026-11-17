@@ -284,15 +284,23 @@
       "note": "PR #86 venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. KDD-temaet blir stående i køen.",
       "updatedAt": "2026-11-15T07:58:41.613Z",
       "finishedAt": "2026-11-15T07:58:41.613Z"
+    },
+    {
+      "id": "3b2ead35-84e0-43ca-aba6-eda8441b7f87",
+      "startedAt": "2026-11-16T08:09:46.238Z",
+      "instructionCommit": "358203e97d2a70edb172455e30408312845c071e",
+      "state": "waiting",
+      "note": "PR #86 venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. KDD-temaet blir stående i køen.",
+      "updatedAt": "2026-11-16T08:10:02.920Z",
+      "finishedAt": "2026-11-16T08:10:02.920Z"
     }
   ],
   "current": {
-    "id": "3b2ead35-84e0-43ca-aba6-eda8441b7f87",
-    "startedAt": "2026-11-16T08:09:46.238Z",
-    "instructionCommit": "358203e97d2a70edb172455e30408312845c071e",
-    "state": "waiting",
-    "note": "PR #86 venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. KDD-temaet blir stående i køen.",
-    "updatedAt": "2026-11-16T08:10:02.920Z",
-    "finishedAt": "2026-11-16T08:10:02.920Z"
+    "id": "96d2fd3c-c80b-4e13-bdd2-4d6b2642c58a",
+    "startedAt": "2026-11-17T08:02:32.659Z",
+    "instructionCommit": "00e2a5ba04207a08df01b06745d3e906dd7662aa",
+    "state": "researching",
+    "note": "Kontrollerer datagrunnlaget for revisjon av helsereformutkastet",
+    "updatedAt": "2026-11-17T08:02:32.659Z"
   }
 }
