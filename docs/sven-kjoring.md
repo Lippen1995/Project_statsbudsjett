@@ -61,3 +61,5 @@ node scripts/sven/analyse.mjs sources 'Netto lånegjeld og investeringsutgifter 
 | Dype analyser | Bygg private analyseprosjekter og gjenopptakbare jobber, med lagret kildegrunnlag og beregninger. |
 | Evaluering og læring | Integrasjonstester for kildeoppslag og redaksjonell regel. Sett opp et adskilt evalueringssett før kandidatkjøring, automatisk avgrenset utrulling og tilbakeføring. |
 | Abonnement | Koble faktisk modellforbruk til kvote og betaling etter at kunde- og forbrukslaget er verifisert. |
+
+Første modellregresjon kjøres med `node scripts/sven/evaluate.mjs` når Claude er konfigurert. Den bruker reelle Fellestall-uttrekk og kontrollerer at forventet tall, kilde og relevant budsjettfase finnes i de kildebelagte funnene. Dette er faste regresjonssaker. Faglig vurdering og et separat blindsett trengs før målingen kan brukes i en automatisk læringssløyfe.
