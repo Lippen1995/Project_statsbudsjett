@@ -299,8 +299,9 @@
     "id": "96d2fd3c-c80b-4e13-bdd2-4d6b2642c58a",
     "startedAt": "2026-11-17T08:02:32.659Z",
     "instructionCommit": "00e2a5ba04207a08df01b06745d3e906dd7662aa",
-    "state": "researching",
-    "note": "Kontrollerer datagrunnlaget for revisjon av helsereformutkastet",
-    "updatedAt": "2026-11-17T08:02:32.659Z"
+    "state": "failed",
+    "note": "Autorisert endringsønske på PR #86 krever utvidet tallgrunnlag. SSBs sykefraværstall er kontrollert som innledende kildearbeid. Revisjonsscriptets GitHub CLI mangler innlogging og kunne ikke hente den åpne PR-en. Ingen ny versjon levert. Neste analysetema blir stående i køen.",
+    "updatedAt": "2026-11-17T08:03:03.113Z",
+    "finishedAt": "2026-11-17T08:03:03.113Z"
   }
 }
