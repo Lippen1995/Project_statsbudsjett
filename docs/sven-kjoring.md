@@ -31,3 +31,15 @@ node scripts/sven/analyse.mjs sources 'Hvor mye brukte staten i 2024 og 2025 if�
 Send bare `question` i JSON-filen for å bruke samme oppslag før et modellkall. Svaret får en kildeoversikt med ID, primærkilde og URL til Fellestall-uttrekket. Regnskapsårene hentes fra spørsmålet. Uten år brukes det siste kommuneåret eller de to siste statsregnskapsårene i uttrekket. Et uoppgitt kommunetall beholdes som en manglende verdi.
 
 Første oppslag dekker samlet statsregnskap og netto driftsutgifter for navngitte kommuner. Statssummen bruker den eksisterende rapportberegningen og samme avgrensning som Fellestall. Kommuneoppslaget bruker KOSTRA-serien for kommunekonsern. Andre spørsmål trenger fortsatt et eksplisitt kildegrunnlag.
+
+## Koble til mobilprototypen lokalt
+
+Bruk `dist` fra grenen `prototype/sven-mobil` i prototyperepoet. Med Claude-nøkkel og modell i miljøet:
+
+```sh
+node scripts/sven/mobile-preview.mjs /sti/til/mobilprototypen/dist
+```
+
+Åpne `http://127.0.0.1:4176/?sven=local#sven`, åpne testkontoen og spør om for eksempel netto driftsutgifter i Stavanger i 2025. Nettleseren sender spørsmålet til den lokale serveren. Serveren henter Fellestall-uttrekket, kaller Claude og returnerer henvisningene som er brukt i svaret. Nøkkelen blir på serveren.
+
+Serveren lytter bare på loopback og behandler én forespørsel av gangen. Bare lokale forespørsler fra samme origin får bruke chatendepunktet. Hvert spørsmål behandles separat. Historikk, kvoteberegning og tilgang i mobilprototypen er fortsatt lokale. Testen kjører med faktiske regnskapsdata og en deterministisk erstatning for Claude.
