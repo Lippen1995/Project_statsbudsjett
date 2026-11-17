@@ -18,3 +18,16 @@ Den eksisterende redaksjonelle boten bruker den oppdaterte [skrivehåndboken](..
 ```sh
 node --test scripts/sven/*.test.mjs
 ```
+
+## Automatisk oppslag i Fellestalls regnskapstall
+
+Kjør kildeoppslaget alene, også uten API-nøkkel:
+
+```sh
+node scripts/sven/analyse.mjs sources 'Hva var netto driftsutgifter i Stavanger og Sandnes i 2025?'
+node scripts/sven/analyse.mjs sources 'Hvor mye brukte staten i 2024 og 2025 ifølge statsregnskapet?'
+```
+
+Send bare `question` i JSON-filen for å bruke samme oppslag før et modellkall. Svaret får en kildeoversikt med ID, primærkilde og URL til Fellestall-uttrekket. Regnskapsårene hentes fra spørsmålet. Uten år brukes det siste kommuneåret eller de to siste statsregnskapsårene i uttrekket. Et uoppgitt kommunetall beholdes som en manglende verdi.
+
+Første oppslag dekker samlet statsregnskap og netto driftsutgifter for navngitte kommuner. Statssummen bruker den eksisterende rapportberegningen og samme avgrensning som Fellestall. Kommuneoppslaget bruker KOSTRA-serien for kommunekonsern. Andre spørsmål trenger fortsatt et eksplisitt kildegrunnlag.
