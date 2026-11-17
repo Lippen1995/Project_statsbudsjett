@@ -9,10 +9,12 @@ test('lokal mobilchat henter reelt KOSTRA-grunnlag og returnerer kilder over HTT
   let calls = 0
   const server = mobilePreview({ root, generate: async ({ input }) => {
     calls++
-    const { sources } = JSON.parse(input)
+    const { sources, question } = JSON.parse(input)
     const source = sources.find(item => item.id === 'kostra-net-expenses-1103')
-    const [{ netExpenditureNokPerCapita }] = JSON.parse(source.text).data
-    assert.equal(netExpenditureNokPerCapita, 80909)
+    const [{ year, netExpenditureNokPerCapita }] = JSON.parse(source.text).data
+    assert.match(question, new RegExp(String(year)))
+    if (calls === 1) assert.equal(netExpenditureNokPerCapita, 80909)
+    else assert.equal(year, 2024)
     return {
       summary: 'Netto driftsutgifter i Stavanger.',
       findings: [{ text: `${netExpenditureNokPerCapita} kroner per innbygger`, sourceIds: [source.id] }],
@@ -23,8 +25,8 @@ test('lokal mobilchat henter reelt KOSTRA-grunnlag og returnerer kilder over HTT
   server.listen(0, '127.0.0.1')
   await once(server, 'listening')
   const origin = `http://127.0.0.1:${server.address().port}`
-  const send = (question, requestOrigin = origin) => fetch(origin + '/api/sven/chat', {
-    method:'POST', headers:{ origin:requestOrigin, 'content-type':'application/json' }, body:JSON.stringify({ question }),
+  const send = (question, requestOrigin = origin, context) => fetch(origin + '/api/sven/chat', {
+    method:'POST', headers:{ origin:requestOrigin, 'content-type':'application/json' }, body:JSON.stringify({ question, context }),
   })
   try {
     assert.equal((await fetch(origin + '/')).status, 200)
@@ -35,7 +37,12 @@ test('lokal mobilchat henter reelt KOSTRA-grunnlag og returnerer kilder over HTT
     const body = await response.json()
     assert.equal(body.findings[0].text, '80909 kroner per innbygger')
     assert.match(body.sources[0].url, /12137/)
-    assert.equal(calls, 1)
+    assert.deepEqual(body.context, { topic:'municipal', municipalities:['Stavanger'] })
+    assert.equal((await send('Hva med 2024?')).status, 422)
+    const followUp = await send('Hva med 2024?', origin, body.context)
+    assert.equal(followUp.status, 200)
+    assert.deepEqual((await followUp.json()).context, body.context)
+    assert.equal(calls, 2)
   } finally {
     await new Promise(resolve => server.close(resolve))
   }

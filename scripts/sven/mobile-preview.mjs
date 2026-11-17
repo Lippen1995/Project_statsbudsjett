@@ -5,6 +5,7 @@ import { pathToFileURL, fileURLToPath } from 'node:url'
 import { analyzeWithSven } from '../../server/sven/analysis.mjs'
 import { anthropicSven } from '../../server/sven/anthropic.mjs'
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
+import { accountContext, expandAccountQuestion } from '../../server/sven/follow-up.mjs'
 
 const dataDir = fileURLToPath(new URL('../../web/public/data/', import.meta.url))
 const mime = { '.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8',
@@ -36,18 +37,25 @@ export function mobilePreview({ root, generate }) {
               return
             }
           }
-          let question
-          try { question = JSON.parse(input)?.question?.trim() } catch {}
+          let payload
+          try { payload = JSON.parse(input) } catch {}
+          const question = typeof payload?.question === 'string' ? payload.question.trim() : ''
           if (!question || question.length > 2000) {
             return reply(res, 400, { error:'Skriv et spørsmål på opptil 2000 tegn.' })
           }
+          const expanded = expandAccountQuestion(question, payload.context)
+          if (expanded.clarification) return reply(res, 422, { error:expanded.clarification })
           let sources
-          try { sources = await resolveSvenSources(question, dataDir) }
+          try { sources = await resolveSvenSources(expanded.question, dataDir) }
           catch {
             return reply(res, 422, { error:'Jeg finner ikke et egnet regnskapsgrunnlag. Spør om samlede statsutgifter eller netto driftsutgifter i en navngitt kommune.' })
           }
-          const answer = await analyzeWithSven({ question, sources, surface:'chat' }, generate)
-          return reply(res, 200, { ...answer, sources:sources.map(({ id, title, url }) => ({ id, title, url })) })
+          const answer = await analyzeWithSven({ question:expanded.question, sources, surface:'chat' }, generate)
+          return reply(res, 200, {
+            ...answer,
+            context:accountContext(sources),
+            sources:sources.map(({ id, title, url }) => ({ id, title, url })),
+          })
         } finally {
           busy = false
         }
