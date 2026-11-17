@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { resolve, join } from 'node:path'
 import { homedir } from 'node:os'
 import { openWorkspace, usageSummary } from '../../server/sven/workspace.mjs'
+import { activeLearningProfile } from '../../server/sven/learning-config.mjs'
 import { claudeTransport } from '../../server/sven/provider.mjs'
 import { researchWithSven } from '../../server/sven/research.mjs'
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
@@ -21,7 +22,7 @@ try {
     // Fail before creating a job if credentials are absent.
     claudeTransport()
     const id = command === 'resume' ? value : workspace.create(owner, {
-      ...JSON.parse(await readFile(value,'utf8')), model: process.env.SVEN_MODEL, asOf: new Date().toISOString().slice(0,10),
+      ...JSON.parse(await readFile(value,'utf8')), tuning:(await activeLearningProfile()).settings, model: process.env.SVEN_MODEL, asOf: new Date().toISOString().slice(0,10),
     })
     if (workspace.get(owner,id).brief.model !== process.env.SVEN_MODEL) throw new Error('Modellen er endret. Opprett en ny analyseversjon.')
     console.error(`Analyse: ${id}`)

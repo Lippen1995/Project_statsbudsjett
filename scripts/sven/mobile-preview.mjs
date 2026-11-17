@@ -4,6 +4,7 @@ import { resolve, extname, sep, join } from 'node:path'
 import { homedir } from 'node:os'
 import { claudeTransport } from '../../server/sven/provider.mjs'
 import { researchWithSven } from '../../server/sven/research.mjs'
+import { activeLearningProfile } from '../../server/sven/learning-config.mjs'
 import { openWorkspace, usageSummary } from '../../server/sven/workspace.mjs'
 import { pathToFileURL, fileURLToPath } from 'node:url'
 import { analyzeWithSven } from '../../server/sven/analysis.mjs'
@@ -94,7 +95,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
     const workspace = researchMode ? openWorkspace(resolve(process.env.SVEN_WORKSPACE || join(homedir(),'.fellestall-sven','research.sqlite'))) : null
     const server = mobilePreview({ root, generate:anthropicSven(), research:researchMode ? async brief=>{
       const owner='local-operator'
-      const id=workspace.create(owner,{...brief,model:process.env.SVEN_MODEL,asOf:new Date().toISOString().slice(0,10)})
+      const id=workspace.create(owner,{...brief,tuning:(await activeLearningProfile()).settings,model:process.env.SVEN_MODEL,asOf:new Date().toISOString().slice(0,10)})
       const result=await workspace.execute(owner,id,(input,onUsage)=>claudeTransport({onUsage})(input),
         options=>researchWithSven({...options,localSources:question=>resolveSvenSources(question,dataDir)}))
       return {...result,jobId:id,usage:usageSummary(workspace.usage(owner,id))}

@@ -1,13 +1,15 @@
 import { createHash } from 'node:crypto'
 import { analysisPolicy, analyzeWithSven } from './analysis.mjs'
 import { parseModelJSON } from './provider.mjs'
+import { deriveMunicipalEvidence } from './calculations.mjs'
+import { builtinSettings, candidateSettings, candidateId } from './learning.mjs'
 
 const text = value => typeof value === 'string' && value.trim().length > 0
 const hash = value => createHash('sha256').update(value).digest('hex')
 const sourceDomains = ['ssb.no', 'regjeringen.no', 'stortinget.no', 'lovdata.no', 'nve.no',
   'statnett.no', 'sodir.no', 'fhi.no', 'helsedirektoratet.no', 'udir.no', 'nav.no', 'ks.no',
   'miljodirektoratet.no', 'riksrevisjonen.no', 'dfo.no', 'sikt.no', 'sametinget.no']
-export const researchVersion = 'sven-research-1'
+export const researchVersion = 'sven-research-2'
 
 // A search hit is not evidence. Only actual fetched text or provider citation
 // excerpts enter the source pack. Generated research prose is not a primary source.
@@ -82,11 +84,12 @@ export function validateAudit(audit) {
 // these privately. No customer text is written to repository or telemetry.
 export async function researchWithSven({ question, surface = 'chat', recommendationRequested = false,
   sources: supplied = [], history = [], plan: suppliedPlan, asOf = new Date().toISOString().slice(0,10),
-  maxSearches = 6, maxSourceChars = 100000, signal, checkpoint = async () => {},
+  tuning = builtinSettings, maxSearches = tuning.maxSearches, maxSourceChars = 100000, signal, checkpoint = async () => {},
   request, localSources = async () => [] }) {
   if (!text(question) || question.length > 12000 || !/^\d{4}-\d{2}-\d{2}$/.test(asOf)) throw new Error('Ugyldig spørsmål eller dato')
   if (!Number.isInteger(maxSearches) || maxSearches < 1 || maxSearches > 12) throw new Error('Ugyldig søkebudsjett')
   if (!Array.isArray(history) || history.length > 12 || history.some(turn => !['user','assistant'].includes(turn.role) || !text(turn.content)) || JSON.stringify(history).length > 24000) throw new Error('Samtalehistorikken er for stor eller ugyldig')
+  const settings = candidateSettings({...tuning,maxSearches})
   const policy = analysisPolicy({ surface, recommendationRequested })
   const run = async (phase, instructions, input, extras = {}) => {
     signal?.throwIfAborted()
@@ -95,7 +98,7 @@ export async function researchWithSven({ question, surface = 'chat', recommendat
     await checkpoint({ phase, status: 'completed', message })
     return message
   }
-  const brief = { question, history, asOf, policy }
+  const brief = { question, history, asOf, policy, responseDensity:settings.responseDensity }
   const plan = suppliedPlan ? validatePlan(suppliedPlan) : validatePlan(parseModelJSON(await run('plan', planInstructions, brief)))
   const gaps = [...plan.missing]
   let local = []
@@ -122,18 +125,22 @@ Returner kildebelagte funn. Bruk søk/fetch, ikke egen hukommelse som faktagrunn
     unique.set(source.id, { ...source, hash: hash(source.text) })
   }
   const sources = [...unique.values()]
+  for (const calculation of deriveMunicipalEvidence(sources)) {
+    if (size + calculation.text.length <= maxSourceChars) { sources.push(calculation); size += calculation.text.length }
+    else gaps.push('Beregningstabellen fikk ikke plass i kildepakken.')
+  }
   if (!sources.length) throw new Error('Fant ikke etterprøvbart kildegrunnlag. Ingen analyse er generert.')
   await checkpoint({ phase: 'evidence', status: 'completed', sources, gaps, plan })
   let corrections = null
   let answer, audit
   for (let attempt = 0; attempt < 2; attempt++) {
     answer = await analyzeWithSven({ question: JSON.stringify({ ...brief, plan, coverageGaps: gaps, corrections }), sources, surface, recommendationRequested },
-      async ({ instructions, input }) => parseModelJSON(await run(`answer-${attempt}`, instructions, JSON.parse(input), { maxTokens: 6000 })))
+      async ({ instructions, input }) => parseModelJSON(await run(`answer-${attempt}`, instructions + `\nLengdepreferanse: ${settings.responseDensity}. Behold alltid nødvendige kilder, motargumenter og forbehold.`, JSON.parse(input), { maxTokens: 6000 })))
     audit = validateAudit(parseModelJSON(await run(`review-${attempt}`, auditInstructions, { ...brief, allowRecommendation: policy.allowRecommendation, answer, sources })))
     if (audit.passed) break
     corrections = { previousAnswer: answer, issues: audit.issues }
   }
-  const result = { version: researchVersion, asOf, question, plan, answer, sources, gaps, audit,
+  const result = { version: researchVersion, candidateId:candidateId(settings), asOf, question, plan, answer, sources, gaps, audit,
     status: audit.passed ? 'reviewed' : 'needs-review',
     // This is automated scrutiny, not proof of factual correctness or permission to publish.
     publicationAuthorized: false }

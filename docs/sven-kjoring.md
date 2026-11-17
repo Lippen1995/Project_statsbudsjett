@@ -66,7 +66,7 @@ Første modellregresjon kjøres med `node scripts/sven/evaluate.mjs` når Claude
 
 ## Undersøkelsesløp og test mot produktene (17. november 2026)
 
-Den nye kjøringen bruker samme regnskapstall, men kan også undersøke brede spørsmål med leverandørens nettsøk og dokumenthenting. Flyten er plan → kildeinnhenting og motbevis → syntese → kvalitetskontroll → høyst én retting og ny kontroll. Maks seks modellforespørsler, seks søk og fire dokumenthentinger per undersøkelse. Disse er kjøregrenser, ikke en kundes månedskvote eller et pristak.
+Den nye kjøringen bruker samme regnskapstall, men kan også undersøke brede spørsmål med leverandørens nettsøk og dokumenthenting. Flyten er plan → kildeinnhenting og motbevis → syntese → kvalitetskontroll → høyst én retting og ny kontroll. Maks seks modellforespørsler og fire dokumenthentinger per undersøkelse. Standard er seks søk; en evaluert konfigurasjon kan velge tre til ti. Disse er kjøregrenser, ikke en kundes månedskvote eller et pristak.
 
 Opprett et privat oppdrag utenfor repoet:
 
@@ -115,9 +115,30 @@ Se [evalueringsprotokollen](../evaluation/sven/README.md). Det følger 30 utvikl
 | Sammenligning med ChatGPT/Claude | Verktøy og utviklingssett implementert. Produktsvar, uavhengig holdout og fagvurderinger gjenstår. |
 | Kundeinnlogging, privat synkronisering, produksjons-API | Ikke levert av det lokale operatørverktøyet. |
 | Månedskvote, abonnement, tilleggskjøp og betalingshendelser | Ikke implementert. Rått leverandørforbruk registreres. |
-| Autonom læring med uavhengig evaluering, utrulling og rollback | Ikke implementert. Automatisk svarrevisjon er ikke en læringssløyfe. |
+| Autonom læring med uavhengig evaluering, utrulling og rollback | Avgrenset kandidatsløyfe og signaturbasert aktivering/tilbakeføring implementert lokalt. Uavhengig evaluatortjeneste, reservert testsett, produksjonsovervåking og bredere læring gjenstår. |
 | Full SSB-katalog, historisk regelverk, lokale partiprogram og voteringstidslinjer | Ikke systematisk importert. Nettsøk erstatter ikke en komplett datakatalog. |
 | Private analyseprosjekter med blokkredigering og PDF/CSV | Jobber og kildepakker finnes lokalt; full kundeeditor og eksportflyt gjenstår. |
 | Produksjonsutrulling og fysisk mobil-/tilgjengelighetstest | Ikke gjennomført for denne grenen. |
 
 Dette er en eksplisitt status, ikke en erklæring om at hele Sven-planen eller konkurransemålet er nådd.
+
+## Beregninger og versjonerte forbedringer
+
+Kommuneundersøkelser får en egen kilde med deterministisk beregnede avvik og tidsendringer. Den oppgir inngangsverdier, originalkilder, år, enhet, formel og begrensninger. Manglende verdi behandles ikke som null. Prosent mot null eller negativ referanse markeres som uegnet. Et flerårig intervall omtales ikke som årlig vekst. Beregningsbiblioteket støtter også median, gjennomsnitt og eksplisitt befolkningsvektet referanse, med målkommunen utelatt; dette referansevalget er foreløpig ikke koblet til modellens planlegging eller mobilens kontroller.
+
+Den avgrensede læringssløyfen kan foreslå endringer i søkebudsjett og svarlengde. Den kan ikke skrive om metode, kildekrav, personvern, publiseringsregler, evaluator eller testgrenser. Input er kun forhåndsdefinerte aggregerte feiltellinger, uten spørsmål, bruker-ID eller politiske personprofiler. Maks to kandidater prøves som standard.
+
+Kontrolløren krever en Ed25519-signert evaluering fra en separat evaluator med privat testsett. Evalueringssignaturen binder kandidat, aktiv referanseversjon, testsett, tidspunkt og resultater. Standardkrav er minst 30 saker per konfigurert fag, ingen faglig tilbakegang, minst 0,1 poeng forbedring i snitt (0–4), null kritiske feil, bestått personvern/publiseringskontroll og kostnadsforhold høyst 1,2. Dette er tekniske aktiveringsgrenser, ikke dokumentasjon på statistisk signifikans. Et nytt signert kritisk overvåkingsavvik tilbakefører automatisk siste aktive versjon.
+
+`SVEN_LEARNING_CONFIG` peker til kontrollørens private JSON-konfigurasjon med `registryPath`, `publicKey` (PEM), `holdoutHashes` og `domains`. Evaluatorens **private** nøkkel og spørsmål skal aldri være tilgjengelig for kandidatgeneratoren. Konfigurasjonen og den aktive versjonen må beskyttes av separate driftstilganger ved produksjon; denne lokale implementasjonen alene etablerer ikke en slik infrastrukturgrense.
+
+```sh
+node scripts/sven/learning.mjs current
+node scripts/sven/learning.mjs propose /privat/kandidat.json
+node scripts/sven/learning.mjs apply /privat/signert-evaluering.json
+node scripts/sven/learn.mjs /privat/aggregerte-feil.json
+```
+
+Den siste kommandoen kjører kandidat → ekstern evaluering → automatisk beslutning, uten menneskelig godkjenning per kandidat. Den krever `SVEN_EVALUATOR_URL` (HTTPS) og `SVEN_EVALUATOR_TOKEN` i tillegg til modellkonfigurasjonen. Evaluatortjenesten må levere den signerte rapporten; ingen slik tjeneste eller holdout-data er provisionert i denne leveransen. Denne sløyfen lærer ikke fritt nye fakta eller forbedrer vilkårlig kode.
+
+Chat og CLI fryser valgt konfigurasjon ved jobbstart. En benchmarkkjøring fryser samme konfigurasjon for hele settet og nekter gjenopptak med en annen modell, kandidat eller forskningsversjon. Aktivering påvirker nye jobber; påbegynte jobber beholder sin versjon.
