@@ -47,3 +47,21 @@ test('lokal mobilchat henter reelt KOSTRA-grunnlag og returnerer kilder over HTT
     await new Promise(resolve => server.close(resolve))
   }
 })
+
+test('forskningsmodus tar brede spørsmål og leverer bare gjennomgåtte svar',async()=>{
+  const root=fileURLToPath(new URL('../../web',import.meta.url))
+  let accepted=false
+  const server=mobilePreview({root,research:async brief=>{
+    assert.equal(brief.question,'Hva kan kommunen bestemme om kraftlinjer?')
+    assert.deepEqual(brief.history,[])
+    return {status:accepted?'reviewed':'needs-review',jobId:'job-1',answer:{summary:'Myndigheten må avklares.',findings:[],uncertainties:[],recommendation:null},sources:[],gaps:[]}
+  }})
+  server.listen(0,'127.0.0.1');await once(server,'listening')
+  const origin=`http://127.0.0.1:${server.address().port}`
+  const send=()=>fetch(origin+'/api/sven/chat',{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify({question:'Hva kan kommunen bestemme om kraftlinjer?'})})
+  try {
+    assert.equal((await send()).status,422)
+    accepted=true
+    const response=await send();assert.equal(response.status,200);assert.equal((await response.json()).research,true)
+  }finally{await new Promise(resolve=>server.close(resolve))}
+})

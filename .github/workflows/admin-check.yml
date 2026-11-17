@@ -3,6 +3,9 @@ on:
   pull_request:
     paths:
       - 'server/admin/**'
+      - 'server/sven/**'
+      - 'scripts/sven/**'
+      - 'evaluation/sven/**'
       - 'scripts/admin/**'
       - 'scripts/analyser/**'
       - 'scripts/deploy/**'
