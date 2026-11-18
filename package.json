@@ -6,7 +6,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test scripts/neon/*.test.mjs scripts/deploy/*.test.mjs scripts/admin/*.test.mjs",
+    "test": "node --test scripts/neon/*.test.mjs scripts/deploy/*.test.mjs scripts/admin/*.test.mjs scripts/sven/*.test.mjs",
     "admin:setup": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local --env-file-if-exists=.env.admin.local scripts/admin/setup.mjs",
     "analysis:pipeline": "node scripts/analyser/pipeline-cli.mjs",
     "data:roundtrip": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon/data-cli.mjs roundtrip",
@@ -15,7 +15,10 @@
     "preview": "npm --prefix web run preview --",
     "neon:init": "neon init -y --org-id org-icy-violet-87182384 --project-id bitter-firefly-21339346 --branch production --services postgres",
     "neon:deploy": "neon deploy --project-id bitter-firefly-21339346 --branch production",
-    "db:check": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon/check.mjs"
+    "db:check": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon/check.mjs",
+    "sven:preflight": "node scripts/sven/preflight.mjs",
+    "sven:research": "node scripts/sven/research.mjs",
+    "sven:benchmark": "node scripts/sven/benchmark.mjs"
   },
   "dependencies": {
     "@neon/config": "^1.9.1",

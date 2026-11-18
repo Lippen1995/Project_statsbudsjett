@@ -4,6 +4,10 @@ Brukeren viste 4. oktober 2026 bekreftelsen på at **«Ukentlig Fellestall-analy
 
 Kjør med abonnementspålogging og prosjektets vanlige tilganger. Bruk ingen OpenAI API-nøkkel til tekstproduksjon. Bruken inngår i kvotene for appen og modellen som utfører oppgaven. GitHub- og LinkedIn-integrasjoner er separate fra valg av AI-produksjon.
 
+## Anbefalinger i publiserte analyser
+
+Følg [Svens skrivehåndbok](../editorial/learning/handbook.md) ved nye utkast og revisjoner. Utfordre den første forklaringen, vis relevante avveininger og konkluder med hva kildene støtter. Gi en tydelig anbefaling om et politisk tiltak eller handlingsvalg bare dersom det konkrete autoriserte analyseoppdraget uttrykkelig ber om det. Kontroller dette også i ingressen, konklusjonen og LinkedIn-teksten før levering.
+
 ## Faktisk arbeidsstatus i admin, 20. oktober 2026
 
 Når `scripts/admin/sven-job.mjs` finnes på fersk main, rapporterer den planlagte
