@@ -308,8 +308,9 @@
     "id": "c1aa0dae-ff47-49b7-88a0-af10525a212b",
     "startedAt": "2026-11-18T08:09:41.781Z",
     "instructionCommit": "41916b734353457d80234c313472691f439d36ec",
-    "state": "researching",
-    "note": "Kontrollerer kilder og leveringsgrunnlag for revisjon av helsereformutkastet.",
-    "updatedAt": "2026-11-18T08:09:41.781Z"
+    "state": "failed",
+    "note": "PR #86 er fortsatt åpen med ubehandlet endringsønske. GitHub-integrasjonen kan lese PR-en, men GitHub CLI mangler innlogging og den lokale prosjektkopien for revisjon er borte. Ingen ny versjon levert. Neste tema beholdes i køen.",
+    "updatedAt": "2026-11-18T08:09:42.950Z",
+    "finishedAt": "2026-11-18T08:09:42.950Z"
   }
 }
