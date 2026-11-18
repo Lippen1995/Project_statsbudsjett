@@ -20,7 +20,7 @@ try {
     if (!ratingsPath) throw new Error('Oppgi egen sti til blindnøkkelen som siste argument')
     await write(resolve(ratingsPath),key)
     await write(join(root,'review.json'),review)
-    await write(join(root,'ratings-template.json'),review.cases.flatMap(c=>c.answers.map(a=>({caseId:c.id,label:a.label,criticalError:false,scores:Object.fromEntries(review.dimensions.map(d=>[d,null])),reason:''}))))
+    await write(join(root,'ratings-template.json'),review.cases.flatMap(c=>c.answers.map(a=>({reviewHash:digest(review),caseId:c.id,label:a.label,criticalError:false,scores:Object.fromEntries(review.dimensions.map(d=>[d,null])),reason:''}))))
     console.log('Blindpakke klar. Del review.json og vurderingsmalen, ikke nøkkelen eller råsvarene.')
   } else if(command==='score') {
     console.log(JSON.stringify(scoreBenchmark(await read(join(root,'review.json')),await read(input),await read(ratingsPath)),null,2))

@@ -52,6 +52,7 @@ export function scoreBenchmark(review, key, ratings) {
   const expected = review.cases.flatMap(c => c.answers.map(a => `${c.id}:${a.label}`))
   if (ratings.length !== expected.length || new Set(ratings.map(r=>`${r.caseId}:${r.label}`)).size !== expected.length) throw new Error('Vurder alle svar før avblinding')
   const rows = ratings.map(rating => {
+    if (rating.reviewHash !== digest(review)) throw new Error('Vurderingen tilhører en annen blindpakke')
     if (!expected.includes(`${rating.caseId}:${rating.label}`) || !nonempty(rating.reason) || typeof rating.criticalError !== 'boolean' ||
       dimensions.some(d => !Number.isInteger(rating.scores?.[d]) || rating.scores[d] < 0 || rating.scores[d] > 4)) throw new Error('Ufullstendig fagvurdering')
     const mapping = key.find(k => k.caseId === rating.caseId && k.label === rating.label)

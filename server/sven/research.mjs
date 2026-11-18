@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import { analysisPolicy, analyzeWithSven } from './analysis.mjs'
 import { parseModelJSON } from './provider.mjs'
 import { deriveMunicipalEvidence } from './calculations.mjs'
-import { builtinSettings, candidateSettings, candidateId } from './learning.mjs'
+import { builtinSettings, candidateSettings, candidateId } from './tuning.mjs'
 
 const text = value => typeof value === 'string' && value.trim().length > 0
 const hash = value => createHash('sha256').update(value).digest('hex')

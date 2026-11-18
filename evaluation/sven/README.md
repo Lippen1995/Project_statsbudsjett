@@ -44,3 +44,5 @@ node scripts/sven/benchmark.mjs score /privat/sven-test /annen-privat-mappe/blin
 Del bare `review.json` og `ratings-template.json` med vurdererne. Produktnavn og modellmetadata fjernes fra strukturen, men selvomtale i svaret kan avsløre identitet; registrer slik avblinding uten å redigere originalsvaret. Blindnøkkel og råsvar skal ikke deles med dem før skårene er låst.
 
 Sven-runneren lagrer etter hver sak og hopper over registrerte resultater ved gjenopptak. En låsefil hindrer parallelle skrivere. En `in-flight`-fil blir liggende ved hardt prosessavbrudd. Undersøk leverandørforbruk og den avbrutte saken før disse filene eventuelt fjernes; en ny forespørsel kan bli fakturert på nytt. Svar og eventuelle private kilder skal ligge utenfor offentlig repo.
+
+Hver poengrad må inneholde `reviewHash`, SHA-256 over den eksakte vurderingspakken. Malgeneratoren setter dette automatisk. Poeng fra en annen anonymiseringsrekkefølge avvises selv om saks-ID og etikettene A/B/C er like.
