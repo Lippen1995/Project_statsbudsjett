@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "extracts": [
+    {
+      "id": "Rusbehandling",
+      "scope": "u-07",
+      "table": "13953",
+      "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+      "selections": {
+        "HelseReg": [
+          "H00"
+        ],
+        "HelseTjenomr": [
+          "TSB"
+        ],
+        "Yrke": [
+          "TOT"
+        ],
+        "ContentsCode": [
+          "Arsverk"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "FravarSykepleiere",
+      "scope": "u-07",
+      "table": "14789",
+      "purpose": "Legemeldt sykefravær per yrke, begge kjønn; egenmeldt fravær er ikke inkludert.",
+      "selections": {
+        "Kjonn": [
+          "0"
+        ],
+        "Yrke": [
+          "222"
+        ],
+        "ContentsCode": [
+          "Sykefraversprosent"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "FravarLeger",
+      "scope": "u-07",
+      "table": "14789",
+      "purpose": "Legemeldt sykefravær per yrke, begge kjønn; egenmeldt fravær er ikke inkludert.",
+      "selections": {
+        "Kjonn": [
+          "0"
+        ],
+        "Yrke": [
+          "221"
+        ],
+        "ContentsCode": [
+          "Sykefraversprosent"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "FravarHelsefag",
+      "scope": "u-07",
+      "table": "14789",
+      "purpose": "Legemeldt sykefravær per yrke, begge kjønn; egenmeldt fravær er ikke inkludert.",
+      "selections": {
+        "Kjonn": [
+          "0"
+        ],
+        "Yrke": [
+          "5321"
+        ],
+        "ContentsCode": [
+          "Sykefraversprosent"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "FravarHelse",
+      "scope": "u-07",
+      "table": "12441",
+      "purpose": "Årlig egen- og legemeldt fravær, korrigert kilde etter 5. november 2026; ikke yrkesfordelt.",
+      "selections": {
+        "Kjonn": [
+          "0"
+        ],
+        "NACE2007": [
+          "86-88"
+        ],
+        "Sykefraver2": [
+          "Alt"
+        ],
+        "ContentsCode": [
+          "Sykdom"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    }
+  ]
+}
