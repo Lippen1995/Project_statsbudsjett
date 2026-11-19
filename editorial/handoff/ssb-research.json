@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "extracts": [
+    {
+      "id": "FravarAlle",
+      "scope": "u-07",
+      "table": "12441",
+      "purpose": "Årlig egen- og legemeldt fravær, korrigert kilde etter 5. november 2026; ikke yrkesfordelt.",
+      "selections": {
+        "Kjonn": [
+          "0"
+        ],
+        "NACE2007": [
+          "00-99"
+        ],
+        "Sykefraver2": [
+          "Alt"
+        ],
+        "ContentsCode": [
+          "Sykdom"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "RhfKostnad",
+      "scope": "u-07",
+      "table": "14022",
+      "purpose": "RHF-administrasjon og fellesfunksjoner: driftskostnader, ikke automatisk innsparingspotensial.",
+      "selections": {
+        "HelseReg": [
+          "H00"
+        ],
+        "HelseTjenomr": [
+          "ADM"
+        ],
+        "InntektKostnad": [
+          "K00"
+        ],
+        "ContentsCode": [
+          "LopendePriser"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "Personalkostnad",
+      "scope": "u-07",
+      "table": "14022",
+      "purpose": "Lønn og andre personalkostnader eksklusive pensjon; løpende priser, ikke sammenlignbart med departementets bevilgning.",
+      "selections": {
+        "HelseReg": [
+          "H00"
+        ],
+        "HelseTjenomr": [
+          "TOT"
+        ],
+        "InntektKostnad": [
+          "K05"
+        ],
+        "ContentsCode": [
+          "LopendePriser"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "OmsorgSykepleiere",
+      "scope": "u-07",
+      "table": "14533",
+      "purpose": "Sykepleiere og spesialsykepleiere i omsorgstjenestene, avtalte årsverk.",
+      "selections": {
+        "KOKkommuneregion0000": [
+          "EAK"
+        ],
+        "KOKyrker0000": [
+          "01",
+          "02"
+        ],
+        "ContentsCode": [
+          "KOSARBAARSVERKST0000"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "aggregation": {
+        "dimension": "KOKyrker0000",
+        "method": "sum"
+      }
+    },
+    {
+      "id": "Hjemmetimer",
+      "scope": "u-07",
+      "table": "12292",
+      "purpose": "Gjennomsnittlig tildelte uketimer helsetjenester i hjemmet; ikke faktisk levert tid eller belastning per ansatt.",
+      "selections": {
+        "KOKkommuneregion0000": [
+          "EAK"
+        ],
+        "ContentsCode": [
+          "KOSgjtimerhjsyk0000"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    }
+  ]
+}
