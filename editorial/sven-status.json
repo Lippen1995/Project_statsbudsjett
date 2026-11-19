@@ -326,7 +326,7 @@
     "startedAt": "2026-11-19T14:49:47.262Z",
     "instructionCommit": "215f72c58355eec10cac5edfed86de8baf820c71",
     "state": "researching",
-    "note": "SSB-katalog hentet via GitHub: 7817 tabeller, alle åtte sider kontrollert. Velger bemannings-, sykefraværs- og kostnadsdata for revisjon av PR 86.",
-    "updatedAt": "2026-11-19T16:34:44.739Z"
+    "note": "Alle tre SSB-importer er verifisert. Kontrollerer reformkostnader, bemanning og partienes standpunkter før revisjon av PR 86.",
+    "updatedAt": "2026-11-19T22:13:16.746Z"
   }
 }

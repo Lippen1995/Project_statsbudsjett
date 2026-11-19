@@ -73,7 +73,7 @@ def main():
 
     index = source(DATA / 'ssb-research/index.json')
     ssb = {}
-    for code in ['Spesialist', 'SykehusStotte', 'Omsorg', 'EldreMenn', 'EldreKvinner']:
+    for code in [e['id'] for e in index['extracts'] if e['scope'] == 'u-07']:
         entry = next(e for e in index['extracts'] if e['scope'] == 'u-07' and e['id'] == code)
         path = DATA / entry['path']
         if digest(path) != entry['hash']:

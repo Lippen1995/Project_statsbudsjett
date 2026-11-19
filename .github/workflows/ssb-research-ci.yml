@@ -25,18 +25,6 @@ jobs:
       - run: python etl/tests/test_ssb_catalogue.py
       - name: Capture complete catalogue and selected metadata
         run: python etl/ssb_research_catalogue.py --output /tmp/ssb-catalogue --metadata 13953 14533 12441 14789 14022 13942 14534 14123 11996 12292 12293
-      - name: Capture official health reform document
-        continue-on-error: true
-        run: |
-          python - <<'PY'
-          import urllib.request, hashlib, pathlib
-          url='https://www.regjeringen.no/contentassets/d406152648054a629e60649ab8daf73e/nou-2026-12-en-helsetjeneste.pdf'
-          with urllib.request.urlopen(url, timeout=40) as r:
-              data=r.read(30000000)
-          assert data.startswith(b'%PDF-') and len(data)<30000000
-          pathlib.Path('/tmp/ssb-catalogue/nou.pdf').write_bytes(data)
-          print('Official document SHA256:', hashlib.sha256(data).hexdigest())
-          PY
       - uses: actions/upload-artifact@v4
         with:
           name: ssb-catalogue
@@ -48,3 +36,5 @@ jobs:
         env:
           SSB_LIVE_TEST: '1'
       - run: node --test web/tests/ssb-research.test.mjs
+      - run: node --test scripts/analyser/test-health-revision.mjs
+

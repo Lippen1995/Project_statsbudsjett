@@ -1,12 +1,19 @@
 {
   "version": 1,
-  "updated": "2026-11-03T08:15:00.000Z",
+  "updated": "2026-11-19T22:15:00Z",
   "nou": {
-    "title": "NOU 2026: 12 En helsetjeneste for vår tid",
-    "url": "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf",
-    "pdfSha256": "b3a7c14bb2a21e8f1184de720396a5123415bb414a57e7c4e0635e19925ce51f",
+    "title": "NOU 2026: 12 Én helsetjeneste",
+    "url": "https://www.regjeringen.no/contentassets/d406152648054a629e60649ab8daf73e/nou-2026-12-en-helsetjeneste.pdf",
     "rhfFte2024": 495,
-    "description": "Utredningen oppgir avtalte årsverk i de regionale helseforetakene. Tallet er en historisk observasjon og ikke et forslag om å fjerne like mange stillinger."
+    "description": "Utredningen oppgir avtalte årsverk i de regionale helseforetakene. Tallet er en historisk observasjon og ikke et forslag om å fjerne like mange stillinger.",
+    "textVerification": {
+      "method": "official-pdf-text",
+      "checkedAt": "2026-11-19T22:15:00Z",
+      "url": "https://www.regjeringen.no/contentassets/d406152648054a629e60649ab8daf73e/nou-2026-12-en-helsetjeneste.pdf",
+      "printedPage": 159,
+      "excerpt": "I 2024 var det til sammen 495 avtalte årsverk i de regionale helseforetakene",
+      "limitation": "Offisiell PDF-tekst kontrollert via nettoppslag. Binærfilen kunne ikke hentes fra GitHub (HTTP 403); ingen ny PDF-hash påstås verifisert."
+    }
   },
   "scenario": {
     "fte": 495,
@@ -33,26 +40,56 @@
       "status": "Har ikke sluttet seg til alle forslagene."
     },
     {
-      "actor": "KS",
-      "position": "Støtter delt ansvar og bedre samarbeid, men vil at nærhelsetjenester skal være frivillige og avviser å flytte legevakten til staten.",
-      "status": "Dokumentert støtte og motstand mot ulike deler."
+      "actor": "Arbeiderpartiet/regjeringen",
+      "position": "Har sendt utredningen på høring og vil søke bredt samarbeid. Har ikke vedtatt hele utvalgets pakke.",
+      "status": "Prosessmelding 2. november 2026"
     },
     {
-      "actor": "Legeforeningen",
-      "position": "Støtter retningen for finansiering av store sykehusbygg, men advarer mot sentralisering og store helseforetak.",
-      "status": "Dokumentert støtte og motstand mot ulike deler."
+      "actor": "Høyre",
+      "position": "Åpen for endringer i styring og finansiering; ønsker mer bruk av private og ideelle og vektlegger pasientenes resultater.",
+      "status": "Reaksjon 3. november 2026"
     },
     {
-      "actor": "Spekter",
-      "position": "Mener endringer må løse konkrete pasient- og arbeidskraftproblemer, og peker på kommuneøkonomi og kommunestruktur.",
-      "status": "Innspill, ikke støtte til hele reformen."
+      "actor": "Fremskrittspartiet",
+      "position": "Vil avvikle RHF-ene og bruke private mer, med offentlig betaling og økt valgfrihet.",
+      "status": "Reaksjon 2. november 2026"
+    },
+    {
+      "actor": "Senterpartiet",
+      "position": "Vil avvikle RHF-ene, men er kritisk til kommunesammenslåinger, nye selskaper og sentralisering.",
+      "status": "Reaksjon 2. november 2026"
+    },
+    {
+      "actor": "Rødt",
+      "position": "Vil ha sterkere demokratisk og lokal kontroll, med ansatte og pasienter nærmere beslutningene.",
+      "status": "Standpunkt ved fremleggelsen 2. november 2026; ikke en full vurdering av alle forslag"
+    },
+    {
+      "actor": "SV",
+      "position": "Vil erstatte foretaksmodellen med demokratisk styring, styrke offentlig kapasitet og arbeidsvilkår og begrense kommersialisering.",
+      "status": "Vedtatt arbeidsprogram 2025–2029, ikke en ny høringsuttalelse"
+    },
+    {
+      "actor": "Venstre",
+      "position": "Vil forbedre foretaksmodellen, korte ned beslutningsveiene, bedre oppgavedelingen og frigjøre klinikertid med støttepersonell.",
+      "status": "Vedtatt stortingsprogram 2025–2029, ikke en ny høringsuttalelse"
+    },
+    {
+      "actor": "KrF",
+      "position": "Vil utrede alternative styringsmodeller, skille drift og investering og sikre lokal behandling med offentlige, private og ideelle tilbud.",
+      "status": "Vedtatt partiprogram 2025–2029, ikke en ny høringsuttalelse"
+    },
+    {
+      "actor": "MDG",
+      "position": "Vil erstatte foretaksmodellen med en administrativ modell inspirert av Skottland, prioritere forebygging og styrke offentlig helsetjeneste.",
+      "status": "Gjeldende helsepolitikk kontrollert 19. november 2026, ikke en datert reaksjon på NOU-en"
     }
   ],
   "sources": [
     {
-      "name": "NOU 2026: 12 En helsetjeneste for vår tid",
-      "url": "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf",
-      "description": "Utvalgets forslag, bakgrunn og vurderinger. Dokumentet inneholder ikke et samlet netto spare- eller kostnadsanslag for reformen."
+      "name": "NOU 2026: 12 Én helsetjeneste",
+      "url": "https://www.regjeringen.no/contentassets/d406152648054a629e60649ab8daf73e/nou-2026-12-en-helsetjeneste.pdf",
+      "description": "Kontrollert offisiell PDF-tekst: RHF-årsverk side 159 og økonomiske konsekvenser kapittel 33. Ingen samlet netto reformkalkyle. Binær PDF-hash er ikke kontrollert på nytt."
     },
     {
       "name": "Helse- og omsorgsdepartementet: mottak av utredningen",
@@ -73,6 +110,57 @@
       "name": "Spekter: endringer må løse konkrete problemer",
       "url": "https://api.kommunikasjon.ntb.no/pressemelding/19126458/helseformutvalgets-rapport-endringer-ma-lose-konkrete-problemer-for-pasientene?lang=no&publisherId=89834",
       "description": "Spekters første reaksjon om kommuneøkonomi, struktur, pasienter og arbeidskraft."
+    },
+    {
+      "name": "Arbeiderpartiet/regjeringen",
+      "url": "https://www.regjeringen.no/no/aktuelt/nytt-skritt-pa-veien-mot-helsereform-vestre-tok-imot-helsereformutvalgets-forslag/id3190681/",
+      "description": "Prosessmelding 2. november 2026. Har sendt utredningen på høring og vil søke bredt samarbeid. Har ikke vedtatt hele utvalgets pakke."
+    },
+    {
+      "name": "Høyre",
+      "url": "https://hoyre.no/2026/11/03/pasientene-ma-komme-forst/",
+      "description": "Reaksjon 3. november 2026. Åpen for endringer i styring og finansiering; ønsker mer bruk av private og ideelle og vektlegger pasientenes resultater."
+    },
+    {
+      "name": "Fremskrittspartiet",
+      "url": "https://www.frp.no/nyheter/helsereformutvalget-peker-i-frps-retning",
+      "description": "Reaksjon 2. november 2026. Vil avvikle RHF-ene og bruke private mer, med offentlig betaling og økt valgfrihet."
+    },
+    {
+      "name": "Senterpartiet",
+      "url": "https://www.senterpartiet.no/aktuelt/kritisk-til-helsereformutvalgets-forslag",
+      "description": "Reaksjon 2. november 2026. Vil avvikle RHF-ene, men er kritisk til kommunesammenslåinger, nye selskaper og sentralisering."
+    },
+    {
+      "name": "Rødt",
+      "url": "https://roedt.no/blogg/helsevesenet-lider-av-akutt-demokratisk-underskudd",
+      "description": "Standpunkt ved fremleggelsen 2. november 2026; ikke en full vurdering av alle forslag. Vil ha sterkere demokratisk og lokal kontroll, med ansatte og pasienter nærmere beslutningene."
+    },
+    {
+      "name": "SV",
+      "url": "https://www.sv.no/wp-content/uploads/2025/08/arbeidsprogram-2025-interaktiv-bokmal-2.pdf",
+      "description": "Vedtatt arbeidsprogram 2025–2029, ikke en ny høringsuttalelse. Vil erstatte foretaksmodellen med demokratisk styring, styrke offentlig kapasitet og arbeidsvilkår og begrense kommersialisering."
+    },
+    {
+      "name": "Venstre",
+      "url": "https://www.venstre.no/content/uploads/venstre-stortingsprogram-2025-2029NN.pdf",
+      "description": "Vedtatt stortingsprogram 2025–2029, ikke en ny høringsuttalelse. Vil forbedre foretaksmodellen, korte ned beslutningsveiene, bedre oppgavedelingen og frigjøre klinikertid med støttepersonell."
+    },
+    {
+      "name": "KrF",
+      "url": "https://krf.no/content/uploads/2020/09/Partiprogram-2025-2029.pdf",
+      "description": "Vedtatt partiprogram 2025–2029, ikke en ny høringsuttalelse. Vil utrede alternative styringsmodeller, skille drift og investering og sikre lokal behandling med offentlige, private og ideelle tilbud."
+    },
+    {
+      "name": "MDG",
+      "url": "https://mdg.no/politikk/helse",
+      "description": "Gjeldende helsepolitikk kontrollert 19. november 2026, ikke en datert reaksjon på NOU-en. Vil erstatte foretaksmodellen med en administrativ modell inspirert av Skottland, prioritere forebygging og styrke offentlig helsetjeneste."
+    },
+    {
+      "name": "Nasjonal helsepersonellplan",
+      "url": "https://www.regjeringen.no/no/dokumenter/meld.-st.-11-20252026/id3164917/?ch=2",
+      "description": "Tiltak for bedre oppgavedeling, arbeidstidsordninger, hele stillinger og å beholde personell. Tiltakene har kostnader og gir ikke en garantert nasjonal innsparing."
     }
-  ]
+  ],
+  "factsVersion": 2
 }
