@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto'
 const hash = (raw) => createHash('sha256').update(raw).digest('hex')
 const number = (v) => new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 2 }).format(v)
 export function ssbEvidenceFacts(evidence = []) {
-  if (!Array.isArray(evidence) || evidence.length > 5) throw Error('Ugyldig SSB-grunnlag')
+  if (!Array.isArray(evidence) || evidence.length > 20) throw Error('Ugyldig SSB-grunnlag')
   const facts = {},
     ids = new Set()
   for (const e of evidence) {
