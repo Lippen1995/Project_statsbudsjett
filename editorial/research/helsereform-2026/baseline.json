@@ -12,7 +12,7 @@
   "sourceHashes": {
     "web/public/data/kpi.json": "aef8b5a18708eeab3efa76d8cf263c9473efca33ce9b43c0e54a93992afc1bbc",
     "web/public/data/befolkning.json": "2a238938a43b4485666897bfd625568ae0f50def82538e0035af3bdc49223c47",
-    "web/public/data/utgifter.json": "2d80587a970345503a041391b392b9cb4598827ab30e4b6b25ca95df9a036365",
+    "web/public/data/utgifter.json": "495e84586083d7ac90663618f3c6a701095dfcd869224f37c0ea4e068f2ad85e",
     "web/public/data/kostra/entities/municipality-0301.json": "137b5a5f9fb953cd4dfd55199ff25cd0accab0d083dd9586fc182735fb4e4db9",
     "web/public/data/kostra/entities/municipality-4601.json": "18ca1f086ca34fb357ef6153627d442313727c1991978eb7842fe0fad559062c",
     "web/public/data/kostra/entities/municipality-5001.json": "8e93b2a440bfdb29fe5381b9645ebdccddfada47183260aa680bb93f359effd5",
