@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "extracts": [
+    {
+      "id": "Sykepleiere",
+      "scope": "u-07",
+      "table": "13953",
+      "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+      "selections": {
+        "HelseReg": [
+          "H00"
+        ],
+        "HelseTjenomr": [
+          "TOT"
+        ],
+        "Yrke": [
+          "01",
+          "02"
+        ],
+        "ContentsCode": [
+          "Arsverk"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "aggregation": {
+        "dimension": "Yrke",
+        "method": "sum"
+      }
+    },
+    {
+      "id": "Leger",
+      "scope": "u-07",
+      "table": "13953",
+      "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+      "selections": {
+        "HelseReg": [
+          "H00"
+        ],
+        "HelseTjenomr": [
+          "TOT"
+        ],
+        "Yrke": [
+          "05",
+          "06"
+        ],
+        "ContentsCode": [
+          "Arsverk"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "aggregation": {
+        "dimension": "Yrke",
+        "method": "sum"
+      }
+    },
+    {
+      "id": "Somatikk",
+      "scope": "u-07",
+      "table": "13953",
+      "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+      "selections": {
+        "HelseReg": [
+          "H00"
+        ],
+        "HelseTjenomr": [
+          "SOM"
+        ],
+        "Yrke": [
+          "TOT"
+        ],
+        "ContentsCode": [
+          "Arsverk"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "PsykiskVoksne",
+      "scope": "u-07",
+      "table": "13953",
+      "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+      "selections": {
+        "HelseReg": [
+          "H00"
+        ],
+        "HelseTjenomr": [
+          "VOP"
+        ],
+        "Yrke": [
+          "TOT"
+        ],
+        "ContentsCode": [
+          "Arsverk"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    {
+      "id": "PsykiskBarn",
+      "scope": "u-07",
+      "table": "13953",
+      "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+      "selections": {
+        "HelseReg": [
+          "H00"
+        ],
+        "HelseTjenomr": [
+          "BUP"
+        ],
+        "Yrke": [
+          "TOT"
+        ],
+        "ContentsCode": [
+          "Arsverk"
+        ],
+        "Tid": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    }
+  ]
+}
