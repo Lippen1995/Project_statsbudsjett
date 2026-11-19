@@ -4,6 +4,7 @@ on:
     paths:
       - 'etl/ssb_research*'
       - 'etl/tests/test_ssb_research.py'
+      - 'etl/tests/test_ssb_catalogue.py'
       - 'scripts/analyser/ssb-research.mjs'
       - '.github/workflows/ssb-research-ci.yml'
   workflow_dispatch:
@@ -21,6 +22,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - run: python etl/tests/test_ssb_catalogue.py
+      - name: Capture complete catalogue and selected metadata
+        run: python etl/ssb_research_catalogue.py --output /tmp/ssb-catalogue
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ssb-catalogue
+          path: /tmp/ssb-catalogue/
+          if-no-files-found: error
+          retention-days: 30
       - run: pip install -r etl/requirements.txt
       - run: python -m pytest etl/tests/test_ssb_research.py -q -s
         env:
