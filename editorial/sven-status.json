@@ -326,7 +326,7 @@
     "startedAt": "2026-11-19T14:49:47.262Z",
     "instructionCommit": "215f72c58355eec10cac5edfed86de8baf820c71",
     "state": "researching",
-    "note": "GitHub-adapter og research-klargjøring verifisert. Kildehash korrigert uten endrede analysetall. Direkte SSB-tilgang svarer ikke.",
-    "updatedAt": "2026-11-19T14:55:48.573Z"
+    "note": "SSB-katalog hentet via GitHub: 7817 tabeller, alle åtte sider kontrollert. Velger bemannings-, sykefraværs- og kostnadsdata for revisjon av PR 86.",
+    "updatedAt": "2026-11-19T16:34:44.739Z"
   }
 }
