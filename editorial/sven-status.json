@@ -326,7 +326,7 @@
     "startedAt": "2026-11-19T14:49:47.262Z",
     "instructionCommit": "215f72c58355eec10cac5edfed86de8baf820c71",
     "state": "researching",
-    "note": "Gjenoppretter kjørbar revisjonsflyt og kontrollerer kildene for PR #86",
-    "updatedAt": "2026-11-19T14:49:47.262Z"
+    "note": "GitHub-adapter og research-klargjøring verifisert. Kildehash korrigert uten endrede analysetall. Direkte SSB-tilgang svarer ikke.",
+    "updatedAt": "2026-11-19T14:55:48.573Z"
   }
 }
