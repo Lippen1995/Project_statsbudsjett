@@ -104,3 +104,14 @@ def test_explicit_category_sum_and_dimension_order():
     d['dimension']['Region']['category']['label']['a']='Lærested i alt'
     with pytest.raises(ValueError):selection_params(d,s,agg)
     with pytest.raises(ValueError):selection_params(d,s,{'dimension':'Tid','method':'sum'})
+
+def test_expanded_archive_scope_keeps_twenty_and_rejects_twenty_first(tmp_path, monkeypatch):
+    import json, ssb_research
+    monkeypatch.setattr(ssb_research, 'fetch_snapshot', lambda *args: {'version':1})
+    for i in range(20):
+        ssb_research.archive(tmp_path, {'id':'Series'+chr(65+i),'scope':'u-07','purpose':'Kontrollert fordypning','table':'13953','selections':{}})
+    before=(tmp_path/'ssb-research/index.json').read_bytes()
+    with pytest.raises(ValueError):
+        ssb_research.archive(tmp_path, {'id':'TooMany','scope':'u-07','purpose':'Kontrollert fordypning','table':'13953','selections':{}})
+    assert (tmp_path/'ssb-research/index.json').read_bytes()==before
+    assert len(json.loads(before)['extracts'])==20
