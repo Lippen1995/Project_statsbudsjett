@@ -246,3 +246,8 @@ kjøring allerede arbeider på samme head. Eksakt menneskelig godkjenning,
 botlevering, kildekontroll og versjonsbundet forhåndsvisning gjelder fortsatt.
 Ingen separat AI-API er innført. Ved manglende innspill skal det ikke sendes en
 statusmelding til brukeren. Ikke opprett en ny kopi av kommentaroppgaven.
+
+
+## Gjenoppretting uten lokal GitHub CLI, 19. november 2026
+
+Hvis GitHub-integrasjonen fungerer, men lokal prosjektkopi eller gh-innlogging mangler, følg `docs/native-github-connector.md`. Hent kildefiler ved fast fersk main-SHA og bruk den dokumenterte native connector-adapteren til de eksisterende skriptene. Ikke avslutt med «GitHub mangler innlogging» før denne veien er kontrollert. Adapteren erstatter bare transporten; faktiske tillatelser, head-kontroll, tallkontroll, botlevering og eksakt menneskelig godkjenning består. Kilde- og nettverksfeil må rapporteres separat. En klargjort pakke er ikke en levert revisjon.
