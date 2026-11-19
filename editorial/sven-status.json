@@ -311,14 +311,22 @@
       "note": "PR #86 er fortsatt åpen med ubehandlet endringsønske. GitHub-integrasjonen kan lese PR-en, men GitHub CLI mangler innlogging og den lokale prosjektkopien for revisjon er borte. Ingen ny versjon levert. Neste tema beholdes i køen.",
       "updatedAt": "2026-11-18T08:09:42.950Z",
       "finishedAt": "2026-11-18T08:09:42.950Z"
+    },
+    {
+      "id": "16b42c4c-048e-4c9f-87e4-e8f541145e32",
+      "startedAt": "2026-11-19T08:00:03.204Z",
+      "state": "failed",
+      "note": "PR #86 har samme head og ubehandlet endringsønske. GitHub CLI mangler fortsatt innlogging. Ingen lokal prosjektkopi funnet. GitHub-integrasjonen kan lese PR-en; ingen ny revisjon eller analyse er levert. Pipelinekøen er beholdt.",
+      "updatedAt": "2026-11-19T08:00:04.776Z",
+      "finishedAt": "2026-11-19T08:00:04.776Z"
     }
   ],
   "current": {
-    "id": "16b42c4c-048e-4c9f-87e4-e8f541145e32",
-    "startedAt": "2026-11-19T08:00:03.204Z",
-    "state": "failed",
-    "note": "PR #86 har samme head og ubehandlet endringsønske. GitHub CLI mangler fortsatt innlogging. Ingen lokal prosjektkopi funnet. GitHub-integrasjonen kan lese PR-en; ingen ny revisjon eller analyse er levert. Pipelinekøen er beholdt.",
-    "updatedAt": "2026-11-19T08:00:04.776Z",
-    "finishedAt": "2026-11-19T08:00:04.776Z"
+    "id": "0a2981b2-ba63-4fa0-a312-2c605dbdb7e5",
+    "startedAt": "2026-11-19T14:49:47.262Z",
+    "instructionCommit": "215f72c58355eec10cac5edfed86de8baf820c71",
+    "state": "researching",
+    "note": "Gjenoppretter kjørbar revisjonsflyt og kontrollerer kildene for PR #86",
+    "updatedAt": "2026-11-19T14:49:47.262Z"
   }
 }
