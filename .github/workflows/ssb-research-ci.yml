@@ -36,3 +36,5 @@ jobs:
         env:
           SSB_LIVE_TEST: '1'
       - run: node --test web/tests/ssb-research.test.mjs
+      - run: node --test scripts/analyser/test-health-revision.mjs
+
