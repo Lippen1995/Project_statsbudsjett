@@ -316,8 +316,9 @@
   "current": {
     "id": "16b42c4c-048e-4c9f-87e4-e8f541145e32",
     "startedAt": "2026-11-19T08:00:03.204Z",
-    "state": "researching",
-    "note": "Kontrollerer åpne gjennomganger og faktisk tilgang for revisjon.",
-    "updatedAt": "2026-11-19T08:00:03.204Z"
+    "state": "failed",
+    "note": "PR #86 har samme head og ubehandlet endringsønske. GitHub CLI mangler fortsatt innlogging. Ingen lokal prosjektkopi funnet. GitHub-integrasjonen kan lese PR-en; ingen ny revisjon eller analyse er levert. Pipelinekøen er beholdt.",
+    "updatedAt": "2026-11-19T08:00:04.776Z",
+    "finishedAt": "2026-11-19T08:00:04.776Z"
   }
 }
