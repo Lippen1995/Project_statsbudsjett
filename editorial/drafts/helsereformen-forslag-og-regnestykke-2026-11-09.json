@@ -5,7 +5,7 @@
   "type": "Politikk og økonomi",
   "status": "draft",
   "createdAt": "2026-11-09T10:04:21.547Z",
-  "generatedAt": "2026-11-09T10:04:21.547Z",
+  "generatedAt": "2026-11-19T22:26:14.511Z",
   "report": {
     "kind": "real-expenditure-per-capita",
     "factsVersion": 2,
@@ -40,8 +40,8 @@
     ],
     "start": 2020,
     "end": 2025,
-    "dataUpdated": "2026-11-06T14:24:41.115233+00:00",
-    "dataHash": "087e7bfefdca4e1a02ba75fe1bd43ef54e296c8529f61030b1bc165150530ff7",
+    "dataUpdated": "2026-11-19T16:51:47.099345+00:00",
+    "dataHash": "8aaf0a02cac211ec4368dccca22d421c6420c3ea4ef479bae29ae8d1a8354e2b",
     "facts": {
       "startYear": {
         "value": 2020,
@@ -793,6 +793,516 @@
         "text": "12,07 %",
         "label": "07459: Alders- og kjønnsfordeling i kommuner, fylker og hele landets befolkning (K) 1986-2026: prosentvis endring, ikke prosentpoeng"
       },
+      "ssbSykepleiereStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: første observasjonsår"
+      },
+      "ssbSykepleiereEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: siste observasjonsår"
+      },
+      "ssbSykepleiereStart": {
+        "value": 39542,
+        "text": "39 542 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: startverdi"
+      },
+      "ssbSykepleiereEnd": {
+        "value": 41774,
+        "text": "41 774 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: sluttverdi"
+      },
+      "ssbSykepleiereChange": {
+        "value": 2232,
+        "text": "2 232 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: endring i måleenheten"
+      },
+      "ssbSykepleiereGrowth": {
+        "value": 5.6446310252389775,
+        "text": "5,64 %",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbLegerStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: første observasjonsår"
+      },
+      "ssbLegerEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: siste observasjonsår"
+      },
+      "ssbLegerStart": {
+        "value": 17770,
+        "text": "17 770 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: startverdi"
+      },
+      "ssbLegerEnd": {
+        "value": 19710,
+        "text": "19 710 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: sluttverdi"
+      },
+      "ssbLegerChange": {
+        "value": 1940,
+        "text": "1 940 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: endring i måleenheten"
+      },
+      "ssbLegerGrowth": {
+        "value": 10.917276308384928,
+        "text": "10,92 %",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbSomatikkStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: første observasjonsår"
+      },
+      "ssbSomatikkEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: siste observasjonsår"
+      },
+      "ssbSomatikkStart": {
+        "value": 68201,
+        "text": "68 201 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: startverdi"
+      },
+      "ssbSomatikkEnd": {
+        "value": 74255,
+        "text": "74 255 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: sluttverdi"
+      },
+      "ssbSomatikkChange": {
+        "value": 6054,
+        "text": "6 054 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: endring i måleenheten"
+      },
+      "ssbSomatikkGrowth": {
+        "value": 8.876702687643867,
+        "text": "8,88 %",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbPsykiskVoksneStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: første observasjonsår"
+      },
+      "ssbPsykiskVoksneEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: siste observasjonsår"
+      },
+      "ssbPsykiskVoksneStart": {
+        "value": 15089,
+        "text": "15 089 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: startverdi"
+      },
+      "ssbPsykiskVoksneEnd": {
+        "value": 15997,
+        "text": "15 997 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: sluttverdi"
+      },
+      "ssbPsykiskVoksneChange": {
+        "value": 908,
+        "text": "908 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: endring i måleenheten"
+      },
+      "ssbPsykiskVoksneGrowth": {
+        "value": 6.017628736165426,
+        "text": "6,02 %",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbPsykiskBarnStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: første observasjonsår"
+      },
+      "ssbPsykiskBarnEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: siste observasjonsår"
+      },
+      "ssbPsykiskBarnStart": {
+        "value": 3353,
+        "text": "3 353 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: startverdi"
+      },
+      "ssbPsykiskBarnEnd": {
+        "value": 3883,
+        "text": "3 883 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: sluttverdi"
+      },
+      "ssbPsykiskBarnChange": {
+        "value": 530,
+        "text": "530 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: endring i måleenheten"
+      },
+      "ssbPsykiskBarnGrowth": {
+        "value": 15.806740232627492,
+        "text": "15,81 %",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbFravarAlleStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: første observasjonsår"
+      },
+      "ssbFravarAlleEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: siste observasjonsår"
+      },
+      "ssbFravarAlleStart": {
+        "value": 6,
+        "text": "6 prosent",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: startverdi"
+      },
+      "ssbFravarAlleEnd": {
+        "value": 6.6,
+        "text": "6,6 prosent",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: sluttverdi"
+      },
+      "ssbFravarAlleChange": {
+        "value": 0.5999999999999996,
+        "text": "0,6 prosent",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: endring i måleenheten"
+      },
+      "ssbFravarAlleGrowth": {
+        "value": 9.999999999999986,
+        "text": "10 %",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbRhfKostnadStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: første observasjonsår"
+      },
+      "ssbRhfKostnadEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: siste observasjonsår"
+      },
+      "ssbRhfKostnadStart": {
+        "value": 1740,
+        "text": "1 740 mill. kr",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: startverdi"
+      },
+      "ssbRhfKostnadEnd": {
+        "value": 2345,
+        "text": "2 345 mill. kr",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: sluttverdi"
+      },
+      "ssbRhfKostnadChange": {
+        "value": 605,
+        "text": "605 mill. kr",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: endring i måleenheten"
+      },
+      "ssbRhfKostnadGrowth": {
+        "value": 34.77011494252873,
+        "text": "34,77 %",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbPersonalkostnadStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: første observasjonsår"
+      },
+      "ssbPersonalkostnadEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: siste observasjonsår"
+      },
+      "ssbPersonalkostnadStart": {
+        "value": 87852,
+        "text": "87 852 mill. kr",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: startverdi"
+      },
+      "ssbPersonalkostnadEnd": {
+        "value": 120389,
+        "text": "120 389 mill. kr",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: sluttverdi"
+      },
+      "ssbPersonalkostnadChange": {
+        "value": 32537,
+        "text": "32 537 mill. kr",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: endring i måleenheten"
+      },
+      "ssbPersonalkostnadGrowth": {
+        "value": 37.03615170969356,
+        "text": "37,04 %",
+        "label": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbOmsorgSykepleiereStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: første observasjonsår"
+      },
+      "ssbOmsorgSykepleiereEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: siste observasjonsår"
+      },
+      "ssbOmsorgSykepleiereStart": {
+        "value": 26934,
+        "text": "26 934 årsverk",
+        "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: startverdi"
+      },
+      "ssbOmsorgSykepleiereEnd": {
+        "value": 27786,
+        "text": "27 786 årsverk",
+        "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: sluttverdi"
+      },
+      "ssbOmsorgSykepleiereChange": {
+        "value": 852,
+        "text": "852 årsverk",
+        "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: endring i måleenheten"
+      },
+      "ssbOmsorgSykepleiereGrowth": {
+        "value": 3.163288037424805,
+        "text": "3,16 %",
+        "label": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbHjemmetimerStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "12292: Omsorgstjenester - supplerende grunnlagstall (K) 2015-2025: første observasjonsår"
+      },
+      "ssbHjemmetimerEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "12292: Omsorgstjenester - supplerende grunnlagstall (K) 2015-2025: siste observasjonsår"
+      },
+      "ssbHjemmetimerStart": {
+        "value": 5,
+        "text": "5 antall",
+        "label": "12292: Omsorgstjenester - supplerende grunnlagstall (K) 2015-2025: startverdi"
+      },
+      "ssbHjemmetimerEnd": {
+        "value": 5,
+        "text": "5 antall",
+        "label": "12292: Omsorgstjenester - supplerende grunnlagstall (K) 2015-2025: sluttverdi"
+      },
+      "ssbHjemmetimerChange": {
+        "value": 0,
+        "text": "0 antall",
+        "label": "12292: Omsorgstjenester - supplerende grunnlagstall (K) 2015-2025: endring i måleenheten"
+      },
+      "ssbHjemmetimerGrowth": {
+        "value": 0,
+        "text": "0 %",
+        "label": "12292: Omsorgstjenester - supplerende grunnlagstall (K) 2015-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbRusbehandlingStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: første observasjonsår"
+      },
+      "ssbRusbehandlingEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: siste observasjonsår"
+      },
+      "ssbRusbehandlingStart": {
+        "value": 3698,
+        "text": "3 698 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: startverdi"
+      },
+      "ssbRusbehandlingEnd": {
+        "value": 3683,
+        "text": "3 683 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: sluttverdi"
+      },
+      "ssbRusbehandlingChange": {
+        "value": -15,
+        "text": "−15 antall",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: endring i måleenheten"
+      },
+      "ssbRusbehandlingGrowth": {
+        "value": -0.40562466197945346,
+        "text": "−0,41 %",
+        "label": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbFravarSykepleiereStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: første observasjonsår"
+      },
+      "ssbFravarSykepleiereEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: siste observasjonsår"
+      },
+      "ssbFravarSykepleiereStart": {
+        "value": 8,
+        "text": "8 prosent",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: startverdi"
+      },
+      "ssbFravarSykepleiereEnd": {
+        "value": 8.5,
+        "text": "8,5 prosent",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: sluttverdi"
+      },
+      "ssbFravarSykepleiereChange": {
+        "value": 0.5,
+        "text": "0,5 prosent",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: endring i måleenheten"
+      },
+      "ssbFravarSykepleiereGrowth": {
+        "value": 6.25,
+        "text": "6,25 %",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbFravarLegerStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: første observasjonsår"
+      },
+      "ssbFravarLegerEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: siste observasjonsår"
+      },
+      "ssbFravarLegerStart": {
+        "value": 3.2,
+        "text": "3,2 prosent",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: startverdi"
+      },
+      "ssbFravarLegerEnd": {
+        "value": 3.7,
+        "text": "3,7 prosent",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: sluttverdi"
+      },
+      "ssbFravarLegerChange": {
+        "value": 0.5,
+        "text": "0,5 prosent",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: endring i måleenheten"
+      },
+      "ssbFravarLegerGrowth": {
+        "value": 15.625,
+        "text": "15,63 %",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbFravarHelsefagStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: første observasjonsår"
+      },
+      "ssbFravarHelsefagEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: siste observasjonsår"
+      },
+      "ssbFravarHelsefagStart": {
+        "value": 9.9,
+        "text": "9,9 prosent",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: startverdi"
+      },
+      "ssbFravarHelsefagEnd": {
+        "value": 10.3,
+        "text": "10,3 prosent",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: sluttverdi"
+      },
+      "ssbFravarHelsefagChange": {
+        "value": 0.40000000000000036,
+        "text": "0,4 prosent",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: endring i måleenheten"
+      },
+      "ssbFravarHelsefagGrowth": {
+        "value": 4.040404040404044,
+        "text": "4,04 %",
+        "label": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbFravarHelseStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: første observasjonsår"
+      },
+      "ssbFravarHelseEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: siste observasjonsår"
+      },
+      "ssbFravarHelseStart": {
+        "value": 8.9,
+        "text": "8,9 prosent",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: startverdi"
+      },
+      "ssbFravarHelseEnd": {
+        "value": 9.4,
+        "text": "9,4 prosent",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: sluttverdi"
+      },
+      "ssbFravarHelseChange": {
+        "value": 0.5,
+        "text": "0,5 prosent",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: endring i måleenheten"
+      },
+      "ssbFravarHelseGrowth": {
+        "value": 5.617977528089879,
+        "text": "5,62 %",
+        "label": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "healthScenarioTime": {
+        "value": 10,
+        "text": "10 %",
+        "label": "Illustrativ tidsbesparelse"
+      },
+      "healthScenarioRealization": {
+        "value": 50,
+        "text": "50 %",
+        "label": "Illustrativ realisering"
+      },
+      "healthScenarioReleased": {
+        "value": 24.75,
+        "text": "24,8",
+        "label": "Frigjorte årsverk i illustrativt RHF-scenario"
+      },
+      "healthScenarioEmployerCost": {
+        "value": 1200000,
+        "text": "1,2 mill. kr",
+        "label": "Antatt årlig kostnad per årsverk"
+      },
+      "healthScenarioUpfront": {
+        "value": 500000000,
+        "text": "500,0 mill. kr",
+        "label": "Antatt engangskostnad"
+      },
+      "healthScenarioOngoing": {
+        "value": 50000000,
+        "text": "50,0 mill. kr",
+        "label": "Antatt årlig merkostnad"
+      },
+      "healthScenarioCashGross": {
+        "value": 29700000,
+        "text": "29,7 mill. kr",
+        "label": "Illustrativ brutto kontantinnsparing ved full bemanningsrealisering"
+      },
+      "healthScenarioCashNet": {
+        "value": -20300000,
+        "text": "−20,3 mill. kr",
+        "label": "Illustrativ netto årlig kontanteffekt etter innfasing"
+      },
+      "healthScenarioRamp": {
+        "value": 3,
+        "text": "3",
+        "label": "Illustrativ innfasing i år"
+      },
+      "healthScenarioYears": {
+        "value": 10,
+        "text": "10",
+        "label": "Illustrativ beregningshorisont i år"
+      },
+      "healthOnePercent": {
+        "value": 1,
+        "text": "1 %",
+        "label": "Illustrativ andel av avtalt arbeidstid"
+      },
+      "healthCareNurseCapacity": {
+        "value": 277.86,
+        "text": "278",
+        "label": "Årsverksekvivalent dersom én prosent av avtalt sykepleiertid i kommunal omsorg frigjøres"
+      },
       "healthRhfFte": {
         "value": 495,
         "text": "495",
@@ -1170,9 +1680,174 @@
         "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
       },
       {
-        "name": "NOU 2026: 12 En helsetjeneste for vår tid",
-        "url": "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf",
-        "description": "Utvalgets forslag, bakgrunn og vurderinger. Dokumentet inneholder ikke et samlet netto spare- eller kostnadsanslag for reformen."
+        "name": "SSB: 13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025 — Sykepleiere (tabell 13953)",
+        "url": "https://www.ssb.no/statbank/table/13953/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:40:25.627225+00:00. Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Sykepleiere",
+        "url": "https://fellestall.no/data/ssb-research/434bffa8ed7493c2558b8d1ee37d9481884aa71cc512d78080ea90d46d208eff.json",
+        "local": "/data/ssb-research/434bffa8ed7493c2558b8d1ee37d9481884aa71cc512d78080ea90d46d208eff.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025 — Leger (tabell 13953)",
+        "url": "https://www.ssb.no/statbank/table/13953/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:40:27.140106+00:00. Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Leger",
+        "url": "https://fellestall.no/data/ssb-research/a82c4c82f9894185af1ef5d62806a971a10b7dbb3ba85145d2b8be9a834150ca.json",
+        "local": "/data/ssb-research/a82c4c82f9894185af1ef5d62806a971a10b7dbb3ba85145d2b8be9a834150ca.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025 — Somatikk (tabell 13953)",
+        "url": "https://www.ssb.no/statbank/table/13953/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:40:28.956272+00:00. Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Somatikk",
+        "url": "https://fellestall.no/data/ssb-research/67e18d98ea8481712bd75e7f417dfe436f04410576eb39b04c24d5b8eb2d6e8b.json",
+        "local": "/data/ssb-research/67e18d98ea8481712bd75e7f417dfe436f04410576eb39b04c24d5b8eb2d6e8b.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025 — PsykiskVoksne (tabell 13953)",
+        "url": "https://www.ssb.no/statbank/table/13953/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:40:31.134619+00:00. Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: PsykiskVoksne",
+        "url": "https://fellestall.no/data/ssb-research/bf12659a6f11d25e1b60bcaaea04a1b9c761eea7281a194665edaf2f189af07c.json",
+        "local": "/data/ssb-research/bf12659a6f11d25e1b60bcaaea04a1b9c761eea7281a194665edaf2f189af07c.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025 — PsykiskBarn (tabell 13953)",
+        "url": "https://www.ssb.no/statbank/table/13953/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:40:32.884497+00:00. Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: PsykiskBarn",
+        "url": "https://fellestall.no/data/ssb-research/a24c3d86ed340c2027123dbf3117c97e7c4cbf83048e9388e69d2acb21cd9251.json",
+        "local": "/data/ssb-research/a24c3d86ed340c2027123dbf3117c97e7c4cbf83048e9388e69d2acb21cd9251.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025 — FravarAlle (tabell 12441)",
+        "url": "https://www.ssb.no/statbank/table/12441/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:41:10.792396+00:00. Årlig egen- og legemeldt fravær, korrigert kilde etter 5. november 2026; ikke yrkesfordelt."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: FravarAlle",
+        "url": "https://fellestall.no/data/ssb-research/6a6d9750d1250f84941816755a7e7d0a2a13ae2a2799cad6f0c8d8a4e962284f.json",
+        "local": "/data/ssb-research/6a6d9750d1250f84941816755a7e7d0a2a13ae2a2799cad6f0c8d8a4e962284f.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025 — RhfKostnad (tabell 14022)",
+        "url": "https://www.ssb.no/statbank/table/14022/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:41:12.824708+00:00. RHF-administrasjon og fellesfunksjoner: driftskostnader, ikke automatisk innsparingspotensial."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: RhfKostnad",
+        "url": "https://fellestall.no/data/ssb-research/a3b95930b113265e2ffa2358ae08c42bfd6f7c92ce961f0b2de73b0f683f3cef.json",
+        "local": "/data/ssb-research/a3b95930b113265e2ffa2358ae08c42bfd6f7c92ce961f0b2de73b0f683f3cef.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025 — Personalkostnad (tabell 14022)",
+        "url": "https://www.ssb.no/statbank/table/14022/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:41:14.843611+00:00. Lønn og andre personalkostnader eksklusive pensjon; løpende priser, ikke sammenlignbart med departementets bevilgning."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Personalkostnad",
+        "url": "https://fellestall.no/data/ssb-research/454dd75a0086f274a3593a97880140166e4d2a47d360df189fe75af9964976fa.json",
+        "local": "/data/ssb-research/454dd75a0086f274a3593a97880140166e4d2a47d360df189fe75af9964976fa.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025 — OmsorgSykepleiere (tabell 14533)",
+        "url": "https://www.ssb.no/statbank/table/14533/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:41:16.389218+00:00. Sykepleiere og spesialsykepleiere i omsorgstjenestene, avtalte årsverk."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: OmsorgSykepleiere",
+        "url": "https://fellestall.no/data/ssb-research/a653a15a08d777d0bb0ec57c53a2b92414047e30a9bac21ed5f2d949ee9b2d64.json",
+        "local": "/data/ssb-research/a653a15a08d777d0bb0ec57c53a2b92414047e30a9bac21ed5f2d949ee9b2d64.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 12292: Omsorgstjenester - supplerende grunnlagstall (K) 2015-2025 — Hjemmetimer (tabell 12292)",
+        "url": "https://www.ssb.no/statbank/table/12292/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:41:18.015865+00:00. Gjennomsnittlig tildelte uketimer helsetjenester i hjemmet; ikke faktisk levert tid eller belastning per ansatt."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Hjemmetimer",
+        "url": "https://fellestall.no/data/ssb-research/4a562cfa1d2793860cf81d545c3eb8ec54e2d62225b04873b97e14ee2e4ce63d.json",
+        "local": "/data/ssb-research/4a562cfa1d2793860cf81d545c3eb8ec54e2d62225b04873b97e14ee2e4ce63d.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025 — Rusbehandling (tabell 13953)",
+        "url": "https://www.ssb.no/statbank/table/13953/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:42:03.221219+00:00. Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Rusbehandling",
+        "url": "https://fellestall.no/data/ssb-research/c4577b900e1141004fe675f4f7fdf7b31da995d7e4a973d859e7097b231c3188.json",
+        "local": "/data/ssb-research/c4577b900e1141004fe675f4f7fdf7b31da995d7e4a973d859e7097b231c3188.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025 — FravarSykepleiere (tabell 14789)",
+        "url": "https://www.ssb.no/statbank/table/14789/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:42:04.893511+00:00. Legemeldt sykefravær per yrke, begge kjønn; egenmeldt fravær er ikke inkludert."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: FravarSykepleiere",
+        "url": "https://fellestall.no/data/ssb-research/ed0f870ae334544a24e33f48816464e68274c8d54598c581b8a1a8fd51bff04c.json",
+        "local": "/data/ssb-research/ed0f870ae334544a24e33f48816464e68274c8d54598c581b8a1a8fd51bff04c.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025 — FravarLeger (tabell 14789)",
+        "url": "https://www.ssb.no/statbank/table/14789/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:42:06.560505+00:00. Legemeldt sykefravær per yrke, begge kjønn; egenmeldt fravær er ikke inkludert."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: FravarLeger",
+        "url": "https://fellestall.no/data/ssb-research/250b542db6616132cf78bd7c652928338628ca184cbfec9352327e14e63f59db.json",
+        "local": "/data/ssb-research/250b542db6616132cf78bd7c652928338628ca184cbfec9352327e14e63f59db.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025 — FravarHelsefag (tabell 14789)",
+        "url": "https://www.ssb.no/statbank/table/14789/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:42:08.063220+00:00. Legemeldt sykefravær per yrke, begge kjønn; egenmeldt fravær er ikke inkludert."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: FravarHelsefag",
+        "url": "https://fellestall.no/data/ssb-research/5a8ffe6c43b52cea3036bf5d7ab944482cd85868419eed4063d3d743ab81f76f.json",
+        "local": "/data/ssb-research/5a8ffe6c43b52cea3036bf5d7ab944482cd85868419eed4063d3d743ab81f76f.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025 — FravarHelse (tabell 12441)",
+        "url": "https://www.ssb.no/statbank/table/12441/",
+        "description": "Frosset uttrekk hentet 2026-11-19T16:42:09.650970+00:00. Årlig egen- og legemeldt fravær, korrigert kilde etter 5. november 2026; ikke yrkesfordelt."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: FravarHelse",
+        "url": "https://fellestall.no/data/ssb-research/53d9af92a3f03040acfb1385417c28eac4ae1a2f3ca9bbcac7a6b844a5cc7676.json",
+        "local": "/data/ssb-research/53d9af92a3f03040acfb1385417c28eac4ae1a2f3ca9bbcac7a6b844a5cc7676.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "NOU 2026: 12 Én helsetjeneste",
+        "url": "https://www.regjeringen.no/contentassets/d406152648054a629e60649ab8daf73e/nou-2026-12-en-helsetjeneste.pdf",
+        "description": "Kontrollert offisiell PDF-tekst: RHF-årsverk side 159 og økonomiske konsekvenser kapittel 33. Ingen samlet netto reformkalkyle. Binær PDF-hash er ikke kontrollert på nytt."
       },
       {
         "name": "Helse- og omsorgsdepartementet: mottak av utredningen",
@@ -1193,6 +1868,56 @@
         "name": "Spekter: endringer må løse konkrete problemer",
         "url": "https://api.kommunikasjon.ntb.no/pressemelding/19126458/helseformutvalgets-rapport-endringer-ma-lose-konkrete-problemer-for-pasientene?lang=no&publisherId=89834",
         "description": "Spekters første reaksjon om kommuneøkonomi, struktur, pasienter og arbeidskraft."
+      },
+      {
+        "name": "Arbeiderpartiet/regjeringen",
+        "url": "https://www.regjeringen.no/no/aktuelt/nytt-skritt-pa-veien-mot-helsereform-vestre-tok-imot-helsereformutvalgets-forslag/id3190681/",
+        "description": "Prosessmelding 2. november 2026. Har sendt utredningen på høring og vil søke bredt samarbeid. Har ikke vedtatt hele utvalgets pakke."
+      },
+      {
+        "name": "Høyre",
+        "url": "https://hoyre.no/2026/11/03/pasientene-ma-komme-forst/",
+        "description": "Reaksjon 3. november 2026. Åpen for endringer i styring og finansiering; ønsker mer bruk av private og ideelle og vektlegger pasientenes resultater."
+      },
+      {
+        "name": "Fremskrittspartiet",
+        "url": "https://www.frp.no/nyheter/helsereformutvalget-peker-i-frps-retning",
+        "description": "Reaksjon 2. november 2026. Vil avvikle RHF-ene og bruke private mer, med offentlig betaling og økt valgfrihet."
+      },
+      {
+        "name": "Senterpartiet",
+        "url": "https://www.senterpartiet.no/aktuelt/kritisk-til-helsereformutvalgets-forslag",
+        "description": "Reaksjon 2. november 2026. Vil avvikle RHF-ene, men er kritisk til kommunesammenslåinger, nye selskaper og sentralisering."
+      },
+      {
+        "name": "Rødt",
+        "url": "https://roedt.no/blogg/helsevesenet-lider-av-akutt-demokratisk-underskudd",
+        "description": "Standpunkt ved fremleggelsen 2. november 2026; ikke en full vurdering av alle forslag. Vil ha sterkere demokratisk og lokal kontroll, med ansatte og pasienter nærmere beslutningene."
+      },
+      {
+        "name": "SV",
+        "url": "https://www.sv.no/wp-content/uploads/2025/08/arbeidsprogram-2025-interaktiv-bokmal-2.pdf",
+        "description": "Vedtatt arbeidsprogram 2025–2029, ikke en ny høringsuttalelse. Vil erstatte foretaksmodellen med demokratisk styring, styrke offentlig kapasitet og arbeidsvilkår og begrense kommersialisering."
+      },
+      {
+        "name": "Venstre",
+        "url": "https://www.venstre.no/content/uploads/venstre-stortingsprogram-2025-2029NN.pdf",
+        "description": "Vedtatt stortingsprogram 2025–2029, ikke en ny høringsuttalelse. Vil forbedre foretaksmodellen, korte ned beslutningsveiene, bedre oppgavedelingen og frigjøre klinikertid med støttepersonell."
+      },
+      {
+        "name": "KrF",
+        "url": "https://krf.no/content/uploads/2020/09/Partiprogram-2025-2029.pdf",
+        "description": "Vedtatt partiprogram 2025–2029, ikke en ny høringsuttalelse. Vil utrede alternative styringsmodeller, skille drift og investering og sikre lokal behandling med offentlige, private og ideelle tilbud."
+      },
+      {
+        "name": "MDG",
+        "url": "https://mdg.no/politikk/helse",
+        "description": "Gjeldende helsepolitikk kontrollert 19. november 2026, ikke en datert reaksjon på NOU-en. Vil erstatte foretaksmodellen med en administrativ modell inspirert av Skottland, prioritere forebygging og styrke offentlig helsetjeneste."
+      },
+      {
+        "name": "Nasjonal helsepersonellplan",
+        "url": "https://www.regjeringen.no/no/dokumenter/meld.-st.-11-20252026/id3164917/?ch=2",
+        "description": "Tiltak for bedre oppgavedeling, arbeidstidsordninger, hele stillinger og å beholde personell. Tiltakene har kostnader og gir ikke en garantert nasjonal innsparing."
       }
     ],
     "methodology": [
@@ -1755,17 +2480,1161 @@
             "year": 2025
           }
         ]
+      },
+      {
+        "id": "Sykepleiere",
+        "scope": "u-07",
+        "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+        "hash": "434bffa8ed7493c2558b8d1ee37d9481884aa71cc512d78080ea90d46d208eff",
+        "table": "13953",
+        "title": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025",
+        "retrievedAt": "2026-11-19T16:40:25.627225+00:00",
+        "updated": "2026-10-01T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Arsverk"
+          ],
+          "HelseReg": [
+            "H00"
+          ],
+          "HelseTjenomr": [
+            "TOT"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "Yrke": [
+            "01",
+            "02"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Arsverk",
+            "label": "Avtalte årsverk"
+          },
+          "HelseReg": {
+            "code": "H00",
+            "label": "Hele landet"
+          },
+          "HelseTjenomr": {
+            "code": "TOT",
+            "label": "I alt"
+          },
+          "Yrke": {
+            "aggregation": "sum",
+            "codes": [
+              "01",
+              "02"
+            ],
+            "labels": [
+              "Spesialsykepleiere",
+              "Sykepleiere"
+            ]
+          }
+        },
+        "unit": "antall",
+        "rows": [
+          {
+            "value": 39542,
+            "year": 2020
+          },
+          {
+            "value": 40070,
+            "year": 2021
+          },
+          {
+            "value": 40585,
+            "year": 2022
+          },
+          {
+            "value": 41011,
+            "year": 2023
+          },
+          {
+            "value": 41375,
+            "year": 2024
+          },
+          {
+            "value": 41774,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "Leger",
+        "scope": "u-07",
+        "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+        "hash": "a82c4c82f9894185af1ef5d62806a971a10b7dbb3ba85145d2b8be9a834150ca",
+        "table": "13953",
+        "title": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025",
+        "retrievedAt": "2026-11-19T16:40:27.140106+00:00",
+        "updated": "2026-10-01T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Arsverk"
+          ],
+          "HelseReg": [
+            "H00"
+          ],
+          "HelseTjenomr": [
+            "TOT"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "Yrke": [
+            "05",
+            "06"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Arsverk",
+            "label": "Avtalte årsverk"
+          },
+          "HelseReg": {
+            "code": "H00",
+            "label": "Hele landet"
+          },
+          "HelseTjenomr": {
+            "code": "TOT",
+            "label": "I alt"
+          },
+          "Yrke": {
+            "aggregation": "sum",
+            "codes": [
+              "05",
+              "06"
+            ],
+            "labels": [
+              "Legespesialister ",
+              "Andre leger "
+            ]
+          }
+        },
+        "unit": "antall",
+        "rows": [
+          {
+            "value": 17770,
+            "year": 2020
+          },
+          {
+            "value": 18181,
+            "year": 2021
+          },
+          {
+            "value": 18559,
+            "year": 2022
+          },
+          {
+            "value": 19000,
+            "year": 2023
+          },
+          {
+            "value": 19288,
+            "year": 2024
+          },
+          {
+            "value": 19710,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "Somatikk",
+        "scope": "u-07",
+        "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+        "hash": "67e18d98ea8481712bd75e7f417dfe436f04410576eb39b04c24d5b8eb2d6e8b",
+        "table": "13953",
+        "title": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025",
+        "retrievedAt": "2026-11-19T16:40:28.956272+00:00",
+        "updated": "2026-10-01T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Arsverk"
+          ],
+          "HelseReg": [
+            "H00"
+          ],
+          "HelseTjenomr": [
+            "SOM"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "Yrke": [
+            "TOT"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Arsverk",
+            "label": "Avtalte årsverk"
+          },
+          "HelseReg": {
+            "code": "H00",
+            "label": "Hele landet"
+          },
+          "HelseTjenomr": {
+            "code": "SOM",
+            "label": "Somatisk behandling"
+          },
+          "Yrke": {
+            "code": "TOT",
+            "label": "I alt"
+          }
+        },
+        "unit": "antall",
+        "rows": [
+          {
+            "value": 68201,
+            "year": 2020
+          },
+          {
+            "value": 69590,
+            "year": 2021
+          },
+          {
+            "value": 70899,
+            "year": 2022
+          },
+          {
+            "value": 72182,
+            "year": 2023
+          },
+          {
+            "value": 73155,
+            "year": 2024
+          },
+          {
+            "value": 74255,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "PsykiskVoksne",
+        "scope": "u-07",
+        "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+        "hash": "bf12659a6f11d25e1b60bcaaea04a1b9c761eea7281a194665edaf2f189af07c",
+        "table": "13953",
+        "title": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025",
+        "retrievedAt": "2026-11-19T16:40:31.134619+00:00",
+        "updated": "2026-10-01T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Arsverk"
+          ],
+          "HelseReg": [
+            "H00"
+          ],
+          "HelseTjenomr": [
+            "VOP"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "Yrke": [
+            "TOT"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Arsverk",
+            "label": "Avtalte årsverk"
+          },
+          "HelseReg": {
+            "code": "H00",
+            "label": "Hele landet"
+          },
+          "HelseTjenomr": {
+            "code": "VOP",
+            "label": "Psykisk helsevern for voksne"
+          },
+          "Yrke": {
+            "code": "TOT",
+            "label": "I alt"
+          }
+        },
+        "unit": "antall",
+        "rows": [
+          {
+            "value": 15089,
+            "year": 2020
+          },
+          {
+            "value": 15124,
+            "year": 2021
+          },
+          {
+            "value": 15441,
+            "year": 2022
+          },
+          {
+            "value": 15444,
+            "year": 2023
+          },
+          {
+            "value": 15812,
+            "year": 2024
+          },
+          {
+            "value": 15997,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "PsykiskBarn",
+        "scope": "u-07",
+        "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+        "hash": "a24c3d86ed340c2027123dbf3117c97e7c4cbf83048e9388e69d2acb21cd9251",
+        "table": "13953",
+        "title": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025",
+        "retrievedAt": "2026-11-19T16:40:32.884497+00:00",
+        "updated": "2026-10-01T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Arsverk"
+          ],
+          "HelseReg": [
+            "H00"
+          ],
+          "HelseTjenomr": [
+            "BUP"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "Yrke": [
+            "TOT"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Arsverk",
+            "label": "Avtalte årsverk"
+          },
+          "HelseReg": {
+            "code": "H00",
+            "label": "Hele landet"
+          },
+          "HelseTjenomr": {
+            "code": "BUP",
+            "label": "Psykisk helsevern for barn og unge"
+          },
+          "Yrke": {
+            "code": "TOT",
+            "label": "I alt"
+          }
+        },
+        "unit": "antall",
+        "rows": [
+          {
+            "value": 3353,
+            "year": 2020
+          },
+          {
+            "value": 3656,
+            "year": 2021
+          },
+          {
+            "value": 3818,
+            "year": 2022
+          },
+          {
+            "value": 3797,
+            "year": 2023
+          },
+          {
+            "value": 3874,
+            "year": 2024
+          },
+          {
+            "value": 3883,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "FravarAlle",
+        "scope": "u-07",
+        "purpose": "Årlig egen- og legemeldt fravær, korrigert kilde etter 5. november 2026; ikke yrkesfordelt.",
+        "hash": "6a6d9750d1250f84941816755a7e7d0a2a13ae2a2799cad6f0c8d8a4e962284f",
+        "table": "12441",
+        "title": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025",
+        "retrievedAt": "2026-11-19T16:41:10.792396+00:00",
+        "updated": "2026-11-05T07:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Sykdom"
+          ],
+          "Kjonn": [
+            "0"
+          ],
+          "NACE2007": [
+            "00-99"
+          ],
+          "Sykefraver2": [
+            "Alt"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Sykdom",
+            "label": "Sykefraværsprosent"
+          },
+          "Kjonn": {
+            "code": "0",
+            "label": "Begge kjønn"
+          },
+          "NACE2007": {
+            "code": "00-99",
+            "label": "Alle næringer"
+          },
+          "Sykefraver2": {
+            "code": "Alt",
+            "label": "Egenmeldt og legemeldt"
+          }
+        },
+        "unit": "prosent",
+        "rows": [
+          {
+            "value": 6,
+            "year": 2020
+          },
+          {
+            "value": 6.1,
+            "year": 2021
+          },
+          {
+            "value": 6.7,
+            "year": 2022
+          },
+          {
+            "value": 6.7,
+            "year": 2023
+          },
+          {
+            "value": 6.8,
+            "year": 2024
+          },
+          {
+            "value": 6.6,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "RhfKostnad",
+        "scope": "u-07",
+        "purpose": "RHF-administrasjon og fellesfunksjoner: driftskostnader, ikke automatisk innsparingspotensial.",
+        "hash": "a3b95930b113265e2ffa2358ae08c42bfd6f7c92ce961f0b2de73b0f683f3cef",
+        "table": "14022",
+        "title": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025",
+        "retrievedAt": "2026-11-19T16:41:12.824708+00:00",
+        "updated": "2026-06-23T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "LopendePriser"
+          ],
+          "HelseReg": [
+            "H00"
+          ],
+          "HelseTjenomr": [
+            "ADM"
+          ],
+          "InntektKostnad": [
+            "K00"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "LopendePriser",
+            "label": "Løpende priser (mill. kr)"
+          },
+          "HelseReg": {
+            "code": "H00",
+            "label": "Hele landet"
+          },
+          "HelseTjenomr": {
+            "code": "ADM",
+            "label": "RHF-administrasjon og fellesfunksjoner"
+          },
+          "InntektKostnad": {
+            "code": "K00",
+            "label": "Totale driftskostnader"
+          }
+        },
+        "unit": "mill. kr",
+        "rows": [
+          {
+            "value": 1740,
+            "year": 2020
+          },
+          {
+            "value": 1676,
+            "year": 2021
+          },
+          {
+            "value": 2277,
+            "year": 2022
+          },
+          {
+            "value": 2221,
+            "year": 2023
+          },
+          {
+            "value": 2517,
+            "year": 2024
+          },
+          {
+            "value": 2345,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "Personalkostnad",
+        "scope": "u-07",
+        "purpose": "Lønn og andre personalkostnader eksklusive pensjon; løpende priser, ikke sammenlignbart med departementets bevilgning.",
+        "hash": "454dd75a0086f274a3593a97880140166e4d2a47d360df189fe75af9964976fa",
+        "table": "14022",
+        "title": "14022: Kostnader og inntekter i spesialisthelsetjenesten, etter tjenesteområde og helseforetak 2006-2025",
+        "retrievedAt": "2026-11-19T16:41:14.843611+00:00",
+        "updated": "2026-06-23T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "LopendePriser"
+          ],
+          "HelseReg": [
+            "H00"
+          ],
+          "HelseTjenomr": [
+            "TOT"
+          ],
+          "InntektKostnad": [
+            "K05"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "LopendePriser",
+            "label": "Løpende priser (mill. kr)"
+          },
+          "HelseReg": {
+            "code": "H00",
+            "label": "Hele landet"
+          },
+          "HelseTjenomr": {
+            "code": "TOT",
+            "label": "I alt"
+          },
+          "InntektKostnad": {
+            "code": "K05",
+            "label": "Lønn og andre personalkostnader, ekskl. pensjonskostnader"
+          }
+        },
+        "unit": "mill. kr",
+        "rows": [
+          {
+            "value": 87852,
+            "year": 2020
+          },
+          {
+            "value": 93396,
+            "year": 2021
+          },
+          {
+            "value": 99761,
+            "year": 2022
+          },
+          {
+            "value": 106776,
+            "year": 2023
+          },
+          {
+            "value": 114034,
+            "year": 2024
+          },
+          {
+            "value": 120389,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "OmsorgSykepleiere",
+        "scope": "u-07",
+        "purpose": "Sykepleiere og spesialsykepleiere i omsorgstjenestene, avtalte årsverk.",
+        "hash": "a653a15a08d777d0bb0ec57c53a2b92414047e30a9bac21ed5f2d949ee9b2d64",
+        "table": "14533",
+        "title": "14533: Årsverk i omsorgstjenestene, etter yrke (K) 2015-2025",
+        "retrievedAt": "2026-11-19T16:41:16.389218+00:00",
+        "updated": "2026-06-15T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "KOSARBAARSVERKST0000"
+          ],
+          "KOKkommuneregion0000": [
+            "EAK"
+          ],
+          "KOKyrker0000": [
+            "01",
+            "02"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "KOSARBAARSVERKST0000",
+            "label": "Avtalte årsverk (årsverk)"
+          },
+          "KOKkommuneregion0000": {
+            "code": "EAK",
+            "label": "Landet"
+          },
+          "KOKyrker0000": {
+            "aggregation": "sum",
+            "codes": [
+              "01",
+              "02"
+            ],
+            "labels": [
+              "Sykepleiere",
+              "Spesialsykepleiere"
+            ]
+          }
+        },
+        "unit": "årsverk",
+        "rows": [
+          {
+            "value": 26934,
+            "year": 2020
+          },
+          {
+            "value": 26671,
+            "year": 2021
+          },
+          {
+            "value": 26511,
+            "year": 2022
+          },
+          {
+            "value": 27036,
+            "year": 2023
+          },
+          {
+            "value": 27160,
+            "year": 2024
+          },
+          {
+            "value": 27786,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "Hjemmetimer",
+        "scope": "u-07",
+        "purpose": "Gjennomsnittlig tildelte uketimer helsetjenester i hjemmet; ikke faktisk levert tid eller belastning per ansatt.",
+        "hash": "4a562cfa1d2793860cf81d545c3eb8ec54e2d62225b04873b97e14ee2e4ce63d",
+        "table": "12292",
+        "title": "12292: Omsorgstjenester - supplerende grunnlagstall (K) 2015-2025",
+        "retrievedAt": "2026-11-19T16:41:18.015865+00:00",
+        "updated": "2026-06-15T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "KOSgjtimerhjsyk0000"
+          ],
+          "KOKkommuneregion0000": [
+            "EAK"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "KOSgjtimerhjsyk0000",
+            "label": "Gjennomsnittlig antall tildelte timer i uken, helsetjenester i hjemmet (antall)"
+          },
+          "KOKkommuneregion0000": {
+            "code": "EAK",
+            "label": "Landet"
+          }
+        },
+        "unit": "antall",
+        "rows": [
+          {
+            "value": 5,
+            "year": 2020
+          },
+          {
+            "value": 5,
+            "year": 2021
+          },
+          {
+            "value": 5.1,
+            "year": 2022
+          },
+          {
+            "value": 5,
+            "year": 2023
+          },
+          {
+            "value": 4.9,
+            "year": 2024
+          },
+          {
+            "value": 5,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "Rusbehandling",
+        "scope": "u-07",
+        "purpose": "Bemanning etter yrke og tjenesteområde; ikke en direkte måling av arbeidsbelastning.",
+        "hash": "c4577b900e1141004fe675f4f7fdf7b31da995d7e4a973d859e7097b231c3188",
+        "table": "13953",
+        "title": "13953: Årsverk i spesialisthelsetjenesten, etter yrke, tjenesteområde og helseforetak 2008-2025",
+        "retrievedAt": "2026-11-19T16:42:03.221219+00:00",
+        "updated": "2026-10-01T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Arsverk"
+          ],
+          "HelseReg": [
+            "H00"
+          ],
+          "HelseTjenomr": [
+            "TSB"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "Yrke": [
+            "TOT"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Arsverk",
+            "label": "Avtalte årsverk"
+          },
+          "HelseReg": {
+            "code": "H00",
+            "label": "Hele landet"
+          },
+          "HelseTjenomr": {
+            "code": "TSB",
+            "label": "Tverrfaglig spesialisert rusbehandling"
+          },
+          "Yrke": {
+            "code": "TOT",
+            "label": "I alt"
+          }
+        },
+        "unit": "antall",
+        "rows": [
+          {
+            "value": 3698,
+            "year": 2020
+          },
+          {
+            "value": 3690,
+            "year": 2021
+          },
+          {
+            "value": 3628,
+            "year": 2022
+          },
+          {
+            "value": 3650,
+            "year": 2023
+          },
+          {
+            "value": 3648,
+            "year": 2024
+          },
+          {
+            "value": 3683,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "FravarSykepleiere",
+        "scope": "u-07",
+        "purpose": "Legemeldt sykefravær per yrke, begge kjønn; egenmeldt fravær er ikke inkludert.",
+        "hash": "ed0f870ae334544a24e33f48816464e68274c8d54598c581b8a1a8fd51bff04c",
+        "table": "14789",
+        "title": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025",
+        "retrievedAt": "2026-11-19T16:42:04.893511+00:00",
+        "updated": "2026-05-13T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Sykefraversprosent"
+          ],
+          "Kjonn": [
+            "0"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "Yrke": [
+            "222"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Sykefraversprosent",
+            "label": "Sykefraværsprosent (legemeldt)"
+          },
+          "Kjonn": {
+            "code": "0",
+            "label": "Begge kjønn"
+          },
+          "Yrke": {
+            "code": "222",
+            "label": "Sykepleiere og spesialsykepleiere"
+          }
+        },
+        "unit": "prosent",
+        "rows": [
+          {
+            "value": 8,
+            "year": 2020
+          },
+          {
+            "value": 8.4,
+            "year": 2021
+          },
+          {
+            "value": 8.4,
+            "year": 2022
+          },
+          {
+            "value": 8.5,
+            "year": 2023
+          },
+          {
+            "value": 8.7,
+            "year": 2024
+          },
+          {
+            "value": 8.5,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "FravarLeger",
+        "scope": "u-07",
+        "purpose": "Legemeldt sykefravær per yrke, begge kjønn; egenmeldt fravær er ikke inkludert.",
+        "hash": "250b542db6616132cf78bd7c652928338628ca184cbfec9352327e14e63f59db",
+        "table": "14789",
+        "title": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025",
+        "retrievedAt": "2026-11-19T16:42:06.560505+00:00",
+        "updated": "2026-05-13T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Sykefraversprosent"
+          ],
+          "Kjonn": [
+            "0"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "Yrke": [
+            "221"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Sykefraversprosent",
+            "label": "Sykefraværsprosent (legemeldt)"
+          },
+          "Kjonn": {
+            "code": "0",
+            "label": "Begge kjønn"
+          },
+          "Yrke": {
+            "code": "221",
+            "label": "Leger"
+          }
+        },
+        "unit": "prosent",
+        "rows": [
+          {
+            "value": 3.2,
+            "year": 2020
+          },
+          {
+            "value": 3.3,
+            "year": 2021
+          },
+          {
+            "value": 3.8,
+            "year": 2022
+          },
+          {
+            "value": 3.9,
+            "year": 2023
+          },
+          {
+            "value": 3.9,
+            "year": 2024
+          },
+          {
+            "value": 3.7,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "FravarHelsefag",
+        "scope": "u-07",
+        "purpose": "Legemeldt sykefravær per yrke, begge kjønn; egenmeldt fravær er ikke inkludert.",
+        "hash": "5a8ffe6c43b52cea3036bf5d7ab944482cd85868419eed4063d3d743ab81f76f",
+        "table": "14789",
+        "title": "14789: Yrkes- (1-, 2-, 3-, 4-siffernivå) og kjønnsfordelt sykefravær (legemeldt) for lønnstakere (årstall) 2015-2025",
+        "retrievedAt": "2026-11-19T16:42:08.063220+00:00",
+        "updated": "2026-05-13T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Sykefraversprosent"
+          ],
+          "Kjonn": [
+            "0"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "Yrke": [
+            "5321"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Sykefraversprosent",
+            "label": "Sykefraværsprosent (legemeldt)"
+          },
+          "Kjonn": {
+            "code": "0",
+            "label": "Begge kjønn"
+          },
+          "Yrke": {
+            "code": "5321",
+            "label": "Helsefagarbeidere"
+          }
+        },
+        "unit": "prosent",
+        "rows": [
+          {
+            "value": 9.9,
+            "year": 2020
+          },
+          {
+            "value": 10.1,
+            "year": 2021
+          },
+          {
+            "value": 9.9,
+            "year": 2022
+          },
+          {
+            "value": 10.1,
+            "year": 2023
+          },
+          {
+            "value": 10.4,
+            "year": 2024
+          },
+          {
+            "value": 10.3,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "FravarHelse",
+        "scope": "u-07",
+        "purpose": "Årlig egen- og legemeldt fravær, korrigert kilde etter 5. november 2026; ikke yrkesfordelt.",
+        "hash": "53d9af92a3f03040acfb1385417c28eac4ae1a2f3ca9bbcac7a6b844a5cc7676",
+        "table": "12441",
+        "title": "12441: Sykefraværstype-, nærings- (17 grupper, SN07) og kjønnsfordelt sykefravær (egen- og/eller legemeldt) for lønnstakere (årstall) 2001-2025",
+        "retrievedAt": "2026-11-19T16:42:09.650970+00:00",
+        "updated": "2026-11-05T07:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "Sykdom"
+          ],
+          "Kjonn": [
+            "0"
+          ],
+          "NACE2007": [
+            "86-88"
+          ],
+          "Sykefraver2": [
+            "Alt"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "Sykdom",
+            "label": "Sykefraværsprosent"
+          },
+          "Kjonn": {
+            "code": "0",
+            "label": "Begge kjønn"
+          },
+          "NACE2007": {
+            "code": "86-88",
+            "label": "Helse- og sosialtjenester"
+          },
+          "Sykefraver2": {
+            "code": "Alt",
+            "label": "Egenmeldt og legemeldt"
+          }
+        },
+        "unit": "prosent",
+        "rows": [
+          {
+            "value": 8.9,
+            "year": 2020
+          },
+          {
+            "value": 9.3,
+            "year": 2021
+          },
+          {
+            "value": 9.7,
+            "year": 2022
+          },
+          {
+            "value": 9.5,
+            "year": 2023
+          },
+          {
+            "value": 9.6,
+            "year": 2024
+          },
+          {
+            "value": 9.4,
+            "year": 2025
+          }
+        ]
       }
     ],
     "healthPolicy": {
       "version": 1,
-      "updated": "2026-11-03T08:15:00.000Z",
+      "updated": "2026-11-19T22:15:00Z",
       "nou": {
-        "title": "NOU 2026: 12 En helsetjeneste for vår tid",
-        "url": "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf",
-        "pdfSha256": "b3a7c14bb2a21e8f1184de720396a5123415bb414a57e7c4e0635e19925ce51f",
+        "title": "NOU 2026: 12 Én helsetjeneste",
+        "url": "https://www.regjeringen.no/contentassets/d406152648054a629e60649ab8daf73e/nou-2026-12-en-helsetjeneste.pdf",
         "rhfFte2024": 495,
-        "description": "Utredningen oppgir avtalte årsverk i de regionale helseforetakene. Tallet er en historisk observasjon og ikke et forslag om å fjerne like mange stillinger."
+        "description": "Utredningen oppgir avtalte årsverk i de regionale helseforetakene. Tallet er en historisk observasjon og ikke et forslag om å fjerne like mange stillinger.",
+        "textVerification": {
+          "method": "official-pdf-text",
+          "checkedAt": "2026-11-19T22:15:00Z",
+          "url": "https://www.regjeringen.no/contentassets/d406152648054a629e60649ab8daf73e/nou-2026-12-en-helsetjeneste.pdf",
+          "printedPage": 159,
+          "excerpt": "I 2024 var det til sammen 495 avtalte årsverk i de regionale helseforetakene",
+          "limitation": "Offisiell PDF-tekst kontrollert via nettoppslag. Binærfilen kunne ikke hentes fra GitHub (HTTP 403); ingen ny PDF-hash påstås verifisert."
+        }
       },
       "scenario": {
         "fte": 495,
@@ -1792,26 +3661,56 @@
           "status": "Har ikke sluttet seg til alle forslagene."
         },
         {
-          "actor": "KS",
-          "position": "Støtter delt ansvar og bedre samarbeid, men vil at nærhelsetjenester skal være frivillige og avviser å flytte legevakten til staten.",
-          "status": "Dokumentert støtte og motstand mot ulike deler."
+          "actor": "Arbeiderpartiet/regjeringen",
+          "position": "Har sendt utredningen på høring og vil søke bredt samarbeid. Har ikke vedtatt hele utvalgets pakke.",
+          "status": "Prosessmelding 2. november 2026"
         },
         {
-          "actor": "Legeforeningen",
-          "position": "Støtter retningen for finansiering av store sykehusbygg, men advarer mot sentralisering og store helseforetak.",
-          "status": "Dokumentert støtte og motstand mot ulike deler."
+          "actor": "Høyre",
+          "position": "Åpen for endringer i styring og finansiering; ønsker mer bruk av private og ideelle og vektlegger pasientenes resultater.",
+          "status": "Reaksjon 3. november 2026"
         },
         {
-          "actor": "Spekter",
-          "position": "Mener endringer må løse konkrete pasient- og arbeidskraftproblemer, og peker på kommuneøkonomi og kommunestruktur.",
-          "status": "Innspill, ikke støtte til hele reformen."
+          "actor": "Fremskrittspartiet",
+          "position": "Vil avvikle RHF-ene og bruke private mer, med offentlig betaling og økt valgfrihet.",
+          "status": "Reaksjon 2. november 2026"
+        },
+        {
+          "actor": "Senterpartiet",
+          "position": "Vil avvikle RHF-ene, men er kritisk til kommunesammenslåinger, nye selskaper og sentralisering.",
+          "status": "Reaksjon 2. november 2026"
+        },
+        {
+          "actor": "Rødt",
+          "position": "Vil ha sterkere demokratisk og lokal kontroll, med ansatte og pasienter nærmere beslutningene.",
+          "status": "Standpunkt ved fremleggelsen 2. november 2026; ikke en full vurdering av alle forslag"
+        },
+        {
+          "actor": "SV",
+          "position": "Vil erstatte foretaksmodellen med demokratisk styring, styrke offentlig kapasitet og arbeidsvilkår og begrense kommersialisering.",
+          "status": "Vedtatt arbeidsprogram 2025–2029, ikke en ny høringsuttalelse"
+        },
+        {
+          "actor": "Venstre",
+          "position": "Vil forbedre foretaksmodellen, korte ned beslutningsveiene, bedre oppgavedelingen og frigjøre klinikertid med støttepersonell.",
+          "status": "Vedtatt stortingsprogram 2025–2029, ikke en ny høringsuttalelse"
+        },
+        {
+          "actor": "KrF",
+          "position": "Vil utrede alternative styringsmodeller, skille drift og investering og sikre lokal behandling med offentlige, private og ideelle tilbud.",
+          "status": "Vedtatt partiprogram 2025–2029, ikke en ny høringsuttalelse"
+        },
+        {
+          "actor": "MDG",
+          "position": "Vil erstatte foretaksmodellen med en administrativ modell inspirert av Skottland, prioritere forebygging og styrke offentlig helsetjeneste.",
+          "status": "Gjeldende helsepolitikk kontrollert 19. november 2026, ikke en datert reaksjon på NOU-en"
         }
       ],
       "sources": [
         {
-          "name": "NOU 2026: 12 En helsetjeneste for vår tid",
-          "url": "https://www.regjeringen.no/contentassets/8089c2908e604358ac67a5b9cbdf8d6e/no/pdfs/nou202620260012000dddpdfs.pdf",
-          "description": "Utvalgets forslag, bakgrunn og vurderinger. Dokumentet inneholder ikke et samlet netto spare- eller kostnadsanslag for reformen."
+          "name": "NOU 2026: 12 Én helsetjeneste",
+          "url": "https://www.regjeringen.no/contentassets/d406152648054a629e60649ab8daf73e/nou-2026-12-en-helsetjeneste.pdf",
+          "description": "Kontrollert offisiell PDF-tekst: RHF-årsverk side 159 og økonomiske konsekvenser kapittel 33. Ingen samlet netto reformkalkyle. Binær PDF-hash er ikke kontrollert på nytt."
         },
         {
           "name": "Helse- og omsorgsdepartementet: mottak av utredningen",
@@ -1832,9 +3731,92 @@
           "name": "Spekter: endringer må løse konkrete problemer",
           "url": "https://api.kommunikasjon.ntb.no/pressemelding/19126458/helseformutvalgets-rapport-endringer-ma-lose-konkrete-problemer-for-pasientene?lang=no&publisherId=89834",
           "description": "Spekters første reaksjon om kommuneøkonomi, struktur, pasienter og arbeidskraft."
+        },
+        {
+          "name": "Arbeiderpartiet/regjeringen",
+          "url": "https://www.regjeringen.no/no/aktuelt/nytt-skritt-pa-veien-mot-helsereform-vestre-tok-imot-helsereformutvalgets-forslag/id3190681/",
+          "description": "Prosessmelding 2. november 2026. Har sendt utredningen på høring og vil søke bredt samarbeid. Har ikke vedtatt hele utvalgets pakke."
+        },
+        {
+          "name": "Høyre",
+          "url": "https://hoyre.no/2026/11/03/pasientene-ma-komme-forst/",
+          "description": "Reaksjon 3. november 2026. Åpen for endringer i styring og finansiering; ønsker mer bruk av private og ideelle og vektlegger pasientenes resultater."
+        },
+        {
+          "name": "Fremskrittspartiet",
+          "url": "https://www.frp.no/nyheter/helsereformutvalget-peker-i-frps-retning",
+          "description": "Reaksjon 2. november 2026. Vil avvikle RHF-ene og bruke private mer, med offentlig betaling og økt valgfrihet."
+        },
+        {
+          "name": "Senterpartiet",
+          "url": "https://www.senterpartiet.no/aktuelt/kritisk-til-helsereformutvalgets-forslag",
+          "description": "Reaksjon 2. november 2026. Vil avvikle RHF-ene, men er kritisk til kommunesammenslåinger, nye selskaper og sentralisering."
+        },
+        {
+          "name": "Rødt",
+          "url": "https://roedt.no/blogg/helsevesenet-lider-av-akutt-demokratisk-underskudd",
+          "description": "Standpunkt ved fremleggelsen 2. november 2026; ikke en full vurdering av alle forslag. Vil ha sterkere demokratisk og lokal kontroll, med ansatte og pasienter nærmere beslutningene."
+        },
+        {
+          "name": "SV",
+          "url": "https://www.sv.no/wp-content/uploads/2025/08/arbeidsprogram-2025-interaktiv-bokmal-2.pdf",
+          "description": "Vedtatt arbeidsprogram 2025–2029, ikke en ny høringsuttalelse. Vil erstatte foretaksmodellen med demokratisk styring, styrke offentlig kapasitet og arbeidsvilkår og begrense kommersialisering."
+        },
+        {
+          "name": "Venstre",
+          "url": "https://www.venstre.no/content/uploads/venstre-stortingsprogram-2025-2029NN.pdf",
+          "description": "Vedtatt stortingsprogram 2025–2029, ikke en ny høringsuttalelse. Vil forbedre foretaksmodellen, korte ned beslutningsveiene, bedre oppgavedelingen og frigjøre klinikertid med støttepersonell."
+        },
+        {
+          "name": "KrF",
+          "url": "https://krf.no/content/uploads/2020/09/Partiprogram-2025-2029.pdf",
+          "description": "Vedtatt partiprogram 2025–2029, ikke en ny høringsuttalelse. Vil utrede alternative styringsmodeller, skille drift og investering og sikre lokal behandling med offentlige, private og ideelle tilbud."
+        },
+        {
+          "name": "MDG",
+          "url": "https://mdg.no/politikk/helse",
+          "description": "Gjeldende helsepolitikk kontrollert 19. november 2026, ikke en datert reaksjon på NOU-en. Vil erstatte foretaksmodellen med en administrativ modell inspirert av Skottland, prioritere forebygging og styrke offentlig helsetjeneste."
+        },
+        {
+          "name": "Nasjonal helsepersonellplan",
+          "url": "https://www.regjeringen.no/no/dokumenter/meld.-st.-11-20252026/id3164917/?ch=2",
+          "description": "Tiltak for bedre oppgavedeling, arbeidstidsordninger, hele stillinger og å beholde personell. Tiltakene har kostnader og gir ikke en garantert nasjonal innsparing."
         }
       ],
+      "factsVersion": 2,
       "series": [
+        {
+          "id": "careNurseFte",
+          "label": "Sykepleierårsverk i kommunal omsorg",
+          "unit": "årsverk",
+          "rows": [
+            {
+              "value": 26934,
+              "year": 2020
+            },
+            {
+              "value": 26671,
+              "year": 2021
+            },
+            {
+              "value": 26511,
+              "year": 2022
+            },
+            {
+              "value": 27036,
+              "year": 2023
+            },
+            {
+              "value": 27160,
+              "year": 2024
+            },
+            {
+              "value": 27786,
+              "year": 2025
+            }
+          ],
+          "source": "SSB, tabell 14533"
+        },
         {
           "id": "specialistFte",
           "label": "Årsverk i spesialisthelsetjenesten",
@@ -2063,81 +4045,232 @@
     }
   },
   "copy": {
-    "title": "Helsereformen kan gi mer tid til pasientene. Sparebeløpet er ukjent.",
-    "description": "Utvalget vil at kommuner og sykehus skal gi mer behandling nær hjemmet. Fellestalls regnskap og en interaktiv kalkulator viser hva som må til for at mer tid også skal gi lavere utgifter.",
-    "lead": "Tenk deg at du er ferdigbehandlet på sykehuset, men fortsatt trenger hjelp før du kan dra hjem. Hvem har plass, hvem tar over, og hvem betaler? Helsereformutvalget vil at kommunen og sykehuset skal løse mer av dette sammen. Det kan bety kortere reisevei og færre brudd i behandlingen. Men utvalget har ikke lagt fram et samlet regnestykke for hva endringene vil koste eller spare.",
+    "title": "Flere eldre, nesten like mange sykepleiere. Dette må helsereformen løse.",
+    "description": "Sykepleierbemanningen i kommunal omsorg har knapt vokst. Vi undersøker sykefravær, reformkostnader og tiltak som kan gi mer tid til pasientene.",
+    "lead": "Fra {{fact:startYear}} til {{fact:endYear}} økte sykepleierårsverkene i kommunal omsorg med {{fact:ssbOmsorgSykepleiereGrowth}}. Befolkningen fra åtti år vokste med {{fact:healthElderlyGrowth}}. Helsereformen skal møte et press som allerede merkes. For dem som går vakt, er spørsmålet hva som faktisk blir lettere i arbeidshverdagen.",
     "sections": [
       {
-        "heading": "Mer behandling nær hjemmet",
-        "factIds": [],
+        "heading": "Omsorgen har fått flere ansatte – men få flere sykepleiere",
         "paragraphs": [
-          "Staten skal fortsatt ha ansvar for spesialisthelsetjenesten, og kommunene for sine helse- og omsorgstjenester. Utvalget vil knytte dem tettere sammen gjennom nærhelsetjenester. Der kan sykehuset bidra med spesialister og kommunen med lokal oppfølging. For en pasient som trenger hjelp fra begge, kan det bety at mer av behandlingen skjer nær hjemmet og at færre må forklare den samme sykehistorien på nytt.",
-          "Det avhenger av hva som faktisk kan tilbys lokalt. Et nytt samarbeid gir liten hjelp hvis det mangler fagfolk, eller hvis ingen har ansvar for å følge opp prøvesvar og endringer i medisiner. For de ansatte må det være klart hvem som har vaktansvar, hvem de skal ringe ved forverring, og hva som skjer med arbeidssted og tariffavtaler dersom oppgaver flyttes."
-        ]
-      },
-      {
-        "heading": "Sykehuspengene og kontorjobbene er to ulike regnestykker",
-        "factIds": [
-          "rhfAmountA",
-          "rhfAmountF",
-          "healthRhfFte",
-          "healthSupportFteGrowth",
-          "healthSpecialistFteGrowth"
+          "Sykepleiere og spesialsykepleiere i kommunal omsorg sto for {{fact:ssbOmsorgSykepleiereStart}} i {{fact:startYear}} og {{fact:ssbOmsorgSykepleiereEnd}} i {{fact:endYear}}. Samtidig økte alle avtalte årsverk i omsorgstjenestene med {{fact:healthCareFteGrowth}}. Bemanningen har altså vokst, men sykepleierkompetansen har ikke fulgt samme tempo.",
+          "Antallet innbyggere fra åtti år steg fra {{fact:healthElderlyStart}} til {{fact:healthElderlyEnd}}. Flere eldre betyr ikke automatisk tilsvarende flere pleietrengende: helsetilstand, yngre brukere og hvilke oppgaver tjenestene utfører, betyr også mye. Tallene alene måler derfor ikke pasienter per sykepleier. De viser likevel hvorfor en reform som flytter flere oppgaver hjem til kommunene, må ha en konkret plan for kompetansen som skal følge med."
         ],
-        "paragraphs": [
-          "Staten eier allerede sykehusene gjennom de regionale helseforetakene. Utvalgets flertall vil flytte administrative oppgaver fra de regionale foretakene til staten. Fellestalls statsregnskap viser at kapittelet for de regionale helseforetakene gikk fra {{fact:rhfAmountA}} i {{fact:startYear}} til {{fact:rhfAmountF}} i {{fact:endYear}}, i løpende kroner. Her ligger finansiering av spesialisthelsetjenesten. Beløpet sier lite om hva som kan spares på ledelse og administrasjon.",
-          "Utredningen oppgir {{fact:healthRhfFte}} avtalte årsverk i de regionale helseforetakene i {{fact:rhfYearE}}. Oppgaver som innkjøp, planlegging og oppfølging av sykehusene må fortsatt utføres. Den bredere kategorien administrasjon og service i spesialisthelsetjenesten steg med {{fact:healthSupportFteGrowth}} fra {{fact:startYear}} til {{fact:endYear}}, mot {{fact:healthSpecialistFteGrowth}} for spesialisthelsetjenesten samlet. Service omfatter blant annet IT, renhold og logistikk. Å telle alt som byråkrati ville blåst opp sparepotensialet."
+        "factIds": [
+          "ssbOmsorgSykepleiereStart",
+          "startYear",
+          "ssbOmsorgSykepleiereEnd",
+          "endYear",
+          "healthCareFteGrowth",
+          "healthElderlyStart",
+          "healthElderlyEnd"
         ]
       },
       {
-        "heading": "Kommunene trenger folk, også etter en reform",
+        "heading": "Sykefraværet må med i regnestykket",
+        "paragraphs": [
+          "I {{fact:endYear}} var det legemeldte sykefraværet {{fact:ssbFravarSykepleiereEnd}} blant sykepleiere og spesialsykepleiere, {{fact:ssbFravarHelsefagEnd}} blant helsefagarbeidere og {{fact:ssbFravarLegerEnd}} blant leger. Dette er andeler av avtalte dagsverk som gikk tapt, ikke andeler ansatte som var syke hele året. Egenmeldt fravær kommer i tillegg.",
+          "For helse- og sosialtjenestene samlet var egen- og legemeldt fravær {{fact:ssbFravarHelseEnd}}, mot {{fact:ssbFravarAlleEnd}} i alle næringer. Disse næringstallene kan sammenlignes med hverandre. De har en annen avgrensning enn yrkestallene over.",
+          "Fraværstallene forteller ikke hvor mye som skyldes jobben. Smitte, alder, kjønnssammensetning og arbeidsmiljø kan alle påvirke forskjellene. For en avdeling med ubesatte vakter er konsekvensen likevel konkret: mindre forutsigbar bemanning og større behov for å dekke hull. En reform som krever opplæring og omstilling, må sette av tid til det. Ellers kan gjennomføringen spise av tiden den skulle frigjøre."
+        ],
+        "factIds": [
+          "endYear",
+          "ssbFravarSykepleiereEnd",
+          "ssbFravarHelsefagEnd",
+          "ssbFravarLegerEnd",
+          "ssbFravarHelseEnd",
+          "ssbFravarAlleEnd"
+        ]
+      },
+      {
+        "heading": "Veksten har vært ulik mellom fagområdene",
+        "paragraphs": [
+          "I spesialisthelsetjenesten økte sykepleierårsverkene med {{fact:ssbSykepleiereGrowth}}, mens legeårsverkene økte med {{fact:ssbLegerGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Etter tjenesteområde vokste somatikken med {{fact:ssbSomatikkGrowth}}, psykisk helsevern for voksne med {{fact:ssbPsykiskVoksneGrowth}} og for barn og unge med {{fact:ssbPsykiskBarnGrowth}}. I rusbehandlingen var endringen {{fact:ssbRusbehandlingGrowth}}; bemanningen var omtrent uendret.",
+          "Dermed blir det for grovt å snakke om én bemanningsutvikling i «helsevesenet». Et nytt samarbeid om pasienter med både rusproblemer og psykiske lidelser kan være nyttig, men en ny organisering fyller ikke i seg selv ledige vakter. Det må avklares hvem som skal gjøre arbeidet, hvilken kompetanse de trenger, og hva de skal slutte å gjøre for å få tid.",
+          "Årsverkene er avtalte stillingsressurser, ikke utførte timer eller behandlingsresultater. Organisasjonsendringer kan flytte ansatte mellom kategorier, og pandemiåret er et spesielt utgangspunkt. Vi bruker derfor ikke disse kurvene som en rangering av effektivitet."
+        ],
+        "factIds": [
+          "ssbSykepleiereGrowth",
+          "ssbLegerGrowth",
+          "startYear",
+          "endYear",
+          "ssbSomatikkGrowth",
+          "ssbPsykiskVoksneGrowth",
+          "ssbPsykiskBarnGrowth",
+          "ssbRusbehandlingGrowth"
+        ]
+      },
+      {
+        "heading": "Hvor har pengene gått?",
+        "paragraphs": [
+          "Fellestalls statsregnskap viser {{fact:total}} under Helse- og omsorgsdepartementet i {{fact:endYear}}. Utgiftene økte med {{fact:nominalGrowth}} siden {{fact:startYear}}. Etter justering for konsumpriser og folketall var veksten {{fact:realPerCapitaGrowth}}. Det er mer penger per innbygger, men prisjusteringen sier ikke nøyaktig hvor mye helsetjeneste pengene kjøper: lønn, medisiner og utstyr kan ha en annen prisutvikling.",
+          "Kapittelet for regionale helseforetak økte fra {{fact:rhfReferenceAmount}} til {{fact:rhfLastAmount}}. Dette finansierer i stor grad sykehustjenester. Beløpet blir derfor ikke ledig hvis de regionale helseforetakene avvikles. Pasientene skal fortsatt behandles.",
+          "SSBs smalere kostnadskategori «RHF-administrasjon og fellesfunksjoner» var {{fact:ssbRhfKostnadEnd}} i {{fact:endYear}}. Den omfatter nødvendige fellesoppgaver og er heller ikke en ferdig sparekonto. Administrasjon som er fordelt på andre tjenesteområder, er ikke med. Statens overføringer og mottakernes kostnader beskriver dessuten delvis de samme pengene og skal ikke legges sammen."
+        ],
+        "factIds": [
+          "total",
+          "endYear",
+          "nominalGrowth",
+          "startYear",
+          "realPerCapitaGrowth",
+          "rhfReferenceAmount",
+          "rhfLastAmount",
+          "ssbRhfKostnadEnd"
+        ]
+      },
+      {
+        "heading": "Hva kan bli annerledes på jobb?",
+        "paragraphs": [
+          "Utvalget foreslår tettere samarbeid mellom kommuner og sykehus, blant annet gjennom felles nærhelsetjenester. Tanken er at pasienten skal få et mer sammenhengende forløp. Samtidig foreslås endringer i styring og finansiering. Regjeringen har sendt utredningen på høring; dette er foreløpig forslag.",
+          "For en hjemmesykepleier kan et bedre forløp bety at behandlingsplan, legemiddelliste og kontaktperson er avklart før pasienten kommer hjem. For sykehuslegen kan det bety mindre tid på å finne ut hvem som overtar. Det er mulige gevinster, ikke dokumenterte virkninger av en reform som ennå ikke er gjennomført.",
+          "Risikoen går motsatt vei dersom ansvar flyttes før bemanning, utstyr og finansiering er på plass. Da kan utskrivningen gå raskere på sykehuset samtidig som arbeidslisten blir lengre i kommunen. Resultatene må derfor måles gjennom hele pasientforløpet: ventetid, reinnleggelser, kontinuitet, avvik og arbeidstid. En besparelse hos avsenderen kan være en ny regning hos mottakeren.",
+          "Finansieringen er en nøkkel. Det særskilte statlige kapittelet for kommunale helse- og omsorgstjenester var {{fact:kommunehelseLastAmount}} i {{fact:endYear}}. Kommunenes egne helse- og omsorgsregninger er langt bredere og dekkes også av frie inntekter. Dette kapitlet kan derfor ikke brukes som et mål på hele kommunetjenesten. En overføring av oppgaver må følges i både kommunens og statens regnskap."
+        ],
         "factIds": [
           "kommunehelseLastAmount",
-          "psykiskLastAmount",
-          "healthElderlyGrowth",
-          "healthCareFteGrowth"
-        ],
-        "paragraphs": [
-          "Fra {{fact:startYear}} til {{fact:endYear}} økte antallet innbyggere som var åtti år eller eldre med {{fact:healthElderlyGrowth}}. Årsverkene i omsorgstjenestene økte med {{fact:healthCareFteGrowth}}. Det sier noe om hvorfor bemanning betyr så mye i reformen. Det sier ikke hvor mye omsorg hver eldre fikk: tjenestene brukes også av yngre, og behovet varierer mellom personer og kommuner.",
-          "Fellestalls kommuneregnskap viser at netto helse- og omsorgsutgifter per innbygger steg etter prisjustering i Oslo, Bergen og Trondheim. Det er tre storbyer, ikke hele landet. I statsregnskapet ble det i {{fact:endYear}} ført {{fact:kommunehelseLastAmount}} på kapittelet for kommunale helse- og omsorgstjenester og {{fact:psykiskLastAmount}} på kapittelet for psykisk helse og rusarbeid. Det er statlige utgifter. Legger man statlige overføringer oppå kommunenes utgifter, kan samme krone dukke opp to ganger. Når en oppgave flyttes, må finansieringen derfor vurderes sammen med bemanningen som faktisk trengs."
+          "endYear"
         ]
       },
       {
-        "heading": "Hva skal til for å spare penger?",
+        "heading": "Hvor mye kan spares – og hva koster omstillingen?",
+        "paragraphs": [
+          "Utredningen oppgir {{fact:healthRhfFte}} avtalte årsverk i de regionale helseforetakene. Oppgavene deres må vurderes enkeltvis; mange vil bestå under ny organisering. Utvalget har ikke lagt fram en samlet netto reformkalkyle. Vi kan likevel vise hva et avgrenset regnestykke krever.",
+          "I kalkulatorens illustrative utgangspunkt reduseres tidsbruken med {{fact:healthScenarioTime}}, og {{fact:healthScenarioRealization}} av dette lar seg hente ut i praksis. Det tilsvarer {{fact:healthScenarioReleased}} årsverk etter innfasing. Beholdes bemanningen, er gevinsten kapasitet til andre oppgaver. Lønnsregningen faller først når bemanningskostnadene faktisk reduseres.",
+          "Med en antatt arbeidsgiverkostnad på {{fact:healthScenarioEmployerCost}} per årsverk ville full uttelling som redusert bemanning gi {{fact:healthScenarioCashGross}} i årlig bruttosparing. Eksemplet setter samtidig engangskostnaden til {{fact:healthScenarioUpfront}} og årlige merkostnader til {{fact:healthScenarioOngoing}}. Da blir den årlige netto kontanteffekten {{fact:healthScenarioCashNet}} etter innfasing, før engangskostnaden er tjent inn. Regnestykket går altså ikke i pluss med disse antakelsene.",
+          "Kostnadene er valgbare illustrasjoner, ikke utvalgets anslag. De viser hvor følsomt resultatet er. En reell beslutning krever priser på blant annet IT, opplæring, flytting av oppgaver og eventuell dobbel drift. Gevinster må tidfestes, og samme frigjorte time kan ikke både bli mer pasienttid og lavere lønnsutgift. Prøv andre antakelser i kalkulatoren."
+        ],
         "factIds": [
-          "healthRhfFte"
+          "healthRhfFte",
+          "healthScenarioTime",
+          "healthScenarioRealization",
+          "healthScenarioReleased",
+          "healthScenarioEmployerCost",
+          "healthScenarioCashGross",
+          "healthScenarioUpfront",
+          "healthScenarioOngoing",
+          "healthScenarioCashNet"
+        ]
+      },
+      {
+        "heading": "Tiltak som kan merkes før organisasjonskartet er ferdig",
+        "paragraphs": [
+          "Start med arbeidsflyten. Bedre oppgavedeling og tilstrekkelig støttepersonell kan frigjøre klinisk tid. Felles rutiner ved utskrivning kan redusere telefonrunder og dobbeltarbeid. Forutsigbare turnuser, opplæring og oppfølging av arbeidsmiljø kan gjøre det lettere å beholde folk. Dette er også retninger i den nasjonale helsepersonellplanen; de krever ikke alle en full omlegging av eierstrukturen.",
+          "Størrelsesordenen er interessant: Hvis {{fact:healthOnePercent}} av den avtalte sykepleiertiden i kommunal omsorg kunne frigjøres, ville det tilsvare omtrent {{fact:healthCareNurseCapacity}} årsverk. Det er en ren regneillustrasjon basert på bemanningen i {{fact:endYear}}, ikke et målt tidstap eller et løfte om lavere sykefravær. Timer er heller ikke fritt flyttbare mellom steder, fag og vakter.",
+          "Lavere terskel betyr ikke gratis. En sekretær koster penger; et nytt journalsystem krever opplæring; bedre turnus kan kreve flere faste ansatte før innleien faller. En fornuftig prøve er å måle samlet kostnad og faktisk frigjort tid før og etter et avgrenset tiltak, sammen med kvalitet og belastning. Tiltak som gir tryggere behandling og færre ekstravakter, kan være verdifulle selv om budsjettet ikke krymper.",
+          "Forebygging og rehabilitering kan redusere behovet for senere hjelp, men virkningen kommer ofte over tid. Det er derfor ikke forsvarlig å finansiere dagens bemanningskutt med en framtidig gevinst man ennå ikke har dokumentert. Med tilgjengelig grunnlag kan vi ikke rangere disse tiltakene som sikkert billigere enn hele reformen. De kan derimot prøves og etterprøves mens de større beslutningene utredes."
         ],
-        "paragraphs": [
-          "En avdeling kan bruke tiden den frigjør på flere pasienter, mindre overtid eller færre innleide vakter. Det første kan gi bedre kapasitet uten at budsjettet blir mindre. De andre kan gi lavere utgifter, hvis vaktene og innleien faktisk faller bort. Den samme timen kan ikke regnes som både mer pasienttid og spart lønn.",
-          "Prøv kalkulatoren med all frigjort tid satt av til tjenestene. Da blir det ingen kontantinnsparing fra personell, selv om kapasiteten kan øke. Flytt en del av gevinsten over til kontantinnsparing og se hvordan resultatet endres når du også regner med omstilling, nye systemer og årlig drift. Et overskudd oppstår først når de faktiske besparelsene dekker kostnadene. Startverdiene er illustrasjoner. Utvalget har ikke levert et samlet kostnadsanslag som gjør dem til en prognose."
-        ]
-      },
-      {
-        "heading": "Her står den politiske striden",
-        "factIds": [],
-        "paragraphs": [
-          "Helseminister Jan Christian Vestre har sendt utredningen på høring og invitert til bredt samarbeid i Stortinget. Utvalget står bak forslagene. Det finnes allerede et stortingsvedtak om å utrede et skille mellom drift og investering i sykehusene, men det er ikke et vedtak om å innføre modellen. Forslaget kan gjøre det lettere å vurdere store bygg for seg. Regningen for bygg, vedlikehold og drift må fortsatt betales.",
-          "KS støtter delt ansvar og bedre samarbeid, men vil at nærhelsetjenester skal være frivillige og vil beholde legevakten i kommunene. KS peker blant annet på sammenhengen med fastleger, rekruttering og lokal beredskap. Legeforeningen er positiv til retningen for finansiering av store sykehusbygg, men skeptisk til sammenslåinger og mer sentralisert styring. Spekter løfter fram kommuneøkonomi og kommunestruktur. Det er standpunkter om bestemte deler av reformen, ikke ja eller nei til hele pakken.",
-          "En mulig konflikt er hvem som bestemmer hvor akuttjenester skal ligge når fagmiljøer ønsker større enheter, mens kommuner vil sikre kort reisevei og beredskap. En annen er hvem som betaler når mer behandling flyttes ut av sykehuset. Det er foreløpig ikke grunnlag her for å tilskrive partiene et flertall for noen av løsningene."
-        ]
-      },
-      {
-        "heading": "Digital hjelp må gi mindre dobbeltarbeid",
         "factIds": [
-          "iktLastAmount"
-        ],
-        "paragraphs": [
-          "Fellestall viser {{fact:iktLastAmount}} på statens særskilte IKT-kapittel for helse og omsorg i {{fact:endYear}}. Der ligger bare en del av pengene som brukes på digitale løsninger. Sykehusenes og kommunenes systemer, opplæring og drift kan ligge andre steder i regnskapet. Kapittelet kan derfor ikke brukes som reformens digitale prislapp.",
-          "En journal som følger pasienten, kan spare telefoner og leting etter opplysninger. KI kan for eksempel hjelpe med et førsteutkast til journalnotat. Gevinsten blir mindre hvis ansatte må rette mange feil eller føre opplysningene i flere systemer. Før man regner inn tid spart, bør man måle hvor mye tid som faktisk går til dokumentasjon og kontroll. Følg også med på om ventetiden går ned, om færre må tilbake på sykehus kort tid etter utskriving, og om pasientene får trygg oppfølging hjemme. De målene sier mer om kvaliteten enn et lavere administrasjonsbudsjett."
+          "healthOnePercent",
+          "healthCareNurseCapacity",
+          "endYear"
         ]
+      },
+      {
+        "heading": "Partiene kan enes om endring og strides om retningen",
+        "paragraphs": [
+          "Arbeiderpartiets regjering vil bearbeide høringen og søke bredt samarbeid. Høyre er positivt til flere forslag og vektlegger raskere hjelp og bruk av private og ideelle. FrP støtter avvikling av de regionale helseforetakene og vil åpne mer for private med offentlig betaling.",
+          "Senterpartiet vil også avvikle RHF-ene, men motsetter seg kommunesammenslåinger og nye selskaper som partiet mener svekker lokal kontroll. Rødt krever mer demokratisk styring og større innflytelse for ansatte og pasienter. Enighet om å fjerne et styringsnivå betyr dermed ikke enighet om hva som skal erstatte det.",
+          "SVs vedtatte program vil erstatte foretaksmodellen, styrke offentlig kapasitet og bedre arbeidsvilkårene, samtidig som kommersialisering begrenses. Venstre vil forbedre modellen, korte ned beslutningsveiene og frigjøre klinikertid gjennom bedre oppgavedeling. KrF vil utrede alternative modeller, skille drift og investering og sikre lokale tilbud. MDG vil ha en forvaltningsmodell inspirert av Skottland, mer forebygging og mer tid til pasientarbeid.",
+          "For SV, Venstre og KrF er dette programstandpunkter; for MDG gjeldende helsepolitikk. De skal ikke leses som ferske høringssvar. Ap-regjeringens prosessmelding og Høyres, FrPs og Senterpartiets reaksjoner gjelder selve framleggelsen. Rødts innlegg ved framleggelsen uttrykker partiets forventninger.",
+          "Vår vurdering er at de tydeligste konfliktene vil dreie seg om lokal kontroll, private aktører og hvem som betaler for oppgaver som flyttes. Senterpartiets varslede motstand mot sentralisering er konkret. SVs og Rødts linje peker mot motstand mot mer kommersiell drift. Høyre og FrP ønsker større bruk av slike aktører. Utfallet av forhandlingene er fortsatt åpent."
+        ],
+        "factIds": []
+      },
+      {
+        "heading": "En reform som tåler møtet med kveldsvakten",
+        "paragraphs": [
+          "For helsearbeidere er den viktige testen om arbeidsdagen blir mer gjennomførbar: færre avbrudd, tydeligere ansvar, riktig kompetanse og tid til å gjøre jobben forsvarlig. For pasienten handler det om å få hjelp i tide og slippe å begynne forklaringen på nytt ved hver overgang.",
+          "Tallene peker særlig mot en sårbarhet i kommunal omsorg: sykepleierbemanningen har vokst langsomt samtidig som den eldste delen av befolkningen har vokst langt raskere. Høyt sykefravær gjør det enda viktigere å planlegge med den bemanningen som faktisk er tilgjengelig. Det beviser ikke hvilken styringsmodell som er best, men skjerper kravene til gjennomføringen.",
+          "Før gevinster tas ut i budsjettene, bør de være synlige i tjenesten. Flyttes oppgaver, må folk, kompetanse og finansiering følge med. Frigjøres tid, må det være klart om den skal gi bedre kapasitet eller lavere kostnader. Og blir belastningen større underveis, må planen kunne justeres. Det er slik reformløfter kan bli en bedre vakt."
+        ],
+        "factIds": []
       }
     ],
-    "conclusion": "Reformen kan gi pasientene bedre oppfølging nær hjemmet hvis kommunen og sykehuset får folk, penger og tydelig ansvar til å gjøre jobben. For å vite om den også sparer penger, må vi se hvilke oppgaver og kostnader som faktisk faller bort, og hva det koster å legge om.",
-    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nFlytt en oppgave fra et helseforetak til staten, og du har fått en ny adresse. Regningen har som regel også flyttemelding.\n\nHelsereformutvalget vil gi flere behandling nær hjemmet og endre styringen av sykehusene. Det kan gi ansatte mer tid til pasientene. Utvalget har likevel ikke satt et samlet sparebeløp på reformen.\n\nI Fellestalls analyse kan du skru på tidsgevinsten, omstillingskostnaden og andelen som faktisk blir til lavere utgifter. Hva bør vi bruke en frigjort time til: flere pasienter eller mindre innleie?",
+    "conclusion": "Sykepleierbemanningen i kommunal omsorg har vokst langt saktere enn den eldste befolkningen. Helsereformen bør vurderes på faktisk pasienttid, kvalitet og arbeidsbelastning. Varige budsjettbesparelser krever dokumenterte gevinster etter at omstillingen er betalt.",
+    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nFlere eldre. Nesten like mange sykepleiere i kommunal omsorg.\n\nFra {{fact:startYear}} til {{fact:endYear}} økte sykepleierårsverkene der med {{fact:ssbOmsorgSykepleiereGrowth}}. Befolkningen fra åtti år økte med {{fact:healthElderlyGrowth}}.\n\nEt nytt organisasjonskart kan henges på vaktrommet. Det kan dessverre ikke ta kveldsvakten.\n\nVi har undersøkt bemanning, sykefravær, statens helseutgifter og partienes forslag. Og regnet på forskjellen mellom frigjort tid og penger som faktisk kan spares.\n\nHva ville frigjort mest pasienttid på din arbeidsplass: bedre oppgavedeling, bedre IT eller mer forutsigbar bemanning?\n\nLes analysen og prøv spareberegningen selv.",
     "graphs": [
       {
         "kind": "series",
+        "afterSection": 0,
+        "title": "Eldre og bemanning i kommunal omsorg",
+        "mode": "index",
+        "chartType": "line",
+        "annotation": "period-change",
+        "series": [
+          {
+            "source": "health",
+            "id": "elderly80plus",
+            "label": "Innbyggere fra åtti år"
+          },
+          {
+            "source": "ssb",
+            "id": "OmsorgSykepleiere",
+            "label": "Sykepleierårsverk"
+          },
+          {
+            "source": "ssb",
+            "id": "Omsorg",
+            "label": "Alle årsverk"
+          }
+        ]
+      },
+      {
+        "kind": "series",
         "afterSection": 1,
+        "title": "Legemeldt sykefravær etter yrke",
+        "mode": "values",
+        "chartType": "line",
+        "annotation": "period-change",
+        "series": [
+          {
+            "source": "ssb",
+            "id": "FravarSykepleiere",
+            "label": "Sykepleiere"
+          },
+          {
+            "source": "ssb",
+            "id": "FravarLeger",
+            "label": "Leger"
+          },
+          {
+            "source": "ssb",
+            "id": "FravarHelsefag",
+            "label": "Helsefagarbeidere"
+          }
+        ]
+      },
+      {
+        "kind": "series",
+        "afterSection": 2,
+        "title": "Bemanning etter tjenesteområde",
+        "mode": "index",
+        "chartType": "line",
+        "annotation": "period-change",
+        "series": [
+          {
+            "source": "ssb",
+            "id": "Somatikk",
+            "label": "Somatikk"
+          },
+          {
+            "source": "ssb",
+            "id": "PsykiskVoksne",
+            "label": "Psykisk helsevern, voksne"
+          },
+          {
+            "source": "ssb",
+            "id": "PsykiskBarn",
+            "label": "Psykisk helsevern, barn"
+          },
+          {
+            "source": "ssb",
+            "id": "Rusbehandling",
+            "label": "Rusbehandling"
+          }
+        ]
+      },
+      {
+        "kind": "series",
+        "afterSection": 3,
         "title": "Statens utgifter til regionale helseforetak",
         "mode": "values",
         "chartType": "line",
@@ -2145,58 +4278,26 @@
         "series": [
           {
             "source": "post",
-            "id": "rhf"
-          }
-        ]
-      },
-      {
-        "kind": "series",
-        "afterSection": 2,
-        "title": "Flere eldre og flere årsverk",
-        "mode": "index",
-        "chartType": "line",
-        "annotation": "period-change",
-        "series": [
-          {
-            "source": "health",
-            "id": "elderly80plus"
-          },
-          {
-            "source": "health",
-            "id": "careFte"
-          }
-        ]
-      },
-      {
-        "kind": "series",
-        "afterSection": 2,
-        "title": "Helse og omsorg per innbygger i tre byer",
-        "mode": "values",
-        "chartType": "line",
-        "annotation": "period-change",
-        "series": [
-          {
-            "source": "health",
-            "id": "municipalOslo",
-            "label": "Oslo"
-          },
-          {
-            "source": "health",
-            "id": "municipalBergen",
-            "label": "Bergen"
-          },
-          {
-            "source": "health",
-            "id": "municipalTrondheim",
-            "label": "Trondheim"
+            "id": "rhf",
+            "label": "Regionale helseforetak"
           }
         ]
       },
       {
         "kind": "health-scenario",
-        "afterSection": 3,
-        "title": "Hva skal til for at regnestykket går i pluss?"
+        "afterSection": 5,
+        "title": "Prøv antakelsene i regnestykket"
       }
     ]
+  },
+  "processedFeedbackIds": [
+    "comment-6916135237"
+  ],
+  "researchRevision": {
+    "previousHead": "8ddd325753de31d564c32ef597387283bd82d693",
+    "actor": "Lippen1995",
+    "sourceCommit": "9497d5a0d630e87c487eb1e15af0d93793676972",
+    "reason": "Utvidet research etter autorisert kommentar comment-6916135237: bemanning, sykefravær, kostnader og politiske standpunkter.",
+    "generatedAt": "2026-11-19T22:26:14.512Z"
   }
 }
