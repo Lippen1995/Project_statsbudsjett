@@ -1,0 +1,1974 @@
+{
+  "contentHash": "53ec3225afbd34e319b0cae2e1372cd7c4fbfc82ef7e2b3f5a0403d62dd256d9",
+  "report": {
+    "kind": "real-expenditure-per-capita",
+    "factsVersion": 2,
+    "researchPlan": [
+      {
+        "id": "Utenudi",
+        "kind": "exclude-chapters",
+        "evidenceIds": [
+          "udi"
+        ]
+      },
+      {
+        "id": "Utenpoliti",
+        "kind": "exclude-chapters",
+        "evidenceIds": [
+          "politi"
+        ]
+      }
+    ],
+    "scopeId": "u-04",
+    "scopeName": "Justis- og beredskapsdepartementet",
+    "detailSelections": [
+      {
+        "id": "politi",
+        "nodeIds": [
+          "u-04-0440",
+          "u-04-0441",
+          "u-04-0443"
+        ]
+      },
+      {
+        "id": "udi",
+        "nodeIds": [
+          "u-04-0490"
+        ]
+      },
+      {
+        "id": "fengsel",
+        "nodeIds": [
+          "u-04-0430",
+          "u-04-0431"
+        ]
+      },
+      {
+        "id": "pst",
+        "nodeIds": [
+          "u-04-0444"
+        ]
+      },
+      {
+        "id": "domstol",
+        "nodeIds": [
+          "u-04-0410",
+          "u-04-0411"
+        ]
+      },
+      {
+        "id": "dsb",
+        "nodeIds": [
+          "u-04-0451"
+        ]
+      },
+      {
+        "id": "helikopter",
+        "nodeIds": [
+          "u-04-0454"
+        ]
+      }
+    ],
+    "start": 2020,
+    "end": 2025,
+    "dataUpdated": "2026-10-19T13:35:02.778063+00:00",
+    "dataHash": "68e360ea7258abc68bc44a8ae98b5658996839c28099f0b62cb2bf17d45d2b83",
+    "facts": {
+      "startYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Første regnskapsår"
+      },
+      "endYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Siste regnskapsår"
+      },
+      "nominalGrowth": {
+        "value": 41.2813641322392,
+        "text": "41,3 %",
+        "label": "Vekst i løpende utgifter"
+      },
+      "populationGrowth": {
+        "value": 4.224622641860942,
+        "text": "4,2 %",
+        "label": "Befolkningsvekst"
+      },
+      "priceGrowth": {
+        "value": 22.699386503067487,
+        "text": "22,7 %",
+        "label": "Prisvekst målt med KPI"
+      },
+      "realPerCapitaGrowth": {
+        "value": 10.477072355000505,
+        "text": "10,5 %",
+        "label": "Realvekst per innbygger"
+      },
+      "firstPerCapita": {
+        "value": 7855.681703859094,
+        "text": "7 856 kr",
+        "label": "Per innbygger i startåret, løpende kroner"
+      },
+      "lastPerCapita": {
+        "value": 10648.744981534906,
+        "text": "10 649 kr",
+        "label": "Per innbygger i sluttåret, løpende kroner"
+      },
+      "firstRealPerCapita": {
+        "value": 9638.873256268827,
+        "text": "9 639 kr",
+        "label": "Startåret i sluttårets priser"
+      },
+      "total": {
+        "value": 59.57269999999998,
+        "text": "59,6 mrd. kr",
+        "label": "Utgifter i sluttåret"
+      },
+      "nominalPerCapitaGrowth": {
+        "value": 35.5546900061356,
+        "text": "35,6 %",
+        "label": "Vekst per innbygger, løpende kroner"
+      },
+      "previousYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Året før største årlige endring"
+      },
+      "largestChangeYear": {
+        "value": 2022,
+        "text": "2022",
+        "label": "År med største årlige endring i absoluttverdi"
+      },
+      "largestAnnualChange": {
+        "value": 6.930411499705702,
+        "text": "6,9 %",
+        "label": "Største årlige endring, KPI-justert per innbygger"
+      },
+      "growthBeforeChange": {
+        "value": 1.4151609483968652,
+        "text": "1,4 %",
+        "label": "KPI-justert vekst per innbygger, 2020–2021"
+      },
+      "growthSinceChange": {
+        "value": 8.935460262410476,
+        "text": "8,9 %",
+        "label": "KPI-justert vekst per innbygger, 2021–2025"
+      },
+      "growthAfterChange": {
+        "value": 1.8750968359551035,
+        "text": "1,9 %",
+        "label": "KPI-justert vekst per innbygger, 2022–2025"
+      },
+      "politiPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: år med høyeste løpende beløp i perioden"
+      },
+      "politiPeakAmount": {
+        "value": 28298.500000000004,
+        "text": "28,3 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: høyeste løpende beløp, 2025"
+      },
+      "politiLastAmount": {
+        "value": 28298.500000000004,
+        "text": "28,3 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: løpende beløp, 2025"
+      },
+      "politiReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: sammenligningsår"
+      },
+      "politiReferenceAmount": {
+        "value": 20053.9,
+        "text": "20,1 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: løpende beløp, 2020"
+      },
+      "politiFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: første år med regnskapsføring på denne posten i perioden"
+      },
+      "politiYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: regnskapsår"
+      },
+      "politiAmountA": {
+        "value": 20053.9,
+        "text": "20,1 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: løpende beløp, 2020"
+      },
+      "politiYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: regnskapsår"
+      },
+      "politiAmountB": {
+        "value": 20112.999999999996,
+        "text": "20,1 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: løpende beløp, 2021"
+      },
+      "politiYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: regnskapsår"
+      },
+      "politiAmountC": {
+        "value": 22933.8,
+        "text": "22,9 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: løpende beløp, 2022"
+      },
+      "politiYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: regnskapsår"
+      },
+      "politiAmountD": {
+        "value": 24403.100000000002,
+        "text": "24,4 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: løpende beløp, 2023"
+      },
+      "politiYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: regnskapsår"
+      },
+      "politiAmountE": {
+        "value": 26014.899999999994,
+        "text": "26,0 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: løpende beløp, 2024"
+      },
+      "politiYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: regnskapsår"
+      },
+      "politiAmountF": {
+        "value": 28298.500000000004,
+        "text": "28,3 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: løpende beløp, 2025"
+      },
+      "politiFirstRecordedAmount": {
+        "value": 20053.9,
+        "text": "20,1 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: første observerte beløp på postutvalget"
+      },
+      "politiChangeSinceFirst": {
+        "value": 8244.600000000002,
+        "text": "8,2 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "politiGrowthSinceFirst": {
+        "value": 41.112202613955404,
+        "text": "41,1 %",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: prosentvis endring fra første observerte år"
+      },
+      "politiContributionAmount": {
+        "value": 8244.600000000002,
+        "text": "8,2 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "politiNetChangeRatio": {
+        "value": 47.36452055817593,
+        "text": "47,4 %",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "politiChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: beløpsendring fra høyeste observerte år"
+      },
+      "politiGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: prosentvis endring fra høyeste observerte år"
+      },
+      "politiLastAnnualChangeAmount": {
+        "value": 2283.6000000000095,
+        "text": "2,3 mrd. kr",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: beløpsendring mellom de siste to regnskapsårene"
+      },
+      "politiGrowthLastYear": {
+        "value": 8.778046427239804,
+        "text": "8,8 %",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "politiRealGrowthSinceReference": {
+        "value": 10.344793979788669,
+        "text": "10,3 %",
+        "label": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "udiPeakYear": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Utlendingsdirektoratet: år med høyeste løpende beløp i perioden"
+      },
+      "udiPeakAmount": {
+        "value": 6069.799999999998,
+        "text": "6,1 mrd. kr",
+        "label": "Utlendingsdirektoratet: høyeste løpende beløp, 2023"
+      },
+      "udiLastAmount": {
+        "value": 5140.200000000001,
+        "text": "5,1 mrd. kr",
+        "label": "Utlendingsdirektoratet: løpende beløp, 2025"
+      },
+      "udiReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Utlendingsdirektoratet: sammenligningsår"
+      },
+      "udiReferenceAmount": {
+        "value": 2112.8,
+        "text": "2,1 mrd. kr",
+        "label": "Utlendingsdirektoratet: løpende beløp, 2020"
+      },
+      "udiFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Utlendingsdirektoratet: første år med regnskapsføring på denne posten i perioden"
+      },
+      "udiYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Utlendingsdirektoratet: regnskapsår"
+      },
+      "udiAmountA": {
+        "value": 2112.8,
+        "text": "2,1 mrd. kr",
+        "label": "Utlendingsdirektoratet: løpende beløp, 2020"
+      },
+      "udiYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Utlendingsdirektoratet: regnskapsår"
+      },
+      "udiAmountB": {
+        "value": 2074.8,
+        "text": "2,1 mrd. kr",
+        "label": "Utlendingsdirektoratet: løpende beløp, 2021"
+      },
+      "udiYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Utlendingsdirektoratet: regnskapsår"
+      },
+      "udiAmountC": {
+        "value": 5883.3,
+        "text": "5,9 mrd. kr",
+        "label": "Utlendingsdirektoratet: løpende beløp, 2022"
+      },
+      "udiYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Utlendingsdirektoratet: regnskapsår"
+      },
+      "udiAmountD": {
+        "value": 6069.799999999998,
+        "text": "6,1 mrd. kr",
+        "label": "Utlendingsdirektoratet: løpende beløp, 2023"
+      },
+      "udiYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Utlendingsdirektoratet: regnskapsår"
+      },
+      "udiAmountE": {
+        "value": 5718.000000000002,
+        "text": "5,7 mrd. kr",
+        "label": "Utlendingsdirektoratet: løpende beløp, 2024"
+      },
+      "udiYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Utlendingsdirektoratet: regnskapsår"
+      },
+      "udiAmountF": {
+        "value": 5140.200000000001,
+        "text": "5,1 mrd. kr",
+        "label": "Utlendingsdirektoratet: løpende beløp, 2025"
+      },
+      "udiFirstRecordedAmount": {
+        "value": 2112.8,
+        "text": "2,1 mrd. kr",
+        "label": "Utlendingsdirektoratet: første observerte beløp på postutvalget"
+      },
+      "udiChangeSinceFirst": {
+        "value": 3027.4000000000005,
+        "text": "3,0 mrd. kr",
+        "label": "Utlendingsdirektoratet: beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "udiGrowthSinceFirst": {
+        "value": 143.2885270730784,
+        "text": "143,3 %",
+        "label": "Utlendingsdirektoratet: prosentvis endring fra første observerte år"
+      },
+      "udiContributionAmount": {
+        "value": 3027.4000000000005,
+        "text": "3,0 mrd. kr",
+        "label": "Utlendingsdirektoratet: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "udiNetChangeRatio": {
+        "value": 17.392153596029136,
+        "text": "17,4 %",
+        "label": "Utlendingsdirektoratet: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "udiChangeFromPeak": {
+        "value": -929.5999999999976,
+        "text": "−929,6 mill. kr",
+        "label": "Utlendingsdirektoratet: beløpsendring fra høyeste observerte år"
+      },
+      "udiGrowthFromPeak": {
+        "value": -15.315166891825072,
+        "text": "−15,3 %",
+        "label": "Utlendingsdirektoratet: prosentvis endring fra høyeste observerte år"
+      },
+      "udiLastAnnualChangeAmount": {
+        "value": -577.8000000000011,
+        "text": "−577,8 mill. kr",
+        "label": "Utlendingsdirektoratet: beløpsendring mellom de siste to regnskapsårene"
+      },
+      "udiGrowthLastYear": {
+        "value": -10.104931794333694,
+        "text": "−10,1 %",
+        "label": "Utlendingsdirektoratet: prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "udiRealGrowthSinceReference": {
+        "value": 90.2430966297606,
+        "text": "90,2 %",
+        "label": "Utlendingsdirektoratet: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "fengselPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: år med høyeste løpende beløp i perioden"
+      },
+      "fengselPeakAmount": {
+        "value": 6837.599999999999,
+        "text": "6,8 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: høyeste løpende beløp, 2025"
+      },
+      "fengselLastAmount": {
+        "value": 6837.599999999999,
+        "text": "6,8 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: løpende beløp, 2025"
+      },
+      "fengselReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: sammenligningsår"
+      },
+      "fengselReferenceAmount": {
+        "value": 5169.4,
+        "text": "5,2 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: løpende beløp, 2020"
+      },
+      "fengselFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: første år med regnskapsføring på denne posten i perioden"
+      },
+      "fengselYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: regnskapsår"
+      },
+      "fengselAmountA": {
+        "value": 5169.4,
+        "text": "5,2 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: løpende beløp, 2020"
+      },
+      "fengselYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: regnskapsår"
+      },
+      "fengselAmountB": {
+        "value": 5349.7,
+        "text": "5,3 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: løpende beløp, 2021"
+      },
+      "fengselYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: regnskapsår"
+      },
+      "fengselAmountC": {
+        "value": 5592.3,
+        "text": "5,6 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: løpende beløp, 2022"
+      },
+      "fengselYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: regnskapsår"
+      },
+      "fengselAmountD": {
+        "value": 5834,
+        "text": "5,8 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: løpende beløp, 2023"
+      },
+      "fengselYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: regnskapsår"
+      },
+      "fengselAmountE": {
+        "value": 6189.5,
+        "text": "6,2 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: løpende beløp, 2024"
+      },
+      "fengselYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: regnskapsår"
+      },
+      "fengselAmountF": {
+        "value": 6837.599999999999,
+        "text": "6,8 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: løpende beløp, 2025"
+      },
+      "fengselFirstRecordedAmount": {
+        "value": 5169.4,
+        "text": "5,2 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: første observerte beløp på postutvalget"
+      },
+      "fengselChangeSinceFirst": {
+        "value": 1668.1999999999998,
+        "text": "1,7 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "fengselGrowthSinceFirst": {
+        "value": 32.27066971021782,
+        "text": "32,3 %",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: prosentvis endring fra første observerte år"
+      },
+      "fengselContributionAmount": {
+        "value": 1668.1999999999998,
+        "text": "1,7 mrd. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "fengselNetChangeRatio": {
+        "value": 9.583666059620729,
+        "text": "9,6 %",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "fengselChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: beløpsendring fra høyeste observerte år"
+      },
+      "fengselGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: prosentvis endring fra høyeste observerte år"
+      },
+      "fengselLastAnnualChangeAmount": {
+        "value": 648.0999999999995,
+        "text": "648,1 mill. kr",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: beløpsendring mellom de siste to regnskapsårene"
+      },
+      "fengselGrowthLastYear": {
+        "value": 10.470958881977532,
+        "text": "10,5 %",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "fengselRealGrowthSinceReference": {
+        "value": 3.4310253002828306,
+        "text": "3,4 %",
+        "label": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "pstPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Politiets sikkerhetstjeneste (PST): år med høyeste løpende beløp i perioden"
+      },
+      "pstPeakAmount": {
+        "value": 1944.8999999999999,
+        "text": "1,9 mrd. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): høyeste løpende beløp, 2025"
+      },
+      "pstLastAmount": {
+        "value": 1944.8999999999999,
+        "text": "1,9 mrd. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): løpende beløp, 2025"
+      },
+      "pstReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Politiets sikkerhetstjeneste (PST): sammenligningsår"
+      },
+      "pstReferenceAmount": {
+        "value": 1045.1,
+        "text": "1,0 mrd. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): løpende beløp, 2020"
+      },
+      "pstFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Politiets sikkerhetstjeneste (PST): første år med regnskapsføring på denne posten i perioden"
+      },
+      "pstYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Politiets sikkerhetstjeneste (PST): regnskapsår"
+      },
+      "pstAmountA": {
+        "value": 1045.1,
+        "text": "1,0 mrd. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): løpende beløp, 2020"
+      },
+      "pstYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Politiets sikkerhetstjeneste (PST): regnskapsår"
+      },
+      "pstAmountB": {
+        "value": 997.9,
+        "text": "997,9 mill. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): løpende beløp, 2021"
+      },
+      "pstYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Politiets sikkerhetstjeneste (PST): regnskapsår"
+      },
+      "pstAmountC": {
+        "value": 1517,
+        "text": "1,5 mrd. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): løpende beløp, 2022"
+      },
+      "pstYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Politiets sikkerhetstjeneste (PST): regnskapsår"
+      },
+      "pstAmountD": {
+        "value": 1617.6000000000001,
+        "text": "1,6 mrd. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): løpende beløp, 2023"
+      },
+      "pstYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Politiets sikkerhetstjeneste (PST): regnskapsår"
+      },
+      "pstAmountE": {
+        "value": 1662.5,
+        "text": "1,7 mrd. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): løpende beløp, 2024"
+      },
+      "pstYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Politiets sikkerhetstjeneste (PST): regnskapsår"
+      },
+      "pstAmountF": {
+        "value": 1944.8999999999999,
+        "text": "1,9 mrd. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): løpende beløp, 2025"
+      },
+      "pstFirstRecordedAmount": {
+        "value": 1045.1,
+        "text": "1,0 mrd. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): første observerte beløp på postutvalget"
+      },
+      "pstChangeSinceFirst": {
+        "value": 899.8,
+        "text": "899,8 mill. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "pstGrowthSinceFirst": {
+        "value": 86.09702420820975,
+        "text": "86,1 %",
+        "label": "Politiets sikkerhetstjeneste (PST): prosentvis endring fra første observerte år"
+      },
+      "pstContributionAmount": {
+        "value": 899.8,
+        "text": "899,8 mill. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "pstNetChangeRatio": {
+        "value": 5.169273900279783,
+        "text": "5,2 %",
+        "label": "Politiets sikkerhetstjeneste (PST): postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "pstChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): beløpsendring fra høyeste observerte år"
+      },
+      "pstGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Politiets sikkerhetstjeneste (PST): prosentvis endring fra høyeste observerte år"
+      },
+      "pstLastAnnualChangeAmount": {
+        "value": 282.39999999999986,
+        "text": "282,4 mill. kr",
+        "label": "Politiets sikkerhetstjeneste (PST): beløpsendring mellom de siste to regnskapsårene"
+      },
+      "pstGrowthLastYear": {
+        "value": 16.98646616541353,
+        "text": "17,0 %",
+        "label": "Politiets sikkerhetstjeneste (PST): prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "pstRealGrowthSinceReference": {
+        "value": 45.521346957388076,
+        "text": "45,5 %",
+        "label": "Politiets sikkerhetstjeneste (PST): KPI-justert endring per innbygger, 2020–2025"
+      },
+      "domstolPeakYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: år med høyeste løpende beløp i perioden"
+      },
+      "domstolPeakAmount": {
+        "value": 3617,
+        "text": "3,6 mrd. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: høyeste løpende beløp, 2025"
+      },
+      "domstolLastAmount": {
+        "value": 3617,
+        "text": "3,6 mrd. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: løpende beløp, 2025"
+      },
+      "domstolReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: sammenligningsår"
+      },
+      "domstolReferenceAmount": {
+        "value": 2815.9,
+        "text": "2,8 mrd. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: løpende beløp, 2020"
+      },
+      "domstolFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: første år med regnskapsføring på denne posten i perioden"
+      },
+      "domstolYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: regnskapsår"
+      },
+      "domstolAmountA": {
+        "value": 2815.9,
+        "text": "2,8 mrd. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: løpende beløp, 2020"
+      },
+      "domstolYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: regnskapsår"
+      },
+      "domstolAmountB": {
+        "value": 2918,
+        "text": "2,9 mrd. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: løpende beløp, 2021"
+      },
+      "domstolYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: regnskapsår"
+      },
+      "domstolAmountC": {
+        "value": 3078.5,
+        "text": "3,1 mrd. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: løpende beløp, 2022"
+      },
+      "domstolYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: regnskapsår"
+      },
+      "domstolAmountD": {
+        "value": 3242.6,
+        "text": "3,2 mrd. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: løpende beløp, 2023"
+      },
+      "domstolYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: regnskapsår"
+      },
+      "domstolAmountE": {
+        "value": 3491.2000000000003,
+        "text": "3,5 mrd. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: løpende beløp, 2024"
+      },
+      "domstolYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: regnskapsår"
+      },
+      "domstolAmountF": {
+        "value": 3617,
+        "text": "3,6 mrd. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: løpende beløp, 2025"
+      },
+      "domstolFirstRecordedAmount": {
+        "value": 2815.9,
+        "text": "2,8 mrd. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: første observerte beløp på postutvalget"
+      },
+      "domstolChangeSinceFirst": {
+        "value": 801.0999999999999,
+        "text": "801,1 mill. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "domstolGrowthSinceFirst": {
+        "value": 28.449163677687412,
+        "text": "28,4 %",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: prosentvis endring fra første observerte år"
+      },
+      "domstolContributionAmount": {
+        "value": 801.0999999999999,
+        "text": "801,1 mill. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "domstolNetChangeRatio": {
+        "value": 4.602250857428466,
+        "text": "4,6 %",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "domstolChangeFromPeak": {
+        "value": 0,
+        "text": "0,0 mill. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: beløpsendring fra høyeste observerte år"
+      },
+      "domstolGrowthFromPeak": {
+        "value": 0,
+        "text": "0,0 %",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: prosentvis endring fra høyeste observerte år"
+      },
+      "domstolLastAnnualChangeAmount": {
+        "value": 125.79999999999973,
+        "text": "125,8 mill. kr",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: beløpsendring mellom de siste to regnskapsårene"
+      },
+      "domstolGrowthLastYear": {
+        "value": 3.6033455545371185,
+        "text": "3,6 %",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "domstolRealGrowthSinceReference": {
+        "value": 0.4427415938361712,
+        "text": "0,4 %",
+        "label": "Tingrettene og lagmannsrettene + Domstoladministrasjonen: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "dsbPeakYear": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: år med høyeste løpende beløp i perioden"
+      },
+      "dsbPeakAmount": {
+        "value": 3778.7000000000003,
+        "text": "3,8 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: høyeste løpende beløp, 2021"
+      },
+      "dsbLastAmount": {
+        "value": 2419.8999999999996,
+        "text": "2,4 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: løpende beløp, 2025"
+      },
+      "dsbReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: sammenligningsår"
+      },
+      "dsbReferenceAmount": {
+        "value": 1665.3999999999999,
+        "text": "1,7 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: løpende beløp, 2020"
+      },
+      "dsbFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: første år med regnskapsføring på denne posten i perioden"
+      },
+      "dsbYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: regnskapsår"
+      },
+      "dsbAmountA": {
+        "value": 1665.3999999999999,
+        "text": "1,7 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: løpende beløp, 2020"
+      },
+      "dsbYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: regnskapsår"
+      },
+      "dsbAmountB": {
+        "value": 3778.7000000000003,
+        "text": "3,8 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: løpende beløp, 2021"
+      },
+      "dsbYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: regnskapsår"
+      },
+      "dsbAmountC": {
+        "value": 2324,
+        "text": "2,3 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: løpende beløp, 2022"
+      },
+      "dsbYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: regnskapsår"
+      },
+      "dsbAmountD": {
+        "value": 2167.7000000000003,
+        "text": "2,2 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: løpende beløp, 2023"
+      },
+      "dsbYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: regnskapsår"
+      },
+      "dsbAmountE": {
+        "value": 2412.1,
+        "text": "2,4 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: løpende beløp, 2024"
+      },
+      "dsbYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: regnskapsår"
+      },
+      "dsbAmountF": {
+        "value": 2419.8999999999996,
+        "text": "2,4 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: løpende beløp, 2025"
+      },
+      "dsbFirstRecordedAmount": {
+        "value": 1665.3999999999999,
+        "text": "1,7 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: første observerte beløp på postutvalget"
+      },
+      "dsbChangeSinceFirst": {
+        "value": 754.4999999999998,
+        "text": "754,5 mill. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "dsbGrowthSinceFirst": {
+        "value": 45.30443136783955,
+        "text": "45,3 %",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: prosentvis endring fra første observerte år"
+      },
+      "dsbContributionAmount": {
+        "value": 754.4999999999998,
+        "text": "754,5 mill. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "dsbNetChangeRatio": {
+        "value": 4.3345378503679655,
+        "text": "4,3 %",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "dsbChangeFromPeak": {
+        "value": -1358.8000000000006,
+        "text": "−1,4 mrd. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: beløpsendring fra høyeste observerte år"
+      },
+      "dsbGrowthFromPeak": {
+        "value": -35.95945695609603,
+        "text": "−36,0 %",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: prosentvis endring fra høyeste observerte år"
+      },
+      "dsbLastAnnualChangeAmount": {
+        "value": 7.799999999999727,
+        "text": "7,8 mill. kr",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: beløpsendring mellom de siste to regnskapsårene"
+      },
+      "dsbGrowthLastYear": {
+        "value": 0.32336967787403026,
+        "text": "0,3 %",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "dsbRealGrowthSinceReference": {
+        "value": 13.622969853983014,
+        "text": "13,6 %",
+        "label": "Direktoratet for samfunnssikkerhet og beredskap: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "helikopterPeakYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Redningshelikoptertjenesten: år med høyeste løpende beløp i perioden"
+      },
+      "helikopterPeakAmount": {
+        "value": 2460.1,
+        "text": "2,5 mrd. kr",
+        "label": "Redningshelikoptertjenesten: høyeste løpende beløp, 2020"
+      },
+      "helikopterLastAmount": {
+        "value": 1864.9,
+        "text": "1,9 mrd. kr",
+        "label": "Redningshelikoptertjenesten: løpende beløp, 2025"
+      },
+      "helikopterReferenceYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Redningshelikoptertjenesten: sammenligningsår"
+      },
+      "helikopterReferenceAmount": {
+        "value": 2460.1,
+        "text": "2,5 mrd. kr",
+        "label": "Redningshelikoptertjenesten: løpende beløp, 2020"
+      },
+      "helikopterFirstRecordedYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Redningshelikoptertjenesten: første år med regnskapsføring på denne posten i perioden"
+      },
+      "helikopterYearA": {
+        "value": 2020,
+        "text": "2020",
+        "label": "Redningshelikoptertjenesten: regnskapsår"
+      },
+      "helikopterAmountA": {
+        "value": 2460.1,
+        "text": "2,5 mrd. kr",
+        "label": "Redningshelikoptertjenesten: løpende beløp, 2020"
+      },
+      "helikopterYearB": {
+        "value": 2021,
+        "text": "2021",
+        "label": "Redningshelikoptertjenesten: regnskapsår"
+      },
+      "helikopterAmountB": {
+        "value": 2180.1,
+        "text": "2,2 mrd. kr",
+        "label": "Redningshelikoptertjenesten: løpende beløp, 2021"
+      },
+      "helikopterYearC": {
+        "value": 2022,
+        "text": "2022",
+        "label": "Redningshelikoptertjenesten: regnskapsår"
+      },
+      "helikopterAmountC": {
+        "value": 1924.3000000000002,
+        "text": "1,9 mrd. kr",
+        "label": "Redningshelikoptertjenesten: løpende beløp, 2022"
+      },
+      "helikopterYearD": {
+        "value": 2023,
+        "text": "2023",
+        "label": "Redningshelikoptertjenesten: regnskapsår"
+      },
+      "helikopterAmountD": {
+        "value": 1756.8,
+        "text": "1,8 mrd. kr",
+        "label": "Redningshelikoptertjenesten: løpende beløp, 2023"
+      },
+      "helikopterYearE": {
+        "value": 2024,
+        "text": "2024",
+        "label": "Redningshelikoptertjenesten: regnskapsår"
+      },
+      "helikopterAmountE": {
+        "value": 1849.4,
+        "text": "1,8 mrd. kr",
+        "label": "Redningshelikoptertjenesten: løpende beløp, 2024"
+      },
+      "helikopterYearF": {
+        "value": 2025,
+        "text": "2025",
+        "label": "Redningshelikoptertjenesten: regnskapsår"
+      },
+      "helikopterAmountF": {
+        "value": 1864.9,
+        "text": "1,9 mrd. kr",
+        "label": "Redningshelikoptertjenesten: løpende beløp, 2025"
+      },
+      "helikopterFirstRecordedAmount": {
+        "value": 2460.1,
+        "text": "2,5 mrd. kr",
+        "label": "Redningshelikoptertjenesten: første observerte beløp på postutvalget"
+      },
+      "helikopterChangeSinceFirst": {
+        "value": -595.1999999999998,
+        "text": "−595,2 mill. kr",
+        "label": "Redningshelikoptertjenesten: beløpsendring fra første observerte år, ikke en årsaksandel"
+      },
+      "helikopterGrowthSinceFirst": {
+        "value": -24.19413844965651,
+        "text": "−24,2 %",
+        "label": "Redningshelikoptertjenesten: prosentvis endring fra første observerte år"
+      },
+      "helikopterContributionAmount": {
+        "value": -595.1999999999998,
+        "text": "−595,2 mill. kr",
+        "label": "Redningshelikoptertjenesten: bokført bidrag til totalendringen; ikke-observert startpost bidrar ikke til startsummen"
+      },
+      "helikopterNetChangeRatio": {
+        "value": -3.4193730000517064,
+        "text": "−3,4 %",
+        "label": "Redningshelikoptertjenesten: postens bokførte endring delt på nettoendringen i totalen; ikke årsaksandel"
+      },
+      "helikopterChangeFromPeak": {
+        "value": -595.1999999999998,
+        "text": "−595,2 mill. kr",
+        "label": "Redningshelikoptertjenesten: beløpsendring fra høyeste observerte år"
+      },
+      "helikopterGrowthFromPeak": {
+        "value": -24.19413844965651,
+        "text": "−24,2 %",
+        "label": "Redningshelikoptertjenesten: prosentvis endring fra høyeste observerte år"
+      },
+      "helikopterLastAnnualChangeAmount": {
+        "value": 15.5,
+        "text": "15,5 mill. kr",
+        "label": "Redningshelikoptertjenesten: beløpsendring mellom de siste to regnskapsårene"
+      },
+      "helikopterGrowthLastYear": {
+        "value": 0.8381096571861146,
+        "text": "0,8 %",
+        "label": "Redningshelikoptertjenesten: prosentvis endring mellom de siste to regnskapsårene"
+      },
+      "helikopterRealGrowthSinceReference": {
+        "value": -40.72247459621331,
+        "text": "−40,7 %",
+        "label": "Redningshelikoptertjenesten: KPI-justert endring per innbygger, 2020–2025"
+      },
+      "ssbLovbruddStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: første observasjonsår"
+      },
+      "ssbLovbruddEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: siste observasjonsår"
+      },
+      "ssbLovbruddStart": {
+        "value": 300636,
+        "text": "300 636 antall",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: startverdi"
+      },
+      "ssbLovbruddEnd": {
+        "value": 348508,
+        "text": "348 508 antall",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: sluttverdi"
+      },
+      "ssbLovbruddChange": {
+        "value": 47872,
+        "text": "47 872 antall",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: endring i måleenheten"
+      },
+      "ssbLovbruddGrowth": {
+        "value": 15.923575353583729,
+        "text": "15,92 %",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "ssbVoldStartYear": {
+        "value": 2020,
+        "text": "2020",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: første observasjonsår"
+      },
+      "ssbVoldEndYear": {
+        "value": 2025,
+        "text": "2025",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: siste observasjonsår"
+      },
+      "ssbVoldStart": {
+        "value": 37063,
+        "text": "37 063 antall",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: startverdi"
+      },
+      "ssbVoldEnd": {
+        "value": 47366,
+        "text": "47 366 antall",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: sluttverdi"
+      },
+      "ssbVoldChange": {
+        "value": 10303,
+        "text": "10 303 antall",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: endring i måleenheten"
+      },
+      "ssbVoldGrowth": {
+        "value": 27.79861317216632,
+        "text": "27,8 %",
+        "label": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025: prosentvis endring, ikke prosentpoeng"
+      },
+      "calcUtenudiNominalGrowth": {
+        "value": 35.900502331898544,
+        "text": "35,9 %",
+        "label": "Nominell vekst uten valgte kapitler"
+      },
+      "calcUtenudiRealGrowth": {
+        "value": 10.758909400497307,
+        "text": "10,8 %",
+        "label": "KPI-justert samlet vekst uten valgte kapitler"
+      },
+      "calcUtenudiRealPerCapitaGrowth": {
+        "value": 6.26942712096894,
+        "text": "6,3 %",
+        "label": "KPI-justert vekst per innbygger uten valgte kapitler"
+      },
+      "calcUtenudiStart": {
+        "value": 40053.2,
+        "text": "40,1 mrd. kr",
+        "label": "Departementsutgifter uten valgte kapitler i første år"
+      },
+      "calcUtenudiEnd": {
+        "value": 54432.499999999985,
+        "text": "54,4 mrd. kr",
+        "label": "Departementsutgifter uten valgte kapitler i siste år"
+      },
+      "calcUtenpolitiNominalGrowth": {
+        "value": 41.43478005255032,
+        "text": "41,4 %",
+        "label": "Nominell vekst uten valgte kapitler"
+      },
+      "calcUtenpolitiRealGrowth": {
+        "value": 15.269345742828522,
+        "text": "15,3 %",
+        "label": "KPI-justert samlet vekst uten valgte kapitler"
+      },
+      "calcUtenpolitiRealPerCapitaGrowth": {
+        "value": 10.597038224757792,
+        "text": "10,6 %",
+        "label": "KPI-justert vekst per innbygger uten valgte kapitler"
+      },
+      "calcUtenpolitiStart": {
+        "value": 22112.1,
+        "text": "22,1 mrd. kr",
+        "label": "Departementsutgifter uten valgte kapitler i første år"
+      },
+      "calcUtenpolitiEnd": {
+        "value": 31274.19999999998,
+        "text": "31,3 mrd. kr",
+        "label": "Departementsutgifter uten valgte kapitler i siste år"
+      }
+    },
+    "eventEvidence": {
+      "version": 2,
+      "items": [
+        {
+          "id": "politi",
+          "nodeIds": [
+            "u-04-0440",
+            "u-04-0441",
+            "u-04-0443"
+          ],
+          "title": "Politidirektoratet - politi- og lensmannsetaten + Politidirektoratet + Påtalemyndigheten i politiet",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-04-0440",
+              "name": "Politidirektoratet - politi- og lensmannsetaten"
+            },
+            {
+              "id": "u-04-0441",
+              "name": "Politidirektoratet"
+            },
+            {
+              "id": "u-04-0443",
+              "name": "Påtalemyndigheten i politiet"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 20053.9,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 20112.999999999996,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 22933.8,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 24403.100000000002,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 26014.899999999994,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 28298.500000000004,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "udi",
+          "nodeIds": [
+            "u-04-0490"
+          ],
+          "title": "Utlendingsdirektoratet",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-04-0490",
+              "name": "Utlendingsdirektoratet"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 2112.8,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 2074.8,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 5883.3,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 6069.799999999998,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 5718.000000000002,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 5140.200000000001,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "fengsel",
+          "nodeIds": [
+            "u-04-0430",
+            "u-04-0431"
+          ],
+          "title": "Kriminalomsorgsdirektoratet + Kriminalomsorgsdirektoratet",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-04-0430",
+              "name": "Kriminalomsorgsdirektoratet"
+            },
+            {
+              "id": "u-04-0431",
+              "name": "Kriminalomsorgsdirektoratet"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 5169.4,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 5349.7,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 5592.3,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 5834,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 6189.5,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 6837.599999999999,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "pst",
+          "nodeIds": [
+            "u-04-0444"
+          ],
+          "title": "Politiets sikkerhetstjeneste (PST)",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-04-0444",
+              "name": "Politiets sikkerhetstjeneste (PST)"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 1045.1,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 997.9,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 1517,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 1617.6000000000001,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 1662.5,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 1944.8999999999999,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "domstol",
+          "nodeIds": [
+            "u-04-0410",
+            "u-04-0411"
+          ],
+          "title": "Tingrettene og lagmannsrettene + Domstoladministrasjonen",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-04-0410",
+              "name": "Tingrettene og lagmannsrettene"
+            },
+            {
+              "id": "u-04-0411",
+              "name": "Domstoladministrasjonen"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 2815.9,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 2918,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 3078.5,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 3242.6,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 3491.2000000000003,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 3617,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "dsb",
+          "nodeIds": [
+            "u-04-0451"
+          ],
+          "title": "Direktoratet for samfunnssikkerhet og beredskap",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-04-0451",
+              "name": "Direktoratet for samfunnssikkerhet og beredskap"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 1665.3999999999999,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 3778.7000000000003,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 2324,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 2167.7000000000003,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 2412.1,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 2419.8999999999996,
+              "reported": true
+            }
+          ]
+        },
+        {
+          "id": "helikopter",
+          "nodeIds": [
+            "u-04-0454"
+          ],
+          "title": "Redningshelikoptertjenesten",
+          "event": "Postvis regnskapssammenligning",
+          "context": "Beløpene følger de oppgitte post-ID-ene i uttrekket. Et utvalg med flere poster summeres uten å dobbelttelle kapittel og underpost. Flytting mellom andre poster og endrede formål må vurderes særskilt.",
+          "basis": "Postnavn og bokførte beløp i Fellestalls DFØ-uttrekk; historisk bakgrunn er ikke en beregnet årsaksandel.",
+          "nodes": [
+            {
+              "id": "u-04-0454",
+              "name": "Redningshelikoptertjenesten"
+            }
+          ],
+          "rows": [
+            {
+              "year": 2020,
+              "expenditure": 2460.1,
+              "reported": true
+            },
+            {
+              "year": 2021,
+              "expenditure": 2180.1,
+              "reported": true
+            },
+            {
+              "year": 2022,
+              "expenditure": 1924.3000000000002,
+              "reported": true
+            },
+            {
+              "year": 2023,
+              "expenditure": 1756.8,
+              "reported": true
+            },
+            {
+              "year": 2024,
+              "expenditure": 1849.4,
+              "reported": true
+            },
+            {
+              "year": 2025,
+              "expenditure": 1864.9,
+              "reported": true
+            }
+          ]
+        }
+      ],
+      "hash": "23e1331b591c3de7a3c947c1a937a6c1f8c3eb05982c294828e0d3a6496168d3"
+    },
+    "rows": [
+      {
+        "year": 2020,
+        "expenditure": 42166,
+        "population": 5367580,
+        "cpi": 81.5,
+        "perCapita": 7855.681703859094,
+        "nominalIndex": 100,
+        "priceIndex": 100,
+        "realPerCapita": 9638.873256268827
+      },
+      {
+        "year": 2021,
+        "expenditure": 44427.9,
+        "population": 5391369,
+        "cpi": 84.3,
+        "perCapita": 8240.560050703263,
+        "nominalIndex": 104.89936279693075,
+        "priceIndex": 103.43558282208589,
+        "realPerCapita": 9775.278826457014
+      },
+      {
+        "year": 2022,
+        "expenditure": 50584.40000000004,
+        "population": 5425270,
+        "cpi": 89.2,
+        "perCapita": 9323.849319941688,
+        "nominalIndex": 118.68924520403313,
+        "priceIndex": 109.44785276073621,
+        "realPerCapita": 10452.74587437409
+      },
+      {
+        "year": 2023,
+        "expenditure": 53356.899999999994,
+        "population": 5488984,
+        "cpi": 94.1,
+        "perCapita": 9720.724272470095,
+        "nominalIndex": 123.74132047247792,
+        "priceIndex": 115.4601226993865,
+        "realPerCapita": 10330.206453209454
+      },
+      {
+        "year": 2024,
+        "expenditure": 55995.00000000001,
+        "population": 5550203,
+        "cpi": 97.1,
+        "perCapita": 10088.820174685505,
+        "nominalIndex": 128.42704879106014,
+        "priceIndex": 119.14110429447852,
+        "realPerCapita": 10390.134062497946
+      },
+      {
+        "year": 2025,
+        "expenditure": 59572.69999999998,
+        "population": 5594340,
+        "cpi": 100,
+        "perCapita": 10648.744981534906,
+        "nominalIndex": 135.55469000613562,
+        "priceIndex": 122.69938650306749,
+        "realPerCapita": 10648.744981534906
+      }
+    ],
+    "sources": [
+      {
+        "name": "Fellestall: de konkrete regnskapspostene",
+        "url": "https://fellestall.no/data/utgifter.json",
+        "local": "/data/utgifter.json",
+        "description": "Hendelseseksemplene er valgt fra samme DFØ-uttrekk som hovedserien. Navn, post-ID-er og årlige beløp er frosset i artikkelens datagrunnlag. Utvalget er ikke et fullstendig koronaregnskap eller en årsaksfordeling av hele veksten."
+      },
+      {
+        "name": "DFØ Statsregnskapet",
+        "url": "https://statsregnskapet.dfo.no",
+        "local": "/data/utgifter.json",
+        "description": "Regnskapsførte utgifter i mill. kroner. Finansposter og SPU-overføringer er utelatt."
+      },
+      {
+        "name": "SSB folkemengde, tabell 07459",
+        "url": "https://www.ssb.no/statbank/table/07459/",
+        "local": "/data/befolkning.json",
+        "description": "Folkemengde ved inngangen til året, som i resten av Fellestall."
+      },
+      {
+        "name": "SSB konsumprisindeks",
+        "url": "https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen",
+        "local": "/data/kpi.json",
+        "description": "Årsgjennomsnitt for KPI, fra Fellestalls normaliserte serie."
+      },
+      {
+        "name": "SSB: 08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025 — Lovbrudd (tabell 08484)",
+        "url": "https://www.ssb.no/statbank/table/08484/",
+        "description": "Frosset uttrekk hentet 2026-11-02T16:11:35.848733+00:00. Se anmeldte lovbrudd opp mot utviklingen i politiets regnskap. Ikke et effektmål eller et mål på all faktisk kriminalitet."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Lovbrudd",
+        "url": "https://fellestall.no/data/ssb-research/351c52e0b752eac45d2b4980663b4de5dbccb6971b31ca7c86b2c6a52f9e1ef2.json",
+        "local": "/data/ssb-research/351c52e0b752eac45d2b4980663b4de5dbccb6971b31ca7c86b2c6a52f9e1ef2.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "SSB: 08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025 — Vold (tabell 08484)",
+        "url": "https://www.ssb.no/statbank/table/08484/",
+        "description": "Frosset uttrekk hentet 2026-11-02T16:11:36.855138+00:00. Undersøk om anmeldt vold og mishandling endret seg i perioden. Anmeldelser påvirkes også av anmeldelsestilbøyelighet og registrering."
+      },
+      {
+        "name": "Frosset SSB-uttrekk: Vold",
+        "url": "https://fellestall.no/data/ssb-research/117bf57842b11d1c755245e6963245579a9ca3da826e4078dbd043e8c31f1490.json",
+        "local": "/data/ssb-research/117bf57842b11d1c755245e6963245579a9ca3da826e4078dbd043e8c31f1490.json",
+        "description": "Originalrespons, metadata, utvalg og tidspunkt. Filens SHA-256 inngår i analysegrunnlaget."
+      },
+      {
+        "name": "Politiets årsrapport 2025",
+        "url": "https://www.politiet.no/globalassets/dokumenter-strategier-og-horinger/pod/arsrapport-2025/politiets-arsrapport-2025.pdf",
+        "description": "Lest årsregnskapet og ledelseskommentarene. Rapporten beskriver disponibel ramme, øremerkede styrkinger mot kriminelle nettverk, hvitvasking og omvendt voldsalarm, samt lønn, eiendom, anskaffelser og mindreforbruk. Den brukes til å tolke politiets regnskap, ikke til å forklare hele departementsveksten."
+      },
+      {
+        "name": "UDI årsrapport 2025",
+        "url": "https://www.udi.no/om-udi/om-udi-og-utlendingsforvaltningen/arsrapporter/arsrapport-2025/",
+        "description": "Lest lederberetningen og omtalen av mottakssystemet. UDI beskriver fortsatt betydelige søknader om midlertidig kollektiv beskyttelse fra Ukraina, usikre ankomsttall og nedbygging og senere oppjustering av mottakskapasitet. Dette støtter koblingen mellom mottaksutgiftene og flyktningsituasjonen, uten å gjøre hele UDI-kapitlet til en ren Ukraina-utgift."
+      },
+      {
+        "name": "Justis- og beredskapsdepartementets budsjettproposisjon for 2025",
+        "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20242025/id3056592/?ch=2",
+        "description": "Kontrollert kapittelomtalene for politiet og UDI. Proposisjonen beskriver styrking av politiets grunnbevilgning og kapasitet mot organiserte kriminelle nettverk, samt utgifter til asylmottak, midlertidig administrativ kapasitet i UDI og høy usikkerhet om ankomster fra Ukraina. Budsjettforslag brukes som dokumentert bakgrunn; artikkelens beløp kommer fra regnskapet."
+      },
+      {
+        "name": "Justis- og beredskapsdepartementets budsjettproposisjon for 2023",
+        "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20222023/id2930712/?ch=2",
+        "description": "Kontrollert kapittel 490 og omtalen av asylmottak. Proposisjonen dokumenterer at høyere oppgavemengde og beredskap etter ankomstene fra Ukraina lå bak flere foreslåtte økninger i UDI og mottakssystemet. Dette er historisk forklaring på vendepunktet rundt 2022, ikke en beregnet årsaksandel."
+      },
+      {
+        "name": "PSTs årsregnskaper",
+        "url": "https://www.pst.no/psts-arsregnskaper/",
+        "description": "Kontrollert at PST publiserer ugraderte årsregnskaper for hele perioden 2020–2025. Regnskapene underbygger at PST er en egen virksomhet med egen regnskapsrapportering. Den graderte delen av virksomheten begrenser hvor detaljert utgiftsveksten kan forklares offentlig."
+      },
+      {
+        "name": "Kriminalomsorgens årsrapporter",
+        "url": "https://www.kriminalomsorgen.no/ressurser?tab=statistikk-og-publikasjoner-%C3%A5rsrapporter",
+        "description": "Kontrollert publiseringssiden for årsrapportene, inkludert 2025. Kilden brukes som primær inngang til virksomhetens mål, kapasitet og årsregnskap. Artikkelen bruker den frosne kapittelserien og unngår å tilskrive veksten én enkelt reform uten en full avstemming."
+      },
+      {
+        "name": "Stortingets justisinnstilling for 2025 – prioriteringer og budsjettforlik",
+        "url": "https://www.stortinget.no/no/Saker-og-publikasjoner/Publikasjoner/Innstillinger/Stortinget/2024-2025/inns-202425-006s/?all=true",
+        "description": "Lest hovedprioriteringer og merknadene til politiet, PST, domstolene og kriminalomsorgen. Ap og Sp begrunner PST-styrkingen med sikkerhetssituasjonen og en områdegjennomgang. Ap, Sp og SVs forlik utvider hurtigsporet til Agder og Øst og øker bemanning i fengslene. Et alternativt partibudsjett er ikke et vedtak. Den graderte PST-rapporten er ikke lest."
+      },
+      {
+        "name": "Stortingets faktiske bevilgningsvedtak for justisbudsjettet 2025",
+        "url": "https://stortinget.no/no/saker-og-publikasjoner/publikasjoner/referater/stortinget/2024-2025/refs-202425-12-13/?m=13",
+        "description": "Kontrollert sak 7: bevilgningene under blant annet kapittel 410, 430, 440, 443 og 444, og vedtaket etter komiteens tilråding. Tilrådingen ble vedtatt. Dette dokumenterer den parlamentariske forankringen, ikke at alle bevilgninger ble brukt nøyaktig som budsjettert eller at ett parti alene skapte regnskapsveksten."
+      },
+      {
+        "name": "SSB: Flere anmeldelser fra foretak i 2025",
+        "url": "https://www.ssb.no/sosiale-forhold-og-kriminalitet/kriminalitet-og-rettsvesen/statistikk/anmeldte-lovbrudd-og-ofre/artikler/flere-anmeldelser-fra-foretak-i-2025",
+        "description": "Lest omtalen av anmeldelsesnivå, digital anmeldelse fra foretak og lovbruddsgrupper. SSB knytter deler av økningen til registreringsmuligheter og normalisering etter pandemien. Anmeldelser er ikke alle faktiske lovbrudd, og serien er ikke et kausalt resultatmål for politibudsjettet."
+      }
+    ],
+    "methodology": [
+      "Hendelsesgrunnlaget følger et lite, redaksjonelt valgt utvalg regnskapsposter. Beløpene er i løpende mill. kroner; eventuelle KPI-justerte endringer per innbygger bruker samme folketall og prisserie som hovedanalysen. En post uten regnskapsføring i uttrekket er merket som ikke observert, ikke som et komplett mål på alle utgifter til formålet. Postene identifiseres med navn og ID.",
+      "Vi summerer regnskapsførte utgifter på postnivå for Justis- og beredskapsdepartementet. Finansposter og overføringer til Statens pensjonsfond utland utelates, med samme filtre som standardvisningen på forsiden. Poster uten regnskapsføring i et år bidrar ikke til summen.",
+      "Kroner per innbygger = utgifter i mill. kr × en million / folkemengden ved inngangen til året.",
+      "Faste kroner = løpende kroner per innbygger × KPI i sluttåret / KPI i det aktuelle året. Realvekst = sluttverdi i faste kroner / startverdi i faste kroner − én.",
+      "Vekstsammenligningen viser samme regnskap i løpende kroner, per innbygger og KPI-justert per innbygger. Prosentene er alternative mål, ikke bidrag som kan legges sammen eller trekkes direkte fra hverandre.",
+      "Nivågrafen viser KPI-justerte kroner per innbygger i sluttårets priser. Grafen for årlige endringer sammenligner hvert år med året før, etter justering for folketall og KPI. Året med størst endring velges etter absolutt prosentendring, uavhengig av fortegn.",
+      "SSB-serier er eksplisitte årlige utvalg. Start-/sluttverdier, forskjell og eventuell prosentvis endring beregnes fra arkiverte observasjoner. Prosentvis endring er ikke prosentpoeng.",
+      "Tilleggsberegninger gjentas fra frosne kapittel/post-serier og eksplisitte SSB-utvalg. Kapitteljustering trekker samme navngitte kapitler fra departementet i hvert år; ingen nasjonal nullutgift antas når ansvaret flyttes.",
+      "Bevilgning per registrert student er valgt regnskapspost delt på eksplisitt valgte læresteders SSB-studenttall. Det er ikke institusjonenes totale kostnader per heltidsstudent. KPI-justering bruker sluttårets konsumpriser."
+    ],
+    "limitations": [
+      "Departementenes ansvarsområder kan endres over tid. Serien følger Fellestalls normaliserte departementsinndeling, og må ikke alene tolkes som vekst i identiske tjenester.",
+      "KPI måler husholdningenes konsumpriser, ikke statens lønns-, bygge- eller innkjøpskostnader. KPI-justering er et sammenligningsmål, ikke et mål på produksjonsvolum.",
+      "Utgifter sier ikke hvor mye eller hvor god tjenesteproduksjon innbyggerne får. Overføringer, pensjoner og tilskudd inngår også.",
+      "Tallene identifiserer ikke årsakene til endringene. De kan ikke alene brukes til å konkludere om effektivitet, sløsing eller virkningen av politiske beslutninger.",
+      "Befolkningsjustering tar ikke hensyn til alderssammensetning. Regnskap sammenlignes med regnskap; framtidige budsjetter er ikke blandet inn.",
+      "Artikkelen har et frosset datagrunnlag. Senere korrigeringer i kildene endrer ikke automatisk en allerede godkjent analyse.",
+      "SSB-seriene er bakgrunnsvariabler, ikke en dokumentert årsaksfordeling av budsjettveksten. Geografi, definisjoner, tidsperiode, revisjoner og eventuelle prognoser må vurderes før tolkning. Siste observerte år erstatter ikke et fremtidig budsjettår.",
+      "Kapitteljusteringen er avgrenset til oppgitte kapitler. Andre ansvarsendringer og integreringsrelatert administrasjon inne i andre kapitler er ikke omregnet.",
+      "Studenttall er SSBs personer per 1. oktober, uten doktorgradsstudenter og permisjoner. Deltid, forskning og andre institusjonsoppgaver påvirker tolkningen; bevilgning per student er ikke ren undervisningskostnad."
+    ],
+    "ssbEvidence": [
+      {
+        "id": "Lovbrudd",
+        "scope": "u-04",
+        "purpose": "Se anmeldte lovbrudd opp mot utviklingen i politiets regnskap. Ikke et effektmål eller et mål på all faktisk kriminalitet.",
+        "hash": "351c52e0b752eac45d2b4980663b4de5dbccb6971b31ca7c86b2c6a52f9e1ef2",
+        "table": "08484",
+        "title": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025",
+        "retrievedAt": "2026-11-02T16:11:35.848733+00:00",
+        "updated": "2026-06-10T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "AnmeldteLovbrudd"
+          ],
+          "LovbruddKrim": [
+            "1AAAAA-9ZZZZz"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "AnmeldteLovbrudd",
+            "label": "Lovbrudd anmeldt"
+          },
+          "LovbruddKrim": {
+            "code": "1AAAAA-9ZZZZz",
+            "label": "Alle lovbruddsgrupper"
+          }
+        },
+        "unit": "antall",
+        "rows": [
+          {
+            "value": 300636,
+            "year": 2020
+          },
+          {
+            "value": 278833,
+            "year": 2021
+          },
+          {
+            "value": 304621,
+            "year": 2022
+          },
+          {
+            "value": 327997,
+            "year": 2023
+          },
+          {
+            "value": 341509,
+            "year": 2024
+          },
+          {
+            "value": 348508,
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "Vold",
+        "scope": "u-04",
+        "purpose": "Undersøk om anmeldt vold og mishandling endret seg i perioden. Anmeldelser påvirkes også av anmeldelsestilbøyelighet og registrering.",
+        "hash": "117bf57842b11d1c755245e6963245579a9ca3da826e4078dbd043e8c31f1490",
+        "table": "08484",
+        "title": "08484: Anmeldte lovbrudd, etter lovbruddsgruppe og type lovbrudd. Antall og per 1 000 innbyggere 1993-2025",
+        "retrievedAt": "2026-11-02T16:11:36.855138+00:00",
+        "updated": "2026-06-10T06:00:00Z",
+        "selections": {
+          "ContentsCode": [
+            "AnmeldteLovbrudd"
+          ],
+          "LovbruddKrim": [
+            "4AAAAA-4ZZZZz"
+          ],
+          "Tid": [
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ]
+        },
+        "categories": {
+          "ContentsCode": {
+            "code": "AnmeldteLovbrudd",
+            "label": "Lovbrudd anmeldt"
+          },
+          "LovbruddKrim": {
+            "code": "4AAAAA-4ZZZZz",
+            "label": "¬ Vold og mishandling"
+          }
+        },
+        "unit": "antall",
+        "rows": [
+          {
+            "value": 37063,
+            "year": 2020
+          },
+          {
+            "value": 35988,
+            "year": 2021
+          },
+          {
+            "value": 39465,
+            "year": 2022
+          },
+          {
+            "value": 42994,
+            "year": 2023
+          },
+          {
+            "value": 45438,
+            "year": 2024
+          },
+          {
+            "value": 47366,
+            "year": 2025
+          }
+        ]
+      }
+    ],
+    "researchSources": {
+      "sha256": "c5992dec51ce964f802a6d67205cc290f3276dee2219880cfad0762fdab187cc",
+      "version": 1,
+      "scope": "u-04",
+      "checkedAt": "2026-11-02",
+      "sources": [
+        {
+          "name": "Politiets årsrapport 2025",
+          "url": "https://www.politiet.no/globalassets/dokumenter-strategier-og-horinger/pod/arsrapport-2025/politiets-arsrapport-2025.pdf",
+          "description": "Lest årsregnskapet og ledelseskommentarene. Rapporten beskriver disponibel ramme, øremerkede styrkinger mot kriminelle nettverk, hvitvasking og omvendt voldsalarm, samt lønn, eiendom, anskaffelser og mindreforbruk. Den brukes til å tolke politiets regnskap, ikke til å forklare hele departementsveksten."
+        },
+        {
+          "name": "UDI årsrapport 2025",
+          "url": "https://www.udi.no/om-udi/om-udi-og-utlendingsforvaltningen/arsrapporter/arsrapport-2025/",
+          "description": "Lest lederberetningen og omtalen av mottakssystemet. UDI beskriver fortsatt betydelige søknader om midlertidig kollektiv beskyttelse fra Ukraina, usikre ankomsttall og nedbygging og senere oppjustering av mottakskapasitet. Dette støtter koblingen mellom mottaksutgiftene og flyktningsituasjonen, uten å gjøre hele UDI-kapitlet til en ren Ukraina-utgift."
+        },
+        {
+          "name": "Justis- og beredskapsdepartementets budsjettproposisjon for 2025",
+          "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20242025/id3056592/?ch=2",
+          "description": "Kontrollert kapittelomtalene for politiet og UDI. Proposisjonen beskriver styrking av politiets grunnbevilgning og kapasitet mot organiserte kriminelle nettverk, samt utgifter til asylmottak, midlertidig administrativ kapasitet i UDI og høy usikkerhet om ankomster fra Ukraina. Budsjettforslag brukes som dokumentert bakgrunn; artikkelens beløp kommer fra regnskapet."
+        },
+        {
+          "name": "Justis- og beredskapsdepartementets budsjettproposisjon for 2023",
+          "url": "https://www.regjeringen.no/no/dokumenter/prop.-1-s-20222023/id2930712/?ch=2",
+          "description": "Kontrollert kapittel 490 og omtalen av asylmottak. Proposisjonen dokumenterer at høyere oppgavemengde og beredskap etter ankomstene fra Ukraina lå bak flere foreslåtte økninger i UDI og mottakssystemet. Dette er historisk forklaring på vendepunktet rundt 2022, ikke en beregnet årsaksandel."
+        },
+        {
+          "name": "PSTs årsregnskaper",
+          "url": "https://www.pst.no/psts-arsregnskaper/",
+          "description": "Kontrollert at PST publiserer ugraderte årsregnskaper for hele perioden 2020–2025. Regnskapene underbygger at PST er en egen virksomhet med egen regnskapsrapportering. Den graderte delen av virksomheten begrenser hvor detaljert utgiftsveksten kan forklares offentlig."
+        },
+        {
+          "name": "Kriminalomsorgens årsrapporter",
+          "url": "https://www.kriminalomsorgen.no/ressurser?tab=statistikk-og-publikasjoner-%C3%A5rsrapporter",
+          "description": "Kontrollert publiseringssiden for årsrapportene, inkludert 2025. Kilden brukes som primær inngang til virksomhetens mål, kapasitet og årsregnskap. Artikkelen bruker den frosne kapittelserien og unngår å tilskrive veksten én enkelt reform uten en full avstemming."
+        },
+        {
+          "name": "Stortingets justisinnstilling for 2025 – prioriteringer og budsjettforlik",
+          "url": "https://www.stortinget.no/no/Saker-og-publikasjoner/Publikasjoner/Innstillinger/Stortinget/2024-2025/inns-202425-006s/?all=true",
+          "description": "Lest hovedprioriteringer og merknadene til politiet, PST, domstolene og kriminalomsorgen. Ap og Sp begrunner PST-styrkingen med sikkerhetssituasjonen og en områdegjennomgang. Ap, Sp og SVs forlik utvider hurtigsporet til Agder og Øst og øker bemanning i fengslene. Et alternativt partibudsjett er ikke et vedtak. Den graderte PST-rapporten er ikke lest."
+        },
+        {
+          "name": "Stortingets faktiske bevilgningsvedtak for justisbudsjettet 2025",
+          "url": "https://stortinget.no/no/saker-og-publikasjoner/publikasjoner/referater/stortinget/2024-2025/refs-202425-12-13/?m=13",
+          "description": "Kontrollert sak 7: bevilgningene under blant annet kapittel 410, 430, 440, 443 og 444, og vedtaket etter komiteens tilråding. Tilrådingen ble vedtatt. Dette dokumenterer den parlamentariske forankringen, ikke at alle bevilgninger ble brukt nøyaktig som budsjettert eller at ett parti alene skapte regnskapsveksten."
+        },
+        {
+          "name": "SSB: Flere anmeldelser fra foretak i 2025",
+          "url": "https://www.ssb.no/sosiale-forhold-og-kriminalitet/kriminalitet-og-rettsvesen/statistikk/anmeldte-lovbrudd-og-ofre/artikler/flere-anmeldelser-fra-foretak-i-2025",
+          "description": "Lest omtalen av anmeldelsesnivå, digital anmeldelse fra foretak og lovbruddsgrupper. SSB knytter deler av økningen til registreringsmuligheter og normalisering etter pandemien. Anmeldelser er ikke alle faktiske lovbrudd, og serien er ikke et kausalt resultatmål for politibudsjettet."
+        }
+      ]
+    }
+  }
+}
