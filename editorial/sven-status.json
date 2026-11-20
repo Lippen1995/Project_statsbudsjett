@@ -325,8 +325,10 @@
     "id": "0a2981b2-ba63-4fa0-a312-2c605dbdb7e5",
     "startedAt": "2026-11-19T14:49:47.262Z",
     "instructionCommit": "215f72c58355eec10cac5edfed86de8baf820c71",
-    "state": "delivering",
-    "note": "Revidert tekst og fem grafer validert mot 259 kontrollerte fakta. Kilde- og beregningstester bestått. Leverer nå til botens gjennomgang på PR 86.",
-    "updatedAt": "2026-11-19T22:22:41.603Z"
+    "state": "review",
+    "note": "Revidert helsereformanalyse levert av boten. Ny head, fungerende versjonsbundet forhåndsvisning og review request til Lippen1995 er kontrollert. Ingen publisering.",
+    "updatedAt": "2026-11-20T07:22:22.179Z",
+    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/86",
+    "finishedAt": "2026-11-20T07:22:22.179Z"
   }
 }
