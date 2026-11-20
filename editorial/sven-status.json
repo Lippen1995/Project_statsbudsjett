@@ -319,16 +319,24 @@
       "note": "PR #86 har samme head og ubehandlet endringsønske. GitHub CLI mangler fortsatt innlogging. Ingen lokal prosjektkopi funnet. GitHub-integrasjonen kan lese PR-en; ingen ny revisjon eller analyse er levert. Pipelinekøen er beholdt.",
       "updatedAt": "2026-11-19T08:00:04.776Z",
       "finishedAt": "2026-11-19T08:00:04.776Z"
+    },
+    {
+      "id": "0a2981b2-ba63-4fa0-a312-2c605dbdb7e5",
+      "startedAt": "2026-11-19T14:49:47.262Z",
+      "instructionCommit": "215f72c58355eec10cac5edfed86de8baf820c71",
+      "state": "review",
+      "note": "Revidert helsereformanalyse levert av boten. Ny head, fungerende versjonsbundet forhåndsvisning og review request til Lippen1995 er kontrollert. Ingen publisering.",
+      "updatedAt": "2026-11-20T07:22:22.179Z",
+      "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/86",
+      "finishedAt": "2026-11-20T07:22:22.179Z"
     }
   ],
   "current": {
-    "id": "0a2981b2-ba63-4fa0-a312-2c605dbdb7e5",
-    "startedAt": "2026-11-19T14:49:47.262Z",
-    "instructionCommit": "215f72c58355eec10cac5edfed86de8baf820c71",
-    "state": "review",
-    "note": "Revidert helsereformanalyse levert av boten. Ny head, fungerende versjonsbundet forhåndsvisning og review request til Lippen1995 er kontrollert. Ingen publisering.",
-    "updatedAt": "2026-11-20T07:22:22.179Z",
-    "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/86",
-    "finishedAt": "2026-11-20T07:22:22.179Z"
+    "id": "8c4d96dd-8806-449e-b85c-01efde8cc807",
+    "startedAt": "2026-11-20T07:58:30.545Z",
+    "instructionCommit": "e3f2bbf233fca08b9e30f22edad72275f0454e0b",
+    "state": "researching",
+    "note": "Kontrollerer kø og åpne gjennomganger",
+    "updatedAt": "2026-11-20T07:58:30.545Z"
   }
 }
