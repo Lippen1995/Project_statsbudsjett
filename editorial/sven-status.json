@@ -329,15 +329,23 @@
       "updatedAt": "2026-11-20T07:22:22.179Z",
       "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/86",
       "finishedAt": "2026-11-20T07:22:22.179Z"
+    },
+    {
+      "id": "8c4d96dd-8806-449e-b85c-01efde8cc807",
+      "startedAt": "2026-11-20T07:58:30.545Z",
+      "instructionCommit": "e3f2bbf233fca08b9e30f22edad72275f0454e0b",
+      "state": "waiting",
+      "note": "PR #86 venter på menneskelig gjennomgang av head 6e8627eb. Revisjonskommentaren er behandlet, og ingen nye autoriserte innspill eller inline-kommentarer finnes. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
+      "updatedAt": "2026-11-20T08:01:04.221Z",
+      "finishedAt": "2026-11-20T08:01:04.221Z"
     }
   ],
   "current": {
-    "id": "8c4d96dd-8806-449e-b85c-01efde8cc807",
-    "startedAt": "2026-11-20T07:58:30.545Z",
-    "instructionCommit": "e3f2bbf233fca08b9e30f22edad72275f0454e0b",
-    "state": "waiting",
-    "note": "PR #86 venter på menneskelig gjennomgang av head 6e8627eb. Revisjonskommentaren er behandlet, og ingen nye autoriserte innspill eller inline-kommentarer finnes. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
-    "updatedAt": "2026-11-20T08:01:04.221Z",
-    "finishedAt": "2026-11-20T08:01:04.221Z"
+    "id": "43a1a0e3-06a4-4931-981e-622f086fff7b",
+    "startedAt": "2026-11-21T08:01:53.825Z",
+    "instructionCommit": "55cd85ff1b46f4adc933fa8995a578eb62d9b4c4",
+    "state": "researching",
+    "note": "Kontrollerer kø og åpne gjennomganger",
+    "updatedAt": "2026-11-21T08:01:53.825Z"
   }
 }
