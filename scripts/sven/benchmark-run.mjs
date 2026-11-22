@@ -1,54 +1,79 @@
-import { readFile, writeFile, rename } from 'node:fs/promises'
+import { link, readFile, unlink, writeFile } from 'node:fs/promises'
+import { randomUUID } from 'node:crypto'
 import { fileURLToPath } from 'node:url'
-import { resolve } from 'node:path'
-import { claudeTransport } from '../../server/sven/provider.mjs'
 import { researchWithSven, researchVersion } from '../../server/sven/research.mjs'
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
 import { digest } from '../../server/sven/benchmark.mjs'
 import { activeLearningProfile } from '../../server/sven/learning-config.mjs'
-import { usageSummary } from '../../server/sven/workspace.mjs'
-const dataDir=fileURLToPath(new URL('../../web/public/data/',import.meta.url))
-try {
-  const [manifestPath,outputPath]=process.argv.slice(2)
-  if (!manifestPath || !outputPath) throw new Error('Bruk: benchmark-run.mjs <manifest.json> <privat-svarfil.json>')
-  const manifest=JSON.parse(await readFile(manifestPath,'utf8'))
-  const manifestHash=digest(manifest)
-  const profile=await activeLearningProfile()
-  const output=resolve(outputPath)
-  const lock=output+'.lock'
-  claudeTransport()
-  await writeFile(lock,String(process.pid),{flag:'wx',mode:0o600})
-  const {unlink}=await import('node:fs/promises')
-  try {
-    let results=[]
-    try {results=JSON.parse(await readFile(output,'utf8'))} catch(error) {if(error.code!=='ENOENT')throw error}
-    if(!Array.isArray(results)||results.some(r=>r.manifestHash!==manifestHash||r.product!=='Sven'||r.model!==process.env.SVEN_MODEL||r.candidateId!==profile.id||r.productVersion!==researchVersion)||new Set(results.map(r=>r.caseId)).size!==results.length)throw new Error('Svarfilen tilhører en annen kjøring eller har duplikater')
-    for(const task of manifest.cases) {
-      if(results.some(r=>r.caseId===task.id))continue
-      const rows=[],started=Date.now(),runAt=new Date().toISOString()
-      const base={manifestHash,caseId:task.id,product:'Sven',candidateId:profile.id,model:process.env.SVEN_MODEL,productVersion:researchVersion,runAt,tools:['Fellestall snapshots','web search','web fetch','automated review']}
-      // A durable in-flight marker prevents silently repeating a possibly billed
-      // run after a hard process interruption. Resolve manually before resuming.
-      const marker=output+'.in-flight'
-      await writeFile(marker,JSON.stringify({...base,warning:'Kontroller avbrutt kjøring før filen fjernes og kjøringen gjenopptas.'}),{flag:'wx',mode:0o600})
-      let submission
-      try {
-        const result=await researchWithSven({...task,tuning:profile.settings,asOf:manifest.asOf,signal:AbortSignal.timeout(manifest.timeLimitMinutes*60_000),
-          request:claudeTransport({onUsage:async u=>rows.push(u)}),localSources:question=>resolveSvenSources(question,dataDir)})
-        const answer=[result.answer.summary,...result.answer.findings.map(f=>f.text+' ['+f.sourceIds.join(', ')+']'),...result.answer.uncertainties,
-          ...(result.answer.recommendation?[result.answer.recommendation.text+' ['+result.answer.recommendation.sourceIds.join(', ')+']']:[]),
-          'Kilder:',...result.sources.map(s=>`${s.id}: ${s.title} ${s.url||s.snapshotURL||''}`)].join('\n\n')
-        submission={...base,status:result.status==='reviewed'?'completed':'failed',answer,result}
-      } catch(error) {submission={...base,status:error.name==='TimeoutError'?'timeout':'failed',answer:'Kjøringen leverte ikke et godkjent svar: '+error.message}}
-      submission.elapsedSeconds=(Date.now()-started)/1000
-      if(submission.elapsedSeconds>manifest.timeLimitMinutes*60)submission.status='timeout'
-      submission.usage=usageSummary(rows)
-      results.push(submission)
-      await writeFile(output+'.tmp',JSON.stringify(results,null,2)+'\n',{mode:0o600})
-      await rename(output+'.tmp',output)
-      await unlink(marker)
-      console.error(`${task.id}: ${submission.status}`)
+import { runInternalBatch } from './internal-batch.mjs'
+
+const dataDir = fileURLToPath(new URL('../../web/public/data/', import.meta.url))
+
+async function readOutput(path) {
+  try { return JSON.parse(await readFile(path, 'utf8')) }
+  catch (error) { if (error.code !== 'ENOENT') throw error }
+}
+
+export async function batchBenchmark({ manifest, file, model, profile, batch, recoverId, progress, sourceLookup = resolveSvenSources }) {
+  if (manifest.svenExecution !== 'batch') throw new Error('Opprett et nytt batchmanifest med benchmark.mjs prepare')
+  const manifestHash = digest(manifest)
+  const rows = await runInternalBatch({ file, model, batch, recoverId, progress, tasks: manifest.cases,
+    signature: { manifestHash, researchVersion, profile },
+    execute: (task, { request, freeze }) => researchWithSven({
+      ...task, tuning: profile.settings, asOf: manifest.asOf, request,
+      localSources: question => freeze('fellestall', () => sourceLookup(question, dataDir)),
+    }),
+  })
+  return rows.map(row => {
+    const result = row.value
+    const status = result ? result.status === 'reviewed' ? 'completed' : 'failed' : row.status
+    const answer = result ? [result.answer.summary,
+      ...result.answer.findings.map(f => `${f.text} [${f.sourceIds.join(', ')}]`),
+      ...result.answer.uncertainties,
+      ...(result.answer.recommendation ? [`${result.answer.recommendation.text} [${result.answer.recommendation.sourceIds.join(', ')}]`] : []),
+      'Kilder:', ...result.sources.map(s => `${s.id}: ${s.title} ${s.url || s.snapshotUrl || ''}`),
+    ].join('\n\n') : 'Kjøringen leverte ikke et godkjent svar: ' + row.error
+    const end = Math.max(Date.parse(row.startedAt), ...row.phases.map(phase => Date.parse(phase.endedAt)))
+    return {
+      manifestHash, caseId: row.id, product: 'Sven', candidateId: profile.id, model, productVersion: researchVersion,
+      execution: 'batch', runAt: row.startedAt, elapsedSeconds: (end - Date.parse(row.startedAt)) / 1000,
+      tools: ['Fellestall snapshots', 'web search', 'web fetch', 'automated review'],
+      status, answer, ...(result ? { result } : {}), usage: row.phases,
     }
-    console.error(`${results.length} Sven-kjøringer registrert. ChatGPT- og Claude-produktsvar må importeres separat.`)
-  }finally{await unlink(lock)}
-} catch(error) {console.error(error.message);process.exitCode=1}
+  })
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  try {
+    const [manifestPath, output, recover] = process.argv.slice(2)
+    if (!manifestPath || !output || (recover && !recover.startsWith('--batch-id='))) {
+      throw new Error('Bruk: benchmark-run.mjs <manifest.json> <privat-svarfil.json> [--batch-id=<id>]')
+    }
+    const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
+    const model = process.env.SVEN_MODEL
+    const profile = await activeLearningProfile()
+    const manifestHash = digest(manifest)
+    const existing = await readOutput(output)
+    if (existing && (!Array.isArray(existing) || existing.length !== manifest.cases.length ||
+        existing.some(row => row.manifestHash !== manifestHash || row.execution !== 'batch' ||
+          row.model !== model || row.candidateId !== profile.id || row.productVersion !== researchVersion))) {
+      throw new Error('Målfilen inneholder svar fra en annen kjøring')
+    }
+    if (existing) {
+      console.error(`${existing.length} Sven-resultater finnes allerede. Ingen modelltrinn er sendt.`)
+    } else {
+      const rows = await batchBenchmark({
+        manifest, file: output + '.batch.json', model, profile, recoverId: recover?.slice('--batch-id='.length),
+      })
+      const temporary = output + '.' + randomUUID() + '.tmp'
+      await writeFile(temporary, JSON.stringify(rows, null, 2) + '\n', { flag:'wx', mode:0o600 })
+      try { await link(temporary, output) }
+      catch (error) { if (error.code !== 'EEXIST' || digest(await readOutput(output)) !== digest(rows)) throw error }
+      finally { await unlink(temporary) }
+      console.error(`${rows.length} Sven-resultater registrert. Batchtid kan ikke sammenlignes med svartid i chat.`)
+    }
+  } catch (error) {
+    console.error(error.message)
+    process.exitCode = 1
+  }
+}

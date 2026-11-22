@@ -4,7 +4,7 @@ Disse 30 offentlige utviklingssakene tester bredde, ikke et hemmelig holdout-set
 
 ## Lik testprotokoll
 
-Bruk de faktiske ChatGPT- og Claude-produktene med nettsøk, nye samtaler, samme spørsmål, samme datoforutsetning og samme tidsbudsjett. Registrer modellnavnet som produktet faktisk viser, abonnement/versjon, verktøy, dato, tidsbruk og uendret svar med kilder. Produktabonnement og API er forskjellige sammenligninger. Ikke presenter en API-baseline som et ChatGPT-produktresultat.
+Bruk de faktiske ChatGPT- og Claude-produktene med nettsøk, nye samtaler, samme spørsmål, samme datoforutsetning og samme tidsbudsjett for begge chattene. Registrer modellnavnet som produktet faktisk viser, abonnement/versjon, verktøy, dato, tidsbruk og uendret svar med kilder. Produktabonnement og API er forskjellige sammenligninger. Ikke presenter en API-baseline som et ChatGPT-produktresultat. Sven kjøres asynkront med Batch API for faglig sammenligning. Batchtiden inkluderer kø og kan ikke brukes til å sammenligne svartid. Blindpakken markerer dette med `timingComparable: false`.
 
 Feil og tidsavbrudd registreres som resultater; ingen utsiling av vanskelige saker. Hvert produkt skal få de samme eventuelle oppfølgingsopplysningene. Ikke gi bare Sven en korrigering. Ved kildeendring mellom kjøringer må sammenligningen merkes eller gjentas. Gjør minst to uavhengige kjøringer av et reservert sett før en bred kvalitetskonklusjon.
 
@@ -29,7 +29,6 @@ Bruk to fagvurderere uavhengig. Kjør `score` separat for hver vurdering, diskut
 ## Kjøring
 
 ```sh
-node scripts/sven/preflight.mjs --live
 node scripts/sven/benchmark.mjs prepare /privat/sven-test
 node scripts/sven/benchmark-run.mjs /privat/sven-test/manifest.json /privat/sven-test/sven-svar.json
 ```
@@ -43,6 +42,6 @@ node scripts/sven/benchmark.mjs score /privat/sven-test /annen-privat-mappe/blin
 
 Del bare `review.json` og `ratings-template.json` med vurdererne. Produktnavn og modellmetadata fjernes fra strukturen, men selvomtale i svaret kan avsløre identitet; registrer slik avblinding uten å redigere originalsvaret. Blindnøkkel og råsvar skal ikke deles med dem før skårene er låst.
 
-Sven-runneren lagrer etter hver sak og hopper over registrerte resultater ved gjenopptak. En låsefil hindrer parallelle skrivere. En `in-flight`-fil blir liggende ved hardt prosessavbrudd. Undersøk leverandørforbruk og den avbrutte saken før disse filene eventuelt fjernes; en ny forespørsel kan bli fakturert på nytt. Svar og eventuelle private kilder skal ligge utenfor offentlig repo.
+Kjøreren trenger `ANTHROPIC_API_KEY` og `SVEN_MODEL`. Den sender klare modelltrinn samlet og starter neste runde når resultatene er tilgjengelige. Lokal status og batch-ID lagres i `sven-svar.json.batch.json`. Kjør samme kommando igjen for å gjenoppta. Ved ukjent innsending, finn batch-ID i Anthropic Console og legg til `--batch-id=<id>`. Kjøreren kontrollerer at resultat-ID-ene matcher før de tas inn. Etter et hardt prosessavbrudd kan en låsefil bli liggende. Kontroller at prosessen har stoppet før den fjernes. Oppbevar manifest, batchstatus, svar og eventuelle private kilder utenfor offentlig repo. Kunde- og operatørchat gjør direkte modellkall.
 
 Hver poengrad må inneholde `reviewHash`, SHA-256 over den eksakte vurderingspakken. Malgeneratoren setter dette automatisk. Poeng fra en annen anonymiseringsrekkefølge avvises selv om saks-ID og etikettene A/B/C er like.

@@ -3,14 +3,16 @@ export const dimensions = ['factualAccuracy','sourceSupport','temporalStatus','r
 const nonempty = x => typeof x === 'string' && x.trim().length > 0
 export const digest = x => createHash('sha256').update(JSON.stringify(x)).digest('hex')
 
-export function prepareBenchmark(cases, { asOf, timeLimitMinutes = 15 } = {}) {
+export function prepareBenchmark(cases, { asOf, timeLimitMinutes = 15, svenExecution } = {}) {
   if (!Array.isArray(cases) || !cases.length || new Set(cases.map(c => c.id)).size !== cases.length ||
     cases.some(c => !nonempty(c.id) || !nonempty(c.domain) || !nonempty(c.question))) throw new Error('Ugyldig testsett')
   if (!/^\d{4}-\d{2}-\d{2}$/.test(asOf) || !Number.isFinite(timeLimitMinutes) || timeLimitMinutes <= 0) throw new Error('Ugyldig testprotokoll')
   return { id: randomUUID(), asOf, timeLimitMinutes, createdAt: new Date().toISOString(),
+    ...(svenExecution === 'batch' ? { svenExecution } : {}),
     cases: cases.map(c => ({ ...c, surface: c.surface || 'chat', recommendationRequested: c.recommendationRequested === true })),
     products: ['Sven','ChatGPT','Claude'], protocol: 'products-with-search-v1',
-    instructions: 'Bruk samme spørsmål og dato i nye samtaler. Aktiver tilgjengelig nettsøk. Registrer faktisk modell, abonnement, verktøy, tid og originaltranskripsjon. Ingen manuell forbedring av svar. API-baseline er en separat test, ikke en erstatning for produktet.' }
+    instructions: 'Bruk samme spørsmål og dato i nye samtaler. Aktiver tilgjengelig nettsøk. Registrer faktisk modell, abonnement, verktøy, tid og originaltranskripsjon. Ingen manuell forbedring av svar. API-baseline er en separat test, ikke en erstatning for produktet.' +
+      (svenExecution === 'batch' ? ' Sven kjøres asynkront for faglig vurdering. Batchtid kan ikke sammenlignes med chattenes svartid.' : '') }
 }
 
 export function validateSubmission(manifest, submission) {
@@ -19,7 +21,9 @@ export function validateSubmission(manifest, submission) {
     !nonempty(submission.runAt) || !Number.isFinite(Date.parse(submission.runAt)) || !Array.isArray(submission.tools) ||
     !submission.tools.every(nonempty) || !Number.isFinite(submission.elapsedSeconds) || submission.elapsedSeconds < 0 ||
     !['completed','failed','timeout'].includes(submission.status)) throw new Error('Svar eller obligatoriske kjøredata mangler')
-  if (submission.status === 'completed' && submission.elapsedSeconds > manifest.timeLimitMinutes * 60) throw new Error('Tidsbudsjettet er overskredet; merk som timeout')
+  const batchSubmission = submission.product === 'Sven' && manifest.svenExecution === 'batch'
+  if (batchSubmission !== (submission.execution === 'batch')) throw new Error('Batchsvaret tilhører en annen kjøremåte')
+  if (!batchSubmission && submission.status === 'completed' && submission.elapsedSeconds > manifest.timeLimitMinutes * 60) throw new Error('Tidsbudsjettet er overskredet; merk som timeout')
   if (submission.manifestHash !== digest(manifest)) throw new Error('Svaret tilhører en annen testprotokoll')
   return submission
 }
@@ -44,7 +48,7 @@ export function blindBenchmark(manifest, submissions, random = randomInt) {
     })
     cases.push({id:task.id,domain:task.domain,question:task.question,surface:task.surface,recommendationRequested:task.recommendationRequested,answers})
   }
-  return { review: {manifestHash:digest(manifest),dimensions,cases}, key }
+  return { review: {manifestHash:digest(manifest),...(manifest.svenExecution === 'batch' ? { timingComparable: false } : {}),dimensions,cases}, key }
 }
 
 export function scoreBenchmark(review, key, ratings) {
@@ -75,6 +79,6 @@ export function scoreBenchmark(review, key, ratings) {
     })
     return {against:product,wins:values.filter(v=>v>0).length,ties:values.filter(v=>v===0).length,losses:values.filter(v=>v<0).length}
   })
-  return {manifestHash:review.manifestHash,summaries,paired,rows,
+  return {manifestHash:review.manifestHash,...(review.timingComparable === false ? { timingComparable: false } : {}),summaries,paired,rows,
     conclusion:'Deskriptiv test. Små utvalg og ett vurderingspanel dokumenterer ikke generell overlegenhet. Kjør et separat, reservert testsett og uavhengige vurderere før kvalitetskrav eller automatisk utrulling.'}
 }

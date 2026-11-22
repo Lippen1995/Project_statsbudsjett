@@ -1,7 +1,8 @@
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { analyzeWithSven } from '../../server/sven/analysis.mjs'
-import { anthropicSven } from '../../server/sven/anthropic.mjs'
+import { parseModelJSON } from '../../server/sven/provider.mjs'
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
+import { runInternalBatch } from './internal-batch.mjs'
 
 const dataDir = fileURLToPath(new URL('../../web/public/data/', import.meta.url))
 
@@ -21,27 +22,49 @@ const cases = [
   },
 ]
 
+async function evaluateCase({ id, surface, question, expectations }, generate, sources) {
+  const answer = await analyzeWithSven({ question, sources, surface }, generate)
+  const passed = expectations.every(expected => answer.findings.some(finding =>
+    expected.value.test(finding.text) &&
+    (!expected.word || expected.word.test(finding.text)) &&
+    (!expected.sourceId || finding.sourceIds.includes(expected.sourceId))))
+  return { id, passed, ...(passed ? {} : { reason: 'Forventet tall, budsjettfase eller kilde mangler i den kildebelagte delen av svaret.' }) }
+}
+
 export async function evaluateSven(generate) {
   const rows = []
-  for (const { id, surface, question, expectations } of cases) {
+  for (const task of cases) {
     try {
-      const sources = await resolveSvenSources(question, dataDir)
-      const answer = await analyzeWithSven({ question, sources, surface }, generate)
-      const verified = expectations.every(expected => answer.findings.some(finding =>
-        expected.value.test(finding.text) &&
-        (!expected.word || expected.word.test(finding.text)) &&
-        (!expected.sourceId || finding.sourceIds.includes(expected.sourceId))))
-      rows.push({ id, passed: verified, ...(verified ? {} : { reason: 'Forventet tall, budsjettfase eller kilde mangler i den kildebelagte delen av svaret.' }) })
+      rows.push(await evaluateCase(task, generate, await resolveSvenSources(task.question, dataDir)))
     } catch {
-      rows.push({ id, passed: false, reason: 'Kildeoppslag eller gyldig modellsvar mangler.' })
+      rows.push({ id: task.id, passed: false, reason: 'Kildeoppslag eller gyldig modellsvar mangler.' })
     }
   }
   return rows
 }
 
+export async function batchEvaluateSven({ file, model, batch, recoverId, progress }) {
+  const rows = await runInternalBatch({
+    file, model, batch, recoverId, progress, tasks: cases,
+    signature: cases.map(({ expectations }) =>
+      expectations.map(({ value, word, sourceId }) => ({ value: String(value), word: String(word), sourceId }))),
+    execute: async (task, { request, freeze }) => evaluateCase(task,
+      async input => parseModelJSON(await request(input)),
+      await freeze('fellestall', () => resolveSvenSources(task.question, dataDir))),
+  })
+  return rows.map(row => ({
+    ...(row.value ?? { id: row.id, passed: false, reason: row.error }),
+    execution: 'batch', usage: row.phases,
+  }))
+}
+
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   try {
-    const rows = await evaluateSven(anthropicSven())
+    const [file, recover] = process.argv.slice(2)
+    if (!file || (recover && !recover.startsWith('--batch-id='))) {
+      throw new Error('Bruk: evaluate.mjs <privat-batchfil.json> [--batch-id=<id>]')
+    }
+    const rows = await batchEvaluateSven({ file, model: process.env.SVEN_MODEL, recoverId: recover?.slice('--batch-id='.length) })
     console.log(JSON.stringify(rows, null, 2))
     if (rows.some(row => !row.passed)) process.exitCode = 1
   } catch (error) {

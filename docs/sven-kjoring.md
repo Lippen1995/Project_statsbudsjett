@@ -62,7 +62,7 @@ node scripts/sven/analyse.mjs sources 'Netto lånegjeld og investeringsutgifter 
 | Evaluering og læring | Integrasjonstester for kildeoppslag og redaksjonell regel. Sett opp et adskilt evalueringssett før kandidatkjøring, automatisk avgrenset utrulling og tilbakeføring. |
 | Abonnement | Koble faktisk modellforbruk til kvote og betaling etter at kunde- og forbrukslaget er verifisert. |
 
-Første modellregresjon kjøres med `node scripts/sven/evaluate.mjs` når Claude er konfigurert. Den bruker reelle Fellestall-uttrekk og kontrollerer at forventet tall, kilde og relevant budsjettfase finnes i de kildebelagte funnene. Dette er faste regresjonssaker. Faglig vurdering og et separat blindsett trengs før målingen kan brukes i en automatisk læringssløyfe.
+Første modellregresjon kjøres med `node scripts/sven/evaluate.mjs /privat/sven-regresjon.batch.json` når Claude er konfigurert. Den bruker Anthropics Batch API, reelle Fellestall-uttrekk og kontrollerer at forventet tall, kilde og relevant budsjettfase finnes i de kildebelagte funnene. Kjør samme kommando for å gjenoppta. Dette er faste regresjonssaker. Faglig vurdering og et separat blindsett trengs før målingen kan brukes i en automatisk læringssløyfe.
 
 ## Undersøkelsesløp og test mot produktene (17. november 2026)
 

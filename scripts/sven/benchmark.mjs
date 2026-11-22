@@ -9,7 +9,7 @@ try {
   const root=resolve(dir)
   if (command==='prepare') {
     const cases=await read(input || new URL('../../evaluation/sven/cases.json',import.meta.url))
-    const manifest=prepareBenchmark(cases,{asOf:new Date().toISOString().slice(0,10)})
+    const manifest=prepareBenchmark(cases,{asOf:new Date().toISOString().slice(0,10),svenExecution:'batch'})
     await mkdir(root,{recursive:true,mode:0o700})
     await write(join(root,'manifest.json'),manifest)
     await write(join(root,'submission-template.json'),{manifestHash:digest(manifest),caseId:cases[0].id,product:'ChatGPT',model:'',productVersion:'',runAt:'',tools:[],elapsedSeconds:0,status:'completed',answer:''})
