@@ -11,6 +11,15 @@ import { resolveSvenSources } from '../../server/sven/sources.mjs'
 const model = 'claude-sonnet-5-5'
 const snapshot = 'https://fellestall.no/data/'
 
+function openingReply(question) {
+  const words = question.toLocaleLowerCase('nb-NO').replace(/[^\p{L}\p{N}]+/gu, ' ').trim()
+  if (/^(hei(?: hei| sven)?|heisann|hallo(?: sven)?|god (?:morgen|dag|kveld)|hello|hi|hey)$/.test(words)) {
+    return /^(hello|hi|hey)$/.test(words)
+      ? 'Hi! What would you like to explore?'
+      : 'Hei! Hva vil du undersøke eller snakke om i dag?'
+  }
+}
+
 async function loadSnapshot(file, signal) {
   const response = await fetch(snapshot + file, { signal: AbortSignal.any([signal, AbortSignal.timeout(8000)]) })
   if (!response.ok) throw new Error('Fellestalls datagrunnlag er utilgjengelig')
@@ -60,18 +69,29 @@ export function hostedPreview({
           typeof turn.content !== 'string' || !turn.content.trim() || turn.content.length > 1200)) {
       return send(400, { error: 'Skriv et spørsmål på opptil 2000 tegn.' })
     }
+    const reply = openingReply(question)
+    const sendReply = summary => send(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
+    if (reply) return sendReply(reply)
     if (!apiKey) return send(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
     if (busy) return send(429, { error: 'Sven undersøker et annet spørsmål. Prøv igjen snart.' })
     busy = true
     const signal = AbortSignal.timeout(150_000)
+    let phase = 'plan'
     try {
       const request = createRequest({ apiKey, model, timeoutMs: 55_000 })
       const result = await researchWithSven({
-        question, history, signal, maxSearches: 3,
+        question, history, signal, maxSearches: 3, conversational: true,
         editorialExamples: selectEditorialExamples({ question }, [example]),
         localSources: query => sources(query, signal),
-        request: input => request({ ...input, maxTokens: Math.min(input.maxTokens ?? 2400, 3600) }),
+        request: input => {
+          phase = input.phase
+          return request({ ...input, maxTokens: Math.min(input.maxTokens ?? 2400, 3600) })
+        },
       })
+      if (result.status === 'conversation') return sendReply(result.reply)
+      if (result.status === 'no-evidence') {
+        return send(422, { error: 'Jeg fant ikke kilder som kunne underbygge et svar på dette. Hvis du har en kilde, kan du gjerne dele den.' })
+      }
       if (result.status !== 'reviewed') {
         return send(422, { error: 'Sven fant mangler i svaret. Prøv et mer avgrenset spørsmål.' })
       }
@@ -81,11 +101,11 @@ export function hostedPreview({
         .map(({ title, url }) => ({ title, url }))
       return send(200, { ...result.answer, sources: links })
     } catch (error) {
-      console.warn('[Sven preview]', String(error?.message).match(/^Claude API svarte HTTP \d{3}$/)?.[0] ?? error?.name)
+      console.warn('[Sven preview]', phase, String(error?.message).match(/^Claude API svarte HTTP \d{3}$/)?.[0] ?? error?.name)
       const limited = /HTTP (402|429)$/.test(error?.message)
       return send(limited ? 429 : 502, { error: limited
         ? 'Claude har nådd en bruksgrense. Vent litt eller sjekk Sven-budsjettet.'
-        : 'Sven kunne ikke fullføre undersøkelsen. Prøv et mer avgrenset spørsmål.' })
+        : 'Sven kunne ikke svare akkurat nå. Prøv igjen.' })
     } finally {
       busy = false
     }
