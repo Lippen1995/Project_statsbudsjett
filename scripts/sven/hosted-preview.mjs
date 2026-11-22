@@ -46,7 +46,7 @@ export function hostedPreview({
   const reply = (status, body) => ({ status, body })
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
   let busy = false
-  async function answerQuestion(question, history) {
+  async function answerQuestion({ question, history, asOf }, memo) {
     const greeting = interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
@@ -57,12 +57,21 @@ export function hostedPreview({
     try {
       const request = createRequest({ apiKey, model, timeoutMs: 55_000, cacheInstructions: true, onUsage })
       const result = await researchWithSven({
-        question, history, signal, maxSearches: 3, conversational: true,
+        question, history, asOf, signal, maxSearches: 3, conversational: true,
         editorialExamples: selectEditorialExamples({ question }, [example]),
-        localSources: query => sources(query, signal, loadSnapshot),
-        request: input => {
+        localSources: async query => {
+          const entry = await memo('local-sources', { query, asOf }, async () => {
+            try { return { sources: await sources(query, signal, loadSnapshot) } }
+            catch { return { missing: true } }
+          })
+          if (entry.missing) throw new Error('Kildeoppslaget mangler grunnlag')
+          return entry.sources
+        },
+        request: ({ signal: requestSignal, ...input }) => {
           phase = input.phase
-          return request({ ...input, maxTokens: Math.min(input.maxTokens ?? 2400, 3600) })
+          const params = { ...input, maxTokens: Math.min(input.maxTokens ?? 2400, 3600) }
+          requestSignal?.throwIfAborted()
+          return memo(phase, params, () => request({ ...params, signal: requestSignal }), { billable: true })
         },
       })
       if (result.status === 'conversation') return directReply(result.reply)
@@ -79,6 +88,7 @@ export function hostedPreview({
       return reply(200, { ...result.answer, sources: links })
     } catch (error) {
       console.warn('[Sven preview]', phase, String(error?.message).match(/^Claude API svarte HTTP \d{3}$/)?.[0] ?? error?.name)
+      if (signal.aborted) return reply(202, { pending: true })
       const limited = /HTTP (402|429)$/.test(error?.message)
       return reply(limited ? 429 : 502, { error: limited
         ? 'Claude har nådd en bruksgrense. Vent litt eller sjekk Sven-budsjettet.'
@@ -101,7 +111,7 @@ export function hostedPreview({
     const { requestId, resume, question: rawQuestion, history = [] } = req.body ?? {}
     if (!validRequestId(requestId)) return send(400, { error: 'Innsendingen mangler en gyldig ID. Last siden på nytt.' })
     if (resume === true) {
-      const { status, body } = await requests.resume(requestId)
+      const { status, body } = await requests.resume(requestId, answerQuestion)
       return send(status, body)
     }
     const question = typeof rawQuestion === 'string' ? rawQuestion.trim() : ''
@@ -110,7 +120,8 @@ export function hostedPreview({
           typeof turn.content !== 'string' || !turn.content.trim() || turn.content.length > 1200)) {
       return send(400, { error: 'Skriv et spørsmål på opptil 2000 tegn.' })
     }
-    const { status, body } = await requests.run(requestId, () => answerQuestion(question, history))
+    const asOf = new Date().toISOString().slice(0, 10)
+    const { status, body } = await requests.run(requestId, { question, history, asOf }, answerQuestion)
     return send(status, body)
   }
 }

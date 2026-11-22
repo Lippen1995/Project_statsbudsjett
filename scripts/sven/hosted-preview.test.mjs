@@ -224,3 +224,43 @@ test('nettsøk brukes som reserve når et valgt Fellestall-oppslag mangler grunn
   assert.equal((await call(preview, 'POST', { question: 'Hva skjedde med barnetrygden?' })).status, 422)
   assert.deepEqual(phases, ['interpret', 'research'])
 })
+
+test('kjent SSB-tabell hentes med web_fetch alene og går videre til faktakontroll', async () => {
+  const url = 'https://www.ssb.no/statbank/table/12137/'
+  const phases = []
+  const preview = hostedPreview({
+    environment: 'preview',
+    apiKey: 'test',
+    createRequest: () => async ({ phase, input, tools }) => {
+      phases.push(phase)
+      const data = JSON.parse(input)
+      if (phase === 'interpret') {
+        assert.deepEqual(data.knownUrls, [url])
+        return response({
+          intent, action: 'research', tools: ['direct'], urls: [url, 'https://evil.test/'],
+          plan: { ...searchPlan, searches: [], counterSearch: '' },
+        })
+      }
+      if (phase === 'direct-fetch') {
+        assert.deepEqual(data.urls, [url])
+        assert.deepEqual(tools.map(tool => tool.name), ['web_fetch'])
+        assert.deepEqual(tools[0].allowed_domains, ['www.ssb.no'])
+        return { content: [...response({ covers: true }).content, {
+          type: 'web_fetch_tool_result', content: { type: 'web_fetch_result', url,
+            content: { title: 'SSB 12137', source: { type: 'text', data: 'Kontrollert tabelltekst' } },
+          },
+        }] }
+      }
+      if (phase === 'answer-0') return response({
+        summary: 'Oppsummert', findings: [{ text: 'Funn', sourceIds: [data.sources[0].id] }],
+        uncertainties: [], recommendation: null,
+      })
+      assert.equal(phase, 'review-0')
+      return response({ passed: true, issues: [] })
+    },
+  })
+  const result = await call(preview, 'POST', { question: 'Hva viser SSB tabell 12137?' })
+  assert.equal(result.status, 200)
+  assert.deepEqual(result.payload.sources, [{ title: 'SSB 12137', url }])
+  assert.deepEqual(phases, ['interpret', 'direct-fetch', 'answer-0', 'review-0'])
+})
