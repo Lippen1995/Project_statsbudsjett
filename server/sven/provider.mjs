@@ -2,13 +2,15 @@
 // request implicitly: an interrupted response can still have incurred usage.
 export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
   model = process.env.SVEN_MODEL, fetchImpl = globalThis.fetch, onUsage = async () => {},
-  timeoutMs = 120_000 } = {}) {
+  timeoutMs = 120_000, cacheInstructions = false } = {}) {
   if (!apiKey || !model) throw new Error('Sett ANTHROPIC_API_KEY og SVEN_MODEL for å kjøre Sven')
   return async ({ instructions, input, tools, maxTokens = 4096, signal, phase = 'answer' }) => {
     const started = Date.now()
     const response = await fetchImpl('https://api.anthropic.com/v1/messages', {
       method: 'POST', headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model, system: instructions, messages: [{ role: 'user', content: input }],
+      body: JSON.stringify({ model, system: cacheInstructions
+        ? [{ type: 'text', text: instructions, cache_control: { type: 'ephemeral' } }]
+        : instructions, messages: [{ role: 'user', content: input }],
         max_tokens: maxTokens, ...(tools ? { tools } : {}) }),
       signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]) : AbortSignal.timeout(timeoutMs),
     })

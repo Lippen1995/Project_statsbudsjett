@@ -105,6 +105,10 @@ node scripts/sven/mobile-preview.mjs /sti/til/prototype/dist --research
 
 Den innloggingsbeskyttede Vercel-previewen bruker `scripts/sven/hosted-preview.mjs` som `/api/sven/chat`. Funksjonen bruker `SVEN_ANTHROPIC_API_KEY` fra Vercels Preview-miljø og Claude Sonnet 5.5. GET viser om nøkkelen er konfigurert uten å kalle modellen. Ved POST fra samme origin tolker Sven først hva brukeren ber om, formålet og betydningen i samtalen. Enkle hilsener besvares direkte. For andre meldinger leverer det første modellkallet både tolkning og valg av fremgangsmåte. Sven kan svare, be om en avklaring eller undersøke saken med Fellestalls data, nettsøk eller begge. Mobilhistorikken kan følge med som oppfølgingskontekst og lagres lokalt i nettleseren.
 
+Mobilen gir hver innsending en tilfeldig forespørsels-ID. Etter et nettbrudd henter «Hent svar» samme innsending med et statusoppslag som aldri starter Claude. Fullførte svar ligger kryptert i den regionale cachen i opptil 15 minutter. Runtime Cache er midlertidig og har ingen atomisk lås på tvers av instanser. Samtidige duplikater i samme instans samles, og en annen instans kan gjenbruke en registrert innsending. Hvis cacheoppføringen mangler, gir statusoppslaget beskjed.
+
+Previewen ber Claude cache de stabile systeminstruksjonene med fem minutters levetid. Spørsmål og historikk ligger etter cachegrensen. `[Sven usage]` registrerer modellforbruk per trinn, inkludert cachelesing, cacheskriving og søk. Offentlige Fellestall-uttrekk gjenvalideres med ETag etter to minutter. KOSTRA-indeksen og kommunefilene mellomlagres med feltene Sven faktisk trenger. Når Fellestalls data dekker spørsmålet, kan Sven hoppe over nettsøk. Et oppslag uten grunnlag kan gå videre til nettsøk.
+
 ### Konkurransetesten
 
 Se [evalueringsprotokollen](../evaluation/sven/README.md). Det følger 30 utviklingssaker, en kjører for Sven, importformat for ekte ChatGPT-/Claude-produktsvar, anonymisert vurderingspakke, separate blindnøkler og poeng per fag. Feil og tidsavbrudd må registreres. Ingen resultater fra levende modeller er dokumentert per 17. november 2026.

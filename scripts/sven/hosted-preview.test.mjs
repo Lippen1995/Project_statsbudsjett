@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { randomBytes } from 'node:crypto'
 import test from 'node:test'
 import { hostedPreview } from './hosted-preview.mjs'
 
@@ -19,7 +20,9 @@ function call(handler, method, body, requestHeaders = headers) {
     status(code) { status = code; return res },
     json(payload) { return { status, payload } },
   }
-  return handler({ method, headers: requestHeaders, body }, res)
+  return handler({ method, headers: requestHeaders,
+    body: method === 'POST' ? { requestId: randomBytes(32).toString('hex'), ...body } : body,
+  }, res)
 }
 
 test('preview-status og avviste forespørsler bruker ingen modellkall', async () => {
@@ -47,8 +50,9 @@ test('preview kjører Sven med Sonnet 5.5 og returnerer brukte kilder', async ()
       assert.equal(question, intent.meaning)
       return [{ id: 'nav', title: 'NAV', url: 'https://www.nav.no/', text: 'Testgrunnlag' }]
     },
-    createRequest: ({ model }) => async input => {
+    createRequest: ({ model, cacheInstructions }) => async input => {
       assert.equal(model, 'claude-sonnet-5-5')
+      assert.equal(cacheInstructions, true)
       calls.push(input.phase)
       if (input.phase === 'interpret') {
         assert.match(input.input, /review-5664781959/)
@@ -66,6 +70,36 @@ test('preview kjører Sven med Sonnet 5.5 og returnerer brukte kilder', async ()
   assert.equal(result.status, 200)
   assert.deepEqual(result.payload.sources, [{ title: 'NAV', url: 'https://www.nav.no/' }])
   assert.deepEqual(calls, ['interpret', 'research', 'answer-0', 'review-0'])
+})
+
+test('gjentatt innsending og gjenopptak gjenbruker resultatet på tvers av instanser', async () => {
+  const storage = new Map()
+  const cache = { get: async key => storage.get(key), set: async (key, value) => storage.set(key, value) }
+  let calls = 0
+  const started = Promise.withResolvers()
+  const finish = Promise.withResolvers()
+  const options = { environment: 'preview', apiKey: 'test', cache, createRequest: () => async () => {
+    calls++
+    started.resolve()
+    await finish.promise
+    return response({ intent, action: 'reply', reply: 'Privat svar' })
+  } }
+  const a = hostedPreview(options)
+  const b = hostedPreview(options)
+  const requestId = randomBytes(32).toString('hex')
+  const input = { requestId, question: 'Hva kan du hjelpe med?' }
+  const original = call(a, 'POST', input)
+  await started.promise
+  assert.equal((await call(a, 'POST', input)).status, 202)
+  assert.equal((await call(b, 'POST', { requestId, resume: true })).status, 202)
+  finish.resolve()
+  const result = await original
+  assert.equal(result.payload.summary, 'Privat svar')
+  assert.deepEqual(await call(b, 'POST', { requestId, resume: true }), result)
+  assert.deepEqual(await call(b, 'POST', input), result)
+  assert.equal((await call(b, 'POST', { resume: true })).status, 410)
+  assert.equal(calls, 1)
+  assert.doesNotMatch(JSON.stringify([...storage]), /Privat svar|Hva kan du hjelpe|\brequestId\b/)
 })
 
 test('en kort hilsen får svar uten leverandør, søk eller datagrunnlag', async () => {
@@ -169,4 +203,24 @@ test('en oppfølging får riktig kontekst og kan bruke bare Fellestall', async (
   })
   assert.equal(result.status, 200)
   assert.deepEqual(phases, ['interpret', 'answer-0', 'review-0'])
+})
+
+test('nettsøk brukes som reserve når et valgt Fellestall-oppslag mangler grunnlag', async () => {
+  const phases = []
+  const preview = hostedPreview({
+    environment: 'preview',
+    apiKey: 'test',
+    sources: async () => [],
+    createRequest: () => async ({ phase, tools, instructions }) => {
+      phases.push(phase)
+      if (phase === 'interpret') return response({
+        intent, action: 'research', tools: ['fellestall'], plan: { ...searchPlan, searches: [], counterSearch: '' },
+      })
+      assert.ok(tools.some(tool => tool.name === 'web_search'))
+      assert.match(instructions, /Fellestalls data ga ikke grunnlag/)
+      return { content: [] }
+    },
+  })
+  assert.equal((await call(preview, 'POST', { question: 'Hva skjedde med barnetrygden?' })).status, 422)
+  assert.deepEqual(phases, ['interpret', 'research'])
 })
