@@ -12,8 +12,8 @@ function mentionsTerm(question, name) {
   return new RegExp(`(?:^|[^\\p{L}\\p{N}])${escaped}(?=$|[^\\p{L}\\p{N}])`, 'u').test(question)
 }
 
-async function municipalSources(dataDir, question, years, metrics) {
-  const index = await readJson(dataDir, 'kostra/index.json')
+async function municipalSources(read, question, years, metrics) {
+  const index = await read('kostra/index.json')
   const selectedYears = years.length ? years : [index.latestYear]
   const entities = index.entities.filter(entity =>
     entity.kind === 'municipality' && entity.name.length > 2 && mentionsTerm(question, entity.name))
@@ -21,7 +21,7 @@ async function municipalSources(dataDir, question, years, metrics) {
   if (entities.length > 12) throw new Error('Oppgi høyst tolv kommuner per oppslag')
   const source = index.sources.find(item => item.source_table === '12137')
   return (await Promise.all(entities.map(async entity => {
-    const detail = await readJson(dataDir, `kostra/entities/municipality-${entity.code}.json`)
+    const detail = await read(`kostra/entities/municipality-${entity.code}.json`)
     return metrics.map(([metric, label]) => ({
       id: `kostra-${metric.replaceAll('_', '-')}-${entity.code}`,
       title: `${label[0].toUpperCase() + label.slice(1)}, ${entity.name} kommunekonsern`,
@@ -44,8 +44,8 @@ async function municipalSources(dataDir, question, years, metrics) {
   }))).flat()
 }
 
-async function stateSources(dataDir, years) {
-  const meta = await readJson(dataDir, 'meta.json')
+async function stateSources(read, stateReport, years) {
+  const meta = await read('meta.json')
   const available = meta.regnskap_aar
   const selected = years.length ? years : available.slice(-2)
   if (!selected.every(year => available.includes(year))) {
@@ -53,7 +53,7 @@ async function stateSources(dataDir, years) {
   }
   const end = Math.max(...selected)
   const start = selected.length > 1 ? Math.min(...selected) : available.findLast(year => year < end) ?? end
-  const report = buildReport(dataDir, { start, end: start === end ? available[1] : end })
+  const report = await stateReport({ start, end: start === end ? available[1] : end })
   return [{
     id: 'dfø-statsregnskap-utgifter',
     title: 'Statsregnskapets utgifter, Fellestalls standardavgrensning',
@@ -71,8 +71,8 @@ async function stateSources(dataDir, years) {
   }]
 }
 
-async function oilSources(dataDir, years) {
-  const snapshot = await readJson(dataDir, 'oljepengebruk.json')
+async function oilSources(read, years) {
+  const snapshot = await read('oljepengebruk.json')
   const available = Object.keys(snapshot.serier).map(Number).sort((a, b) => a - b)
   const selected = years.length ? years : available.slice(-2)
   if (!selected.every(year => available.includes(year))) {
@@ -101,16 +101,19 @@ async function oilSources(dataDir, years) {
   }))
 }
 
-export async function resolveSvenSources(question, dataDir) {
+export async function resolveSvenSources(question, dataDir, {
+  read = file => readJson(dataDir, file),
+  stateReport = options => buildReport(dataDir, options),
+} = {}) {
   if (typeof question !== 'string' || !question.trim()) throw new TypeError('Spørsmålet mangler')
   const normalized = normalize(question)
   const years = [...new Set(Array.from(normalized.matchAll(supportedPeriod), ([year]) => Number(year)))].sort()
-  if (/oljepengebruk|oljepenger|strukturelt oljekorrigert/.test(normalized)) return oilSources(dataDir, years)
+  if (/oljepengebruk|oljepenger|strukturelt oljekorrigert/.test(normalized)) return oilSources(read, years)
   const metrics = Object.entries(municipalMetrics).filter(([, label]) => mentionsTerm(normalized, label))
-  if (metrics.length) return municipalSources(dataDir, normalized, years, metrics)
+  if (metrics.length) return municipalSources(read, normalized, years, metrics)
   if (/statsregnskap|statens\s+utgifter|(?:brukte|bruker)\s+staten/.test(normalized) &&
       !/departement|forsvar|helse|samferdsel|utdanning|trygd|budsjettforslag/.test(normalized)) {
-    return stateSources(dataDir, years)
+    return stateSources(read, stateReport, years)
   }
   throw new Error('Automatisk oppslag dekker statsregnskapets samlede utgifter, oljepengebruk og utvalgte nøkkeltall for kommunekonsern. Legg ved kilder for andre spørsmål.')
 }

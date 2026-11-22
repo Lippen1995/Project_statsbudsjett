@@ -103,6 +103,8 @@ node scripts/sven/mobile-preview.mjs /sti/til/prototype/dist --research
 
 Åpne `http://127.0.0.1:4176/?sven=local#sven`. Dette bruker prototypens lokale testkonto og kjører ekte modellforespørsler når miljøet er konfigurert. De tre siste spørsmålene og svarene, avkortet i klienten, kan følge samtalen. Kilder er klikkbare. Den lokale chatten viser ikke en oppdiktet abonnementsprosent; månedskvote er ikke konfigurert i testmiljøet. Den separate designprototypen beholder sin merkede demonstrasjon av prosentvis kapasitet.
 
+Den innloggingsbeskyttede Vercel-previewen bruker `scripts/sven/hosted-preview.mjs` som `/api/sven/chat`. Funksjonen bruker `SVEN_ANTHROPIC_API_KEY` fra Vercels Preview-miljø og Claude Sonnet 5.5. GET viser om nøkkelen er konfigurert uten å kalle modellen. POST fra samme origin starter research. Mobilhistorikken kan følge med som oppfølgingskontekst og lagres lokalt i nettleseren.
+
 ### Konkurransetesten
 
 Se [evalueringsprotokollen](../evaluation/sven/README.md). Det følger 30 utviklingssaker, en kjører for Sven, importformat for ekte ChatGPT-/Claude-produktsvar, anonymisert vurderingspakke, separate blindnøkler og poeng per fag. Feil og tidsavbrudd må registreres. Ingen resultater fra levende modeller er dokumentert per 17. november 2026.

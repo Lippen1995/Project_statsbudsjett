@@ -1,6 +1,5 @@
 import { readdirSync, readFileSync } from 'node:fs'
 
-const feedbackDirectory = new URL('../../editorial/learning/feedback/', import.meta.url)
 const normalize = (text) =>
   typeof text === 'string' ? (text.toLowerCase().normalize('NFC').match(/\p{L}+/gu) ?? []).join(' ') : ''
 
@@ -37,6 +36,7 @@ export function selectEditorialExamples(packet, notes) {
 
 export function withEditorialExamples(packet) {
   if (!packet.question && !packet.article && packet.pipelineState !== 'research-required') return packet
+  const feedbackDirectory = new URL('../../editorial/learning/feedback/', import.meta.url)
   const notes = readdirSync(feedbackDirectory)
     .filter((name) => name.endsWith('.json'))
     .flatMap((name) => {
