@@ -83,7 +83,7 @@ export function validateAudit(audit) {
 // Each checkpoint must finish before the next billed step. A caller can persist
 // these privately. No customer text is written to repository or telemetry.
 export async function researchWithSven({ question, surface = 'chat', recommendationRequested = false,
-  sources: supplied = [], history = [], plan: suppliedPlan, asOf = new Date().toISOString().slice(0,10),
+  sources: supplied = [], history = [], editorialExamples = [], plan: suppliedPlan, asOf = new Date().toISOString().slice(0,10),
   tuning = builtinSettings, maxSearches = tuning.maxSearches, maxSourceChars = 100000, signal, checkpoint = async () => {},
   request, localSources = async () => [] }) {
   if (!text(question) || question.length > 12000 || !/^\d{4}-\d{2}-\d{2}$/.test(asOf)) throw new Error('Ugyldig spørsmål eller dato')
@@ -99,7 +99,11 @@ export async function researchWithSven({ question, surface = 'chat', recommendat
     return message
   }
   const brief = { question, history, asOf, policy, responseDensity:settings.responseDensity }
-  const plan = suppliedPlan ? validatePlan(suppliedPlan) : validatePlan(parseModelJSON(await run('plan', planInstructions, brief)))
+  const planningInput = editorialExamples.length ? { ...brief, editorialExamples } : brief
+  const planningInstructions = editorialExamples.length
+    ? planInstructions + '\nTidligere saker kan gi ideer til hva som er verdt å undersøke. Underbygg denne saken med egne kilder.'
+    : planInstructions
+  const plan = suppliedPlan ? validatePlan(suppliedPlan) : validatePlan(parseModelJSON(await run('plan', planningInstructions, planningInput)))
   const gaps = [...plan.missing]
   let local = []
   try { local = await localSources(question) } catch { gaps.push('Fellestalls lokale dataoppslag fant ikke et passende grunnlag.') }

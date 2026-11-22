@@ -49,6 +49,11 @@ Bruk denne formen for nye læringsnotater; opprett reelle poster først når inn
 Læringsnotater med personopplysninger eller upublisert materiale skal ikke legges i et offentlig repo uten særskilt grunnlag. Det eksisterende preferanseregisteret inneholder bare generaliserte redaksjonelle føringer som allerede står i prosjektets offentlige dokumentasjon.
 
 ## Hva som faktisk er automatisk
+
+`prepare.mjs` legger ved inntil to relevante `editorialExamples` for skrive- eller researchoppgaven. Et ferdig behandlet læringsnotat kan ha et valgfritt `example` med `topics` (temaord eller korte uttrykk) og `description` (en kort, delbar beskrivelse av hva som fungerte i den konkrete saken). Bare eksempelets ID og beskrivelse følger med arbeidsgrunnlaget. Bruk beskrivelsen som erfaring når den passer oppgaven, og underbygg nye påstander med dagens kilder.
+
+Mobilprototypen i researchmodus bruker de samme eksemplene når den planlegger et relevant spørsmål. Samtalehistorikken kan gi sammenheng i den pågående samtalen. Utvalget av redaksjonelle eksempler hentes fra behandlede notater i prosjektet.
+
 Dette er en instruksjonsbasert arbeidsflyt: en agent må lese filene og utføre rundene. Det er ikke opprettet en ny bakgrunnsjobb, kommentar-trigger, database, vurderingsmodell eller AI-API. En GitHub-kommentar vekker ikke i seg selv den planlagte oppgaven. Eksisterende ukesoppgave og manuelle revisjoner skal bruke materialet når det er på main.
 
 ## Videre utvidelse

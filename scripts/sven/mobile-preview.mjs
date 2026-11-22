@@ -11,6 +11,7 @@ import { analyzeWithSven } from '../../server/sven/analysis.mjs'
 import { anthropicSven } from '../../server/sven/anthropic.mjs'
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
 import { accountContext, expandAccountQuestion } from '../../server/sven/follow-up.mjs'
+import { withEditorialExamples } from '../analyser/learning-context.mjs'
 
 const dataDir = fileURLToPath(new URL('../../web/public/data/', import.meta.url))
 const mime = { '.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8',
@@ -49,7 +50,7 @@ export function mobilePreview({ root, generate, research }) {
             return reply(res, 400, { error:'Skriv et spørsmål på opptil 2000 tegn.' })
           }
           if (research) {
-            const result = await research({question, history: payload.history || []})
+            const result = await research(withEditorialExamples({ question, history: payload.history || [] }))
             if (result.status !== 'reviewed') return reply(res, 422, { error:'Kvalitetskontrollen fant uløste mangler. Analysen er lagret for gjennomgang.', jobId:result.jobId })
             return reply(res, 200, { ...result.answer, jobId:result.jobId, research:true,
               sources:result.sources.map(({id,title,url})=>({id,title,url})),

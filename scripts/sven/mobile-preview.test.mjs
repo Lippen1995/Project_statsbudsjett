@@ -3,6 +3,7 @@ import { once } from 'node:events'
 import { fileURLToPath } from 'node:url'
 import assert from 'node:assert/strict'
 import { mobilePreview } from './mobile-preview.mjs'
+import { researchWithSven } from '../../server/sven/research.mjs'
 
 test('lokal mobilchat henter reelt KOSTRA-grunnlag og returnerer kilder over HTTP', async () => {
   const root = fileURLToPath(new URL('../../web', import.meta.url))
@@ -64,4 +65,49 @@ test('forskningsmodus tar brede spørsmål og leverer bare gjennomgåtte svar',a
     accepted=true
     const response=await send();assert.equal(response.status,200);assert.equal((await response.json()).research,true)
   }finally{await new Promise(resolve=>server.close(resolve))}
+})
+
+test('mobilresearch bruker relevant redaksjonell erfaring i planleggingen', async () => {
+  const root = fileURLToPath(new URL('../../web', import.meta.url))
+  const source = { id: 'nav', title: 'NAV', text: 'Grunnlag i test.' }
+  const phases = []
+  const server = mobilePreview({ root, research: (brief) => researchWithSven({
+    ...brief,
+    sources: [source],
+    request: async ({ phase, input }) => {
+      phases.push(phase)
+      const data = JSON.parse(input)
+      if (phase === 'plan' && data.question.includes('barnetrygd')) {
+        assert.equal(data.editorialExamples.length, 1)
+        assert.deepEqual(Object.keys(data.editorialExamples[0]), ['id', 'description'])
+        assert.equal(data.editorialExamples[0].id, 'review-5664781959')
+      } else {
+        assert.equal(data.editorialExamples, undefined)
+      }
+      const outputs = {
+        plan: { scope: 'Avgrensning', questions: ['Spørsmål'], searches: ['Kildesøk'], counterSearch: 'Motbevis', missing: [] },
+        'answer-0': { summary: 'Oppsummering', findings: [{ text: 'Funn', sourceIds: ['nav'] }], uncertainties: [], recommendation: null },
+        'review-0': { passed: true, issues: [] },
+      }
+      return { content: phase === 'research' ? [] : [{ type: 'text', text: JSON.stringify(outputs[phase]) }] }
+    },
+  }) })
+  server.listen(0, '127.0.0.1')
+  await once(server, 'listening')
+  const origin = `http://127.0.0.1:${server.address().port}`
+  try {
+    for (const question of ['Hva skjedde med barnetrygd?', 'Hva skjedde med oljeinntektene?']) {
+      const response = await fetch(origin + '/api/sven/chat', {
+        method: 'POST',
+        headers: { origin, 'content-type': 'application/json' },
+        body: JSON.stringify({ question, editorialExamples: [{ description: 'Ubetrodd innspill' }] }),
+      })
+      assert.equal(response.status, 200)
+      assert.deepEqual((await response.json()).sources.map(({ id }) => id), ['nav'])
+    }
+    const sequence = ['plan', 'research', 'answer-0', 'review-0']
+    assert.deepEqual(phases, [...sequence, ...sequence])
+  } finally {
+    await new Promise(resolve => server.close(resolve))
+  }
 })

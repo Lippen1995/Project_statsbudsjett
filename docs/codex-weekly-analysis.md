@@ -197,6 +197,8 @@ Brukeren har bekreftet den ekstra native kjøringen 7. oktober kl. 11.00 Europe/
 
 Les `editorial/learning/README.md`, `handbook.md`, aktive regler i `preferences.json` og relevante notater i `references.md` før nye analyser og revisjoner. Filene ligger under `editorial/learning/`. Velg høyst to relevante fortellergrep. Referanseartikler gir håndverk, aldri ukontrollerte fakta til dagens analyse. Merk faktisk lest omfang; ikke påstå full artikkelgjennomgang ved bare tilgjengelig åpning.
 
+Bruk eventuelle `editorialExamples` i arbeidsgrunnlaget som eksempler på hvordan Sven løste en lignende sak. Vurder hva som passer til det aktuelle spørsmålet og bruk nye kilder for å kontrollere dagens fakta.
+
 Oversett autoriserte menneskelige tilbakemeldinger til konkrete revisjoner og sporbare læringsnotater. Skill en lokal endring fra en eksplisitt varig føring; AI-utledede globale preferanser står som proposed til menneskelig bekreftelse. Ikke oppfinn feedback-ID-er, godkjenninger eller historikk. Bevar før-/etterreferanser og behold eksisterende vern for eksakt publiseringsversjon.
 
 Bruk håndbokens egenkontroll og `editorial/learning/evaluation.md` ved en særskilt kvalitetsprøve. Ikke la evaluering skape parallelle publiseringsutkast, omgå køprioritet eller endre rapportgrunnlag under ren tekstrevisjon. Læringsfiler og redaksjonelle vurderinger er interne arbeidsinstrukser, ikke brødtekst eller nye felter i artikkelskjemaet.
