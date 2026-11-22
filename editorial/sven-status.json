@@ -353,8 +353,9 @@
     "id": "fe999f02-3c71-4b28-adeb-39cc35b131d7",
     "startedAt": "2026-11-22T08:01:48.161Z",
     "instructionCommit": "b053f719c802b6aa6190e8bad1139b8b5cfdcfd6",
-    "state": "researching",
-    "note": "Kontrollerer kø og åpne gjennomganger",
-    "updatedAt": "2026-11-22T08:01:48.161Z"
+    "state": "waiting",
+    "note": "Fersk main og PR #86 kontrollert. Head 6e8627eb venter på menneskelig gjennomgang. Ingen ubehandlede revisjonsønsker eller inline-kommentarer. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
+    "updatedAt": "2026-11-22T08:04:08.121Z",
+    "finishedAt": "2026-11-22T08:04:08.121Z"
   }
 }
