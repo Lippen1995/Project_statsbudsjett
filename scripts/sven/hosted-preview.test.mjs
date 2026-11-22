@@ -8,6 +8,10 @@ const headers = {
   'content-type': 'application/json',
 }
 
+const intent = { request: 'Hva skjedde?', purpose: 'Forstå en endring', meaning: 'Undersøk hva som skjedde med barnetrygd.' }
+const searchPlan = { scope: 'Norge', questions: ['Hva viser kildene?'], searches: ['barnetrygd'], counterSearch: 'usikkerhet', missing: [] }
+const response = value => ({ content: [{ type: 'text', text: JSON.stringify(value) }] })
+
 function call(handler, method, body, requestHeaders = headers) {
   let status
   const res = {
@@ -32,25 +36,36 @@ test('preview-status og avviste forespørsler bruker ingen modellkall', async ()
 test('preview kjører Sven med Sonnet 5.5 og returnerer brukte kilder', async () => {
   const calls = []
   const outputs = {
-    plan: { scope: 'Norge', questions: ['Hva viser kildene?'], searches: ['barnetrygd'], counterSearch: 'usikkerhet', missing: [] },
+    interpret: { intent, action: 'research', tools: ['fellestall', 'web'], plan: searchPlan },
     'answer-0': { summary: 'Oppsummert', findings: [{ text: 'Funn', sourceIds: ['nav'] }], uncertainties: [], recommendation: null },
     'review-0': { passed: true, issues: [] },
   }
   const preview = hostedPreview({
     environment: 'preview',
     apiKey: 'test',
-    sources: async () => [{ id: 'nav', title: 'NAV', url: 'https://www.nav.no/', text: 'Testgrunnlag' }],
+    sources: async question => {
+      assert.equal(question, intent.meaning)
+      return [{ id: 'nav', title: 'NAV', url: 'https://www.nav.no/', text: 'Testgrunnlag' }]
+    },
     createRequest: ({ model }) => async input => {
       assert.equal(model, 'claude-sonnet-5-5')
       calls.push(input.phase)
-      if (input.phase === 'plan') assert.match(input.input, /review-5664781959/)
-      return { content: input.phase === 'research' ? [] : [{ type: 'text', text: JSON.stringify(outputs[input.phase]) }] }
+      if (input.phase === 'interpret') {
+        assert.match(input.input, /review-5664781959/)
+        assert.equal(input.tools, undefined)
+      }
+      if (input.phase === 'research') {
+        assert.deepEqual(JSON.parse(input.input).intent, intent)
+        assert.ok(input.tools.length)
+        return { content: [] }
+      }
+      return response(outputs[input.phase])
     },
   })
   const result = await call(preview, 'POST', { question: 'Hei, hva skjedde med barnetrygd?' })
   assert.equal(result.status, 200)
   assert.deepEqual(result.payload.sources, [{ title: 'NAV', url: 'https://www.nav.no/' }])
-  assert.deepEqual(calls, ['plan', 'research', 'answer-0', 'review-0'])
+  assert.deepEqual(calls, ['interpret', 'research', 'answer-0', 'review-0'])
 })
 
 test('en kort hilsen får svar uten leverandør, søk eller datagrunnlag', async () => {
@@ -75,9 +90,10 @@ test('samtale og avklaringer kan besvares med kun første modellkall', async () 
     sources: () => assert.fail('Samtale trenger ingen kilder'),
     createRequest: () => async input => {
       calls.push(input.phase)
-      assert.match(input.instructions, /Svar naturlig på vanlig samtale/)
+      assert.match(input.instructions, /Tolk meldingen før du velger fremgangsmåte/)
+      assert.equal(input.tools, undefined)
       assert.equal(JSON.parse(input.input).history[0].content, 'Hei!')
-      return { content: [{ type: 'text', text: JSON.stringify({ reply: 'Jeg kan hjelpe deg å undersøke offentlig økonomi.' }) }] }
+      return response({ intent, action: 'reply', reply: 'Jeg kan hjelpe deg å undersøke offentlig økonomi.' })
     },
   })
   const { status, payload } = await call(preview, 'POST', {
@@ -87,19 +103,70 @@ test('samtale og avklaringer kan besvares med kun første modellkall', async () 
   assert.equal(status, 200)
   assert.match(payload.summary, /offentlig økonomi/)
   assert.deepEqual(payload.sources, [])
-  assert.deepEqual(calls, ['plan'])
+  assert.deepEqual(calls, ['interpret'])
 })
 
 test('research uten kildegrunnlag forklares konkret', async () => {
+  let localCalls = 0
   const preview = hostedPreview({
     environment: 'preview',
     apiKey: 'test',
-    sources: async () => [],
-    createRequest: () => async ({ phase }) => phase === 'plan' ? { content: [{
-      type: 'text', text: JSON.stringify({ scope: 'Norge', questions: ['Hva ble vedtatt?'], searches: ['forslag'], counterSearch: 'motbevis', missing: [] }),
-    }] } : { content: [] },
+    sources: async () => { localCalls++; return [] },
+    createRequest: () => async ({ phase }) => phase === 'interpret'
+      ? response({ intent, action: 'research', tools: ['web'], plan: searchPlan })
+      : { content: [] },
   })
   const { status, payload } = await call(preview, 'POST', { question: 'Hva ble vedtatt i statsbudsjettet?' })
   assert.equal(status, 422)
   assert.match(payload.error, /fant ikke kilder/)
+  assert.equal(localCalls, 0)
+})
+
+test('en uklar oppfølging kan avklares uten verktøy', async () => {
+  const preview = hostedPreview({
+    environment: 'preview',
+    apiKey: 'test',
+    sources: () => assert.fail('Avklaring trenger ingen kilder'),
+    createRequest: () => async ({ phase, tools }) => {
+      assert.equal(phase, 'interpret')
+      assert.equal(tools, undefined)
+      return response({
+        intent: { request: 'Sammenligne med 2024', purpose: 'Forstå utvikling', meaning: 'Det er uklart hvilket tall som skal sammenlignes.' },
+        action: 'clarify', reply: 'Hvilket tall vil du sammenligne med 2024?',
+      })
+    },
+  })
+  const result = await call(preview, 'POST', { question: 'Hva med 2024?' })
+  assert.match(result.payload.summary, /Hvilket tall/)
+})
+
+test('en oppfølging får riktig kontekst og kan bruke bare Fellestall', async () => {
+  const phases = []
+  const preview = hostedPreview({
+    environment: 'preview',
+    apiKey: 'test',
+    sources: async question => {
+      assert.equal(question, 'Hva var netto driftsutgifter i Stavanger i 2024?')
+      return [{ id: 'ssb', title: 'KOSTRA', url: 'https://www.ssb.no/', text: 'Testgrunnlag' }]
+    },
+    createRequest: () => async ({ phase, tools }) => {
+      phases.push(phase)
+      assert.equal(tools, undefined)
+      if (phase === 'interpret') return response({
+        intent: { request: 'Sammenligne med 2024', purpose: 'Forstå utvikling', meaning: 'Hva var netto driftsutgifter i Stavanger i 2024?' },
+        action: 'research', tools: ['fellestall'], plan: { ...searchPlan, searches: [], counterSearch: '' },
+      })
+      if (phase === 'answer-0') return response({
+        summary: 'Oppsummert', findings: [{ text: 'Funn', sourceIds: ['ssb'] }], uncertainties: [], recommendation: null,
+      })
+      assert.equal(phase, 'review-0')
+      return response({ passed: true, issues: [] })
+    },
+  })
+  const result = await call(preview, 'POST', {
+    question: 'Hva med 2024?',
+    history: [{ role: 'user', content: 'Hva var netto driftsutgifter i Stavanger i 2025?' }],
+  })
+  assert.equal(result.status, 200)
+  assert.deepEqual(phases, ['interpret', 'answer-0', 'review-0'])
 })

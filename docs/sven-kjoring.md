@@ -103,7 +103,7 @@ node scripts/sven/mobile-preview.mjs /sti/til/prototype/dist --research
 
 Åpne `http://127.0.0.1:4176/?sven=local#sven`. Dette bruker prototypens lokale testkonto og kjører ekte modellforespørsler når miljøet er konfigurert. De tre siste spørsmålene og svarene, avkortet i klienten, kan følge samtalen. Kilder er klikkbare. Den lokale chatten viser ikke en oppdiktet abonnementsprosent; månedskvote er ikke konfigurert i testmiljøet. Den separate designprototypen beholder sin merkede demonstrasjon av prosentvis kapasitet.
 
-Den innloggingsbeskyttede Vercel-previewen bruker `scripts/sven/hosted-preview.mjs` som `/api/sven/chat`. Funksjonen bruker `SVEN_ANTHROPIC_API_KEY` fra Vercels Preview-miljø og Claude Sonnet 5.5. GET viser om nøkkelen er konfigurert uten å kalle modellen. Ved POST fra samme origin besvares enkle hilsener direkte. Første modellkall kan svare på andre samtalemeldinger, be om en avklaring eller planlegge en undersøkelse. Mobilhistorikken kan følge med som oppfølgingskontekst og lagres lokalt i nettleseren.
+Den innloggingsbeskyttede Vercel-previewen bruker `scripts/sven/hosted-preview.mjs` som `/api/sven/chat`. Funksjonen bruker `SVEN_ANTHROPIC_API_KEY` fra Vercels Preview-miljø og Claude Sonnet 5.5. GET viser om nøkkelen er konfigurert uten å kalle modellen. Ved POST fra samme origin tolker Sven først hva brukeren ber om, formålet og betydningen i samtalen. Enkle hilsener besvares direkte. For andre meldinger leverer det første modellkallet både tolkning og valg av fremgangsmåte. Sven kan svare, be om en avklaring eller undersøke saken med Fellestalls data, nettsøk eller begge. Mobilhistorikken kan følge med som oppfølgingskontekst og lagres lokalt i nettleseren.
 
 ### Konkurransetesten
 

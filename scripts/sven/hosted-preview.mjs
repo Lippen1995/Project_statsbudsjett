@@ -5,20 +5,11 @@ import example from '../../editorial/learning/feedback/review-5664781959.json' w
 import { selectEditorialExamples } from '../analyser/learning-context.mjs'
 import { buildReport } from '../analyser/report.mjs'
 import { claudeTransport } from '../../server/sven/provider.mjs'
-import { researchWithSven } from '../../server/sven/research.mjs'
+import { interpretGreeting, researchWithSven } from '../../server/sven/research.mjs'
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
 
 const model = 'claude-sonnet-5-5'
 const snapshot = 'https://fellestall.no/data/'
-
-function openingReply(question) {
-  const words = question.toLocaleLowerCase('nb-NO').replace(/[^\p{L}\p{N}]+/gu, ' ').trim()
-  if (/^(hei(?: hei| sven)?|heisann|hallo(?: sven)?|god (?:morgen|dag|kveld)|hello|hi|hey)$/.test(words)) {
-    return /^(hello|hi|hey)$/.test(words)
-      ? 'Hi! What would you like to explore?'
-      : 'Hei! Hva vil du undersøke eller snakke om i dag?'
-  }
-}
 
 async function loadSnapshot(file, signal) {
   const response = await fetch(snapshot + file, { signal: AbortSignal.any([signal, AbortSignal.timeout(8000)]) })
@@ -69,14 +60,14 @@ export function hostedPreview({
           typeof turn.content !== 'string' || !turn.content.trim() || turn.content.length > 1200)) {
       return send(400, { error: 'Skriv et spørsmål på opptil 2000 tegn.' })
     }
-    const reply = openingReply(question)
+    const greeting = interpretGreeting(question)
     const sendReply = summary => send(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
-    if (reply) return sendReply(reply)
+    if (greeting) return sendReply(greeting.reply)
     if (!apiKey) return send(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
     if (busy) return send(429, { error: 'Sven undersøker et annet spørsmål. Prøv igjen snart.' })
     busy = true
     const signal = AbortSignal.timeout(150_000)
-    let phase = 'plan'
+    let phase = 'interpret'
     try {
       const request = createRequest({ apiKey, model, timeoutMs: 55_000 })
       const result = await researchWithSven({
