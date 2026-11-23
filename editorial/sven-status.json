@@ -347,15 +347,23 @@
       "note": "Fersk main og PR #86 kontrollert. Head 6e8627eb venter fortsatt på menneskelig gjennomgang. Ingen ubehandlede revisjonsønsker eller inline-kommentarer. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
       "updatedAt": "2026-11-21T08:03:42.141Z",
       "finishedAt": "2026-11-21T08:03:42.141Z"
+    },
+    {
+      "id": "fe999f02-3c71-4b28-adeb-39cc35b131d7",
+      "startedAt": "2026-11-22T08:01:48.161Z",
+      "instructionCommit": "b053f719c802b6aa6190e8bad1139b8b5cfdcfd6",
+      "state": "waiting",
+      "note": "Fersk main og PR #86 kontrollert. Head 6e8627eb venter på menneskelig gjennomgang. Ingen ubehandlede revisjonsønsker eller inline-kommentarer. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
+      "updatedAt": "2026-11-22T08:04:08.121Z",
+      "finishedAt": "2026-11-22T08:04:08.121Z"
     }
   ],
   "current": {
-    "id": "fe999f02-3c71-4b28-adeb-39cc35b131d7",
-    "startedAt": "2026-11-22T08:01:48.161Z",
-    "instructionCommit": "b053f719c802b6aa6190e8bad1139b8b5cfdcfd6",
-    "state": "waiting",
-    "note": "Fersk main og PR #86 kontrollert. Head 6e8627eb venter på menneskelig gjennomgang. Ingen ubehandlede revisjonsønsker eller inline-kommentarer. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
-    "updatedAt": "2026-11-22T08:04:08.121Z",
-    "finishedAt": "2026-11-22T08:04:08.121Z"
+    "id": "59d61d7e-fc0f-4220-8d4f-79d49d3dfdc5",
+    "startedAt": "2026-11-23T08:00:46.744Z",
+    "instructionCommit": "c7a04804538534d686cc746c61d40d4c6213ba01",
+    "state": "researching",
+    "note": "Kontrollerer kø og åpne gjennomganger",
+    "updatedAt": "2026-11-23T08:00:46.744Z"
   }
 }
