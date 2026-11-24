@@ -55,10 +55,9 @@ export function previewRequests(cache, { now = Date.now } = {}) {
           if (previous.digest !== digest || previous.running) throw new Error('Trinnet kan ikke trygt gjenbrukes')
           return previous.value
         }
-        if (billable) {
-          state.steps[phase] = { digest, running: true }
-          await write(id, state)
-        }
+        state.phase = phase
+        if (billable) state.steps[phase] = { digest, running: true }
+        await write(id, state)
         const value = await work()
         state.steps[phase] = { digest, value }
         await write(id, state)
@@ -73,5 +72,17 @@ export function previewRequests(cache, { now = Date.now } = {}) {
       return { status: 503, body: { error: 'Sven kunne ikke lagre fremdriften. Bruk «Hent svar» for å sjekke samme innsending.', recoverable: true } }
     } finally { active.delete(id) }
   }
-  return { run: (id, brief, execute) => advance(id, execute, brief), resume: (id, execute) => advance(id, execute) }
+  return {
+    run: (id, brief, execute) => advance(id, execute, brief),
+    resume: (id, execute) => advance(id, execute),
+    async progress(id) {
+      try {
+        const encrypted = await cache.get(cacheKey(id))
+        if (!encrypted) return {}
+        const state = unseal(id, encrypted)
+        if (state.result) return { done: true }
+        return state.leaseUntil > now() && state.phase ? { phase: state.phase } : {}
+      } catch { return {} }
+    },
+  }
 }

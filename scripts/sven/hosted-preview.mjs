@@ -12,6 +12,10 @@ import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
 import { previewRequests, validRequestId } from '../../server/sven/preview-requests.mjs'
 
 const model = 'claude-sonnet-5-5'
+const previewModels = [
+  { id: model, label: 'Claude Sonnet 5.5', detail: 'Standard' },
+  { id: 'claude-opus-5-5', label: 'Claude Opus 5.5', detail: 'Høyere forbruk' },
+]
 
 async function resolveSources(question, signal, loadSnapshot) {
   return resolveSvenSources(question, undefined, {
@@ -46,7 +50,7 @@ export function hostedPreview({
   const reply = (status, body) => ({ status, body })
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
   let busy = false
-  async function answerQuestion({ question, history, asOf }, memo) {
+  async function answerQuestion({ question, history, asOf, selectedModel = model }, memo) {
     const greeting = interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
@@ -54,8 +58,12 @@ export function hostedPreview({
     busy = true
     const signal = AbortSignal.timeout(150_000)
     let phase = 'interpret'
+    const usage = { calls: 0, input: 0, output: 0, cacheRead: 0, cacheWrite: 0, searches: 0 }
+    const measuredReply = (status, body) => reply(status, {
+      ...body, ...(usage.calls ? { model: selectedModel, usage } : {}),
+    })
     try {
-      const request = createRequest({ apiKey, model, timeoutMs: 55_000, cacheInstructions: true, onUsage })
+      const request = createRequest({ apiKey, model: selectedModel, timeoutMs: 55_000, cacheInstructions: true, onUsage })
       const result = await researchWithSven({
         question, history, asOf, signal, maxSearches: 3, conversational: true,
         editorialExamples: selectEditorialExamples({ question }, [example]),
@@ -67,30 +75,40 @@ export function hostedPreview({
           if (entry.missing) throw new Error('Kildeoppslaget mangler grunnlag')
           return entry.sources
         },
-        request: ({ signal: requestSignal, ...input }) => {
+        request: async ({ signal: requestSignal, ...input }) => {
           phase = input.phase
           const params = { ...input, maxTokens: Math.min(input.maxTokens ?? 2400, 3600) }
           requestSignal?.throwIfAborted()
-          return memo(phase, params, () => request({ ...params, signal: requestSignal }), { billable: true })
+          const result = await memo(phase, { model: selectedModel, ...params },
+            () => request({ ...params, signal: requestSignal }), { billable: true })
+          if (result.usage) {
+            usage.calls++
+            usage.input += result.usage.input_tokens ?? 0
+            usage.output += result.usage.output_tokens ?? 0
+            usage.cacheRead += result.usage.cache_read_input_tokens ?? 0
+            usage.cacheWrite += result.usage.cache_creation_input_tokens ?? 0
+            usage.searches += result.usage.server_tool_use?.web_search_requests ?? 0
+          }
+          return result
         },
       })
-      if (result.status === 'conversation') return directReply(result.reply)
+      if (result.status === 'conversation') return measuredReply(200, directReply(result.reply).body)
       if (result.status === 'no-evidence') {
-        return reply(422, { error: 'Jeg fant ikke kilder som kunne underbygge et svar på dette. Hvis du har en kilde, kan du gjerne dele den.' })
+        return measuredReply(422, { error: 'Jeg fant ikke kilder som kunne underbygge et svar på dette. Hvis du har en kilde, kan du gjerne dele den.' })
       }
       if (result.status !== 'reviewed') {
-        return reply(422, { error: 'Sven fant mangler i svaret. Prøv et mer avgrenset spørsmål.' })
+        return measuredReply(422, { error: 'Sven fant mangler i svaret. Prøv et mer avgrenset spørsmål.' })
       }
       const used = new Set([...result.answer.findings, result.answer.recommendation]
         .filter(Boolean).flatMap(finding => finding.sourceIds))
       const links = result.sources.filter(source => used.has(source.id) && source.url?.startsWith('https://'))
-        .map(({ title, url }) => ({ title, url }))
-      return reply(200, { ...result.answer, sources: links })
+        .map(({ id, title, url }) => ({ id, title, url }))
+      return measuredReply(200, { ...result.answer, sources: links })
     } catch (error) {
       console.warn('[Sven preview]', phase, String(error?.message).match(/^Claude API svarte HTTP \d{3}$/)?.[0] ?? error?.name)
       if (signal.aborted) return reply(202, { pending: true })
       const limited = /HTTP (402|429)$/.test(error?.message)
-      return reply(limited ? 429 : 502, { error: limited
+      return measuredReply(limited ? 429 : 502, { error: limited
         ? 'Claude har nådd en bruksgrense. Vent litt eller sjekk Sven-budsjettet.'
         : 'Sven kunne ikke svare akkurat nå. Prøv igjen.' })
     } finally {
@@ -102,14 +120,15 @@ export function hostedPreview({
     res.setHeader('Cache-Control', 'no-store')
     const send = (status, body) => res.status(status).json(body)
     if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
-    if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model })
+    if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels })
     if (req.method !== 'POST') return send(405, { error: 'Metoden støttes ikke.' })
     if (req.headers.origin !== `https://${req.headers.host}` ||
         req.headers['content-type']?.split(';', 1)[0] !== 'application/json') {
       return send(403, { error: 'Send spørsmålet fra den beskyttede forhåndsvisningen.' })
     }
-    const { requestId, resume, question: rawQuestion, history = [] } = req.body ?? {}
+    const { requestId, resume, progress, question: rawQuestion, history = [], model: selectedModel = model } = req.body ?? {}
     if (!validRequestId(requestId)) return send(400, { error: 'Innsendingen mangler en gyldig ID. Last siden på nytt.' })
+    if (progress === true) return send(200, await requests.progress(requestId))
     if (resume === true) {
       const { status, body } = await requests.resume(requestId, answerQuestion)
       return send(status, body)
@@ -120,8 +139,9 @@ export function hostedPreview({
           typeof turn.content !== 'string' || !turn.content.trim() || turn.content.length > 1200)) {
       return send(400, { error: 'Skriv et spørsmål på opptil 2000 tegn.' })
     }
+    if (!previewModels.some(option => option.id === selectedModel)) return send(400, { error: 'Denne modellen er ikke tilgjengelig.' })
     const asOf = new Date().toISOString().slice(0, 10)
-    const { status, body } = await requests.run(requestId, { question, history, asOf }, answerQuestion)
+    const { status, body } = await requests.run(requestId, { question, history, asOf, selectedModel }, answerQuestion)
     return send(status, body)
   }
 }

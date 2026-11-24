@@ -29,9 +29,12 @@ test('preview-status og avviste forespørsler bruker ingen modellkall', async ()
   const options = { apiKey: 'test', createRequest: () => assert.fail('Ingen modellkall forventet') }
   assert.equal((await call(hostedPreview({ ...options, environment: 'production' }), 'GET')).status, 404)
   const preview = hostedPreview({ ...options, environment: 'preview' })
-  assert.deepEqual(await call(preview, 'GET'), {
-    status: 200, payload: { configured: true, model: 'claude-sonnet-5-5' },
-  })
+  const { status, payload } = await call(preview, 'GET')
+  assert.equal(status, 200)
+  assert.equal(payload.configured, true)
+  assert.equal(payload.model, 'claude-sonnet-5-5')
+  assert.deepEqual(payload.models.map(option => option.id), ['claude-sonnet-5-5', 'claude-opus-5-5'])
+  assert.equal((await call(preview, 'POST', { question: 'Barnetrygd', model: 'ukjent' })).status, 400)
   assert.equal((await call(preview, 'POST', { question: 'Barnetrygd' }, { ...headers, origin: 'https://annet.test' })).status, 403)
   assert.equal((await call(preview, 'POST', { question: 'Barnetrygd', history: [null] })).status, 400)
 })
@@ -68,7 +71,7 @@ test('preview kjører Sven med Sonnet 5.5 og returnerer brukte kilder', async ()
   })
   const result = await call(preview, 'POST', { question: 'Hei, hva skjedde med barnetrygd?' })
   assert.equal(result.status, 200)
-  assert.deepEqual(result.payload.sources, [{ title: 'NAV', url: 'https://www.nav.no/' }])
+  assert.deepEqual(result.payload.sources, [{ id: 'nav', title: 'NAV', url: 'https://www.nav.no/' }])
   assert.deepEqual(calls, ['interpret', 'research', 'answer-0', 'review-0'])
 })
 
@@ -90,6 +93,7 @@ test('gjentatt innsending og gjenopptak gjenbruker resultatet på tvers av insta
   const input = { requestId, question: 'Hva kan du hjelpe med?' }
   const original = call(a, 'POST', input)
   await started.promise
+  assert.deepEqual((await call(b, 'POST', { requestId, progress: true })).payload, { phase: 'interpret' })
   assert.equal((await call(a, 'POST', input)).status, 202)
   assert.equal((await call(b, 'POST', { requestId, resume: true })).status, 202)
   finish.resolve()
@@ -97,6 +101,7 @@ test('gjentatt innsending og gjenopptak gjenbruker resultatet på tvers av insta
   assert.equal(result.payload.summary, 'Privat svar')
   assert.deepEqual(await call(b, 'POST', { requestId, resume: true }), result)
   assert.deepEqual(await call(b, 'POST', input), result)
+  assert.deepEqual((await call(b, 'POST', { requestId, progress: true })).payload, { done: true })
   assert.equal((await call(b, 'POST', { resume: true })).status, 410)
   assert.equal(calls, 1)
   assert.doesNotMatch(JSON.stringify([...storage]), /Privat svar|Hva kan du hjelpe|\brequestId\b/)
@@ -261,6 +266,24 @@ test('kjent SSB-tabell hentes med web_fetch alene og går videre til faktakontro
   })
   const result = await call(preview, 'POST', { question: 'Hva viser SSB tabell 12137?' })
   assert.equal(result.status, 200)
-  assert.deepEqual(result.payload.sources, [{ title: 'SSB 12137', url }])
+  assert.deepEqual(result.payload.sources.map(({ title, url }) => ({ title, url })), [{ title: 'SSB 12137', url }])
   assert.deepEqual(phases, ['interpret', 'direct-fetch', 'answer-0', 'review-0'])
+})
+
+test('modellvalget brukes og forbruket kommer fra leverandøren', async () => {
+  const preview = hostedPreview({
+    environment: 'preview',
+    apiKey: 'test',
+    createRequest: ({ model }) => async () => {
+      assert.equal(model, 'claude-opus-5-5')
+      return {
+        ...response({ intent, action: 'reply', reply: 'Svar' }),
+        usage: { input_tokens: 17, output_tokens: 4, cache_read_input_tokens: 512, cache_creation_input_tokens: 0 },
+      }
+    },
+  })
+  const result = await call(preview, 'POST', { question: 'Hva kan du hjelpe med?', model: 'claude-opus-5-5' })
+  assert.equal(result.status, 200)
+  assert.equal(result.payload.model, 'claude-opus-5-5')
+  assert.deepEqual(result.payload.usage, { calls: 1, input: 17, output: 4, cacheRead: 512, cacheWrite: 0, searches: 0 })
 })
