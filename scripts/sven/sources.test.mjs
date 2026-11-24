@@ -44,3 +44,15 @@ test('oljepengeoppslag skiller mellom budsjettfaser og beholder primærkilden', 
   assert.match(proposal.url, /^https:\/\/www\.regjeringen\.no\//)
   assert.equal(rows.find(r => r.year === 2027).structuralMillionNok, 608430)
 })
+
+test('delt kapittel 1760 har både kontantregnskap og dokumentasjon av prosjekter', async () => {
+  const sources = await resolveSvenSources('Kap. 1760\nFellestalls rad-ID: u-17-1760\nHva finansierte utgiftene i 2025?', dataDir)
+  const account = sources.find(source => source.id === 'dfo-u-17-1760')
+  const data = JSON.parse(account.text)
+  assert.match(data.officialChapterNameIn2025, /Forsvarsmateriell/)
+  assert.equal(data.scopeChangedIn, undefined)
+  assert(sources.find(source => source.url.endsWith('/Kontantregnskap')).text.includes('36 330 464'))
+  const projects = sources.find(source => source.url.endsWith('/Noter'))
+  assert.match(projects.text, /F-35.*nye ubåter.*P-8A/)
+  assert.match(projects.text, /virksomhetsregnskapet er ikke det samme som kontantutbetaling/)
+})

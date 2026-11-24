@@ -26,7 +26,7 @@ export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
     await onUsage(usage)
     // Tool turns can already contain usable, attributed evidence even if the
     // provider stopped before writing its own final prose.
-    const toolPhase = phase === 'research' || phase === 'direct-fetch'
+    const toolPhase = ['research', 'research-followup', 'direct-fetch'].includes(phase)
     const partial = ['pause_turn', 'max_tokens'].includes(message.stop_reason)
     if (message.stop_reason !== 'end_turn' && !(toolPhase && partial)) {
       throw Object.assign(new Error('Claude fullførte ikke analysen'), {

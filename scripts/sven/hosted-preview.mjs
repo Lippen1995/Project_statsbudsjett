@@ -103,7 +103,7 @@ export function hostedPreview({
             result = await memo(phase, { model: selectedModel, ...params, ...(effort === 'default' ? {} : { effort }) },
               async () => {
                 const message = await request({ ...params, signal: requestSignal })
-                return phase === 'research' ? compactSearchEvidence(message) : message
+                return ['research', 'research-followup'].includes(phase) ? compactSearchEvidence(message) : message
               }, { billable: true })
           } catch (error) {
             addUsage(error?.usage)

@@ -323,7 +323,7 @@ test('delt budsjettkapittel gir svar selv om leverandøren stopper midt i netts�
         calls++
         if (calls === 1) return Response.json({ ...response({ intent, action: 'research', tools: ['web'], plan: searchPlan }), stop_reason: 'end_turn', usage })
         if (calls === 2) {
-          assert.ok(tools.some(tool => tool.name === 'web_fetch' && tool.max_content_tokens === 6000))
+          assert.ok(tools.some(tool => tool.name === 'web_fetch' && tool.max_content_tokens === 4000))
           return Response.json({ stop_reason: stop, usage, content: [
             { type: 'web_search_tool_result', content: [{ encrypted_content: randomBytes(1_450_000).toString('hex') }] },
             { type: 'text', text: 'Ufullstendig syntese', citations: [{
@@ -351,5 +351,78 @@ test('delt budsjettkapittel gir svar selv om leverandøren stopper midt i netts�
     assert.equal(result.payload.sources[0].id, 'fd-prop1s-2025-1720')
     assert.deepEqual(phases.map(([phase]) => phase), ['interpret', 'research', 'answer-0', 'review-0'])
     assert.equal(phases[1][1], stop)
+  }
+})
+
+test('konkrete spørsmål om budsjettposter blir undersøkt videre når tallene ikke dekker aktivitetene', async () => {
+  const question = 'Valgt innhold i Fellestall: Nyanskaffelser av materiell og nybygg og nyanlegg\nKap. 1760\nRegnskap 2025\nFellestalls rad-ID: u-17-1760\n\nBrukerens spørsmål: Hva ligger i denne? Hvilke aktiviteter består den av?'
+  const local = { id: 'post45', title: 'Postfordeling kapittel 1760', text: 'Regnskap 2025, post 45: 36,33 mrd. kr.' }
+  const annualUrl = 'https://www.fma.no/arsrapport-2025/arsregnskap/Noter'
+  const finding = 'Forsvarsmateriells årsrapport navngir F-35, nye ubåter og P-8A Poseidon.'
+  const projectEvidence = { content: [{ type: 'text', text: finding, citations: [
+    { type: 'web_search_result_location', url: annualUrl, title: 'Forsvarsmateriell, note om prosjekter', cited_text: finding },
+  ] }] }
+  const leads = [{ url: annualUrl, title: 'Forsvarsmateriells regnskapsnoter' }]
+  const proposedQuery = 'Forsvarsmateriell årsrapport 2025 kapittel 1760 post 45 konkrete prosjekter'
+  for (const initialWeb of [false, true]) {
+    const phases = []
+    let allocatedSearches = 0
+    const preview = hostedPreview({
+      environment: 'preview', apiKey: 'test',
+      sources: async query => {
+        assert.equal(query, question)
+        return [local]
+      },
+      createRequest: () => async ({ phase, input: payload, tools, instructions }) => {
+        phases.push(phase)
+        const input = JSON.parse(payload)
+        if (tools) allocatedSearches += tools.find(tool => tool.name === 'web_search').max_uses
+        switch (phase) {
+          case 'interpret':
+            assert.match(instructions, /et postnavn viser hvor mye/i)
+            return response({ intent, action: 'research', tools: [initialWeb ? 'web' : 'fellestall'],
+              plan: initialWeb ? searchPlan : { ...searchPlan, searches: [], counterSearch: '' } })
+          case 'research':
+            assert.equal(tools.find(tool => tool.name === 'web_search').max_uses, 2)
+            return { stop_reason: 'max_tokens', content: [{ type: 'web_search_tool_result', content: [
+              { type: 'web_search_result', ...leads[0] },
+            ] }] }
+          case 'research-followup':
+            assert.equal(tools.find(tool => tool.name === 'web_search').max_uses, initialWeb ? 1 : 2)
+            assert.equal(tools.find(tool => tool.name === 'web_fetch').max_uses, 1)
+            assert.deepEqual(input.sourceLeads, initialWeb ? leads : [])
+            assert.equal(input.query, initialWeb ? null : proposedQuery)
+            return projectEvidence
+          case 'answer-0':
+          case 'answer-1': {
+            const project = input.sources.find(source => source.url === annualUrl)
+            if (phase === 'answer-1' || initialWeb) assert(project)
+            else assert.equal(project, undefined)
+            return response({ summary: project ? finding : 'Grunnlaget viser post 45 og beløpet.',
+              findings: [{ text: project ? finding : local.text, sourceIds: [project?.id ?? local.id] }],
+              recommendation: null, uncertainties: [] })
+          }
+          case 'review-0':
+          case 'review-1':
+            assert.match(instructions, /besvarer det vesentlige/)
+            if (!initialWeb && phase === 'review-0') {
+              assert.equal(input.searchesRemaining, 3)
+              return response({ passed: true, issues: [], followupSearch: proposedQuery })
+            }
+            assert.equal(input.searchesRemaining, 0)
+            return response({ passed: true, issues: [] })
+          default:
+            assert.fail(phase)
+        }
+      },
+    })
+    const result = await call(preview, 'POST', { question })
+    assert.equal(result.status, 200)
+    assert.match(result.payload.summary, /P-8A Poseidon/)
+    assert.deepEqual(result.payload.sources.map(source => source.url), [annualUrl])
+    assert(allocatedSearches <= 3)
+    assert.deepEqual(phases, initialWeb
+      ? ['interpret', 'research', 'research-followup', 'answer-0', 'review-0']
+      : ['interpret', 'answer-0', 'review-0', 'research-followup', 'answer-1', 'review-1'])
   }
 })

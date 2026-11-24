@@ -65,6 +65,28 @@ const chapterDocuments = {
       'Etterretningstjenesten (kap. 1735) og Redningshelikoptertjenesten (kap. 1791) ble holdt utenfor. ' +
       'Tall for kap. 1720 før og etter 2021 gjelder derfor forskjellige avgrensninger.',
   }],
+  'u-17-1760': [{
+    id: 'fd-prop1s-2025-1760',
+    title: 'Prop. 1 S for 2025, Forsvarsdepartementets omtale av kapittel 1760 post 45',
+    url: 'https://www.regjeringen.no/no/dokumenter/prop.-1-s-20242025/id3057361/?ch=3',
+    text: 'Post 45 finansierer større materiellanskaffelser og vedlikehold, herunder nye kampfly med baseløsning, ' +
+      'flernasjonale investeringsprogrammer i NATO, forskning, utvikling og innovasjon. Proposisjonen er regjeringens forslag for 2025.',
+  }, {
+    id: 'fma-regnskap-2025-1760-45',
+    title: 'Forsvarsmateriell 2025, kontantregnskap for kapittel 1760 post 45',
+    url: 'https://www.fma.no/arsrapport-2025/arsregnskap/Kontantregnskap',
+    text: 'For 2025 viser bevilgningsrapporteringen på kapittel 1760 post 45 samlet tildeling på 37 031 357 tusen kroner ' +
+      'og regnskap på 36 330 464 tusen kroner. Dette er beløpet på posten samlet i kontantregnskapet.',
+  }, {
+    id: 'fma-arsrapport-2025-investeringsprosjekter',
+    title: 'Forsvarsmateriell 2025, regnskapsnoter om konkrete investeringsprosjekter',
+    url: 'https://www.fma.no/arsrapport-2025/arsregnskap/Noter',
+    text: 'Forsvarsmateriell navngir blant annet F-35-anskaffelsen, nye ubåter, P-8A Poseidon maritime patruljefly, ' +
+      'luftovervåking og artillerisystem 155 mm. Prosjekttabellen for varelager under tilvirkning oppgir tilgang i 2025 ' +
+      'på 1 994 820 tusen kroner for F-35-anskaffelsen, 1 781 099 for nye ubåter og 670 964 for P-8A Poseidon. ' +
+      'Tilgang i virksomhetsregnskapet er ikke det samme som kontantutbetaling fra post 45. ' +
+      'De navngitte prosjektene er eksempler, og tabellen er ikke en full avstemming av post 45.',
+  }],
 }
 
 async function budgetRowSources(read, ids) {
@@ -87,7 +109,8 @@ async function budgetRowSources(read, ids) {
       snapshotUrl: 'https://fellestall.no/data/' + file,
       text: JSON.stringify({
         department: department.navn, chapter: chapterNumber, selected: selected.tag, labelInDataset: selected.navn,
-        ...(documents.length ? { officialChapterNameSince2021: 'Forsvaret', scopeChangedIn: 2021 } : {}),
+        ...(chapterId === 'u-17-1720' ? { officialChapterNameSince2021: 'Forsvaret', scopeChangedIn: 2021 } : {}),
+        ...(chapterId === 'u-17-1760' ? { officialChapterNameIn2025: 'Forsvarsmateriell og større anskaffelser og vedlikehold' } : {}),
         millionNokByYearAndPhase: selected.serier,
         posts: selected.children?.map(row => ({
           post: row.tag, label: row.navn, latestAccounting: Object.entries(row.serier)
