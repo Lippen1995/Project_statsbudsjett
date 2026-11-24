@@ -16,6 +16,12 @@ const previewModels = [
   { id: model, label: 'Claude Sonnet 5.5', detail: 'Standard' },
   { id: 'claude-opus-5-5', label: 'Claude Opus 5.5', detail: 'Høyere forbruk' },
 ]
+const effortLevels = [
+  { id: 'default', label: 'Modellens standard' },
+  { id: 'low', label: 'Lav · raskere' },
+  { id: 'medium', label: 'Middels · balansert' },
+  { id: 'high', label: 'Høy · grundigere' },
+]
 
 async function resolveSources(question, signal, loadSnapshot) {
   return resolveSvenSources(question, undefined, {
@@ -50,7 +56,7 @@ export function hostedPreview({
   const reply = (status, body) => ({ status, body })
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
   let busy = false
-  async function answerQuestion({ question, history, asOf, selectedModel = model }, memo) {
+  async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default' }, memo) {
     const greeting = interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
@@ -60,10 +66,11 @@ export function hostedPreview({
     let phase = 'interpret'
     const usage = { calls: 0, input: 0, output: 0, cacheRead: 0, cacheWrite: 0, searches: 0 }
     const measuredReply = (status, body) => reply(status, {
-      ...body, ...(usage.calls ? { model: selectedModel, usage } : {}),
+      ...body, ...(usage.calls ? { model: selectedModel, effort, usage } : {}),
     })
     try {
-      const request = createRequest({ apiKey, model: selectedModel, timeoutMs: 55_000, cacheInstructions: true, onUsage })
+      const request = createRequest({ apiKey, model: selectedModel, timeoutMs: effort === 'high' ? 65_000 : 55_000,
+        cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
       const result = await researchWithSven({
         question, history, asOf, signal, maxSearches: 3, conversational: true,
         editorialExamples: selectEditorialExamples({ question }, [example]),
@@ -77,9 +84,12 @@ export function hostedPreview({
         },
         request: async ({ signal: requestSignal, ...input }) => {
           phase = input.phase
-          const params = { ...input, maxTokens: Math.min(input.maxTokens ?? 2400, 3600) }
+          const maxTokens = effort === 'high'
+            ? Math.max(4000, Math.min(input.maxTokens ?? 4000, 6000))
+            : Math.min(input.maxTokens ?? 2400, 3600)
+          const params = { ...input, maxTokens }
           requestSignal?.throwIfAborted()
-          const result = await memo(phase, { model: selectedModel, ...params },
+          const result = await memo(phase, { model: selectedModel, ...params, ...(effort === 'default' ? {} : { effort }) },
             () => request({ ...params, signal: requestSignal }), { billable: true })
           if (result.usage) {
             usage.calls++
@@ -120,13 +130,14 @@ export function hostedPreview({
     res.setHeader('Cache-Control', 'no-store')
     const send = (status, body) => res.status(status).json(body)
     if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
-    if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels })
+    if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels })
     if (req.method !== 'POST') return send(405, { error: 'Metoden støttes ikke.' })
     if (req.headers.origin !== `https://${req.headers.host}` ||
         req.headers['content-type']?.split(';', 1)[0] !== 'application/json') {
       return send(403, { error: 'Send spørsmålet fra den beskyttede forhåndsvisningen.' })
     }
-    const { requestId, resume, progress, question: rawQuestion, history = [], model: selectedModel = model } = req.body ?? {}
+    const { requestId, resume, progress, question: rawQuestion, history = [], model: selectedModel = model,
+      effort = 'default' } = req.body ?? {}
     if (!validRequestId(requestId)) return send(400, { error: 'Innsendingen mangler en gyldig ID. Last siden på nytt.' })
     if (progress === true) return send(200, await requests.progress(requestId))
     if (resume === true) {
@@ -140,8 +151,9 @@ export function hostedPreview({
       return send(400, { error: 'Skriv et spørsmål på opptil 2000 tegn.' })
     }
     if (!previewModels.some(option => option.id === selectedModel)) return send(400, { error: 'Denne modellen er ikke tilgjengelig.' })
+    if (!effortLevels.some(option => option.id === effort)) return send(400, { error: 'Dette resonneringsnivået er ikke tilgjengelig.' })
     const asOf = new Date().toISOString().slice(0, 10)
-    const { status, body } = await requests.run(requestId, { question, history, asOf, selectedModel }, answerQuestion)
+    const { status, body } = await requests.run(requestId, { question, history, asOf, selectedModel, effort }, answerQuestion)
     return send(status, body)
   }
 }

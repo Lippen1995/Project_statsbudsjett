@@ -22,6 +22,19 @@ test('Claude caches the stable instructions while keeping question and history i
   assert.equal(usage.cacheRead, 600)
 })
 
+test('Claude receives an explicit effort only when configured', async () => {
+  const sent = []
+  const options = { apiKey: 'test', model: 'claude-sonnet-5-5', fetchImpl: async (_url, body) => {
+    sent.push(JSON.parse(body.body))
+    return Response.json({ stop_reason: 'end_turn' })
+  } }
+  const input = { instructions: 'Instruksjoner', input: 'Spørsmål' }
+  await claudeTransport(options)(input)
+  await claudeTransport({ ...options, effort: 'medium' })(input)
+  assert.equal(sent[0].output_config, undefined)
+  assert.deepEqual(sent[1].output_config, { effort: 'medium' })
+})
+
 test('public snapshots coalesce, revalidate by ETag and replace stale data', async () => {
   const storage = new Map()
   const cache = { get: async key => storage.get(key), set: async (key, value) => storage.set(key, value) }

@@ -34,7 +34,9 @@ test('preview-status og avviste forespørsler bruker ingen modellkall', async ()
   assert.equal(payload.configured, true)
   assert.equal(payload.model, 'claude-sonnet-5-5')
   assert.deepEqual(payload.models.map(option => option.id), ['claude-sonnet-5-5', 'claude-opus-5-5'])
+  assert.deepEqual(payload.effortLevels.map(option => option.id), ['default', 'low', 'medium', 'high'])
   assert.equal((await call(preview, 'POST', { question: 'Barnetrygd', model: 'ukjent' })).status, 400)
+  assert.equal((await call(preview, 'POST', { question: 'Barnetrygd', effort: 'ukjent' })).status, 400)
   assert.equal((await call(preview, 'POST', { question: 'Barnetrygd' }, { ...headers, origin: 'https://annet.test' })).status, 403)
   assert.equal((await call(preview, 'POST', { question: 'Barnetrygd', history: [null] })).status, 400)
 })
@@ -270,20 +272,25 @@ test('kjent SSB-tabell hentes med web_fetch alene og går videre til faktakontro
   assert.deepEqual(phases, ['interpret', 'direct-fetch', 'answer-0', 'review-0'])
 })
 
-test('modellvalget brukes og forbruket kommer fra leverandøren', async () => {
+test('modell og resonneringsstyrke gjelder hele forespørselen og rapporteres sammen med forbruk', async () => {
+  const requestId = randomBytes(32).toString('hex')
   const preview = hostedPreview({
     environment: 'preview',
     apiKey: 'test',
-    createRequest: ({ model }) => async () => {
+    createRequest: ({ model, effort }) => async ({ maxTokens }) => {
       assert.equal(model, 'claude-opus-5-5')
+      assert.equal(effort, 'high')
+      assert.equal(maxTokens, 4000)
       return {
         ...response({ intent, action: 'reply', reply: 'Svar' }),
         usage: { input_tokens: 17, output_tokens: 4, cache_read_input_tokens: 512, cache_creation_input_tokens: 0 },
       }
     },
   })
-  const result = await call(preview, 'POST', { question: 'Hva kan du hjelpe med?', model: 'claude-opus-5-5' })
+  const result = await call(preview, 'POST', { requestId, question: 'Hva kan du hjelpe med?', model: 'claude-opus-5-5', effort: 'high' })
   assert.equal(result.status, 200)
   assert.equal(result.payload.model, 'claude-opus-5-5')
+  assert.equal(result.payload.effort, 'high')
   assert.deepEqual(result.payload.usage, { calls: 1, input: 17, output: 4, cacheRead: 512, cacheWrite: 0, searches: 0 })
+  assert.deepEqual(await call(preview, 'POST', { requestId, resume: true, effort: 'low' }), result)
 })

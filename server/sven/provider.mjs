@@ -2,7 +2,7 @@
 // request implicitly: an interrupted response can still have incurred usage.
 export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
   model = process.env.SVEN_MODEL, fetchImpl = globalThis.fetch, onUsage = async () => {},
-  timeoutMs = 120_000, cacheInstructions = false } = {}) {
+  timeoutMs = 120_000, cacheInstructions = false, effort } = {}) {
   if (!apiKey || !model) throw new Error('Sett ANTHROPIC_API_KEY og SVEN_MODEL for å kjøre Sven')
   return async ({ instructions, input, tools, maxTokens = 4096, signal, phase = 'answer' }) => {
     const started = Date.now()
@@ -11,7 +11,7 @@ export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
       body: JSON.stringify({ model, system: cacheInstructions
         ? [{ type: 'text', text: instructions, cache_control: { type: 'ephemeral' } }]
         : instructions, messages: [{ role: 'user', content: input }],
-        max_tokens: maxTokens, ...(tools ? { tools } : {}) }),
+        max_tokens: maxTokens, ...(tools ? { tools } : {}), ...(effort ? { output_config: { effort } } : {}) }),
       signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]) : AbortSignal.timeout(timeoutMs),
     })
     if (!response.ok) throw new Error(`Claude API svarte HTTP ${response.status}`)
