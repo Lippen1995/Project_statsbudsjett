@@ -294,3 +294,62 @@ test('modell og resonneringsstyrke gjelder hele forespørselen og rapporteres sa
   assert.deepEqual(result.payload.usage, { calls: 1, input: 17, output: 4, cacheRead: 512, cacheWrite: 0, searches: 0 })
   assert.deepEqual(await call(preview, 'POST', { requestId, resume: true, effort: 'low' }), result)
 })
+
+test('delt budsjettkapittel gir svar selv om leverandøren stopper midt i nettsøket', async () => {
+  const { claudeTransport } = await import('../../server/sven/provider.mjs')
+  const { resolveSvenSources } = await import('../../server/sven/sources.mjs')
+  const directory = new URL('../../web/public/data/', import.meta.url)
+  const { readFile } = await import('node:fs/promises')
+  const storage = new Map()
+  const cache = { get: async key => storage.get(key), set: async (key, value) => {
+    assert(value.length < 150_000, 'Opaque web tool results must not reach the checkpoint')
+    storage.set(key, value)
+  } }
+  const question = 'Valgt innhold i Fellestall: Felles ledelse og kommandoapparat\nKap. 1720\nRegnskap 2025\nFellestalls rad-ID: u-17-1720\n\nBrukerens spørsmål: Hvilke aktiviteter inngår?'
+  for (const stop of ['pause_turn', 'max_tokens']) {
+    let calls = 0
+    const phases = []
+    const preview = hostedPreview({
+      environment: 'preview', apiKey: 'test', cache,
+      sources: async query => {
+        assert.equal(query, question)
+        return resolveSvenSources(query, undefined, { read: async file => JSON.parse(await readFile(new URL(file, directory))) })
+      },
+      onUsage: usage => phases.push([usage.phase, usage.stopReason]),
+      createRequest: options => claudeTransport({ ...options, fetchImpl: async (url, init) => {
+        const { messages, tools } = JSON.parse(init.body)
+        const input = JSON.parse(messages[0].content)
+        const usage = { input_tokens: 2, output_tokens: 1 }
+        calls++
+        if (calls === 1) return Response.json({ ...response({ intent, action: 'research', tools: ['web'], plan: searchPlan }), stop_reason: 'end_turn', usage })
+        if (calls === 2) {
+          assert.ok(tools.some(tool => tool.name === 'web_fetch' && tool.max_content_tokens === 6000))
+          return Response.json({ stop_reason: stop, usage, content: [
+            { type: 'web_search_tool_result', content: [{ encrypted_content: randomBytes(1_450_000).toString('hex') }] },
+            { type: 'text', text: 'Ufullstendig syntese', citations: [{
+              type: 'web_search_result_location', url: 'https://www.regjeringen.no/test', cited_text: 'Et relevant kildeutdrag', title: 'Kilde',
+            }] },
+          ] })
+        }
+        if (calls === 3) {
+          const data = input.sources.find(source => source.id === 'dfo-u-17-1720')
+          assert.equal(JSON.parse(data.text).millionNokByYearAndPhase['2025'].regnskap, 51906)
+          assert(input.sources.some(source => source.id === 'fd-prop1s-2025-1720' && source.text.includes('Hæren')))
+          assert(input.sources.some(source => source.id === 'fd-prop16s-2025-1720' && source.text.includes('2021')))
+          assert(input.sources.some(source => source.text === 'Et relevant kildeutdrag'))
+          return Response.json({ ...response({ summary: 'Kapittel 1720 er Forsvaret.',
+            findings: [{ text: 'Post 01 gjelder driftsutgifter.', sourceIds: ['fd-prop1s-2025-1720'] }],
+            recommendation: null, uncertainties: [] }), stop_reason: 'end_turn', usage })
+        }
+        assert.equal(calls, 4)
+        return Response.json({ ...response({ passed: true, issues: [] }), stop_reason: 'end_turn', usage })
+      } }),
+    })
+    const result = await call(preview, 'POST', { question })
+    assert.equal(result.status, 200)
+    assert.equal(result.payload.usage.calls, 4)
+    assert.equal(result.payload.sources[0].id, 'fd-prop1s-2025-1720')
+    assert.deepEqual(phases.map(([phase]) => phase), ['interpret', 'research', 'answer-0', 'review-0'])
+    assert.equal(phases[1][1], stop)
+  }
+})

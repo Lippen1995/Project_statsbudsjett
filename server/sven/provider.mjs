@@ -24,7 +24,15 @@ export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
       searches: message.usage?.server_tool_use?.web_search_requests ?? 0 }
     // Record even an invalid/truncated answer; it was still billed.
     await onUsage(usage)
-    if (message.stop_reason !== 'end_turn') throw new Error(`Claude fullførte ikke analysen (${message.stop_reason})`)
+    // Tool turns can already contain usable, attributed evidence even if the
+    // provider stopped before writing its own final prose.
+    const toolPhase = phase === 'research' || phase === 'direct-fetch'
+    const partial = ['pause_turn', 'max_tokens'].includes(message.stop_reason)
+    if (message.stop_reason !== 'end_turn' && !(toolPhase && partial)) {
+      throw Object.assign(new Error('Claude fullførte ikke analysen'), {
+        code: 'provider-incomplete', stopReason: message.stop_reason, usage: message.usage,
+      })
+    }
     return { ...message, _svenReceivedAt: new Date().toISOString() }
   }
 }

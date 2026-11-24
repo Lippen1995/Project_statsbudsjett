@@ -6,7 +6,7 @@ import example from '../../editorial/learning/feedback/review-5664781959.json' w
 import { selectEditorialExamples } from '../analyser/learning-context.mjs'
 import { buildReport } from '../analyser/report.mjs'
 import { claudeTransport } from '../../server/sven/provider.mjs'
-import { interpretGreeting, researchWithSven } from '../../server/sven/research.mjs'
+import { compactSearchEvidence, interpretGreeting, researchWithSven } from '../../server/sven/research.mjs'
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
 import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
 import { previewRequests, validRequestId } from '../../server/sven/preview-requests.mjs'
@@ -47,8 +47,8 @@ export function hostedPreview({
   createRequest = claudeTransport,
   sources = resolveSources,
   cache = getCache({ namespace: 'fellestall-sven-preview-v1' }),
-  onUsage = ({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs }) => {
-    console.info('[Sven usage]', JSON.stringify({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs }))
+  onUsage = ({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason }) => {
+    console.info('[Sven usage]', JSON.stringify({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason }))
   },
 } = {}) {
   const requests = previewRequests(cache)
@@ -89,16 +89,27 @@ export function hostedPreview({
             : Math.min(input.maxTokens ?? 2400, 3600)
           const params = { ...input, maxTokens }
           requestSignal?.throwIfAborted()
-          const result = await memo(phase, { model: selectedModel, ...params, ...(effort === 'default' ? {} : { effort }) },
-            () => request({ ...params, signal: requestSignal }), { billable: true })
-          if (result.usage) {
+          const addUsage = measured => {
+            if (!measured) return
             usage.calls++
-            usage.input += result.usage.input_tokens ?? 0
-            usage.output += result.usage.output_tokens ?? 0
-            usage.cacheRead += result.usage.cache_read_input_tokens ?? 0
-            usage.cacheWrite += result.usage.cache_creation_input_tokens ?? 0
-            usage.searches += result.usage.server_tool_use?.web_search_requests ?? 0
+            usage.input += measured.input_tokens ?? 0
+            usage.output += measured.output_tokens ?? 0
+            usage.cacheRead += measured.cache_read_input_tokens ?? 0
+            usage.cacheWrite += measured.cache_creation_input_tokens ?? 0
+            usage.searches += measured.server_tool_use?.web_search_requests ?? 0
           }
+          let result
+          try {
+            result = await memo(phase, { model: selectedModel, ...params, ...(effort === 'default' ? {} : { effort }) },
+              async () => {
+                const message = await request({ ...params, signal: requestSignal })
+                return phase === 'research' ? compactSearchEvidence(message) : message
+              }, { billable: true })
+          } catch (error) {
+            addUsage(error?.usage)
+            throw error
+          }
+          addUsage(result.usage)
           return result
         },
       })
@@ -115,7 +126,7 @@ export function hostedPreview({
         .map(({ id, title, url }) => ({ id, title, url }))
       return measuredReply(200, { ...result.answer, sources: links })
     } catch (error) {
-      console.warn('[Sven preview]', phase, String(error?.message).match(/^Claude API svarte HTTP \d{3}$/)?.[0] ?? error?.name)
+      console.warn('[Sven preview]', phase, String(error?.message).match(/^Claude API svarte HTTP \d{3}$/)?.[0] ?? error?.code ?? error?.name, ['pause_turn', 'max_tokens', 'refusal'].includes(error?.stopReason) ? error.stopReason : undefined)
       if (signal.aborted) return reply(202, { pending: true })
       const limited = /HTTP (402|429)$/.test(error?.message)
       return measuredReply(limited ? 429 : 502, { error: limited

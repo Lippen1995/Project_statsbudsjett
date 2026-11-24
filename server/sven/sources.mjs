@@ -44,6 +44,63 @@ async function municipalSources(read, question, years, metrics) {
   }))).flat()
 }
 
+export function selectedBudgetReferences(question) {
+  return [...new Set(Array.from(question.matchAll(/(?:^|\n)Fellestalls rad-ID: ([ui]-\d{1,3}-\d{4}(?:-\d{1,3})?)(?=\s|$)/g),
+    ([, id]) => id))].slice(0, 4)
+}
+
+const chapterDocuments = {
+  'u-17-1720': [{
+    id: 'fd-prop1s-2025-1720',
+    title: 'Forsvarsdepartementets budsjettproposisjon for 2025, kapittel 1720 Forsvaret',
+    url: 'https://www.regjeringen.no/no/dokumenter/prop.-1-s-20242025/id3057361/?ch=3',
+    text: 'Budsjettproposisjonen for 2025 bruker navnet «Forsvaret» for kap. 1720. Post 01 er driftsutgifter for Forsvaret. ' +
+      'Departementets fordeling omfatter blant annet Hæren, Sjøforsvaret, Luftforsvaret og Forsvarsstaben. Flere foreslåtte satsinger ' +
+      'var avsatt sentralt i Forsvarsstaben i forslaget, med senere fordeling til driftsenhetene. Dokumentet beskriver budsjettforslaget, ikke regnskapsført fordeling i 2025.',
+  }, {
+    id: 'fd-prop16s-2025-1720',
+    title: 'Forsvarsdepartementets omtale av kapittelomleggingen fra 2021',
+    url: 'https://www.regjeringen.no/no/dokumenter/prop.-16-s-20252026/id3140207/?ch=3',
+    text: 'Fra 2021 ble forsvarsgrenene og andre selvstendige enheter i Forsvaret samlet under kap. 1720 Forsvaret. ' +
+      'Etterretningstjenesten (kap. 1735) og Redningshelikoptertjenesten (kap. 1791) ble holdt utenfor. ' +
+      'Tall for kap. 1720 før og etter 2021 gjelder derfor forskjellige avgrensninger.',
+  }],
+}
+
+async function budgetRowSources(read, ids) {
+  const files = new Map()
+  const result = []
+  for (const id of ids) {
+    const file = id.startsWith('u-') ? 'utgifter.json' : 'inntekter.json'
+    if (!files.has(file)) files.set(file, await read(file))
+    const [, division, chapterNumber] = id.split('-')
+    const department = files.get(file).find(row => row.id === id.slice(0, 2 + division.length))
+    const chapterId = id.split('-').slice(0, 3).join('-')
+    const chapter = department?.children?.find(row => row.id === chapterId)
+    const selected = id === chapterId ? chapter : chapter?.children?.find(row => row.id === id)
+    if (!selected) continue
+    const documents = chapterDocuments[chapterId] ?? []
+    result.push({
+      id: 'dfo-' + id,
+      title: `DFØ · ${selected.tag} · ${selected.navn}`,
+      url: 'https://statsregnskapet.dfo.no/',
+      snapshotUrl: 'https://fellestall.no/data/' + file,
+      text: JSON.stringify({
+        department: department.navn, chapter: chapterNumber, selected: selected.tag, labelInDataset: selected.navn,
+        ...(documents.length ? { officialChapterNameSince2021: 'Forsvaret', scopeChangedIn: 2021 } : {}),
+        millionNokByYearAndPhase: selected.serier,
+        posts: selected.children?.map(row => ({
+          post: row.tag, label: row.navn, latestAccounting: Object.entries(row.serier)
+            .filter(([, amount]) => Number.isFinite(amount.regnskap)).sort((a, b) => Number(a[0]) - Number(b[0])).slice(-3)
+            .map(([year, amount]) => [year, amount.regnskap]),
+        })),
+        method: 'Millioner kroner i løpende priser. Regnskap og budsjettfaser er separate serier. Bruk dokumentomtalen for hva kapitlet dekker.',
+      }),
+    }, ...documents)
+  }
+  return [...new Map(result.map(source => [source.id, source])).values()]
+}
+
 async function stateSources(read, stateReport, years) {
   const meta = await read('meta.json')
   const available = meta.regnskap_aar
@@ -106,6 +163,11 @@ export async function resolveSvenSources(question, dataDir, {
   stateReport = options => buildReport(dataDir, options),
 } = {}) {
   if (typeof question !== 'string' || !question.trim()) throw new TypeError('Spørsmålet mangler')
+  const budgetRows = selectedBudgetReferences(question)
+  if (budgetRows.length) {
+    const evidence = await budgetRowSources(read, budgetRows)
+    if (evidence.length) return evidence
+  }
   const normalized = normalize(question)
   const years = [...new Set(Array.from(normalized.matchAll(supportedPeriod), ([year]) => Number(year)))].sort()
   if (/oljepengebruk|oljepenger|strukturelt oljekorrigert/.test(normalized)) return oilSources(read, years)
