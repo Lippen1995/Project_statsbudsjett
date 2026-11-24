@@ -23,6 +23,32 @@ const effortLevels = [
   { id: 'high', label: 'Høy · grundigere' },
 ]
 
+// Output includes thinking. Give source work and synthesis more room than
+// interpretation and review, with separate limits for the two models.
+const outputLimits = {
+  [model]: {
+    default: { shorter: 6_000, research: 16_000, answer: 12_000 },
+    low: { shorter: 4_000, research: 10_000, answer: 8_000 },
+    medium: { shorter: 6_000, research: 16_000, answer: 12_000 },
+    high: { shorter: 10_000, research: 24_000, answer: 18_000 },
+  },
+  'claude-opus-5-5': {
+    default: { shorter: 8_000, research: 24_000, answer: 18_000 },
+    low: { shorter: 5_000, research: 12_000, answer: 10_000 },
+    medium: { shorter: 8_000, research: 24_000, answer: 18_000 },
+    high: { shorter: 16_000, research: 48_000, answer: 32_000 },
+  },
+}
+
+const researchPhases = ['research', 'research-followup', 'direct-fetch']
+const requestTimeoutMs = 270_000
+
+function phaseOutputLimit(selectedModel, effort, phase) {
+  const limits = outputLimits[selectedModel][effort]
+  if (researchPhases.includes(phase)) return limits.research
+  return phase.startsWith('answer-') ? limits.answer : limits.shorter
+}
+
 async function resolveSources(question, signal, loadSnapshot) {
   return resolveSvenSources(question, undefined, {
     read: async file => JSON.parse(await loadSnapshot(file, signal)),
@@ -47,11 +73,11 @@ export function hostedPreview({
   createRequest = claudeTransport,
   sources = resolveSources,
   cache = getCache({ namespace: 'fellestall-sven-preview-v1' }),
-  onUsage = ({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason }) => {
-    console.info('[Sven usage]', JSON.stringify({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason }))
+  onUsage = ({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }) => {
+    console.info('[Sven usage]', JSON.stringify({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }))
   },
 } = {}) {
-  const requests = previewRequests(cache)
+  const requests = previewRequests(cache, { leaseMs: requestTimeoutMs + 30_000 })
   const loadSnapshot = snapshotLoader({ cache })
   const reply = (status, body) => ({ status, body })
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
@@ -62,15 +88,15 @@ export function hostedPreview({
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
     if (busy) return reply(429, { error: 'Sven undersøker et annet spørsmål. Prøv igjen snart.' })
     busy = true
-    const signal = AbortSignal.timeout(150_000)
+    const signal = AbortSignal.timeout(requestTimeoutMs)
     let phase = 'interpret'
     const usage = { calls: 0, input: 0, output: 0, cacheRead: 0, cacheWrite: 0, searches: 0 }
     const measuredReply = (status, body) => reply(status, {
       ...body, ...(usage.calls ? { model: selectedModel, effort, usage } : {}),
     })
     try {
-      const request = createRequest({ apiKey, model: selectedModel, timeoutMs: effort === 'high' ? 65_000 : 55_000,
-        cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
+      const request = createRequest({ apiKey, model: selectedModel, timeoutMs: 230_000,
+        stream: true, cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
       const result = await researchWithSven({
         question, history, asOf, signal, maxSearches: 3, conversational: true,
         editorialExamples: selectEditorialExamples({ question }, [example]),
@@ -84,10 +110,7 @@ export function hostedPreview({
         },
         request: async ({ signal: requestSignal, ...input }) => {
           phase = input.phase
-          const maxTokens = effort === 'high'
-            ? Math.max(4000, Math.min(input.maxTokens ?? 4000, 6000))
-            : Math.min(input.maxTokens ?? 2400, 3600)
-          const params = { ...input, maxTokens }
+          const params = { ...input, maxTokens: phaseOutputLimit(selectedModel, effort, phase) }
           requestSignal?.throwIfAborted()
           const addUsage = measured => {
             if (!measured) return

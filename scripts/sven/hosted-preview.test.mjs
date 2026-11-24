@@ -280,7 +280,7 @@ test('modell og resonneringsstyrke gjelder hele forespørselen og rapporteres sa
     createRequest: ({ model, effort }) => async ({ maxTokens }) => {
       assert.equal(model, 'claude-opus-5-5')
       assert.equal(effort, 'high')
-      assert.equal(maxTokens, 4000)
+      assert.equal(maxTokens, 16_000)
       return {
         ...response({ intent, action: 'reply', reply: 'Svar' }),
         usage: { input_tokens: 17, output_tokens: 4, cache_read_input_tokens: 512, cache_creation_input_tokens: 0 },
@@ -424,5 +424,37 @@ test('konkrete spørsmål om budsjettposter blir undersøkt videre når tallene 
     assert.deepEqual(phases, initialWeb
       ? ['interpret', 'research', 'research-followup', 'answer-0', 'review-0']
       : ['interpret', 'answer-0', 'review-0', 'research-followup', 'answer-1', 'review-1'])
+  }
+})
+
+test('preview uses the selected model and effort to give research and synthesis separate output limits', async () => {
+  for (const [model, effort, expected] of [
+    ['claude-sonnet-5-5', 'default', [6_000, 16_000, 12_000, 6_000]],
+    ['claude-sonnet-5-5', 'high', [10_000, 24_000, 18_000, 10_000]],
+    ['claude-opus-5-5', 'high', [16_000, 48_000, 32_000, 16_000]],
+  ]) {
+    const limits = []
+    const preview = hostedPreview({
+      environment: 'preview', apiKey: 'test',
+      sources: async () => [{ id: 'local', title: 'Regnskap', text: 'Tall fra regnskapet', url: 'https://fellestall.no/' }],
+      createRequest: options => async ({ phase, maxTokens }) => {
+        assert.equal(options.model, model)
+        assert.equal(options.effort, effort === 'default' ? undefined : effort)
+        assert.equal(options.stream, true)
+        assert(options.timeoutMs > 180_000)
+        limits.push(maxTokens)
+        if (phase === 'interpret') return response({ intent, action: 'research', tools: ['fellestall', 'web'], plan: searchPlan })
+        if (phase === 'research') return { content: [] }
+        if (phase === 'answer-0') return response({
+          summary: 'Svar', findings: [{ text: 'Tall fra regnskapet', sourceIds: ['local'] }],
+          recommendation: null, uncertainties: [],
+        })
+        assert.equal(phase, 'review-0')
+        return response({ passed: true, issues: [] })
+      },
+    })
+    const result = await call(preview, 'POST', { question: 'Hva viser regnskapet?', model, effort })
+    assert.equal(result.status, 200)
+    assert.deepEqual(limits, expected)
   }
 })

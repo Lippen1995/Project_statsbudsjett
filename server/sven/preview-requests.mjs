@@ -4,7 +4,6 @@ import { deflateRawSync, inflateRawSync } from 'node:zlib'
 export const validRequestId = id => typeof id === 'string' && /^[a-f0-9]{64}$/.test(id)
 const cacheKey = id => 'request-v2:' + createHash('sha256').update(id).digest('hex')
 const ttl = 900
-const leaseMs = 175_000
 
 function seal(id, value) {
   const iv = randomBytes(12)
@@ -21,7 +20,7 @@ function unseal(id, value) {
   return JSON.parse(inflateRawSync(Buffer.concat([decipher.update(bytes.subarray(28)), decipher.final()])).toString('utf8'))
 }
 
-export function previewRequests(cache, { now = Date.now } = {}) {
+export function previewRequests(cache, { now = Date.now, leaseMs = 175_000 } = {}) {
   const active = new Set()
   const pending = { status: 202, body: { pending: true } }
   const missing = {

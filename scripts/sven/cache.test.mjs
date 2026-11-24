@@ -63,3 +63,74 @@ test('public snapshots coalesce, revalidate by ETag and replace stale data', asy
   assert.equal(JSON.parse(await load(file)).latestYear, 2026)
   assert.deepEqual(fetches, [undefined, '"v1"', '"v1"'])
 })
+
+const sse = events => {
+  const content = events.map(event => `event: ${event.type}\r\ndata: ${JSON.stringify(event)}\r\n\r\n`).join('')
+  const bytes = new TextEncoder().encode(content)
+  return new Response(new ReadableStream({
+    start(controller) {
+      for (let i = 0; i < bytes.length; i += 37) controller.enqueue(bytes.subarray(i, i + 37))
+      controller.close()
+    },
+  }), { headers: { 'content-type': 'text/event-stream; charset=utf-8' } })
+}
+
+test('strømmet Claude-research beholder kilder og kumulativ bruk ved max_tokens', async () => {
+  const citation = { type: 'web_search_result_location', cited_text: 'Kildeutdrag', url: 'https://www.ssb.no/' }
+  const search = { type: 'web_search_tool_result', content: [{ type: 'web_search_result', title: 'SSB', url: citation.url }] }
+  const events = [
+    { type: 'message_start', message: { id: 'test-stream', model: 'claude-opus-5-5',
+      usage: { input_tokens: 12, output_tokens: 1, cache_read_input_tokens: 100 } } },
+    { type: 'content_block_start', index: 0, content_block: { type: 'thinking', thinking: '' } },
+    { type: 'content_block_delta', index: 0, delta: { type: 'thinking_delta', thinking: 'Intern resonnering' } },
+    { type: 'content_block_start', index: 1, content_block: search },
+    { type: 'content_block_start', index: 2, content_block: { type: 'text', text: '', citations: null } },
+    { type: 'content_block_delta', index: 2, delta: { type: 'text_delta', text: 'Første ' } },
+    { type: 'ping' },
+    { type: 'content_block_delta', index: 2, delta: { type: 'text_delta', text: 'utdrag.' } },
+    { type: 'content_block_delta', index: 2, delta: { type: 'citations_delta', citation } },
+    { type: 'message_delta', delta: { stop_reason: 'max_tokens' }, usage: {
+      output_tokens: 30, server_tool_use: { web_search_requests: 2 },
+    } },
+    { type: 'message_stop' },
+  ]
+  const records = []
+  const request = claudeTransport({
+    apiKey: 'test', model: 'claude-opus-5-5', effort: 'high', stream: true, onUsage: entry => records.push(entry),
+    fetchImpl: async (_, { body }) => {
+      const payload = JSON.parse(body)
+      assert.equal(payload.stream, true)
+      assert.equal(payload.max_tokens, 48_000)
+      assert.deepEqual(payload.output_config, { effort: 'high' })
+      return sse(events)
+    },
+  })
+  const result = await request({ instructions: 'Undersøk', input: 'Privat', phase: 'research-followup', maxTokens: 48_000 })
+  assert.deepEqual(result.content, [search, { type: 'text', text: 'Første utdrag.', citations: [citation] }])
+  assert.equal(records.length, 1)
+  assert.equal(records[0].input, 12)
+  assert.equal(records[0].output, 30)
+  assert.equal(records[0].cacheRead, 100)
+  assert.equal(records[0].searches, 2)
+  assert.equal(records[0].stopReason, 'max_tokens')
+  assert.equal(records[0].maxTokens, 48_000)
+})
+
+test('en avbrutt Claude-strøm godkjennes ikke som et ferdig svar', async () => {
+  let calls = 0
+  const records = []
+  const request = claudeTransport({
+    apiKey: 'test', model: 'claude-opus-5-5', stream: true, onUsage: entry => records.push(entry),
+    fetchImpl: async () => {
+      calls++
+      return sse([{ type: 'message_start', message: { usage: { input_tokens: 12 } } }])
+    },
+  })
+  await assert.rejects(request({ instructions: 'Svar', input: 'Spørsmål' }), error => {
+    assert.equal(error.usage.input_tokens, 12)
+    return /uten et ferdig svar/.test(error.message)
+  })
+  assert.equal(calls, 1)
+  assert.equal(records[0].input, 12)
+  assert.equal(records[0].stopReason, 'stream_interrupted')
+})
