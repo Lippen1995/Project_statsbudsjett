@@ -2,13 +2,15 @@ import { fromBuffer } from 'yauzl'
 import { SaxesParser } from 'saxes'
 import { parse } from 'csv-parse/sync'
 import ExcelJS from 'exceljs'
+import { describeOfficeParts, readPresentationText, relatedOfficeParts } from './office-edit.mjs'
+import { isImage } from './vision-import.mjs'
 
 export const maxUploadBytes = 2 * 1024 * 1024
 const maxChars = 24_000
 const uploadTypes = new Set(['csv', 'tsv', 'txt', 'md', 'xlsx', 'docx', 'pptx', 'pdf'])
 const maxZipPayload = 24 * 1024 * 1024
 
-function unzipOffice(bytes, wanted) {
+export function unzipOffice(bytes, wanted) {
   return new Promise((resolve, reject) => {
     fromBuffer(bytes, { lazyEntries: true, validateEntrySizes: true }, (error, archive) => {
       if (error) return reject(error)
@@ -118,42 +120,55 @@ async function pdfText(bytes) {
   try {
     let text = ''
     let page = 1
+    let scanned = 0
     for (; page <= Math.min(document.numPages, 80) && text.length < maxChars; page++) {
       const contents = await (await document.getPage(page)).getTextContent()
       const pageText = contents.items.map(item => (item.str ?? '') + (item.hasEOL ? '\n' : '')).join('')
       if (pageText?.trim()) text += `Side ${page}\n${pageText}\n\n`
+      else scanned++
     }
-    return { text, partial: page <= document.numPages }
+    return { text, partial: page <= document.numPages || scanned > 0, pageCount: document.numPages, scanned }
   } finally {
     await document.loadingTask.destroy()
   }
 }
 
-export async function extractUpload(name, bytes) {
+export async function extractUpload(name, bytes, { readVisual, visual = false } = {}) {
   if (typeof name !== 'string' || name.length > 180 || /[\\/\x00-\x1f]/.test(name)) {
     throw new Error('Vedlegget må ha et gyldig filnavn.')
   }
   const type = name.split('.').at(-1).toLowerCase()
-  if (!uploadTypes.has(type) || !bytes.length || bytes.length > maxUploadBytes) {
-    throw new Error('Velg Excel, Word, PowerPoint, PDF, CSV, TSV eller tekst opptil 2 MB.')
+  if ((!uploadTypes.has(type) && !isImage(type)) || !bytes.length || bytes.length > maxUploadBytes) {
+    throw new Error('Velg Excel, Word, PowerPoint, PDF, bilde, CSV eller tekst opptil 2 MB.')
   }
-  let text, partial = false
-  if (type === 'xlsx') ({ text, partial } = await workbookText(bytes))
-  else if (type === 'pdf') ({ text, partial } = await pdfText(bytes))
-  else if (type === 'docx') {
-    const parts = await unzipOffice(bytes, file => file === 'word/document.xml')
-    if (parts.size) text = officeParagraphs(parts.get('word/document.xml'), 'w')
+  let parsed = {}, editable = ''
+  if (isImage(type)) {
+    if (!readVisual) throw new Error('Visuell dokumentlesing er ikke tilgjengelig.')
+    parsed = await readVisual({ bytes, extension: type })
+  } else if (type === 'pdf') {
+    parsed = await pdfText(bytes)
+    if (readVisual && (visual || !parsed.text.trim() || (parsed.scanned > 0 && parsed.pageCount <= 20))) {
+      parsed = await readVisual({ bytes, extension: type, pageCount: parsed.pageCount })
+    }
+  } else if (type === 'xlsx') {
+    parsed = await workbookText(bytes)
+    editable = describeOfficeParts(await unzipOffice(bytes, relatedOfficeParts), type)
+  } else if (type === 'docx') {
+    const parts = await unzipOffice(bytes, relatedOfficeParts)
+    if (parts.has('word/document.xml')) parsed.text = officeParagraphs(parts.get('word/document.xml'), 'w')
+    editable = describeOfficeParts(parts, type)
   } else if (type === 'pptx') {
-    const parts = await unzipOffice(bytes, file => /^ppt\/slides\/slide\d+\.xml$/.test(file))
-    text = [...parts].sort(([a], [b]) => a.localeCompare(b, 'en', { numeric: true }))
-      .map(([, xml], index) => `Lysbilde ${index + 1}\n${officeParagraphs(xml, 'a')}`).join('\n\n')
+    const parts = await unzipOffice(bytes, relatedOfficeParts)
+    parsed.text = readPresentationText(parts, xml => officeParagraphs(xml, 'a'))
+    editable = describeOfficeParts(parts, type)
   } else {
     const raw = new TextDecoder().decode(bytes)
     const decoded = raw.includes('\ufffd') ? new TextDecoder('windows-1252').decode(bytes) : raw
     if (decoded.includes('\0')) throw new Error('Filen inneholder binært innhold.')
-    text = ['csv', 'tsv'].includes(type) ? csvText(decoded, type) : decoded
+    parsed.text = ['csv', 'tsv'].includes(type) ? csvText(decoded, type) : decoded
   }
-  text = text?.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, '').trim()
+  let text = parsed.text?.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, '').trim()
+  let partial = parsed.partial === true
   if (!text) throw new Error(type === 'pdf'
     ? 'PDF-en inneholder ingen lesbar tekst. Bruk en PDF med tekstlag eller send tallene som Excel.'
     : 'Jeg fant ingen lesbar tekst eller celler i vedlegget.')
@@ -162,5 +177,6 @@ export async function extractUpload(name, bytes) {
     text = text.slice(0, lastLine > maxChars * 0.8 ? lastLine : maxChars)
     partial = true
   }
-  return { name, text, partial }
+  return { name, text, partial, ...(parsed.vision ? { vision: true } : {}), ...(parsed.usage ? { usage: parsed.usage } : {}),
+    ...(editable ? { editable, format: type } : {}) }
 }

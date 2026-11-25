@@ -2,6 +2,8 @@ import { createHash } from 'node:crypto'
 import { analysisPolicy, analyzeWithSven } from './analysis.mjs'
 import { chartInstructions, validateChart } from './charts.mjs'
 import { deliverableInstructions, validateDeliverables } from './deliverables.mjs'
+import { advancedRouting, attachAdvancedFields, mergeRevision, resolvePriorSources } from './advanced-tools.mjs'
+import { computeInstructions } from './run-analysis-code.mjs'
 import { parseModelJSON } from './provider.mjs'
 import { selectedBudgetReferences } from './sources.mjs'
 import { deriveMunicipalEvidence } from './calculations.mjs'
@@ -156,7 +158,7 @@ export function compactSearchEvidence(message) {
   return { sources, leads: [...leads.values()], errors: toolErrors(message), usage: message.usage, stopReason: message.stop_reason }
 }
 
-function validateTurn(turn, knownUrls, charts, files, uploads) {
+function validateTurn(turn, knownUrls, charts, files, uploads, advanced, prior) {
   const { action, reply, tools, plan, urls } = turn ?? {}
   const { request, purpose, meaning } = turn?.intent ?? {}
   if (![request, purpose, meaning].every(value => text(value) && value.length <= 1500)) {
@@ -166,10 +168,12 @@ function validateTurn(turn, knownUrls, charts, files, uploads) {
   if (['reply', 'clarify'].includes(action) && text(reply) && reply.length <= 3000) {
     const chart = charts && action === 'reply' && validateChart(turn.chart, new Set())
     const deliverables = files && action === 'reply' && validateDeliverables(turn.deliverables, new Set(), { hasChart: Boolean(chart) })
-    return { intent, action, reply: reply.trim(), ...(chart ? { chart } : {}), ...(deliverables ? { deliverables } : {}) }
+    const result = { intent, action, reply: reply.trim(), ...(chart ? { chart } : {}), ...(deliverables ? { deliverables } : {}) }
+    return advanced && action === 'reply' ? attachAdvancedFields(result, turn.deliverables, new Set()) : result
   }
   if (action === 'research' && Array.isArray(tools) && tools.length > 0 && new Set(tools).size === tools.length &&
-      tools.every(tool => ['fellestall', 'direct', 'web'].includes(tool) || (tool === 'uploads' && uploads.length))) {
+      tools.every(tool => ['fellestall', 'direct', 'web'].includes(tool) || (tool === 'uploads' && uploads.length) ||
+        (advanced && (tool === 'compute' || (tool === 'versions' && prior))))) {
     const directUrls = tools.includes('direct') && Array.isArray(urls)
       ? [...new Set(urls.filter(url => knownUrls.includes(url)))].slice(0, 3) : []
     return { intent, action, tools, directUrls, plan: validatePlan(plan, { web: tools.includes('web') }) }
@@ -221,6 +225,7 @@ export function validateAudit(audit) {
 // Each checkpoint must finish before the next billed step. A caller can persist
 // these privately. No customer text is written to repository or telemetry.
 export async function researchWithSven({ question, surface = 'chat', recommendationRequested = false, conversational = false, charts = false, files = false,
+  advanced = false, prior = null, compute,
   sources: supplied = [], uploads = [], history = [], editorialExamples = [], plan: suppliedPlan, asOf = new Date().toISOString().slice(0,10),
   tuning = builtinSettings, maxSearches = tuning.maxSearches, maxSourceChars = 100000, signal, checkpoint = async () => {},
   request, localSources = async () => [] }) {
@@ -239,14 +244,17 @@ export async function researchWithSven({ question, surface = 'chat', recommendat
   const brief = { question, history, asOf, policy, responseDensity:settings.responseDensity }
   const knownUrls = conversational ? knownDocumentUrls(question, history) : []
   const planningInput = { ...brief, ...(conversational ? { knownUrls } : {}), ...(editorialExamples.length ? { editorialExamples } : {}),
-    ...(uploads.length ? { uploads: uploads.map(({ id, title, text }) => ({ id, title, sample: text.slice(0, 1300) })) } : {}) }
+    ...(uploads.length ? { uploads: uploads.map(({ id, title, text, editable }) => ({ id, title, sample: text.slice(0, 1300), ...(editable ? { editable } : {}) })) } : {}),
+    ...(prior ? { prior: { title: prior.answer.deliverables?.title ?? prior.answer.chart?.title, summary: prior.answer.summary } } : {}),
+  }
   const planningInstructions = editorialExamples.length
     ? planInstructions + '\nTidligere saker kan gi ideer til hva som er verdt å undersøke. Underbygg denne saken med egne kilder.'
     : planInstructions
   const turn = conversational && !suppliedPlan
     ? (!uploads.length && interpretGreeting(question)) || validateTurn(parseModelJSON(await run('interpret',
       [conversationInstructions, ...(charts ? [chartRouting] : []),
-        ...(files ? [fileRouting] : []), planningInstructions.replace('Svar kun JSON:', 'JSON-format for feltet "plan":')].join('\n\n'), planningInput)), knownUrls, charts, files, uploads)
+        ...(files ? [fileRouting] : []), ...(advanced ? [advancedRouting] : []),
+        planningInstructions.replace('Svar kun JSON:', 'JSON-format for feltet "plan":')].join('\n\n'), planningInput)), knownUrls, charts, files, uploads, advanced, prior)
     : null
   if (turn && turn.action !== 'research') return { status: 'conversation', reply: turn.reply,
     ...(turn.chart ? { chart: turn.chart } : {}), ...(turn.deliverables ? { deliverables: turn.deliverables } : {}) }
@@ -281,6 +289,7 @@ gir tilstrekkelig grunnlag for spørsmålet, inkludert riktig år, geografi og s
     gaps.push(...toolErrors(direct).map(error => `Kildeverktøy: ${error.tool}/${error.code}`))
   }
   const needsFallbackSearch = turn && !turn.tools.includes('web') && !selectedUploads.length &&
+    !turn.tools.includes('versions') && !turn.tools.includes('compute') &&
     (turn.tools.includes('direct') ? !directCovered : !local.length)
   const searchRequest = () => run('research', `Undersøk denne planen med nettsøk. Hent originaldokumenter der mulig.
 Prioriter det som må besvares utover regnskapstallene. Bruk identifikator, år og konkret informasjonsbehov i første søk.
@@ -331,6 +340,22 @@ Returner korte kildebelagte funn med sitater, slik at funnene kan brukes videre.
   }
   addSources([...supplied, ...selectedUploads, ...local, ...directEvidence, ...web.sources])
   addSources(deriveMunicipalEvidence(sources))
+  if (prior && advanced) addSources(resolvePriorSources(prior, sources))
+  if (advanced && compute && turn?.tools.includes('compute')) {
+    if (!sources.length) addSources([{ id: 'oppgitte-tall', title: 'Tall og antakelser fra meldingen', type: 'upload', text: question }])
+    try {
+      const { code, method } = parseModelJSON(await run('compute-code', computeInstructions, {
+        question, intent: turn.intent, sources: sources.map(({ id, title, text }) => ({ id, title, text })),
+      }, { maxTokens: 4800 }))
+      if (!text(method) || method.length > 1000) throw new Error('Mangler forklaring av metoden')
+      const value = await compute(code, sources)
+      addSources([{ id: 'sven-beregning', title: method, type: 'calculation', text: JSON.stringify({ method, value, code,
+        sourceIds: sources.map(source => source.id) }) }])
+    } catch (error) {
+      if (signal?.aborted) throw error
+      gaps.push('Kodekjøringen kunne ikke fullføres. Oppgi hva alternativt grunnlag faktisk støtter.')
+    }
+  }
   let triedFollowup = false
   async function searchForMissingEvidence(query) {
     triedFollowup = true
@@ -365,10 +390,12 @@ Kildebelegg funnene med sitater. Skill gjennomført aktivitet fra forslag og kos
   let corrections = null
   let answer, audit
   for (let attempt = 0; attempt < 2; attempt++) {
-    answer = await analyzeWithSven({ question: JSON.stringify({ ...researchBrief, plan, coverageGaps: gaps, corrections }), sources, surface, recommendationRequested, charts, files },
-      async ({ instructions, input }) => parseModelJSON(await run(`answer-${attempt}`, instructions + `\nLengdepreferanse: ${settings.responseDensity}. Behold alltid nødvendige kilder, motargumenter og forbehold.`, JSON.parse(input), { maxTokens: 6000 })))
+    answer = await analyzeWithSven({ question: JSON.stringify({ ...researchBrief, plan, coverageGaps: gaps, corrections,
+      ...(prior ? { prior: prior.answer } : {}) }), sources, surface, recommendationRequested, charts, files, advanced },
+      async ({ instructions, input }) => mergeRevision(prior, parseModelJSON(await run(`answer-${attempt}`, instructions + `\nLengdepreferanse: ${settings.responseDensity}. Behold alltid nødvendige kilder, motargumenter og forbehold.`, JSON.parse(input), { maxTokens: 6000 }))))
     const maySearch = conversational && attempt === 0 && !triedFollowup && searchesRemaining > 0 && !selectedUploads.length
-    audit = validateAudit(parseModelJSON(await run(`review-${attempt}`, auditInstructions + (conversational ? coverageInstructions : '') + (charts ? chartReview : '') + (files ? fileReview : ''),
+    audit = validateAudit(parseModelJSON(await run(`review-${attempt}`, auditInstructions + (conversational ? coverageInstructions : '') + (charts ? chartReview : '') + (files ? fileReview : '') +
+      (advanced ? '\nEtterprøv kodeberegninger, scenarienes enheter og grunnlag, og at forespurte revisjoner bevarer andre deler av leveransen. Kontroller at filendringer bruker oppgitte felt-ID-er.' : ''),
       { ...researchBrief, allowRecommendation: policy.allowRecommendation, answer, sources,
         ...(conversational ? { searchesRemaining: maySearch ? searchesRemaining : 0, sourceLeads: maySearch ? web.leads ?? [] : [] } : {}) })))
     const query = maySearch && text(audit.followupSearch) ? audit.followupSearch.trim().slice(0, 300) : null

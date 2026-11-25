@@ -11,6 +11,8 @@ import { resolveSvenSources } from '../../server/sven/sources.mjs'
 import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
 import { previewRequests, validRequestId } from '../../server/sven/preview-requests.mjs'
 import { prepareMunicipalMap } from '../../server/sven/municipal-map.mjs'
+import { revisionContext } from '../../server/sven/advanced-tools.mjs'
+import { runAnalysisCode } from '../../server/sven/run-analysis-code.mjs'
 
 const model = 'claude-sonnet-5-5'
 const previewModels = [
@@ -52,6 +54,12 @@ export function hostedPreview({
   createRequest = claudeTransport,
   sources = resolveSources,
   mapGeometry = prepareMunicipalMap,
+  compute = runAnalysisCode,
+  googlePicker = {
+    clientId: process.env.SVEN_GOOGLE_PICKER_CLIENT_ID,
+    key: process.env.SVEN_GOOGLE_PICKER_KEY,
+    appId: process.env.SVEN_GOOGLE_PICKER_APP_ID,
+  },
   publishJob,
   cache = getCache({ namespace: 'fellestall-sven-preview-v1' }),
   onUsage = ({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }) => {
@@ -63,7 +71,8 @@ export function hostedPreview({
   const reply = (status, body) => ({ status, body })
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
   let busy = false
-  async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default', files = false, uploads = [] }, memo) {
+  async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default', files = false,
+    uploads = [], advanced = false, prior = null }, memo) {
     const greeting = !uploads.length && interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
@@ -82,7 +91,14 @@ export function hostedPreview({
       const request = createRequest({ apiKey, model: selectedModel, timeoutMs: publishJob ? 260_000 : null,
         stream: true, cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
       const result = await researchWithSven({
-        question, history, asOf, signal, maxSearches: 3, conversational: true, charts: true, files, uploads,
+        question, history, asOf, signal, maxSearches: 3, conversational: true, charts: true, files, uploads, advanced, prior,
+        ...(advanced ? { compute: (code, inputs) => memo('compute-run', { code, inputs }, async () => {
+          try { return { value: await compute(code, inputs) } }
+          catch { return { failed: true } }
+        }).then(result => {
+          if (result.failed) throw new Error('Sven kunne ikke kjøre analyseprogrammet')
+          return result.value
+        }) } : {}),
         editorialExamples: selectEditorialExamples({ question }, [example]),
         localSources: async query => {
           const entry = await memo('local-sources', { query, asOf }, async () => {
@@ -144,10 +160,11 @@ export function hostedPreview({
       }
       const { deliverables } = result.answer
       const used = new Set([...result.answer.findings, result.answer.recommendation, result.answer.chart,
-        deliverables?.table, deliverables?.map, deliverables?.illustration, ...(deliverables?.sections ?? [])]
+        deliverables?.table, deliverables?.map, deliverables?.illustration, deliverables?.scenario,
+        ...(deliverables?.officeEdit ? [{ sourceIds: [deliverables.officeEdit.sourceId] }] : []), ...(deliverables?.sections ?? [])]
         .filter(Boolean).flatMap(finding => finding.sourceIds))
-      const links = result.sources.filter(source => used.has(source.id) && (source.url?.startsWith('https://') || source.type === 'upload'))
-        .map(({ id, title, url, type }) => type === 'upload' ? { id, title, type } : { id, title, url })
+      const links = result.sources.filter(source => used.has(source.id) && (source.url?.startsWith('https://') || ['upload', 'calculation'].includes(source.type)))
+        .map(({ id, title, url, type }) => ['upload', 'calculation'].includes(type) ? { id, title, type } : { id, title, url })
       return measuredReply(200, { ...result.answer, sources: links,
         ...(deliverables ? { deliverables: await withGeometry(deliverables) } : {}),
       })
@@ -167,13 +184,16 @@ export function hostedPreview({
     res.setHeader('Cache-Control', 'no-store')
     const send = (status, body) => res.status(status).json(body)
     if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
-    if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels, files: true })
+    if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels, files: true,
+      advanced: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
+    })
     if (req.method !== 'POST') return send(405, { error: 'Metoden støttes ikke.' })
     if (req.headers.origin !== `https://${req.headers.host}` ||
         req.headers['content-type']?.split(';', 1)[0] !== 'application/json') {
       return send(403, { error: 'Send spørsmålet fra den beskyttede forhåndsvisningen.' })
     }
-    const { requestId, resume, progress, question: rawQuestion, history = [], files: attachments = [], carryAttachments, model: selectedModel = model,
+    const { requestId, resume, progress, question: rawQuestion, history = [], files: attachments = [], carryAttachments,
+      projectFiles = [], revision, model: selectedModel = model,
       effort = 'default' } = req.body ?? {}
     if (!validRequestId(requestId)) return send(400, { error: 'Innsendingen mangler en gyldig ID. Last siden på nytt.' })
     if (progress === true) return send(200, await requests.progress(requestId))
@@ -190,18 +210,27 @@ export function hostedPreview({
     }
     if (!previewModels.some(option => option.id === selectedModel)) return send(400, { error: 'Denne modellen er ikke tilgjengelig.' })
     if (!effortLevels.some(option => option.id === effort)) return send(400, { error: 'Dette resonneringsnivået er ikke tilgjengelig.' })
-    if (!Array.isArray(attachments) || attachments.length > 3 || attachments.some(file =>
+    if (!Array.isArray(attachments) || attachments.length > 3 || !Array.isArray(projectFiles) || projectFiles.length > 6 ||
+      [...attachments, ...projectFiles].some(file =>
       typeof file?.name !== 'string' || !file.name.trim() || file.name.length > 180 ||
-      typeof file.text !== 'string' || !file.text.trim() || file.text.length > 24_000)) {
+      typeof file.text !== 'string' || !file.text.trim() || file.text.length > 24_000 ||
+      (file.editable != null && (typeof file.editable !== 'string' || file.editable.length > 10_000)))) {
       return send(400, { error: 'Sven kan motta opptil tre lesbare vedlegg per melding.' })
     }
-    const currentAttachments = carryAttachments === true && interpretGreeting(question) ? [] : attachments
-    const uploads = currentAttachments.map(({ name, text, partial }, index) => ({
-      id: `vedlegg-${index + 1}`, type: 'upload', title: name,
-      text: partial ? `Utdrag av vedlegget. Innhold kan mangle.\n${text}` : text,
+    const greeting = interpretGreeting(question)
+    const prior = revision ? revisionContext(revision) : null
+    if (revision && !prior) return send(422, { error: 'Sven kunne ikke åpne den valgte versjonen for redigering.' })
+    const asSources = (files, prefix) => files.map(({ name, text, partial, editable, vision, assetId }, index) => ({
+      id: typeof assetId === 'string' && /^[a-f0-9-]{36}$/.test(assetId) ? `fil-${assetId}` : `${prefix}-${index + 1}`,
+      type: 'upload', title: name,
+      ...(editable ? { editable: true } : {}),
+      text: [partial ? 'Utdrag av vedlegget. Innhold kan mangle.' : '', vision ? 'Visuelt lest vedlegg. Oppgi side ved bruk av PDF.' : '',
+        text, editable ? `Redigerbare felt i originalen:\n${editable}` : ''].filter(Boolean).join('\n\n'),
     }))
+    const uploads = [...asSources(carryAttachments === true && greeting ? [] : attachments, 'vedlegg'),
+      ...asSources(greeting ? [] : projectFiles, 'prosjektfil')]
     const asOf = new Date().toISOString().slice(0, 10)
-    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads }
+    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads, advanced: true, ...(prior ? { prior } : {}) }
     if (publishJob && apiKey && (uploads.length || !interpretGreeting(question))) {
       try {
         const { status, body } = await requests.enqueue(requestId, brief, publishJob)

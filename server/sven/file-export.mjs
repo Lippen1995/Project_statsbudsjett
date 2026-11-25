@@ -32,7 +32,7 @@ function exportSource({ id, title, url, type }) {
   title = asText(title, 300)
   id = asText(id, 180)
   const href = httpsUrl(url)
-  if (!id || !title || (!href && type !== 'upload')) return null
+  if (!id || !title || (!href && !['upload', 'calculation'].includes(type))) return null
   return { id, title, ...(href ? { url: href } : {}) }
 }
 
