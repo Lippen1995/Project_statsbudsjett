@@ -80,7 +80,7 @@ export function hostedPreview({
       const request = createRequest({ apiKey, model: selectedModel, timeoutMs: publishJob ? 260_000 : null,
         stream: true, cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
       const result = await researchWithSven({
-        question, history, asOf, signal, maxSearches: 3, conversational: true,
+        question, history, asOf, signal, maxSearches: 3, conversational: true, charts: true,
         editorialExamples: selectEditorialExamples({ question }, [example]),
         localSources: async query => {
           const entry = await memo('local-sources', { query, asOf }, async () => {
@@ -126,14 +126,16 @@ export function hostedPreview({
           return result
         },
       })
-      if (result.status === 'conversation') return measuredReply(200, directReply(result.reply).body)
+      if (result.status === 'conversation') return measuredReply(200, {
+        ...directReply(result.reply).body, ...(result.chart ? { chart: result.chart } : {}),
+      })
       if (result.status === 'no-evidence') {
         return measuredReply(422, { error: 'Jeg fant ikke kilder som kunne underbygge et svar på dette. Hvis du har en kilde, kan du gjerne dele den.' })
       }
       if (result.status !== 'reviewed') {
         return measuredReply(422, { error: 'Sven fant mangler i svaret. Prøv et mer avgrenset spørsmål.' })
       }
-      const used = new Set([...result.answer.findings, result.answer.recommendation]
+      const used = new Set([...result.answer.findings, result.answer.recommendation, result.answer.chart]
         .filter(Boolean).flatMap(finding => finding.sourceIds))
       const links = result.sources.filter(source => used.has(source.id) && source.url?.startsWith('https://'))
         .map(({ id, title, url }) => ({ id, title, url }))

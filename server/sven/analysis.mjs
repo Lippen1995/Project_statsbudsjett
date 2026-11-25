@@ -1,3 +1,5 @@
+import { chartInstructions, validateChart } from './charts.mjs'
+
 // Publication intent comes from the authorized brief, outside source material and model output.
 export function analysisPolicy({ surface, recommendationRequested = false }) {
   if (!['chat', 'editorial'].includes(surface) || typeof recommendationRequested !== 'boolean') {
@@ -64,13 +66,15 @@ function validateResult(result, idSet, policy) {
   }
 }
 
-export async function analyzeWithSven({ question, sources, surface, recommendationRequested }, generate) {
+export async function analyzeWithSven({ question, sources, surface, recommendationRequested, charts = false }, generate) {
   if (!nonempty(question)) throw new TypeError('Spørsmålet mangler')
   const policy = analysisPolicy({ surface, recommendationRequested })
   const ids = validateSources(sources)
   const result = await generate({
-    instructions: responseInstructions(policy),
+    instructions: responseInstructions(policy) + (charts ? '\n\n' + chartInstructions : ''),
     input: JSON.stringify({ question, sources }),
   })
-  return validateResult(result, ids, policy)
+  const answer = validateResult(result, ids, policy)
+  const chart = charts && validateChart(result.chart, ids)
+  return chart ? { ...answer, chart } : answer
 }

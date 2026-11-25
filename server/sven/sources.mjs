@@ -5,7 +5,16 @@ import { municipalMetrics } from './municipal-metrics.mjs'
 
 const readJson = async (dir, file) => JSON.parse(await readFile(join(dir, file), 'utf8'))
 const supportedPeriod = /\b(?:19|20)\d{2}\b/g
+const yearRange = /\b((?:19|20)\d{2})\s*(?:[-–—]|til|t\.o\.m\.)\s*((?:19|20)\d{2})\b/g
 const normalize = text => text.normalize('NFC').toLocaleLowerCase('nb-NO')
+
+function requestedYears(question) {
+  const years = new Set(Array.from(question.matchAll(supportedPeriod), ([year]) => Number(year)))
+  for (const [, from, to] of question.matchAll(yearRange)) {
+    for (let year = Number(from) + 1; year < Number(to); year++) years.add(year)
+  }
+  return [...years].sort((left, right) => left - right)
+}
 
 function mentionsTerm(question, name) {
   const escaped = normalize(name).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -192,7 +201,7 @@ export async function resolveSvenSources(question, dataDir, {
     if (evidence.length) return evidence
   }
   const normalized = normalize(question)
-  const years = [...new Set(Array.from(normalized.matchAll(supportedPeriod), ([year]) => Number(year)))].sort()
+  const years = requestedYears(normalized)
   if (/oljepengebruk|oljepenger|strukturelt oljekorrigert/.test(normalized)) return oilSources(read, years)
   const metrics = Object.entries(municipalMetrics).filter(([, label]) => mentionsTerm(normalized, label))
   if (metrics.length) return municipalSources(read, normalized, years, metrics)

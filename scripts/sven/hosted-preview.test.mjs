@@ -120,6 +120,52 @@ test('gjentatt innsending og gjenopptak gjenbruker resultatet på tvers av insta
   assert.doesNotMatch(JSON.stringify([...storage]), /Privat svar|Hva kan du hjelpe|\brequestId\b/)
 })
 
+const chart = {
+  type: 'line', title: 'Netto driftsutgifter i Oslo', axis: 'År', unit: 'Kr per innbygger',
+  series: ['Oslo'], rows: [{ label: '2023', values: [81000] }, { label: '2024', values: [null] },
+    { label: '2025', values: [87000] }], sourceIds: ['ssb'],
+}
+
+test('preview returnerer grafen og kilden etter kvalitetskontrollen', async () => {
+  const preview = hostedPreview({
+    environment: 'preview', apiKey: 'test',
+    sources: async () => [{ id: 'ssb', text: '2023: 81 000. 2024: mangler. 2025: 87 000.', title: 'SSB', url: 'https://www.ssb.no/' }],
+    createRequest: () => async ({ phase, instructions, input }) => {
+      if (phase === 'interpret') {
+        assert.match(instructions, /Chatten kan vise grafer direkte/)
+        return response({ intent, action: 'research', tools: ['fellestall'], plan: searchPlan })
+      }
+      if (phase === 'answer-0') {
+        assert.match(instructions, /Legg til feltet chart/)
+        return response({ summary: 'Utgiftene økte.', findings: [], uncertainties: [], recommendation: null, chart })
+      }
+      assert.equal(phase, 'review-0')
+      assert.deepEqual(JSON.parse(input).answer.chart, chart)
+      return response({ passed: true, issues: [] })
+    },
+  })
+  const { status, payload } = await call(preview, 'POST', { question: 'Vis netto driftsutgifter i Oslo i en graf' })
+  assert.equal(status, 200)
+  assert.deepEqual(payload.chart, chart)
+  assert.deepEqual(payload.sources, [{ id: 'ssb', title: 'SSB', url: 'https://www.ssb.no/' }])
+})
+
+test('brukerens egne tall kan vises med ett kall og ukjente kilde-ID-er avvises', async () => {
+  for (const sourceIds of [[], ['ukjent']]) {
+    const userChart = { ...chart, type: 'bar', sourceIds }
+    const preview = hostedPreview({
+      environment: 'preview', apiKey: 'test', sources: () => assert.fail('Brukerdata trenger ikke kildeoppslag'),
+      createRequest: () => async ({ phase }) => {
+        assert.equal(phase, 'interpret')
+        return response({ intent, action: 'reply', reply: 'Tallene du oppga.', chart: userChart })
+      },
+    })
+    const { status, payload } = await call(preview, 'POST', { question: 'Vis 81 000 i 2023 og 87 000 i 2025 i et stolpediagram' })
+    assert.equal(status, 200)
+    assert.deepEqual(payload.chart, sourceIds.length ? undefined : userChart)
+  }
+})
+
 test('en kort hilsen får svar uten leverandør, søk eller datagrunnlag', async () => {
   const preview = hostedPreview({
     environment: 'preview',

@@ -36,6 +36,11 @@ test('kommuneoppslag gir separate kilder for hvert etterspurt nøkkeltall', asyn
   assert.deepEqual(sources.map(s => JSON.parse(s.text).data[0].amountNokPerCapita), [79012, 13136])
 })
 
+test('intervaller henter også årene mellom endepunktene', async () => {
+  const [source] = await resolveSvenSources('Graf over netto driftsutgifter i Stavanger fra 2021 til 2025', dataDir)
+  assert.deepEqual(JSON.parse(source.text).data.map(row => row.year), [2021, 2022, 2023, 2024, 2025])
+})
+
 test('oljepengeoppslag skiller mellom budsjettfaser og beholder primærkilden', async () => {
   const sources = await resolveSvenSources('Hva var oljepengebruken i 2026 og 2027?', dataDir)
   const rows = sources.flatMap(s => JSON.parse(s.text).data)
