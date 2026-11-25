@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto'
 import { QueueClient } from '@vercel/queue'
 import { hostedPreview } from './hosted-preview.mjs'
 import { previewJobCodec, validRequestId } from '../../server/sven/preview-requests.mjs'
+export { default as watch } from './preview-watch.mjs'
 
 const queue = new QueueClient({ region: 'iad1' })
 const topic = 'sven-preview-analyses'

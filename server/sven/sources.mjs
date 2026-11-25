@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { buildReport } from '../../scripts/analyser/report.mjs'
 import { municipalMetrics } from './municipal-metrics.mjs'
+import { norwayPopulation, officialMunicipalCounts, publicCaseId, publicSchoolPupils, readPublicCase } from './policy-public-data.mjs'
 
 const readJson = async (dir, file) => JSON.parse(await readFile(join(dir, file), 'utf8'))
 const supportedPeriod = /\b(?:19|20)\d{2}\b/g
@@ -10,8 +11,9 @@ const throughLatest = /\b(?:siden|fra)\s+((?:19|20)\d{2})\b/
 const normalize = text => text.normalize('NFC').toLocaleLowerCase('nb-NO')
 
 function requestedYears(question) {
-  const years = new Set(Array.from(question.matchAll(supportedPeriod), ([year]) => Number(year)))
-  for (const [, from, to] of question.matchAll(yearRange)) {
+  const periodText = question.replace(/\bkap(?:ittel)?\.?\s*\d{4}(?:[\s,]*post\s*\d{1,3})?/gi, '')
+  const years = new Set(Array.from(periodText.matchAll(supportedPeriod), ([year]) => Number(year)))
+  for (const [, from, to] of periodText.matchAll(yearRange)) {
     for (let year = Number(from) + 1; year < Number(to); year++) years.add(year)
   }
   return [...years].sort((left, right) => left - right)
@@ -30,16 +32,25 @@ const serviceTerms = [
   ['FGK5', 'Samferdsel', /samferdsel/],
   ['FGK2', 'Kultur', /kultur/],
 ]
+const overviewCodes = { revenues: 'AGD13', expenses: 'AGD9', net_result: 'AGD23', debt: 'KG31', investments: 'AGI1', net_expenses: 'AGD1' }
+
+export const budgetPhases = Object.freeze([
+  { id: 'forslag', label: 'Regjeringens forslag' },
+  { id: 'saldert', label: 'Saldert budsjett · Stortingets vedtak' },
+  { id: 'revidert', label: 'Løpende revidert budsjett · registrerte endringsvedtak' },
+  { id: 'regnskap', label: 'Statsregnskap · faktisk bokført' },
+])
 
 function mentionsTerm(question, name) {
   const escaped = normalize(name).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   return new RegExp(`(?:^|[^\\p{L}\\p{N}])${escaped}(?=$|[^\\p{L}\\p{N}])`, 'u').test(question)
 }
 
-async function municipalSources(read, question, years, metrics, service) {
+async function municipalSources(read, question, years, metrics, service, insights, lens) {
   const index = await read('kostra/index.json')
-  const period = yearsThroughLatest(question, years, index.years)
-  const selectedYears = period.length ? period : years.length ? years : [index.latestYear]
+  const period = yearsThroughLatest(question, years, index.years ?? [])
+  const selectedYears = period.length ? period : years.length ? years :
+    lens === 'drivers' && index.years?.length > 1 ? index.years.slice(-2) : [index.latestYear]
   const entities = index.entities.filter(entity =>
     entity.kind === 'municipality' && entity.name.split(/\s+[–-]\s+/).some(name => name.length > 2 && mentionsTerm(question, name)))
   if (!entities.length) throw new Error('Oppgi kommunenavn for oppslag i kommuneregnskapet')
@@ -52,6 +63,7 @@ async function municipalSources(read, question, years, metrics, service) {
       const values = detail.services.find(serviceArea => serviceArea.code === code)?.metrics
       return [{ id: `kostra-${code.toLowerCase()}-${entity.code}`, title: `${name}, ${entity.name} kommunekonsern`,
         url: 'https://www.ssb.no/statbank/table/12362/',
+        ...(insights ? { snapshotUrl: `https://fellestall.no/data/kostra/entities/municipality-${entity.code}.json`, municipality: entity.code } : {}),
         updated: index.sources.find(item => item.source_table === '12362')?.fetched_at ?? index.updated,
         text: JSON.stringify({ kommune: entity.name, kommunenummer: entity.code, funksjon: code,
           boundaryHistory: detail.boundaryHistory,
@@ -68,10 +80,12 @@ async function municipalSources(read, question, years, metrics, service) {
       url: 'https://www.ssb.no/statbank/table/12137/',
       snapshotUrl: `https://fellestall.no/data/kostra/entities/municipality-${entity.code}.json`,
       updated: source?.fetched_at ?? index.updated,
+      ...(insights ? { municipality: entity.code } : {}),
       text: JSON.stringify({
         kommune: entity.name,
         kommunenummer: entity.code,
         metric,
+        ...(insights ? { boundaryHistory: detail.boundaryHistory ?? [], metricCode: overviewCodes[metric] } : {}),
         data: selectedYears.map(year => {
           const row = detail.overview[metric]?.[year]
           return metric === 'net_expenses'
@@ -88,6 +102,32 @@ async function priceIndex(read) {
   const kpi = await read('kpi.json')
   return { id: 'ssb-kpi-aarsindeks', title: 'SSB · Konsumprisindeksen, årsgjennomsnitt',
     url: 'https://www.ssb.no/statbank/table/14711/', text: JSON.stringify({ method: 'KPI totalindeks 2025 = 100.', indexByYear: kpi }) }
+}
+
+async function countsSources(expenses, question, fetchCounts, denominator) {
+  const definitions = parsed => denominator === 'population' || /per innbygger|befolkning/.test(question)
+    ? norwayPopulation : parsed.funksjon === 'FGK8b' ? publicSchoolPupils : norwayPopulation
+  const byKey = new Map()
+  for (const source of expenses) {
+    if (!source.municipality) continue
+    const parsed = JSON.parse(source.text)
+    const definition = definitions(parsed)
+    const years = parsed.data.filter(row => Number.isInteger(row.year)).map(row => row.year)
+    const key = definition.table + '-' + source.municipality
+    if (years.length >= 2) byKey.set(key, { years: [years[0], years.at(-1)], definition, parsed, region: source.municipality })
+  }
+  const responses = await Promise.allSettled([...byKey.values()].map(async ({ years, definition, parsed, region }) => {
+    const result = await fetchCounts(definition, region, years)
+    if (!Object.values(result.counts).some(Number.isFinite)) return null
+    return { id: `ssb-${definition.table}-${region}`, title: `${definition.label} · ${parsed.kommune}`,
+      url: `https://www.ssb.no/statbank/table/${definition.table}/`, snapshotUrl: result.url,
+      updated: result.updated, countMetadata: { region, table: definition.table, unit: definition.unit, label: definition.label },
+      text: JSON.stringify({ ...definition, region, countsByYear: result.counts,
+        method: definition === publicSchoolPupils ? 'Elevtall i kommunale grunnskoler. Årsregnskapet i kommunekonsernet kan dekke flere utgiftstyper enn undervisning for disse elevene.'
+          : 'Innbyggere ved inngangen til året. Hentet fra SSB og summert over begge kjønn og alle aldre.' }),
+    }
+  }))
+  return responses.flatMap(item => item.status === 'fulfilled' && item.value ? [item.value] : [])
 }
 
 export function selectedBudgetReferences(question) {
@@ -135,35 +175,75 @@ const chapterDocuments = {
   }],
 }
 
-async function budgetRowSources(read, ids) {
+export function findBudgetNodes(tree, { id, chapter, post }) {
+  const rows = []
+  for (const department of tree) for (const item of department.children ?? []) {
+    if (id ? !id.startsWith(item.id) : item.id.split('-')[2] !== chapter) continue
+    const selected = id ? id === item.id ? item : item.children?.find(row => row.id === id)
+      : post ? item.children?.find(row => Number(row.id.split('-')[3]) === Number(post)) : item
+    if (selected) rows.push({ department, chapter: item, selected })
+  }
+  return rows
+}
+
+export function budgetSelector(question) {
+  const found = question.match(/\bkap(?:ittel)?\.?\s*(\d{4})(?!\d)/i)
+  if (!found) return null
+  const post = question.slice(found.index + found[0].length).match(/^[\s,]*(?:\/\s*)?post\s*(\d{1,3})(?!\d)/i)?.[1]
+  return { chapter: found[1], ...(post ? { post } : {}) }
+}
+
+async function budgetRowSources(read, ids, selection, years, insights) {
   const files = new Map()
   const result = []
-  for (const id of ids) {
+  const idList = [...ids]
+  if (selection && !idList.length) {
+    for (const file of ['utgifter.json', 'inntekter.json']) {
+      const tree = await read(file)
+      files.set(file, tree)
+      const found = findBudgetNodes(tree, selection)
+      if (found.length) { idList.push(...found.map(row=>row.selected.id)); break }
+    }
+  }
+  const meta = insights ? await read('meta.json').catch(() => ({})) : {}
+  for (const id of idList) {
     const file = id.startsWith('u-') ? 'utgifter.json' : 'inntekter.json'
     if (!files.has(file)) files.set(file, await read(file))
-    const [, division, chapterNumber] = id.split('-')
-    const department = files.get(file).find(row => row.id === id.slice(0, 2 + division.length))
-    const chapterId = id.split('-').slice(0, 3).join('-')
-    const chapter = department?.children?.find(row => row.id === chapterId)
-    const selected = id === chapterId ? chapter : chapter?.children?.find(row => row.id === id)
-    if (!selected) continue
+    const tree = files.get(file)
+    const [match] = findBudgetNodes(tree, { id })
+    if (!match) continue
+    const { department, chapter, selected } = match
+    const chapterId = chapter.id
+    const chapterNumber = chapterId.split('-')[2]
+    const post = id.split('-')[3]
+    const scopes = insights ? findBudgetNodes(tree,{chapter:chapterNumber,post}).map(({department,selected})=>({
+      department:department.navn,id:selected.id,
+      accountingYears:Object.entries(selected.serier).filter(([,row])=>Number.isFinite(row.regnskap)).map(([year])=>Number(year)),
+    })) : []
     const documents = chapterDocuments[chapterId] ?? []
     result.push({
       id: 'dfo-' + id,
       title: `DFØ · ${selected.tag} · ${selected.navn}`,
       url: 'https://statsregnskapet.dfo.no/',
       snapshotUrl: 'https://fellestall.no/data/' + file,
+      ...(insights ? { budget: { id, years, latestAccounting: meta.siste_regnskap_aar,
+        proposalUrl: meta.kilder?.find(source => /Gul bok/i.test(source.navn))?.url,
+        proposalYear: meta.budsjettforslag?.findLast(proposal => proposal.phase === 'initial')?.year,
+        ...(scopes.length>1?{scopes}:{}),
+      } } : {}),
       text: JSON.stringify({
         department: department.navn, chapter: chapterNumber, selected: selected.tag, labelInDataset: selected.navn,
         ...(chapterId === 'u-17-1720' ? { officialChapterNameSince2021: 'Forsvaret', scopeChangedIn: 2021 } : {}),
         ...(chapterId === 'u-17-1760' ? { officialChapterNameIn2025: 'Forsvarsmateriell og større anskaffelser og vedlikehold' } : {}),
+        ...(scopes.length>1?{organizationalScopes:scopes}:{}),
         millionNokByYearAndPhase: selected.serier,
         posts: selected.children?.map(row => ({
           post: row.tag, label: row.navn, latestAccounting: Object.entries(row.serier)
             .filter(([, amount]) => Number.isFinite(amount.regnskap)).sort((a, b) => Number(a[0]) - Number(b[0])).slice(-3)
             .map(([year, amount]) => [year, amount.regnskap]),
         })),
-        method: 'Millioner kroner i løpende priser. Regnskap og budsjettfaser er separate serier. Bruk dokumentomtalen for hva kapitlet dekker.',
+        method: 'Millioner kroner i løpende priser. Regnskap og budsjettfaser er separate serier. Bruk dokumentomtalen for hva kapitlet dekker.' +
+          (insights ? ' Løpende revidert betyr saldert budsjett pluss registrerte endringsvedtak hos DFØ, og kan omfatte senere vedtak enn vårens RNB.' : ''),
       }),
     }, ...documents)
   }
@@ -230,22 +310,40 @@ async function oilSources(read, years) {
 export async function resolveSvenSources(question, dataDir, {
   read = file => readJson(dataDir, file),
   stateReport = options => buildReport(dataDir, options),
+  insights = false, lens, denominator, fetchCounts = officialMunicipalCounts, fetchCase = readPublicCase,
 } = {}) {
   if (typeof question !== 'string' || !question.trim()) throw new TypeError('Spørsmålet mangler')
-  const budgetRows = selectedBudgetReferences(question)
-  if (budgetRows.length) {
-    const evidence = await budgetRowSources(read, budgetRows)
-    if (evidence.length) return evidence
-  }
   const normalized = normalize(question)
   const years = requestedYears(normalized)
+  const budgetRows = selectedBudgetReferences(question)
+  const namedBudget = insights ? budgetSelector(normalized) : null
+  if (budgetRows.length || namedBudget) {
+    const evidence = await budgetRowSources(read, budgetRows, namedBudget, years, insights)
+    if (evidence.length) return evidence
+  }
+  if (insights) {
+    const link = question.match(/https:\/\/www\.stortinget\.no\/no\/Saker-og-publikasjoner\/Saker\/Sak\/?\?p=\d+/i)?.[0]
+    const id = publicCaseId(link ?? normalized.match(/\b(?:stortingssak|stortingets saks-id|sak-id)\s*[:#]?\s*(\d{4,8})\b/)?.[1])
+    if (id) {
+      const record = await fetchCase(id)
+      return [{ id: 'storting-sak-' + id, title: record.title, url: record.url, parliamentCase: id,
+        text: JSON.stringify({ ...record, method: 'Stortingets åpne data. Statusen «behandlet» kan vise til komiteen. Les ferdigbehandlet, vedtaksfelt og tilhørende dokumenter for å fastslå utfallet.' }) }]
+    }
+  }
   if (/oljepengebruk|oljepenger|strukturelt oljekorrigert/.test(normalized)) return oilSources(read, years)
   const metrics = Object.entries(municipalMetrics).filter(([, label]) => mentionsTerm(normalized, label))
   const service = serviceTerms.find(([, , pattern]) => pattern.test(normalized))
   if (metrics.length || service) {
     try {
-      const found = await municipalSources(read, normalized, years, metrics, service)
-      if (/realvekst|reell vekst|prisjuster|faste kroner|inflasjon|konsumprisindeks/.test(normalized)) found.push(await priceIndex(read))
+      const found = await municipalSources(read, normalized, years, metrics, service, insights, lens)
+      const needsDrivers = insights && lens === 'drivers'
+      const needsPrices = needsDrivers || /realvekst|reell vekst|prisjuster|faste kroner|inflasjon|konsumprisindeks/.test(normalized)
+      const [prices, counts] = await Promise.all([
+        needsPrices ? priceIndex(read).catch(error => { if (!insights) throw error; return null }) : null,
+        needsDrivers ? countsSources(found, normalized, fetchCounts, denominator) : [],
+      ])
+      if (prices) found.push(prices)
+      found.push(...counts)
       return found
     } catch (error) {
       if (metrics.length || /kommun|kostra/.test(normalized)) throw error

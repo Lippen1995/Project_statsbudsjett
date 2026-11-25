@@ -8,15 +8,16 @@ const freshness = 120_000
 
 function compactKostra(file, raw) {
   if (file === 'kostra/index.json') {
-    const { latestYear, updated, entities, sources } = JSON.parse(raw)
-    return JSON.stringify({ latestYear, updated,
-      sources: sources.filter(source => source.source_table === '12137'),
+    const { latestYear, years, updated, entities, sources } = JSON.parse(raw)
+    return JSON.stringify({ latestYear, years, updated,
+      sources: sources.filter(source => ['12137', '12362', '07022'].includes(source.source_table)),
       entities: entities.filter(entity => entity.kind === 'municipality')
         .map(({ name, code, kind }) => ({ name, code, kind })),
     })
   }
   if (file.startsWith('kostra/entities/')) {
-    return JSON.stringify({ overview: JSON.parse(raw).overview })
+    const { entity, latestYear, overview, services, boundaryHistory } = JSON.parse(raw)
+    return JSON.stringify({ entity, latestYear, overview, services, boundaryHistory })
   }
   return raw
 }
@@ -24,7 +25,7 @@ function compactKostra(file, raw) {
 export function snapshotLoader({ cache, fetchImpl = fetch, now = Date.now }) {
   const inFlight = new Map()
   async function load(file) {
-    const key = `snapshot-v1:${file}`
+    const key = `snapshot-v2:${file}`
     let saved
     try { saved = await cache.get(key) } catch { /* Read the authoritative snapshot. */ }
     const decode = async () => (await decompress(Buffer.from(saved.data, 'base64'))).toString('utf8')

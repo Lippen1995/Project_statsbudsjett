@@ -7,6 +7,7 @@ import { computeInstructions } from './run-analysis-code.mjs'
 import { parseModelJSON } from './provider.mjs'
 import { selectedBudgetReferences } from './sources.mjs'
 import { deriveMunicipalEvidence } from './calculations.mjs'
+import { buildPolicyEvidence, finishPolicy, modelPolicyEvidence, policyAnswerInstructions, policyAuditInstructions, policyRouting } from './policy-insights.mjs'
 import { builtinSettings, candidateSettings, candidateId } from './tuning.mjs'
 
 const text = value => typeof value === 'string' && value.trim().length > 0
@@ -121,8 +122,9 @@ function directDocumentEvidence(message, urls, retrievedAt) {
     for (const citation of block.citations ?? []) {
       if (citation.type !== 'page_location' || citation.document_index !== 0 || !text(citation.cited_text)) continue
       const excerpt = citation.cited_text
-      evidence.push({ id: `pdf-${hash(url + excerpt).slice(0, 24)}`, title: citation.document_title || content.title || new URL(url).hostname,
-        url, text: excerpt, retrievedAt, evidenceKind: 'citation-excerpt', primaryCandidate: true })
+    const page = Number.isInteger(citation.start_page_number) && citation.start_page_number > 0 ? citation.start_page_number : null
+    evidence.push({ id: `pdf-${hash(url + excerpt).slice(0, 24)}`, title: citation.document_title || content.title || new URL(url).hostname,
+        url, text: excerpt, retrievedAt, evidenceKind: 'citation-excerpt', primaryCandidate: true, ...(page ? { page } : {}) })
     }
   }
   return evidence
@@ -158,7 +160,7 @@ export function compactSearchEvidence(message) {
   return { sources, leads: [...leads.values()], errors: toolErrors(message), usage: message.usage, stopReason: message.stop_reason }
 }
 
-function validateTurn(turn, knownUrls, charts, files, uploads, advanced, prior) {
+function validateTurn(turn, knownUrls, charts, files, uploads, advanced, prior, insights) {
   const { action, reply, tools, plan, urls } = turn ?? {}
   const { request, purpose, meaning } = turn?.intent ?? {}
   if (![request, purpose, meaning].every(value => text(value) && value.length <= 1500)) {
@@ -176,7 +178,10 @@ function validateTurn(turn, knownUrls, charts, files, uploads, advanced, prior) 
         (advanced && (tool === 'compute' || (tool === 'versions' && prior))))) {
     const directUrls = tools.includes('direct') && Array.isArray(urls)
       ? [...new Set(urls.filter(url => knownUrls.includes(url)))].slice(0, 3) : []
-    return { intent, action, tools, directUrls, plan: validatePlan(plan, { web: tools.includes('web') }) }
+    const lens = insights && ['drivers', 'budget', 'comparison', 'factcheck'].includes(turn.lens) ? turn.lens : undefined
+    const denominator = lens === 'drivers' && ['pupils','population'].includes(turn.denominator) ? turn.denominator : undefined
+    return { intent, action, tools, directUrls, plan: validatePlan(plan, { web: tools.includes('web') }),
+      ...(lens ? { lens } : {}), ...(denominator ? { denominator } : {}) }
   }
   throw new Error('Ugyldig valg av fremgangsmåte')
 }
@@ -225,7 +230,7 @@ export function validateAudit(audit) {
 // Each checkpoint must finish before the next billed step. A caller can persist
 // these privately. No customer text is written to repository or telemetry.
 export async function researchWithSven({ question, surface = 'chat', recommendationRequested = false, conversational = false, charts = false, files = false,
-  advanced = false, prior = null, compute,
+  advanced = false, prior = null, compute, insights = false,
   sources: supplied = [], uploads = [], history = [], editorialExamples = [], plan: suppliedPlan, asOf = new Date().toISOString().slice(0,10),
   tuning = builtinSettings, maxSearches = tuning.maxSearches, maxSourceChars = 100000, signal, checkpoint = async () => {},
   request, localSources = async () => [] }) {
@@ -253,19 +258,20 @@ export async function researchWithSven({ question, surface = 'chat', recommendat
   const turn = conversational && !suppliedPlan
     ? (!uploads.length && interpretGreeting(question)) || validateTurn(parseModelJSON(await run('interpret',
       [conversationInstructions, ...(charts ? [chartRouting] : []),
-        ...(files ? [fileRouting] : []), ...(advanced ? [advancedRouting] : []),
-        planningInstructions.replace('Svar kun JSON:', 'JSON-format for feltet "plan":')].join('\n\n'), planningInput)), knownUrls, charts, files, uploads, advanced, prior)
+        ...(files ? [fileRouting] : []), ...(advanced ? [advancedRouting] : []), ...(insights ? [policyRouting] : []),
+        planningInstructions.replace('Svar kun JSON:', 'JSON-format for feltet "plan":')].join('\n\n'), planningInput)), knownUrls, charts, files, uploads, advanced, prior, insights)
     : null
   if (turn && turn.action !== 'research') return { status: 'conversation', reply: turn.reply,
     ...(turn.chart ? { chart: turn.chart } : {}), ...(turn.deliverables ? { deliverables: turn.deliverables } : {}) }
   const plan = turn?.plan ?? validatePlan(suppliedPlan ?? parseModelJSON(await run('plan', planningInstructions, planningInput)))
-  const researchBrief = turn ? { ...brief, intent: turn.intent } : brief
+  const researchBrief = turn ? { ...brief, intent: turn.intent, ...(turn.lens ? { lens:turn.lens } : {}) } : brief
   const selectedUploads = turn?.tools.includes('uploads') ? uploads : []
   const gaps = [...plan.missing]
   let local = []
   const attachedBudget = selectedBudgetReferences(question).length > 0
   if (!turn || turn.tools.includes('fellestall') || attachedBudget) {
-    try { local = await localSources(attachedBudget ? question : turn?.intent.meaning ?? question) }
+    try { local = await localSources(attachedBudget ? question : turn?.intent.meaning ?? question,
+      insights ? { insights, lens: turn?.lens, denominator: turn?.denominator } : undefined) }
     catch { gaps.push('Fellestalls lokale dataoppslag fant ikke et passende grunnlag.') }
   }
   const fetchTool = { type: 'web_fetch_20250910', name: 'web_fetch', max_uses: conversational ? 2 : 4,
@@ -383,19 +389,30 @@ Kildebelegg funnene med sitater. Skill gjennomført aktivitet fra forslag og kos
     await searchForMissingEvidence(null)
   }
   if (!sources.length) {
-    if (conversational) return { status: 'no-evidence' }
+    if (conversational) return { status: 'no-evidence', ...(turn?.lens ? { lens:turn.lens } : {}) }
     throw new Error('Fant ikke etterprøvbart kildegrunnlag. Ingen analyse er generert.')
   }
   await checkpoint({ phase: 'evidence', status: 'completed', sources, gaps, plan })
   let corrections = null
   let answer, audit
   for (let attempt = 0; attempt < 2; attempt++) {
+    let proposedPolicy
+    const policyEvidence = insights ? buildPolicyEvidence(sources, turn?.lens, question) : null
     answer = await analyzeWithSven({ question: JSON.stringify({ ...researchBrief, plan, coverageGaps: gaps, corrections,
       ...(prior ? { prior: prior.answer } : {}) }), sources, surface, recommendationRequested, charts, files, advanced },
-      async ({ instructions, input }) => mergeRevision(prior, parseModelJSON(await run(`answer-${attempt}`, instructions + `\nLengdepreferanse: ${settings.responseDensity}. Behold alltid nødvendige kilder, motargumenter og forbehold.`, JSON.parse(input), { maxTokens: 6000 }))))
+      async ({ instructions, input }) => {
+        const parsed = parseModelJSON(await run(`answer-${attempt}`, instructions +
+          `\nLengdepreferanse: ${settings.responseDensity}. Behold alltid nødvendige kilder, motargumenter og forbehold.` +
+          (policyEvidence ? '\n\n' + policyAnswerInstructions : ''),
+        { ...JSON.parse(input), ...(policyEvidence ? { policyEvidence:modelPolicyEvidence(policyEvidence) } : {}) }, { maxTokens:6000 }))
+        proposedPolicy = parsed?.policy
+        return mergeRevision(prior, parsed)
+      })
+    if (policyEvidence) answer = finishPolicy(answer, proposedPolicy, policyEvidence, sources, question)
     const maySearch = conversational && attempt === 0 && !triedFollowup && searchesRemaining > 0 && !selectedUploads.length
     audit = validateAudit(parseModelJSON(await run(`review-${attempt}`, auditInstructions + (conversational ? coverageInstructions : '') + (charts ? chartReview : '') + (files ? fileReview : '') +
-      (advanced ? '\nEtterprøv kodeberegninger, scenarienes enheter og grunnlag, og at forespurte revisjoner bevarer andre deler av leveransen. Kontroller at filendringer bruker oppgitte felt-ID-er.' : ''),
+      (advanced ? '\nEtterprøv kodeberegninger, scenarienes enheter og grunnlag, og at forespurte revisjoner bevarer andre deler av leveransen. Kontroller at filendringer bruker oppgitte felt-ID-er.' : '') +
+      (policyEvidence ? policyAuditInstructions : ''),
       { ...researchBrief, allowRecommendation: policy.allowRecommendation, answer, sources,
         ...(conversational ? { searchesRemaining: maySearch ? searchesRemaining : 0, sourceLeads: maySearch ? web.leads ?? [] : [] } : {}) })))
     const query = maySearch && text(audit.followupSearch) ? audit.followupSearch.trim().slice(0, 300) : null

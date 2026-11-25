@@ -30,8 +30,9 @@ const effortLevels = [
 const anthropicOutputLimit = 128_000
 const invocationLeaseMs = 330_000
 
-async function resolveSources(question, signal, loadSnapshot) {
+async function resolveSources(question, signal, loadSnapshot, options) {
   return resolveSvenSources(question, undefined, {
+    ...options,
     read: async file => JSON.parse(await loadSnapshot(file, signal)),
     stateReport: async (options) => {
       const dir = await mkdtemp(join(tmpdir(), 'sven-preview-'))
@@ -72,7 +73,7 @@ export function hostedPreview({
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
   let busy = false
   async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default', files = false,
-    uploads = [], advanced = false, prior = null }, memo) {
+    uploads = [], advanced = false, prior = null, insights = false }, memo) {
     const greeting = !uploads.length && interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
@@ -91,7 +92,7 @@ export function hostedPreview({
       const request = createRequest({ apiKey, model: selectedModel, timeoutMs: publishJob ? 260_000 : null,
         stream: true, cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
       const result = await researchWithSven({
-        question, history, asOf, signal, maxSearches: 3, conversational: true, charts: true, files, uploads, advanced, prior,
+        question, history, asOf, signal, maxSearches: 3, conversational: true, charts: true, files, uploads, advanced, prior, insights,
         ...(advanced ? { compute: (code, inputs) => memo('compute-run', { code, inputs }, async () => {
           try { return { value: await compute(code, inputs) } }
           catch { return { failed: true } }
@@ -100,9 +101,9 @@ export function hostedPreview({
           return result.value
         }) } : {}),
         editorialExamples: selectEditorialExamples({ question }, [example]),
-        localSources: async query => {
-          const entry = await memo('local-sources', { query, asOf }, async () => {
-            try { return { sources: await sources(query, signal, loadSnapshot) } }
+        localSources: async (query, options) => {
+          const entry = await memo('local-sources', { query, asOf, ...(options ? { options } : {}) }, async () => {
+            try { return { sources: await sources(query, signal, loadSnapshot, options) } }
             catch { return { missing: true } }
           })
           if (entry.missing) throw new Error('Kildeoppslaget mangler grunnlag')
@@ -153,6 +154,11 @@ export function hostedPreview({
         ...(result.deliverables ? { deliverables: await withGeometry(result.deliverables) } : {}),
       })
       if (result.status === 'no-evidence') {
+        if (result.lens === 'factcheck') return measuredReply(200, {
+          ...directReply('Jeg fant ikke uavhengige kilder som kunne avgjøre påstanden. Send gjerne originalen eller tallgrunnlaget.').body,
+          policy: { factCheck: { claim: question, wording:'user-question', verdict:'insufficient',
+            reasoning:'Kildene som ble funnet ga ikke tilstrekkelig grunnlag for å fastslå utfallet.', sourceIds:[], interpretations:[] } },
+        })
         return measuredReply(422, { error: 'Jeg fant ikke kilder som kunne underbygge et svar på dette. Hvis du har en kilde, kan du gjerne dele den.' })
       }
       if (result.status !== 'reviewed') {
@@ -162,9 +168,10 @@ export function hostedPreview({
       const used = new Set([...result.answer.findings, result.answer.recommendation, result.answer.chart,
         deliverables?.table, deliverables?.map, deliverables?.illustration, deliverables?.scenario,
         ...(deliverables?.officeEdit ? [{ sourceIds: [deliverables.officeEdit.sourceId] }] : []), ...(deliverables?.sections ?? [])]
-        .filter(Boolean).flatMap(finding => finding.sourceIds))
+        .filter(Boolean).flatMap(finding => finding.sourceIds).concat(result.answer.policy?.sourceIds ?? []))
       const links = result.sources.filter(source => used.has(source.id) && (source.url?.startsWith('https://') || ['upload', 'calculation'].includes(source.type)))
-        .map(({ id, title, url, type }) => ['upload', 'calculation'].includes(type) ? { id, title, type } : { id, title, url })
+        .map(({ id, title, url, type, page }) => ['upload', 'calculation'].includes(type) ? { id, title, type } :
+          { id, title, url: page && /\.pdf(?:\?|#|$)/i.test(url) ? url.split('#')[0] + '#page=' + page : url })
       return measuredReply(200, { ...result.answer, sources: links,
         ...(deliverables ? { deliverables: await withGeometry(deliverables) } : {}),
       })
@@ -185,7 +192,7 @@ export function hostedPreview({
     const send = (status, body) => res.status(status).json(body)
     if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
     if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels, files: true,
-      advanced: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
+      advanced: true, insights: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
     })
     if (req.method !== 'POST') return send(405, { error: 'Metoden støttes ikke.' })
     if (req.headers.origin !== `https://${req.headers.host}` ||
@@ -230,7 +237,7 @@ export function hostedPreview({
     const uploads = [...asSources(carryAttachments === true && greeting ? [] : attachments, 'vedlegg'),
       ...asSources(greeting ? [] : projectFiles, 'prosjektfil')]
     const asOf = new Date().toISOString().slice(0, 10)
-    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads, advanced: true, ...(prior ? { prior } : {}) }
+    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads, advanced: true, insights: true, ...(prior ? { prior } : {}) }
     if (publishJob && apiKey && (uploads.length || !interpretGreeting(question))) {
       try {
         const { status, body } = await requests.enqueue(requestId, brief, publishJob)

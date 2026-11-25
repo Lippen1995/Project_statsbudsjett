@@ -36,6 +36,25 @@ function exportSource({ id, title, url, type }) {
   return { id, title, ...(href ? { url: href } : {}) }
 }
 
+function workbookTraces(policy, table, type, sources) {
+  if (!table || !Array.isArray(policy?.observations) || !Array.isArray(policy[type])) return []
+  const entries = new Map(policy.observations.slice(0,2500).flatMap(item=>
+    typeof item?.id === 'string' && Number.isFinite(item.value) ? [[item.id,item]] : []))
+  return policy[type].slice(0,2500).flatMap(entry=>{
+    if (!Number.isInteger(entry?.row) || !Number.isInteger(entry?.column) || entry.row < 0 || entry.column < 0) return []
+    const observation = entries.get(entry.observationId)
+    const { row,column } = entry
+    const value = column < table.columns.length ? table.rows[row]?.[column] : table.derived[row]?.[column-table.columns.length]
+    if (!observation || !Number.isFinite(value) || Math.abs(value-observation.value)>Math.max(Math.abs(value)*1e-12,1e-10)) return []
+    const source=sources.find(item=>item.id===observation.sourceId)
+    return [{ row,column,value,unit:asText(observation.unit,90),where:asText(observation.where,650),
+      formula:asText(observation.formula,600), quote:asText(observation.quote,650),
+      url:source ? httpsUrl(observation.url ?? source.url) : undefined,
+      snapshotUrl:source ? httpsUrl(observation.snapshotUrl) : undefined,
+    }]
+  })
+}
+
 export function normalizeExport(format, payload) {
   if (!Object.hasOwn(fileTypes, format) || !payload || !Array.isArray(payload.sources) || payload.sources.length > 100) return null
   const sources = payload.sources.map(source => source && exportSource(source)).filter(Boolean)
@@ -58,7 +77,8 @@ export function normalizeExport(format, payload) {
   const recommendation = asText(payload.recommendation?.text, 2400)
   const uncertainties = Array.isArray(payload.uncertainties) ? payload.uncertainties.slice(0, 25).map(value => asText(value, 900)).filter(Boolean) : []
   if (!(summary || table || kit.sections.length || kit.illustration || kit.map)) return null
-  return { title, summary, findings, uncertainties, kit, table, sources, chart,
+  const traces = format === 'xlsx' ? workbookTraces(payload.policy,table,kit.table?'tableRefs':'chartRefs',sources) : []
+  return { title, summary, findings, uncertainties, kit, table, sources, chart, traces,
     recommendation: recommendation ? { text: recommendation, sourceIds: (Array.isArray(payload.recommendation.sourceIds)
       ? payload.recommendation.sourceIds : []).filter(id => ids.has(id)) } : null }
 }
@@ -120,6 +140,18 @@ async function xlsxFile(document) {
       column.numFmt = calculation.unit === '%' ? '#,##0.00" %"' : '#,##0.00'
     }
     styleSheet(calculations)
+  }
+  if (document.traces.length) {
+    const ledger = workbook.addWorksheet('Kildespor', {views:[{state:'frozen',ySplit:1}]})
+    ledger.addRow(['Fane','Celle','Verdi','Enhet','Plassering i kilden','Regnestykke','Kildeutdrag','Originalkilde','Datauttrekk'])
+    for (const trace of document.traces) {
+      const tab = trace.column < table.columns.length ? data : workbook.getWorksheet('Beregninger')
+      if (!tab || trace.column >= table.columns.length + table.calculations.length) continue
+      const link = url => url ? {text:url,hyperlink:url} : null
+      ledger.addRow([tab.name,tab.getRow(trace.row+2).getCell(trace.column+1).address,trace.value,trace.unit,
+        trace.where,trace.formula,trace.quote,link(trace.url),link(trace.snapshotUrl)])
+    }
+    styleSheet(ledger)
   }
 
   const sources = workbook.addWorksheet('Kilder og merknader')
