@@ -41,6 +41,16 @@ test('intervaller henter også årene mellom endepunktene', async () => {
   assert.deepEqual(JSON.parse(source.text).data.map(row => row.year), [2021, 2022, 2023, 2024, 2025])
 })
 
+test('skoleutgifter siden startåret henter tre kommuner og KPI for realvekst', async () => {
+  const sources = await resolveSvenSources('Skoleutgifter i Oslo, Bergen og Trondheim siden 2021 og realvekst', dataDir)
+  assert.equal(sources.length, 4)
+  for (const source of sources.slice(0, 3)) {
+    assert.match(source.url, /12362/)
+    assert.deepEqual(JSON.parse(source.text).data.map(row => row.year), [2021, 2022, 2023, 2024, 2025])
+  }
+  assert.equal(JSON.parse(sources.at(-1).text).indexByYear[2025], 100)
+})
+
 test('oljepengeoppslag skiller mellom budsjettfaser og beholder primærkilden', async () => {
   const sources = await resolveSvenSources('Hva var oljepengebruken i 2026 og 2027?', dataDir)
   const rows = sources.flatMap(s => JSON.parse(s.text).data)

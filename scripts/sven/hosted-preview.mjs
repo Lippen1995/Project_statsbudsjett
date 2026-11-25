@@ -10,6 +10,7 @@ import { compactSearchEvidence, interpretGreeting, researchWithSven } from '../.
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
 import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
 import { previewRequests, validRequestId } from '../../server/sven/preview-requests.mjs'
+import { prepareMunicipalMap } from '../../server/sven/municipal-map.mjs'
 
 const model = 'claude-sonnet-5-5'
 const previewModels = [
@@ -50,6 +51,7 @@ export function hostedPreview({
   apiKey = process.env.SVEN_ANTHROPIC_API_KEY,
   createRequest = claudeTransport,
   sources = resolveSources,
+  mapGeometry = prepareMunicipalMap,
   publishJob,
   cache = getCache({ namespace: 'fellestall-sven-preview-v1' }),
   onUsage = ({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }) => {
@@ -61,8 +63,8 @@ export function hostedPreview({
   const reply = (status, body) => ({ status, body })
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
   let busy = false
-  async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default' }, memo) {
-    const greeting = interpretGreeting(question)
+  async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default', files = false, uploads = [] }, memo) {
+    const greeting = !uploads.length && interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
     if (!publishJob && busy) return reply(429, { error: 'Sven undersøker et annet spørsmål. Prøv igjen snart.' })
@@ -80,7 +82,7 @@ export function hostedPreview({
       const request = createRequest({ apiKey, model: selectedModel, timeoutMs: publishJob ? 260_000 : null,
         stream: true, cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
       const result = await researchWithSven({
-        question, history, asOf, signal, maxSearches: 3, conversational: true, charts: true,
+        question, history, asOf, signal, maxSearches: 3, conversational: true, charts: true, files, uploads,
         editorialExamples: selectEditorialExamples({ question }, [example]),
         localSources: async query => {
           const entry = await memo('local-sources', { query, asOf }, async () => {
@@ -126,8 +128,13 @@ export function hostedPreview({
           return result
         },
       })
+      const withGeometry = async deliverables => {
+        if (!deliverables?.map) return deliverables
+        return { ...deliverables, map: await memo('map-geometry', deliverables.map, () => mapGeometry(deliverables.map)) }
+      }
       if (result.status === 'conversation') return measuredReply(200, {
         ...directReply(result.reply).body, ...(result.chart ? { chart: result.chart } : {}),
+        ...(result.deliverables ? { deliverables: await withGeometry(result.deliverables) } : {}),
       })
       if (result.status === 'no-evidence') {
         return measuredReply(422, { error: 'Jeg fant ikke kilder som kunne underbygge et svar på dette. Hvis du har en kilde, kan du gjerne dele den.' })
@@ -135,11 +142,15 @@ export function hostedPreview({
       if (result.status !== 'reviewed') {
         return measuredReply(422, { error: 'Sven fant mangler i svaret. Prøv et mer avgrenset spørsmål.' })
       }
-      const used = new Set([...result.answer.findings, result.answer.recommendation, result.answer.chart]
+      const { deliverables } = result.answer
+      const used = new Set([...result.answer.findings, result.answer.recommendation, result.answer.chart,
+        deliverables?.table, deliverables?.map, deliverables?.illustration, ...(deliverables?.sections ?? [])]
         .filter(Boolean).flatMap(finding => finding.sourceIds))
-      const links = result.sources.filter(source => used.has(source.id) && source.url?.startsWith('https://'))
-        .map(({ id, title, url }) => ({ id, title, url }))
-      return measuredReply(200, { ...result.answer, sources: links })
+      const links = result.sources.filter(source => used.has(source.id) && (source.url?.startsWith('https://') || source.type === 'upload'))
+        .map(({ id, title, url, type }) => type === 'upload' ? { id, title, type } : { id, title, url })
+      return measuredReply(200, { ...result.answer, sources: links,
+        ...(deliverables ? { deliverables: await withGeometry(deliverables) } : {}),
+      })
     } catch (error) {
       if (error === continuation) return reply(202, { pending: true, continuation: true })
       console.warn('[Sven preview]', phase, String(error?.message).match(/^Claude API svarte HTTP \d{3}$/)?.[0] ?? error?.code ?? error?.name, ['pause_turn', 'max_tokens', 'refusal'].includes(error?.stopReason) ? error.stopReason : undefined)
@@ -156,13 +167,13 @@ export function hostedPreview({
     res.setHeader('Cache-Control', 'no-store')
     const send = (status, body) => res.status(status).json(body)
     if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
-    if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels })
+    if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels, files: true })
     if (req.method !== 'POST') return send(405, { error: 'Metoden støttes ikke.' })
     if (req.headers.origin !== `https://${req.headers.host}` ||
         req.headers['content-type']?.split(';', 1)[0] !== 'application/json') {
       return send(403, { error: 'Send spørsmålet fra den beskyttede forhåndsvisningen.' })
     }
-    const { requestId, resume, progress, question: rawQuestion, history = [], model: selectedModel = model,
+    const { requestId, resume, progress, question: rawQuestion, history = [], files: attachments = [], carryAttachments, model: selectedModel = model,
       effort = 'default' } = req.body ?? {}
     if (!validRequestId(requestId)) return send(400, { error: 'Innsendingen mangler en gyldig ID. Last siden på nytt.' })
     if (progress === true) return send(200, await requests.progress(requestId))
@@ -179,9 +190,19 @@ export function hostedPreview({
     }
     if (!previewModels.some(option => option.id === selectedModel)) return send(400, { error: 'Denne modellen er ikke tilgjengelig.' })
     if (!effortLevels.some(option => option.id === effort)) return send(400, { error: 'Dette resonneringsnivået er ikke tilgjengelig.' })
+    if (!Array.isArray(attachments) || attachments.length > 3 || attachments.some(file =>
+      typeof file?.name !== 'string' || !file.name.trim() || file.name.length > 180 ||
+      typeof file.text !== 'string' || !file.text.trim() || file.text.length > 24_000)) {
+      return send(400, { error: 'Sven kan motta opptil tre lesbare vedlegg per melding.' })
+    }
+    const currentAttachments = carryAttachments === true && interpretGreeting(question) ? [] : attachments
+    const uploads = currentAttachments.map(({ name, text, partial }, index) => ({
+      id: `vedlegg-${index + 1}`, type: 'upload', title: name,
+      text: partial ? `Utdrag av vedlegget. Innhold kan mangle.\n${text}` : text,
+    }))
     const asOf = new Date().toISOString().slice(0, 10)
-    const brief = { question, history, asOf, selectedModel, effort }
-    if (publishJob && apiKey && !interpretGreeting(question)) {
+    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads }
+    if (publishJob && apiKey && (uploads.length || !interpretGreeting(question))) {
       try {
         const { status, body } = await requests.enqueue(requestId, brief, publishJob)
         return send(status, body)

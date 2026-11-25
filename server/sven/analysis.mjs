@@ -1,4 +1,5 @@
 import { chartInstructions, validateChart } from './charts.mjs'
+import { deliverableInstructions, validateDeliverables } from './deliverables.mjs'
 
 // Publication intent comes from the authorized brief, outside source material and model output.
 export function analysisPolicy({ surface, recommendationRequested = false }) {
@@ -66,15 +67,17 @@ function validateResult(result, idSet, policy) {
   }
 }
 
-export async function analyzeWithSven({ question, sources, surface, recommendationRequested, charts = false }, generate) {
+export async function analyzeWithSven({ question, sources, surface, recommendationRequested, charts = false, files = false }, generate) {
   if (!nonempty(question)) throw new TypeError('Spørsmålet mangler')
   const policy = analysisPolicy({ surface, recommendationRequested })
   const ids = validateSources(sources)
   const result = await generate({
-    instructions: responseInstructions(policy) + (charts ? '\n\n' + chartInstructions : ''),
+    instructions: [responseInstructions(policy), ...(charts ? [chartInstructions] : []),
+      ...(files ? [deliverableInstructions] : [])].join('\n\n'),
     input: JSON.stringify({ question, sources }),
   })
   const answer = validateResult(result, ids, policy)
   const chart = charts && validateChart(result.chart, ids)
-  return chart ? { ...answer, chart } : answer
+  const deliverables = files && validateDeliverables(result.deliverables, ids, { hasChart: Boolean(chart) })
+  return { ...answer, ...(chart ? { chart } : {}), ...(deliverables ? { deliverables } : {}) }
 }

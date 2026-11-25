@@ -6,6 +6,7 @@ import { municipalMetrics } from './municipal-metrics.mjs'
 const readJson = async (dir, file) => JSON.parse(await readFile(join(dir, file), 'utf8'))
 const supportedPeriod = /\b(?:19|20)\d{2}\b/g
 const yearRange = /\b((?:19|20)\d{2})\s*(?:[-–—]|til|t\.o\.m\.)\s*((?:19|20)\d{2})\b/g
+const throughLatest = /\b(?:siden|fra)\s+((?:19|20)\d{2})\b/
 const normalize = text => text.normalize('NFC').toLocaleLowerCase('nb-NO')
 
 function requestedYears(question) {
@@ -16,21 +17,51 @@ function requestedYears(question) {
   return [...years].sort((left, right) => left - right)
 }
 
+function yearsThroughLatest(question, years, available) {
+  const first = question.match(throughLatest)?.[1]
+  return first && years.length === 1 ? available.filter(year => year >= Number(first)) : years
+}
+
+const serviceTerms = [
+  ['FGK8b', 'Grunnskole', /grunnskol|skoleutgift|skolebruk|\bskolen?\b/],
+  ['FGK7', 'Barnehage', /barnehage/],
+  ['FGK9', 'Helse og omsorg', /helse[ -]+og omsorg|omsorgsutgift|pleie og omsorg/],
+  ['FGK13', 'Barnevern', /barnevern/],
+  ['FGK5', 'Samferdsel', /samferdsel/],
+  ['FGK2', 'Kultur', /kultur/],
+]
+
 function mentionsTerm(question, name) {
   const escaped = normalize(name).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   return new RegExp(`(?:^|[^\\p{L}\\p{N}])${escaped}(?=$|[^\\p{L}\\p{N}])`, 'u').test(question)
 }
 
-async function municipalSources(read, question, years, metrics) {
+async function municipalSources(read, question, years, metrics, service) {
   const index = await read('kostra/index.json')
-  const selectedYears = years.length ? years : [index.latestYear]
+  const period = yearsThroughLatest(question, years, index.years)
+  const selectedYears = period.length ? period : years.length ? years : [index.latestYear]
   const entities = index.entities.filter(entity =>
-    entity.kind === 'municipality' && entity.name.length > 2 && mentionsTerm(question, entity.name))
+    entity.kind === 'municipality' && entity.name.split(/\s+[–-]\s+/).some(name => name.length > 2 && mentionsTerm(question, name)))
   if (!entities.length) throw new Error('Oppgi kommunenavn for oppslag i kommuneregnskapet')
   if (entities.length > 12) throw new Error('Oppgi høyst tolv kommuner per oppslag')
   const source = index.sources.find(item => item.source_table === '12137')
   return (await Promise.all(entities.map(async entity => {
     const detail = await read(`kostra/entities/municipality-${entity.code}.json`)
+    if (service) {
+      const [code, name] = service
+      const values = detail.services.find(serviceArea => serviceArea.code === code)?.metrics
+      return [{ id: `kostra-${code.toLowerCase()}-${entity.code}`, title: `${name}, ${entity.name} kommunekonsern`,
+        url: 'https://www.ssb.no/statbank/table/12362/',
+        updated: index.sources.find(item => item.source_table === '12362')?.fetched_at ?? index.updated,
+        text: JSON.stringify({ kommune: entity.name, kommunenummer: entity.code, funksjon: code,
+          boundaryHistory: detail.boundaryHistory,
+          data: selectedYears.map(year => ({ year, ...Object.fromEntries(['gross_expenses', 'net_expenses', 'investments'].map(metric => {
+            const value = values?.[metric]?.[year]
+            return [metric, { amountThousandNok: value?.amount ?? null, nokPerCapita: value?.perCapita ?? null }]
+          })) })), method: 'KOSTRA kommunekonsern, 12362. Løpende priser. Netto og brutto er separate begreper. Kr per innbygger er ikke kr per elev. Null betyr at tallet mangler.',
+        }),
+      }]
+    }
     return metrics.map(([metric, label]) => ({
       id: `kostra-${metric.replaceAll('_', '-')}-${entity.code}`,
       title: `${label[0].toUpperCase() + label.slice(1)}, ${entity.name} kommunekonsern`,
@@ -51,6 +82,12 @@ async function municipalSources(read, question, years, metrics) {
       }),
     }))
   }))).flat()
+}
+
+async function priceIndex(read) {
+  const kpi = await read('kpi.json')
+  return { id: 'ssb-kpi-aarsindeks', title: 'SSB · Konsumprisindeksen, årsgjennomsnitt',
+    url: 'https://www.ssb.no/statbank/table/14711/', text: JSON.stringify({ method: 'KPI totalindeks 2025 = 100.', indexByYear: kpi }) }
 }
 
 export function selectedBudgetReferences(question) {
@@ -204,7 +241,16 @@ export async function resolveSvenSources(question, dataDir, {
   const years = requestedYears(normalized)
   if (/oljepengebruk|oljepenger|strukturelt oljekorrigert/.test(normalized)) return oilSources(read, years)
   const metrics = Object.entries(municipalMetrics).filter(([, label]) => mentionsTerm(normalized, label))
-  if (metrics.length) return municipalSources(read, normalized, years, metrics)
+  const service = serviceTerms.find(([, , pattern]) => pattern.test(normalized))
+  if (metrics.length || service) {
+    try {
+      const found = await municipalSources(read, normalized, years, metrics, service)
+      if (/realvekst|reell vekst|prisjuster|faste kroner|inflasjon|konsumprisindeks/.test(normalized)) found.push(await priceIndex(read))
+      return found
+    } catch (error) {
+      if (metrics.length || /kommun|kostra/.test(normalized)) throw error
+    }
+  }
   if (/statsregnskap|statens\s+utgifter|(?:brukte|bruker)\s+staten/.test(normalized) &&
       !/departement|forsvar|helse|samferdsel|utdanning|trygd|budsjettforslag/.test(normalized)) {
     return stateSources(read, stateReport, years)
