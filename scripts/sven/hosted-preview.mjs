@@ -12,6 +12,7 @@ import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
 import { previewRequests, validRequestId } from '../../server/sven/preview-requests.mjs'
 import { prepareMunicipalMap } from '../../server/sven/municipal-map.mjs'
 import { revisionContext } from '../../server/sven/advanced-tools.mjs'
+import { buildPolicyEvidence, finishPolicy } from '../../server/sven/policy-insights.mjs'
 import { runAnalysisCode } from '../../server/sven/run-analysis-code.mjs'
 
 const model = 'claude-sonnet-5-5'
@@ -30,16 +31,16 @@ const effortLevels = [
 const anthropicOutputLimit = 128_000
 const invocationLeaseMs = 330_000
 
-async function resolveSources(question, signal, loadSnapshot, options) {
+async function resolveSources(question, signal, loadSnapshot, options, refresh) {
   return resolveSvenSources(question, undefined, {
     ...options,
-    read: async file => JSON.parse(await loadSnapshot(file, signal)),
+    read: async file => JSON.parse(await loadSnapshot(file, signal, {refresh})),
     stateReport: async (options) => {
       const dir = await mkdtemp(join(tmpdir(), 'sven-preview-'))
       try {
         await Promise.all(['meta', 'utgifter', 'befolkning', 'kpi'].map(async name => {
           const file = name + '.json'
-          await writeFile(join(dir, file), await loadSnapshot(file, signal))
+          await writeFile(join(dir, file), await loadSnapshot(file, signal, {refresh}))
         }))
         return buildReport(dir, options)
       } finally {
@@ -73,7 +74,7 @@ export function hostedPreview({
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
   let busy = false
   async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default', files = false,
-    uploads = [], advanced = false, prior = null, insights = false }, memo) {
+    uploads = [], advanced = false, prior = null, insights = false, refreshSources = false }, memo) {
     const greeting = !uploads.length && interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
@@ -84,6 +85,7 @@ export function hostedPreview({
     const continuation = new Error('Continue from checkpoint')
     let startedModelCall = false
     let phase = 'interpret'
+    let localLookups = 0
     const usage = { calls: 0, input: 0, output: 0, cacheRead: 0, cacheWrite: 0, searches: 0 }
     const measuredReply = (status, body) => reply(status, {
       ...body, ...(usage.calls ? { model: selectedModel, effort, usage } : {}),
@@ -102,8 +104,9 @@ export function hostedPreview({
         }) } : {}),
         editorialExamples: selectEditorialExamples({ question }, [example]),
         localSources: async (query, options) => {
-          const entry = await memo('local-sources', { query, asOf, ...(options ? { options } : {}) }, async () => {
-            try { return { sources: await sources(query, signal, loadSnapshot, options) } }
+          const lookup = localLookups++
+          const entry = await memo(lookup ? 'local-sources-' + lookup : 'local-sources', { query, asOf, ...(options ? { options } : {}) }, async () => {
+            try { return { sources: await sources(query, signal, loadSnapshot, options, refreshSources) } }
             catch { return { missing: true } }
           })
           if (entry.missing) throw new Error('Kildeoppslaget mangler grunnlag')
@@ -152,6 +155,7 @@ export function hostedPreview({
       if (result.status === 'conversation') return measuredReply(200, {
         ...directReply(result.reply).body, ...(result.chart ? { chart: result.chart } : {}),
         ...(result.deliverables ? { deliverables: await withGeometry(result.deliverables) } : {}),
+        ...(result.policy ? {policy:result.policy} : {}),
       })
       if (result.status === 'no-evidence') {
         if (result.lens === 'factcheck') return measuredReply(200, {
@@ -159,6 +163,11 @@ export function hostedPreview({
           policy: { factCheck: { claim: question, wording:'user-question', verdict:'insufficient',
             reasoning:'Kildene som ble funnet ga ikke tilstrekkelig grunnlag for å fastslå utfallet.', sourceIds:[], interpretations:[] } },
         })
+        if (['delivery','reconcile'].includes(result.lens)) {
+          const summary = result.lens === 'delivery' ? 'Jeg fant ikke dokumentasjon som avgjør hvordan dette løftet ble fulgt opp.'
+            : 'Jeg fant ikke dokumentasjon for begge tallene. Del gjerne originalkildene, så kan jeg forsøke å avstemme dem.'
+          return measuredReply(200,finishPolicy(directReply(summary).body,null,buildPolicyEvidence([],result.lens,question),[],question))
+        }
         return measuredReply(422, { error: 'Jeg fant ikke kilder som kunne underbygge et svar på dette. Hvis du har en kilde, kan du gjerne dele den.' })
       }
       if (result.status !== 'reviewed') {
@@ -192,7 +201,7 @@ export function hostedPreview({
     const send = (status, body) => res.status(status).json(body)
     if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
     if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels, files: true,
-      advanced: true, insights: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
+      advanced: true, insights: true, workbench: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
     })
     if (req.method !== 'POST') return send(405, { error: 'Metoden støttes ikke.' })
     if (req.headers.origin !== `https://${req.headers.host}` ||
@@ -200,7 +209,7 @@ export function hostedPreview({
       return send(403, { error: 'Send spørsmålet fra den beskyttede forhåndsvisningen.' })
     }
     const { requestId, resume, progress, question: rawQuestion, history = [], files: attachments = [], carryAttachments,
-      projectFiles = [], revision, model: selectedModel = model,
+      projectFiles = [], revision, refreshSources, model: selectedModel = model,
       effort = 'default' } = req.body ?? {}
     if (!validRequestId(requestId)) return send(400, { error: 'Innsendingen mangler en gyldig ID. Last siden på nytt.' })
     if (progress === true) return send(200, await requests.progress(requestId))
@@ -237,7 +246,7 @@ export function hostedPreview({
     const uploads = [...asSources(carryAttachments === true && greeting ? [] : attachments, 'vedlegg'),
       ...asSources(greeting ? [] : projectFiles, 'prosjektfil')]
     const asOf = new Date().toISOString().slice(0, 10)
-    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads, advanced: true, insights: true, ...(prior ? { prior } : {}) }
+    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads, advanced: true, insights: true, ...(refreshSources === true ? {refreshSources:true} : {}), ...(prior ? { prior } : {}) }
     if (publishJob && apiKey && (uploads.length || !interpretGreeting(question))) {
       try {
         const { status, body } = await requests.enqueue(requestId, brief, publishJob)

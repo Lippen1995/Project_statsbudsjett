@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { buildReport } from '../../scripts/analyser/report.mjs'
+import { peerBenchmark } from './municipal-peers.mjs'
 import { municipalMetrics } from './municipal-metrics.mjs'
 import { norwayPopulation, officialMunicipalCounts, publicCaseId, publicSchoolPupils, readPublicCase } from './policy-public-data.mjs'
 
@@ -186,12 +187,12 @@ export function findBudgetNodes(tree, { id, chapter, post }) {
   return rows
 }
 
-export function budgetSelector(question) {
-  const found = question.match(/\bkap(?:ittel)?\.?\s*(\d{4})(?!\d)/i)
-  if (!found) return null
-  const post = question.slice(found.index + found[0].length).match(/^[\s,]*(?:\/\s*)?post\s*(\d{1,3})(?!\d)/i)?.[1]
-  return { chapter: found[1], ...(post ? { post } : {}) }
+function budgetSelectors(question) {
+  return [...question.matchAll(/\bkap(?:ittel)?\.?\s*(\d{4})(?!\d)(?:[\s,]*\/?\s*post\s*(\d{1,3})(?!\d))?/gi)]
+    .slice(0, 4).map(([, chapter, post])=>({chapter,...(post?{post}:{})}))
 }
+
+export function budgetSelector(question) { return budgetSelectors(question)[0] ?? null }
 
 async function budgetRowSources(read, ids, selection, years, insights) {
   const files = new Map()
@@ -310,29 +311,45 @@ async function oilSources(read, years) {
 export async function resolveSvenSources(question, dataDir, {
   read = file => readJson(dataDir, file),
   stateReport = options => buildReport(dataDir, options),
-  insights = false, lens, denominator, fetchCounts = officialMunicipalCounts, fetchCase = readPublicCase,
+  insights = false, lens, denominator, fetchCounts = officialMunicipalCounts, fetchCase = readPublicCase, loadValues, loadCentrality,
 } = {}) {
   if (typeof question !== 'string' || !question.trim()) throw new TypeError('Spørsmålet mangler')
   const normalized = normalize(question)
   const years = requestedYears(normalized)
   const budgetRows = selectedBudgetReferences(question)
-  const namedBudget = insights ? budgetSelector(normalized) : null
-  if (budgetRows.length || namedBudget) {
-    const evidence = await budgetRowSources(read, budgetRows, namedBudget, years, insights)
-    if (evidence.length) return evidence
+  const combined = ['delivery','reconcile'].includes(lens)
+  const namedBudgets = insights ? budgetSelectors(normalized).slice(0,combined?4:1) : []
+  const evidence = []
+  if (budgetRows.length) evidence.push(...await budgetRowSources(read,budgetRows,null,years,insights))
+  if ((!evidence.length || combined) && namedBudgets.length) {
+    const groups = await Promise.all(namedBudgets.map(selection=>budgetRowSources(read,[],selection,years,insights)))
+    evidence.push(...groups.flat())
   }
+  const budgetEvidence = [...new Map(evidence.map(source=>[source.id,source])).values()]
+  if (budgetEvidence.length && !combined) return budgetEvidence
   if (insights) {
     const link = question.match(/https:\/\/www\.stortinget\.no\/no\/Saker-og-publikasjoner\/Saker\/Sak\/?\?p=\d+/i)?.[0]
     const id = publicCaseId(link ?? normalized.match(/\b(?:stortingssak|stortingets saks-id|sak-id)\s*[:#]?\s*(\d{4,8})\b/)?.[1])
     if (id) {
       const record = await fetchCase(id)
-      return [{ id: 'storting-sak-' + id, title: record.title, url: record.url, parliamentCase: id,
+      return [...budgetEvidence,{ id: 'storting-sak-' + id, title: record.title, url: record.url, parliamentCase: id,
         text: JSON.stringify({ ...record, method: 'Stortingets åpne data. Statusen «behandlet» kan vise til komiteen. Les ferdigbehandlet, vedtaksfelt og tilhørende dokumenter for å fastslå utfallet.' }) }]
     }
   }
-  if (/oljepengebruk|oljepenger|strukturelt oljekorrigert/.test(normalized)) return oilSources(read, years)
+  if (budgetEvidence.length && lens !== 'reconcile') return budgetEvidence
+  if (/oljepengebruk|oljepenger|strukturelt oljekorrigert/.test(normalized)) return [...budgetEvidence,...await oilSources(read, years)]
   const metrics = Object.entries(municipalMetrics).filter(([, label]) => mentionsTerm(normalized, label))
   const service = serviceTerms.find(([, , pattern]) => pattern.test(normalized))
+  if (insights && lens === 'peers') {
+    const index = await read('kostra/index.json')
+    const focus = index.entities.filter(entity=>entity.kind === 'municipality').flatMap(entity=>entity.name.split(/\s+[–-]\s+/)
+      .filter(name=>name.length>2 && mentionsTerm(normalized,name)).map(name=>({entity,offset:normalized.indexOf(normalize(name)),length:name.length})))
+      .sort((a,b)=>a.offset-b.offset || b.length-a.length)[0]?.entity
+    const metric = service && /brutto/.test(normalized) ? 'gross_expenses' : service && /investering/.test(normalized) ? 'investments'
+      : service ? 'net_expenses' : metrics[0]?.[0] ?? 'net_expenses'
+    const evidence = await peerBenchmark({index,focus,year:years.at(-1) ?? index.latestYear,service,metric,loadValues,loadCentrality})
+    if (evidence?.length) return evidence
+  }
   if (metrics.length || service) {
     try {
       const found = await municipalSources(read, normalized, years, metrics, service, insights, lens)
@@ -344,14 +361,15 @@ export async function resolveSvenSources(question, dataDir, {
       ])
       if (prices) found.push(prices)
       found.push(...counts)
-      return found
+      return [...budgetEvidence,...found]
     } catch (error) {
-      if (metrics.length || /kommun|kostra/.test(normalized)) throw error
+      if (!budgetEvidence.length && (metrics.length || /kommun|kostra/.test(normalized))) throw error
     }
   }
   if (/statsregnskap|statens\s+utgifter|(?:brukte|bruker)\s+staten/.test(normalized) &&
       !/departement|forsvar|helse|samferdsel|utdanning|trygd|budsjettforslag/.test(normalized)) {
-    return stateSources(read, stateReport, years)
+    return [...budgetEvidence,...await stateSources(read, stateReport, years)]
   }
+  if (combined) return budgetEvidence
   throw new Error('Automatisk oppslag dekker statsregnskapets samlede utgifter, oljepengebruk og utvalgte nøkkeltall for kommunekonsern. Legg ved kilder for andre spørsmål.')
 }

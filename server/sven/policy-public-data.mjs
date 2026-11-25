@@ -132,3 +132,29 @@ export async function readPublicCase(id, fetchImpl = fetch) {
   const source = await officialResponse('https://data.stortinget.no/eksport/sak?sakid=' + id, fetchImpl)
   return parsePublicCase(await source.text(), id)
 }
+
+export async function officialMunicipalValues(definition, regions, year, fetchImpl = fetch) {
+  if (!regions.length || !regions.every(region=>/^\d{4}$/.test(region)) || !Number.isInteger(year) || year < 1900 || year > 2199) {
+    throw new Error('Ugyldig kommune eller periode')
+  }
+  const fixed = { ...definition.options, Tid:String(year) }
+  const filter = { ...fixed, [definition.regionKey]:regions.join(',') }
+  const url = statbankDataUrl(definition.table,filter)
+  const {id,size,dimension,value} = await (await officialResponse(url,fetchImpl)).json()
+  const axis = id?.indexOf(definition.regionKey)
+  if (!Array.isArray(id) || !Array.isArray(size) || !Array.isArray(value) || id.length !== size.length ||
+      axis < 0 || size[axis] !== value.length || id.length !== Object.keys(fixed).length+1 ||
+      !id.every((key,index)=>index===axis || size[index]===1 && positionMap(dimension?.[key]?.category)[fixed[key]]===0)) {
+    throw new Error('Uventet datauttrekk fra SSB')
+  }
+  const positions = positionMap(dimension?.[definition.regionKey]?.category)
+  return {url,values:Object.fromEntries(regions.map(code=>[code,Number.isFinite(value[positions[code]]) ? value[positions[code]] : null]))}
+}
+
+export async function officialCentrality(year, fetchImpl = fetch) {
+  if (!Number.isInteger(year) || year < 1900 || year > 2199) throw new Error('Ugyldig år')
+  const url = `https://data.ssb.no/api/klass/v1/classifications/128/corresponds?targetClassificationId=131&from=${year}-01-01&to=${year}-01-02`
+  const {correspondenceItems} = await (await officialResponse(url,fetchImpl)).json()
+  return {url,values:Object.fromEntries(correspondenceItems.filter(item=>/^0?[1-6]$/.test(item.sourceCode)&&/^\d{4}$/.test(item.targetCode))
+    .map(item=>[item.targetCode,Number(item.sourceCode)]))}
+}

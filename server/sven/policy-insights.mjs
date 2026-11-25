@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto'
 import { calculationFormula, tableFromChart } from './deliverables.mjs'
 import { publicCaseId, statbankDataUrl } from './policy-public-data.mjs'
 import { budgetPhases } from './sources.mjs'
+import { deliveryChain, policyScenario, reconcileAmounts } from './policy-workbench.mjs'
 
 export const policyRouting = `Velg også lens i det første svaret når det er relevant: "drivers" ved spørsmål om hva som forklarer utgiftsendring, "budget" ved spor fra forslag til regnskap, "comparison" ved sammenlignbarhet eller "factcheck" ved sjekk av en påstand. For drivers kan denominator være "pupils" eller "population". Velg fellestall når saken gjelder tall eller kapittel/post som Fellestall dekker, eller når du har Stortingets saks-ID. Ta med identifikator, år og balansert avgrensning i meaning. Når brukeren spør om en konkret forklaring eller vil sjekke en offentlig påstand, velg også relevante primærkilder der de kan belyse saken utover tallene.`
 
@@ -203,8 +204,10 @@ function driverData(sources, sourceData, records, lens, question) {
 
 export function buildPolicyEvidence(sources, lens, question) {
   const records = new Map(), sourceData = [], timelines = [], follow = new Map()
+  const peerBenchmark = lens === 'peers' ? sources.find(source=>source.peerBenchmark)?.peerBenchmark : null
   const register = item => follow.set([item.kind,item.key,item.metric].join(':'), item)
   for (const source of sources) {
+    if (peerBenchmark) for (const record of source.peerRecords ?? []) records.set(record.id,{ sourceId:source.id,url:source.url,...record })
     if (!source.municipality && !source.budget && !source.countMetadata && !source.parliamentCase &&
         !['ssb-kpi-aarsindeks','dfø-statsregnskap-utgifter'].includes(source.id)) continue
     let data
@@ -234,7 +237,7 @@ export function buildPolicyEvidence(sources, lens, question) {
   const caseLink = question.match(/https:\/\/www\.stortinget\.no\/no\/Saker-og-publikasjoner\/Saker\/Sak\/?\?p=\d+/i)?.[0]
   const caseId = publicCaseId(caseLink)
   if (caseId && ![...follow.values()].some(item => item.kind==='case' && item.key===caseId)) register({kind:'case',key:caseId,title:'Stortingssak '+caseId})
-  return { records, timelines, follow:[...follow.values()], ...driverData(sources,sourceData,records,lens,question) }
+  return { records, timelines, peerBenchmark, lens, follow:[...follow.values()], ...driverData(sources,sourceData,records,lens,question) }
 }
 
 const verdicts = ['supported','partial','contradicted','insufficient']
@@ -386,6 +389,19 @@ export function finishPolicy(answer, proposed, evidence, sources, question) {
     comparisons.push({status:reported.status,reason:reported.reason,sourceIds:reported.sourceIds})
   }
   const records = new Map(evidence.records)
+  const getObservation = (spec, label) => {
+    if (spec.observationId) return records.get(spec.observationId)
+    const source = known.get(spec.sourceId)
+    if (!source || !Number.isFinite(spec.value) || !safe(spec.unit,48)) return null
+    const record = quotedObservation(source,spec,spec.value,{label,unit:spec.unit})
+    if (record) records.set(record.id,record)
+    return record
+  }
+  const reconciliation = reconcileAmounts(proposed?.reconciliation,getObservation,evidence.lens === 'reconcile')
+  const delivery = deliveryChain(proposed?.delivery,known,question,evidence.lens === 'delivery')
+  const scenario = policyScenario(proposed?.scenario,getObservation)
+  const peerBenchmark = evidence.peerBenchmark ? { ...evidence.peerBenchmark,
+    sources:sources.filter(source=>source.peerBenchmark || source.peerRecords).map(source=>({id:source.id, url:source.snapshotUrl ?? source.url})) } : null
   const tableRefs=attachTableRefs(answer.deliverables?.table,proposed,records,known)
   const chartRefs=answer.chart ? attachTableRefs(tableFromChart(answer.chart), { cells:proposed?.chartCells }, records, known) : []
   const timelines=completeBudgetTimeline(evidence.timelines,proposed?.budgetEvidence,records,known)
@@ -400,20 +416,25 @@ export function finishPolicy(answer, proposed, evidence, sources, question) {
     ...[...tableRefs,...chartRefs,...findingRefs].map(row=>row.observationId),
     ...timelines.flatMap(row=>row.rows.map(point=>point.observationId).filter(Boolean)),
     ...evidence.drivers.flatMap(driver=>[driver.startObservation,driver.endObservation,driver.realGrowth,...driver.rows.map(row=>row.observationId)]),
+    ...[reconciliation?.left,reconciliation?.right,...(reconciliation?.adjustments ?? []),...(scenario?.assumptions ?? [])].flatMap(row=>row?.observationId ? [row.observationId] : []),
+    ...(peerBenchmark ? sources.flatMap(source=>(source.peerRecords ?? []).map(row=>row.id)) : []),
   ])
   for (const id of retain) for (const input of records.get(id)?.inputs ?? []) retain.add(input)
   const observations = [...retain].flatMap(id=>records.has(id)?[records.get(id)]:[])
   const linkedSources = new Set([...observations.map(item=>item.sourceId).filter(Boolean),
     ...comparisons.flatMap(item=>item.sourceIds), ...timelines.map(item=>item.sourceId),
+    ...(delivery?.stages ?? []).flatMap(item=>item.sourceId ? [item.sourceId] : []),
+    ...(peerBenchmark?.sources ?? []).map(source=>source.id),
     ...(factCheck ? [...factCheck.sourceIds,...factCheck.interpretations.flatMap(item=>item.sourceIds),factCheck.claimSourceId].filter(Boolean) : []),
   ])
-  if (!(observations.length||comparisons.length||timelines.length||evidence.drivers.length||factCheck||evidence.follow.length)) return answer
+  if (!(observations.length||comparisons.length||timelines.length||evidence.drivers.length||factCheck||evidence.follow.length||reconciliation||delivery||scenario||peerBenchmark)) return answer
   return { ...answer, policy: { observations, tableRefs, chartRefs, findingRefs, comparisons, drivers:evidence.drivers, timelines,
-    follow:evidence.follow, ...(factCheck ? { factCheck } : {}), sourceIds:[...linkedSources] } }
+    follow:evidence.follow, ...(factCheck ? { factCheck } : {}), ...(reconciliation ? { reconciliation } : {}),
+    ...(delivery ? {delivery} : {}), ...(scenario ? {scenario} : {}), ...(peerBenchmark ? {peerBenchmark} : {}), sourceIds:[...linkedSources] } }
 }
 
 export function modelPolicyEvidence(evidence) {
   const observations = [...evidence.records.values()].slice(0,200).map(({id,label,value,unit,year,subject}) =>
     ({id,label,value,unit,year,...(subject?{subject}:{})}))
-  return { observations, comparisons:evidence.comparisons, drivers:evidence.drivers, timelines:evidence.timelines }
+  return { observations, comparisons:evidence.comparisons, drivers:evidence.drivers, timelines:evidence.timelines, ...(evidence.peerBenchmark ? {peerBenchmark:evidence.peerBenchmark} : {}) }
 }

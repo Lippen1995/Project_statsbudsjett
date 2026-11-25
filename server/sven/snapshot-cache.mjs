@@ -12,7 +12,7 @@ function compactKostra(file, raw) {
     return JSON.stringify({ latestYear, years, updated,
       sources: sources.filter(source => ['12137', '12362', '07022'].includes(source.source_table)),
       entities: entities.filter(entity => entity.kind === 'municipality')
-        .map(({ name, code, kind }) => ({ name, code, kind })),
+        .map(({ name, code, kind, peer_group_id }) => ({ name, code, kind, peer_group_id })),
     })
   }
   if (file.startsWith('kostra/entities/')) {
@@ -24,12 +24,12 @@ function compactKostra(file, raw) {
 
 export function snapshotLoader({ cache, fetchImpl = fetch, now = Date.now }) {
   const inFlight = new Map()
-  async function load(file) {
-    const key = `snapshot-v2:${file}`
+  async function load(file, refresh) {
+    const key = `snapshot-v3:${file}`
     let saved
     try { saved = await cache.get(key) } catch { /* Read the authoritative snapshot. */ }
     const decode = async () => (await decompress(Buffer.from(saved.data, 'base64'))).toString('utf8')
-    if (saved?.data && saved.freshUntil > now()) {
+    if (!refresh && saved?.data && saved.freshUntil > now()) {
       try { return await decode() } catch { saved = null }
     }
     const headers = saved?.etag ? { 'If-None-Match': saved.etag } : undefined
@@ -54,12 +54,13 @@ export function snapshotLoader({ cache, fetchImpl = fetch, now = Date.now }) {
     } catch { /* A cache write must not prevent a fresh answer. */ }
     return data
   }
-  return async (file, signal) => {
+  return async (file, signal, {refresh=false} = {}) => {
     signal?.throwIfAborted()
-    if (!inFlight.has(file)) {
-      inFlight.set(file, load(file).finally(() => inFlight.delete(file)))
+    const key = refresh ? 'refresh:' + file : file
+    if (!inFlight.has(key)) {
+      inFlight.set(key, load(file,refresh).finally(() => inFlight.delete(key)))
     }
-    const data = await inFlight.get(file)
+    const data = await inFlight.get(key)
     signal?.throwIfAborted()
     return data
   }
