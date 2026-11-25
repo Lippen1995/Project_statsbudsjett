@@ -1,9 +1,9 @@
-import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:crypto'
+import { createCipheriv, createDecipheriv, createHash, createHmac, randomBytes } from 'node:crypto'
 import { deflateRawSync, inflateRawSync } from 'node:zlib'
 
 export const validRequestId = id => typeof id === 'string' && /^[a-f0-9]{64}$/.test(id)
 const cacheKey = id => 'request-v2:' + createHash('sha256').update(id).digest('hex')
-const ttl = 900
+const defaultTtl = 900
 
 function seal(id, value) {
   const iv = randomBytes(12)
@@ -20,7 +20,7 @@ function unseal(id, value) {
   return JSON.parse(inflateRawSync(Buffer.concat([decipher.update(bytes.subarray(28)), decipher.final()])).toString('utf8'))
 }
 
-export function previewRequests(cache, { now = Date.now, leaseMs = 175_000 } = {}) {
+export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl = defaultTtl } = {}) {
   const active = new Set()
   const pending = { status: 202, body: { pending: true } }
   const missing = {
@@ -34,17 +34,58 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000 } = {
     if (value.length > 1_900_000) throw new Error('Undersøkelsen er for stor til å lagre i previewen')
     return cache.set(cacheKey(id), value, { ttl, name: 'Sven preview request' })
   }
-  async function advance(id, execute, brief) {
+  async function read(id) {
+    const encrypted = await cache.get(cacheKey(id))
+    return encrypted ? unseal(id, encrypted) : null
+  }
+  const backgroundPending = { status: 202, body: { pending: true, background: true } }
+  async function enqueue(id, brief, publish) {
+    const saved = await read(id)
+    const state = saved ?? { brief, steps: {}, revision: 0, phase: 'queued' }
+    if (state.result) return state.result
+    if (!Number.isInteger(state.revision)) return pending
+    // Sending the same revision again is idempotent at the queue. Store the
+    // lookup first so even a worker that starts immediately can find it.
+    if (!saved) await write(id, state)
+    if (!saved || state.phase === 'queued') await publish(id, state)
+    return backgroundPending
+  }
+  async function backgroundStatus(id) {
+    const state = await read(id)
+    if (state?.result) return state.result
+    return Number.isInteger(state?.revision)
+      ? { ...backgroundPending, body: { ...backgroundPending.body, phase: state.phase } }
+      : null
+  }
+  async function advance(id, execute, brief, job) {
     if (active.has(id)) return pending
     active.add(id)
     try {
-      const encrypted = await cache.get(cacheKey(id))
-      const saved = encrypted ? unseal(id, encrypted) : null
+      const saved = await read(id)
       if (saved?.result) return saved.result
+      if (job && saved?.revision > job.state.revision) {
+        await job.publish(id, saved)
+        return backgroundPending
+      }
       if (saved && (brief || saved.leaseUntil > now())) return pending
-      if (!saved && !brief) return missing
-      const state = saved ?? { brief, steps: {} }
-      if (Object.values(state.steps).some(step => step.running)) return uncertain
+      if (!saved && !brief && !job) return missing
+      const state = saved ?? (job ? structuredClone(job.state) : { brief, steps: {} })
+      const interrupted = Object.entries(state.steps).find(([, step]) => step.running)
+      if (interrupted) {
+        const [phase, previous] = interrupted
+        if (!job) return uncertain
+        state.retries ??= {}
+        if (!state.retries[phase]) {
+          state.retries[phase] = 1
+          delete state.steps[phase]
+        } else if (['research', 'research-followup', 'direct-fetch'].includes(phase)) {
+          state.steps[phase] = { digest: previous.digest, value: { content: [], stop_reason: 'pause_turn' } }
+        } else {
+          const result = { status: 502, body: { error: 'Et modellkall ble avbrutt to ganger. Start en ny analyse for å prøve igjen.' } }
+          await write(id, { result, leaseUntil: 0 })
+          return result
+        }
+      }
       state.leaseUntil = now() + leaseMs
       await write(id, state)
       async function memo(phase, input, work, { billable = false, beforeStart } = {}) {
@@ -65,8 +106,18 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000 } = {
       }
       const result = await execute(state.brief, memo)
       state.leaseUntil = 0
+      const running = Object.values(state.steps).some(step => step.running)
+      if (job && running && [429, 502].includes(result.status)) {
+        await write(id, state)
+        return pending
+      }
       if (result.status !== 202) state.result = result
+      if (job && result.body.continuation) state.revision++
       await write(id, state.result ? { result, leaseUntil: 0 } : state)
+      if (job && result.body.continuation) {
+        await job.publish(id, state)
+        return backgroundPending
+      }
       return result
     } catch {
       return { status: 503, body: { error: 'Sven kunne ikke lagre fremdriften. Bruk «Hent svar» for å sjekke samme innsending.', recoverable: true } }
@@ -75,14 +126,22 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000 } = {
   return {
     run: (id, brief, execute) => advance(id, execute, brief),
     resume: (id, execute) => advance(id, execute),
+    enqueue, backgroundStatus,
+    work: (id, state, execute, publish) => advance(id, execute, undefined, { state, publish }),
     async progress(id) {
       try {
-        const encrypted = await cache.get(cacheKey(id))
-        if (!encrypted) return {}
-        const state = unseal(id, encrypted)
-        if (state.result) return { done: true }
-        return state.leaseUntil > now() && state.phase ? { phase: state.phase } : {}
+        const state = await read(id)
+        if (state?.result) return { done: true }
+        return state?.phase && (Number.isInteger(state.revision) || state.leaseUntil > now()) ? { phase: state.phase } : {}
       } catch { return {} }
     },
+  }
+}
+
+export function previewJobCodec(secret) {
+  const key = createHmac('sha256', secret).update('fellestall-sven-queue-v1').digest('hex')
+  return {
+    pack: (id, state) => seal(key, { id, state }),
+    unpack: packet => unseal(key, packet),
   }
 }

@@ -50,12 +50,13 @@ export function hostedPreview({
   apiKey = process.env.SVEN_ANTHROPIC_API_KEY,
   createRequest = claudeTransport,
   sources = resolveSources,
+  publishJob,
   cache = getCache({ namespace: 'fellestall-sven-preview-v1' }),
   onUsage = ({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }) => {
     console.info('[Sven usage]', JSON.stringify({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }))
   },
 } = {}) {
-  const requests = previewRequests(cache, { leaseMs: invocationLeaseMs })
+  const requests = previewRequests(cache, { leaseMs: invocationLeaseMs, ...(publishJob ? { ttl: 86_400 } : {}) })
   const loadSnapshot = snapshotLoader({ cache })
   const reply = (status, body) => ({ status, body })
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
@@ -64,7 +65,7 @@ export function hostedPreview({
     const greeting = interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
-    if (busy) return reply(429, { error: 'Sven undersøker et annet spørsmål. Prøv igjen snart.' })
+    if (!publishJob && busy) return reply(429, { error: 'Sven undersøker et annet spørsmål. Prøv igjen snart.' })
     busy = true
     const step = new AbortController()
     const { signal } = step
@@ -76,7 +77,7 @@ export function hostedPreview({
       ...body, ...(usage.calls ? { model: selectedModel, effort, usage } : {}),
     })
     try {
-      const request = createRequest({ apiKey, model: selectedModel, timeoutMs: null,
+      const request = createRequest({ apiKey, model: selectedModel, timeoutMs: publishJob ? 260_000 : null,
         stream: true, cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
       const result = await researchWithSven({
         question, history, asOf, signal, maxSearches: 3, conversational: true,
@@ -149,7 +150,7 @@ export function hostedPreview({
     }
   }
 
-  return async (req, res) => {
+  const handle = async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     const send = (status, body) => res.status(status).json(body)
     if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
@@ -164,7 +165,8 @@ export function hostedPreview({
     if (!validRequestId(requestId)) return send(400, { error: 'Innsendingen mangler en gyldig ID. Last siden på nytt.' })
     if (progress === true) return send(200, await requests.progress(requestId))
     if (resume === true) {
-      const { status, body } = await requests.resume(requestId, answerQuestion)
+      const result = publishJob ? await requests.backgroundStatus(requestId) : null
+      const { status, body } = result ?? await requests.resume(requestId, answerQuestion)
       return send(status, body)
     }
     const question = typeof rawQuestion === 'string' ? rawQuestion.trim() : ''
@@ -176,9 +178,20 @@ export function hostedPreview({
     if (!previewModels.some(option => option.id === selectedModel)) return send(400, { error: 'Denne modellen er ikke tilgjengelig.' })
     if (!effortLevels.some(option => option.id === effort)) return send(400, { error: 'Dette resonneringsnivået er ikke tilgjengelig.' })
     const asOf = new Date().toISOString().slice(0, 10)
-    const { status, body } = await requests.run(requestId, { question, history, asOf, selectedModel, effort }, answerQuestion)
+    const brief = { question, history, asOf, selectedModel, effort }
+    if (publishJob && apiKey && !interpretGreeting(question)) {
+      try {
+        const { status, body } = await requests.enqueue(requestId, brief, publishJob)
+        return send(status, body)
+      } catch {
+        return send(503, { error: 'Analysen venter på oppstart. Sven prøver å koble til igjen.', recoverable: true })
+      }
+    }
+    const { status, body } = await requests.run(requestId, brief, answerQuestion)
     return send(status, body)
   }
+  handle.work = (id, state) => requests.work(id, state, answerQuestion, publishJob)
+  return handle
 }
 
 export default hostedPreview()

@@ -134,3 +134,19 @@ test('en avbrutt Claude-strøm godkjennes ikke som et ferdig svar', async () => 
   assert.equal(records[0].input, 12)
   assert.equal(records[0].stopReason, 'stream_interrupted')
 })
+
+test('research can preserve completed citation blocks when a stream disconnects', async () => {
+  const citation = { type: 'web_search_result_location', cited_text: 'Primærkilde', url: 'https://www.ssb.no/' }
+  const request = claudeTransport({ apiKey: 'test', model: 'claude-sonnet-5-5', stream: true,
+    fetchImpl: async () => sse([
+      { type: 'message_start', message: { usage: { input_tokens: 12 } } },
+      { type: 'content_block_start', index: 0, content_block: { type: 'text', text: 'Utdrag', citations: [citation] } },
+      { type: 'content_block_stop', index: 0 },
+      { type: 'content_block_start', index: 1, content_block: { type: 'text', text: 'Ufullstendig' } },
+    ]),
+  })
+  const result = await request({ instructions: 'Finn kilder', input: 'Spørsmål', phase: 'research' })
+  assert.equal(result.stop_reason, 'pause_turn')
+  assert.equal(result.content.length, 1)
+  assert.deepEqual(result.content[0].citations, [citation])
+})

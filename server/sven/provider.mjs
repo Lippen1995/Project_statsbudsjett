@@ -16,6 +16,7 @@ export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
       signal: signal && timeout ? AbortSignal.any([signal, timeout]) : signal ?? timeout,
     })
     if (!response.ok) throw new Error(`Claude API svarte HTTP ${response.status}`)
+    const toolPhase = ['research', 'research-followup', 'direct-fetch'].includes(phase)
     let message
     let streamError
     try {
@@ -23,8 +24,12 @@ export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
         ? await readMessageStream(response.body) : await response.json()
     } catch (error) {
       if (!error?.usage) throw error
-      streamError = error
-      message = { usage: error.usage, stop_reason: 'stream_interrupted' }
+      const partial = toolPhase && !signal?.aborted && error.partialMessage
+      if (partial) message = { ...partial, stop_reason: 'pause_turn' }
+      else {
+        streamError = error
+        message = { usage: error.usage, stop_reason: 'stream_interrupted' }
+      }
     }
     const usage = { requestId: message.id ?? response.headers.get('request-id'), model: message.model ?? model,
       phase, elapsedMs: Date.now() - started, stopReason: message.stop_reason, maxTokens,
@@ -37,7 +42,6 @@ export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
     if (streamError) throw streamError
     // Tool turns can already contain usable, attributed evidence even if the
     // provider stopped before writing its own final prose.
-    const toolPhase = ['research', 'research-followup', 'direct-fetch'].includes(phase)
     const partial = ['pause_turn', 'max_tokens'].includes(message.stop_reason)
     if (message.stop_reason !== 'end_turn' && !(toolPhase && partial)) {
       throw Object.assign(new Error('Claude fullførte ikke analysen'), {
@@ -69,6 +73,7 @@ async function* messageEvents(body) {
 
 async function readMessageStream(body) {
   let message
+  const completed = new Set()
   try {
     for await (const event of messageEvents(body)) {
       if (event.type === 'error') {
@@ -93,6 +98,8 @@ async function readMessageStream(body) {
         if (block?.type !== 'text') continue
         if (event.delta.type === 'text_delta') block.text += event.delta.text
         if (event.delta.type === 'citations_delta') (block.citations ??= []).push(event.delta.citation)
+      } else if (event.type === 'content_block_stop') {
+        completed.add(event.index)
       } else if (event.type === 'message_delta') {
         Object.assign(message, event.delta)
         const { server_tool_use: toolUsage, ...usage } = event.usage ?? {}
@@ -104,6 +111,9 @@ async function readMessageStream(body) {
     }
     throw new Error('Claude avsluttet responsstrømmen uten et ferdig svar')
   } catch (error) {
-    throw Object.assign(error, { usage: message?.usage })
+    const content = message?.content.filter((block, index) => block && completed.has(index)) ?? []
+    const usable = content.some(block => block.citations?.length ||
+      block.type === 'web_fetch_tool_result' && block.content?.type === 'web_fetch_result')
+    throw Object.assign(error, { usage: message?.usage, ...(usable ? { partialMessage: { ...message, content } } : {}) })
   }
 }

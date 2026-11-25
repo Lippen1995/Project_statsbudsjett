@@ -502,3 +502,69 @@ test('an investigation continues across separate invocations and each billed pha
   assert.equal(repeated.status, 200)
   assert.deepEqual(phases, expected)
 })
+
+test('queued analysis completes after the client leaves and restores a durable checkpoint after cache loss', async () => {
+  const { previewJobCodec } = await import('../../server/sven/preview-requests.mjs')
+  const codec = previewJobCodec('simulated-server-secret')
+  const storage = new Map()
+  const cache = { get: async key => storage.get(key), set: async (key, value) => storage.set(key, value) }
+  const messages = new Map()
+  const delivered = []
+  const phases = []
+  let interrupted = false
+  const options = {
+    environment: 'preview', apiKey: 'test', cache,
+    publishJob: async (id, state) => {
+      const key = id + ':' + state.revision
+      if (!messages.has(key)) messages.set(key, codec.pack(id, state))
+    },
+    sources: async () => [{ id: 'accounts', title: 'Regnskap', text: 'Fellestalls tallgrunnlag' }],
+    createRequest: ({ timeoutMs }) => async ({ phase }) => {
+      assert.equal(timeoutMs, 260_000)
+      phases.push(phase)
+      if (phase === 'interpret') return response({ intent, action: 'research', tools: ['fellestall', 'web'], plan: searchPlan })
+      if (phase === 'research') return { content: [] }
+      if (phase === 'answer-0') {
+        if (!interrupted) {
+          interrupted = true
+          throw new Error('Temporarily disconnected')
+        }
+        return response({
+          summary: 'Ferdig analyse', findings: [{ text: 'Funn', sourceIds: ['accounts'] }], recommendation: null, uncertainties: [],
+        })
+      }
+      assert.equal(phase, 'review-0')
+      return response({ passed: true, issues: [] })
+    },
+  }
+  const requestId = randomBytes(32).toString('hex')
+  const question = 'Privat spørsmål til Sven'
+  const chat = hostedPreview(options)
+  const accepted = await callOnce(chat, 'POST', { requestId, question })
+  assert.deepEqual(accepted, { status: 202, payload: { pending: true, background: true } })
+  assert.deepEqual(await callOnce(chat, 'POST', { requestId, resume: true }),
+    { status: 202, payload: { pending: true, background: true, phase: 'queued' } })
+  assert.deepEqual(phases, [])
+  assert.equal(messages.size, 1)
+  assert(![...messages.values()][0].includes(question))
+  // The browser sends nothing while fresh worker instances consume the queue.
+  for (const [, packet] of messages) {
+    const { id, state } = codec.unpack(packet)
+    const work = () => hostedPreview(options).work(id, state)
+    const result = await work()
+    delivered.push(state.revision)
+    if (state.revision === 0) storage.clear()
+    if (result.status === 202 && !result.body.background) {
+      assert.equal(state.revision, 2)
+      assert.equal((await work()).body.background, true)
+    }
+  }
+  assert.deepEqual(delivered, [0, 1, 2, 3])
+  const finished = await callOnce(hostedPreview(options), 'POST', { requestId, resume: true })
+  assert.equal(finished.payload.summary, 'Ferdig analyse')
+  assert.deepEqual(phases, ['interpret', 'research', 'answer-0', 'answer-0', 'review-0'])
+  // Redelivery of a completed queue entry cannot start another billable call.
+  const { id, state } = codec.unpack([...messages.values()][0])
+  assert.equal((await hostedPreview(options).work(id, state)).status, 200)
+  assert.equal(phases.length, 5)
+})
