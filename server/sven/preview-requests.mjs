@@ -47,13 +47,14 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000 } = {
       if (Object.values(state.steps).some(step => step.running)) return uncertain
       state.leaseUntil = now() + leaseMs
       await write(id, state)
-      async function memo(phase, input, work, { billable = false } = {}) {
+      async function memo(phase, input, work, { billable = false, beforeStart } = {}) {
         const digest = createHash('sha256').update(JSON.stringify(input)).digest('hex')
         const previous = state.steps[phase]
         if (previous) {
           if (previous.digest !== digest || previous.running) throw new Error('Trinnet kan ikke trygt gjenbrukes')
           return previous.value
         }
+        beforeStart?.()
         state.phase = phase
         if (billable) state.steps[phase] = { digest, running: true }
         await write(id, state)

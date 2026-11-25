@@ -13,7 +13,7 @@ const intent = { request: 'Hva skjedde?', purpose: 'Forstå en endring', meaning
 const searchPlan = { scope: 'Norge', questions: ['Hva viser kildene?'], searches: ['barnetrygd'], counterSearch: 'usikkerhet', missing: [] }
 const response = value => ({ content: [{ type: 'text', text: JSON.stringify(value) }] })
 
-function call(handler, method, body, requestHeaders = headers) {
+function callOnce(handler, method, body, requestHeaders = headers) {
   let status
   const res = {
     setHeader() {},
@@ -23,6 +23,17 @@ function call(handler, method, body, requestHeaders = headers) {
   return handler({ method, headers: requestHeaders,
     body: method === 'POST' ? { requestId: randomBytes(32).toString('hex'), ...body } : body,
   }, res)
+}
+
+async function call(handler, method, body, requestHeaders = headers) {
+  if (method !== 'POST') return callOnce(handler, method, body, requestHeaders)
+  const requestId = body?.requestId ?? randomBytes(32).toString('hex')
+  let res = await callOnce(handler, method, { ...body, requestId }, requestHeaders)
+  for (let i = 0; res.payload.continuation; i++) {
+    assert(i < 12, 'Previewen fortsatte uten å bli ferdig')
+    res = await callOnce(handler, 'POST', { requestId, resume: true }, requestHeaders)
+  }
+  return res
 }
 
 test('preview-status og avviste forespørsler bruker ingen modellkall', async () => {
@@ -280,7 +291,7 @@ test('modell og resonneringsstyrke gjelder hele forespørselen og rapporteres sa
     createRequest: ({ model, effort }) => async ({ maxTokens }) => {
       assert.equal(model, 'claude-opus-5-5')
       assert.equal(effort, 'high')
-      assert.equal(maxTokens, 16_000)
+      assert.equal(maxTokens, 128_000)
       return {
         ...response({ intent, action: 'reply', reply: 'Svar' }),
         usage: { input_tokens: 17, output_tokens: 4, cache_read_input_tokens: 512, cache_creation_input_tokens: 0 },
@@ -427,11 +438,11 @@ test('konkrete spørsmål om budsjettposter blir undersøkt videre når tallene 
   }
 })
 
-test('preview uses the selected model and effort to give research and synthesis separate output limits', async () => {
-  for (const [model, effort, expected] of [
-    ['claude-sonnet-5-5', 'default', [6_000, 16_000, 12_000, 6_000]],
-    ['claude-sonnet-5-5', 'high', [10_000, 24_000, 18_000, 10_000]],
-    ['claude-opus-5-5', 'high', [16_000, 48_000, 32_000, 16_000]],
+test('preview uses the provider maximum in every phase regardless of model or effort', async () => {
+  for (const [model, effort] of [
+    ['claude-sonnet-5-5', 'default'],
+    ['claude-sonnet-5-5', 'high'],
+    ['claude-opus-5-5', 'high'],
   ]) {
     const limits = []
     const preview = hostedPreview({
@@ -441,7 +452,7 @@ test('preview uses the selected model and effort to give research and synthesis 
         assert.equal(options.model, model)
         assert.equal(options.effort, effort === 'default' ? undefined : effort)
         assert.equal(options.stream, true)
-        assert(options.timeoutMs > 180_000)
+        assert.equal(options.timeoutMs, null)
         limits.push(maxTokens)
         if (phase === 'interpret') return response({ intent, action: 'research', tools: ['fellestall', 'web'], plan: searchPlan })
         if (phase === 'research') return { content: [] }
@@ -455,6 +466,39 @@ test('preview uses the selected model and effort to give research and synthesis 
     })
     const result = await call(preview, 'POST', { question: 'Hva viser regnskapet?', model, effort })
     assert.equal(result.status, 200)
-    assert.deepEqual(limits, expected)
+    assert.deepEqual(limits, [128_000, 128_000, 128_000, 128_000])
   }
+})
+
+test('an investigation continues across separate invocations and each billed phase runs once', async () => {
+  const data = new Map()
+  const cache = { get: async key => data.get(key), set: async (key, value) => data.set(key, value) }
+  const phases = []
+  const options = {
+    environment: 'preview', apiKey: 'test', cache,
+    sources: async () => [{ id: 'local', title: 'Regnskap', text: 'Fellestalls tallgrunnlag' }],
+    createRequest: ({ timeoutMs }) => async ({ phase }) => {
+      assert.equal(timeoutMs, null)
+      phases.push(phase)
+      if (phase === 'interpret') return response({ intent, action: 'research', tools: ['fellestall', 'web'], plan: searchPlan })
+      if (phase === 'research') return { content: [] }
+      if (phase === 'answer-0') return response({
+        summary: 'Svar', findings: [{ text: 'Funn', sourceIds: ['local'] }], recommendation: null, uncertainties: [],
+      })
+      assert.equal(phase, 'review-0')
+      return response({ passed: true, issues: [] })
+    },
+  }
+  const requestId = randomBytes(32).toString('hex')
+  const expected = ['interpret', 'research', 'answer-0', 'review-0']
+  for (const [i, phase] of expected.entries()) {
+    const input = i === 0 ? { question: 'Hva viser regnskapet?' } : { resume: true }
+    const result = await callOnce(hostedPreview(options), 'POST', { ...input, requestId })
+    assert.deepEqual(phases, expected.slice(0, i + 1), phase)
+    if (i < expected.length - 1) assert.deepEqual(result, { status: 202, payload: { pending: true, continuation: true } })
+    else assert.equal(result.payload.summary, 'Svar')
+  }
+  const repeated = await callOnce(hostedPreview(options), 'POST', { requestId, resume: true })
+  assert.equal(repeated.status, 200)
+  assert.deepEqual(phases, expected)
 })

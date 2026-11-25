@@ -6,13 +6,14 @@ export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
   if (!apiKey || !model) throw new Error('Sett ANTHROPIC_API_KEY og SVEN_MODEL for å kjøre Sven')
   return async ({ instructions, input, tools, maxTokens = 4096, signal, phase = 'answer' }) => {
     const started = Date.now()
+    const timeout = timeoutMs === null ? undefined : AbortSignal.timeout(timeoutMs)
     const response = await fetchImpl('https://api.anthropic.com/v1/messages', {
       method: 'POST', headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({ model, system: cacheInstructions
         ? [{ type: 'text', text: instructions, cache_control: { type: 'ephemeral' } }]
         : instructions, messages: [{ role: 'user', content: input }],
         max_tokens: maxTokens, ...(stream ? { stream: true } : {}), ...(tools ? { tools } : {}), ...(effort ? { output_config: { effort } } : {}) }),
-      signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]) : AbortSignal.timeout(timeoutMs),
+      signal: signal && timeout ? AbortSignal.any([signal, timeout]) : signal ?? timeout,
     })
     if (!response.ok) throw new Error(`Claude API svarte HTTP ${response.status}`)
     let message
