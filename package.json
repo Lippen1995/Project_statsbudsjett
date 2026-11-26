@@ -6,7 +6,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test scripts/neon/*.test.mjs scripts/deploy/*.test.mjs scripts/admin/*.test.mjs",
+    "test": "node --test scripts/neon/*.test.mjs scripts/deploy/*.test.mjs scripts/admin/*.test.mjs scripts/sven/*.test.mjs scripts/customer/*.test.mjs",
     "admin:setup": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local --env-file-if-exists=.env.admin.local scripts/admin/setup.mjs",
     "analysis:pipeline": "node scripts/analyser/pipeline-cli.mjs",
     "data:roundtrip": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon/data-cli.mjs roundtrip",
@@ -15,19 +15,45 @@
     "preview": "npm --prefix web run preview --",
     "neon:init": "neon init -y --org-id org-icy-violet-87182384 --project-id bitter-firefly-21339346 --branch production --services postgres",
     "neon:deploy": "neon deploy --project-id bitter-firefly-21339346 --branch production",
-    "db:check": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon/check.mjs"
+    "db:check": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon/check.mjs",
+    "sven:preflight": "node scripts/sven/preflight.mjs",
+    "sven:research": "node scripts/sven/research.mjs",
+    "sven:benchmark": "node scripts/sven/benchmark.mjs"
   },
   "dependencies": {
+    "@jitl/quickjs-singlefile-cjs-release-sync": "0.32.0",
     "@neon/config": "^1.9.1",
     "@neon/env": "^1.6.2",
     "@neondatabase/serverless": "1.2.0",
+    "@resvg/resvg-js": "2.6.2",
     "@vercel/functions": "^3.10.1",
+    "@vercel/queue": "0.11.0",
     "better-auth": "^1.7.11",
-    "pg": "^8.23.1"
+    "csv-parse": "7.0.3",
+    "d3-geo": "3.1.1",
+    "docx": "9.16.0",
+    "exceljs": "4.4.0",
+    "jszip": "3.10.2",
+    "pdfkit": "0.21.0",
+    "pg": "^8.23.1",
+    "pptxgenjs": "4.0.1",
+    "quickjs-emscripten-core": "0.32.0",
+    "saxes": "6.0.0",
+    "svg-to-pdfkit": "0.1.8",
+    "unpdf": "2.2.2",
+    "yauzl": "3.4.0"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.10",
     "@types/pg": "^8.23.1",
     "esbuild": "^0.28.2"
+  },
+  "overrides": {
+    "exceljs": {
+      "uuid": "11.1.1"
+    },
+    "pptxgenjs": {
+      "image-size": "2.1.0"
+    }
   }
 }

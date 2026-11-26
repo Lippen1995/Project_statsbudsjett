@@ -3,6 +3,11 @@ on:
   pull_request:
     paths:
       - 'server/admin/**'
+      - 'server/sven/**'
+      - 'server/customer/**'
+      - 'scripts/customer/**'
+      - 'scripts/sven/**'
+      - 'evaluation/sven/**'
       - 'scripts/admin/**'
       - 'scripts/analyser/**'
       - 'scripts/deploy/**'

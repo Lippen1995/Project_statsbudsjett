@@ -1,0 +1,331 @@
+import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { getCache } from '@vercel/functions'
+import example from '../../editorial/learning/feedback/review-5664781959.json' with { type: 'json' }
+import { selectEditorialExamples } from '../analyser/learning-context.mjs'
+import { buildReport } from '../analyser/report.mjs'
+import { claudeTransport, countClaudeTokens, isWebSearchPhase } from '../../server/sven/provider.mjs'
+import { compactSearchEvidence, interpretGreeting, researchWithSven } from '../../server/sven/research.mjs'
+import { resolveSvenSources } from '../../server/sven/sources.mjs'
+import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
+import { previewRequests, validRequestId } from '../../server/sven/preview-requests.mjs'
+import { prepareMunicipalMap } from '../../server/sven/municipal-map.mjs'
+import { revisionContext } from '../../server/sven/advanced-tools.mjs'
+import { buildPolicyEvidence, finishPolicy } from '../../server/sven/policy-insights.mjs'
+import { financeLenses } from '../../server/sven/finance-insights.mjs'
+import { runAnalysisCode } from '../../server/sven/run-analysis-code.mjs'
+import { runtimeCustomerAccess } from '../../server/customer/runtime.mjs'
+
+const model = 'claude-sonnet-5-5'
+const previewModels = [
+  { id: model, label: 'Claude Sonnet 5.5', detail: 'Standard' },
+  { id: 'claude-opus-5-5', label: 'Claude Opus 5.5', detail: 'Høyere forbruk' },
+]
+const effortLevels = [
+  { id: 'default', label: 'Modellens standard' },
+  { id: 'low', label: 'Lav · raskere' },
+  { id: 'medium', label: 'Middels · balansert' },
+  { id: 'high', label: 'Høy · grundigere' },
+]
+
+// The Messages API requires max_tokens. Both preview models support 128,000.
+const anthropicOutputLimit = 128_000
+const invocationLeaseMs = 330_000
+const customerRequestKey = (customerId, requestId) => createHash('sha256').update('customer-request-v1:' + customerId + ':' + requestId).digest('hex')
+
+function visibleProgress(status) {
+  const { phase } = status
+  if (/^research-followup-\d+$/.test(phase)) return { ...status, phase:'research-followup' }
+  if (/^(?:answer|review)-[1-9]\d*$/.test(phase)) return { ...status, phase:phase.split('-')[0]+'-1' }
+  return status
+}
+
+async function resolveSources(question, signal, loadSnapshot, options, refresh) {
+  return resolveSvenSources(question, undefined, {
+    ...options,
+    read: async file => JSON.parse(await loadSnapshot(file, signal, {refresh})),
+    stateReport: async (options) => {
+      const dir = await mkdtemp(join(tmpdir(), 'sven-preview-'))
+      try {
+        await Promise.all(['meta', 'utgifter', 'befolkning', 'kpi'].map(async name => {
+          const file = name + '.json'
+          await writeFile(join(dir, file), await loadSnapshot(file, signal, {refresh}))
+        }))
+        return buildReport(dir, options)
+      } finally {
+        await rm(dir, { recursive: true, force: true })
+      }
+    },
+  })
+}
+
+export function hostedPreview({
+  environment = process.env.VERCEL_ENV,
+  apiKey = process.env.SVEN_ANTHROPIC_API_KEY,
+  createRequest = claudeTransport,
+  countTokens = countClaudeTokens,
+  sources = resolveSources,
+  mapGeometry = prepareMunicipalMap,
+  compute = runAnalysisCode,
+  googlePicker = {
+    clientId: process.env.SVEN_GOOGLE_PICKER_CLIENT_ID,
+    key: process.env.SVEN_GOOGLE_PICKER_KEY,
+    appId: process.env.SVEN_GOOGLE_PICKER_APP_ID,
+  },
+  publishJob,
+  access = runtimeCustomerAccess,
+  cache = getCache({ namespace: 'fellestall-sven-preview-v1' }),
+  onUsage = ({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }) => {
+    console.info('[Sven usage]', JSON.stringify({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }))
+  },
+} = {}) {
+  const requests = previewRequests(access.jobCache??cache, { leaseMs: invocationLeaseMs, ...(publishJob ? { ttl: 86_400 } : {}) })
+  const loadSnapshot = snapshotLoader({ cache })
+  const reply = (status, body) => ({ status, body })
+  const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
+  let busy = false
+  async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default', files = false,
+    uploads = [], advanced = false, prior = null, insights = false, refreshSources = false, adaptiveResearch = false, financeTools = false,
+    customerId,customerRequestId }, memo) {
+    const greeting = !uploads.length && interpretGreeting(question)
+    if (greeting) return directReply(greeting.reply)
+    if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
+    if (!publishJob && busy) return reply(429, { error: 'Sven undersøker et annet spørsmål. Prøv igjen snart.' })
+    busy = true
+    const step = new AbortController()
+    const { signal } = step
+    const continuation = new Error('Continue from checkpoint')
+    let startedModelCall = false
+    let phase = 'interpret'
+    let localLookups = 0
+    const usage = { calls: 0, input: 0, output: 0, cacheRead: 0, cacheWrite: 0, searches: 0 }
+    const measuredReply = (status, body) => reply(status, {
+      ...body, ...(usage.calls ? { model: selectedModel, effort, usage } : {}),
+    })
+    try {
+      const request = access.quota?null:createRequest({ apiKey, model: selectedModel, timeoutMs: publishJob ? 260_000 : null,
+        stream: true, cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
+      const result = await researchWithSven({
+        question, history, asOf, signal, conversational: true, charts: true, files, uploads, advanced, prior, insights, financeTools,
+        // Keep the same request inputs when resuming work started before this release.
+        ...(adaptiveResearch ? { adaptiveResearch } : { maxSearches:3 }),
+        ...(advanced ? { compute: (code, inputs) => memo('compute-run', { code, inputs }, async () => {
+          try { return { value: await compute(code, inputs) } }
+          catch { return { failed: true } }
+        }).then(result => {
+          if (result.failed) throw new Error('Sven kunne ikke kjøre analyseprogrammet')
+          return result.value
+        }) } : {}),
+        editorialExamples: selectEditorialExamples({ question }, [example]),
+        localSources: async (query, options) => {
+          const lookup = localLookups++
+          const entry = await memo(lookup ? 'local-sources-' + lookup : 'local-sources', { query, asOf, ...(options ? { options } : {}) }, async () => {
+            try { return { sources: await sources(query, signal, loadSnapshot, options, refreshSources) } }
+            catch { return { missing: true } }
+          })
+          if (entry.missing) throw new Error('Kildeoppslaget mangler grunnlag')
+          return entry.sources
+        },
+        request: async ({ signal: requestSignal, ...input }) => {
+          phase = input.phase
+          const params = { ...input, maxTokens: anthropicOutputLimit }
+          requestSignal?.throwIfAborted()
+          const addUsage = measured => {
+            if (!measured) {
+              if(access.quota){usage.calls++;for(const key of ['input','output','cacheRead','cacheWrite','searches'])usage[key]=null}
+              return
+            }
+            usage.calls++
+            for(const [key,value] of Object.entries({input:measured.input_tokens,output:measured.output_tokens,
+              cacheRead:measured.cache_read_input_tokens??0,cacheWrite:measured.cache_creation_input_tokens??0,searches:measured.server_tool_use?.web_search_requests??0})) {
+              if(access.quota&&(usage[key]===null||!Number.isSafeInteger(value)))usage[key]=null
+              else usage[key]+=value??0
+            }
+          }
+          let result,currentCallStarted=false
+          try {
+            result = await memo(phase, { model: selectedModel, ...params, ...(effort === 'default' ? {} : { effort }) },
+              async permit => {
+                currentCallStarted=true
+                const message = access.quota
+                  ? await access.quota.execute(permit,params,async(approved,measured)=>createRequest({apiKey,model:selectedModel,
+                    timeoutMs:publishJob?260_000:null,stream:true,cacheInstructions:true,...(effort==='default'?{}:{effort}),
+                    onUsage:async usage=>{await measured(usage);await onUsage(usage)}})({...approved,signal:requestSignal}))
+                  : await request({ ...params, signal: requestSignal })
+                return isWebSearchPhase(phase) ? compactSearchEvidence(message) : message
+              }, { billable: true, beforeStart: async () => {
+                if (startedModelCall) {
+                  // Yield between calls. Completed phases are replayed from
+                  // the checkpoint when the client resumes the same request.
+                  step.abort(continuation)
+                  throw continuation
+                }
+                let permit
+                if(access.quota) {
+                  let meterInputTokens
+                  try {meterInputTokens=await countTokens({apiKey,model:selectedModel,...params,cacheInstructions:true,signal:requestSignal})}
+                  catch {throw Object.assign(Error('Sven kunne ikke beregne kapasiteten før oppstart. Prøv igjen senere.'),{status:503})}
+                  permit=await access.quota.reserve({userId:customerId,requestId:customerRequestId,phase,model:selectedModel,params:{...params,meterInputTokens}})
+                }
+                startedModelCall = true
+                return permit
+              } })
+          } catch (error) {
+            if(!access.quota||currentCallStarted&&!error.notBilled)addUsage(error?.usage)
+            throw error
+          }
+          addUsage(result.usage)
+          return result
+        },
+      })
+      const withGeometry = async deliverables => {
+        if (!deliverables?.map) return deliverables
+        return { ...deliverables, map: await memo('map-geometry', deliverables.map, () => mapGeometry(deliverables.map)) }
+      }
+      if (result.status === 'conversation') return measuredReply(200, {
+        ...directReply(result.reply).body, ...(result.chart ? { chart: result.chart } : {}),
+        ...(result.deliverables ? { deliverables: await withGeometry(result.deliverables) } : {}),
+        ...(result.policy ? {policy:result.policy} : {}),
+      })
+      if (result.status === 'no-evidence') {
+        if (result.lens === 'factcheck') return measuredReply(200, {
+          ...directReply('Jeg fant ikke uavhengige kilder som kunne avgjøre påstanden. Send gjerne originalen eller tallgrunnlaget.').body,
+          policy: { factCheck: { claim: question, wording:'user-question', verdict:'insufficient',
+            reasoning:'Kildene som ble funnet ga ikke tilstrekkelig grunnlag for å fastslå utfallet.', sourceIds:[], interpretations:[] } },
+        })
+        if (['delivery','reconcile'].includes(result.lens)) {
+          const summary = result.lens === 'delivery' ? 'Jeg fant ikke dokumentasjon som avgjør hvordan dette løftet ble fulgt opp.'
+            : 'Jeg fant ikke dokumentasjon for begge tallene. Del gjerne originalkildene, så kan jeg forsøke å avstemme dem.'
+          return measuredReply(200,finishPolicy(directReply(summary).body,null,buildPolicyEvidence([],result.lens,question),[],question))
+        }
+        if (financeLenses.includes(result.lens)) {
+          const questionForLens={
+            transfers:'Hvilken tilskuddsordning og hvilket år gjelder det? Del gjerne en lenke til ordningen.',
+            distribution:'Hvilken ordning eller sats vil du endre, og hvilket år skal være utgangspunkt?',
+            'school-quality':'Hvilken kommune eller skole og hvilke år vil du undersøke?',
+            anomalies:'Hvilken kommune og hvilket regnskapsår vil du at jeg skal sjekke?',
+          }
+          return measuredReply(200,directReply('Jeg fant ikke et egnet tallgrunnlag. '+questionForLens[result.lens]).body)
+        }
+        return measuredReply(422, { error: 'Jeg fant ikke kilder som kunne underbygge et svar på dette. Hvis du har en kilde, kan du gjerne dele den.' })
+      }
+      if (result.status !== 'reviewed') {
+        return measuredReply(422, { error: 'Sven fant mangler i svaret. Prøv et mer avgrenset spørsmål.' })
+      }
+      const { deliverables } = result.answer
+      const used = new Set([...result.answer.findings, result.answer.recommendation, result.answer.chart,
+        deliverables?.table, deliverables?.map, deliverables?.illustration, deliverables?.scenario,
+        ...(deliverables?.officeEdit ? [{ sourceIds: [deliverables.officeEdit.sourceId] }] : []), ...(deliverables?.sections ?? [])]
+        .filter(Boolean).flatMap(finding => finding.sourceIds).concat(result.answer.policy?.sourceIds ?? []))
+      const links = result.sources.filter(source => used.has(source.id) && (source.url?.startsWith('https://') || ['upload', 'calculation'].includes(source.type)))
+        .map(({ id, title, url, type, page }) => ['upload', 'calculation'].includes(type) ? { id, title, type } :
+          { id, title, url: page && /\.pdf(?:\?|#|$)/i.test(url) ? url.split('#')[0] + '#page=' + page : url })
+      return measuredReply(200, { ...result.answer, sources: links,
+        ...(deliverables ? { deliverables: await withGeometry(deliverables) } : {}),
+      })
+    } catch (error) {
+      if (error === continuation) return reply(202, { pending: true, continuation: true })
+      if([402,403,503].includes(error.status)&&!error.code)return measuredReply(error.status,{error:error.message,quotaBlocked:true,recoverable:true})
+      console.warn('[Sven preview]', phase, String(error?.message).match(/^Claude API svarte HTTP \d{3}$/)?.[0] ?? error?.code ?? error?.name, ['pause_turn', 'max_tokens', 'refusal'].includes(error?.stopReason) ? error.stopReason : undefined)
+      const limited = /HTTP (402|429)$/.test(error?.message)
+      return measuredReply(limited ? 429 : 502, { error: limited
+        ? 'Claude har nådd en bruksgrense. Vent litt eller sjekk Sven-budsjettet.'
+        : 'Sven kunne ikke svare akkurat nå. Prøv igjen.' })
+    } finally {
+      busy = false
+    }
+  }
+
+  const handle = async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store')
+    const send = (status, body) => res.status(status).json(body)
+    if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
+    try {
+    const customer = await access.authorize(req)
+    if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels, files: true,
+      advanced: true, insights: true, workbench: true, adaptiveResearch: true, financeTools: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
+    })
+    if (req.method !== 'POST') return send(405, { error: 'Metoden støttes ikke.' })
+    if (req.headers.origin !== (customer.origin ?? `https://${req.headers.host}`) ||
+        req.headers['content-type']?.split(';', 1)[0] !== 'application/json') {
+      return send(403, { error: 'Send spørsmålet fra den beskyttede forhåndsvisningen.' })
+    }
+    const { requestId, resume, progress, question: rawQuestion, history = [], files: attachments = [], carryAttachments,
+      projectFiles = [], revision, refreshSources, model: selectedModel = model,
+      effort = 'default' } = req.body ?? {}
+    if (!validRequestId(requestId)) return send(400, { error: 'Innsendingen mangler en gyldig ID. Last siden på nytt.' })
+    const storageId = customerRequestKey(customer.id,requestId)
+    if (progress === true || resume === true) await access.owned(customer, 'jobs', requestId)
+    if (progress === true) return send(200, visibleProgress(await requests.progress(storageId)))
+    if (resume === true) {
+      if(req.body.retryQuota===true&&publishJob) {
+        const {status,body}=await requests.restartQueued(storageId,publishJob)
+        return send(status,body)
+      }
+      const result = publishJob ? await requests.backgroundStatus(storageId) : null
+      const { status, body } = result ?? await requests.resume(storageId, answerQuestion,{retryQuota:req.body.retryQuota===true})
+      return send(status, visibleProgress(body))
+    }
+    const question = typeof rawQuestion === 'string' ? rawQuestion.trim() : ''
+    if (!question || question.length > 2000 || !Array.isArray(history) || history.length > 6 ||
+        history.some(turn => !['user', 'assistant'].includes(turn?.role) ||
+          typeof turn.content !== 'string' || !turn.content.trim() || turn.content.length > 1200)) {
+      return send(400, { error: 'Skriv et spørsmål på opptil 2000 tegn.' })
+    }
+    if (!previewModels.some(option => option.id === selectedModel)) return send(400, { error: 'Denne modellen er ikke tilgjengelig.' })
+    if (!effortLevels.some(option => option.id === effort)) return send(400, { error: 'Dette resonneringsnivået er ikke tilgjengelig.' })
+    if(access.quota)await access.quota.allowed(customer,selectedModel)
+    if (!Array.isArray(attachments) || attachments.length > 3 || !Array.isArray(projectFiles) || projectFiles.length > 6 ||
+      [...attachments, ...projectFiles].some(file =>
+      typeof file?.name !== 'string' || !file.name.trim() || file.name.length > 180 ||
+      typeof file.text !== 'string' || !file.text.trim() || file.text.length > 24_000 ||
+      (file.editable != null && (typeof file.editable !== 'string' || file.editable.length > 10_000)))) {
+      return send(400, { error: 'Sven kan motta opptil tre lesbare vedlegg per melding.' })
+    }
+    const greeting = interpretGreeting(question)
+    const prior = revision ? revisionContext(revision) : null
+    if (revision && !prior) return send(422, { error: 'Sven kunne ikke åpne den valgte versjonen for redigering.' })
+    const asSources = (files, prefix) => files.map(({ name, text, partial, editable, vision, assetId }, index) => ({
+      id: typeof assetId === 'string' && /^[a-f0-9-]{36}$/.test(assetId) ? `fil-${assetId}` : `${prefix}-${index + 1}`,
+      type: 'upload', title: name,
+      ...(editable ? { editable: true } : {}),
+      text: [partial ? 'Utdrag av vedlegget. Innhold kan mangle.' : '', vision ? 'Visuelt lest vedlegg. Oppgi side ved bruk av PDF.' : '',
+        text, editable ? `Redigerbare felt i originalen:\n${editable}` : ''].filter(Boolean).join('\n\n'),
+    }))
+    const uploads = [...asSources(carryAttachments === true && greeting ? [] : attachments, 'vedlegg'),
+      ...asSources(greeting ? [] : projectFiles, 'prosjektfil')]
+    const asOf = new Date().toISOString().slice(0, 10)
+    await access.claimJob(customer, requestId, { title:question.slice(0,180),
+      conversationId:req.body.conversationId, projectId:req.body.projectId, files:[...attachments,...projectFiles] })
+    const brief = { question, history, asOf, selectedModel, effort, customerId:customer.id, customerRequestId:requestId, files: true, uploads, advanced: true, insights: true, adaptiveResearch: true, financeTools: true, ...(refreshSources === true ? {refreshSources:true} : {}), ...(prior ? { prior } : {}) }
+    if (publishJob && apiKey && (uploads.length || !interpretGreeting(question))) {
+      try {
+        const { status, body } = await requests.enqueue(storageId, brief, publishJob)
+        return send(status, body)
+      } catch {
+        return send(503, { error: 'Analysen venter på oppstart. Sven prøver å koble til igjen.', recoverable: true })
+      }
+    }
+    const { status, body } = await requests.run(storageId, brief, answerQuestion)
+    return send(status, body)
+    } catch(error) {
+      return send(error.status ?? 503, { error:error.status ? error.message : 'Kundeinnloggingen er utilgjengelig. Prøv igjen senere.' })
+    }
+  }
+  handle.work = async (id, state) => {
+    try {
+      if (!state?.brief?.customerId || !validRequestId(state.brief.customerRequestId) || id!==customerRequestKey(state.brief.customerId,state.brief.customerRequestId)) {
+        return {status:404,body:{error:'Analysen finnes ikke.'}}
+      }
+      await access.owned({id:state.brief.customerId},'jobs',state.brief.customerRequestId)
+      return await requests.work(id, state, answerQuestion, publishJob)
+    } catch(error) {
+      return {status:error.status??503,body:{error:error.status?error.message:'Kundeinnloggingen er utilgjengelig.'}}
+    }
+  }
+  return handle
+}
+
+export default hostedPreview()

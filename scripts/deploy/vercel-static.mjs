@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os'
 import { createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 import { packageAdmin } from '../admin/package.mjs'
+import { packageCustomer } from '../customer/package.mjs'
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex')
 
@@ -66,6 +67,7 @@ if (command === 'pack') {
     version: 3,
     ...(paths.includes('admin/index.html') ? { crons: [{ path: '/api/admin/cron', schedule: '17 2 * * *' }] } : {}),
     routes: [
+      { src: '/api/customer(?:/.*)?', dest: '/customer-api' },
       ...(paths.includes('admin/index.html') ? [{ src: '/api/(admin(?:/.*)?|auth(?:/.*)?|telemetry|health)', dest: '/admin-api' }] : []),
       { src: '/(.*)', headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' }, continue: true },
       { src: '/assets/(.*)', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
@@ -78,6 +80,7 @@ if (command === 'pack') {
     ],
   }
   if (paths.includes('admin/index.html')) await packageAdmin(output, { dataDir: resolve(source, 'data') })
+  await packageCustomer(output)
   await writeFile(resolve(output, 'config.json'), JSON.stringify(config, null, 2) + '\n')
   console.log(`Pakket ${paths.length} filer til Build Output API v3`)
 } else if (command === 'verify') {
