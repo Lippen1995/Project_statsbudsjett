@@ -12,6 +12,7 @@ import {
 import { graphPlan } from '../../web/src/analyser/chart-plan.js'
 import { topicKey, focusedQuestions } from '../../web/src/analyser/topics.js'
 import { healthReformFacts, validateHealthReform } from './health-reform.mjs'
+import { editorialInputHash, policyHash, validateAssessment } from './editorial-policy.mjs'
 export const contentHash = (article) =>
   createHash('sha256')
     .update(
@@ -23,6 +24,7 @@ export const contentHash = (article) =>
         type: article.type,
         report: article.report,
         copy: article.copy,
+        ...(article.editorial ? { editorial: article.editorial } : {}),
         ...(article.replaces ? { replaces: article.replaces } : {}),
         ...(article.presentation ? { presentation: article.presentation } : {}),
       }),
@@ -30,11 +32,13 @@ export const contentHash = (article) =>
     .digest('hex')
 const fields = ['title', 'description', 'lead', 'conclusion', 'linkedin']
 export function validateCopy(copy, report) {
+  if (copy?.format !== undefined && !['brief', 'feature'].includes(copy.format))
+    throw Error('Ukjent journalistisk format')
   if (copy?.layout !== undefined && (copy.layout !== 'bridge-led' || report.kind !== 'budget-comparison'))
     throw Error('Ukjent artikkeloppsett')
   if (!copy || fields.some((k) => typeof copy[k] !== 'string' || !copy[k].trim()))
     throw Error('Ufullstendig artikkeltekst')
-  if (!Array.isArray(copy.sections) || copy.sections.length < 4 || copy.sections.length > 10)
+  if (!Array.isArray(copy.sections) || copy.sections.length < (copy.format ? 1 : 4) || copy.sections.length > 10)
     throw Error('Analysen må ha fire til ti faglige seksjoner')
   if (copy.description.length > 220 || copy.title.length > 120 || copy.linkedin.length > 1400)
     throw Error('Tittel, beskrivelse eller LinkedIn-tekst er for lang')
@@ -53,10 +57,11 @@ export function validateCopy(copy, report) {
     texts.push(s.heading, ...s.paragraphs)
   }
   if (report.question && focusedQuestions[report.question]) {
-    const prefixes = focusedQuestions[report.question].evidence
+    const prefixes = [...focusedQuestions[report.question].evidence,
+      ...(report.question === 'health-reform' && report.healthPolicy ? ['health', 'ssbOmsorg'] : [])]
     if (
       copy.sections.filter((s) => s.factIds.some((id) => prefixes.some((p) => id.startsWith(p))))
-        .length < 2
+        .length < (copy.format === 'brief' ? 1 : 2)
     )
       throw Error('Den smale problemstillingen må faktisk undersøkes i minst to seksjoner')
   }
@@ -79,7 +84,8 @@ export function validateCopy(copy, report) {
     .flatMap((s) => s.paragraphs)
     .join(' ')
     .split(/\s+/).length
-  if (words < 450) throw Error('Analysen er for kort til en omfattende faglig gjennomgang')
+  if (words < (copy.format === 'brief' ? 100 : copy.format === 'feature' ? 250 : 450))
+    throw Error('Analysen er for kort til valgt format')
   return copy
 }
 export function validateArticle(article, { published = false } = {}) {
@@ -210,6 +216,16 @@ export function validateArticle(article, { published = false } = {}) {
   )
     throw Error('Metode, begrensninger eller kilder mangler')
   validateCopy(article.copy, r)
+  if (article.editorial) {
+    const e = article.editorial
+    if (e.policyHash !== policyHash || e.inputHash !== editorialInputHash(article))
+      throw Error('Redaksjonell kontroll er utdatert; vurder artikkelen på nytt')
+    const result = validateAssessment(article, e.assessment, { graphCount: graphPlan(article.copy, r).length })
+    if (e.status === 'approved' && (!result.approved || result.score !== e.score))
+      throw Error('Intern godkjenning samsvarer ikke med kvalitetsvurderingen')
+  }
+  if (published && article.copy.format && article.editorial?.status !== 'approved')
+    throw Error('Nye journalistiske formater krever intern redaksjonell godkjenning før publisering')
   if (
     published &&
     (article.status !== 'published' ||

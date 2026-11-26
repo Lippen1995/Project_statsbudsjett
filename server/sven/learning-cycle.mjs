@@ -9,13 +9,13 @@ export function learningSignals(value) {
   return {...value}
 }
 
-export async function runLearningCycle({registry,signals,request,evaluate,maxCandidates=2,checkpoint=async()=>{}}) {
+export async function runLearningCycle({registry,signals,request,evaluate,maxCandidates=2,checkpoint=async()=>{},propose,onDecision=async()=>{}}) {
   const summary=learningSignals(signals)
   if(!Number.isInteger(maxCandidates)||maxCandidates<1||maxCandidates>3)throw new Error('Ugyldig iterasjonsbudsjett')
   const attempts=[]
   for(let i=0;i<maxCandidates;i++) {
     const baseline=registry.current()
-    const candidate=candidateSettings(parseModelJSON(await request({phase:`learning-${i}`,maxTokens:500,
+    const candidate=candidateSettings(propose ? await propose({baseline,signals:summary,attempt:i}) : parseModelJSON(await request({phase:`learning-${i}`,maxTokens:500,
       instructions:'Foreslå én konfigurasjonsforbedring basert på aggregerte feil. Du kan kun endre maxSearches (heltall 3–10) og responseDensity (concise, balanced eller detailed). Endre aldri kildekrav, publiseringsregler, evaluering eller personvern. Svar kun med JSON med disse to feltene. Ikke hev at forslaget er bedre før uavhengig evaluering.',
       input:JSON.stringify({baseline:baseline.settings,signals:summary,previousAttempts:attempts.map(a=>({candidate:a.settings,accepted:a.accepted,reason:a.reason}))})})))
     const proposed=registry.propose(candidate)
@@ -29,6 +29,7 @@ export async function runLearningCycle({registry,signals,request,evaluate,maxCan
     const report=JSON.parse(attestation.payload)
     if(report.kind!=='evaluation'||report.candidateId!==proposed.id||report.baselineId!==baseline.id)throw new Error('Evaluatoren svarte for feil kandidat eller sammenligningsversjon')
     const decision=registry.apply(attestation)
+    await onDecision({candidate:proposed,baseline,attestation,decision})
     attempts.push({...proposed,accepted:decision.accepted,reason:decision.reason})
     await checkpoint(attempts.at(-1))
     if(decision.accepted)break

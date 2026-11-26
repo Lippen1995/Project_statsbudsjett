@@ -23,6 +23,8 @@ export async function deliverResearchRevision({g,reviewer,actor,packet,sourceCom
     processedFeedbackIds:[...(previous.processedFeedbackIds??[]),...feedback.map(f=>f.id)],
     researchRevision:{previousHead:pr.head.sha,actor,sourceCommit,reason:packet.reason,generatedAt:now()}}
   delete next.approval;delete next.publishedAt
+  delete next.editorial
+  if (a.editorial) next.editorial = a.editorial
   validateArticle(next)
   const latest=await g.api(`${g.root}/pulls/${pr.number}`)
   const latestFeedback=await pendingFeedback(g,pr.number,previous)

@@ -13,7 +13,7 @@ replacementSource(published, { slug, contentHash: contentHash(source) })
 const detailSelections = detailsFile ? JSON.parse(readFileSync(detailsFile, 'utf8')) : undefined
 const article = replacementDraft(source, new Date().toISOString(), { detailSelections })
 mkdirSync(dirname(output), { recursive: true })
-writeFileSync(output, JSON.stringify({ mode: 'replacement', article }, null, 2) + '\n')
+writeFileSync(output, JSON.stringify({ mode: 'replacement', editorialProtocol: 1, article }, null, 2) + '\n')
 console.log(
   'Erstatningsutkast klargjort. Revider copy og grafer; behold report og replaces uendret. Ny menneskelig godkjenning kreves.',
 )

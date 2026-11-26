@@ -5,6 +5,7 @@ import { assertReviewBranch } from '../../scripts/analyser/review.mjs'
 import { replacementDraft } from '../../scripts/analyser/replacement.mjs'
 import { currentAnalyses } from '../../web/src/analyser/topics.js'
 import { audit, fail, requireRole, text } from './core.mjs'
+import { assertEditorialApproval } from '../../scripts/analyser/editorial.mjs'
 
 const publicationPath = 'web/src/analyser/publications.json'
 function validateEdit(article) {
@@ -142,6 +143,7 @@ export function editorialService({ sql, github }) {
       }
       delete next.approval
       delete next.publishedAt
+      delete next.editorial
       if (value.processedFeedbackIds) {
         if (
           !Array.isArray(value.processedFeedbackIds) ||
@@ -207,6 +209,8 @@ export function editorialService({ sql, github }) {
         )
       if (value.confirm !== 'GODKJENN')
         fail('Skriv GODKJENN for å godkjenne denne eksakte versjonen.')
+      if (current.article.copy.format || current.article.editorial)
+        assertEditorialApproval(current.article)
       const [checklist] = await sql.query(
         "SELECT data FROM ft_admin_records WHERE collection='checklists' AND data->>'article'=$1 AND data->>'head'=$2 ORDER BY updated_at DESC LIMIT 1",
         [String(value.number), current.head],
@@ -289,6 +293,7 @@ export function editorialService({ sql, github }) {
         copy: value.copy,
         ...(value.presentation ? { presentation: value.presentation } : {}),
       }
+      delete article.editorial
       validateEdit(article)
       const path = 'editorial/handoff/admin-' + randomUUID() + '.json'
       const result = await github.writeFile(

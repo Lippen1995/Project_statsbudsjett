@@ -18,7 +18,9 @@
     "db:check": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon/check.mjs",
     "sven:preflight": "node scripts/sven/preflight.mjs",
     "sven:research": "node scripts/sven/research.mjs",
-    "sven:benchmark": "node scripts/sven/benchmark.mjs"
+    "sven:benchmark": "node scripts/sven/benchmark.mjs",
+    "test:editorial:browser": "node web/browser-tests/editorial.mjs",
+    "editorial": "node scripts/analyser/editorial-cli.mjs"
   },
   "dependencies": {
     "@jitl/quickjs-singlefile-cjs-release-sync": "0.32.0",
@@ -46,7 +48,8 @@
   "devDependencies": {
     "@electric-sql/pglite": "0.5.10",
     "@types/pg": "^8.23.1",
-    "esbuild": "^0.28.2"
+    "esbuild": "^0.28.2",
+    "playwright-core": "^1.65.1"
   },
   "overrides": {
     "exceljs": {

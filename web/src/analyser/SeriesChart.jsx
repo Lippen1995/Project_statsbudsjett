@@ -3,7 +3,7 @@ import AnalysisBars, { analysisColors as colors } from './AnalysisBars'
 import { seriesGraph } from './chart-plan.js'
 import { factText, number } from './model.js'
 export default function SeriesChart({ graph, report }) {
-  const [activeSeries, setActiveSeries] = useState(0)
+  const [activeSeries, setActiveSeries] = useState(graph.focus ?? 0)
   const data = seriesGraph(graph, report)
   const units = [...new Set(data.series.map(s => s.unit))]
   const indexUnit = units.length === 1 ? (units[0] === 'mill. kr' ? 'løpende kroner' : units[0]) : ''
@@ -26,10 +26,14 @@ export default function SeriesChart({ graph, report }) {
             <i style={{ background: colors[i] }} />{factText(s.label, report)}
           </button> : <span key={i}><i style={{ background: colors[i] }} />{factText(s.label, report)}</span>)}
       </div>
-      <AnalysisBars years={data.years} label={`${title}. ${data.unit}`}
+      {graph.chartType === 'small-multiples' ? data.series.map((s, i) => <div key={i}><h3>{factText(s.label, report)}</h3>
+        <AnalysisBars years={data.years} label={factText(s.label, report)} chartType="line" axis={graph.axis} annotation={graph.annotation}
+          forecastFrom={report.kind === 'oil-funds' ? report.forecastFrom : undefined}
+          series={[{...s,label:factText(s.label, report),color:colors[i]}]} />
+      </div>) : <AnalysisBars years={data.years} label={`${title}. ${data.unit}`}
         chartType={graph.chartType} axis={graph.axis} annotation={graph.annotation} activeSeries={activeSeries}
         forecastFrom={report.kind === 'oil-funds' ? report.forecastFrom : undefined}
-        series={data.series.map((s, i) => ({ ...s, label: factText(s.label, report), color: colors[i] }))} />
+        series={data.series.map((s, i) => ({ ...s, label: factText(s.label, report), color: colors[i] }))} />}
       <details className="an-table-scroll an-evidence">
         <summary>Tall og kilder</summary>
         {graph.description && <p className="an-chart-note">{factText(graph.description, report)}</p>}

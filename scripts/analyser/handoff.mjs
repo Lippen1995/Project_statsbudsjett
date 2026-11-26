@@ -9,8 +9,9 @@ import { runWorkflow, readReviewContext } from './workflow.mjs'
 import { pipelineRepository, assertCurrentEntry, completeEntry, pipelinePath, pipelineMarker } from './pipeline-model.mjs'
 import { ensurePipelineNext, buildPipelineReport } from './pipeline-reports.mjs'
 import { topicKey } from '../../web/src/analyser/topics.js'
+import { assertEditorialApproval } from './editorial.mjs'
 
-export async function deliverScheduled({ g, reviewer, actor, input, ...options }) {
+export async function deliverScheduled({ g, reviewer, actor, input, requireEditorial = false, ...options }) {
   if (!['weekly', 'feedback', 'replacement', 'budget-day', 'oil-funds'].includes(input.mode))
     throw Error('Ugyldig leveringsmodus')
   if (
@@ -28,6 +29,8 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
       ? packet.mode
       : input.mode
   const article = validateArticle(packet.article ?? packet)
+  if (requireEditorial || packet.editorialProtocol === 1 || article.copy.format)
+    assertEditorialApproval(article)
   if (article.status !== 'draft' || article.approval || article.publishedAt)
     throw Error('Bare et utkast uten godkjenning kan leveres')
   if (mode === 'research-revision') return deliverResearchRevision({g,reviewer,actor,packet,sourceCommit:input.sourceCommit,...options})
@@ -85,6 +88,7 @@ export async function deliverScheduled({ g, reviewer, actor, input, ...options }
       return article.copy
     },
     ...(article.presentation ? { presentation:article.presentation } : {}),
+    ...(article.editorial ? { editorial: article.editorial } : {}),
   })
   if (queued && result?.waiting && result.pipelineMatch) {
     // Gjenoppta hvis PR-en ble opprettet, men review request feilet før kvittering.
@@ -121,6 +125,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
         sourcePath: process.env.ANALYSIS_SOURCE_PATH,
         number: Number(process.env.ANALYSIS_PR_NUMBER),
       },
+      requireEditorial: true,
     })
   } catch (error) {
     const message =

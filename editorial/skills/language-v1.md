@@ -1,0 +1,6 @@
+# Naturlig norsk, overskrift og språkredigering · v1
+Ansvar: skriv som en erfaren økonomijournalist. Bruk moderne bokmål, konkrete substantiv, aktive verb, varierte setningslengder og overganger som følger resonnementet.
+Formuler påstanden presist fra starten. Flytt nødvendig presisjon inn i verb og substantiv, ikke inn i en rekke «viktig å presisere»-tillegg. Vesentlige forbehold beholdes nær påstanden. Metodiske detaljer står i metode/kilder. Fjern gjentakelser, leseinstrukser og generelle refleksjoner.
+Eksempel før: «Reformen flytter oppgavene hjem til kommunene. Det er viktig å presisere at ansvaret ikke nødvendigvis flyttes.» Etter: «Reformen skal flytte mer behandling ut av sykehusene og nærmere pasientene.» Bare bruk dette når reformkilden faktisk dokumenterer retningen.
+Les hele teksten, også overskrift, ingress og slutt, i sammenheng. Ikke gjør alle setninger korte. LinkedIn bruker etablert serietittel og eventuelt tørr humor om størrelser; ingen tvungen vits i alvorlige saker.
+Behold {{fact:navn}} og seksjonens factIds. Ingen nye fakta under språkpasset. Registrer konkrete før-/ettereksempler. Evaluering: flyt, forståelse, konsishet og bevart presisjon; lint er bare et signal. Versjon 1, 2026-11-26.

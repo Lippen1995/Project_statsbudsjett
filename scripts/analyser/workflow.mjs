@@ -103,6 +103,7 @@ export async function runWorkflow({
   pipelinePlan,
   pipelineReference,
   presentation,
+  editorial,
   beforeDraftWrite = async () => {},
 }) {
   const draftPrefix = 'editorial/drafts/'
@@ -217,6 +218,7 @@ export async function runWorkflow({
       report,
       copy: await generateCopy(report),
       ...(presentation ? { presentation } : {}),
+      ...(editorial ? { editorial } : {}),
     })
     await beforeDraftWrite()
     const main = await g.api(`${g.root}/git/ref/heads/main`)
@@ -248,6 +250,7 @@ export async function runWorkflow({
           geography: a.geography,
           type: a.type,
           ...(a.replaces ? { replaces: a.replaces } : {}),
+          ...(a.editorial ? { editorial: a.editorial } : {}),
         })
       if (
         stored.status !== 'draft' ||
@@ -309,6 +312,8 @@ export async function runWorkflow({
         feedbackAt: last.at,
         generatedAt: now(),
       })
+      if (editorial) next.editorial = editorial
+      validateArticle(next)
       next.processedFeedbackIds = [
         ...(article.processedFeedbackIds ?? []),
         ...feedback.map((f) => f.id),

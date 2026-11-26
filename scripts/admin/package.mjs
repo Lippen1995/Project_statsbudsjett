@@ -4,6 +4,7 @@ import { build } from 'esbuild'
 import { fileURLToPath } from 'node:url'
 import { buildTopicCatalog } from './topic-catalog.mjs'
 import { buildDataCatalog } from './data-catalog.mjs'
+import { editorialRendererHash } from '../analyser/editorial-render-hash.mjs'
 
 export async function packageAdmin(output, { dataDir } = {}) {
   const directory = resolve(output, 'functions/admin-api.func')
@@ -14,6 +15,7 @@ export async function packageAdmin(output, { dataDir } = {}) {
   await build({
     entryPoints: [fileURLToPath(new URL('../../server/admin/vercel.mjs', import.meta.url))], outfile: resolve(directory, 'index.mjs'),
     bundle: true, platform: 'node', target: 'node24', format: 'esm', external: ['pg-native'],
+    define: { __SVEN_EDITORIAL_RENDERER_HASH__: JSON.stringify(editorialRendererHash()) },
     banner: { js: "import { createRequire as __createRequire } from 'node:module'; const require = __createRequire(import.meta.url);" },
     minify: true,
   })

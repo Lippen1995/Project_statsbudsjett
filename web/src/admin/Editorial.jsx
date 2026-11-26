@@ -394,6 +394,24 @@ function ReviewVersion({ detail: d, reload, commentAction }) {
           </button>
         ))}
       </div>
+      {d.article.editorial && (
+        <Panel title="Intern redaksjonell kontroll">
+          <p>{d.article.editorial.status} · {d.article.editorial.score}/100. Modellvurdering med kildekontroll; menneskelig godkjenning kreves fortsatt.</p>
+          <p>{d.article.editorial.angle?.reason}</p>
+          <p>{d.article.editorial.visual?.choice}</p>
+          <details>
+            <summary>Vurderinger, modellbruk og revisjoner</summary>
+            <ul>{Object.entries(d.article.editorial.assessment.dimensions).map(([key, value]) => (
+              <li key={key}>{key}: {value.notApplicable ? 'ikke relevant' : value.score} — {value.observation}</li>
+            ))}</ul>
+            <p>{d.article.editorial.revisions} revisjoner. Kjøring {d.article.editorial.runId}.</p>
+            <ul>{d.article.editorial.usage.map((u, i) => (
+              <li key={i}>{u.stage}: {u.model}, {u.workUnits} arbeidsenheter. Tokens: {u.inputTokens === null ? 'ikke oppgitt av verten' : u.inputTokens + u.outputTokens}. Kostnad: {u.costUsd === null ? 'ikke oppgitt av verten' : u.costUsd + ' USD'}.</li>
+            ))}</ul>
+          </details>
+          {dirty && <Notice>Endringer krever en ny redaksjonell kontroll av den lagrede versjonen.</Notice>}
+        </Panel>
+      )}
       {tab === 'preview' && <Preview article={article} />}{' '}
       {tab === 'social' && (
         <Panel title="Forhåndsvisning av LinkedIn og deling">

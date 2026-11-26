@@ -11,6 +11,8 @@ web/dist/
 !.env.*.example
 .neon
 node_modules/
+editorial/runs/
+editorial/experiments/
 published-site/
 __pycache__/
 *.pyc

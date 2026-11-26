@@ -3,14 +3,15 @@ export const dimensions = ['factualAccuracy','sourceSupport','temporalStatus','r
 const nonempty = x => typeof x === 'string' && x.trim().length > 0
 export const digest = x => createHash('sha256').update(JSON.stringify(x)).digest('hex')
 
-export function prepareBenchmark(cases, { asOf, timeLimitMinutes = 15, svenExecution } = {}) {
+export function prepareBenchmark(cases, { asOf, timeLimitMinutes = 15, svenExecution, products = ['Sven','ChatGPT','Claude'], evaluationDimensions = dimensions, referenceProduct = products[0] } = {}) {
   if (!Array.isArray(cases) || !cases.length || new Set(cases.map(c => c.id)).size !== cases.length ||
     cases.some(c => !nonempty(c.id) || !nonempty(c.domain) || !nonempty(c.question))) throw new Error('Ugyldig testsett')
   if (!/^\d{4}-\d{2}-\d{2}$/.test(asOf) || !Number.isFinite(timeLimitMinutes) || timeLimitMinutes <= 0) throw new Error('Ugyldig testprotokoll')
+  if (!Array.isArray(products) || products.length < 2 || products.length > 8 || new Set(products).size !== products.length || !products.every(nonempty) || !products.includes(referenceProduct) || !Array.isArray(evaluationDimensions) || !evaluationDimensions.length || !evaluationDimensions.every(nonempty) || new Set(evaluationDimensions).size !== evaluationDimensions.length) throw new Error('Ugyldige produkter eller kvalitetsdimensjoner')
   return { id: randomUUID(), asOf, timeLimitMinutes, createdAt: new Date().toISOString(),
     ...(svenExecution === 'batch' ? { svenExecution } : {}),
     cases: cases.map(c => ({ ...c, surface: c.surface || 'chat', recommendationRequested: c.recommendationRequested === true })),
-    products: ['Sven','ChatGPT','Claude'], protocol: 'products-with-search-v1',
+    products, ...(products.join(',') !== 'Sven,ChatGPT,Claude' || evaluationDimensions !== dimensions ? {dimensions:evaluationDimensions, referenceProduct} : {}), protocol: 'products-with-search-v1',
     instructions: 'Bruk samme spørsmål og dato i nye samtaler. Aktiver tilgjengelig nettsøk. Registrer faktisk modell, abonnement, verktøy, tid og originaltranskripsjon. Ingen manuell forbedring av svar. API-baseline er en separat test, ikke en erstatning for produktet.' +
       (svenExecution === 'batch' ? ' Sven kjøres asynkront for faglig vurdering. Batchtid kan ikke sammenlignes med chattenes svartid.' : '') }
 }
@@ -48,22 +49,23 @@ export function blindBenchmark(manifest, submissions, random = randomInt) {
     })
     cases.push({id:task.id,domain:task.domain,question:task.question,surface:task.surface,recommendationRequested:task.recommendationRequested,answers})
   }
-  return { review: {manifestHash:digest(manifest),...(manifest.svenExecution === 'batch' ? { timingComparable: false } : {}),dimensions,cases}, key }
+  return { review: {manifestHash:digest(manifest),...(manifest.svenExecution === 'batch' ? { timingComparable: false } : {}),dimensions:manifest.dimensions ?? dimensions, ...(manifest.referenceProduct ? {referenceProduct:manifest.referenceProduct,productCount:manifest.products.length} : {}),cases}, key }
 }
 
 export function scoreBenchmark(review, key, ratings) {
-  if (key.length !== review.cases.length * 3 || new Set(key.map(k=>`${k.caseId}:${k.label}`)).size !== key.length || review.cases.some(c => new Set(key.filter(k=>k.caseId===c.id).map(k=>k.product)).size !== 3)) throw new Error('Ugyldig blindnøkkel')
+  const dimensionKeys = review.dimensions, productCount = review.productCount ?? 3, referenceProduct = review.referenceProduct ?? 'Sven'
+  if (key.length !== review.cases.length * productCount || new Set(key.map(k=>`${k.caseId}:${k.label}`)).size !== key.length || review.cases.some(c => new Set(key.filter(k=>k.caseId===c.id).map(k=>k.product)).size !== productCount)) throw new Error('Ugyldig blindnøkkel')
   const expected = review.cases.flatMap(c => c.answers.map(a => `${c.id}:${a.label}`))
   if (ratings.length !== expected.length || new Set(ratings.map(r=>`${r.caseId}:${r.label}`)).size !== expected.length) throw new Error('Vurder alle svar før avblinding')
   const rows = ratings.map(rating => {
     if (rating.reviewHash !== digest(review)) throw new Error('Vurderingen tilhører en annen blindpakke')
     if (!expected.includes(`${rating.caseId}:${rating.label}`) || !nonempty(rating.reason) || typeof rating.criticalError !== 'boolean' ||
-      dimensions.some(d => !Number.isInteger(rating.scores?.[d]) || rating.scores[d] < 0 || rating.scores[d] > 4)) throw new Error('Ufullstendig fagvurdering')
+      dimensionKeys.some(d => !Number.isInteger(rating.scores?.[d]) || rating.scores[d] < 0 || rating.scores[d] > 4)) throw new Error('Ufullstendig fagvurdering')
     const mapping = key.find(k => k.caseId === rating.caseId && k.label === rating.label)
     if (!mapping) throw new Error('Blindnøkkel mangler')
     const task = review.cases.find(c=>c.id===rating.caseId)
     const status = task.answers.find(a=>a.label===rating.label).status
-    return {...rating,product:mapping.product,domain:task.domain, score:rating.criticalError || status !== 'completed' ? 0 : dimensions.reduce((s,d)=>s+rating.scores[d],0)/dimensions.length}
+    return {...rating,product:mapping.product,domain:task.domain, score:rating.criticalError || status !== 'completed' ? 0 : dimensionKeys.reduce((s,d)=>s+rating.scores[d],0)/dimensionKeys.length}
   })
   const domains = [...new Set(rows.map(r=>r.domain))]
   const products = [...new Set(key.map(r=>r.product))]
@@ -71,9 +73,9 @@ export function scoreBenchmark(review, key, ratings) {
     const values=rows.filter(r=>r.product===product && (domain==='alle'||r.domain===domain))
     return {domain,product,cases:values.length,mean:values.reduce((s,r)=>s+r.score,0)/values.length,criticalErrors:values.filter(r=>r.criticalError).length}
   }))
-  const paired = products.filter(p=>p!=='Sven').map(product => {
+  const paired = products.filter(p=>p!==referenceProduct).map(product => {
     const values=review.cases.map(c=>{
-      const sven=rows.find(r=>r.caseId===c.id&&r.product==='Sven').score
+      const sven=rows.find(r=>r.caseId===c.id&&r.product===referenceProduct).score
       const baseline=rows.find(r=>r.caseId===c.id&&r.product===product).score
       return Math.sign(sven-baseline)
     })

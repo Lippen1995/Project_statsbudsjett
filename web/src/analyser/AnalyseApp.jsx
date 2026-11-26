@@ -191,7 +191,7 @@ export function Article({ article, preview, review, successor }) {
   const t = (text) => factText(text, r)
   const budget = r.kind === 'budget-comparison'
   const bridgeLed = c.layout === 'bridge-led'
-  const MethodContainer = bridgeLed ? 'details' : React.Fragment
+  const MethodContainer = bridgeLed || c.format ? 'details' : React.Fragment
   const oil = r.kind === 'oil-funds'
   const graphs = graphPlan(c, r)
   const components = {
@@ -275,7 +275,7 @@ export function Article({ article, preview, review, successor }) {
         </p>
         {bridgeLed && <p className="an-data-date">Revidert følger Fellestalls løpende serie: saldert budsjett pluss registrerte endringsvedtak hos DFØ.</p>}
       </header>
-      {!bridgeLed && <section className="an-conclusion" aria-labelledby="konklusjon">
+      {!bridgeLed && !c.format && <section className="an-conclusion" aria-labelledby="konklusjon">
         <div className="ft-stikkord">Hovedfunn</div>
         <h2 id="konklusjon">Vår vurdering</h2>
         <p>{t(c.conclusion)}</p>
@@ -312,7 +312,7 @@ export function Article({ article, preview, review, successor }) {
             {s.paragraphs.map((p, j) => (
               <p key={j}>{t(p)}</p>
             ))}
-            {!bridgeLed && s.factIds.length > 0 && (
+            {!bridgeLed && !c.format && s.factIds.length > 0 && (
               <p className="an-reference">
                 <a
                   href={
@@ -342,13 +342,13 @@ export function Article({ article, preview, review, successor }) {
             })}
         </React.Fragment>
       ))}
-      {r.eventEvidence && <EventEvidence report={r} />}
-      {r.healthPolicy && <HealthPolitics policy={r.healthPolicy} />}
+      {r.eventEvidence && (c.format ? <details className="an-supplement"><summary>Regnskapspostene bak analysen</summary><EventEvidence report={r} /></details> : <EventEvidence report={r} />)}
+      {r.healthPolicy && (c.format ? <details className="an-supplement"><summary>Politiske posisjoner og kilder</summary><HealthPolitics policy={r.healthPolicy} /></details> : <HealthPolitics policy={r.healthPolicy} />)}
       {budget && <PoliticalEvidence report={r} />}
       {budget && !bridgeLed && <PartyPriorities report={r} />}
       <section id="metode" className="an-method">
         <MethodContainer>
-        {bridgeLed ? <summary>Metode og kilder</summary> : <><div className="ft-kicker">Åpent regnestykke</div><h2>Metode og kilder</h2></>}
+        {bridgeLed || c.format ? <summary>Metode og kilder</summary> : <><div className="ft-kicker">Åpent regnestykke</div><h2>Metode og kilder</h2></>}
         {r.methodology.map((p, i) => (
           <p key={i}>{p}</p>
         ))}
