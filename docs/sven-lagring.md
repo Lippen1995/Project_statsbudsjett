@@ -38,7 +38,7 @@ Ved bytte mellom preview og lanseringsdomene må kunden logge inn på nytt. Samm
 
 ## Sikkerhetskopi og isolert gjenoppretting
 
-Operatørverktøyet tar et konsistent, kryptert innholdsuttrekk med kontrollsum og skjemaversjon. Det inkluderer dokumenter, originalfiler, ressursregistre og jobbsjekkpunkter. Passord, konto-e-post fra autentisering, sessions og betalings-/tilgangsdata inngår ikke. Profilens frivillige kontaktopplysninger inngår som øvrig kryptert kundeinnhold. Autentisering og annen drift krever også den vanlige databaseberedskapen.
+Operatørverktøyet tar et konsistent, kryptert innholdsuttrekk med kontrollsum og skjemaversjon. Det inkluderer dokumenter, originalfiler, ressursregistre og jobbsjekkpunkter. Passord, konto-e-post fra autentisering, sessions og betalings-/tilgangsdata inngår ikke. Profilens frivillige kontaktopplysninger inngår som øvrig kryptert kundeinnhold. Verktøyet avviser uttrekk eller slettelogger over 150 MB før komprimering, før en fil skrives; da kreves en dimensjonert databasebackup. Autentisering, større arbeidssett og annen drift krever også den vanlige databaseberedskapen.
 
 Kommandoene leser forbindelsen og nøkkelgrunnlaget fra operatørmiljøet. Filene opprettes med tilgang 0600 og overskriver ikke eksisterende filer. Ingen hemmelige verdier skal gis som kommandolinjeargument eller lagres i repoet.
 

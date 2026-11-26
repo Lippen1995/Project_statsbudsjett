@@ -136,6 +136,8 @@ test('sider begrenser API-svar uten å miste innhold; slettede originaler fjerne
 
 test('kryptert sikkerhetskopi gjenopprettes isolert og fersk slettelogg hindrer gjenoppliving',async t=>{
   const db=await fixture(t),a=await seed(db,db.a),b=await seed(db,db.b)
+  await assert.rejects(backupCustomerContent(db.pool,db.secret,{maxBytes:1000}),/for stort/)
+  assert.equal((await db.service.storage.list(db.a.user)).items.length,a.items.length,'Avvist kopi skal ikke endre kundedata')
   const backup=await backupCustomerContent(db.pool,db.secret)
   assert.doesNotMatch(JSON.stringify(backup),/Privat|example.test|password|session_token/)
   const isolated=await testDatabase();t.after(()=>isolated.engine.close());await migrateCustomers(isolated.pool)

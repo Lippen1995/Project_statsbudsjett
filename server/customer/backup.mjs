@@ -9,8 +9,14 @@ const tables={
   ft_customer_job:['storage_key','owner_id','request_id','data','lease_token','lease_until','updated_at'],
 };
 const signature='fellestall-customer-content-backup-v1'
+const maxArchiveBytes=150_000_000
+function pack(crypto,purpose,value,maxBytes=maxArchiveBytes) {
+  if(!Number.isSafeInteger(maxBytes)||maxBytes<1||maxBytes>maxArchiveBytes)throw Error('Ugyldig grense for innholdskopi.')
+  if(Buffer.byteLength(JSON.stringify(value))>maxBytes)throw Error('Innholdsuttrekket er for stort for dette verktøyet. Bruk en dimensjonert databasebackup.')
+  return crypto.seal(purpose,value)
+}
 
-export async function backupCustomerContent(pool,secret) {
+export async function backupCustomerContent(pool,secret,{maxBytes=maxArchiveBytes}={}) {
   const client=await pool.connect(),crypto=customerEncryption(secret)
   try {
     await client.query('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY')
@@ -19,7 +25,7 @@ export async function backupCustomerContent(pool,secret) {
     const data={}
     for(const [table,columns] of Object.entries(tables)) data[table]=(await client.query(`SELECT ${columns.join(',')} FROM ${table}`)).rows
     const owners=[...new Set(Object.values(data).flat().map(row=>row.owner_id))]
-    const archive=crypto.seal(signature,{version:customerSchemaVersion,createdAt:new Date().toISOString(),owners,data})
+    const archive=pack(crypto,signature,{version:customerSchemaVersion,createdAt:new Date().toISOString(),owners,data},maxBytes)
     await client.query('COMMIT')
     return {format:signature,sha256:createHash('sha256').update(archive).digest('hex'),archive}
   }catch(error){await client.query('ROLLBACK');throw error}
@@ -30,7 +36,7 @@ export async function backupCustomerContent(pool,secret) {
 // backup cannot account for erasures performed after that backup was taken.
 export async function backupErasureLedger(pool,secret) {
   const {rows}=await pool.query('SELECT * FROM ft_customer_erasure ORDER BY erased_at')
-  return customerEncryption(secret).seal(signature+':erasures',{capturedAt:new Date().toISOString(),entries:rows})
+  return pack(customerEncryption(secret),signature+':erasures',{capturedAt:new Date().toISOString(),entries:rows})
 }
 
 export async function restoreCustomerContent(pool,secret,backup,{isolated=false,erasureLedger}={}) {
