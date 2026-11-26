@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { randomBytes } from 'node:crypto'
 import test from 'node:test'
-import { hostedPreview } from './hosted-preview.mjs'
+import { hostedPreview } from './test-access.mjs'
 
 const headers = {
   host: 'preview.test',

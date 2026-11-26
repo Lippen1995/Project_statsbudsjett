@@ -60,7 +60,7 @@ Demoens 100 000 tokens og påfyll på 25 % er ikke vedtatte lanseringskvoter. Pr
 
 ## Arbeidsliste
 
-Status 26. november: Det tekniske funksjonsinventaret i steg 1 er ferdig kartlagt mot den oppgitte klientversjonen, og SVEN-L01 er lukket. Gratis og betalt versjon er bekreftet. Pris, kvoter og vilkår for eventuell ekstra kapasitet gjenstår i SVEN-L02. Implementeringsoppgavene står åpne.
+Status 26. november: SVEN-L01 er lukket. SVEN-L03 er implementert og kontrollert med isolert PostgreSQL og den klargjorte mobilklienten; produksjonsaktivering inngår i SVEN-L08. Gratis og betalt versjon er bekreftet. Pris, kvoter og vilkår for eventuell ekstra kapasitet gjenstår i SVEN-L02. Varig innholdslagring i SVEN-L04 står fortsatt åpen.
 
 Codex utfører implementering og automatiserte kontroller i aktive arbeidsøkter. Simen avklarer kommersielle vilkår og organiserer faglig vurdering og pilotbruk. Hver ferdig oppgave skal ha dato, kodeversjon og kontrollbevis; en avkryssing alene erstatter ikke beviset. Kundeopplysninger og private testdialoger lagres utenfor det offentlige repoet.
 
@@ -86,12 +86,14 @@ Bevis: [klientgrunnlag, funksjonsinventar og kontroller](sven-mobilinventar.md).
 
 ### SVEN-L03 Kundekontoer og tilgangsskille
 
-**Frist:** 27. november. **Avhengigheter:** Kan bygges mens SVEN-L01 og SVEN-L02 avklares. **Status:** Åpen.
+**Frist:** 27. november. **Avhengigheter:** Kan bygges mens SVEN-L01 og SVEN-L02 avklares. **Status:** Implementert og lokalt verifisert 26. november; produksjonsaktivering kontrolleres i SVEN-L08.
 
-- [ ] Registrering, innlogging, utlogging og kontogjenoppretting fungerer mot en reell kundetjeneste, adskilt fra administratortilgang.
-- [ ] Serveren kontrollerer eierskap til alle samtaler, prosjekter, filer, resultater og jobber, også ved gjenopptak.
-- [ ] To kontoer, utlogget bruker og utløpt økt er testet direkte mot API-et; kunnskap om en annen brukers ID gir ikke tilgang.
-- [ ] Alle kontotyper får tilgang gjennom samme serverkontroll; klienten kan ikke gi seg selv betalt tilgang.
+- [x] Registrering, e-postbekreftelse, innlogging, utlogging og kontogjenoppretting fungerer mot en kundetjeneste, adskilt fra administratortilgang.
+- [x] Serveren kontrollerer eierskap til samtale-, prosjekt-, fil- og jobbregistre samt Svens resultater/status, også ved gjenopptak. Lagring av selve innholdet ferdigstilles i SVEN-L04.
+- [x] To kontoer, utlogget bruker og utløpt økt er testet direkte mot API-et; kunnskap om en annen brukers ID gir ikke tilgang.
+- [x] Kontotypen leses fra serveren og kan ikke settes til betalt av klienten. Betalingsaktivering og kvoter implementeres i SVEN-L05 og SVEN-L06.
+
+Bevis: [kundekontoer, oppsett og kontroller](sven-kundekontoer.md). Testene bruker ekte økter og passordhashing; e-postlevering og modellrespons er kontrollert erstattet. Ingen produksjonsaktivering er utført.
 
 ### SVEN-L04 Varig lagring og sletting
 
@@ -203,4 +205,5 @@ Fyll inn dato, eksakt kodeversjon, metode/enhet, resultat og lenke eller privat 
 
 | Oppgave | Dato og kodeversjon | Kontroll og resultat | Bevis |
 | --- | --- | --- | --- |
-| SVEN-L01 | 26. november 2026; klient `55bfa030951d4736a0c06e50eb62e35a387f7640` | Kilde og arkiv bekreftet; 13 skript, 20 ressurslenker, 27 ruter og fast delingskopi kontrollert lokalt. Ingen implementeringsoppgaver er lukket. | [Kontrollgrunnlag](sven-mobilinventar.md) |
+| SVEN-L01 | 26. november 2026; klient `55bfa030951d4736a0c06e50eb62e35a387f7640` | Kilde og arkiv bekreftet; 13 skript, 20 ressurslenker, 27 ruter og fast delingskopi kontrollert lokalt. | [Kontrollgrunnlag](sven-mobilinventar.md) |
+| SVEN-L03 | 26. november 2026; klientbaselinen klargjort med kundekobling fra denne PR-en | Konto-API, e-postbekreftelse/gjenoppretting, to kundeøkter, eierskap, Sven-ruter, migrering og mobilreise kontrollert i isolert PostgreSQL. Produksjonsaktivering gjenstår i SVEN-L08. | [Kontrollgrunnlag](sven-kundekontoer.md) |

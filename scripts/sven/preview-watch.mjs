@@ -1,8 +1,10 @@
 import { getCache } from '@vercel/functions'
 import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
 import { normalizeWatchTarget, readWatchTarget } from '../../server/sven/public-watch.mjs'
+import { runtimeCustomerAccess } from '../../server/customer/runtime.mjs'
 
 export function previewWatch({ environment = process.env.VERCEL_ENV,
+  access = runtimeCustomerAccess,
   cache = getCache({ namespace:'fellestall-sven-preview-v1' }),
   read = async file=>JSON.parse(await snapshotLoaderForPreview(cache)(file)), fetchCase,
 } = {}) {
@@ -11,7 +13,10 @@ export function previewWatch({ environment = process.env.VERCEL_ENV,
     const send=(status,body)=>res.status(status).json(body)
     if(environment!=='preview') return send(404,{error:'Sven preview er utilgjengelig.'})
     if(req.method!=='POST') return send(405,{error:'Metoden støttes ikke.'})
-    if(req.headers.origin!==`https://${req.headers.host}` ||
+    let customer
+    try {customer=await access.authorize(req)}
+    catch(error) {return send(error.status??503,{error:error.status?error.message:'Kundeinnloggingen er utilgjengelig.'})}
+    if(req.headers.origin!==(customer.origin??`https://${req.headers.host}`) ||
         req.headers['content-type']?.split(';',1)[0]!=='application/json') return send(403,{error:'Bruk oppfølgingen i Sven-previewen.'})
     const targets=req.body?.targets
     if(!Array.isArray(targets)||!targets.length||targets.length>16||targets.some(target=>!normalizeWatchTarget(target))) {

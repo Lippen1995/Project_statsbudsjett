@@ -10,7 +10,7 @@ import { extractUpload, unzipOffice } from '../../server/sven/file-input.mjs'
 import { mergeRevision, normalizeScenario, revisionContext } from '../../server/sven/advanced-tools.mjs'
 import { runAnalysisCode } from '../../server/sven/run-analysis-code.mjs'
 import { visionImport } from '../../server/sven/vision-import.mjs'
-import { hostedPreview } from './hosted-preview.mjs'
+import { hostedPreview } from './test-access.mjs'
 
 const edit = async (bytes, format, edits, append) =>
   editOfficeFile(bytes, await unzipOffice(bytes, relatedOfficeParts), format, edits, append)

@@ -2,6 +2,7 @@ import { extractUpload, maxUploadBytes, unzipOffice } from '../../server/sven/fi
 import { exportFile, fileTypes, normalizeExport } from '../../server/sven/file-export.mjs'
 import { editOfficeFile, relatedOfficeParts } from '../../server/sven/office-edit.mjs'
 import { visionImport } from '../../server/sven/vision-import.mjs'
+import { runtimeCustomerAccess } from '../../server/customer/runtime.mjs'
 
 const maxEncodedUpload = 4 * Math.ceil(maxUploadBytes / 3)
 
@@ -18,25 +19,33 @@ function fileResponse(res, format, bytes, title) {
   return res.end()
 }
 
-export function previewFiles({ environment = process.env.VERCEL_ENV, readVisual = visionImport() } = {}) {
+export function previewFiles({ environment = process.env.VERCEL_ENV, readVisual = visionImport(), access = runtimeCustomerAccess } = {}) {
   return async function handle(req, res) {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('X-Content-Type-Options', 'nosniff')
     const error = (status, message) => res.status(status).json({ error: message })
     if (environment !== 'preview') return error(404, 'Sven preview er utilgjengelig.')
     if (req.method !== 'POST') return error(405, 'Metoden støttes ikke.')
-    if (req.headers.origin !== `https://${req.headers.host}` ||
+    let customer
+    try { customer = await access.authorize(req) }
+    catch(cause) {return error(cause.status??503,cause.status?cause.message:'Kundeinnloggingen er utilgjengelig.')}
+    if (req.headers.origin !== (customer.origin ?? `https://${req.headers.host}`) ||
         req.headers['content-type']?.split(';', 1)[0] !== 'application/json') {
       return error(403, 'Bruk filverktøyet fra den beskyttede forhåndsvisningen.')
     }
     const { action, name, data, format, document, edits, append, visual, version } = req.body ?? {}
+    if (req.body?.fileId) {
+      try {await access.owned(customer,'files',req.body.fileId)}
+      catch(cause) {return error(cause.status??503,cause.status?cause.message:'Kundeinnloggingen er utilgjengelig.')}
+    }
     if (action === 'extract') {
       if (!validData(data)) {
         return error(400, 'Velg en lesbar fil opptil 2 MB.')
       }
       try {
         const input = await extractUpload(name, Buffer.from(data, 'base64'), { readVisual, visual: visual === true })
-        return res.status(200).json(input)
+        const file = await access.createFile(customer, input.name)
+        return res.status(200).json({...input,assetId:file.id})
       } catch (cause) {
         const message = cause?.message
         const readable = typeof message === 'string' && /^(Velg|Vedlegget|Jeg fant|Office-filen|PDF-en|Filen|Sven kan ikke bruke visuell|Sven kunne ikke lese bildet)/.test(message)

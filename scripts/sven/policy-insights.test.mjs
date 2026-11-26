@@ -10,8 +10,7 @@ import { buildPolicyEvidence, finishPolicy, moneyDrivers } from '../../server/sv
 import { parsePublicCase, readStatbankCounts } from '../../server/sven/policy-public-data.mjs'
 import { normalizeWatchTarget, readWatchTarget } from '../../server/sven/public-watch.mjs'
 import { exportFile, normalizeExport } from '../../server/sven/file-export.mjs'
-import { hostedPreview } from './hosted-preview.mjs'
-import { previewWatch } from './preview-watch.mjs'
+import { hostedPreview, previewWatch } from './test-access.mjs'
 
 const dataDir = fileURLToPath(new URL('../../web/public/data/',import.meta.url))
 const disk = async file=>JSON.parse(await readFile(dataDir+file,'utf8'))

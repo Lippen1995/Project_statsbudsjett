@@ -2,6 +2,8 @@
 
 Lanseringsarbeidet mot 10. desember 2026 følger [planen og arbeidslisten](sven-lansering.md). Den omfatter både gratis og betalt versjon, og beskriver kravene som må være oppfylt før PR #90 kan merges.
 
+De deploybare Preview-rutene for chat, filer og oppfølging krever nå en bekreftet kundekonto. Se [kundekontoer og mobilkobling](sven-kundekontoer.md) for serveroppsett og klargjøring av klienten. Det lokale loopback-verktøyet nedenfor er fortsatt et separat operatørverktøy.
+
 Med en konfigurert Claude-modell og et kontrollert kildegrunnlag:
 
 ```sh

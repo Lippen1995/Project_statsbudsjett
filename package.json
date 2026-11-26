@@ -6,7 +6,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test scripts/neon/*.test.mjs scripts/deploy/*.test.mjs scripts/admin/*.test.mjs scripts/sven/*.test.mjs",
+    "test": "node --test scripts/neon/*.test.mjs scripts/deploy/*.test.mjs scripts/admin/*.test.mjs scripts/sven/*.test.mjs scripts/customer/*.test.mjs",
     "admin:setup": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local --env-file-if-exists=.env.admin.local scripts/admin/setup.mjs",
     "analysis:pipeline": "node scripts/analyser/pipeline-cli.mjs",
     "data:roundtrip": "node --use-env-proxy --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon/data-cli.mjs roundtrip",

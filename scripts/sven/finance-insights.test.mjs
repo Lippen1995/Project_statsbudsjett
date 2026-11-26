@@ -8,7 +8,7 @@ import { financeSources, anomalySeries, simulateEqualization } from '../../serve
 import { buildPolicyEvidence, finishPolicy } from '../../server/sven/policy-insights.mjs'
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
 import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
-import { hostedPreview } from './hosted-preview.mjs'
+import { hostedPreview } from './test-access.mjs'
 
 const pack = value=>({content:[{type:'text',text:JSON.stringify(value)}]})
 const read = async file=>JSON.parse(await readFile(new URL('../../web/public/data/'+file,import.meta.url),'utf8'))

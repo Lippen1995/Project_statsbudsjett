@@ -6,8 +6,7 @@ import { validateDeliverables } from '../../server/sven/deliverables.mjs'
 import { exportFile, normalizeExport } from '../../server/sven/file-export.mjs'
 import { extractUpload } from '../../server/sven/file-input.mjs'
 import { prepareMunicipalMap } from '../../server/sven/municipal-map.mjs'
-import { previewFiles } from './preview-files.mjs'
-import { hostedPreview } from './hosted-preview.mjs'
+import { previewFiles, hostedPreview } from './test-access.mjs'
 
 const table = {
   title: 'Skoleutgifter', sourceIds: ['ssb'],

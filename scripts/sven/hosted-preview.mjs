@@ -1,4 +1,5 @@
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { getCache } from '@vercel/functions'
@@ -15,6 +16,7 @@ import { revisionContext } from '../../server/sven/advanced-tools.mjs'
 import { buildPolicyEvidence, finishPolicy } from '../../server/sven/policy-insights.mjs'
 import { financeLenses } from '../../server/sven/finance-insights.mjs'
 import { runAnalysisCode } from '../../server/sven/run-analysis-code.mjs'
+import { runtimeCustomerAccess } from '../../server/customer/runtime.mjs'
 
 const model = 'claude-sonnet-5-5'
 const previewModels = [
@@ -31,6 +33,7 @@ const effortLevels = [
 // The Messages API requires max_tokens. Both preview models support 128,000.
 const anthropicOutputLimit = 128_000
 const invocationLeaseMs = 330_000
+const customerRequestKey = (customerId, requestId) => createHash('sha256').update('customer-request-v1:' + customerId + ':' + requestId).digest('hex')
 
 function visibleProgress(status) {
   const { phase } = status
@@ -71,6 +74,7 @@ export function hostedPreview({
     appId: process.env.SVEN_GOOGLE_PICKER_APP_ID,
   },
   publishJob,
+  access = runtimeCustomerAccess,
   cache = getCache({ namespace: 'fellestall-sven-preview-v1' }),
   onUsage = ({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }) => {
     console.info('[Sven usage]', JSON.stringify({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }))
@@ -219,11 +223,13 @@ export function hostedPreview({
     res.setHeader('Cache-Control', 'no-store')
     const send = (status, body) => res.status(status).json(body)
     if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
+    try {
+    const customer = await access.authorize(req)
     if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels, files: true,
       advanced: true, insights: true, workbench: true, adaptiveResearch: true, financeTools: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
     })
     if (req.method !== 'POST') return send(405, { error: 'Metoden støttes ikke.' })
-    if (req.headers.origin !== `https://${req.headers.host}` ||
+    if (req.headers.origin !== (customer.origin ?? `https://${req.headers.host}`) ||
         req.headers['content-type']?.split(';', 1)[0] !== 'application/json') {
       return send(403, { error: 'Send spørsmålet fra den beskyttede forhåndsvisningen.' })
     }
@@ -231,10 +237,12 @@ export function hostedPreview({
       projectFiles = [], revision, refreshSources, model: selectedModel = model,
       effort = 'default' } = req.body ?? {}
     if (!validRequestId(requestId)) return send(400, { error: 'Innsendingen mangler en gyldig ID. Last siden på nytt.' })
-    if (progress === true) return send(200, visibleProgress(await requests.progress(requestId)))
+    const storageId = customerRequestKey(customer.id,requestId)
+    if (progress === true || resume === true) await access.owned(customer, 'jobs', requestId)
+    if (progress === true) return send(200, visibleProgress(await requests.progress(storageId)))
     if (resume === true) {
-      const result = publishJob ? await requests.backgroundStatus(requestId) : null
-      const { status, body } = result ?? await requests.resume(requestId, answerQuestion)
+      const result = publishJob ? await requests.backgroundStatus(storageId) : null
+      const { status, body } = result ?? await requests.resume(storageId, answerQuestion)
       return send(status, visibleProgress(body))
     }
     const question = typeof rawQuestion === 'string' ? rawQuestion.trim() : ''
@@ -265,19 +273,34 @@ export function hostedPreview({
     const uploads = [...asSources(carryAttachments === true && greeting ? [] : attachments, 'vedlegg'),
       ...asSources(greeting ? [] : projectFiles, 'prosjektfil')]
     const asOf = new Date().toISOString().slice(0, 10)
-    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads, advanced: true, insights: true, adaptiveResearch: true, financeTools: true, ...(refreshSources === true ? {refreshSources:true} : {}), ...(prior ? { prior } : {}) }
+    await access.claimJob(customer, requestId, { title:question.slice(0,180),
+      conversationId:req.body.conversationId, projectId:req.body.projectId, files:[...attachments,...projectFiles] })
+    const brief = { question, history, asOf, selectedModel, effort, customerId:customer.id, customerRequestId:requestId, files: true, uploads, advanced: true, insights: true, adaptiveResearch: true, financeTools: true, ...(refreshSources === true ? {refreshSources:true} : {}), ...(prior ? { prior } : {}) }
     if (publishJob && apiKey && (uploads.length || !interpretGreeting(question))) {
       try {
-        const { status, body } = await requests.enqueue(requestId, brief, publishJob)
+        const { status, body } = await requests.enqueue(storageId, brief, publishJob)
         return send(status, body)
       } catch {
         return send(503, { error: 'Analysen venter på oppstart. Sven prøver å koble til igjen.', recoverable: true })
       }
     }
-    const { status, body } = await requests.run(requestId, brief, answerQuestion)
+    const { status, body } = await requests.run(storageId, brief, answerQuestion)
     return send(status, body)
+    } catch(error) {
+      return send(error.status ?? 503, { error:error.status ? error.message : 'Kundeinnloggingen er utilgjengelig. Prøv igjen senere.' })
+    }
   }
-  handle.work = (id, state) => requests.work(id, state, answerQuestion, publishJob)
+  handle.work = async (id, state) => {
+    try {
+      if (!state?.brief?.customerId || !validRequestId(state.brief.customerRequestId) || id!==customerRequestKey(state.brief.customerId,state.brief.customerRequestId)) {
+        return {status:404,body:{error:'Analysen finnes ikke.'}}
+      }
+      await access.owned({id:state.brief.customerId},'jobs',state.brief.customerRequestId)
+      return await requests.work(id, state, answerQuestion, publishJob)
+    } catch(error) {
+      return {status:error.status??503,body:{error:error.status?error.message:'Kundeinnloggingen er utilgjengelig.'}}
+    }
+  }
   return handle
 }
 

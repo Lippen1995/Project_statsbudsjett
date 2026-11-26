@@ -10,7 +10,7 @@ import { builtinSettings } from '../../server/sven/tuning.mjs'
 import { claudeTransport } from '../../server/sven/provider.mjs'
 import { batchBenchmark } from './benchmark-run.mjs'
 import { batchEvaluateSven } from './evaluate.mjs'
-import { hostedPreview } from './hosted-preview.mjs'
+import { hostedPreview } from './test-access.mjs'
 import { anthropicBatch, runInternalBatch } from './internal-batch.mjs'
 
 const message = value => ({
