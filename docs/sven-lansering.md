@@ -37,6 +37,7 @@ Hovedreisen er å åpne Fellestall på mobilen, opprette en konto, få en kildeb
 | Prosjekter og historikk | Samtaler, prosjektvedlegg, svar og leveranseversjoner er private, varige og tilgjengelige på tvers av enheter. | SVEN-L03, SVEN-L04 |
 | Vedlegg og dokumentredigering | Dagens støttede filtyper, størrelsesgrenser og leseavgrensninger oppgis. Originalfiler og nye versjoner håndteres riktig. | SVEN-L04, SVEN-L08, SVEN-L10 |
 | Leveranser | Synlige tabeller, grafer, kart, scenarioer og nedlastingsvalg virker. Dagens eksportformater er CSV, XLSX, PPTX, DOCX, PDF og SVG. | SVEN-L08, SVEN-L10 |
+| Delte analyser | En valgt analyseversjon kan forhåndsvises, deles som en fast kopi og åpnes av mottakeren. Mottakerkrets, innhold i lenken og virkningen av sletting forklares presist. | SVEN-L08, SVEN-L09, SVEN-L10 |
 | Følger og varsler | Lagrede valg og endringer vises korrekt. Dagens kontroll ved åpning og under aktiv bruk beskrives presist. Bakgrunnsvarsling og push inngår ikke som nytt løfte. | SVEN-L04, SVEN-L08, SVEN-L10 |
 | Google Drive | Hvis importen aktiveres i lanseringsklienten, må filvalg, autorisasjon og import være prøvd på lanseringsdomenet. | SVEN-L01, SVEN-L08, SVEN-L10 |
 | Personvern og drift | Vilkår og personverntekst beskriver faktisk behandling, lagring og sletting; chat, kø, feil og kostnader overvåkes. | SVEN-L09 |
@@ -53,24 +54,26 @@ Autonom læring i produksjon, en komplett historisk kildekatalog, ny generell an
 | Pris, valuta, faktureringsperiode og visning av eventuell merverdiavgift | Åpent. | Simen, før SVEN-L06 ferdigstilles 1. desember. |
 | Inkludert kapasitet, periode og funksjons-/modelltilgang for hvert nivå | Åpent. | Simen, med målt kostnadsgrunnlag fra implementeringen, før SVEN-L05 og SVEN-L06 ferdigstilles. |
 | Kjøp av ekstra kapasitet, pris, utløp og overføring til ny periode | Åpent. Previewens gratis påfyll er ikke et vedtatt produktvilkår. | Simen, før SVEN-L06 ferdigstilles. |
-| Mobilklientens kanoniske kilde, bygg og fullstendige funksjonsinventar | Må bekreftes; klientkilden inngår ikke i det gjennomgåtte endringssettet i PR #90. | SVEN-L01, 27. november. |
+| Mobilklientens kilde og funksjonsinventar | Bekreftet 26. november: privat Sites-repo, `preview/sven-cost`, commit `55bfa030951d4736a0c06e50eb62e35a387f7640`, rot `dist/`. Se [inventaret](sven-mobilinventar.md). | SVEN-L01 lukket; samlet produksjonspakke gjenstår i SVEN-L08. |
 
 Demoens 100 000 tokens og påfyll på 25 % er ikke vedtatte lanseringskvoter. Priser og produktvilkår skal ikke utledes fra disse tallene. Åpne prisvalg stopper ikke arbeid med kontoer, lagring og konfigurerbare kvoter.
 
 ## Arbeidsliste
 
-Status 26. november: Steg 1 er startet. Omfanget og oppgavene nedenfor er etablert. Fullstendig låsing av funksjonsinventaret krever SVEN-L01 og avklaringene i SVEN-L02. Implementeringsoppgavene står åpne.
+Status 26. november: Det tekniske funksjonsinventaret i steg 1 er ferdig kartlagt mot den oppgitte klientversjonen, og SVEN-L01 er lukket. Gratis og betalt versjon er bekreftet. Pris, kvoter og vilkår for eventuell ekstra kapasitet gjenstår i SVEN-L02. Implementeringsoppgavene står åpne.
 
 Codex utfører implementering og automatiserte kontroller i aktive arbeidsøkter. Simen avklarer kommersielle vilkår og organiserer faglig vurdering og pilotbruk. Hver ferdig oppgave skal ha dato, kodeversjon og kontrollbevis; en avkryssing alene erstatter ikke beviset. Kundeopplysninger og private testdialoger lagres utenfor det offentlige repoet.
 
 ### SVEN-L01 Mobilkilde og lanseringsinventar
 
-**Frist:** 27. november. **Avhengigheter:** Tilgang til mobilklientens kanoniske kilde. **Status:** Åpen.
+**Frist:** 27. november. **Avhengigheter:** Tilgang til mobilklientens kanoniske kilde. **Status:** Ferdig 26. november, kontrollert mot `55bfa030951d4736a0c06e50eb62e35a387f7640`.
 
-- [ ] Registrer repo, ref og commit for mobilklienten, og dokumenter bygg og kobling til serveren.
-- [ ] Gå gjennom alle skjermer, knapper og funksjonsflagg; avstem inventaret over mot faktisk klient.
-- [ ] Registrer aktiverte integrasjoner og miljøavhengigheter uten hemmelige verdier.
-- [ ] Bekreft at lanseringsartefakten kan bygges fra registrerte versjoner, uten en udokumentert lokal `dist`-mappe.
+- [x] Registrer repo, ref og commit for mobilklienten, og dokumenter bygg og kobling til serveren.
+- [x] Kartlegg skjermene, handlingene og funksjonsbetingelsene; avstem inventaret over mot klientkilden og representative nettleserkontroller.
+- [x] Registrer integrasjoner og miljøavhengigheter uten hemmelige verdier; skill mellom kildebetingelser og bekreftet produksjonsaktivering.
+- [x] Bekreft at klientartefakten kan pakkes fra den registrerte commiten, uten en udokumentert lokal `dist`-mappe. Samlet produksjonspakke kontrolleres i SVEN-L08.
+
+Bevis: [klientgrunnlag, funksjonsinventar og kontroller](sven-mobilinventar.md). Deling og visningene for offentlige finanser er eksisterende funksjoner som inngår i ferdigstillingen.
 
 ### SVEN-L02 Vilkår for gratis og betalt versjon
 
@@ -140,6 +143,7 @@ Grunnlag: [forespørselslageret](../server/sven/preview-requests.mjs) og [køarb
 - [ ] Alle synlige funksjoner i inventaret er koblet til reell serverfunksjonalitet; modellvalg og kontotype er konsistente.
 - [ ] Tastatur, kildeåpning, venting, nettverksbrudd, bakgrunnsmodus og avbrudd gir forståelig status uten utilsiktet ny innsending.
 - [ ] Alle synlige eksportformater og dokumentredigering er prøvd; original og endret versjon kan åpnes i relevant filprogram.
+- [ ] Deling viser en fast, valgt analyseversjon, og forhåndsvisningen viser innholdet som mottakeren faktisk får.
 
 ### SVEN-L09 Personvern, drift og tilbakeføring
 
@@ -147,6 +151,7 @@ Grunnlag: [forespørselslageret](../server/sven/preview-requests.mjs) og [køarb
 
 - [ ] Personvern og vilkår dekker kundekonto, samtaler, vedlegg, AI-leverandør, betaling, lagringstid og faktisk sletting.
 - [ ] Brukeren forstår hvordan private vedlegg behandles; produksjonslogger unngår privat dialog og filinnhold.
+- [ ] Delingsdialogen oppgir riktig mottakerkrets og forklarer at lenken inneholder en kopi som ikke tilbakekalles ved sletting av originalen. Profilens felt for politiske verv og parti/liste inngår i beskrivelsen av personopplysninger.
 - [ ] Overvåking kontrollerer chat-API, kø, fastlåste jobber, modellfeil og kostnader; redaksjonell GitHub-helse brukes ikke som bevis for chathelse.
 - [ ] En ansvarlig kan undersøke en feil via jobb-ID og stoppe nytt fakturerbart arbeid uten å miste lagrede resultater.
 - [ ] Tilbakeføring av den samlede klient- og serverleveransen er prøvd med kontroll av lagrede data og kvoter.
@@ -161,6 +166,7 @@ Grunnlag: [forespørselslageret](../server/sven/preview-requests.mjs) og [køarb
 - [ ] Faktiske Sven-svar fra et på forhånd fastsatt spørsmålssett er fagvurdert mot originalkilder. Bruk eksisterende utviklingssaker og pilotens kommuneoppgaver; dokumenter utvalg og modell.
 - [ ] Det er ingen åpne kritiske tall-/kildefeil, datalekkasjer eller feil i tilgang/belastning. Datagap og manglende verdier behandles korrekt.
 - [ ] Faktisk svartid, feilrate og leverandørkostnad er registrert, også for avbrutte oppdrag og begge modellvalg dersom begge tilbys.
+- [ ] En delt versjon er prøvd i en ny gjesteøkt; den endres ikke med originalen og gir ikke tilgang til andre samtaler eller prosjektfiler. Filtrering av aktivt innhold og kildeprotokoller er kontrollert.
 
 Det eksisterende [utviklingssettet](../evaluation/sven/README.md) er ikke et uavhengig grunnlag for generelle konkurransepåstander. Bruk eksisterende [nettlesertest](../web/browser-tests/startup-intro.mjs) som kontroll av forsiden; den erstatter ikke tester av Sven-flyten.
 
@@ -197,4 +203,4 @@ Fyll inn dato, eksakt kodeversjon, metode/enhet, resultat og lenke eller privat 
 
 | Oppgave | Dato og kodeversjon | Kontroll og resultat | Bevis |
 | --- | --- | --- | --- |
-| Ingen implementeringsoppgaver lukket | — | Lanseringsarbeidslisten ble opprettet 26. november 2026. | — |
+| SVEN-L01 | 26. november 2026; klient `55bfa030951d4736a0c06e50eb62e35a387f7640` | Kilde og arkiv bekreftet; 13 skript, 20 ressurslenker, 27 ruter og fast delingskopi kontrollert lokalt. Ingen implementeringsoppgaver er lukket. | [Kontrollgrunnlag](sven-mobilinventar.md) |

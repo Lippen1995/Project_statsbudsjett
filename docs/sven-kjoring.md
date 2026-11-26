@@ -36,7 +36,7 @@ Oppslaget dekker samlet statsregnskap og følgende mål for navngitte kommuner: 
 
 ## Koble til mobilprototypen lokalt
 
-Bruk `dist` fra grenen `prototype/sven-mobil` i prototyperepoet. Med Claude-nøkkel og modell i miljøet:
+Bruk `dist/` fra det separate, private Sites-repoet på grenen `preview/sven-cost`. Det verifiserte klientgrunnlaget for Sven-previewen er commit `55bfa030951d4736a0c06e50eb62e35a387f7640`. Se [kilde, pakking og funksjonsinventar](sven-mobilinventar.md). Med Claude-nøkkel og modell i miljøet:
 
 ```sh
 node scripts/sven/mobile-preview.mjs /sti/til/mobilprototypen/dist
