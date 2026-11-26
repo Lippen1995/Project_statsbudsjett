@@ -19,7 +19,7 @@ function fileResponse(res, format, bytes, title) {
   return res.end()
 }
 
-export function previewFiles({ environment = process.env.VERCEL_ENV, readVisual = visionImport(), access = runtimeCustomerAccess } = {}) {
+export function previewFiles({ environment = process.env.VERCEL_ENV, readVisual, createVisual=visionImport, access = runtimeCustomerAccess } = {}) {
   return async function handle(req, res) {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('X-Content-Type-Options', 'nosniff')
@@ -47,7 +47,11 @@ export function previewFiles({ environment = process.env.VERCEL_ENV, readVisual 
         return error(400, 'Velg en lesbar fil opptil 2 MB.')
       }
       try {
-        const input = await extractUpload(name, Buffer.from(data, 'base64'), { readVisual, visual: visual === true })
+        const meteredVisual=async input=>{
+          if(access.quota&&!/^[a-f0-9]{64}$/.test(req.body.requestId??''))throw Object.assign(Error('Fillesingen mangler en gyldig innsending. Prøv å legge ved filen på nytt.'),{status:400})
+          return (readVisual??createVisual({...(access.quota?{meter:{quota:access.quota,userId:customer.id,requestId:req.body.requestId}}:{})}))(input)
+        }
+        const input = await extractUpload(name, Buffer.from(data, 'base64'), { readVisual:meteredVisual, visual: visual === true })
         const file = access.saveFile
           ? await access.saveFile(customer,{name:input.name,bytes:Buffer.from(data,'base64'),meta:input,projectId:req.body.projectId,conversationId:req.body.conversationId})
           : await access.createFile(customer, input.name)

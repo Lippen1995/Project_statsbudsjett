@@ -2,6 +2,23 @@
 // request implicitly: an interrupted response can still have incurred usage.
 export const isWebSearchPhase = phase => /^(?:research|research-followup(?:-\d+)?)$/.test(phase)
 
+export async function countClaudeTokens({apiKey=process.env.SVEN_ANTHROPIC_API_KEY,model,instructions,input,tools,cacheInstructions=true,signal,fetchImpl=globalThis.fetch}) {
+  if(!apiKey||!model)throw Error('Tokenberegningen mangler serveroppsett.')
+  // count_tokens rejects server tools. Count static content here; the meter
+  // reserves their prompt overhead and subsequent tool input separately.
+  const countableTools=tools?.filter(tool=>!/^web_(?:search|fetch)_/.test(tool.type??''))
+  const response=await fetchImpl('https://api.anthropic.com/v1/messages/count_tokens',{
+    method:'POST',headers:{'content-type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},
+    body:JSON.stringify({model,system:cacheInstructions?[{type:'text',text:instructions,cache_control:{type:'ephemeral'}}]:instructions,
+      messages:[{role:'user',content:input}],...(countableTools?.length?{tools:countableTools}:{})}),
+    signal:signal?AbortSignal.any([signal,AbortSignal.timeout(15000)]):AbortSignal.timeout(15000),
+  })
+  if(!response.ok)throw Error('Tokenberegningen er midlertidig utilgjengelig.')
+  const result=await response.json()
+  if(!Number.isSafeInteger(result.input_tokens)||result.input_tokens<0)throw Error('Tokenberegningen mangler måling.')
+  return result.input_tokens
+}
+
 export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
   model = process.env.SVEN_MODEL, fetchImpl = globalThis.fetch, onUsage = async () => {},
   timeoutMs = 120_000, cacheInstructions = false, effort, stream = false } = {}) {
@@ -17,20 +34,27 @@ export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
         max_tokens: maxTokens, ...(stream ? { stream: true } : {}), ...(tools ? { tools } : {}), ...(effort ? { output_config: { effort } } : {}) }),
       signal: signal && timeout ? AbortSignal.any([signal, timeout]) : signal ?? timeout,
     })
-    if (!response.ok) throw new Error(`Claude API svarte HTTP ${response.status}`)
+    if (!response.ok) throw Object.assign(new Error(`Claude API svarte HTTP ${response.status}`),{
+      status:response.status,notBilled:response.status>=400&&response.status<500,code:'provider-http-rejected',
+      providerRequestId:response.headers.get('request-id'),providerModel:model,
+    })
     const toolPhase = isWebSearchPhase(phase) || phase === 'direct-fetch'
     let message
     let streamError
+    let incompleteStream=false
     try {
       message = response.headers.get('content-type')?.startsWith('text/event-stream')
         ? await readMessageStream(response.body) : await response.json()
     } catch (error) {
+      error.providerRequestId??=response.headers.get('request-id')
+      error.providerModel??=model
       if (!error?.usage) throw error
+      incompleteStream=true
       const partial = toolPhase && !signal?.aborted && error.partialMessage
       if (partial) message = { ...partial, stop_reason: 'pause_turn' }
       else {
         streamError = error
-        message = { usage: error.usage, stop_reason: 'stream_interrupted' }
+        message = { id:error.providerRequestId,model:error.providerModel,usage: error.usage, stop_reason: 'stream_interrupted' }
       }
     }
     const usage = { requestId: message.id ?? response.headers.get('request-id'), model: message.model ?? model,
@@ -38,7 +62,7 @@ export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
       input: message.usage?.input_tokens ?? null, output: message.usage?.output_tokens ?? null,
       cacheRead: message.usage?.cache_read_input_tokens ?? 0,
       cacheWrite: message.usage?.cache_creation_input_tokens ?? 0,
-      searches: message.usage?.server_tool_use?.web_search_requests ?? 0 }
+      searches: message.usage?.server_tool_use?.web_search_requests ?? 0,complete:!incompleteStream }
     // Record even an invalid/truncated answer; it was still billed.
     await onUsage(usage)
     if (streamError) throw streamError
@@ -116,6 +140,6 @@ async function readMessageStream(body) {
     const content = message?.content.filter((block, index) => block && completed.has(index)) ?? []
     const usable = content.some(block => block.citations?.length ||
       block.type === 'web_fetch_tool_result' && block.content?.type === 'web_fetch_result')
-    throw Object.assign(error, { usage: message?.usage, ...(usable ? { partialMessage: { ...message, content } } : {}) })
+    throw Object.assign(error, { usage: message?.usage,providerRequestId:message?.id,providerModel:message?.model, ...(usable ? { partialMessage: { ...message, content } } : {}) })
   }
 }

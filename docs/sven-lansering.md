@@ -51,16 +51,16 @@ Autonom læring i produksjon, en komplett historisk kildekatalog, ny generell an
 | Valg | Status | Ansvar og frist |
 | --- | --- | --- |
 | Både gratis og betalt versjon | Bekreftet av Simen 26. november. | Inngår i alle relevante konto-, kvote- og betalingstester. |
-| Pris, valuta, faktureringsperiode og visning av eventuell merverdiavgift | Åpent. | Simen, før SVEN-L06 ferdigstilles 1. desember. |
+| Pris, valuta, faktureringsperiode og visning av eventuell merverdiavgift | Simen bekreftet 26. november: 314 NOK eks. mva. per måned. Avgiftsberegning og endelig totalpris skal fremgå ved kjøp. | Inngår i SVEN-L06. |
 | Inkludert kapasitet, periode og funksjons-/modelltilgang for hvert nivå | Åpent. | Simen, med målt kostnadsgrunnlag fra implementeringen, før SVEN-L05 og SVEN-L06 ferdigstilles. |
-| Kjøp av ekstra kapasitet, pris, utløp og overføring til ny periode | Åpent. Previewens gratis påfyll er ikke et vedtatt produktvilkår. | Simen, før SVEN-L06 ferdigstilles. |
+| Kjøp av ekstra kapasitet, pris, utløp og overføring til ny periode | Simen bekreftet 26. november at ekstra kapasitet skal kunne kjøpes. Pris, mengde og utløps-/overføringsvilkår gjenstår. Previewens gratis påfyll er ikke et produktvilkår. | Simen, før SVEN-L06 ferdigstilles. |
 | Mobilklientens kilde og funksjonsinventar | Bekreftet 26. november: privat Sites-repo, `preview/sven-cost`, commit `55bfa030951d4736a0c06e50eb62e35a387f7640`, rot `dist/`. Se [inventaret](sven-mobilinventar.md). | SVEN-L01 lukket; samlet produksjonspakke gjenstår i SVEN-L08. |
 
 Demoens 100 000 tokens og påfyll på 25 % er ikke vedtatte lanseringskvoter. Priser og produktvilkår skal ikke utledes fra disse tallene. Åpne prisvalg stopper ikke arbeid med kontoer, lagring og konfigurerbare kvoter.
 
 ## Arbeidsliste
 
-Status 26. november: SVEN-L01 er lukket. SVEN-L03 og SVEN-L04 er implementert og kontrollert med isolert PostgreSQL og den klargjorte mobilklienten, inkludert flere enheter, sletting og isolert gjenoppretting. Produksjonsaktivering og faktisk driftsbackup inngår i SVEN-L08/SVEN-L09. Den atomiske jobbleasen i SVEN-L07 er også rettet og prøvd; avregning ved uavklart modellkall gjenstår. Neste arbeid er serverstyrt forbruksregnskap, kvoter og betaling i SVEN-L05/SVEN-L06. Gratis og betalt versjon er bekreftet; pris, kvoter og påfyllsvilkår gjenstår i SVEN-L02.
+Status 26. november: SVEN-L01, SVEN-L03 og SVEN-L04 er kartlagt/implementert og lokalt kontrollert. Forbruksregnskapet og den konfigurerbare kvotemotoren i SVEN-L05 er koblet til mobil, chat og visuell fillesing. SVEN-L07 har også måling av avbrudd, varige reservasjoner og vern mot automatisk gjentakelse av uavklarte kundekall. Alle 190 backendtester, 245 frontendtester, bygg/pakking og begge mobilreisene består lokalt med kontrollerte modell- og e-postresponser. Produksjonsaktivering, faktisk driftsbackup og leverandørens harde kostnadsgrense inngår i SVEN-L08/SVEN-L09. Neste nødvendige handling for SVEN-L06 er å koble et Stripe-testmiljø til Vercel-prosjektet `fellestall`, i dashbordet eller etter CLI-innlogging. 314 NOK eks. mva. per måned og kjøp av ekstra kapasitet er bekreftet; [konkret forslag til inkludert kapasitet og påfyll](sven-kvoter.md) er lagret for avklaring. Ingen reell betalingsflyt er implementert eller utgitt ennå.
 
 Codex utfører implementering og automatiserte kontroller i aktive arbeidsøkter. Simen avklarer kommersielle vilkår og organiserer faglig vurdering og pilotbruk. Hver ferdig oppgave skal ha dato, kodeversjon og kontrollbevis; en avkryssing alene erstatter ikke beviset. Kundeopplysninger og private testdialoger lagres utenfor det offentlige repoet.
 
@@ -79,7 +79,7 @@ Bevis: [klientgrunnlag, funksjonsinventar og kontroller](sven-mobilinventar.md).
 
 **Frist:** Før SVEN-L05 og SVEN-L06 ferdigstilles 1. desember. **Avhengigheter:** Simens produktvalg og målt kostnadsgrunnlag. **Status:** Åpen.
 
-- [ ] Registrer pris, faktureringsperiode, valuta og avgiftsvisning.
+- [x] Registrer pris, faktureringsperiode og valuta: 314 NOK eks. mva. per måned, bekreftet 26. november. Avgiftsvisning verifiseres i kjøpsflyten.
 - [ ] Definer kvoteperiode, inkludert kapasitet, modellvekting og funksjonstilgang per nivå.
 - [ ] Avklar om ekstra kapasitet selges ved lansering, og hvilke saldo-/utløpsvilkår som gjelder.
 - [ ] Definer virkningen av oppgradering, oppsigelse, mislykket betaling og eventuell refusjon på tilgang og saldo.
@@ -91,7 +91,7 @@ Bevis: [klientgrunnlag, funksjonsinventar og kontroller](sven-mobilinventar.md).
 - [x] Registrering, e-postbekreftelse, innlogging, utlogging og kontogjenoppretting fungerer mot en kundetjeneste, adskilt fra administratortilgang.
 - [x] Serveren kontrollerer eierskap til samtale-, prosjekt-, fil- og jobbregistre samt Svens resultater/status, også ved gjenopptak. Selve innholdet lagres i SVEN-L04.
 - [x] To kontoer, utlogget bruker og utløpt økt er testet direkte mot API-et; kunnskap om en annen brukers ID gir ikke tilgang.
-- [x] Kontotypen leses fra serveren og kan ikke settes til betalt av klienten. Betalingsaktivering og kvoter implementeres i SVEN-L05 og SVEN-L06.
+- [x] Kontotypen leses fra serveren og kan ikke settes til betalt av klienten. Serverkvoter er koblet inn i SVEN-L05; faktisk betalingsaktivering gjenstår i SVEN-L06.
 
 Bevis: [kundekontoer, oppsett og kontroller](sven-kundekontoer.md). Testene bruker ekte økter og passordhashing; e-postlevering og modellrespons er kontrollert erstattet. Ingen produksjonsaktivering er utført.
 
@@ -109,17 +109,19 @@ Bevis: [lagringsformat, synkronisering, sletting, backup og kontroller](sven-lag
 
 ### SVEN-L05 Forbruksregnskap og kvoter
 
-**Frist:** 1. desember. **Avhengigheter:** SVEN-L03; sluttverdier fra SVEN-L02. **Status:** Åpen.
+**Frist:** 1. desember. **Avhengigheter:** SVEN-L03; sluttverdier fra SVEN-L02. **Status:** Kvotemotor og mobilkobling implementert og lokalt prøvd 26. november. Kommersiell konfigurasjon, reell oppgradering og produksjonskontroll gjenstår.
 
-- [ ] Serveren reserverer kapasitet før fakturerbart arbeid og avstemmer mot faktisk modell-, cache-, søke- og visuelt filforbruk.
-- [ ] Gratis og betalt kvote, modellvalg, perioder og eventuell tilleggssaldo håndheves på tvers av enheter og samtidige forespørsler.
-- [ ] Gjenopptak, avbrudd, avvist svar, ukjent forbruk og mislykket modellkall er avregnet uten skjult nullføring eller dobbel belastning av samme registrerte forbruk.
-- [ ] Brukeren får forståelig status ved brukt kvote; oppgradering bruker den eksisterende kontoen og historikken.
-- [ ] Kontogrenser og samlet kostnadsgrense er prøvd med samtidige analyser; klientens måler samsvarer med serveren.
+- [x] Serveren reserverer før fakturerbart arbeid og avstemmer faktisk modell-, cache-, søke- og visuelt filforbruk. Serververktøyenes inputreserve er et estimat; uventet overforbruk registreres fullt og stanser nye kall.
+- [x] Konfigurerbare gratis-/betalingsgrenser, modellvalg, abonnementsperiode og ekstrasaldo håndheves mellom enheter og samtidige forespørsler. Faktiske produktverdier er ikke aktivert.
+- [x] Gjenopptak, avbrudd, avvisning og ukjent forbruk er prøvd med reell SSE-parser og kontrollert transport. Ukjent måling beholder reservasjonen og leverandør-ID når den finnes; samme registrerte forbruk belastes én gang.
+- [ ] Mobilen viser kvotestopp, reservasjoner og samme jobb etter intern testoppgradering. Gjenopptak etter et faktisk abonnementskjøp gjenstår i SVEN-L06.
+- [x] Konto- og globale reservasjonsgrenser er prøvd mellom instanser og kunder; mobilmåleren henter serverdata. Uavhengig kostnadstak hos leverandøren og live kalibrering inngår i SVEN-L09/SVEN-L10.
+
+Bevis og begrensninger: [forbruk, perioder, prisforslag og kontroller](sven-kvoter.md). Testbudsjett og intern tilgangsendring er ikke et betalingsbevis.
 
 ### SVEN-L06 Betaling og abonnement
 
-**Frist:** 1. desember. **Avhengigheter:** SVEN-L02, SVEN-L03 og SVEN-L05. **Status:** Åpen.
+**Frist:** 1. desember. **Avhengigheter:** SVEN-L02, SVEN-L03 og SVEN-L05. **Status:** Venter på Vercel-innlogging for å koble et faktisk Stripe-testmiljø til prosjektet. Månedlig pris og krav om påfyll er bekreftet. Ingen checkout, produktpris eller betalingswebhook er opprettet som erstatning for integrasjonen.
 
 - [ ] En gratiskonto kan kjøpe abonnement og få riktig tilgang etter en bekreftet hendelse fra betalingsleverandøren.
 - [ ] Signaturkontroll og idempotent behandling dekker duplikate, forsinkede og omordnede betalingshendelser.
@@ -129,12 +131,12 @@ Bevis: [lagringsformat, synkronisering, sletting, backup og kontroller](sven-lag
 
 ### SVEN-L07 Kø og samtidige modellkall
 
-**Frist:** 2. desember. **Avhengigheter:** Eierskap fra SVEN-L03 ved integrasjon. Kjernelåsen kan rettes uavhengig. **Status:** Åpen.
+**Frist:** 2. desember. **Avhengigheter:** Eierskap fra SVEN-L03 ved integrasjon. **Status:** Køvern og forbruksbehandling implementert/lokalt prøvd 26. november; faktisk køutrulling følger SVEN-L08.
 
 - [x] Reserver jobber atomisk på tvers av serverinstanser med databaselease og tokenkontroll ved skriving.
 - [x] Gjenta reproduksjonen fra gjennomgangen: To instanser behandler samme jobb samtidig. Før retting startet begge modellkallet; etter retting starter bare én. Prøvd i lagringskontrollen 26. november.
-- [ ] Gjentatt kølevering, lease-utløp, prosessavbrudd, gjenopptak og allerede fullført jobb er testet med samme jobb-ID.
-- [ ] Eventuell gjentakelse etter et uavklart leverandørkall er uttrykkelig håndtert og registrert i forbruksregnskapet.
+- [x] Gjentatt kølevering, lease-utløp, avbrudd, gjenopptak og allerede fullført jobb er testet med samme jobb-ID og kontrollerte feil.
+- [x] Uavklart kundemodellkall gjentas ikke automatisk. Reservasjon og tilgjengelig delmåling bevares til bekreftet avstemming; køgjenlevering starter ikke et nytt betalt kall.
 
 Grunnlag: [forespørselslageret](../server/sven/preview-requests.mjs) og [køarbeideren](../scripts/sven/queued-preview.mjs).
 

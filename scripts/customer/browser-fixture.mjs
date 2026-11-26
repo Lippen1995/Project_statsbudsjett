@@ -15,7 +15,7 @@ const origin='http://127.0.0.1:'+port
 const db=await customerDatabase({site:origin})
 const storage=new Map(),cache={get:async key=>storage.get(key),set:async(key,value)=>storage.set(key,value)}
 const jobs=new Map();let modelCalls=0
-const options={environment:'preview',apiKey:'test-only',access:db.service.access,cache,
+const options={environment:'preview',apiKey:'test-only',access:db.service.access,cache,countTokens:async()=>100,
   publishJob:async(id,state)=>{jobs.set(id,{id,state:structuredClone(state)});if(state.brief.question!=='Lang undersøkelse')queueMicrotask(()=>drain(false))},
   createRequest:()=>async()=>{modelCalls++;return {content:[{type:'text',text:JSON.stringify({intent:{meaning:'Forklar kommunetallene',purpose:'Forstå offentlig økonomi',request:'Kontrollert nettlesertest'},action:'reply',reply:'Dette er et kontrollert testsvar til den innloggede kunden.'})}],usage:{input_tokens:10,output_tokens:10}}}}
 async function drain(includeHeld) {
@@ -39,6 +39,14 @@ const server=createServer(async(req,res)=>{
     }
     if(url.pathname==='/__test/release-jobs') {
       storage.clear();await drain(true);res.setHeader('Content-Type','application/json');res.end(JSON.stringify({modelCalls,pending:jobs.size,publicCacheEntries:storage.size}));return
+    }
+    if(url.pathname==='/__test/quota'&&req.method==='POST') {
+      // Local test operator only. No such route exists in the deployed API.
+      const chunks=[];for await(const chunk of req)chunks.push(chunk)
+      const value=JSON.parse(Buffer.concat(chunks))
+      if(value.freeMonthlyNano!==undefined)db.service.quota.config.plans.free.monthlyNano=value.freeMonthlyNano
+      if(value.upgradeUserId)await db.sql.query("UPDATE ft_customer_access SET plan='paid',paid_from=$2,paid_until=$3 WHERE user_id=$1",[value.upgradeUserId,new Date(),new Date(Date.now()+31*86400000)])
+      res.setHeader('Content-Type','application/json');res.end(JSON.stringify({modelCalls}));return
     }
     if(url.pathname.startsWith('/api/customer/'))return account(req,res)
     if(url.pathname.startsWith('/api/sven/')) {

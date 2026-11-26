@@ -26,7 +26,7 @@ Kunde- og admincookies har forskjellige prefikser. Kundekontoer og adminbrukere 
 
 ## Tilgang og ressursregister
 
-`/api/customer/session` returnerer innlogget kunde og det serverstyrte kontonivået. Nye kontoer får `free`. Det finnes ingen offentlig operasjon for å gjøre seg selv betalt eller administrator. Bekreftet betalingsbehandling og kvotehåndheving implementeres i SVEN-L05 og SVEN-L06.
+`/api/customer/session` returnerer innlogget kunde, gyldig serverstyrt kontonivå og [forbruk/kvote](sven-kvoter.md). Nye kontoer får `free`. Det finnes ingen offentlig operasjon for å gjøre seg selv betalt, gi seg saldo eller få administratortilgang. Betalt kapasitet krever en gyldig abonnementsperiode. Bekreftet betalingsbehandling gjenstår i SVEN-L06.
 
 Ressursregisteret knytter prosjekter, samtaler, filer og analysejobber til kunden. Eierskap bestemmes fra økten, aldri fra en `ownerId`, `customerId`, rolle eller et abonnementsfelt sendt av nettleseren. Prosjekt- og samtaletilknytning kontrolleres mot samme eier. Lesing og navneendring er eierfiltrert, og en annen kunde får 404 også når vedkommende kjenner en gyldig ID.
 
@@ -37,6 +37,7 @@ Sven krever kundeøkt før chat, filbehandling og oppfølgingsoppslag. Før et n
 | `GET /api/customer/config` | Tilgjengelighet for registrering og e-postgjenoppretting, uten hemmeligheter. |
 | `/api/customer/auth/*` | Avgrenset tillatt sett for registrering, innlogging, utlogging, bekreftelse og gjenoppretting. Andre konto-/adminoperasjoner er ikke eksponert. |
 | `GET /api/customer/session` | Kundeidentitet og serverstyrt kontonivå; 401 uten en gyldig, bekreftet kundeøkt. |
+| `GET /api/customer/usage` | Egen kvoteperiode, avregnet bruk, reservasjoner, ekstrasaldo og modelltilgang. |
 | `GET /api/customer/resources/{kind}` | Kundens egne metadata for prosjekter, samtaler, filer eller jobber. |
 | `GET /api/customer/resources/{kind}/{id}` | Eierskapskontrollert metadata for én ressurs. |
 | `POST /api/customer/resources/{kind}` | Opprett prosjekt-, samtale- eller filmetadata. Jobber opprettes gjennom Sven. |

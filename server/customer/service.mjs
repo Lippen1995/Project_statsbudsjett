@@ -2,17 +2,19 @@ import { createCustomerAuth } from './auth.mjs'
 import { customerResources, customerError } from './resources.mjs'
 import { customerStorage } from './storage.mjs'
 import { verifyPassword } from 'better-auth/crypto'
+import { customerQuota } from './quota.mjs'
 
 const responseHeaders = { 'Cache-Control':'no-store', 'X-Content-Type-Options':'nosniff', 'X-Robots-Tag':'noindex, nofollow', 'Referrer-Policy':'no-referrer' }
 const json = (value,status=200) => Response.json(value,{status,headers:responseHeaders})
 const authGet = /^\/(?:get-session|ok|verify-email|reset-password\/[^/]+)$/
 const authPost = new Set(['/sign-up/email','/sign-in/email','/sign-out','/request-password-reset','/reset-password','/send-verification-email'])
 
-export function createCustomerService({ pool, secret, origin, mail }) {
+export function createCustomerService({ pool, secret, origin, mail, quotaConfig }) {
   const sql = { query:async(text,values)=>(await pool.query(text,values)).rows }
   const auth = createCustomerAuth(pool,{secret,origin,mail})
   const resources = customerResources(sql)
   const storage = customerStorage({pool,secret})
+  const quota = customerQuota({pool,secret,...(quotaConfig?{config:quotaConfig}:{})})
   async function session(headers) {
     const state = await auth.api.getSession({headers:new Headers(headers)})
     if (!state?.user?.emailVerified) throw customerError('Du må logge inn.',401)
@@ -28,6 +30,7 @@ export function createCustomerService({ pool, secret, origin, mail }) {
     claimJob:storage.claimJob,
     jobCache:storage.jobCache,
     saveFile:storage.saveFile,
+    quota,
     createFile:(user,title)=>resources.create(user,'files',{title}),
   }
   async function handle(request) {
@@ -66,9 +69,10 @@ export function createCustomerService({ pool, secret, origin, mail }) {
         return result
       }
       if (url.pathname === '/api/customer/session' && request.method === 'GET') {
-        const [account] = await sql.query('SELECT plan FROM ft_customer_access WHERE user_id=$1',[user.id])
-        return json({user:{id:user.id,name:user.name,email:user.email,emailVerified:user.emailVerified},account:{plan:account?.plan??'free'},recoveryEmailReady:mail.ready})
+        const usage=await quota.summary(user)
+        return json({user:{id:user.id,name:user.name,email:user.email,emailVerified:user.emailVerified},account:{plan:usage.plan},usage,recoveryEmailReady:mail.ready})
       }
+      if(url.pathname==='/api/customer/usage'&&request.method==='GET')return json(await quota.summary(user))
       const match = url.pathname.match(/^\/api\/customer\/resources\/(projects|conversations|files|jobs)(?:\/([^/]+))?$/)
       if (!match) return json({error:'Innholdet finnes ikke.'},404)
       const [,kind,id] = match
@@ -87,7 +91,7 @@ export function createCustomerService({ pool, secret, origin, mail }) {
       return json({error:error.status?error.message:'Kundetjenesten kunne ikke fullføre forespørselen.'},error.status??503)
     }
   }
-  return {auth,resources,storage,access,handle,session,origin}
+  return {auth,resources,storage,quota,access,handle,session,origin}
 }
 
 async function readJSON(request,limit) {

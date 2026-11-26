@@ -23,7 +23,7 @@ test('chat, resultat, status og køarbeid er bundet til reelle kundeøkter og ei
   const cb=await db.service.resources.create(bUser,'conversations',{title:'Samtale B'})
   const stored=new Map(),cache={get:async key=>stored.get(key),set:async(key,value)=>stored.set(key,value)}
   let models=0
-  const options={environment:'preview',apiKey:'controlled-test-key',access:db.service.access,cache,
+  const options={environment:'preview',apiKey:'controlled-test-key',access:db.service.access,cache,countTokens:async()=>100,
     createRequest:()=>async()=>{models++;return message({intent:{meaning:'Forklar dette',purpose:'Forstå tall',request:'Privat spørsmål'},action:'reply',reply:'Privat svar til kunde A'})}}
   const handler=hostedPreview(options)
   const id=randomBytes(32).toString('hex')

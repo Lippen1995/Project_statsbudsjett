@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises'
 
-export const customerSchemaVersion = 2
+export const customerSchemaVersion = 3
 
 export async function migrateCustomers(pool) {
   const client = await pool.connect()

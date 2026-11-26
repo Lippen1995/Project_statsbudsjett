@@ -1,6 +1,11 @@
 import { migrateCustomers } from '../../server/customer/migrations.mjs'
 import { createCustomerService } from '../../server/customer/service.mjs'
 import { testDatabase } from '../admin/test-support.mjs'
+import { quotaConfig } from '../../server/customer/quota-config.mjs'
+
+// Deliberately generous synthetic budgets; this is never production policy.
+export const testQuotas=quotaConfig({FELLESTALL_SVEN_QUOTAS:JSON.stringify({version:1,globalMonthlyNano:10000_000_000_000,
+  plans:{free:{monthlyNano:100_000_000_000,models:['claude-sonnet-5-5']},paid:{monthlyNano:200_000_000_000,models:['claude-sonnet-5-5','claude-opus-5-5']}}})})
 
 export const origin='http://localhost:5173'
 export const cookieOf=response=>response.headers.getSetCookie().map(value=>value.split(';')[0]).join('; ')
@@ -9,12 +14,21 @@ export const request=(path,body,cookie,method=body?'POST':'GET',site=origin)=>ne
   ...(body?{body:JSON.stringify(body)}:{}),
 })
 
-export async function customerDatabase({site=origin}={}) {
+export async function customerDatabase({site=origin,quotaSettings=testQuotas}={}) {
   const db=await testDatabase()
-  await migrateCustomers(db.pool)
+  // PGlite has one wire connection. Serialize complete transactions instead of
+  // pretending nested BEGINs are independent PostgreSQL clients.
+  let tail=Promise.resolve()
+  async function acquire() {let release;const previous=tail;tail=new Promise(resolve=>release=resolve);await previous;return release}
+  const pool={
+    async connect(){const unlock=await acquire(),client=await db.pool.connect();let released=false;return{query:(...args)=>client.query(...args),release(){if(!released){released=true;client.release();unlock()}}}},
+    async query(...args){const unlock=await acquire();try{return await db.pool.query(...args)}finally{unlock()}},
+    end:db.pool.end,
+  }
+  await migrateCustomers(pool)
   const messages=[]
   const mail={ready:true,verify:async value=>messages.push({...value,purpose:'verify'}),reset:async value=>messages.push({...value,purpose:'reset'})}
-  const service=createCustomerService({pool:db.pool,origin:site,secret:db.secret,mail})
+  const service=createCustomerService({pool,origin:site,secret:db.secret,mail,quotaConfig:quotaSettings})
   const call=(path,body,cookie,method)=>service.handle(request(path,body,cookie,method,site))
   async function register(email,name='Testkunde') {
     const password='Et langt testpassord 123!'
@@ -27,5 +41,5 @@ export async function customerDatabase({site=origin}={}) {
     if(login.status!==200)throw Error('Innlogging feilet: '+login.status+' '+await login.text())
     return {cookie:cookieOf(login),password,user:(await login.json()).user}
   }
-  return {...db,service,call,register,messages,mail}
+  return {...db,pool,service,call,register,messages,mail}
 }

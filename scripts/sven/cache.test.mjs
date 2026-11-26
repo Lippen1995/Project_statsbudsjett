@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { claudeTransport } from '../../server/sven/provider.mjs'
+import { claudeTransport, countClaudeTokens } from '../../server/sven/provider.mjs'
 import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
 
 test('Claude caches the stable instructions while keeping question and history in the message', async () => {
@@ -133,6 +133,20 @@ test('en avbrutt Claude-strøm godkjennes ikke som et ferdig svar', async () => 
   assert.equal(calls, 1)
   assert.equal(records[0].input, 12)
   assert.equal(records[0].stopReason, 'stream_interrupted')
+  assert.equal(records[0].complete,false)
+})
+
+test('tokenberegning bruker samme private grunnlag og utelater serververktøy som endepunktet avviser',async()=>{
+  let counted,sent,url
+  const options={apiKey:'test',model:'claude-sonnet-5-5',cacheInstructions:true}
+  const params={instructions:'Stabile instrukser',input:[{type:'text',text:'Privat spørsmål'}],tools:[{type:'web_search_20250305',name:'web_search',max_uses:1}]}
+  const count=await countClaudeTokens({...options,...params,fetchImpl:async(endpoint,{body})=>{url=endpoint;counted=JSON.parse(body);return Response.json({input_tokens:123})}})
+  assert.equal(count,123);assert.match(url,/\/messages\/count_tokens$/)
+  await claudeTransport({...options,fetchImpl:async(_url,{body})=>{sent=JSON.parse(body);return Response.json({stop_reason:'end_turn',usage:{input_tokens:123,output_tokens:5},content:[]})}})(params)
+  for(const key of ['model','system','messages'])assert.deepEqual(counted[key],sent[key])
+  assert.equal(counted.tools,undefined);assert.deepEqual(sent.tools,params.tools)
+  await assert.rejects(countClaudeTokens({...options,...params,fetchImpl:async()=>Response.json({error:'avvist'},{status:429})}),/utilgjengelig/)
+  await assert.rejects(countClaudeTokens({...options,...params,fetchImpl:async()=>Response.json({})}),/mangler måling/)
 })
 
 test('research can preserve completed citation blocks when a stream disconnects', async () => {

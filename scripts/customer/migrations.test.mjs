@@ -28,7 +28,7 @@ test('kundemigrering er atomisk og gjentakbar og bevarer eksisterende administra
   await db.sql.query('INSERT INTO ft_customer_user(id,name,email) VALUES($1,$2,$3)',[id,'Behold meg','behold@example.test'])
   await migrateCustomers(db.pool)
   assert.equal((await db.sql.query('SELECT id FROM ft_customer_user'))[0].id,id)
-  assert.equal((await db.sql.query('SELECT version FROM ft_customer_schema'))[0].version,2)
+  assert.equal((await db.sql.query('SELECT version FROM ft_customer_schema'))[0].version,3)
   assert.deepEqual((await db.sql.query('SELECT id,email FROM ft_admin_user'))[0],original)
 })
 
@@ -57,7 +57,7 @@ test('skjema 1 oppgraderes med lagring uten å endre kunde eller eierskap',async
   await migrateCustomers(db.pool);await migrateCustomers(db.pool)
   assert.equal((await db.sql.query('SELECT owner_id FROM ft_customer_resource WHERE id=$1',[project]))[0].owner_id,id)
   assert.equal((await db.sql.query('SELECT name FROM ft_customer_user WHERE id=$1',[id]))[0].name,'Eksisterende kunde')
-  assert.equal((await db.sql.query('SELECT version FROM ft_customer_schema'))[0].version,2)
+  assert.equal((await db.sql.query('SELECT version FROM ft_customer_schema'))[0].version,3)
   assert.deepEqual(await db.sql.query('SELECT * FROM ft_customer_document'),[])
 })
 

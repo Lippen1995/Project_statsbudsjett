@@ -32,4 +32,11 @@ export const runtimeCustomerAccess={
     set:async(...args)=>(await customerRuntime()).storage.jobCache.set(...args),
     claim:async(...args)=>(await customerRuntime()).storage.jobCache.claim(...args),
   },
+  quota:{
+    summary:async(...args)=>(await customerRuntime()).quota.summary(...args),
+    allowed:async(...args)=>(await customerRuntime()).quota.allowed(...args),
+    reserve:async(...args)=>(await customerRuntime()).quota.reserve(...args),
+    execute:async(...args)=>(await customerRuntime()).quota.execute(...args),
+    record:async(...args)=>(await customerRuntime()).quota.record(...args),
+  },
 }

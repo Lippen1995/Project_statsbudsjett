@@ -138,12 +138,13 @@
     } catch{}
   }
   window.FellestallStorage(api,{request:json});
+  window.FellestallCapacity(api,{request:json});
   (async()=>{
     try {
       const response=await nativeFetch('/api/customer/session',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(10000)});
       if(!response.ok&&response.status!==401)throw Error('Kontoen kunne ikke hentes.');
       if(response.ok) {
-        const value=await response.json();api.user=value.user;api.account=value.account;
+        const value=await response.json();api.user=value.user;api.account=value.account;api.usage=value.usage;
         api.storageKey=prefix+api.user.id;api.assetDatabase=prefix+'assets:'+api.user.id;
         await api.loadContent();
       }

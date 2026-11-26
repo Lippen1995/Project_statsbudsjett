@@ -6,7 +6,7 @@ import { getCache } from '@vercel/functions'
 import example from '../../editorial/learning/feedback/review-5664781959.json' with { type: 'json' }
 import { selectEditorialExamples } from '../analyser/learning-context.mjs'
 import { buildReport } from '../analyser/report.mjs'
-import { claudeTransport, isWebSearchPhase } from '../../server/sven/provider.mjs'
+import { claudeTransport, countClaudeTokens, isWebSearchPhase } from '../../server/sven/provider.mjs'
 import { compactSearchEvidence, interpretGreeting, researchWithSven } from '../../server/sven/research.mjs'
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
 import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
@@ -65,6 +65,7 @@ export function hostedPreview({
   environment = process.env.VERCEL_ENV,
   apiKey = process.env.SVEN_ANTHROPIC_API_KEY,
   createRequest = claudeTransport,
+  countTokens = countClaudeTokens,
   sources = resolveSources,
   mapGeometry = prepareMunicipalMap,
   compute = runAnalysisCode,
@@ -86,7 +87,8 @@ export function hostedPreview({
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
   let busy = false
   async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default', files = false,
-    uploads = [], advanced = false, prior = null, insights = false, refreshSources = false, adaptiveResearch = false, financeTools = false }, memo) {
+    uploads = [], advanced = false, prior = null, insights = false, refreshSources = false, adaptiveResearch = false, financeTools = false,
+    customerId,customerRequestId }, memo) {
     const greeting = !uploads.length && interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
@@ -103,7 +105,7 @@ export function hostedPreview({
       ...body, ...(usage.calls ? { model: selectedModel, effort, usage } : {}),
     })
     try {
-      const request = createRequest({ apiKey, model: selectedModel, timeoutMs: publishJob ? 260_000 : null,
+      const request = access.quota?null:createRequest({ apiKey, model: selectedModel, timeoutMs: publishJob ? 260_000 : null,
         stream: true, cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
       const result = await researchWithSven({
         question, history, asOf, signal, conversational: true, charts: true, files, uploads, advanced, prior, insights, financeTools,
@@ -131,31 +133,47 @@ export function hostedPreview({
           const params = { ...input, maxTokens: anthropicOutputLimit }
           requestSignal?.throwIfAborted()
           const addUsage = measured => {
-            if (!measured) return
+            if (!measured) {
+              if(access.quota){usage.calls++;for(const key of ['input','output','cacheRead','cacheWrite','searches'])usage[key]=null}
+              return
+            }
             usage.calls++
-            usage.input += measured.input_tokens ?? 0
-            usage.output += measured.output_tokens ?? 0
-            usage.cacheRead += measured.cache_read_input_tokens ?? 0
-            usage.cacheWrite += measured.cache_creation_input_tokens ?? 0
-            usage.searches += measured.server_tool_use?.web_search_requests ?? 0
+            for(const [key,value] of Object.entries({input:measured.input_tokens,output:measured.output_tokens,
+              cacheRead:measured.cache_read_input_tokens??0,cacheWrite:measured.cache_creation_input_tokens??0,searches:measured.server_tool_use?.web_search_requests??0})) {
+              if(access.quota&&(usage[key]===null||!Number.isSafeInteger(value)))usage[key]=null
+              else usage[key]+=value??0
+            }
           }
-          let result
+          let result,currentCallStarted=false
           try {
             result = await memo(phase, { model: selectedModel, ...params, ...(effort === 'default' ? {} : { effort }) },
-              async () => {
-                const message = await request({ ...params, signal: requestSignal })
+              async permit => {
+                currentCallStarted=true
+                const message = access.quota
+                  ? await access.quota.execute(permit,params,async(approved,measured)=>createRequest({apiKey,model:selectedModel,
+                    timeoutMs:publishJob?260_000:null,stream:true,cacheInstructions:true,...(effort==='default'?{}:{effort}),
+                    onUsage:async usage=>{await measured(usage);await onUsage(usage)}})({...approved,signal:requestSignal}))
+                  : await request({ ...params, signal: requestSignal })
                 return isWebSearchPhase(phase) ? compactSearchEvidence(message) : message
-              }, { billable: true, beforeStart: () => {
+              }, { billable: true, beforeStart: async () => {
                 if (startedModelCall) {
                   // Yield between calls. Completed phases are replayed from
                   // the checkpoint when the client resumes the same request.
                   step.abort(continuation)
                   throw continuation
                 }
+                let permit
+                if(access.quota) {
+                  let meterInputTokens
+                  try {meterInputTokens=await countTokens({apiKey,model:selectedModel,...params,cacheInstructions:true,signal:requestSignal})}
+                  catch {throw Object.assign(Error('Sven kunne ikke beregne kapasiteten før oppstart. Prøv igjen senere.'),{status:503})}
+                  permit=await access.quota.reserve({userId:customerId,requestId:customerRequestId,phase,model:selectedModel,params:{...params,meterInputTokens}})
+                }
                 startedModelCall = true
+                return permit
               } })
           } catch (error) {
-            addUsage(error?.usage)
+            if(!access.quota||currentCallStarted&&!error.notBilled)addUsage(error?.usage)
             throw error
           }
           addUsage(result.usage)
@@ -209,6 +227,7 @@ export function hostedPreview({
       })
     } catch (error) {
       if (error === continuation) return reply(202, { pending: true, continuation: true })
+      if([402,403,503].includes(error.status)&&!error.code)return measuredReply(error.status,{error:error.message,quotaBlocked:true,recoverable:true})
       console.warn('[Sven preview]', phase, String(error?.message).match(/^Claude API svarte HTTP \d{3}$/)?.[0] ?? error?.code ?? error?.name, ['pause_turn', 'max_tokens', 'refusal'].includes(error?.stopReason) ? error.stopReason : undefined)
       const limited = /HTTP (402|429)$/.test(error?.message)
       return measuredReply(limited ? 429 : 502, { error: limited
@@ -241,8 +260,12 @@ export function hostedPreview({
     if (progress === true || resume === true) await access.owned(customer, 'jobs', requestId)
     if (progress === true) return send(200, visibleProgress(await requests.progress(storageId)))
     if (resume === true) {
+      if(req.body.retryQuota===true&&publishJob) {
+        const {status,body}=await requests.restartQueued(storageId,publishJob)
+        return send(status,body)
+      }
       const result = publishJob ? await requests.backgroundStatus(storageId) : null
-      const { status, body } = result ?? await requests.resume(storageId, answerQuestion)
+      const { status, body } = result ?? await requests.resume(storageId, answerQuestion,{retryQuota:req.body.retryQuota===true})
       return send(status, visibleProgress(body))
     }
     const question = typeof rawQuestion === 'string' ? rawQuestion.trim() : ''
@@ -253,6 +276,7 @@ export function hostedPreview({
     }
     if (!previewModels.some(option => option.id === selectedModel)) return send(400, { error: 'Denne modellen er ikke tilgjengelig.' })
     if (!effortLevels.some(option => option.id === effort)) return send(400, { error: 'Dette resonneringsnivået er ikke tilgjengelig.' })
+    if(access.quota)await access.quota.allowed(customer,selectedModel)
     if (!Array.isArray(attachments) || attachments.length > 3 || !Array.isArray(projectFiles) || projectFiles.length > 6 ||
       [...attachments, ...projectFiles].some(file =>
       typeof file?.name !== 'string' || !file.name.trim() || file.name.length > 180 ||

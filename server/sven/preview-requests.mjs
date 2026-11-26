@@ -59,11 +59,12 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
   async function backgroundStatus(id) {
     const state = await read(id)
     if (state?.result) return state.result
+    if (state?.paused) return state.paused
     return Number.isInteger(state?.revision)
       ? { ...backgroundPending, body: { ...backgroundPending.body, phase: state.phase } }
       : null
   }
-  async function advance(id, execute, brief, job) {
+  async function advance(id, execute, brief, job, {retryQuota=false}={}) {
     if (active.has(id)) return pending
     active.add(id)
     let lease
@@ -74,6 +75,10 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
       const save=(state)=>write(id,state,lease)
       const saved = await read(id)
       if (saved?.result) return saved.result
+      if(saved?.paused) {
+        if(!retryQuota)return saved.paused
+        delete saved.paused
+      }
       if (job && saved?.revision > job.state.revision) {
         await job.publish(id, saved)
         return backgroundPending
@@ -86,6 +91,10 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
       const state = saved ?? (job ? structuredClone(job.state) : { brief, steps: {} })
       const interrupted = Object.entries(state.steps).find(([, step]) => step.running)
       if (interrupted) {
+        if(cache.durable) {
+          await save({result:uncertain,leaseUntil:0})
+          return uncertain
+        }
         const [phase, previous] = interrupted
         if (!job) return uncertain
         state.retries ??= {}
@@ -109,17 +118,26 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
           if (previous.digest !== digest || previous.running) throw new Error('Trinnet kan ikke trygt gjenbrukes')
           return previous.value
         }
-        beforeStart?.()
+        const permit=await beforeStart?.()
         state.phase = phase
         if (billable) state.steps[phase] = { digest, running: true }
         await save(state)
-        const value = await work()
+        let value
+        try {value=await work(permit)}
+        catch(error) {
+          if(error.notBilled||error.meterFinalized){delete state.steps[phase];await save(state)}
+          throw error
+        }
         state.steps[phase] = { digest, value }
         await save(state)
         return value
       }
       const result = await execute(state.brief, memo)
       state.leaseUntil = 0
+      if(result.body?.quotaBlocked) {
+        state.paused=result;state.phase='quota'
+        await save(state);return result
+      }
       const running = Object.values(state.steps).some(step => step.running)
       if (job && running && [429, 502].includes(result.status)) {
         await save(state)
@@ -137,10 +155,26 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
       return { status: 503, body: { error: 'Sven kunne ikke lagre fremdriften. Bruk «Hent svar» for å sjekke samme innsending.', recoverable: true } }
     } finally { if(lease?.release)await lease.release().catch(()=>{}); active.delete(id) }
   }
+  async function restartQueued(id,publish) {
+    const lease=cache.claim?await cache.claim(cacheKey(id),leaseMs):undefined
+    if(lease?.gone)return missing
+    if(cache.claim&&!lease)return backgroundPending
+    try {
+      const state=await read(id)
+      if(!state)return missing
+      if(state.result)return state.result
+      if(state.paused) {
+        delete state.paused;state.phase='queued';state.leaseUntil=0;state.revision++
+        await write(id,state,lease)
+      }
+      if(state.phase==='queued')await publish(id,state)
+      return backgroundPending
+    }finally{await lease?.release?.()}
+  }
   return {
     run: (id, brief, execute) => advance(id, execute, brief),
-    resume: (id, execute) => advance(id, execute),
-    enqueue, backgroundStatus,
+    resume: (id, execute,options) => advance(id, execute,undefined,undefined,options),
+    enqueue, backgroundStatus,restartQueued,
     work: (id, state, execute, publish) => advance(id, execute, undefined, { state, publish }),
     async progress(id) {
       try {

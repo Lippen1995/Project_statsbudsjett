@@ -43,7 +43,7 @@ export async function restoreCustomerContent(pool,secret,backup,{isolated=false,
   if(!isolated||!erasureLedger)throw Error('Gjenoppretting krever et isolert, tomt mål og en oppdatert slettelogg.')
   if(backup?.format!==signature||createHash('sha256').update(backup.archive??'').digest('hex')!==backup.sha256)throw Error('Sikkerhetskopien har feil format eller kontrollsum.')
   const crypto=customerEncryption(secret),snapshot=crypto.open(signature,backup.archive),ledger=crypto.open(signature+':erasures',erasureLedger)
-  if(snapshot.version!==customerSchemaVersion||Date.parse(ledger.capturedAt)<Date.parse(snapshot.createdAt))throw Error('Skjemaet eller sletteloggen er for gammel.')
+  if(!Number.isInteger(snapshot.version)||snapshot.version<2||snapshot.version>customerSchemaVersion||Date.parse(ledger.capturedAt)<Date.parse(snapshot.createdAt))throw Error('Skjemaet eller sletteloggen er for gammel.')
   const data=snapshot.data,removed=new Set()
   const accountDeleted=new Set(snapshot.owners.filter(owner=>ledger.entries.some(entry=>entry.owner_hash===crypto.ownerHash(owner)&&entry.kind==='account')))
   for(const row of data.ft_customer_resource) {
@@ -78,7 +78,7 @@ export async function restoreCustomerContent(pool,secret,backup,{isolated=false,
   try {
     await client.query('BEGIN')
     await client.query('LOCK TABLE ft_customer_user IN EXCLUSIVE MODE')
-    for(const table of ['ft_customer_user','ft_customer_erasure',...Object.keys(tables)]) {
+    for(const table of ['ft_customer_user','ft_customer_erasure','ft_customer_meter','ft_customer_quota_global','ft_customer_quota_period','ft_customer_quota_credit',...Object.keys(tables)]) {
       const {rows:[count]}=await client.query(`SELECT count(*)::int AS count FROM ${table}`)
       if(count.count)throw Error('Målet må være tomt. Eksisterende kunder kan ikke overskrives.')
     }

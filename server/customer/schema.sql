@@ -63,3 +63,32 @@ CREATE TABLE IF NOT EXISTS ft_customer_schema (
   id integer PRIMARY KEY CHECK (id = 1), version integer NOT NULL,
   updated_at timestamptz NOT NULL DEFAULT now()
 );
+ALTER TABLE ft_customer_access ADD COLUMN IF NOT EXISTS paid_until timestamptz;
+ALTER TABLE ft_customer_access ADD COLUMN IF NOT EXISTS paid_from timestamptz;
+CREATE TABLE IF NOT EXISTS ft_customer_quota_global (
+  period text PRIMARY KEY, spent bigint NOT NULL DEFAULT 0 CHECK(spent>=0),
+  held bigint NOT NULL DEFAULT 0 CHECK(held>=0), blocked boolean NOT NULL DEFAULT false, blocked_reason text
+);
+CREATE TABLE IF NOT EXISTS ft_customer_quota_period (
+  owner_id text NOT NULL REFERENCES ft_customer_user(id) ON DELETE CASCADE, period text NOT NULL,
+  spent bigint NOT NULL DEFAULT 0 CHECK(spent>=0), held bigint NOT NULL DEFAULT 0 CHECK(held>=0),
+  PRIMARY KEY(owner_id,period)
+);
+CREATE TABLE IF NOT EXISTS ft_customer_quota_credit (
+  id text PRIMARY KEY, owner_id text NOT NULL REFERENCES ft_customer_user(id) ON DELETE CASCADE,
+  source text NOT NULL UNIQUE, amount bigint NOT NULL CHECK(amount>0),
+  spent bigint NOT NULL DEFAULT 0 CHECK(spent>=0), held bigint NOT NULL DEFAULT 0 CHECK(held>=0),
+  valid_from timestamptz NOT NULL DEFAULT now(), expires_at timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS ft_customer_meter (
+  id text PRIMARY KEY, owner_id text REFERENCES ft_customer_user(id) ON DELETE SET NULL,
+  owner_hash text NOT NULL, period text NOT NULL, request_id text NOT NULL, phase text NOT NULL,
+  model text NOT NULL, digest text NOT NULL, price_version text NOT NULL, rates jsonb NOT NULL,
+  state text NOT NULL CHECK(state IN ('reserved','running','unknown','settled','rejected')),
+  reserved bigint NOT NULL CHECK(reserved>=0), cost bigint, funding jsonb NOT NULL,
+  usage jsonb, provider_request_id text, note text, lease_until timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS ft_customer_meter_owner ON ft_customer_meter(owner_id,period,created_at);
+CREATE UNIQUE INDEX IF NOT EXISTS ft_customer_meter_provider ON ft_customer_meter(provider_request_id) WHERE provider_request_id IS NOT NULL;
