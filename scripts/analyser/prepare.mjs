@@ -12,6 +12,7 @@ import { topicBlocked } from '../../web/src/analyser/topics.js'
 import { buildOilReport } from './oil-report.mjs'
 import { pipelineRepository } from './pipeline-model.mjs'
 import { preparePipeline } from './pipeline-reports.mjs'
+import { withEditorialExamples } from './learning-context.mjs'
 
 const output = process.argv[2]
 if (!output || !/^editorial\/handoff\/[a-z0-9-]+\.json$/.test(output))
@@ -79,7 +80,7 @@ if (process.argv[3] && !budgetDay && !oil && !pipelinePlan) {
   }) : null
   if (pipeline?.packet) {
     mkdirSync(dirname(output), { recursive: true })
-    writeFileSync(output, JSON.stringify(pipeline.packet, null, 2) + '\n')
+    writeFileSync(output, JSON.stringify(withEditorialExamples(pipeline.packet), null, 2) + '\n')
     console.log(pipeline.packet.pipelineState === 'research-required' ? 'Bestillingen venter på relevant research og analyseplan; ingen annen analyse er valgt.' : 'Ingen temaer har nådd skrivedatoen. Pipeline er beholdt.')
     process.exit(0)
   }
@@ -112,7 +113,7 @@ if (process.argv[3] && !budgetDay && !oil && !pipelinePlan) {
   }
 }
 mkdirSync(dirname(output), { recursive: true })
-writeFileSync(output, JSON.stringify(packet, null, 2) + '\n')
+writeFileSync(output, JSON.stringify(withEditorialExamples(packet), null, 2) + '\n')
 console.log(
   `Kontrollert grunnlag lagret i ${output}. AI skal skrive article.copy og validere før levering.`,
 )

@@ -16,6 +16,10 @@
   "scope": "article-only",
   "status": "applied",
   "ruleId": null,
+  "example": {
+    "topics": ["barnetrygd", "kontantstøtte", "familieytelser", "barne- og familiedepartementet"],
+    "description": "I en tidligere familieytelsessak viste regnskapet at barnetrygd og kontantstøtte utviklet seg ulikt. Sven brukte NAVs sats- og mottakerhistorikk til å undersøke hva som lå bak, og så på skatteomleggingen før nettoeffekten ble omtalt. Da kunne saken åpne med en konkret konsekvens for familiene."
+  },
   "learningBasis": {
     "handbookVersion": 1,
     "activeRules": [
