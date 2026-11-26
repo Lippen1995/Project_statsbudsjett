@@ -28,7 +28,7 @@ test('kundemigrering er atomisk og gjentakbar og bevarer eksisterende administra
   await db.sql.query('INSERT INTO ft_customer_user(id,name,email) VALUES($1,$2,$3)',[id,'Behold meg','behold@example.test'])
   await migrateCustomers(db.pool)
   assert.equal((await db.sql.query('SELECT id FROM ft_customer_user'))[0].id,id)
-  assert.equal((await db.sql.query('SELECT version FROM ft_customer_schema'))[0].version,1)
+  assert.equal((await db.sql.query('SELECT version FROM ft_customer_schema'))[0].version,2)
   assert.deepEqual((await db.sql.query('SELECT id,email FROM ft_admin_user'))[0],original)
 })
 
@@ -43,6 +43,22 @@ test('kundepakken inkluderer selvstendig funksjon og SQL uten administratorboots
   assert.doesNotMatch(schema,/ft_admin_user/)
   assert.doesNotMatch(source,/FELLESTALL_ADMIN_PASSWORD_HASH|bootstrapAdmin/)
   assert.equal(JSON.parse(await readFile(join(directory,'.vc-config.json'),'utf8')).handler,'index.mjs')
+})
+
+test('skjema 1 oppgraderes med lagring uten å endre kunde eller eierskap',async t=>{
+  const db=await testDatabase();t.after(()=>db.engine.close())
+  // Simulate the account-only schema already running in a preview.
+  const schema=await readFile(new URL('../../server/customer/schema.sql',import.meta.url),'utf8')
+  await db.engine.exec(schema.split('ALTER TABLE ft_customer_resource')[0])
+  await db.engine.exec('CREATE TABLE ft_customer_schema(id integer PRIMARY KEY,version integer NOT NULL,updated_at timestamptz DEFAULT now()); INSERT INTO ft_customer_schema(id,version) VALUES(1,1)')
+  const id=randomUUID(),project=randomUUID()
+  await db.sql.query('INSERT INTO ft_customer_user(id,name,email) VALUES($1,$2,$3)',[id,'Eksisterende kunde','eksisterende@example.test'])
+  await db.sql.query("INSERT INTO ft_customer_resource(kind,id,owner_id,title) VALUES('projects',$1,$2,$3)",[project,id,'Bevart prosjekt'])
+  await migrateCustomers(db.pool);await migrateCustomers(db.pool)
+  assert.equal((await db.sql.query('SELECT owner_id FROM ft_customer_resource WHERE id=$1',[project]))[0].owner_id,id)
+  assert.equal((await db.sql.query('SELECT name FROM ft_customer_user WHERE id=$1',[id]))[0].name,'Eksisterende kunde')
+  assert.equal((await db.sql.query('SELECT version FROM ft_customer_schema'))[0].version,2)
+  assert.deepEqual(await db.sql.query('SELECT * FROM ft_customer_document'),[])
 })
 
 test('bekreftelse og gjenoppretting bruker eksisterende e-postleverandør med dedupliserte utsendinger',async()=>{

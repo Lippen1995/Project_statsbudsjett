@@ -10,7 +10,7 @@ export function customerResources(sql) {
     createdAt:row.created_at,updatedAt:row.updated_at })
   async function owned(user,kind,id) {
     if (!user?.id || !resourceId(kind,id)) throw customerError('Innholdet finnes ikke.',404)
-    const [row] = await sql.query('SELECT * FROM ft_customer_resource WHERE owner_id=$1 AND kind=$2 AND id=$3',[user.id,kind,id])
+    const [row] = await sql.query('SELECT * FROM ft_customer_resource WHERE owner_id=$1 AND kind=$2 AND id=$3 AND deleted_at IS NULL',[user.id,kind,id])
     if (!row) throw customerError('Innholdet finnes ikke.',404)
     return view(row)
   }
@@ -36,12 +36,12 @@ export function customerResources(sql) {
     owned, create,
     async list(user,kind) {
       if (!customerKinds.has(kind)) throw customerError('Innholdet finnes ikke.',404)
-      return (await sql.query('SELECT * FROM ft_customer_resource WHERE owner_id=$1 AND kind=$2 ORDER BY created_at DESC LIMIT 200',[user.id,kind])).map(view)
+      return (await sql.query('SELECT * FROM ft_customer_resource WHERE owner_id=$1 AND kind=$2 AND deleted_at IS NULL ORDER BY created_at DESC',[user.id,kind])).map(view)
     },
     async rename(user,kind,id,title) {
       if (typeof title !== 'string' || !title.trim() || title.length > 180) throw customerError('Skriv et navn på opptil 180 tegn.')
       await owned(user,kind,id)
-      await sql.query('UPDATE ft_customer_resource SET title=$4,updated_at=now() WHERE owner_id=$1 AND kind=$2 AND id=$3',[user.id,kind,id,title.trim()])
+      await sql.query('UPDATE ft_customer_resource SET title=$4,updated_at=now() WHERE owner_id=$1 AND kind=$2 AND id=$3 AND deleted_at IS NULL',[user.id,kind,id,title.trim()])
       return owned(user,kind,id)
     },
   }

@@ -30,10 +30,10 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
   const uncertain = {
     status: 409, body: { error: 'Et tidligere modellkall mangler bekreftet resultat. Sven sender det ikke på nytt automatisk.' },
   }
-  function write(id, state) {
+  function write(id, state, lease) {
     const value = seal(id, state)
     if (value.length > 1_900_000) throw new Error('Undersøkelsen er for stor til å lagre i previewen')
-    return cache.set(cacheKey(id), value, { ttl, name: 'Sven preview request' })
+    return lease ? lease.set(value) : cache.set(cacheKey(id), value, { ttl, name: 'Sven preview request' })
   }
   async function read(id) {
     const encrypted = await cache.get(cacheKey(id))
@@ -41,15 +41,20 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
   }
   const backgroundPending = { status: 202, body: { pending: true, background: true } }
   async function enqueue(id, brief, publish) {
-    const saved = await read(id)
-    const state = saved ?? { brief, steps: {}, revision: 0, phase: 'queued' }
-    if (state.result) return state.result
-    if (!Number.isInteger(state.revision)) return pending
-    // Sending the same revision again is idempotent at the queue. Store the
-    // lookup first so even a worker that starts immediately can find it.
-    if (!saved) await write(id, state)
-    if (!saved || state.phase === 'queued') await publish(id, state)
-    return backgroundPending
+    const lease = cache.claim ? await cache.claim(cacheKey(id), leaseMs) : undefined
+    if(lease?.gone) return missing
+    if(cache.claim&&!lease) return backgroundPending
+    try {
+      const saved = await read(id)
+      const state = saved ?? { brief, steps: {}, revision: 0, phase: 'queued' }
+      if (state.result) return state.result
+      if (!Number.isInteger(state.revision)) return pending
+      // Sending the same revision again is idempotent at the queue. Store the
+      // lookup first so even a worker that starts immediately can find it.
+      if (!saved) await write(id, state, lease)
+      if (!saved || state.phase === 'queued') await publish(id, state)
+      return backgroundPending
+    } finally {await lease?.release?.()}
   }
   async function backgroundStatus(id) {
     const state = await read(id)
@@ -61,7 +66,12 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
   async function advance(id, execute, brief, job) {
     if (active.has(id)) return pending
     active.add(id)
+    let lease
     try {
+      lease=cache.claim ? await cache.claim(cacheKey(id),leaseMs) : undefined
+      if(lease?.gone) return missing
+      if(cache.claim&&!lease) return pending
+      const save=(state)=>write(id,state,lease)
       const saved = await read(id)
       if (saved?.result) return saved.result
       if (job && saved?.revision > job.state.revision) {
@@ -70,6 +80,9 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
       }
       if (saved && (brief || saved.leaseUntil > now())) return pending
       if (!saved && !brief && !job) return missing
+      // A durable job must have an existing checkpoint. Queue copies cannot
+      // recreate a deleted or lost checkpoint, including after account erasure.
+      if (!saved && job && cache.durable) return missing
       const state = saved ?? (job ? structuredClone(job.state) : { brief, steps: {} })
       const interrupted = Object.entries(state.steps).find(([, step]) => step.running)
       if (interrupted) {
@@ -83,12 +96,12 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
           state.steps[phase] = { digest: previous.digest, value: { content: [], stop_reason: 'pause_turn' } }
         } else {
           const result = { status: 502, body: { error: 'Et modellkall ble avbrutt to ganger. Start en ny analyse for å prøve igjen.' } }
-          await write(id, { result, leaseUntil: 0 })
+          await save({ result, leaseUntil: 0 })
           return result
         }
       }
       state.leaseUntil = now() + leaseMs
-      await write(id, state)
+      await save(state)
       async function memo(phase, input, work, { billable = false, beforeStart } = {}) {
         const digest = createHash('sha256').update(JSON.stringify(input)).digest('hex')
         const previous = state.steps[phase]
@@ -99,22 +112,22 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
         beforeStart?.()
         state.phase = phase
         if (billable) state.steps[phase] = { digest, running: true }
-        await write(id, state)
+        await save(state)
         const value = await work()
         state.steps[phase] = { digest, value }
-        await write(id, state)
+        await save(state)
         return value
       }
       const result = await execute(state.brief, memo)
       state.leaseUntil = 0
       const running = Object.values(state.steps).some(step => step.running)
       if (job && running && [429, 502].includes(result.status)) {
-        await write(id, state)
+        await save(state)
         return pending
       }
       if (result.status !== 202) state.result = result
       if (job && result.body.continuation) state.revision++
-      await write(id, state.result ? { result, leaseUntil: 0 } : state)
+      await save(state.result ? { result, leaseUntil: 0 } : state)
       if (job && result.body.continuation) {
         await job.publish(id, state)
         return backgroundPending
@@ -122,7 +135,7 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
       return result
     } catch {
       return { status: 503, body: { error: 'Sven kunne ikke lagre fremdriften. Bruk «Hent svar» for å sjekke samme innsending.', recoverable: true } }
-    } finally { active.delete(id) }
+    } finally { if(lease?.release)await lease.release().catch(()=>{}); active.delete(id) }
   }
   return {
     run: (id, brief, execute) => advance(id, execute, brief),

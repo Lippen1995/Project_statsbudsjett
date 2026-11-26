@@ -39,6 +39,26 @@ CREATE TABLE IF NOT EXISTS ft_customer_resource (
   PRIMARY KEY(kind,id)
 );
 CREATE INDEX IF NOT EXISTS ft_customer_resource_owner ON ft_customer_resource(owner_id,kind,created_at);
+ALTER TABLE ft_customer_resource ADD COLUMN IF NOT EXISTS deleted_at timestamptz;
+CREATE TABLE IF NOT EXISTS ft_customer_document (
+  owner_id text NOT NULL REFERENCES ft_customer_user(id) ON DELETE CASCADE,
+  kind text NOT NULL, id text NOT NULL, version integer NOT NULL DEFAULT 1,
+  data text, updated_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY(owner_id,kind,id)
+);
+CREATE TABLE IF NOT EXISTS ft_customer_file (
+  id text PRIMARY KEY, owner_id text NOT NULL REFERENCES ft_customer_user(id) ON DELETE CASCADE,
+  data text NOT NULL, created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS ft_customer_job (
+  storage_key text PRIMARY KEY, owner_id text NOT NULL REFERENCES ft_customer_user(id) ON DELETE CASCADE,
+  request_id text NOT NULL, data text, lease_token text, lease_until timestamptz,
+  updated_at timestamptz NOT NULL DEFAULT now(), UNIQUE(owner_id,request_id)
+);
+CREATE TABLE IF NOT EXISTS ft_customer_erasure (
+  owner_hash text NOT NULL, kind text NOT NULL, id text NOT NULL,
+  erased_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY(owner_hash,kind,id)
+);
 CREATE TABLE IF NOT EXISTS ft_customer_schema (
   id integer PRIMARY KEY CHECK (id = 1), version integer NOT NULL,
   updated_at timestamptz NOT NULL DEFAULT now()

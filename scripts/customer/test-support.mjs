@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises'
+import { migrateCustomers } from '../../server/customer/migrations.mjs'
 import { createCustomerService } from '../../server/customer/service.mjs'
 import { testDatabase } from '../admin/test-support.mjs'
 
@@ -11,7 +11,7 @@ export const request=(path,body,cookie,method=body?'POST':'GET',site=origin)=>ne
 
 export async function customerDatabase({site=origin}={}) {
   const db=await testDatabase()
-  await db.engine.exec(await readFile(new URL('../../server/customer/schema.sql',import.meta.url),'utf8'))
+  await migrateCustomers(db.pool)
   const messages=[]
   const mail={ready:true,verify:async value=>messages.push({...value,purpose:'verify'}),reset:async value=>messages.push({...value,purpose:'reset'})}
   const service=createCustomerService({pool:db.pool,origin:site,secret:db.secret,mail})

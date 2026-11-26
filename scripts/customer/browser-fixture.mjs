@@ -14,8 +14,18 @@ const port=Number(process.argv[3]||4181)
 const origin='http://127.0.0.1:'+port
 const db=await customerDatabase({site:origin})
 const storage=new Map(),cache={get:async key=>storage.get(key),set:async(key,value)=>storage.set(key,value)}
-const sven=hostedPreview({environment:'preview',apiKey:'test-only',access:db.service.access,cache,
-  createRequest:()=>async()=>({content:[{type:'text',text:JSON.stringify({intent:{meaning:'Forklar kommunetallene',purpose:'Forstå offentlig økonomi',request:'Kontrollert nettlesertest'},action:'reply',reply:'Dette er et kontrollert testsvar til den innloggede kunden.'})}],usage:{input_tokens:10,output_tokens:10}})})
+const jobs=new Map();let modelCalls=0
+const options={environment:'preview',apiKey:'test-only',access:db.service.access,cache,
+  publishJob:async(id,state)=>{jobs.set(id,{id,state:structuredClone(state)});if(state.brief.question!=='Lang undersøkelse')queueMicrotask(()=>drain(false))},
+  createRequest:()=>async()=>{modelCalls++;return {content:[{type:'text',text:JSON.stringify({intent:{meaning:'Forklar kommunetallene',purpose:'Forstå offentlig økonomi',request:'Kontrollert nettlesertest'},action:'reply',reply:'Dette er et kontrollert testsvar til den innloggede kunden.'})}],usage:{input_tokens:10,output_tokens:10}}}}
+async function drain(includeHeld) {
+  for(const [id,job] of jobs) {
+    if(!includeHeld&&job.state.brief.question==='Lang undersøkelse')continue
+    jobs.delete(id);const result=await hostedPreview(options).work(id,job.state)
+    if(result.status===202&&!result.body.background){jobs.set(id,job);setTimeout(()=>drain(includeHeld),20)}
+  }
+}
+const sven=hostedPreview(options)
 const files=previewFiles({environment:'preview',access:db.service.access,readVisual:()=>{throw Error('Visuell modell brukes ikke i denne testen')}})
 const watch=previewWatch({environment:'preview',access:db.service.access})
 const account=customerNodeHandler(db.service.handle,{origin})
@@ -26,6 +36,9 @@ const server=createServer(async(req,res)=>{
     req.headers['x-vercel-forwarded-for']='127.0.0.1'
     if(url.pathname==='/__test/mail') {
       res.setHeader('Content-Type','application/json');res.end(JSON.stringify(db.messages.filter(message=>message.user.email===url.searchParams.get('email')).map(({url,purpose})=>({url,purpose}))));return
+    }
+    if(url.pathname==='/__test/release-jobs') {
+      storage.clear();await drain(true);res.setHeader('Content-Type','application/json');res.end(JSON.stringify({modelCalls,pending:jobs.size,publicCacheEntries:storage.size}));return
     }
     if(url.pathname.startsWith('/api/customer/'))return account(req,res)
     if(url.pathname.startsWith('/api/sven/')) {

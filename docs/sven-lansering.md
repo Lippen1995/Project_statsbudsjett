@@ -60,7 +60,7 @@ Demoens 100 000 tokens og påfyll på 25 % er ikke vedtatte lanseringskvoter. Pr
 
 ## Arbeidsliste
 
-Status 26. november: SVEN-L01 er lukket. SVEN-L03 er implementert og kontrollert med isolert PostgreSQL og den klargjorte mobilklienten; produksjonsaktivering inngår i SVEN-L08. Gratis og betalt versjon er bekreftet. Pris, kvoter og vilkår for eventuell ekstra kapasitet gjenstår i SVEN-L02. Varig innholdslagring i SVEN-L04 står fortsatt åpen.
+Status 26. november: SVEN-L01 er lukket. SVEN-L03 og SVEN-L04 er implementert og kontrollert med isolert PostgreSQL og den klargjorte mobilklienten, inkludert flere enheter, sletting og isolert gjenoppretting. Produksjonsaktivering og faktisk driftsbackup inngår i SVEN-L08/SVEN-L09. Den atomiske jobbleasen i SVEN-L07 er også rettet og prøvd; avregning ved uavklart modellkall gjenstår. Neste arbeid er serverstyrt forbruksregnskap, kvoter og betaling i SVEN-L05/SVEN-L06. Gratis og betalt versjon er bekreftet; pris, kvoter og påfyllsvilkår gjenstår i SVEN-L02.
 
 Codex utfører implementering og automatiserte kontroller i aktive arbeidsøkter. Simen avklarer kommersielle vilkår og organiserer faglig vurdering og pilotbruk. Hver ferdig oppgave skal ha dato, kodeversjon og kontrollbevis; en avkryssing alene erstatter ikke beviset. Kundeopplysninger og private testdialoger lagres utenfor det offentlige repoet.
 
@@ -89,7 +89,7 @@ Bevis: [klientgrunnlag, funksjonsinventar og kontroller](sven-mobilinventar.md).
 **Frist:** 27. november. **Avhengigheter:** Kan bygges mens SVEN-L01 og SVEN-L02 avklares. **Status:** Implementert og lokalt verifisert 26. november; produksjonsaktivering kontrolleres i SVEN-L08.
 
 - [x] Registrering, e-postbekreftelse, innlogging, utlogging og kontogjenoppretting fungerer mot en kundetjeneste, adskilt fra administratortilgang.
-- [x] Serveren kontrollerer eierskap til samtale-, prosjekt-, fil- og jobbregistre samt Svens resultater/status, også ved gjenopptak. Lagring av selve innholdet ferdigstilles i SVEN-L04.
+- [x] Serveren kontrollerer eierskap til samtale-, prosjekt-, fil- og jobbregistre samt Svens resultater/status, også ved gjenopptak. Selve innholdet lagres i SVEN-L04.
 - [x] To kontoer, utlogget bruker og utløpt økt er testet direkte mot API-et; kunnskap om en annen brukers ID gir ikke tilgang.
 - [x] Kontotypen leses fra serveren og kan ikke settes til betalt av klienten. Betalingsaktivering og kvoter implementeres i SVEN-L05 og SVEN-L06.
 
@@ -97,13 +97,15 @@ Bevis: [kundekontoer, oppsett og kontroller](sven-kundekontoer.md). Testene bruk
 
 ### SVEN-L04 Varig lagring og sletting
 
-**Frist:** 30. november. **Avhengigheter:** SVEN-L03. **Status:** Åpen.
+**Frist:** 30. november. **Avhengigheter:** SVEN-L03. **Status:** Implementert og lokalt verifisert 26. november; produksjonsaktivering og driftsbackup følger SVEN-L08/SVEN-L09.
 
-- [ ] Samtaler, prosjekter, vedlegg, leveranseversjoner og følgevalg lagres med eierskap og hentes på en annen enhet.
-- [ ] Utløpt cache og ny utrulling mister ikke lagrede eller pågående kundeoppdrag.
-- [ ] Håndtering av lokale preview-data og bytte av domene er besluttet og beskrevet for brukeren.
-- [ ] Sletting av innhold og konto er prøvd; kømeldinger kan ikke gjenopprette slettet kundeinnhold.
-- [ ] Sikkerhetskopi og gjenoppretting er prøvd med isolerte testdata.
+- [x] Samtaler, prosjekter, vedlegg, leveranseversjoner og følgevalg lagres med eierskap og hentes på en annen enhet.
+- [x] Jobblageret er uten cache-TTL; nye serverinstanser og tømt offentlig cache mister ikke lagrede eller pågående kundeoppdrag. En faktisk produksjonsutrulling verifiseres i SVEN-L08.
+- [x] Lokal testkonto importeres ikke automatisk; klienten forklarer eksport og bevaring i gammel preview. Domeneovergang krever ny innlogging, samme serverlager og fullført/eksportert lokal utboks.
+- [x] Sletting av innhold og konto er prøvd, også under arbeid; kømeldinger og gamle nettleserversjoner kan ikke gjenopprette slettet kundeinnhold.
+- [x] Kryptert sikkerhetskopi og gjenoppretting er prøvd i separat testdatabase; en nyere slettelogg håndheves på en eldre kopi. Daglig produksjonskopi og oppbevaring aktiveres i driftssteget.
+
+Bevis: [lagringsformat, synkronisering, sletting, backup og kontroller](sven-lagring.md). Nettleserkontrollen omfatter to enheter for samme konto og en separat fremmed kunde; modell og e-post er kontrollert erstattet.
 
 ### SVEN-L05 Forbruksregnskap og kvoter
 
@@ -129,8 +131,8 @@ Bevis: [kundekontoer, oppsett og kontroller](sven-kundekontoer.md). Testene bruk
 
 **Frist:** 2. desember. **Avhengigheter:** Eierskap fra SVEN-L03 ved integrasjon. Kjernelåsen kan rettes uavhengig. **Status:** Åpen.
 
-- [ ] Reserver jobber atomisk på tvers av serverinstanser; en lokal prosesslås og separat cachelesing/-skriving er utilstrekkelig.
-- [ ] Gjenta reproduksjonen fra gjennomgangen: To instanser behandler samme jobb samtidig. Før retting startet begge modellkallet; etter retting starter bare én.
+- [x] Reserver jobber atomisk på tvers av serverinstanser med databaselease og tokenkontroll ved skriving.
+- [x] Gjenta reproduksjonen fra gjennomgangen: To instanser behandler samme jobb samtidig. Før retting startet begge modellkallet; etter retting starter bare én. Prøvd i lagringskontrollen 26. november.
 - [ ] Gjentatt kølevering, lease-utløp, prosessavbrudd, gjenopptak og allerede fullført jobb er testet med samme jobb-ID.
 - [ ] Eventuell gjentakelse etter et uavklart leverandørkall er uttrykkelig håndtert og registrert i forbruksregnskapet.
 

@@ -42,7 +42,9 @@ Sven krever kundeøkt før chat, filbehandling og oppfølgingsoppslag. Før et n
 | `POST /api/customer/resources/{kind}` | Opprett prosjekt-, samtale- eller filmetadata. Jobber opprettes gjennom Sven. |
 | `PUT /api/customer/resources/{kind}/{id}` | Endre navnet på en egen ressurs. Eierskap og tilknytning kan ikke overtas. |
 
-Registeret lagrer foreløpig eierskap, navn og tilknytning. Det erstatter ikke den varige innholdslagringen i SVEN-L04: full samtalehistorikk, leveranseversjoner og originale filblobber synkroniseres ennå ikke til kundelageret. Den lokale arbeidskopien fjernes ved bekreftet utlogging. Ikke bruk denne leveransen alene som en erklæring om at kundeinnhold kan gjenopprettes på en annen enhet.
+Registeret er nå koblet til [varig innholdslagring, synkronisering og sletting](sven-lagring.md). Samtaler, prosjekter, leveranseversjoner, følgevalg og originalfiler lagres på kontoen og hentes på en annen enhet. Mobilen lagrer en lokal utboks for endringer som ennå ikke er kvittert; konflikter er synlige og kan eksporteres. Bekreftet utlogging fullfører lagring før lokal arbeidskopi fjernes. Produksjonsaktivering og faktisk driftsbackup gjenstår i SVEN-L08/SVEN-L09.
+
+Lagring eksponerer også paginert `GET /api/customer/content`, versjonskontrollert `PUT /api/customer/content`, eierkontrollert `GET /api/customer/files/{id}`, `DELETE /api/customer/resources/{kind}/{id}` og passordbeskyttet `DELETE /api/customer/account`. Se lagringsveiledningen for format, grenser og slettesemantikk.
 
 ## Mobilklienten
 
@@ -52,7 +54,7 @@ Kundekoblingen legges på den [verifiserte klientbaselinen](sven-mobilinventar.m
 node scripts/customer/prepare-mobile.mjs /sti/til/privat-klientrepo /tom/outputmappe
 ```
 
-Klargjøringen krever eksakt baseline og uendret sporet kilde. Den kopierer kun sporede Git-blobber fra commiten, avviser uventede filtyper og krever tom output. Deretter kobles `customer-auth.js` til klienten, og de kjente integrasjonspunktene oppdateres med kontoflyt, eierskapsregistrering og fil-ID-er. Kjent kilde må matche før en slik tilpasning kan utføres. Output får `customer-source.json` med klient- og serverref og `customerDirty` for kontroll. En lanseringskandidat krever committet kode og `customerDirty: false`; en utviklingspakke med lokale endringer er ikke en slik kandidat.
+Klargjøringen krever eksakt baseline og uendret sporet kilde. Den kopierer kun sporede Git-blobber fra commiten, avviser uventede filtyper og krever tom output. Deretter kobles `customer-auth.js` og `customer-storage.js` til klienten, og de kjente integrasjonspunktene oppdateres med kontoflyt, eierskap, innholds-/filsynkronisering og sletting. Kjent kilde må matche før en slik tilpasning kan utføres. Output får `customer-source.json` med klient- og serverref og `customerDirty` for kontroll. En lanseringskandidat krever committet kode og `customerDirty: false`; en utviklingspakke med lokale endringer er ikke en slik kandidat.
 
 Før klienten startes, hentes den faktiske økten fra serveren. Nettlesercache og filbase får et eget navn per kundekonto; gammel lokal testkonto importeres ikke automatisk. Lokal `session: true` og direkte navigasjon til `#sven` gir ikke innlogging. Passord, sesjonstoken og gjenopprettingstoken lagres ikke i nettleserlageret. Gjenopprettingstokenet tas ut av adressefeltet og beholdes kun i minnet mens nytt passord velges.
 
@@ -68,7 +70,7 @@ node --test scripts/customer/*.test.mjs
 
 Mobilreisen er prøvd i Chromium på 390 × 844 med den faktiske klargjorte klienten, ekte konto-API og isolert database. E-post fanges lokalt og Sven-modellen er kontrollert erstattet. Kontrollen dekker registrering, bekreftelse, HttpOnly-cookie, innlogging, prosjekt, samtale, vedlegg, analysejobb, to isolerte kunder, utlogging og nytt passord.
 
-26. november besto alle 171 rottester, alle 245 frontendtester og produksjonsbygg med SEO-kontroll. Den samlede statiske Vercel-pakken er bygget med kundens rute, funksjon og migreringsgrunnlag. Skjermbilder av innlogging og den innloggede chatten er visuelt kontrollert. Kildekontrollert uttrekk av mobilklienten gir samme klientfiler som nettlesertesten brukte.
+26. november besto hele backend- og frontendtestsettet, produksjonsbygg med SEO-kontroll og samlet statisk Vercel-pakking med kundens rute, funksjon og migreringsgrunnlag. Den utvidede mobilreisen kontrollerer også en annen enhet, varig analyse etter lukket side, versjonskonflikt, originalfiler og sletting. Skjermbilder av innlogging, chat, konfliktvarsel og lagringsside er visuelt kontrollert. Se [lagringsveiledningen](sven-lagring.md) for kontrollbevis og driftsbegrensninger.
 
 For å gjenta nettleserkontrollen med en kompatibel Playwright-installasjon:
 

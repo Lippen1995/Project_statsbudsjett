@@ -39,14 +39,21 @@ export function previewFiles({ environment = process.env.VERCEL_ENV, readVisual 
       catch(cause) {return error(cause.status??503,cause.status?cause.message:'Kundeinnloggingen er utilgjengelig.')}
     }
     if (action === 'extract') {
+      try {
+        if(req.body.projectId)await access.owned(customer,'projects',req.body.projectId)
+        if(req.body.conversationId)await access.owned(customer,'conversations',req.body.conversationId)
+      }catch(cause){return error(cause.status??503,cause.status?cause.message:'Fillageret er utilgjengelig.')}
       if (!validData(data)) {
         return error(400, 'Velg en lesbar fil opptil 2 MB.')
       }
       try {
         const input = await extractUpload(name, Buffer.from(data, 'base64'), { readVisual, visual: visual === true })
-        const file = await access.createFile(customer, input.name)
+        const file = access.saveFile
+          ? await access.saveFile(customer,{name:input.name,bytes:Buffer.from(data,'base64'),meta:input,projectId:req.body.projectId,conversationId:req.body.conversationId})
+          : await access.createFile(customer, input.name)
         return res.status(200).json({...input,assetId:file.id})
       } catch (cause) {
+        if(cause.status)return error(cause.status,cause.message)
         const message = cause?.message
         const readable = typeof message === 'string' && /^(Velg|Vedlegget|Jeg fant|Office-filen|PDF-en|Filen|Sven kan ikke bruke visuell|Sven kunne ikke lese bildet)/.test(message)
         return res.status(422).json({ error: readable ? message : 'Sven kunne ikke lese vedlegget. Sjekk at filen kan åpnes og prøv igjen.',

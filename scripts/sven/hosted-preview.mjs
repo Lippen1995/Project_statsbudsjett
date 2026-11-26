@@ -80,7 +80,7 @@ export function hostedPreview({
     console.info('[Sven usage]', JSON.stringify({ phase, input, output, cacheRead, cacheWrite, searches, elapsedMs, stopReason, maxTokens }))
   },
 } = {}) {
-  const requests = previewRequests(cache, { leaseMs: invocationLeaseMs, ...(publishJob ? { ttl: 86_400 } : {}) })
+  const requests = previewRequests(access.jobCache??cache, { leaseMs: invocationLeaseMs, ...(publishJob ? { ttl: 86_400 } : {}) })
   const loadSnapshot = snapshotLoader({ cache })
   const reply = (status, body) => ({ status, body })
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })

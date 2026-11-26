@@ -1,7 +1,7 @@
 import { customerRuntime } from './runtime.mjs'
 import { customerOrigin } from './auth.mjs'
 
-export function customerNodeHandler(handle,{origin=customerOrigin(),maxBytes=32000}={}) {
+export function customerNodeHandler(handle,{origin=customerOrigin(),maxBytes=3_000_000}={}) {
   return async(req,res)=>{
     try {
       let size=0

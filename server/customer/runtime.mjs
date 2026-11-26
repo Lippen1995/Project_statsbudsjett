@@ -25,4 +25,11 @@ export const runtimeCustomerAccess={
   owned:async(...args)=>(await customerRuntime()).resources.owned(...args),
   claimJob:async(...args)=>(await customerRuntime()).access.claimJob(...args),
   createFile:async(...args)=>(await customerRuntime()).access.createFile(...args),
+  saveFile:async(...args)=>(await customerRuntime()).storage.saveFile(...args),
+  jobCache:{
+    durable:true,
+    get:async(...args)=>(await customerRuntime()).storage.jobCache.get(...args),
+    set:async(...args)=>(await customerRuntime()).storage.jobCache.set(...args),
+    claim:async(...args)=>(await customerRuntime()).storage.jobCache.claim(...args),
+  },
 }
