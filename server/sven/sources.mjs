@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { buildReport } from '../../scripts/analyser/report.mjs'
 import { peerBenchmark } from './municipal-peers.mjs'
+import { financeLenses, financeSources } from './finance-insights.mjs'
 import { municipalMetrics } from './municipal-metrics.mjs'
 import { norwayPopulation, officialMunicipalCounts, publicCaseId, publicSchoolPupils, readPublicCase } from './policy-public-data.mjs'
 
@@ -45,6 +46,12 @@ export const budgetPhases = Object.freeze([
 function mentionsTerm(question, name) {
   const escaped = normalize(name).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   return new RegExp(`(?:^|[^\\p{L}\\p{N}])${escaped}(?=$|[^\\p{L}\\p{N}])`, 'u').test(question)
+}
+
+function municipalityInQuestion(index, normalized) {
+  return index.entities.filter(entity=>entity.kind === 'municipality').flatMap(entity=>entity.name.split(/\s+[–-]\s+/)
+      .filter(name=>name.length>2 && mentionsTerm(normalized,name)).map(name=>({entity,offset:normalized.indexOf(normalize(name)),length:name.length})))
+      .sort((a,b)=>a.offset-b.offset || b.length-a.length)[0]?.entity
 }
 
 async function municipalSources(read, question, years, metrics, service, insights, lens) {
@@ -311,13 +318,23 @@ async function oilSources(read, years) {
 export async function resolveSvenSources(question, dataDir, {
   read = file => readJson(dataDir, file),
   stateReport = options => buildReport(dataDir, options),
-  insights = false, lens, denominator, fetchCounts = officialMunicipalCounts, fetchCase = readPublicCase, loadValues, loadCentrality,
+  insights = false, lens, denominator, fetchCounts = officialMunicipalCounts, fetchCase = readPublicCase, loadValues, loadCentrality, finance, loadPayments, loadSeries,
 } = {}) {
   if (typeof question !== 'string' || !question.trim()) throw new TypeError('Spørsmålet mangler')
   const normalized = normalize(question)
   const years = requestedYears(normalized)
   const budgetRows = selectedBudgetReferences(question)
-  const combined = ['delivery','reconcile'].includes(lens)
+  const financeLookup=insights&&financeLenses.includes(lens)
+  const combined = ['delivery','reconcile','transfers'].includes(lens)
+  if (financeLookup) {
+    const index=await read('kostra/index.json')
+    const selector=selectedBudgetReferences(question).find(id=>/^[ui]-\d{1,3}-0571(?:-\d{1,3})?$/.test(id))
+    const lookupQuestion=selector ? normalized+' kap 0571'+(selector.split('-')[3]?' post '+selector.split('-')[3]:'') : normalized
+    const focus=municipalityInQuestion(index,normalized)
+    const service=serviceTerms.find(([, , pattern])=>pattern.test(normalized))
+    const result=await financeSources({lens,years,focus,service,question:lookupQuestion,options:finance,read,index,loadPayments,loadSeries})
+    if (result.length) return result
+  }
   const namedBudgets = insights ? budgetSelectors(normalized).slice(0,combined?4:1) : []
   const evidence = []
   if (budgetRows.length) evidence.push(...await budgetRowSources(read,budgetRows,null,years,insights))
@@ -342,9 +359,7 @@ export async function resolveSvenSources(question, dataDir, {
   const service = serviceTerms.find(([, , pattern]) => pattern.test(normalized))
   if (insights && lens === 'peers') {
     const index = await read('kostra/index.json')
-    const focus = index.entities.filter(entity=>entity.kind === 'municipality').flatMap(entity=>entity.name.split(/\s+[–-]\s+/)
-      .filter(name=>name.length>2 && mentionsTerm(normalized,name)).map(name=>({entity,offset:normalized.indexOf(normalize(name)),length:name.length})))
-      .sort((a,b)=>a.offset-b.offset || b.length-a.length)[0]?.entity
+    const focus=municipalityInQuestion(index,normalized)
     const metric = service && /brutto/.test(normalized) ? 'gross_expenses' : service && /investering/.test(normalized) ? 'investments'
       : service ? 'net_expenses' : metrics[0]?.[0] ?? 'net_expenses'
     const evidence = await peerBenchmark({index,focus,year:years.at(-1) ?? index.latestYear,service,metric,loadValues,loadCentrality})

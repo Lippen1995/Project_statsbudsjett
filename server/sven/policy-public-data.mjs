@@ -158,3 +158,20 @@ export async function officialCentrality(year, fetchImpl = fetch) {
   return {url,values:Object.fromEntries(correspondenceItems.filter(item=>/^0?[1-6]$/.test(item.sourceCode)&&/^\d{4}$/.test(item.targetCode))
     .map(item=>[item.targetCode,Number(item.sourceCode)]))}
 }
+
+export async function officialMunicipalSeries(definition, region, years, fetchImpl = fetch) {
+  if (!/^\d{4}$/.test(region) || !years.length || !years.every(year=>Number.isInteger(year) && year>=1900 && year<=2199)) {
+    throw new Error('Ugyldig kommune eller periode')
+  }
+  const fixed = { ...definition.options, [definition.regionKey]:region }
+  const url=statbankDataUrl(definition.table,{...fixed,Tid:years.join(',')})
+  const {id,size,dimension,value}=await (await officialResponse(url,fetchImpl)).json()
+  const time=id?.indexOf('Tid')
+  if (!Array.isArray(id) || id.length!==Object.keys(fixed).length+1 || time<0 || !Array.isArray(size) ||
+      !Array.isArray(value) || size[time]!==value.length ||
+      !id.every((key,axis)=>axis===time||size[axis]===1&&positionMap(dimension?.[key]?.category)[fixed[key]]===0)) {
+    throw new Error('Uventet tidsserie fra SSB')
+  }
+  const positions=positionMap(dimension.Tid?.category)
+  return {url,values:Object.fromEntries(years.map(year=>[year,Number.isFinite(value[positions[year]])?value[positions[year]]:null]))}
+}

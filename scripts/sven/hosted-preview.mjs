@@ -13,6 +13,7 @@ import { previewRequests, validRequestId } from '../../server/sven/preview-reque
 import { prepareMunicipalMap } from '../../server/sven/municipal-map.mjs'
 import { revisionContext } from '../../server/sven/advanced-tools.mjs'
 import { buildPolicyEvidence, finishPolicy } from '../../server/sven/policy-insights.mjs'
+import { financeLenses } from '../../server/sven/finance-insights.mjs'
 import { runAnalysisCode } from '../../server/sven/run-analysis-code.mjs'
 
 const model = 'claude-sonnet-5-5'
@@ -81,7 +82,7 @@ export function hostedPreview({
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
   let busy = false
   async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default', files = false,
-    uploads = [], advanced = false, prior = null, insights = false, refreshSources = false, adaptiveResearch = false }, memo) {
+    uploads = [], advanced = false, prior = null, insights = false, refreshSources = false, adaptiveResearch = false, financeTools = false }, memo) {
     const greeting = !uploads.length && interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
@@ -101,7 +102,7 @@ export function hostedPreview({
       const request = createRequest({ apiKey, model: selectedModel, timeoutMs: publishJob ? 260_000 : null,
         stream: true, cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
       const result = await researchWithSven({
-        question, history, asOf, signal, conversational: true, charts: true, files, uploads, advanced, prior, insights,
+        question, history, asOf, signal, conversational: true, charts: true, files, uploads, advanced, prior, insights, financeTools,
         // Keep the same request inputs when resuming work started before this release.
         ...(adaptiveResearch ? { adaptiveResearch } : { maxSearches:3 }),
         ...(advanced ? { compute: (code, inputs) => memo('compute-run', { code, inputs }, async () => {
@@ -177,6 +178,15 @@ export function hostedPreview({
             : 'Jeg fant ikke dokumentasjon for begge tallene. Del gjerne originalkildene, så kan jeg forsøke å avstemme dem.'
           return measuredReply(200,finishPolicy(directReply(summary).body,null,buildPolicyEvidence([],result.lens,question),[],question))
         }
+        if (financeLenses.includes(result.lens)) {
+          const questionForLens={
+            transfers:'Hvilken tilskuddsordning og hvilket år gjelder det? Del gjerne en lenke til ordningen.',
+            distribution:'Hvilken ordning eller sats vil du endre, og hvilket år skal være utgangspunkt?',
+            'school-quality':'Hvilken kommune eller skole og hvilke år vil du undersøke?',
+            anomalies:'Hvilken kommune og hvilket regnskapsår vil du at jeg skal sjekke?',
+          }
+          return measuredReply(200,directReply('Jeg fant ikke et egnet tallgrunnlag. '+questionForLens[result.lens]).body)
+        }
         return measuredReply(422, { error: 'Jeg fant ikke kilder som kunne underbygge et svar på dette. Hvis du har en kilde, kan du gjerne dele den.' })
       }
       if (result.status !== 'reviewed') {
@@ -210,7 +220,7 @@ export function hostedPreview({
     const send = (status, body) => res.status(status).json(body)
     if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
     if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels, files: true,
-      advanced: true, insights: true, workbench: true, adaptiveResearch: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
+      advanced: true, insights: true, workbench: true, adaptiveResearch: true, financeTools: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
     })
     if (req.method !== 'POST') return send(405, { error: 'Metoden støttes ikke.' })
     if (req.headers.origin !== `https://${req.headers.host}` ||
@@ -255,7 +265,7 @@ export function hostedPreview({
     const uploads = [...asSources(carryAttachments === true && greeting ? [] : attachments, 'vedlegg'),
       ...asSources(greeting ? [] : projectFiles, 'prosjektfil')]
     const asOf = new Date().toISOString().slice(0, 10)
-    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads, advanced: true, insights: true, adaptiveResearch: true, ...(refreshSources === true ? {refreshSources:true} : {}), ...(prior ? { prior } : {}) }
+    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads, advanced: true, insights: true, adaptiveResearch: true, financeTools: true, ...(refreshSources === true ? {refreshSources:true} : {}), ...(prior ? { prior } : {}) }
     if (publishJob && apiKey && (uploads.length || !interpretGreeting(question))) {
       try {
         const { status, body } = await requests.enqueue(requestId, brief, publishJob)

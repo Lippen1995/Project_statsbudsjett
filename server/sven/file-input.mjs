@@ -1,48 +1,14 @@
-import { fromBuffer } from 'yauzl'
 import { SaxesParser } from 'saxes'
 import { parse } from 'csv-parse/sync'
 import ExcelJS from 'exceljs'
 import { describeOfficeParts, readPresentationText, relatedOfficeParts } from './office-edit.mjs'
 import { isImage } from './vision-import.mjs'
+import { unzipOffice } from './office-archive.mjs'
+export { unzipOffice } from './office-archive.mjs'
 
 export const maxUploadBytes = 2 * 1024 * 1024
 const maxChars = 24_000
 const uploadTypes = new Set(['csv', 'tsv', 'txt', 'md', 'xlsx', 'docx', 'pptx', 'pdf'])
-const maxZipPayload = 24 * 1024 * 1024
-
-export function unzipOffice(bytes, wanted) {
-  return new Promise((resolve, reject) => {
-    fromBuffer(bytes, { lazyEntries: true, validateEntrySizes: true }, (error, archive) => {
-      if (error) return reject(error)
-      let entries = 0
-      let total = 0
-      const extracted = new Map()
-      const fail = failure => { archive.close(); reject(failure) }
-      archive.once('error', fail)
-      archive.once('end', () => resolve(extracted))
-      archive.on('entry', entry => {
-        total += entry.uncompressedSize
-        if (++entries > 1600 || total > maxZipPayload || entry.isEncrypted()) {
-          fail(new Error('Office-filen er for stor eller passordbeskyttet.'))
-          return
-        }
-        if (!wanted(entry.fileName)) return archive.readEntry()
-        archive.openReadStream(entry, (streamError, stream) => {
-          if (streamError) return fail(streamError)
-          const chunks = []
-          stream.on('data', chunk => chunks.push(chunk))
-          stream.once('error', fail)
-          stream.once('end', () => {
-            extracted.set(entry.fileName, Buffer.concat(chunks).toString('utf8'))
-            archive.readEntry()
-          })
-        })
-      })
-      archive.readEntry()
-    })
-  })
-}
-
 function officeParagraphs(xml, namespace) {
   const result = []
   const parser = new SaxesParser({ xmlns: false })

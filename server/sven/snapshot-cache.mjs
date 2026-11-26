@@ -8,16 +8,21 @@ const freshness = 120_000
 
 function compactKostra(file, raw) {
   if (file === 'kostra/index.json') {
-    const { latestYear, years, updated, entities, sources } = JSON.parse(raw)
-    return JSON.stringify({ latestYear, years, updated,
+    const { latestYear, years, updated, entities, sources, incomeEqualization } = JSON.parse(raw)
+    const taxBase=Object.fromEntries(Object.entries(incomeEqualization??{}).filter(([year])=>Number(year)>=2024).map(([year,rows])=>
+      [year,Object.fromEntries(Object.entries(rows).filter(([id])=>id.startsWith('municipality:')).map(([id,row])=>[
+        id,{population:row.population,taxBefore:{amount:row.taxBefore?.amount},equalization:{amount:row.equalization?.amount},
+          basis:row.basis,sourceUrl:row.sourceUrl},
+      ]))]))
+    return JSON.stringify({ latestYear, years, updated, ...(Object.keys(taxBase).length?{incomeEqualization:taxBase}:{}),
       sources: sources.filter(source => ['12137', '12362', '07022'].includes(source.source_table)),
       entities: entities.filter(entity => entity.kind === 'municipality')
-        .map(({ name, code, kind, peer_group_id }) => ({ name, code, kind, peer_group_id })),
+        .map(({ id, name, code, kind, peer_group_id }) => ({ id, name, code, kind, peer_group_id })),
     })
   }
   if (file.startsWith('kostra/entities/')) {
-    const { entity, latestYear, overview, services, boundaryHistory } = JSON.parse(raw)
-    return JSON.stringify({ entity, latestYear, overview, services, boundaryHistory })
+    const { entity, latestYear, overview, services, boundaryHistory, stateFlows, blockGrantCalculation } = JSON.parse(raw)
+    return JSON.stringify({ entity, latestYear, overview, services, boundaryHistory, stateFlows, blockGrantCalculation })
   }
   return raw
 }
@@ -25,7 +30,7 @@ function compactKostra(file, raw) {
 export function snapshotLoader({ cache, fetchImpl = fetch, now = Date.now }) {
   const inFlight = new Map()
   async function load(file, refresh) {
-    const key = `snapshot-v3:${file}`
+    const key = `snapshot-v4:${file}`
     let saved
     try { saved = await cache.get(key) } catch { /* Read the authoritative snapshot. */ }
     const decode = async () => (await decompress(Buffer.from(saved.data, 'base64'))).toString('utf8')

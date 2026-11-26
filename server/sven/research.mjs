@@ -7,6 +7,7 @@ import { computeInstructions } from './run-analysis-code.mjs'
 import { parseModelJSON } from './provider.mjs'
 import { publicCaseId } from './policy-public-data.mjs'
 import { selectedBudgetReferences } from './sources.mjs'
+import { financeLenses, financeRates, financeRouting, financeAnswerInstructions, financeAuditInstructions } from './finance-insights.mjs'
 import { deriveMunicipalEvidence } from './calculations.mjs'
 import { buildPolicyEvidence, finishPolicy, modelPolicyEvidence, policyAnswerInstructions, policyAuditInstructions, policyRouting } from './policy-insights.mjs'
 import { scenarioSchema, policyScenario, workbenchRouting, workbenchAnswerInstructions, workbenchAuditInstructions } from './policy-workbench.mjs'
@@ -162,7 +163,7 @@ export function compactSearchEvidence(message) {
   return { sources, leads: [...leads.values()], errors: toolErrors(message), usage: message.usage, stopReason: message.stop_reason }
 }
 
-function validateTurn(turn, knownUrls, charts, files, uploads, advanced, prior, insights) {
+function validateTurn(turn, knownUrls, charts, files, uploads, advanced, prior, insights, financeTools) {
   const { action, reply, tools, plan, urls } = turn ?? {}
   const { request, purpose, meaning } = turn?.intent ?? {}
   if (![request, purpose, meaning].every(value => text(value) && value.length <= 1500)) {
@@ -176,15 +177,27 @@ function validateTurn(turn, knownUrls, charts, files, uploads, advanced, prior, 
     const result = { intent, action, reply: reply.trim(), ...(scenario ? { policy:{scenario} } : {}), ...(chart ? { chart } : {}), ...(deliverables ? { deliverables } : {}) }
     return advanced && action === 'reply' ? attachAdvancedFields(result, turn.deliverables, new Set()) : result
   }
-  if (action === 'research' && Array.isArray(tools) && tools.length > 0 && new Set(tools).size === tools.length &&
-      tools.every(tool => ['fellestall', 'direct', 'web'].includes(tool) || (tool === 'uploads' && uploads.length) ||
-        (advanced && (tool === 'compute' || (tool === 'versions' && prior))))) {
-    const directUrls = tools.includes('direct') && Array.isArray(urls)
-      ? [...new Set(urls.filter(url => knownUrls.includes(url)))].slice(0, 3) : []
-    const lens = insights && ['drivers', 'budget', 'comparison', 'factcheck', 'peers', 'delivery', 'reconcile'].includes(turn.lens) ? turn.lens : undefined
+  const allowed = tool => ['fellestall', 'direct', 'web'].includes(tool) || (tool === 'uploads' && uploads.length) ||
+    (advanced && (tool === 'compute' || (tool === 'versions' && prior)))
+  if (action === 'research' && (financeTools || Array.isArray(tools) && tools.length > 0 &&
+      new Set(tools).size === tools.length && tools.every(allowed))) {
+    const chosen = [...new Set((Array.isArray(tools) ? tools : []).filter(allowed))]
+    if (!chosen.length) chosen.push(knownUrls.length ? 'direct' : 'fellestall')
+    const directUrls = chosen.includes('direct')
+      ? [...new Set((Array.isArray(urls) ? urls : financeTools ? knownUrls : []).filter(url => knownUrls.includes(url)))].slice(0, 3) : []
+    const lenses = ['drivers', 'budget', 'comparison', 'factcheck', 'peers', 'delivery', 'reconcile', ...(financeTools?financeLenses:[])]
+    const lens = insights && lenses.includes(turn.lens) ? turn.lens : undefined
     const denominator = lens === 'drivers' && ['pupils','population'].includes(turn.denominator) ? turn.denominator : undefined
-    return { intent, action, tools, directUrls, plan: validatePlan(plan, { web: tools.includes('web') }),
-      ...(lens ? { lens } : {}), ...(denominator ? { denominator } : {}) }
+    const rates=lens==='distribution'?financeRates(turn.finance):null
+    let planning
+    try { planning=validatePlan(plan, { web: chosen.includes('web') && !financeTools }) }
+    catch (error) {
+      if (!financeTools) throw error
+      planning={scope:intent.meaning,questions:[intent.request],searches:[],counterSearch:'',missing:[]}
+    }
+    if (financeTools && chosen.includes('web') && !planning.searches.length) planning.searches=[intent.meaning.slice(0,300)]
+    return { intent, action, tools:chosen, directUrls, plan:planning,
+      ...(lens ? { lens } : {}), ...(denominator ? { denominator } : {}), ...(rates ? { finance:rates } : {}) }
   }
   throw new Error('Ugyldig valg av fremgangsmåte')
 }
@@ -253,7 +266,7 @@ export function validateAudit(audit) {
 // Each checkpoint must finish before the next billed step. A caller can persist
 // these privately. No customer text is written to repository or telemetry.
 export async function researchWithSven({ question, surface = 'chat', recommendationRequested = false, conversational = false, charts = false, files = false,
-  advanced = false, prior = null, compute, insights = false, adaptiveResearch = false,
+  advanced = false, prior = null, compute, insights = false, adaptiveResearch = false, financeTools = false,
   sources: supplied = [], uploads = [], history = [], editorialExamples = [], plan: suppliedPlan, asOf = new Date().toISOString().slice(0,10),
   tuning = builtinSettings, maxSearches = tuning.maxSearches, maxSourceChars = 100000, signal, checkpoint = async () => {},
   request, localSources = async () => [] }) {
@@ -283,8 +296,8 @@ export async function researchWithSven({ question, surface = 'chat', recommendat
   const turn = conversational && !suppliedPlan
     ? (!uploads.length && interpretGreeting(question)) || validateTurn(parseModelJSON(await run('interpret',
       [conversationInstructions, ...(charts ? [chartRouting] : []),
-        ...(files ? [fileRouting] : []), ...(advanced ? [advancedRouting] : []), ...(insights ? [policyRouting, workbenchRouting, scenarioSchema] : []),
-        planningInstructions.replace('Svar kun JSON:', 'JSON-format for feltet "plan":')].join('\n\n'), planningInput)), knownUrls, charts, files, uploads, advanced, prior, insights)
+        ...(files ? [fileRouting] : []), ...(advanced ? [advancedRouting] : []), ...(insights ? [policyRouting, workbenchRouting, scenarioSchema] : []), ...(financeTools?[financeRouting]:[]),
+        planningInstructions.replace('Svar kun JSON:', 'JSON-format for feltet "plan":')].join('\n\n'), planningInput)), knownUrls, charts, files, uploads, advanced, prior, insights, financeTools)
     : null
   if (turn && turn.action !== 'research') return { status: 'conversation', reply: turn.reply,
     ...(turn.chart ? { chart: turn.chart } : {}), ...(turn.deliverables ? { deliverables: turn.deliverables } : {}),
@@ -295,10 +308,10 @@ export async function researchWithSven({ question, surface = 'chat', recommendat
   const gaps = [...plan.missing]
   let local = []
   const attachedBudget = selectedBudgetReferences(question).length > 0
-  const workbenchLookup = ['peers','delivery','reconcile'].includes(turn?.lens)
+  const workbenchLookup = ['peers','delivery','reconcile',...(financeTools?financeLenses:[])].includes(turn?.lens)
   if (!turn || turn.tools.includes('fellestall') || attachedBudget || workbenchLookup) {
     const query = attachedBudget ? question : turn?.intent.meaning ?? question
-    const options = insights ? { insights, lens:turn?.lens, denominator:turn?.denominator } : undefined
+    const options = insights ? { insights, lens:turn?.lens, denominator:turn?.denominator, ...(turn?.finance?{finance:turn.finance}:{}) } : undefined
     const lookup = async value => {
       try { return await localSources(value,options) }
       catch { return null }
@@ -469,19 +482,23 @@ Kildebelegg funnene med sitater. Skill gjennomført aktivitet fra forslag og kos
       async ({ instructions, input }) => {
         const parsed = parseModelJSON(await run(`answer-${attempt}`, instructions +
           `\nLengdepreferanse: ${settings.responseDensity}. Behold alltid nødvendige kilder, motargumenter og forbehold.` +
-          (policyEvidence ? '\n\n' + policyAnswerInstructions + '\n' + workbenchAnswerInstructions : ''),
+          (policyEvidence ? '\n\n' + policyAnswerInstructions + '\n' + workbenchAnswerInstructions : '') +
+          (financeTools ? '\n' + financeAnswerInstructions : ''),
         { ...JSON.parse(input), ...(policyEvidence ? { policyEvidence:modelPolicyEvidence(policyEvidence) } : {}) }, { maxTokens:6000 }))
         proposedPolicy = parsed?.policy
         return mergeRevision(prior, parsed)
       })
     if (policyEvidence) answer = finishPolicy(answer, proposedPolicy, policyEvidence, sources, question)
+    const reviewedAnswer=answer.policy?.finance?{...answer,policy:{...answer.policy,
+      finance:{summary:modelPolicyEvidence(policyEvidence).finance,grantTrail:answer.policy.finance.grantTrail}}}:answer
+    const reviewedSources=financeTools?sources.map(({finance,...source})=>source):sources
     const maySearch = conversational && !selectedUploads.length &&
       (adaptive ? webProgress : attempt === 0 && followupCount === 0 && searchesRemaining > 0)
     audit = validateAudit(parseModelJSON(await run(`review-${attempt}`, auditInstructions +
       (conversational ? adaptive ? adaptiveCoverageInstructions : coverageInstructions : '') + (charts ? chartReview : '') + (files ? fileReview : '') +
       (advanced ? '\nEtterprøv kodeberegninger, scenarienes enheter og grunnlag, og at forespurte revisjoner bevarer andre deler av leveransen. Kontroller at filendringer bruker oppgitte felt-ID-er.' : '') +
-      (policyEvidence ? policyAuditInstructions + workbenchAuditInstructions : ''),
-      { ...researchBrief, allowRecommendation: policy.allowRecommendation, answer, sources,
+      (policyEvidence ? policyAuditInstructions + workbenchAuditInstructions : '') + (financeTools?'\n'+financeAuditInstructions:''),
+      { ...researchBrief, allowRecommendation: policy.allowRecommendation, answer:reviewedAnswer, sources:reviewedSources,
         ...(adaptive ? { canContinueResearch:maySearch, previousSearches:attemptedSearches, sourceLeads:maySearch ? [...sourceLeads.values()].slice(-12) : [] }
           : conversational ? { searchesRemaining: maySearch ? searchesRemaining : 0, sourceLeads: maySearch ? web.leads ?? [] : [] } : {}) })))
     const query = maySearch && text(audit.followupSearch) ? audit.followupSearch.trim().slice(0, 300) : null
@@ -489,7 +506,7 @@ Kildebelegg funnene med sitater. Skill gjennomført aktivitet fra forslag og kos
     if (audit.passed && !expanded) break
     if (!expanded && corrected) break
     corrected = !expanded || !adaptive
-    corrections = { previousAnswer: answer, issues: audit.issues,
+    corrections = { previousAnswer: reviewedAnswer, issues: audit.issues,
       ...(expanded ? { followup: query } : {}) }
   }
   if (stalled && audit.passed) answer = { ...answer, uncertainties: [...answer.uncertainties,
