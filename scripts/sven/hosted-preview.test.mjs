@@ -445,8 +445,8 @@ test('konkrete spørsmål om budsjettposter blir undersøkt videre når tallene 
               { type: 'web_search_result', ...leads[0] },
             ] }] }
           case 'research-followup':
-            assert.equal(tools.find(tool => tool.name === 'web_search').max_uses, initialWeb ? 1 : 2)
-            assert.equal(tools.find(tool => tool.name === 'web_fetch').max_uses, 1)
+            assert.equal(tools.find(tool => tool.name === 'web_search').max_uses, 2)
+            assert.equal(tools.find(tool => tool.name === 'web_fetch').max_uses, 2)
             assert.deepEqual(input.sourceLeads, initialWeb ? leads : [])
             assert.equal(input.query, initialWeb ? null : proposedQuery)
             return projectEvidence
@@ -463,10 +463,10 @@ test('konkrete spørsmål om budsjettposter blir undersøkt videre når tallene 
           case 'review-1':
             assert.match(instructions, /besvarer det vesentlige/)
             if (!initialWeb && phase === 'review-0') {
-              assert.equal(input.searchesRemaining, 3)
+              assert.equal(input.canContinueResearch, true)
               return response({ passed: true, issues: [], followupSearch: proposedQuery })
             }
-            assert.equal(input.searchesRemaining, 0)
+            assert.deepEqual(input.previousSearches, initialWeb ? [] : [proposedQuery])
             return response({ passed: true, issues: [] })
           default:
             assert.fail(phase)
@@ -477,7 +477,7 @@ test('konkrete spørsmål om budsjettposter blir undersøkt videre når tallene 
     assert.equal(result.status, 200)
     assert.match(result.payload.summary, /P-8A Poseidon/)
     assert.deepEqual(result.payload.sources.map(source => source.url), [annualUrl])
-    assert(allocatedSearches <= 3)
+    assert.equal(allocatedSearches, initialWeb ? 4 : 2)
     assert.deepEqual(phases, initialWeb
       ? ['interpret', 'research', 'research-followup', 'answer-0', 'review-0']
       : ['interpret', 'answer-0', 'review-0', 'research-followup', 'answer-1', 'review-1'])
@@ -613,4 +613,106 @@ test('queued analysis completes after the client leaves and restores a durable c
   const { id, state } = codec.unpack([...messages.values()][0])
   assert.equal((await hostedPreview(options).work(id, state)).status, 200)
   assert.equal(phases.length, 5)
+})
+
+test('store undersøkelser kan ta flere enn tre nettsøk i køen, og kan gjenopptas uten nye kall for ferdige trinn', async () => {
+  const { claudeTransport } = await import('../../server/sven/provider.mjs')
+  const { previewJobCodec } = await import('../../server/sven/preview-requests.mjs')
+  const codec = previewJobCodec('simulated-server-secret')
+  const storage = new Map()
+  const messages = new Map()
+  const phases = []
+  const allocations = []
+  const excerpts = new Map([
+    ['research', ['tildelinger','Offisiell tildelingsliste med beløp per mottaker.']],
+    ['research-followup', ['utbetalinger','Regnskapsnote med bokførte utbetalinger.']],
+    ['research-followup-2', ['leveranser','Kontrollrapport dokumenterer ferdige leveranser.']],
+  ])
+  const queries = ['ordning 2025 bokførte utbetalinger regnskapsnote','ordning 2025 ferdige leveranser kontrollrapport']
+  const options = {
+    environment:'preview', apiKey:'test',
+    cache:{get:async key=>storage.get(key),set:async (key,value)=>storage.set(key,value)},
+    publishJob:async (id,state)=>{
+      if (!messages.has(state.revision)) messages.set(state.revision,codec.pack(id,state))
+    },
+    createRequest:options => claudeTransport({ ...options, onUsage:({phase})=>phases.push(phase), fetchImpl:async (_url,init)=>{
+      const input = JSON.parse(init.body)
+      const payload = JSON.parse(input.messages[0].content)
+      const instructions = input.system[0].text
+      const phase = phases.at(-1)
+      if (instructions.includes('Tolk meldingen før')) {
+        return Response.json({...response({intent,action:'research',tools:['web'],plan:searchPlan}),stop_reason:'end_turn',usage:{}})
+      }
+      const searchTool = input.tools?.find(tool=>tool.name==='web_search')
+      if (searchTool) {
+        allocations.push(searchTool.max_uses)
+        const key = payload.query ? payload.query===queries[0] ? 'research-followup':'research-followup-2' : 'research'
+        const [url,text]=excerpts.get(key)
+        if (key==='research-followup-2') assert.deepEqual(payload.previousSearches,queries.slice(0,1))
+        return Response.json({content:[{type:'text',text,citations:[{
+          type:'web_search_result_location',url:'https://www.regjeringen.no/'+url,title:url,cited_text:text,
+        }]}],stop_reason:key==='research-followup-2'?'pause_turn':'end_turn',usage:{server_tool_use:{web_search_requests:2}}})
+      }
+      if (payload.answer) {
+        assert.equal(payload.canContinueResearch,true)
+        assert.equal(payload.searchesRemaining,undefined)
+        const query = queries[payload.sources.length-1]
+        return Response.json({...response({passed:true,issues:[],...(query?{followupSearch:query}:{})}),stop_reason:'end_turn',usage:{}})
+      }
+      assert(phase)
+      const findings = payload.sources.map(source=>({text:source.text,sourceIds:[source.id]}))
+      return Response.json({...response({summary:'Gjennomgått',findings,uncertainties:[],recommendation:null}),stop_reason:'end_turn',usage:{}})
+    }}),
+  }
+  const requestId = randomBytes(32).toString('hex')
+  const chat = hostedPreview(options)
+  assert.equal((await callOnce(chat,'POST',{requestId,question:'Hvilke tildelinger, utbetalinger og ferdige leveranser er dokumentert?'})).status,202)
+  for (const [revision,packet] of messages) {
+    assert(revision < 12)
+    const {id,state}=codec.unpack(packet)
+    if (revision===7) storage.clear()
+    await hostedPreview(options).work(id,state)
+  }
+  const finished=await callOnce(chat,'POST',{requestId,resume:true})
+  assert.equal(finished.status,200)
+  assert.deepEqual(allocations,[2,2,2])
+  assert.equal(finished.payload.usage.searches,6)
+  assert.equal(finished.payload.sources.length,3)
+  assert.deepEqual(phases,[
+    'interpret','research','answer-0','review-0','research-followup','answer-1','review-1',
+    'research-followup-2','answer-2','review-2',
+  ])
+})
+
+test('videre nettsøk stanser ved gjentatte søk og ved kilder som gjentar samme innhold', async () => {
+  const original = 'Årsrapporten beskriver tildelinger, men dokumenterer ikke utbetalinger.'
+  const query = 'Oslo 2025 utbetalinger årsrapport'
+  const publicExcerpt = (url,text)=>({content:[{type:'text',text,citations:[{
+    type:'web_search_result_location',url,title:'Årsrapport',cited_text:text,
+  }]}]})
+  for (const sameEvidence of [true,false]) {
+    const webPhases = []
+    const options = { environment:'preview',apiKey:'test',createRequest:()=>async ({phase,input})=>{
+      const payload = JSON.parse(input)
+      if (phase === 'interpret') return response({intent,action:'research',tools:['web'],plan:searchPlan})
+      if (phase === 'research') {
+        webPhases.push(phase)
+        return publicExcerpt('https://www.regjeringen.no/rapport',original)
+      }
+      if (phase === 'research-followup') {
+        webPhases.push(phase)
+        return publicExcerpt('https://www.regjeringen.no/rapport-kopi',sameEvidence?original.toUpperCase():'Vedlegget viser når ordningen åpnet.')
+      }
+      if (phase.startsWith('answer-')) return response({summary:original,
+        findings:[{text:original,sourceIds:[payload.sources[0].id]}],uncertainties:[],recommendation:null})
+      assert.match(phase,/^review-[01]$/)
+      const followupSearch = phase === 'review-0' ? query : '2025 Oslo – årsrapport utbetalinger'
+      return response({passed:true,issues:[],followupSearch})
+    } }
+    const result = await call(hostedPreview(options),'POST',{question:'Hvor mye ble tildelt og utbetalt i 2025?'})
+    assert.equal(result.status,200)
+    assert.deepEqual(webPhases,['research','research-followup'])
+    assert.match(result.payload.uncertainties.join(' '),/Videre søk ga ikke nytt grunnlag/)
+    assert.equal(result.payload.sources.length,1)
+  }
 })

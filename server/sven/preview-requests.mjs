@@ -1,5 +1,6 @@
 import { createCipheriv, createDecipheriv, createHash, createHmac, randomBytes } from 'node:crypto'
 import { deflateRawSync, inflateRawSync } from 'node:zlib'
+import { isWebSearchPhase } from './provider.mjs'
 
 export const validRequestId = id => typeof id === 'string' && /^[a-f0-9]{64}$/.test(id)
 const cacheKey = id => 'request-v2:' + createHash('sha256').update(id).digest('hex')
@@ -78,7 +79,7 @@ export function previewRequests(cache, { now = Date.now, leaseMs = 175_000, ttl 
         if (!state.retries[phase]) {
           state.retries[phase] = 1
           delete state.steps[phase]
-        } else if (['research', 'research-followup', 'direct-fetch'].includes(phase)) {
+        } else if (isWebSearchPhase(phase) || phase === 'direct-fetch') {
           state.steps[phase] = { digest: previous.digest, value: { content: [], stop_reason: 'pause_turn' } }
         } else {
           const result = { status: 502, body: { error: 'Et modellkall ble avbrutt to ganger. Start en ny analyse for å prøve igjen.' } }

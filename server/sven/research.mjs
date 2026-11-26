@@ -217,6 +217,26 @@ sannsynligvis kan besvares fra en offentlig kilde, og searchesRemaining er stør
 "followupSearch":"konkret søk med enhet, periode og relevant kilde". SourceLeads er bare tips til hvor
 du kan lete. Kriteriene for passed og issues gjelder fortsatt utkastet på kildene som faktisk finnes.`
 
+const adaptiveCoverageInstructions = `
+Vurder også om svaret besvarer det vesentlige brukeren spurte om. Når canContinueResearch er true, foreslå
+"followupSearch":"konkret søk" bare hvis en viktig del av oppgaven fortsatt mangler dekning og det finnes
+en plausibel kilde eller en ny undersøkelsesretning. Velg det som kan endre svaret mest. Bruk tidligere
+søk, fagkunnskap og nye kildespor, og unngå å omformulere samme søk uten ny retning. Stopp når kildene
+dekker spørsmålet eller et nytt søk neppe hjelper. Beskriv eventuelle hull og hva som kan underbygges.
+Døm utkastet på kildene som faktisk finnes, også når du foreslår oppfølging. Et faktuelt holdbart delsvar med
+tydelig avgrensning kan bestå. Et budsjettpostnavn svarer alene ikke på hvilke aktiviteter som ble gjennomført.`
+
+const evidenceText = value => value.normalize('NFC').toLocaleLowerCase('nb-NO').replace(/\s+/g, ' ').trim()
+const queryKey = query => evidenceText(query).match(/[\p{L}\p{N}]+/gu)?.sort().join(' ') ?? ''
+
+function newWebEvidence(candidates, previous) {
+  const known = previous.map(source=>({url:source.url,text:evidenceText(source.text)}))
+  return candidates.filter(candidate => {
+    const excerpt = evidenceText(candidate.text)
+    return !known.some(source=>source.text === excerpt || candidate.url === source.url && source.text.includes(excerpt))
+  })
+}
+
 const chartRouting = `Chatten kan vise grafer direkte. Når brukeren ber om en graf av faktatall, tolk hvilken serie, enhet og periode de ber om, også når de viser tilbake til samtalen. Velg research for å hente tallgrunnlaget. Hvis brukeren selv har oppgitt hele tallgrunnlaget og bare ber om å visualisere det, velg reply med chart og en tom liste i sourceIds. Beskriv da tallene som brukerens egne. ${chartInstructions}`
 
 const chartReview = `\nHvis brukeren ber om en graf, kontroller at chart er med når kildene har de nødvendige tallene. Kontroller verdiene, kildene, tidsintervallene, enheten og eventuelle hull i serien. Ved manglende grunnlag må svaret forklare hvilke tall som mangler.`
@@ -233,11 +253,12 @@ export function validateAudit(audit) {
 // Each checkpoint must finish before the next billed step. A caller can persist
 // these privately. No customer text is written to repository or telemetry.
 export async function researchWithSven({ question, surface = 'chat', recommendationRequested = false, conversational = false, charts = false, files = false,
-  advanced = false, prior = null, compute, insights = false,
+  advanced = false, prior = null, compute, insights = false, adaptiveResearch = false,
   sources: supplied = [], uploads = [], history = [], editorialExamples = [], plan: suppliedPlan, asOf = new Date().toISOString().slice(0,10),
   tuning = builtinSettings, maxSearches = tuning.maxSearches, maxSourceChars = 100000, signal, checkpoint = async () => {},
   request, localSources = async () => [] }) {
   if (!text(question) || question.length > 12000 || !/^\d{4}-\d{2}-\d{2}$/.test(asOf)) throw new Error('Ugyldig spørsmål eller dato')
+  const adaptive = adaptiveResearch && conversational
   if (!Number.isInteger(maxSearches) || maxSearches < 1 || maxSearches > 12) throw new Error('Ugyldig søkebudsjett')
   if (!Array.isArray(history) || history.length > 12 || history.some(turn => !['user','assistant'].includes(turn.role) || !text(turn.content)) || JSON.stringify(history).length > 24000) throw new Error('Samtalehistorikken er for stor eller ugyldig')
   const settings = candidateSettings({...tuning,maxSearches})
@@ -255,9 +276,10 @@ export async function researchWithSven({ question, surface = 'chat', recommendat
     ...(uploads.length ? { uploads: uploads.map(({ id, title, text, editable }) => ({ id, title, sample: text.slice(0, 1300), ...(editable ? { editable } : {}) })) } : {}),
     ...(prior ? { prior: { title: prior.answer.deliverables?.title ?? prior.answer.chart?.title, summary: prior.answer.summary } } : {}),
   }
+  const initialPlan = adaptive ? planInstructions.replace('Maks fire søk.', 'Foreslå opptil fire søk å starte med. Planen kan utvides underveis når nye kilder avdekker vesentlige spørsmål.') : planInstructions
   const planningInstructions = editorialExamples.length
-    ? planInstructions + '\nTidligere saker kan gi ideer til hva som er verdt å undersøke. Underbygg denne saken med egne kilder.'
-    : planInstructions
+    ? initialPlan + '\nTidligere saker kan gi ideer til hva som er verdt å undersøke. Underbygg denne saken med egne kilder.'
+    : initialPlan
   const turn = conversational && !suppliedPlan
     ? (!uploads.length && interpretGreeting(question)) || validateTurn(parseModelJSON(await run('interpret',
       [conversationInstructions, ...(charts ? [chartRouting] : []),
@@ -288,7 +310,7 @@ export async function researchWithSven({ question, surface = 'chat', recommendat
   const fetchTool = { type: 'web_fetch_20250910', name: 'web_fetch', max_uses: conversational ? 2 : 4,
     max_content_tokens: conversational ? 4000 : 6000, citations: { enabled: true } }
   const searchTool = (max_uses) => ({ type: 'web_search_20250305', name: 'web_search', max_uses })
-  const initialSearches = conversational ? Math.max(1, maxSearches - 1) : maxSearches
+  const initialSearches = adaptive ? 2 : conversational ? Math.max(1, maxSearches - 1) : maxSearches
   let searchesRemaining = maxSearches
   let directEvidence = []
   let directCovered = false
@@ -330,8 +352,8 @@ Returner korte kildebelagte funn med sitater, slik at funnene kan brukes videre.
     gaps.push(...web.errors.map(error => `Kildeverktøy: ${error.tool}/${error.code}`))
   }
   if (!turn || turn.tools.includes('web') || needsFallbackSearch) {
-    // The tool is bounded even when a timed-out call has no usage receipt.
-    searchesRemaining -= initialSearches
+    // Each provider call has its own tool allocation. Older workflows use a fixed total.
+    if (!adaptive) searchesRemaining -= initialSearches
     try { search = await searchRequest() }
     catch (error) {
       if (signal?.aborted || !conversational || ![...supplied, ...selectedUploads, ...local, ...directEvidence].length) throw error
@@ -382,32 +404,55 @@ Returner korte kildebelagte funn med sitater, slik at funnene kan brukes videre.
       gaps.push('Kodekjøringen kunne ikke fullføres. Oppgi hva alternativt grunnlag faktisk støtter.')
     }
   }
-  let triedFollowup = false
+  let followupCount = 0
+  let webProgress = true
+  const followupQueries = new Set()
+  const attemptedSearches = []
+  const sourceLeads = new Map((web.leads ?? []).map(lead=>[lead.url,lead]))
+  let stalled = false
   async function searchForMissingEvidence(query) {
-    triedFollowup = true
-    const limit = Math.min(searchesRemaining, 2)
-    searchesRemaining -= limit
+    const key = queryKey(query ?? '')
+    if (adaptive && query && (!key || followupQueries.has(key))) {
+      webProgress = false
+      stalled = true
+      return false
+    }
+    if (query) followupQueries.add(key)
+    const round = followupCount++
+    const phase = round ? 'research-followup-' + (round+1) : 'research-followup'
+    const limit = adaptive ? 2 : Math.min(searchesRemaining, 2)
+    if (!adaptive) searchesRemaining -= limit
     const before = sources.length
     try {
-      const additional = normalizeSearch(await run('research-followup', `Undersøk det viktigste spørsmålet som mangler en konkret kilde.
+      const additional = normalizeSearch(await run(phase, `Undersøk det viktigste spørsmålet som mangler en konkret kilde.
 Bruk det foreslåtte søket hvis oppgitt, ellers utled det fra planen, første søks tips og brukerens hensikt.
 Bruk kapittel/post, enhet og år når de er relevante. Foretrekk et kort avsnitt eller en tabell i en primærkilde.
-Kildebelegg funnene med sitater. Skill gjennomført aktivitet fra forslag og kostnadsrammer.`,
-      { ...researchBrief, plan, query, sourceLeads: web.leads ?? [] }, { tools: [
-        searchTool(limit), { ...fetchTool, max_uses: 1 },
+Kildebelegg funnene med sitater. Skill gjennomført aktivitet fra forslag og kostnadsrammer.` +
+      (adaptive ? '\nUndersøk kilder eller deler av kilder som kan belyse det konkrete hullet. Bruk færre oppslag dersom grunnlaget er dekkende etter første treff.' : ''),
+      { ...researchBrief, plan, query, sourceLeads: adaptive ? [...sourceLeads.values()].slice(-12) : web.leads ?? [],
+        ...(adaptive ? { previousSearches:attemptedSearches, consultedSources:sources.filter(source=>source.url).slice(-15)
+          .map(({ title, url })=>({ title, url })) } : {}) }, { tools: [
+        searchTool(limit), { ...fetchTool, max_uses: adaptive ? 2 : 1 },
       ], maxTokens: 2400 }))
       recordSearchGaps(additional)
-      addSources(additional.sources)
+      addSources(adaptive ? newWebEvidence(additional.sources, sources) : additional.sources)
+      for (const lead of additional.leads ?? []) if (!sourceLeads.has(lead.url)) sourceLeads.set(lead.url,lead)
     } catch (error) {
       if (signal?.aborted || !sources.length) throw error
       gaps.push('Det oppfølgende søket kunne ikke fullføres.')
     }
-    return sources.length > before
+    const expanded = sources.length > before
+    if (adaptive) {
+      if (query) attemptedSearches.push(query)
+      webProgress = expanded
+      stalled = !expanded
+    }
+    return expanded
   }
-  if (conversational && searchesRemaining > 0 && !web.sources.length &&
-      ['max_tokens', 'pause_turn'].includes(web.stopReason)) {
-    await searchForMissingEvidence(null)
-  }
+  const firstSearchInterrupted = ['max_tokens', 'pause_turn'].includes(web.stopReason)
+  const unverifiedLeads = adaptive && !selectedUploads.length && !sources.length && sourceLeads.size > 0
+  if (conversational && !web.sources.length &&
+      (unverifiedLeads || firstSearchInterrupted && (adaptive || searchesRemaining > 0))) await searchForMissingEvidence(null)
   if (!sources.length) {
     if (conversational) return { status: 'no-evidence', ...(turn?.lens ? { lens:turn.lens } : {}) }
     throw new Error('Fant ikke etterprøvbart kildegrunnlag. Ingen analyse er generert.')
@@ -415,7 +460,8 @@ Kildebelegg funnene med sitater. Skill gjennomført aktivitet fra forslag og kos
   await checkpoint({ phase: 'evidence', status: 'completed', sources, gaps, plan })
   let corrections = null
   let answer, audit
-  for (let attempt = 0; attempt < 2; attempt++) {
+  let corrected = false
+  for (let attempt = 0; ; attempt++) {
     let proposedPolicy
     const policyEvidence = insights ? buildPolicyEvidence(sources, turn?.lens, question) : null
     answer = await analyzeWithSven({ question: JSON.stringify({ ...researchBrief, plan, coverageGaps: gaps, corrections,
@@ -429,18 +475,25 @@ Kildebelegg funnene med sitater. Skill gjennomført aktivitet fra forslag og kos
         return mergeRevision(prior, parsed)
       })
     if (policyEvidence) answer = finishPolicy(answer, proposedPolicy, policyEvidence, sources, question)
-    const maySearch = conversational && attempt === 0 && !triedFollowup && searchesRemaining > 0 && !selectedUploads.length
-    audit = validateAudit(parseModelJSON(await run(`review-${attempt}`, auditInstructions + (conversational ? coverageInstructions : '') + (charts ? chartReview : '') + (files ? fileReview : '') +
+    const maySearch = conversational && !selectedUploads.length &&
+      (adaptive ? webProgress : attempt === 0 && followupCount === 0 && searchesRemaining > 0)
+    audit = validateAudit(parseModelJSON(await run(`review-${attempt}`, auditInstructions +
+      (conversational ? adaptive ? adaptiveCoverageInstructions : coverageInstructions : '') + (charts ? chartReview : '') + (files ? fileReview : '') +
       (advanced ? '\nEtterprøv kodeberegninger, scenarienes enheter og grunnlag, og at forespurte revisjoner bevarer andre deler av leveransen. Kontroller at filendringer bruker oppgitte felt-ID-er.' : '') +
       (policyEvidence ? policyAuditInstructions + workbenchAuditInstructions : ''),
       { ...researchBrief, allowRecommendation: policy.allowRecommendation, answer, sources,
-        ...(conversational ? { searchesRemaining: maySearch ? searchesRemaining : 0, sourceLeads: maySearch ? web.leads ?? [] : [] } : {}) })))
+        ...(adaptive ? { canContinueResearch:maySearch, previousSearches:attemptedSearches, sourceLeads:maySearch ? [...sourceLeads.values()].slice(-12) : [] }
+          : conversational ? { searchesRemaining: maySearch ? searchesRemaining : 0, sourceLeads: maySearch ? web.leads ?? [] : [] } : {}) })))
     const query = maySearch && text(audit.followupSearch) ? audit.followupSearch.trim().slice(0, 300) : null
     const expanded = query ? await searchForMissingEvidence(query) : false
     if (audit.passed && !expanded) break
+    if (!expanded && corrected) break
+    corrected = !expanded || !adaptive
     corrections = { previousAnswer: answer, issues: audit.issues,
       ...(expanded ? { followup: query } : {}) }
   }
+  if (stalled && audit.passed) answer = { ...answer, uncertainties: [...answer.uncertainties,
+    'Videre søk ga ikke nytt grunnlag for å avklare det som gjenstår.'] }
   const result = { version: researchVersion, candidateId:candidateId(settings), asOf, question, plan, answer, sources, gaps, audit,
     status: audit.passed ? 'reviewed' : 'needs-review',
     // This is automated scrutiny, not proof of factual correctness or permission to publish.

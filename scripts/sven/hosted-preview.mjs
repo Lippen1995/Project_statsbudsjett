@@ -5,7 +5,7 @@ import { getCache } from '@vercel/functions'
 import example from '../../editorial/learning/feedback/review-5664781959.json' with { type: 'json' }
 import { selectEditorialExamples } from '../analyser/learning-context.mjs'
 import { buildReport } from '../analyser/report.mjs'
-import { claudeTransport } from '../../server/sven/provider.mjs'
+import { claudeTransport, isWebSearchPhase } from '../../server/sven/provider.mjs'
 import { compactSearchEvidence, interpretGreeting, researchWithSven } from '../../server/sven/research.mjs'
 import { resolveSvenSources } from '../../server/sven/sources.mjs'
 import { snapshotLoader } from '../../server/sven/snapshot-cache.mjs'
@@ -30,6 +30,13 @@ const effortLevels = [
 // The Messages API requires max_tokens. Both preview models support 128,000.
 const anthropicOutputLimit = 128_000
 const invocationLeaseMs = 330_000
+
+function visibleProgress(status) {
+  const { phase } = status
+  if (/^research-followup-\d+$/.test(phase)) return { ...status, phase:'research-followup' }
+  if (/^(?:answer|review)-[1-9]\d*$/.test(phase)) return { ...status, phase:phase.split('-')[0]+'-1' }
+  return status
+}
 
 async function resolveSources(question, signal, loadSnapshot, options, refresh) {
   return resolveSvenSources(question, undefined, {
@@ -74,7 +81,7 @@ export function hostedPreview({
   const directReply = summary => reply(200, { summary, findings: [], uncertainties: [], recommendation: null, sources: [] })
   let busy = false
   async function answerQuestion({ question, history, asOf, selectedModel = model, effort = 'default', files = false,
-    uploads = [], advanced = false, prior = null, insights = false, refreshSources = false }, memo) {
+    uploads = [], advanced = false, prior = null, insights = false, refreshSources = false, adaptiveResearch = false }, memo) {
     const greeting = !uploads.length && interpretGreeting(question)
     if (greeting) return directReply(greeting.reply)
     if (!apiKey) return reply(503, { error: 'Sven-nøkkelen mangler i denne Vercel-previewen.' })
@@ -94,7 +101,9 @@ export function hostedPreview({
       const request = createRequest({ apiKey, model: selectedModel, timeoutMs: publishJob ? 260_000 : null,
         stream: true, cacheInstructions: true, ...(effort === 'default' ? {} : { effort }), onUsage })
       const result = await researchWithSven({
-        question, history, asOf, signal, maxSearches: 3, conversational: true, charts: true, files, uploads, advanced, prior, insights,
+        question, history, asOf, signal, conversational: true, charts: true, files, uploads, advanced, prior, insights,
+        // Keep the same request inputs when resuming work started before this release.
+        ...(adaptiveResearch ? { adaptiveResearch } : { maxSearches:3 }),
         ...(advanced ? { compute: (code, inputs) => memo('compute-run', { code, inputs }, async () => {
           try { return { value: await compute(code, inputs) } }
           catch { return { failed: true } }
@@ -130,7 +139,7 @@ export function hostedPreview({
             result = await memo(phase, { model: selectedModel, ...params, ...(effort === 'default' ? {} : { effort }) },
               async () => {
                 const message = await request({ ...params, signal: requestSignal })
-                return ['research', 'research-followup'].includes(phase) ? compactSearchEvidence(message) : message
+                return isWebSearchPhase(phase) ? compactSearchEvidence(message) : message
               }, { billable: true, beforeStart: () => {
                 if (startedModelCall) {
                   // Yield between calls. Completed phases are replayed from
@@ -201,7 +210,7 @@ export function hostedPreview({
     const send = (status, body) => res.status(status).json(body)
     if (environment !== 'preview') return send(404, { error: 'Previewen er utilgjengelig.' })
     if (req.method === 'GET') return send(200, { configured: Boolean(apiKey), model, models: previewModels, effortLevels, files: true,
-      advanced: true, insights: true, workbench: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
+      advanced: true, insights: true, workbench: true, adaptiveResearch: true, ...(googlePicker?.clientId && googlePicker.key && googlePicker.appId ? { googlePicker } : {}),
     })
     if (req.method !== 'POST') return send(405, { error: 'Metoden støttes ikke.' })
     if (req.headers.origin !== `https://${req.headers.host}` ||
@@ -212,11 +221,11 @@ export function hostedPreview({
       projectFiles = [], revision, refreshSources, model: selectedModel = model,
       effort = 'default' } = req.body ?? {}
     if (!validRequestId(requestId)) return send(400, { error: 'Innsendingen mangler en gyldig ID. Last siden på nytt.' })
-    if (progress === true) return send(200, await requests.progress(requestId))
+    if (progress === true) return send(200, visibleProgress(await requests.progress(requestId)))
     if (resume === true) {
       const result = publishJob ? await requests.backgroundStatus(requestId) : null
       const { status, body } = result ?? await requests.resume(requestId, answerQuestion)
-      return send(status, body)
+      return send(status, visibleProgress(body))
     }
     const question = typeof rawQuestion === 'string' ? rawQuestion.trim() : ''
     if (!question || question.length > 2000 || !Array.isArray(history) || history.length > 6 ||
@@ -246,7 +255,7 @@ export function hostedPreview({
     const uploads = [...asSources(carryAttachments === true && greeting ? [] : attachments, 'vedlegg'),
       ...asSources(greeting ? [] : projectFiles, 'prosjektfil')]
     const asOf = new Date().toISOString().slice(0, 10)
-    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads, advanced: true, insights: true, ...(refreshSources === true ? {refreshSources:true} : {}), ...(prior ? { prior } : {}) }
+    const brief = { question, history, asOf, selectedModel, effort, files: true, uploads, advanced: true, insights: true, adaptiveResearch: true, ...(refreshSources === true ? {refreshSources:true} : {}), ...(prior ? { prior } : {}) }
     if (publishJob && apiKey && (uploads.length || !interpretGreeting(question))) {
       try {
         const { status, body } = await requests.enqueue(requestId, brief, publishJob)

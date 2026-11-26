@@ -1,5 +1,7 @@
 // Transport is shared by generation, research and review. Never retry a billable
 // request implicitly: an interrupted response can still have incurred usage.
+export const isWebSearchPhase = phase => /^(?:research|research-followup(?:-\d+)?)$/.test(phase)
+
 export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
   model = process.env.SVEN_MODEL, fetchImpl = globalThis.fetch, onUsage = async () => {},
   timeoutMs = 120_000, cacheInstructions = false, effort, stream = false } = {}) {
@@ -16,7 +18,7 @@ export function claudeTransport({ apiKey = process.env.ANTHROPIC_API_KEY,
       signal: signal && timeout ? AbortSignal.any([signal, timeout]) : signal ?? timeout,
     })
     if (!response.ok) throw new Error(`Claude API svarte HTTP ${response.status}`)
-    const toolPhase = ['research', 'research-followup', 'direct-fetch'].includes(phase)
+    const toolPhase = isWebSearchPhase(phase) || phase === 'direct-fetch'
     let message
     let streamError
     try {
