@@ -5,7 +5,7 @@
   "type": "Politikk og økonomi",
   "status": "draft",
   "createdAt": "2026-11-09T10:04:21.547Z",
-  "generatedAt": "2026-11-26T20:17:25.736Z",
+  "generatedAt": "2026-11-27T05:50:52.244204+00:00",
   "report": {
     "kind": "real-expenditure-per-capita",
     "factsVersion": 2,
@@ -4046,45 +4046,34 @@
   },
   "copy": {
     "title": "Flere eldre, nesten like mange sykepleiere",
-    "description": "Den eldste delen av befolkningen vokste langt raskere enn sykepleierbemanningen. Helsereformens regnestykke må handle om mer enn organisasjonskartet.",
-    "lead": "Fra {{fact:startYear}} til {{fact:endYear}} vokste antallet innbyggere fra åtti år med {{fact:healthElderlyGrowth}}. Sykepleierårsverkene i kommunal omsorg økte bare {{fact:ssbOmsorgSykepleiereGrowth}}. Det er bakteppet for en helsereform som skal gi pasientene mer sammenhengende hjelp.",
-    "conclusion": "En ny organisering frigjør ikke automatisk sykepleiertid. Reformens økonomi avhenger av hvilke oppgaver som faktisk forsvinner, hva omstillingen koster og hvor gevinstene tas ut.",
-    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nFlere eldre. Nesten like mange sykepleiere.\n\nI kommunal omsorg økte sykepleierårsverkene {{fact:ssbOmsorgSykepleiereGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Antallet innbyggere fra åtti år steg {{fact:healthElderlyGrowth}}.\n\nEt nytt organisasjonskart fyller ingen kveldsvakt. Vi undersøker forskjellen mellom frigjort arbeidstid og penger spart – og hva reformens regnestykke faktisk krever.",
+    "description": "Kommunal omsorg fikk få flere sykepleiere mens den eldste befolkningen vokste. Vi følger reformforslagene fra pasientens hjem til regningen for omstillingen.",
+    "lead": "Fra {{fact:startYear}} til {{fact:endYear}} økte antallet innbyggere fra åtti år med {{fact:healthElderlyGrowth}}. Sykepleierårsverkene i kommunal omsorg økte med {{fact:ssbOmsorgSykepleiereGrowth}}. Helsereformutvalget vil knytte kommuner og sykehus tettere sammen.",
+    "conclusion": "Tettere samarbeid kan gjøre overgangen fra sykehus til hjem enklere. Besparelsene avhenger av hvilke oppgaver som faller bort, hva omstillingen koster, og om frigjort tid skal brukes på pasienter eller tas ut som lavere lønnsutgifter.",
+    "linkedin": "𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳\n\nAntallet innbyggere fra åtti år økte {{fact:healthElderlyGrowth}} fra {{fact:startYear}} til {{fact:endYear}}. Sykepleierårsverkene i kommunal omsorg økte {{fact:ssbOmsorgSykepleiereGrowth}}.\n\nHelsereformutvalget vil knytte kommuner og sykehus tettere sammen. Det kan gjøre overgangen hjem enklere for pasienten. Men hvem får tid til å følge opp – og hvem betaler når oppgavene flyttes?\n\nVi følger bemanningen, partienes ulike forslag og regnestykket bak mulige besparelser. I kalkulatoren kan du se hva som skjer når frigjorte timer brukes på pasienter, og når de i stedet tas ut som lavere lønnsutgifter.",
     "sections": [
       {
-        "heading": "Kompetansen vokste saktere enn omsorgen",
+        "heading": "Få flere sykepleiere i en større omsorgstjeneste",
         "paragraphs": [
-          "Kommunal omsorg fikk flere ansatte gjennom perioden. Alle avtalte årsverk økte {{fact:healthCareFteGrowth}}, mens sykepleiere og spesialsykepleiere gikk fra {{fact:ssbOmsorgSykepleiereStart}} til {{fact:ssbOmsorgSykepleiereEnd}}. Sykepleierkompetansen fulgte dermed ikke den samlede bemanningsveksten.",
-          "Samtidig økte befolkningen fra åtti år fra {{fact:healthElderlyStart}} til {{fact:healthElderlyEnd}}. Eldre er ikke det samme som pleietrengende, og omsorgstjenestene hjelper også yngre brukere. Sammenligningen viser to utviklingstrekk, ikke hvor mange pasienter hver sykepleier hadde ansvar for.",
-          "Det gjør oppgavedelingen sentral: En reform som skal gi mer behandling nær pasientene, trenger også personell med riktig kompetanse der behandlingen skjer."
+          "Kommunal omsorg fikk flere ansatte gjennom perioden. De samlede avtalte årsverkene økte {{fact:healthCareFteGrowth}}, mens sykepleiere og spesialsykepleiere gikk fra {{fact:ssbOmsorgSykepleiereStart}} til {{fact:ssbOmsorgSykepleiereEnd}}. Sykepleierbemanningen vokste altså langsommere enn resten av tjenesten.",
+          "Omsorgstjenestene hjelper både yngre og eldre, og behovet for hjelp avhenger blant annet av helsen deres. Veksten i den eldste befolkningen sier derfor ikke hvor mange pasienter den enkelte sykepleieren har ansvar for.",
+          "I tillegg går arbeidstid tapt til sykefravær. På landsbasis var det legemeldte fraværet blant sykepleiere og spesialsykepleiere {{fact:ssbFravarSykepleiereEnd}} i {{fact:endYear}}, mot {{fact:ssbFravarLegerEnd}} blant leger. Dette er andeler av avtalte dagsverk, og egenmeldt fravær kommer i tillegg. Tallene gjelder yrkene samlet. Hvor mye fravær som skyldes arbeidsforholdene, kan de ikke svare på."
         ],
         "factIds": [
           "healthCareFteGrowth",
           "ssbOmsorgSykepleiereStart",
           "ssbOmsorgSykepleiereEnd",
-          "healthElderlyStart",
-          "healthElderlyEnd"
-        ]
-      },
-      {
-        "heading": "Sykepleierne hadde høyere fravær enn legene",
-        "paragraphs": [
-          "Det legemeldte sykefraværet i {{fact:endYear}} var {{fact:ssbFravarSykepleiereEnd}} blant sykepleiere og spesialsykepleiere, mot {{fact:ssbFravarLegerEnd}} blant leger. Tallene måler tapte avtalte dagsverk; egenmeldt fravær kommer i tillegg. De viser fravær i yrkene, ikke hvor mye som skyldes jobben eller hvor stor del en reform kan påvirke.",
-          "For den som skal dekke vaktene, handler reformen derfor også om tid til opplæring, omstilling og nye oppgaver. Et system som skal frigjøre arbeidstid, kan kreve ekstra innsats mens det innføres. Om belastningen faktisk faller, må undersøkes gjennom bemanning, arbeidstid, fravær og kvalitet i tjenestene – ikke leses ut av organisasjonskartet."
-        ],
-        "factIds": [
-          "endYear",
           "ssbFravarSykepleiereEnd",
+          "endYear",
           "ssbFravarLegerEnd"
         ]
       },
       {
-        "heading": "Bedre overganger krever mer enn en raskere utskrivning",
+        "heading": "Når pasienten kommer hjem",
         "paragraphs": [
-          "Helsereformutvalget foreslår tettere samarbeid mellom kommuner og sykehus, blant annet gjennom felles nærhelsetjenester og endringer i styring og finansiering. Regjeringen har sendt utredningen på høring. Forslagene er ennå ikke vedtatt.",
-          "For en hjemmesykepleier kan et mer sammenhengende pasientforløp bety at behandlingsplan, legemiddelliste og kontaktperson er avklart når pasienten kommer hjem. Sykehuslegen kan slippe telefonrunder for å finne den som skal følge opp. Slike gevinster er muligheter reformen må prøves mot, ikke resultater den allerede har levert.",
-          "Utskrivning kan også flytte arbeid og kostnader. Dersom sykehuset sparer tid mens kommunen får flere oppgaver, er ikke hele helsetjenesten nødvendigvis blitt mer effektiv. Den samlede virkningen avhenger av bemanning, utstyr, finansiering og kvaliteten i pasientforløpet.",
-          "Finansieringen må også følge hele pasientforløpet. I {{fact:endYear}} ble {{fact:kommunehelseLastAmount}} regnskapsført på det særskilte statlige kapittelet for kommunale helse- og omsorgstjenester. Kommunenes egne utgifter er langt bredere og dekkes også av frie inntekter. Dette kapitlet er derfor ikke et mål på hele kommunetjenesten."
+          "Helsereformutvalget foreslår tettere samarbeid mellom kommuner og sykehus, blant annet gjennom felles nærhelsetjenester og endringer i styring og finansiering. Regjeringen har sendt utredningen på høring.",
+          "En behandlingsplan, oppdatert legemiddelliste og avklart kontaktperson kan spare hjemmesykepleieren for telefonrunder når pasienten kommer hjem. Sykehuslegen kan slippe å lete etter den som skal følge opp.",
+          "Men en raskere utskrivning kan også gi kommunen mer å gjøre før folk, utstyr og finansiering er på plass. Da kan sykehusets besparelse ende som merarbeid og høyere utgifter i kommunen. Omstillingen krever dessuten opplæring og tid til nye rutiner fra ansatte som allerede skal dekke vaktene.",
+          "I {{fact:endYear}} førte staten {{fact:kommunehelseLastAmount}} på det særskilte kapittelet for kommunale helse- og omsorgstjenester. Kommunene finansierer også store utgifter med frie inntekter. En flytting av oppgaver må derfor følges i begge regnskapene for å vise hva den samlet koster."
         ],
         "factIds": [
           "endYear",
@@ -4092,23 +4081,24 @@
         ]
       },
       {
-        "heading": "Å fjerne et styringsnivå fjerner ikke sykehusregningen",
+        "heading": "Sykehusregningen består selv om styringen endres",
         "paragraphs": [
-          "Utredningen oppgir {{fact:healthRhfFte}} avtalte årsverk i de regionale helseforetakene. Dette er et historisk bemanningstall, ikke en beregning av hvor mange stillinger som kan fjernes. Mange fellesoppgaver må fortsatt utføres dersom organiseringen endres.",
-          "Regnskapet førte {{fact:rhfLastAmount}} på kapittelet for regionale helseforetak i {{fact:endYear}}. Pengene finansierer i stor grad sykehustjenester og blir ikke ledige når et ledd i styringen avvikles. En spareberegning må finne oppgaver og utgifter som faktisk faller bort, og trekke fra det som oppstår andre steder."
+          "På kapittelet for regionale helseforetak førte staten {{fact:rhfLastAmount}} i {{fact:endYear}}. Pengene finansierer i stor grad sykehustjenester. Pasientbehandlingen må fortsatt betales om noen andre overtar styringen.",
+          "Utredningen oppgir {{fact:healthRhfFte}} avtalte årsverk i de regionale helseforetakene. Mange fellesoppgaver vil bestå under en ny organisering. Skal utgiftene ned, må oppgaver falle bort eller gjøres billigere et annet sted.",
+          "En ansatt som bruker mindre tid på administrasjon, kan få tid til andre oppgaver uten at lønnsregningen faller."
         ],
         "factIds": [
-          "healthRhfFte",
           "rhfLastAmount",
-          "endYear"
+          "endYear",
+          "healthRhfFte"
         ]
       },
       {
-        "heading": "Frigjorte timer og lavere lønnsutgifter er ulike gevinster",
+        "heading": "Kostnadene kan spise opp besparelsen",
         "paragraphs": [
-          "Kalkulatoren under viser forskjellen. Det illustrative utgangspunktet reduserer tidsbruken med {{fact:healthScenarioTime}} og lar {{fact:healthScenarioRealization}} av dette bli realisert i praksis. Etter innfasing tilsvarer det {{fact:healthScenarioReleased}} årsverk. Med uendret bemanning kan tiden brukes på andre oppgaver.",
-          "Skal gevinsten i stedet bli lavere lønnsutgifter, må bemanningskostnadene faktisk reduseres. Med en antatt arbeidsgiverkostnad på {{fact:healthScenarioEmployerCost}} per årsverk gir full uttelling som redusert bemanning {{fact:healthScenarioCashGross}} i årlig bruttosparing.",
-          "Eksemplet setter samtidig engangskostnaden til {{fact:healthScenarioUpfront}} og årlige merkostnader til {{fact:healthScenarioOngoing}}. Da blir den årlige netto kontanteffekten {{fact:healthScenarioCashNet}} etter innfasing. Engangskostnaden kommer i tillegg. Dette er valgbare antakelser som gir et negativt resultat, ikke utvalgets anslag på reformen."
+          "Utvalget har ikke lagt fram en samlet netto reformkalkyle. Kalkulatoren under bruker derfor våre egne, valgbare antakelser om tid og kostnader. I utgangspunktet reduseres tidsbruken med {{fact:healthScenarioTime}}, og {{fact:healthScenarioRealization}} av dette lar seg hente ut i praksis. Det tilsvarer {{fact:healthScenarioReleased}} årsverk etter innfasing. Beholdes de ansatte, får de kapasitet til andre oppgaver.",
+          "Tas hele tidsgevinsten i stedet ut som lavere bemanningskostnader, gir en antatt arbeidsgiverkostnad på {{fact:healthScenarioEmployerCost}} per årsverk {{fact:healthScenarioCashGross}} i årlig bruttosparing.",
+          "Eksemplet har imidlertid også {{fact:healthScenarioOngoing}} i årlige merkostnader. Det er mer enn bruttosparingen, og netto kontanteffekt blir {{fact:healthScenarioCashNet}} etter innfasing. I tillegg kommer engangskostnaden på {{fact:healthScenarioUpfront}}. Med disse antakelsene går regnestykket i minus selv når hele tidsgevinsten tas ut som redusert bemanning."
         ],
         "factIds": [
           "healthScenarioTime",
@@ -4116,34 +4106,27 @@
           "healthScenarioReleased",
           "healthScenarioEmployerCost",
           "healthScenarioCashGross",
-          "healthScenarioUpfront",
           "healthScenarioOngoing",
-          "healthScenarioCashNet"
+          "healthScenarioCashNet",
+          "healthScenarioUpfront"
         ]
       },
       {
-        "heading": "Arbeidsflyten kan prøves før hele reformen er avgjort",
+        "heading": "Partiene vil endre helsevesenet i ulike retninger",
         "paragraphs": [
-          "Den nasjonale helsepersonellplanen peker blant annet mot bedre oppgavedeling, støttepersonell og tiltak for å beholde ansatte. En avklart legemiddelliste ved utskrivning eller bedre fordeling av administrative oppgaver kan være avgrensede steder å undersøke tidsbruken. Gevinstene av slike tiltak avhenger av hvordan de gjennomføres lokalt.",
-          "En sekretær koster penger, og et journalsystem krever opplæring. Mer pasienttid kan derfor være et godt resultat selv uten lavere utgifter. Det tilgjengelige grunnlaget rangerer ikke disse tiltakene som sikkert billigere enn helsereformen. En sammenligning trenger samlet kostnad, faktisk frigjort tid og behandlingskvalitet før og etter tiltaket."
+          "FrP og Senterpartiet vil begge avvikle de regionale helseforetakene. FrP ønsker samtidig større bruk av private med offentlig betaling. Senterpartiet motsetter seg sentralisering og nye selskaper som partiet mener svekker lokal kontroll.",
+          "Høyre vektlegger pasientenes resultater og større bruk av private og ideelle. Rødt krever mer demokratisk styring og større innflytelse for ansatte og pasienter. Ap-regjeringen vil søke bredt samarbeid etter å ha sendt utredningen på høring.",
+          "I sine vedtatte programmer vil SV erstatte foretaksmodellen og begrense kommersialisering, mens Venstre vil forbedre modellen og frigjøre klinikertid gjennom bedre oppgavedeling. KrF vil utrede alternativer og skille drift og investering. MDGs gjeldende helsepolitikk vil ha en forvaltningsmodell inspirert av Skottland og mer forebygging."
         ],
         "factIds": []
       },
       {
-        "heading": "Partiene er enige om endring, men ikke om styringen",
+        "heading": "Oppgavedeling kan prøves lokalt",
         "paragraphs": [
-          "Ap-regjeringen har sendt utredningen på høring og vil søke bredt samarbeid. Høyre vektlegger pasientenes resultater og større bruk av private og ideelle. FrP vil avvikle de regionale helseforetakene og åpne mer for private med offentlig betaling. Senterpartiet vil også avvikle RHF-ene, men motsetter seg sentralisering og nye selskaper som partiet mener svekker lokal kontroll. Rødt krever mer demokratisk styring og større innflytelse for ansatte og pasienter.",
-          "Partiprogrammene viser andre skillelinjer: SV vil erstatte foretaksmodellen og begrense kommersialisering. Venstre vil forbedre modellen og frigjøre klinikertid gjennom bedre oppgavedeling. KrF vil utrede alternativer og skille drift og investering. MDGs gjeldende helsepolitikk vil ha en forvaltningsmodell inspirert av Skottland og mer forebygging. Dette er program- og politikkstandpunkter, ikke nye høringssvar.",
-          "Felles ønske om endring gir dermed ingen ferdig enighet om hvem som skal styre, hvilke aktører som skal behandle pasientene eller hvordan oppgavene skal finansieres. For helsearbeiderne er det forskjeller som kan bety mer enn navnet på den nye organisasjonen."
-        ],
-        "factIds": []
-      },
-      {
-        "heading": "Regnestykket må følge pasienten",
-        "paragraphs": [
-          "En annen regneillustrasjon setter størrelsene i perspektiv: {{fact:healthOnePercent}} av den avtalte sykepleiertiden i kommunal omsorg tilsvarer omtrent {{fact:healthCareNurseCapacity}} årsverk. Det er langt mer enn tidsgevinsten i det avgrensede RHF-scenariet. Tallene gjelder ulike oppgaver og steder, men viser hvorfor plasseringen av en mulig tidsgevinst betyr noe. De dokumenterer ikke at slike timer faktisk kan frigjøres.",
-          "Reformens økonomi kan derfor ikke avgjøres ved å telle bokser i organisasjonskartet. Det trengs dokumenterte endringer i arbeidsflyt, ressursbruk og behandlingskvalitet gjennom hele forløpet. En spart time på sykehuset må vurderes sammen med arbeidet den utløser i kommunen.",
-          "Kostnader til IT, opplæring og eventuell dobbel drift må også inn. Frigjort tid kan være verdifull selv om budsjettet ikke krymper. Men den samme timen kan ikke både brukes på flere pasienter og regnes som bortfalt lønnsutgift. Det er her skillet går mellom et håp om en enklere arbeidshverdag og en etterprøvbar reformkalkyle."
+          "Helsepersonellplanen peker mot bedre oppgavedeling, mer støttepersonell og tiltak for å beholde ansatte. Slike grep kan prøves lokalt mens de større spørsmålene om organisering behandles.",
+          "Størrelsen på tjenesten gjør selv små tidsgevinster interessante. Hvis {{fact:healthOnePercent}} av den avtalte sykepleiertiden i kommunal omsorg kunne frigjøres, ville det tilsvare omtrent {{fact:healthCareNurseCapacity}} årsverk. Dette er en regneillustrasjon. Vi har ikke målt hvor mye tid som kan frigjøres, og timene ville vært fordelt på ulike arbeidsplasser og vakter.",
+          "Et nytt journalsystem krever opplæring, og mer støttepersonell gir nye lønnsutgifter. Til gjengjeld kan helsearbeiderne få mer tid til pasientene. Grunnlaget gir ingen sikker rangering av hvilke tiltak som sparer mest. Kostnadene, den frigjorte tiden og kvaliteten på behandlingen må undersøkes sammen.",
+          "Mer pasienttid kan være en gevinst selv om budsjettet ikke krymper. Regnestykket blir et annet hvis den frigjorte tiden tas ut som lavere bemanning. Den samme timen kan ikke både brukes på en pasient og føres som spart lønn."
         ],
         "factIds": [
           "healthOnePercent",
@@ -4175,7 +4158,7 @@
       },
       {
         "kind": "health-scenario",
-        "afterSection": 4,
+        "afterSection": 3,
         "title": "Hva skal til for at regnestykket går opp?"
       }
     ]
