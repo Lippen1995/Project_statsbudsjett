@@ -364,15 +364,23 @@
       "state": "researching",
       "note": "Kontrollerer kø og åpne gjennomganger",
       "updatedAt": "2026-11-23T08:00:46.744Z"
+    },
+    {
+      "id": "924bb6e6-5de1-49cd-8209-f7030bfe9fbd",
+      "startedAt": "2026-11-26T08:01:09.190Z",
+      "instructionCommit": "6b20b892cbe3e458c196da45e58df5068e7cfa14",
+      "state": "waiting",
+      "note": "Fersk main og PR #86 kontrollert. Head 6e8627eb venter på menneskelig gjennomgang. Ingen ubehandlede revisjonsønsker eller inline-kommentarer. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
+      "updatedAt": "2026-11-26T08:03:01.498Z",
+      "finishedAt": "2026-11-26T08:03:01.498Z"
     }
   ],
   "current": {
-    "id": "924bb6e6-5de1-49cd-8209-f7030bfe9fbd",
-    "startedAt": "2026-11-26T08:01:09.190Z",
-    "instructionCommit": "6b20b892cbe3e458c196da45e58df5068e7cfa14",
-    "state": "waiting",
-    "note": "Fersk main og PR #86 kontrollert. Head 6e8627eb venter på menneskelig gjennomgang. Ingen ubehandlede revisjonsønsker eller inline-kommentarer. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
-    "updatedAt": "2026-11-26T08:03:01.498Z",
-    "finishedAt": "2026-11-26T08:03:01.498Z"
+    "id": "0ca4aec0-ed58-4884-914d-5c8bd73fa229",
+    "startedAt": "2026-11-27T08:03:31.607Z",
+    "instructionCommit": "979606058be4b106ab289d6a537b258a3a5892bb",
+    "state": "researching",
+    "note": "Kontrollerer kø og åpne gjennomganger",
+    "updatedAt": "2026-11-27T08:03:31.607Z"
   }
 }
