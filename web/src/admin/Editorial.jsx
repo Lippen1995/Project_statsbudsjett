@@ -396,13 +396,13 @@ function ReviewVersion({ detail: d, reload, commentAction }) {
       </div>
       {d.article.editorial && (
         <Panel title="Intern redaksjonell kontroll">
-          <p>{d.article.editorial.status} · {d.article.editorial.score}/100. Modellvurdering med kildekontroll; menneskelig godkjenning kreves fortsatt.</p>
+          <p>{d.article.editorial.status} · {d.article.editorial.review?.verified ? `${d.article.editorial.score}/100 · uavhengig kontrollert` : 'Ikke uavhengig kontrollert; egenpoeng gir ingen godkjenning'}. Menneskelig publiseringsgodkjenning kreves fortsatt.</p>
           <p>{d.article.editorial.angle?.reason}</p>
           <p>{d.article.editorial.visual?.choice}</p>
           <details>
             <summary>Vurderinger, modellbruk og revisjoner</summary>
             <ul>{Object.entries(d.article.editorial.assessment.dimensions).map(([key, value]) => (
-              <li key={key}>{key}: {value.notApplicable ? 'ikke relevant' : value.score} — {value.observation}</li>
+              <li key={key}>{key}: {value.notApplicable ? 'ikke relevant' : d.article.editorial.review?.verified ? value.score : 'egenobservasjon'} — {value.observation}</li>
             ))}</ul>
             <p>{d.article.editorial.revisions} revisjoner. Kjøring {d.article.editorial.runId}.</p>
             <ul>{d.article.editorial.usage.map((u, i) => (

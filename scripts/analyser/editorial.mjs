@@ -7,6 +7,7 @@ import { diagnoseArticle } from './editorial-quality.mjs'
 import { policy, policyHash, digest, editorialInputHash, validateAssessment } from './editorial-policy.mjs'
 import { loadSkills } from './editorial-skills.mjs'
 import { editorialRendererHash } from './editorial-render-hash.mjs'
+import { verifyEditorialReview } from './editorial-review.mjs'
 
 export const stages = Object.freeze(['research', 'angle', 'draft', 'visual', 'language', 'factcheck', 'editor'])
 const text = value => typeof value === 'string' && value.trim().length >= 12 && value.length <= 4000
@@ -40,9 +41,21 @@ function validateStage(stage, value, article) {
       throw Error('Vurder reelt ulike vinklinger med dokumentasjon, leserbetydning og valgt dramaturgi')
   }
   if (['draft', 'language'].includes(stage)) validateArticle(article)
-  if (stage === 'language' && (!Array.isArray(value.changes) || !value.changes.length ||
-      value.changes.some(c => !text(c.before) || !text(c.after) || !text(c.reason))))
-    throw Error('Språkpasset krever konkrete før-/ettereksempler og begrunnelse')
+  if (stage === 'language') {
+    if (!Array.isArray(value.changes) || !value.changes.length ||
+        value.changes.some(c => !text(c.before) || !text(c.after) || !text(c.reason)))
+      throw Error('Språkpasset krever konkrete før-/ettereksempler og begrunnelse')
+    if (value.inputHash !== editorialInputHash(article) || !Array.isArray(value.sections) ||
+        value.sections.length !== article.copy.sections.length || new Set(value.sections.map(s=>s.index)).size !== article.copy.sections.length ||
+        value.sections.some(s=>!Number.isInteger(s.index)||!article.copy.sections[s.index]||!text(s.function)||!text(s.transition)||!text(s.repetition)||
+          !text(s.evidence)||!article.copy.sections[s.index].paragraphs.some(p=>p.includes(s.evidence))) ||
+        !text(value.opening) || !text(value.ending))
+      throw Error('Språkpasset må undersøke funksjon, overgang og gjentakelser i hver seksjon og kontrollere åpning og avslutning')
+    const warnings=diagnoseArticle(article).warnings
+    if (!Array.isArray(value.warningDecisions) || warnings.some(w=>!value.warningDecisions.some(d=>
+      d.warningHash===digest(w)&&d.decision==='keep'&&text(d.reason))))
+      throw Error('Språklige faresignaler må rettes eller begrunnes konkret; en poengsum er ikke en språkrevisjon')
+  }
   if (stage === 'visual') {
     const count = graphPlan(article.copy, article.report).length
     if (!text(value.purpose) || !text(value.choice)) throw Error('Begrunn grafbehov og valgt fremstilling')
@@ -114,11 +127,13 @@ export function reviseRun(run, stage, reason, { at = new Date().toISOString() } 
   next.updatedAt = at; next.revision++
   return next
 }
-export function finishEditorial(run, article) {
+export function finishEditorial(run, article, {reviewVerification} = {}) {
   assertRun(run, article)
   if (run.status !== 'working') throw Error('En blokkert kjøring kan ikke sluttgodkjennes')
   if (stages.some(s => !run.completed[s])) throw Error('Redaksjonelle arbeidssteg mangler')
   for (const stage of stages) {
+    if(run.completed[stage].payloadHash!==digest(run.completed[stage].value))
+      throw Error('Et ferdig arbeidssteg er endret etter registrering; kontroller steget på nytt')
     if (stages.indexOf(stage) >= 2 && run.completed[stage].inputHash !== editorialInputHash(article))
       throw Error('Kontrollen gjelder en tidligere artikkelversjon')
     validateStage(stage, run.completed[stage].value, article)
@@ -126,26 +141,31 @@ export function finishEditorial(run, article) {
   const diagnostics = diagnoseArticle(article)
   const assessment = run.completed.editor.value.assessment
   const result = validateAssessment(article, assessment, { graphCount: graphPlan(article.copy, article.report).length })
-  const approved = result.approved && !diagnostics.blockers.length
+  const review=verifyEditorialReview(article,assessment,run.completed.editor.value.attestation,reviewVerification)
+  const technicallyReady=result.meetsRubric && !diagnostics.blockers.length
+  const approved = technicallyReady && review.verified
   const next = structuredClone(run)
-  next.status = approved ? 'approved' : 'needs-revision'
-  next.reason = [...result.reasons, ...diagnostics.blockers.map(b => b.observation)].join('; ')
+  next.status = approved ? 'approved' : technicallyReady ? 'needs-review' : 'needs-revision'
+  next.reason = [...result.reasons, ...diagnostics.blockers.map(b => b.observation),...(!review.verified?[review.reason]:[])].join('; ')
   next.revision++
   const editorial = { version: 1, runId: run.id, policyHash, inputHash: editorialInputHash(article),
     status: next.status, score: result.score, assessment, angle: run.completed.angle.value,
     stages: stages.map(stage => ({ stage, at: run.completed[stage].at, skills: run.completed[stage].skills })),
     visual: run.completed.visual.value, usage: run.usage, revisions: run.revisions, diagnostics }
+  editorial.review={...review,...(review.verified?{attestation:run.completed.editor.value.attestation}:{})}
   return { run: next, editorial }
 }
-export function assertEditorialApproval(article) {
+export function assertEditorialApproval(article, reviewVerification) {
   const e = article.editorial
   if (!e || e.version !== 1 || e.status !== 'approved' || e.policyHash !== policyHash || e.inputHash !== editorialInputHash(article))
     throw Error('Artikkelen mangler intern kvalitetsgodkjenning for gjeldende versjon')
   const result = validateAssessment(article, e.assessment, { graphCount: graphPlan(article.copy, article.report).length })
+  const review=verifyEditorialReview(article,e.assessment,e.review?.attestation,reviewVerification)
+  if(!review.verified)throw Error(review.reason)
   if (graphPlan(article.copy, article.report).length && (!['desktop','mobile'].every(device => e.visual?.captures?.some(c =>
     c.device === device && c.accepted === true && c.rendererHash === editorialRendererHash() && /^[a-f0-9]{64}$/.test(c.hash) && text(c.critique)))))
     throw Error('Visuell godkjenning mangler eller gjelder en eldre grafvisning')
-  if (!result.approved || result.score !== e.score || stages.some(s => !e.stages?.some(c => c.stage === s)) || diagnoseArticle(article).blockers.length)
+  if (!result.meetsRubric || result.score !== e.score || stages.some(s => !e.stages?.some(c => c.stage === s)) || diagnoseArticle(article,{reviewVerification}).blockers.length)
     throw Error('Artikkelen oppfyller ikke de interne kvalitetskravene')
   return e
 }

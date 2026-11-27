@@ -1,4 +1,10 @@
-# Leveranse og verifikasjon, 26. november 2026
+# Leveranse og verifikasjon, oppdatert 27. november 2026
+
+Rettelse: Den første kontrollkjøringen registrerte forhåndsutfylte egenvurderinger.
+De tidligere poengene er trukket som grunnlag for redaksjonell godkjenning.
+[Oppfølgingen 27. november](flow-fix-2026-11-27.md) beskriver feilen, den nye
+tekniske sperren og den gjennomgående tekstredigeringen. Uten faktisk signert
+uavhengig kontroll blir status nå `needs-review`, uansett egenpoeng.
 
 Dette er en lokal implementering og en konkret gjennomgangsleveranse. Den er
 bygget på fersk main og eksisterende Sven-grunnmur i PR #90. Ingen kode er
@@ -47,7 +53,7 @@ runneren startet ikke skjulte ekstra modellkall for å lage dem.
 
 | Prøve | Før | Etter | Endring |
 |---|---|---|---|
-| Helsereform | 1 475 ord, ni seksjoner, fem visuelle elementer | 862 ord, åtte seksjoner, to visuelle elementer | Kompetanse og arbeidstid leder historien; sykefravær, økonomi, alternativer og partienes posisjoner beholdes |
+| Helsereform | 1 475 ord, ni seksjoner, fem visuelle elementer | 706 ord, seks seksjoner, to visuelle elementer | Kompetanse og arbeidstid leder historien; sykefravær, økonomi, alternativer og partienes posisjoner beholdes |
 | Studiefinansiering | 606 ord, seks seksjoner, to grafer | 327 ord, tre seksjoner, én graf | Holder fortellingen til støtte per student etter prisjustering |
 | Familieytelser | 724 ord, fem seksjoner, to grafer | 463 ord, tre seksjoner, én graf | Åpner med færre mottakere og større utbetaling; beholder regel- og nettoforklaringen |
 
@@ -82,10 +88,11 @@ Les [helsereformutkastet](examples/health-after.md),
 i samme mappe. Private bilder og checkpoints ligger i
 `editorial/runs/verification/`, utenfor publiseringsregisteret.
 
-De interne poengene 91,7, 91,95 og 91,8 er **samme native agents egenvurdering i
-separate pass**, ikke blind evaluering eller dokumentasjon på generell
-overlegenhet. Kortere tekst er ikke i seg selv en kvalitetsmåling. Den
-konkrete teksten og bildene er grunnlaget for å bedømme forbedringen.
+De tidligere egenpoengene 91,7, 91,95 og 91,8 er trukket som godkjenningsgrunnlag.
+De var ikke resultatet av en uavhengig evaluering. De er fjernet fra
+prøveartiklenes metadata og fra visningen av redaksjonell godkjenning. Kortere
+tekst og beståtte tekniske tester må ikke brukes som bevis på god journalistikk.
+Den konkrete teksten og bildene er grunnlaget for å bedømme forbedringen.
 
 ## Testdekning og praktiske grenser
 
@@ -99,7 +106,7 @@ node --test scripts/analyser/test-health-revision.mjs editorial/research/helsere
 npm run test:editorial:browser
 ```
 
-Resultat: **190 server-/Sven-/kundetester og 264 frontend-/analysetester passerer**, i tillegg til seks helsescenario-/kildetester og seks nettleserprøver.
+Resultat: **190 server-/Sven-/kundetester og 271 frontend-/analysetester passerer**, i tillegg til seks helsescenario-/kildetester og seks nettleserprøver.
 
 Server-/Sven-/kundetestene dekker eksisterende analysepolicy, research,
 samtalehistorikk, verktøy, leverandørstrømming, cache, jobbgjenopptakelse,

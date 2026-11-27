@@ -11,26 +11,12 @@
     },
     "after": {
       "title": "Flere eldre, nesten like mange sykepleiere",
-      "sections": 8,
-      "words": 862,
+      "sections": 6,
+      "words": 706,
       "graphs": 2,
-      "internalScore": 91.7
+      "withdrawnSelfScore": 91.7
     },
-    "evaluation": "Same native agent in separate passes. Not blind, independent or scientifically calibrated. No competitor comparison performed.",
-    "visualCaptures": [
-      {
-        "device": "desktop",
-        "manifestHash": "3ac0c0b92bc011999dd3527f5c8ba7dccdeb5413ff482ce352b4333f1df8acbd",
-        "rendererHash": "39c4350bfd7dfff6c2beacf842490af06bf18e120a7bcd2889d30d3997d76dd8",
-        "critique": "Bildet er sett: perioden er komplett, etiketter og akser klippes ikke, og grafen ligger etter teksten den dokumenterer. Farger og typografi følger eksisterende Fellestall-visning."
-      },
-      {
-        "device": "mobile",
-        "manifestHash": "01b9ffbec049dfb4729e7c08a00d37c0a8ea74ac26654d8f3adf0fdd6edd2a6d",
-        "rendererHash": "39c4350bfd7dfff6c2beacf842490af06bf18e120a7bcd2889d30d3997d76dd8",
-        "critique": "Bildet er sett: overskrift, enhet, nullpunkt eller synlig avkortet akse og hele den korte tidsperioden er lesbare. Endepunktene krever ikke vannrett rulling. Datatabellen er tilgjengelig under grafen."
-      }
-    ]
+    "evaluation": "Historical self-scores are withdrawn as approval evidence. Current text has no independent editorial attestation and is for human review; technical tests do not measure journalistic quality."
   },
   {
     "case": "students",
@@ -47,9 +33,9 @@
       "sections": 3,
       "words": 327,
       "graphs": 1,
-      "internalScore": 91.95
+      "withdrawnSelfScore": 91.95
     },
-    "evaluation": "Same native agent in separate passes. Not blind, independent or scientifically calibrated. No competitor comparison performed.",
+    "evaluation": "Historical self-scores are withdrawn as approval evidence. Current text has no independent editorial attestation and is for human review; technical tests do not measure journalistic quality.",
     "visualCaptures": [
       {
         "device": "desktop",
@@ -80,9 +66,9 @@
       "sections": 3,
       "words": 463,
       "graphs": 1,
-      "internalScore": 91.8
+      "withdrawnSelfScore": 91.8
     },
-    "evaluation": "Same native agent in separate passes. Not blind, independent or scientifically calibrated. No competitor comparison performed.",
+    "evaluation": "Historical self-scores are withdrawn as approval evidence. Current text has no independent editorial attestation and is for human review; technical tests do not measure journalistic quality.",
     "visualCaptures": [
       {
         "device": "desktop",

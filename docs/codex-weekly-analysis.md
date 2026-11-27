@@ -2,6 +2,14 @@
 
 ## Redaksjonell kvalitetsprotokoll, 26. november 2026
 
+Presisering 27. november: Språkpasset skal redigere hele fortellingen og
+vurdere overgangen og gjentakelser i hver seksjon. Les `language-v2.md` via
+gjeldende skillregister. Ikke legg til en setning om at en mulig gevinst ennå
+ikke er levert når «kan» eller «foreslår» allerede avgrenser påstanden.
+Behold vesentlige forbehold der de endrer tolkningen. Egenpoeng og utfylte
+sjekklister er ikke en uavhengig evaluering; uten betrodd signert sluttkontroll
+skal kjøringen få `needs-review`, aldri automatisk intern godkjenning.
+
 For nye analyser og revisjoner gjelder [Sven-arbeidsprotokollen](sven/workflow.md)
 for vinkelvalg, målrettede revisjoner, språk, faktasjekk og faktisk visuell kontroll.
 Bruk eksisterende kø, research, kildeimport, `withEditorialExamples`, bot og

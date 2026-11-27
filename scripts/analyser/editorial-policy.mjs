@@ -5,7 +5,7 @@ export const dimensions = Object.freeze({
   factual: 20, analysis: 20, language: 15, angle: 10, visual: 10,
   engagement: 10, structure: 5, precision: 5, pedagogy: 5,
 })
-export const policy = Object.freeze({ version: 1, target: 90, maxRevisions: 3,
+export const policy = Object.freeze({ version: 2, target: 90, independentReviewRequired: true, maxRevisions: 3,
   maxWorkUnits: 40, maxElapsedMinutes: 180, dimensions })
 export const policyHash = digest(policy)
 export const editorialInputHash = (article) => digest({
@@ -60,7 +60,7 @@ export function validateAssessment(article, assessment, { graphCount = 0 } = {})
   const score = Math.round(total / weight * 100) / 100
   const blockers = assessment.findings.filter(f => f.severity !== 'suggestion')
   const unsupported = assessment.claimChecks.filter(c => c.status === 'unsupported')
-  return { score, approved: score >= policy.target && !blockers.length && !unsupported.length,
+  return { score, meetsRubric: score >= policy.target && !blockers.length && !unsupported.length,
     reasons: [...blockers.map(f => f.observation), ...unsupported.map(c => c.block + ': ' + c.note),
       ...(score < policy.target ? [`Kvalitet ${score} er under målet ${policy.target}`] : [])] }
 }

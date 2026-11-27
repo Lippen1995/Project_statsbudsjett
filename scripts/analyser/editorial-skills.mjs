@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url'
 import { digest } from './editorial-policy.mjs'
 import { withEditorialExamples } from './learning-context.mjs'
 export const skillRoot = fileURLToPath(new URL('../../editorial/skills/', import.meta.url))
+// Maintainer-controlled defaults are code, not a value the learner may change.
+export const defaultSkillVersions = Object.freeze({language:2,storytelling:1,visual:1})
 export const stageSkills = Object.freeze({
   research: ['research'], angle: ['storytelling'], draft: ['storytelling', 'language'],
   visual: ['visual'], language: ['language'], factcheck: ['research', 'review'],
@@ -23,7 +25,7 @@ export function loadSkills(stage, { query = '', limit = 6, root = skillRoot, pac
     let entry = registry.skills[id]
     if (activeHashes && ['language', 'storytelling', 'visual'].includes(id)) {
       const hash = activeHashes[id]
-      const file = hash ? readdirSync(root).find(name => new RegExp(`^${id}-v[1-9][0-9]*\\.md$`).test(name) && digest(readFileSync(root+name,'utf8')) === hash) : `${id}-v1.md`
+      const file = hash ? readdirSync(root).find(name => new RegExp(`^${id}-v[1-9][0-9]*\\.md$`).test(name) && digest(readFileSync(root+name,'utf8')) === hash) : `${id}-v${defaultSkillVersions[id]}.md`
       if (!file) throw Error('Den godkjente skill-versjonen finnes ikke lokalt')
       entry = {file,hash:hash ?? digest(readFileSync(root+file,'utf8')),version:Number(/-v(\d+)\.md$/.exec(file)[1])}
     }

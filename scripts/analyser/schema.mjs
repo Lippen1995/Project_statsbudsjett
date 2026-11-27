@@ -13,6 +13,7 @@ import { graphPlan } from '../../web/src/analyser/chart-plan.js'
 import { topicKey, focusedQuestions } from '../../web/src/analyser/topics.js'
 import { healthReformFacts, validateHealthReform } from './health-reform.mjs'
 import { editorialInputHash, policyHash, validateAssessment } from './editorial-policy.mjs'
+import { verifyEditorialReview } from './editorial-review.mjs'
 export const contentHash = (article) =>
   createHash('sha256')
     .update(
@@ -88,7 +89,7 @@ export function validateCopy(copy, report) {
     throw Error('Analysen er for kort til valgt format')
   return copy
 }
-export function validateArticle(article, { published = false } = {}) {
+export function validateArticle(article, { published = false, reviewVerification } = {}) {
   if(article.presentation) {
     const p=article.presentation
     if(Object.keys(p).some(k=>!['image','imageAlt','tags'].includes(k))||
@@ -221,8 +222,12 @@ export function validateArticle(article, { published = false } = {}) {
     if (e.policyHash !== policyHash || e.inputHash !== editorialInputHash(article))
       throw Error('Redaksjonell kontroll er utdatert; vurder artikkelen på nytt')
     const result = validateAssessment(article, e.assessment, { graphCount: graphPlan(article.copy, r).length })
-    if (e.status === 'approved' && (!result.approved || result.score !== e.score))
+    if (e.status === 'approved' && (!result.meetsRubric || result.score !== e.score))
       throw Error('Intern godkjenning samsvarer ikke med kvalitetsvurderingen')
+    if(e.status==='approved') {
+      const review=verifyEditorialReview(article,e.assessment,e.review?.attestation,{...reviewVerification,allowExpired:published})
+      if(!review.verified)throw Error(review.reason)
+    }
   }
   if (published && article.copy.format && article.editorial?.status !== 'approved')
     throw Error('Nye journalistiske formater krever intern redaksjonell godkjenning før publisering')

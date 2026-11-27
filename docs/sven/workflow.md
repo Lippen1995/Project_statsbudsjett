@@ -1,5 +1,35 @@
 # Redaksjonell kjøring i eksisterende native oppgave
 
+## Rettet kontrollkontrakt, 27. november 2026
+
+Egenvurderte poeng kan ikke lenger gi status `approved`. Uten signert,
+uavhengig sluttkontroll stanser en ellers teknisk gyldig kjøring i
+`needs-review`. Runneren skal da stoppe, ikke gjenta vurderingen for å skaffe
+seg høyere poeng. Egenpoeng skjules som godkjenningssignal i admin/PR-visningen.
+
+Det endelige editor-steget kan levere `attestation: {payload, signature}`.
+Payload er JSON signert med Ed25519 av den eksisterende evaluatorens private
+nøkkel, og inneholder `kind: editorial-review`, `independent: true`, `reviewer`,
+`inputHash`, `policyHash`, `assessmentHash`, `issuedAt` og `expiresAt`.
+Assessment-hashen beregnes med den beskyttede `digest`-funksjonen. Offentlig
+nøkkel hentes fra eksisterende `SVEN_LEARNING_CONFIG`; ingen kandidat eller
+artikkel får velge en egen nøkkel. Attestasjonen gjelder høyst ett døgn og
+må gjelde nøyaktig tekst, policy og vurdering. Det opprettes ingen ny evaluator
+eller nøkkel. Manglende faktisk evaluatortilgang er en blokkering som skal vises.
+
+Et språkcheckpoint krever nå `inputHash`, `opening`, `ending`, `sections` og
+`warningDecisions`, i tillegg til konkrete endringer. Hvert `sections`-element
+har `index`, et faktisk `evidence`-sitat fra seksjonen, `function`, `transition`
+og `repetition`. Hele artikkelen skal dekkes. Gjenstående lint-signaler krever
+`warningHash: digest(warning)`, `decision: keep` og en konkret `reason` som
+forklarer hva leseren ellers ville misforstått. Faresignaler er ikke forbudte
+ord; nødvendige forbehold skal fortsatt stå. En ferdig checkpoint-payload som
+endres etter registrering, avvises ved sluttkontroll.
+
+Disse kontraktene hindrer at forfatterens forhåndsutfylte sjekkliste gir
+automatisk godkjenning. De beviser ikke i seg selv at teksten er velskrevet.
+En faktisk uavhengig vurdering og lesbar tekst er fortsatt nødvendig.
+
 Dette er arbeidsprotokollen for ny tekst og revisjon. Den bruker samme kø,
 researchverktøy, botlevering og menneskelige publiseringsgodkjenning som før.
 Vanlig chat beholder `researchWithSven` og utløser ingen av stegene nedenfor.

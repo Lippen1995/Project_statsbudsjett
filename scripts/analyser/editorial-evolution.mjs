@@ -2,7 +2,7 @@
 // No second evaluator, holdout authority, activation threshold or learning database.
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs'
 import { digest, policyHash, dimensions } from './editorial-policy.mjs'
-import { skillRoot } from './editorial-skills.mjs'
+import { skillRoot, defaultSkillVersions } from './editorial-skills.mjs'
 import { saveRun } from './editorial.mjs'
 import { prepareBenchmark, blindBenchmark, scoreBenchmark } from '../../server/sven/benchmark.mjs'
 import { candidateId } from '../../server/sven/tuning.mjs'
@@ -15,7 +15,7 @@ const read = path => JSON.parse(readFileSync(path,'utf8'))
 const sameAsset = (a,b) => a?.file===b?.file && a?.hash===b?.hash && a?.version===b?.version
 function profileAsset(skill, profile, root) {
   const expected=profile.settings.editorialSkills?.[skill]
-  const file=expected ? readdirSync(root).find(name=>new RegExp(`^${skill}-v[1-9][0-9]*\\.md$`).test(name) && digest(readFileSync(root+name,'utf8'))===expected) : `${skill}-v1.md`
+  const file=expected ? readdirSync(root).find(name=>new RegExp(`^${skill}-v[1-9][0-9]*\\.md$`).test(name) && digest(readFileSync(root+name,'utf8'))===expected) : `${skill}-v${defaultSkillVersions[skill]}.md`
   if(!file)throw Error('Den signerte profilens skill-fil mangler')
   return {file,hash:expected??digest(readFileSync(root+file,'utf8')),version:Number(/-v(\d+)\.md$/.exec(file)[1])}
 }

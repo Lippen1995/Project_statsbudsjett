@@ -6,31 +6,7 @@ Les begge tekstene under. **Vil du endre noe? Skriv ønsket i en vanlig kommenta
 
 **Endringsønsker:** Behandles ved neste kjøring av den planlagte AI-oppgaven. Du kan også be om revisjon tidligere i oppgavens chat. GitHub-kommentaren starter ikke i seg selv en ny AI-kjøring. Ubehandlede ønsker stopper publisering.
 
-Versjon: `4272f1d43cb20cc0d13e7435a9793f229ab3b1f213cc4023e90ab8a4057e9d33` · Datagrunnlag: 2026-10-19T13:35:02.778063+00:00 · Regnskap 2020–2025
-
-## Intern redaksjonell kontroll
-
-approved · 91.8/100 · kjøring fd76676d-1630-429d-9dc4-92fc2006dab4. Modellvurdering, ikke en garanti for faktuell korrekthet.
-
-Vinkel: Forklare hvordan endrede satser og vilkår påvirket ordningene ulikt.
-
-- factual: 94 — Alle tall refererer til frosne fakta som schema gjenberegner. Forslag, betingede virkninger og illustrasjoner er uttrykkelig skilt fra observerte resultater.
-
-- analysis: 91 — Forklarer både satser, støtteperiode og skatteomlegging. Dermed unngår teksten å likestille større budsjettpost med lik ny nettoinntekt for alle familier.
-
-- language: 90 — Ingressen etablerer kontrasten raskere. Brødteksten beholder nødvendige forklaringer av ordningene, men kunne fortsatt strammes ved redaktørlesing.
-
-- angle: 95 — Færre mottakere og større barnetrygdutgift er en presis dokumentert kontrast. Forklaringen går videre til hvem som samtidig mistet kontantstøttemåneder.
-
-- visual: 89 — Barnetrygdens nivå vises tydelig med stolper fra null. Kontantstøtten får ikke egen graf i den korte versjonen; dette prioriterer enkelhet, men gir mindre visuell sammenligning.
-
-- engagement: 91 — Motsetningen mellom færre mottakere og høyere utbetaling gir en tydelig forklaringsoppgave. Ingen husholdningsgevinst er diktet opp.
-
-- structure: 92 — Hovedfunnet kommer før bakgrunn og regnskapsdetaljer. Hver seksjon utvikler en forklaring, motsetning eller nødvendig avgrensning.
-
-- precision: 92 — Prisgrunnlag, mottakernevner og skille mellom illustrasjon og målt virkning er bevart. Overflødig dobbeltoppsummering er fjernet fra ny visning.
-
-- pedagogy: 92 — Betydningen forklares før de tekniske detaljene, og leseren kan etterprøve tallene i grafenes tabeller og kilderegisteret.
+Versjon: `3f40b46d3f33df9b4dae36254287a3b492b0cc1c62897420bbbc7f3a85737dd9` · Datagrunnlag: 2026-10-19T13:35:02.778063+00:00 · Regnskap 2020–2025
 
 ## LinkedIn-utkast
 

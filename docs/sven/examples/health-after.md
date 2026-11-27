@@ -6,41 +6,17 @@ Les begge tekstene under. **Vil du endre noe? Skriv ønsket i en vanlig kommenta
 
 **Endringsønsker:** Behandles ved neste kjøring av den planlagte AI-oppgaven. Du kan også be om revisjon tidligere i oppgavens chat. GitHub-kommentaren starter ikke i seg selv en ny AI-kjøring. Ubehandlede ønsker stopper publisering.
 
-Versjon: `e1ca77bb09c3ef0e541cc3982bca262838492cc297a7a5dd8e29e437a05b664f` · Datagrunnlag: 2026-11-19T16:51:47.099345+00:00 · Regnskap 2020–2025
-
-## Intern redaksjonell kontroll
-
-approved · 91.7/100 · kjøring c8366f11-7011-4d94-96da-4d78ec63d33c. Modellvurdering, ikke en garanti for faktuell korrekthet.
-
-Vinkel: Forklare bemanningskontrasten og hva som kreves av reformens økonomiske regnestykke.
-
-- factual: 94 — Alle tall refererer til frosne fakta som schema gjenberegner. Forslag, betingede virkninger og illustrasjoner er uttrykkelig skilt fra observerte resultater.
-
-- analysis: 91 — Sammenholder bemanning, demografi og reformens kapasitet/kontantstrøm. Illustrasjonen med kommunal sykepleiertid setter RHF-scenariet i perspektiv uten å gjøre en prognose av den.
-
-- language: 92 — Formuleringen om å flytte oppgaver hjem til kommunene er erstattet med presist språk om behandling nær pasientene. Fravær, partiposisjoner og regneantakelser beholdes.
-
-- angle: 93 — Vinkelen tar helsearbeidernes kompetanse og arbeidstid som inngang. Finansiering og politisk organisering forklarer hvorfor løftet ikke kan leses direkte som sparing.
-
-- visual: 90 — To visuelle elementer har ulike oppgaver: en indeksgraf viser bemanningskontrasten, mens kalkulatoren viser skillet mellom kapasitet og kontantstrøm. Fokusert akse er synlig merket.
-
-- engagement: 88 — Kontrasten er konkret og relevant, men leserengasjement er ikke målt. Den nødvendige politiske delen gjør teksten lengre enn en ren nyhet.
-
-- structure: 92 — Hovedfunnet kommer før bakgrunn og regnskapsdetaljer. Hver seksjon utvikler en forklaring, motsetning eller nødvendig avgrensning.
-
-- precision: 92 — Prisgrunnlag, mottakernevner og skille mellom illustrasjon og målt virkning er bevart. Overflødig dobbeltoppsummering er fjernet fra ny visning.
-
-- pedagogy: 92 — Betydningen forklares før de tekniske detaljene, og leseren kan etterprøve tallene i grafenes tabeller og kilderegisteret.
+Versjon: `857f7f402e96790fa32c8d00fdc476b64aa962141c12973d7eb22aaf53724621` · Datagrunnlag: 2026-11-19T16:51:47.099345+00:00 · Regnskap 2020–2025
 
 ## LinkedIn-utkast
 
 𝗧𝗔𝗟𝗟 𝗣Å 𝗕𝗢𝗥𝗗𝗘𝗧 | 𝘉𝘢𝘬 𝘵𝘢𝘭𝘭𝘦𝘯𝘦 𝘪 𝘰𝘧𝘧𝘦𝘯𝘵𝘭𝘪𝘨 𝘴𝘦𝘬𝘵𝘰𝘳
 
-Flere eldre. Nesten like mange sykepleiere.
+Antallet innbyggere fra åtti år økte 17,3 % fra 2020 til 2025. Sykepleierårsverkene i kommunal omsorg økte 3,16 %.
 
-I kommunal omsorg økte sykepleierårsverkene 3,16 % fra 2020 til 2025. Antallet innbyggere fra åtti år steg 17,3 %.
+Helsereformutvalget vil knytte kommuner og sykehus tettere sammen. Det kan gjøre overgangen hjem enklere for pasienten. Men hvem får tid til å følge opp – og hvem betaler når oppgavene flyttes?
 
-Et nytt organisasjonskart fyller ingen kveldsvakt. Vi undersøker forskjellen mellom frigjort arbeidstid og penger spart – og hva reformens regnestykke faktisk krever.
+Vi følger bemanningen, partienes ulike forslag og regnestykket bak mulige besparelser. I kalkulatoren kan du se hva som skjer når frigjorte timer brukes på pasienter, og når de i stedet tas ut som lavere lønnsutgifter.
 
 Lenke etter publisering: https://fellestall.no/analyser/helsereformen-forslag-og-regnestykke-2026-11-09/
 
@@ -48,69 +24,63 @@ Lenke etter publisering: https://fellestall.no/analyser/helsereformen-forslag-og
 
 # Flere eldre, nesten like mange sykepleiere
 
-Fra 2020 til 2025 vokste antallet innbyggere fra åtti år med 17,3 %. Sykepleierårsverkene i kommunal omsorg økte bare 3,16 %. Det er bakteppet for en helsereform som skal gi pasientene mer sammenhengende hjelp.
+Fra 2020 til 2025 økte antallet innbyggere fra åtti år med 17,3 %. Sykepleierårsverkene i kommunal omsorg økte med 3,16 %. Helsereformutvalget vil knytte kommuner og sykehus tettere sammen.
 
 ## Hovedfunn
 
-En ny organisering frigjør ikke automatisk sykepleiertid. Reformens økonomi avhenger av hvilke oppgaver som faktisk forsvinner, hva omstillingen koster og hvor gevinstene tas ut.
+Tettere samarbeid kan gjøre overgangen fra sykehus til hjem enklere. Besparelsene avhenger av hvilke oppgaver som faller bort, hva omstillingen koster, og om frigjort tid skal brukes på pasienter eller tas ut som lavere lønnsutgifter.
 
-## Kompetansen vokste saktere enn omsorgen
+## Få flere sykepleiere i en større omsorgstjeneste
 
-Kommunal omsorg fikk flere ansatte gjennom perioden. Alle avtalte årsverk økte 11,7 %, mens sykepleiere og spesialsykepleiere gikk fra 26 934 årsverk til 27 786 årsverk. Sykepleierkompetansen fulgte dermed ikke den samlede bemanningsveksten.
+Kommunal omsorg fikk flere ansatte gjennom perioden. De samlede avtalte årsverkene økte 11,7 %, mens sykepleiere og spesialsykepleiere gikk fra 26 934 årsverk til 27 786 årsverk. Sykepleierbemanningen vokste altså langsommere enn resten av tjenesten.
 
-Samtidig økte befolkningen fra åtti år fra 230 710 til 270 537. Eldre er ikke det samme som pleietrengende, og omsorgstjenestene hjelper også yngre brukere. Sammenligningen viser to utviklingstrekk, ikke hvor mange pasienter hver sykepleier hadde ansvar for.
+Omsorgstjenestene hjelper både yngre og eldre, og behovet for hjelp avhenger blant annet av helsen deres. Veksten i den eldste befolkningen sier derfor ikke hvor mange pasienter den enkelte sykepleieren har ansvar for.
 
-Det gjør oppgavedelingen sentral: En reform som skal gi mer behandling nær pasientene, trenger også personell med riktig kompetanse der behandlingen skjer.
+I tillegg går arbeidstid tapt til sykefravær. På landsbasis var det legemeldte fraværet blant sykepleiere og spesialsykepleiere 8,5 prosent i 2025, mot 3,7 prosent blant leger. Dette er andeler av avtalte dagsverk, og egenmeldt fravær kommer i tillegg. Tallene gjelder yrkene samlet. Hvor mye fravær som skyldes arbeidsforholdene, kan de ikke svare på.
 
-## Sykepleierne hadde høyere fravær enn legene
+## Når pasienten kommer hjem
 
-Det legemeldte sykefraværet i 2025 var 8,5 prosent blant sykepleiere og spesialsykepleiere, mot 3,7 prosent blant leger. Tallene måler tapte avtalte dagsverk; egenmeldt fravær kommer i tillegg. De viser fravær i yrkene, ikke hvor mye som skyldes jobben eller hvor stor del en reform kan påvirke.
+Helsereformutvalget foreslår tettere samarbeid mellom kommuner og sykehus, blant annet gjennom felles nærhelsetjenester og endringer i styring og finansiering. Regjeringen har sendt utredningen på høring.
 
-For den som skal dekke vaktene, handler reformen derfor også om tid til opplæring, omstilling og nye oppgaver. Et system som skal frigjøre arbeidstid, kan kreve ekstra innsats mens det innføres. Om belastningen faktisk faller, må undersøkes gjennom bemanning, arbeidstid, fravær og kvalitet i tjenestene – ikke leses ut av organisasjonskartet.
+En behandlingsplan, oppdatert legemiddelliste og avklart kontaktperson kan spare hjemmesykepleieren for telefonrunder når pasienten kommer hjem. Sykehuslegen kan slippe å lete etter den som skal følge opp.
 
-## Bedre overganger krever mer enn en raskere utskrivning
+Men en raskere utskrivning kan også gi kommunen mer å gjøre før folk, utstyr og finansiering er på plass. Da kan sykehusets besparelse ende som merarbeid og høyere utgifter i kommunen. Omstillingen krever dessuten opplæring og tid til nye rutiner fra ansatte som allerede skal dekke vaktene.
 
-Helsereformutvalget foreslår tettere samarbeid mellom kommuner og sykehus, blant annet gjennom felles nærhelsetjenester og endringer i styring og finansiering. Regjeringen har sendt utredningen på høring. Forslagene er ennå ikke vedtatt.
+I 2025 førte staten 7,4 mrd. kr på det særskilte kapittelet for kommunale helse- og omsorgstjenester. Kommunene finansierer også store utgifter med frie inntekter. En flytting av oppgaver må derfor følges i begge regnskapene for å vise hva den samlet koster.
 
-For en hjemmesykepleier kan et mer sammenhengende pasientforløp bety at behandlingsplan, legemiddelliste og kontaktperson er avklart når pasienten kommer hjem. Sykehuslegen kan slippe telefonrunder for å finne den som skal følge opp. Slike gevinster er muligheter reformen må prøves mot, ikke resultater den allerede har levert.
+## Sykehusregningen består selv om styringen endres
 
-Utskrivning kan også flytte arbeid og kostnader. Dersom sykehuset sparer tid mens kommunen får flere oppgaver, er ikke hele helsetjenesten nødvendigvis blitt mer effektiv. Den samlede virkningen avhenger av bemanning, utstyr, finansiering og kvaliteten i pasientforløpet.
+På kapittelet for regionale helseforetak førte staten 236,3 mrd. kr i 2025. Pengene finansierer i stor grad sykehustjenester. Pasientbehandlingen må fortsatt betales om noen andre overtar styringen.
 
-## Å fjerne et styringsnivå fjerner ikke sykehusregningen
+Utredningen oppgir 495 avtalte årsverk i de regionale helseforetakene. Mange fellesoppgaver vil bestå under en ny organisering. Skal utgiftene ned, må oppgaver falle bort eller gjøres billigere et annet sted.
 
-Utredningen oppgir 495 avtalte årsverk i de regionale helseforetakene. Dette er et historisk bemanningstall, ikke en beregning av hvor mange stillinger som kan fjernes. Mange fellesoppgaver må fortsatt utføres dersom organiseringen endres.
+En ansatt som bruker mindre tid på administrasjon, kan få tid til andre oppgaver uten at lønnsregningen faller.
 
-Det samme gjelder pengene: Bevilgningene til regionale helseforetak finansierer i stor grad sykehustjenester. De blir ikke ledige når et ledd i styringen avvikles. En spareberegning må finne oppgaver og utgifter som faktisk faller bort, og trekke fra det som oppstår andre steder.
+## Kostnadene kan spise opp besparelsen
 
-## Frigjorte timer og lavere lønnsutgifter er ulike gevinster
+Utvalget har ikke lagt fram en samlet netto reformkalkyle. Kalkulatoren under bruker derfor våre egne, valgbare antakelser om tid og kostnader. I utgangspunktet reduseres tidsbruken med 10 %, og 50 % av dette lar seg hente ut i praksis. Det tilsvarer 24,8 årsverk etter innfasing. Beholdes de ansatte, får de kapasitet til andre oppgaver.
 
-Kalkulatoren under viser forskjellen. Det illustrative utgangspunktet reduserer tidsbruken med 10 % og lar 50 % av dette bli realisert i praksis. Etter innfasing tilsvarer det 24,8 årsverk. Med uendret bemanning kan tiden brukes på andre oppgaver.
+Tas hele tidsgevinsten i stedet ut som lavere bemanningskostnader, gir en antatt arbeidsgiverkostnad på 1,2 mill. kr per årsverk 29,7 mill. kr i årlig bruttosparing.
 
-Skal gevinsten i stedet bli lavere lønnsutgifter, må bemanningskostnadene faktisk reduseres. Med en antatt arbeidsgiverkostnad på 1,2 mill. kr per årsverk gir full uttelling som redusert bemanning 29,7 mill. kr i årlig bruttosparing.
+Eksemplet har imidlertid også 50,0 mill. kr i årlige merkostnader. Det er mer enn bruttosparingen, og netto kontanteffekt blir −20,3 mill. kr etter innfasing. I tillegg kommer engangskostnaden på 500,0 mill. kr. Med disse antakelsene går regnestykket i minus selv når hele tidsgevinsten tas ut som redusert bemanning.
 
-Eksemplet setter samtidig engangskostnaden til 500,0 mill. kr og årlige merkostnader til 50,0 mill. kr. Da blir den årlige netto kontanteffekten −20,3 mill. kr etter innfasing. Engangskostnaden kommer i tillegg. Dette er valgbare antakelser som gir et negativt resultat, ikke utvalgets anslag på reformen.
+## Partiene vil endre helsevesenet i ulike retninger
 
-## Arbeidsflyten kan prøves før hele reformen er avgjort
+FrP og Senterpartiet vil begge avvikle de regionale helseforetakene. FrP ønsker samtidig større bruk av private med offentlig betaling. Senterpartiet motsetter seg sentralisering og nye selskaper som partiet mener svekker lokal kontroll.
 
-Den nasjonale helsepersonellplanen peker blant annet mot bedre oppgavedeling, støttepersonell og tiltak for å beholde ansatte. En avklart legemiddelliste ved utskrivning eller bedre fordeling av administrative oppgaver kan være avgrensede steder å undersøke tidsbruken. Gevinstene av slike tiltak avhenger av hvordan de gjennomføres lokalt.
+Høyre vektlegger pasientenes resultater og større bruk av private og ideelle. Rødt krever mer demokratisk styring og større innflytelse for ansatte og pasienter. Ap-regjeringen vil søke bredt samarbeid etter å ha sendt utredningen på høring.
 
-En sekretær koster penger, og et journalsystem krever opplæring. Mer pasienttid kan derfor være et godt resultat selv uten lavere utgifter. Det tilgjengelige grunnlaget rangerer ikke disse tiltakene som sikkert billigere enn helsereformen. En sammenligning trenger samlet kostnad, faktisk frigjort tid og behandlingskvalitet før og etter tiltaket.
+I sine vedtatte programmer vil SV erstatte foretaksmodellen og begrense kommersialisering, mens Venstre vil forbedre modellen og frigjøre klinikertid gjennom bedre oppgavedeling. KrF vil utrede alternativer og skille drift og investering. MDGs gjeldende helsepolitikk vil ha en forvaltningsmodell inspirert av Skottland og mer forebygging.
 
-## Partiene er enige om endring, men ikke om styringen
+## Oppgavedeling kan prøves lokalt
 
-Ap-regjeringen har sendt utredningen på høring og vil søke bredt samarbeid. Høyre vektlegger pasientenes resultater og større bruk av private og ideelle. FrP vil avvikle de regionale helseforetakene og åpne mer for private med offentlig betaling. Senterpartiet vil også avvikle RHF-ene, men motsetter seg sentralisering og nye selskaper som partiet mener svekker lokal kontroll. Rødt krever mer demokratisk styring og større innflytelse for ansatte og pasienter.
+Helsepersonellplanen peker mot bedre oppgavedeling, mer støttepersonell og tiltak for å beholde ansatte. Slike grep kan prøves lokalt mens de større spørsmålene om organisering behandles.
 
-Partiprogrammene viser andre skillelinjer: SV vil erstatte foretaksmodellen og begrense kommersialisering. Venstre vil forbedre modellen og frigjøre klinikertid gjennom bedre oppgavedeling. KrF vil utrede alternativer og skille drift og investering. MDGs gjeldende helsepolitikk vil ha en forvaltningsmodell inspirert av Skottland og mer forebygging. Dette er program- og politikkstandpunkter, ikke nye høringssvar.
+Størrelsen på tjenesten gjør selv små tidsgevinster interessante. Hvis 1 % av den avtalte sykepleiertiden i kommunal omsorg kunne frigjøres, ville det tilsvare omtrent 278 årsverk. Dette er en regneillustrasjon. Vi har ikke målt hvor mye tid som kan frigjøres, og timene ville vært fordelt på ulike arbeidsplasser og vakter.
 
-Felles ønske om endring gir dermed ingen ferdig enighet om hvem som skal styre, hvilke aktører som skal behandle pasientene eller hvordan oppgavene skal finansieres. For helsearbeiderne er det forskjeller som kan bety mer enn navnet på den nye organisasjonen.
+Et nytt journalsystem krever opplæring, og mer støttepersonell gir nye lønnsutgifter. Til gjengjeld kan helsearbeiderne få mer tid til pasientene. Grunnlaget gir ingen sikker rangering av hvilke tiltak som sparer mest. Kostnadene, den frigjorte tiden og kvaliteten på behandlingen må undersøkes sammen.
 
-## Regnestykket må følge pasienten
-
-En annen regneillustrasjon setter størrelsene i perspektiv: 1 % av den avtalte sykepleiertiden i kommunal omsorg tilsvarer omtrent 278 årsverk. Det er langt mer enn tidsgevinsten i det avgrensede RHF-scenariet. Tallene gjelder ulike oppgaver og steder, men viser hvorfor plasseringen av en mulig tidsgevinst betyr noe. De dokumenterer ikke at slike timer faktisk kan frigjøres.
-
-Reformens økonomi kan derfor ikke avgjøres ved å telle bokser i organisasjonskartet. Det trengs dokumenterte endringer i arbeidsflyt, ressursbruk og behandlingskvalitet gjennom hele forløpet. En spart time på sykehuset må vurderes sammen med arbeidet den utløser i kommunen.
-
-Kostnader til IT, opplæring og eventuell dobbel drift må også inn. Frigjort tid kan være verdifull selv om budsjettet ikke krymper. Men den samme timen kan ikke både brukes på flere pasienter og regnes som bortfalt lønnsutgift. Det er her skillet går mellom et håp om en enklere arbeidshverdag og en etterprøvbar reformkalkyle.
+Mer pasienttid kan være en gevinst selv om budsjettet ikke krymper. Regnestykket blir et annet hvis den frigjorte tiden tas ut som lavere bemanning. Den samme timen kan ikke både brukes på en pasient og føres som spart lønn.
 
 ## Grafer i denne versjonen
 
@@ -127,7 +97,7 @@ De eldste ble flere. Sykepleierbemanningen vokste lite.
 | 2024 | 111,17 | 100,84 |
 | 2025 | 117,26 | 103,16 |
 
-- health-scenario, etter avsnitt 5
+- health-scenario, etter avsnitt 4
 
 ## Hendelser og konkrete regnskapsposter
 

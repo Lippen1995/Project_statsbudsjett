@@ -12,9 +12,9 @@
       "hash": "257b0ce3f2f18f50ce19228166888f7d8121095de3c2dd43dc445320c93bb705"
     },
     "language": {
-      "version": 1,
-      "file": "language-v1.md",
-      "hash": "ff8e1094e35cdb23d4cb0239188657a2722a11549b88071b7514e8af3a783f6a"
+      "version": 2,
+      "file": "language-v2.md",
+      "hash": "9c50754a65eab57fd7e1dc2a920070f6bc94ac48dc76783a48febd1ee55750dc"
     },
     "visual": {
       "version": 1,
@@ -32,6 +32,24 @@
       "hash": "30dfd6b7a8e546b97f7f1474d3a4c59a99f99d94e8ee1274779afda050b71e36"
     }
   },
-  "history": [],
-  "revision": 0
+  "history": [
+    {
+      "skill": "language",
+      "version": 2,
+      "at": "2026-11-27T05:53:28.391Z",
+      "action": "maintainer-revision",
+      "before": {
+        "version": 1,
+        "file": "language-v1.md",
+        "hash": "ff8e1094e35cdb23d4cb0239188657a2722a11549b88071b7514e8af3a783f6a"
+      },
+      "after": {
+        "version": 2,
+        "file": "language-v2.md",
+        "hash": "9c50754a65eab57fd7e1dc2a920070f6bc94ac48dc76783a48febd1ee55750dc"
+      },
+      "reason": "Brukeren ba om å rette manglende flyt og overflødige forbehold. Ingen påstått uavhengig kvalitetsmåling."
+    }
+  ],
+  "revision": 1
 }

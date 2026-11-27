@@ -6,31 +6,7 @@ Les begge tekstene under. **Vil du endre noe? Skriv ønsket i en vanlig kommenta
 
 **Endringsønsker:** Behandles ved neste kjøring av den planlagte AI-oppgaven. Du kan også be om revisjon tidligere i oppgavens chat. GitHub-kommentaren starter ikke i seg selv en ny AI-kjøring. Ubehandlede ønsker stopper publisering.
 
-Versjon: `8fbb3decdf2b19c3ee78c64436d966c2d4ba205e0fcf8021064ae375710d0679` · Datagrunnlag: 2026-10-08T13:41:18.909470+00:00 · Regnskap 2020–2025
-
-## Intern redaksjonell kontroll
-
-approved · 91.95/100 · kjøring 3cce074b-213e-487e-9994-e9ac07e85981. Modellvurdering, ikke en garanti for faktuell korrekthet.
-
-Vinkel: Skille størrelsen på en bevilgning fra pengene per relevant mottaker.
-
-- factual: 95 — Den frosne mottakernevneren gjelder statlige læresteder; teksten skiller finansiering per student fra institusjonenes kostnader og faktisk undervisningskvalitet.
-
-- analysis: 90 — Knytter nominell bevilgning til studenttall og konsumpriser. Ingen nye data om kvalitet eller institusjonenes egne kostnader er tillagt.
-
-- language: 91 — Den korte forklaringen beholder overgangen fra mer penger til prisjustert nedgang. En generell vurdering er byttet ut med forklaringen om prisvekst.
-
-- angle: 94 — Overskrift og åpning velger pengene per student, som er mer relevant for leseren enn departementets omorganisering.
-
-- visual: 91 — Faktiske desktop- og mobilbilder er inspisert. Alle år er synlige i de korte seriene, enhet og målestokk fremgår, og grafene støtter ulike deler av forklaringen.
-
-- engagement: 89 — Kontrasten i åpningen gir en konkret grunn til å følge forklaringen. Teksten bruker konsekvenser og økonomiske mekanismer uten sensasjonelle løfter.
-
-- structure: 92 — Hovedfunnet kommer før bakgrunn og regnskapsdetaljer. Hver seksjon utvikler en forklaring, motsetning eller nødvendig avgrensning.
-
-- precision: 92 — Prisgrunnlag, mottakernevner og skille mellom illustrasjon og målt virkning er bevart. Overflødig dobbeltoppsummering er fjernet fra ny visning.
-
-- pedagogy: 94 — Samme bevilgning følges gjennom mottaker- og prisjustering. Grafens nullpunkt og datatabell gjør størrelsen etterprøvbar.
+Versjon: `324aeb79d0640f9299c9df5934a81c34f00e705181088f876a2e587d18e48095` · Datagrunnlag: 2026-10-08T13:41:18.909470+00:00 · Regnskap 2020–2025
 
 ## LinkedIn-utkast
 

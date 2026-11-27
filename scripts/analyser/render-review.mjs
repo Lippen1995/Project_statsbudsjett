@@ -27,10 +27,10 @@ export function renderReview(article) {
     `Versjon: \`${contentHash(article)}\` · Datagrunnlag: ${r.dataUpdated} · ${r.kind === 'oil-funds' ? 'Nøkkeltall, inkludert anslag og budsjettforslag' : r.kind === 'budget-comparison' ? 'Budsjett' : 'Regnskap'} ${r.start}–${r.end}`,
     ...(article.editorial ? [
       '## Intern redaksjonell kontroll',
-      `${article.editorial.status} · ${article.editorial.score}/100 · kjøring ${article.editorial.runId}. Modellvurdering, ikke en garanti for faktuell korrekthet.`,
+      `${article.editorial.status} · ${article.editorial.review?.verified ? `${article.editorial.score}/100 · uavhengig kontrollert` : 'Ingen uavhengig godkjenning; egenpoeng er bare rådgivende'} · kjøring ${article.editorial.runId}.`,
       `Vinkel: ${article.editorial.angle?.reason ?? ''}`,
       ...Object.entries(article.editorial.assessment.dimensions).map(([key, d]) =>
-        `- ${key}: ${d.notApplicable ? 'ikke relevant' : d.score} — ${d.observation}`),
+        `- ${key}: ${d.notApplicable ? 'ikke relevant' : article.editorial.review?.verified ? d.score : 'egenobservasjon'} — ${d.observation}`),
     ] : []),
     '## LinkedIn-utkast',
     escape(c.linkedin),

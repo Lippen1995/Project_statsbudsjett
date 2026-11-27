@@ -1,27 +1,31 @@
 // Orchestrates existing stage executors. The native host or the existing Sven
 // transport supplies executeStage; this module never creates another provider.
-import { newEditorialRun, checkpoint as record, reviseRun, finishEditorial, stages, assertRun } from './editorial.mjs'
+import { newEditorialRun, checkpoint as record, reviseRun, finishEditorial, stages, assertRun, assertEditorialApproval } from './editorial.mjs'
 import { editorialInputHash, policy } from './editorial-policy.mjs'
 import { loadSkills } from './editorial-skills.mjs'
 
 export async function runEditorial({ article, run = newEditorialRun(article), executeStage,
-  persist = async () => {}, model, now = () => new Date().toISOString() }) {
+  persist = async () => {}, model, now = () => new Date().toISOString(), reviewVerification }) {
   article = run.article ?? article
   assertRun(run, article)
-  if (run.status === 'approved') return { article, run }
+  if (run.status === 'approved') { assertEditorialApproval(article,reviewVerification); return { article, run } }
   if (run.pending) throw Error('Et arbeidssteg har uavklart resultat; kontroller forbruk før eksplisitt gjenopptakelse')
   if (run.status !== 'working') throw Error('Kjøringen må revideres eksplisitt før gjenopptakelse')
   const commit = async next => { next.article = article; await persist(next, run.revision); run = next }
   while (run.status === 'working') {
     const stage = stages.find(s => !run.completed[s])
     if (!stage) {
-      const result = finishEditorial(run, article)
+      const result = finishEditorial(run, article, {reviewVerification})
       if (result.run.status === 'approved') {
         article = { ...article, editorial: result.editorial }
         // Reports remain portable; local manifests/images live in the private run.
         article.editorial.visual = { ...article.editorial.visual,
           captures: article.editorial.visual.captures?.map(({manifest,...capture}) => capture) }
         await commit(result.run)
+      } else if (result.run.status === 'needs-review') {
+        article={...article,editorial:result.editorial}
+        await commit(result.run)
+        break
       } else {
         const finding = run.completed.editor.value.assessment.findings.find(f => f.severity !== 'suggestion')
         const target = stages.includes(finding?.target) ? finding.target : 'draft'
