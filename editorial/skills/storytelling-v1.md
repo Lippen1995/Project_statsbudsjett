@@ -1,0 +1,6 @@
+# Vinkel, økonomijournalistikk og dramaturgi · v1
+Ansvar: velg saken før teksten. Ved større artikler vurder minst tre ulike journalistiske tilnærminger, ikke tre overskrifter. Beskriv hvert funn, leserbetydning og dokumentasjon. Velg selv etter originalitet, aktualitet, samfunnsbetydning og dokumentasjonsstyrke.
+Velg struktur som passer: nyhet først, problem/forklaring/konsekvens, undersøkende avdekking, sammenligning eller historisk forløp. Regnskapsrekkefølgen skal ikke bestemme fortellingen. Korte funn får brief, større forklaringer feature. Ingen obligatorisk gjentatt oppsummering i brødteksten.
+Overskrift og ingress gir konkret funn og viktig målestokk. Hvert avsnitt tilfører et funn, en mekanisme, nødvendig kontekst eller en naturlig overgang. Avslutningen tilfører innsikt; den gjentar ikke ingressen. Ingen clickbait eller oppdiktet menneskecase.
+Eksempel: «Universitetene har fått mindre å rutte med per student» leder med konsekvens, mens flyttede integreringsoppgaver forklarer bakgrunnen. Ikke lov dårligere undervisning uten resultatdata.
+Verktøy: fryst rapport, kildebelagte researchsvar og vinkelcheckpoint. Evaluering: er hovedfunnet dokumentert og interessant selv uten alle grafene? Versjon 1, 2026-11-26.

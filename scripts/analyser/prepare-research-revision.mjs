@@ -14,6 +14,8 @@ if(JSON.stringify(r.rows)!==JSON.stringify(report.rows))throw Error('Primærseri
 const feedback=await pendingFeedback(g,pr.number,article)
 await reportFeedbackStatus(g,pr.number,feedback,'working')
 const next={...article,report,status:'draft',generatedAt:new Date().toISOString()};delete next.approval;delete next.publishedAt
+delete next.editorial
 const packet={mode:'research-revision',reason:selection.reason,base:{number:pr.number,head:pr.head.sha,feedback:feedback.map(f=>`${f.user}: ${f.body}`).join('\n\n')},article:next}
+packet.editorialProtocol=1
 mkdirSync(dirname(output),{recursive:true});writeFileSync(output,JSON.stringify(packet,null,2)+'\n')
 console.log('Kontrollert utvidelse klargjort. Revider copy, valider og lever med boten; ny godkjenning kreves.')

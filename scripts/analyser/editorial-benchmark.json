@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "note": "Beskyttede oppgaver. Samme frosne research ved skrivebenchmark. Skill-kandidater kan ikke endre oppgaver eller policy. Manglende feltdata merkes blocked, aldri erstattes av oppdiktede tall.",
+  "tasks": [
+    {"id":"state-growth","split":"development","topic":"Statsbudsjettet","prompt":"Forklar hva som holdt statens utgifter oppe etter pandemien. Skill posteksempler fra full avstemming."},
+    {"id":"students","split":"development","topic":"Skole","prompt":"Forklar endringen i støtte per student. Skill bevilgning, kostnad og undervisningskvalitet."},
+    {"id":"family-benefits","split":"holdout","topic":"Demografi","prompt":"Forklar barnetrygdvekst med færre mottakere og kortere kontantstøtte. Kontroller nettoeffekt av skatteomlegging."},
+    {"id":"municipal-health","split":"holdout","topic":"Kommuneøkonomi","prompt":"Undersøk helseutgifter per relevant innbyggergruppe i sammenlignbare kommuner. Kontroller utvalg og kommunegrenser."},
+    {"id":"health-reform","split":"holdout","topic":"Helsepolitikk","prompt":"Skill reformens foreslåtte behandlingssted, juridiske ansvar og finansiering. Ikke gjør målsetting til vedtak."},
+    {"id":"transport","split":"holdout","topic":"Samferdsel","prompt":"Undersøk investeringer, vedlikehold og kostnadsvekst i sammenlignbare samferdselsposter."},
+    {"id":"energy","split":"holdout","topic":"Energi","prompt":"Forklar statlige energiinntekter og støtteordninger; skill brutto inntekt fra nettoeffekt og mottakergrupper."},
+    {"id":"administration","split":"holdout","topic":"Offentlig administrasjon","prompt":"Undersøk utgiftsendring etter omorganisering. Avstem flyttede oppgaver før realvekst tolkes."},
+    {"id":"political-economy","split":"development","topic":"Politisk økonomi","prompt":"Skill partiprioriteringer, budsjettforslag og dokumentert parlamentarisk gjennomslag."},
+    {"id":"productivity","split":"holdout","topic":"Offentlig produktivitet","prompt":"Undersøk om sammenlignbare ressurs- og resultatmål dokumenterer produktivitetsendring. Utgifter alene er utilstrekkelig."}
+  ]
+}

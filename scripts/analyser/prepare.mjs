@@ -113,6 +113,8 @@ if (process.argv[3] && !budgetDay && !oil && !pipelinePlan) {
   }
 }
 mkdirSync(dirname(output), { recursive: true })
+packet.editorialProtocol = 1
+delete packet.article.editorial
 writeFileSync(output, JSON.stringify(withEditorialExamples(packet), null, 2) + '\n')
 console.log(
   `Kontrollert grunnlag lagret i ${output}. AI skal skrive article.copy og validere før levering.`,

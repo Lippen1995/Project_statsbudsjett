@@ -1,5 +1,38 @@
 # Oppgavebeskrivelse: ukentlig Fellestall-analyse
 
+## Redaksjonell kvalitetsprotokoll, 26. november 2026
+
+Presisering 27. november: Språkpasset skal redigere hele fortellingen og
+vurdere overgangen og gjentakelser i hver seksjon. Les `language-v2.md` via
+gjeldende skillregister. Ikke legg til en setning om at en mulig gevinst ennå
+ikke er levert når «kan» eller «foreslår» allerede avgrenser påstanden.
+Behold vesentlige forbehold der de endrer tolkningen. Egenpoeng og utfylte
+sjekklister er ikke en uavhengig evaluering; uten betrodd signert sluttkontroll
+skal kjøringen få `needs-review`, aldri automatisk intern godkjenning.
+
+For nye analyser og revisjoner gjelder [Sven-arbeidsprotokollen](sven/workflow.md)
+for vinkelvalg, målrettede revisjoner, språk, faktasjekk og faktisk visuell kontroll.
+Bruk eksisterende kø, research, kildeimport, `withEditorialExamples`, bot og
+menneskelig godkjenning. Ingen ny tidsplan eller separat AI-API for native tekst.
+Disse formatføringene har forrang over eldre krav om fire til åtte seksjoner,
+fast ordantall og minst én graf: velg `brief` eller `feature` etter funnet;
+ingen graf er riktig når grafikken ikke gir mer forståelse.
+
+Opprett privat redaksjonell kjøring med `editorial-cli.mjs` etter `prepare.mjs`.
+Last bare relevante skills for hvert faglige pass. Større artikler krever tre
+reelt ulike vinkler. Undersøk vesentlige hull før skriving. Gjør separate språk-,
+fakta- og redaktørpass, og se de faktiske grafbildene på mobil og desktop.
+Registrer konkrete observasjoner og målrettede revisjoner, ikke bare poeng.
+Endret tekst eller graf krever nye kontroller for den endelige artikkelversjonen.
+Kjør `finish` før botlevering; utilstrekkelig kvalitet eller overskredet budsjett
+skal få dokumentert stoppstatus. Intern godkjenning erstatter aldri menneskets.
+
+Læring gjenbruker det signerte registeret og blindbenchmark fra Sven-grunnmuren.
+Redaksjonelle kandidater kan bare endre tre avgrensede skill-hasher, aldri
+evaluering, holdout, rettigheter eller politiske prinsipper. Bruk faktisk
+tilgjengelig evaluator; ikke aktiver en kandidat på fabrikkert egenvurdering.
+Vanlig chat beholder sitt eksisterende analyse-, minne- og kvoteløp.
+
 Brukeren viste 4. oktober 2026 bekreftelsen på at **«Ukentlig Fellestall-analyse»** er opprettet og aktiv i en annen ChatGPT-samtale. Den opprinnelige tidsplanen var mandager klokken **09.00, Europe/Oslo**, første gang **5. oktober 2026**. Den samme oppgaven ble 19. oktober utvidet til **daglig køkontroll kl. 09.00 fra 20. oktober**, for å støtte administratorens daterte bestillinger. Vanlige automatiske Sven-analyser er fortsatt mandagsanalyser. Oppdateringsverktøyet bekreftet aktiv konfigurasjon; den nye pipelineflyten er ikke verifisert i produksjon. Oppgaven henter denne beskrivelsen fra main. Ikke opprett en ny parallell tidsplan.
 
 Kjør med abonnementspålogging og prosjektets vanlige tilganger. Bruk ingen OpenAI API-nøkkel til tekstproduksjon. Bruken inngår i kvotene for appen og modellen som utfører oppgaven. GitHub- og LinkedIn-integrasjoner er separate fra valg av AI-produksjon.
@@ -252,3 +285,8 @@ kjøring allerede arbeider på samme head. Eksakt menneskelig godkjenning,
 botlevering, kildekontroll og versjonsbundet forhåndsvisning gjelder fortsatt.
 Ingen separat AI-API er innført. Ved manglende innspill skal det ikke sendes en
 statusmelding til brukeren. Ikke opprett en ny kopi av kommentaroppgaven.
+
+
+## Gjenoppretting uten lokal GitHub CLI, 19. november 2026
+
+Hvis GitHub-integrasjonen fungerer, men lokal prosjektkopi eller gh-innlogging mangler, følg `docs/native-github-connector.md`. Hent kildefiler ved fast fersk main-SHA og bruk den dokumenterte native connector-adapteren til de eksisterende skriptene. Ikke avslutt med «GitHub mangler innlogging» før denne veien er kontrollert. Adapteren erstatter bare transporten; faktiske tillatelser, head-kontroll, tallkontroll, botlevering og eksakt menneskelig godkjenning består. Kilde- og nettverksfeil må rapporteres separat. En klargjort pakke er ikke en levert revisjon.

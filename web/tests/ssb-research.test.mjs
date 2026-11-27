@@ -105,3 +105,10 @@ test('SSB facts are checked by the article schema and cannot be rewritten indepe
   article.report.facts.ssbEldreEnd.value = 111
   assert.throws(() => validateArticle(article), /Fakta/)
 })
+
+test('Expanded research accepts twenty distinct series and still bounds evidence', () => {
+ const entries = Array.from({length:21}, (_,i) => ({...evidence, id:'Series'+String.fromCharCode(65+i)}));
+ assert.equal(Object.keys(ssbEvidenceFacts(entries.slice(0,20))).length,120);
+ assert.throws(()=>ssbEvidenceFacts(entries), /SSB/);
+ assert.throws(()=>ssbEvidenceFacts([entries[0],entries[0]]), /SSB/);
+});

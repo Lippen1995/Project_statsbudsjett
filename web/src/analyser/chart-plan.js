@@ -27,7 +27,7 @@ export function graphPlan(copy, report) {
           ] }]
         : allowed.map((kind, i) => ({ kind, afterSection: i }))
       : copy.graphs
-  if (!Array.isArray(plan) || plan.length < 1 || plan.length > 7)
+  if (!Array.isArray(plan) || plan.length < (copy.format ? 0 : 1) || plan.length > 7)
     throw Error('Velg én til syv grafer')
   for (const graph of plan) {
     if (
@@ -45,7 +45,7 @@ export function graphPlan(copy, report) {
     else if (!allowed.includes(graph.kind)) throw Error('Ukjent graf for denne rapporttypen')
     const keys =
       graph.kind === 'series'
-        ? ['kind', 'afterSection', 'title', 'description', 'mode', 'series', 'chartType', 'axis', 'annotation']
+        ? ['kind', 'afterSection', 'title', 'description', 'mode', 'series', 'chartType', 'axis', 'annotation', 'focus']
         : graph.kind === 'budget-bridge'
           ? ['kind', 'afterSection', 'title', 'description', 'department', 'chapter', 'groupBy', 'groups']
           : graph.kind === 'health-scenario'
@@ -63,13 +63,14 @@ export function graphPlan(copy, report) {
   return plan
 }
 export function seriesGraph(graph, report) {
+  if (graph.focus !== undefined && (!Number.isInteger(graph.focus) || graph.focus < 0 || graph.focus >= (graph.series?.length ?? 0))) throw Error('Fremhevingen må vise til en valgt serie')
   if (graph.annotation !== undefined && graph.annotation !== 'period-change')
     throw Error('Ukjent grafpil')
-  if (graph.chartType !== undefined && !['bar', 'line'].includes(graph.chartType))
+  if (graph.chartType !== undefined && !['bar', 'line', 'small-multiples'].includes(graph.chartType))
     throw Error('Velg stolper eller linjer')
   if (graph.axis !== undefined && !['zero', 'focused'].includes(graph.axis))
     throw Error('Ukjent aksevalg')
-  if (graph.axis === 'focused' && graph.chartType !== 'line')
+  if (graph.axis === 'focused' && !['line', 'small-multiples'].includes(graph.chartType))
     throw Error('Avkortet akse krever linjegraf; stolper starter i null')
 
   if (

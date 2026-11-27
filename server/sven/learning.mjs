@@ -33,7 +33,7 @@ export function openLearningRegistry(path,{publicKey,holdoutHashes,domains,minCa
   return {
     close:()=>db.close(),current,
     propose(settings){
-      const normalized=candidateSettings(settings),id=candidateId(normalized)
+      const normalized=candidateSettings({...settings,...(!Object.hasOwn(settings,'editorialSkills') && current().settings.editorialSkills ? {editorialSkills:current().settings.editorialSkills} : {})}),id=candidateId(normalized)
       db.prepare('INSERT OR IGNORE INTO candidates(id,settings) VALUES(?,?)').run(id,JSON.stringify(normalized))
       return {id,settings:normalized}
     },

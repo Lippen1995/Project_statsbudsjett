@@ -25,6 +25,13 @@ export function renderReview(article) {
     '**Varsler:** Følg denne gjennomgangen i GitHub-appen og aktiver pushvarsler for review requests. Innsyn følger repositoryets tilgang; dette er ikke en separat privat kanal.',
     '**Endringsønsker:** Behandles ved neste kjøring av den planlagte AI-oppgaven. Du kan også be om revisjon tidligere i oppgavens chat. GitHub-kommentaren starter ikke i seg selv en ny AI-kjøring. Ubehandlede ønsker stopper publisering.',
     `Versjon: \`${contentHash(article)}\` · Datagrunnlag: ${r.dataUpdated} · ${r.kind === 'oil-funds' ? 'Nøkkeltall, inkludert anslag og budsjettforslag' : r.kind === 'budget-comparison' ? 'Budsjett' : 'Regnskap'} ${r.start}–${r.end}`,
+    ...(article.editorial ? [
+      '## Intern redaksjonell kontroll',
+      `${article.editorial.status} · ${article.editorial.review?.verified ? `${article.editorial.score}/100 · uavhengig kontrollert` : 'Ingen uavhengig godkjenning; egenpoeng er bare rådgivende'} · kjøring ${article.editorial.runId}.`,
+      `Vinkel: ${article.editorial.angle?.reason ?? ''}`,
+      ...Object.entries(article.editorial.assessment.dimensions).map(([key, d]) =>
+        `- ${key}: ${d.notApplicable ? 'ikke relevant' : article.editorial.review?.verified ? d.score : 'egenobservasjon'} — ${d.observation}`),
+    ] : []),
     '## LinkedIn-utkast',
     escape(c.linkedin),
     ...(article.replaces

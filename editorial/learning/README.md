@@ -1,4 +1,22 @@
 # Svens redaksjonelle læring
+
+## Utvidelse 26. november 2026
+
+Nye artikler og revisjoner følger [arbeidsprotokollen](../../docs/sven/workflow.md).
+Versjonerte, selektivt lastede skills ligger i `editorial/skills/`. Den korte
+innholdsbundne kvalitetsrapporten følger artikkelens `editorial`-felt; private
+checkpoints, modellinput og screenshotstier følger ikke med. Dette supplerer
+eldre instrukser nedenfor om at læringsnotater bare ligger separat.
+
+Skill-kandidater bruker samme signerte læringsregister, private holdout og
+benchmark som Svens eksisterende grunnmur. `runEditorialLearning` utvider den
+eksisterende avgrensede læringssyklusen; den oppretter ingen ny evaluator eller
+tidsplan. Avgrensede språk-, forteller- og visuelle forbedringer kan aktiveres
+automatisk etter dokumenterte, signerte tester og tilbakeføres ved regresjon.
+Menneskelige preferanser håndteres fortsatt av eksisterende adminflyt. En lokal
+rettelse blir ikke automatisk en varig preferanse. Dette krever faktisk
+evaluatorkonfigurasjon; tilstedeværelsen av kode beviser ikke aktiv læring.
+
 Versjon 1 • 18. oktober 2026
 
 Dette er et første redaksjonelt grunnlag for Fellestall. Modellen er ikke finjustert. Ingen journalist er engasjert til å godkjenne denne håndboken: den er AI-utarbeidet med utgangspunkt i publisert journalistikk og brukerens dokumenterte føringer. Forbedring må måles på nye utkast.

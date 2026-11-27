@@ -40,8 +40,9 @@ jobs:
         run: node scripts/analyser/cli.mjs stage
       - name: Installer for validering
         if: github.event.review.state == 'approved'
-        working-directory: web
-        run: npm ci
+        run: |
+          npm ci
+          npm --prefix web ci
       - name: Test og bygg før publisering
         if: github.event.review.state == 'approved'
         working-directory: web

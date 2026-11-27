@@ -4,6 +4,7 @@ on:
     paths:
       - 'etl/ssb_research*'
       - 'etl/tests/test_ssb_research.py'
+      - 'etl/tests/test_ssb_catalogue.py'
       - 'scripts/analyser/ssb-research.mjs'
       - '.github/workflows/ssb-research-ci.yml'
   workflow_dispatch:
@@ -21,8 +22,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - run: python etl/tests/test_ssb_catalogue.py
+      - name: Capture complete catalogue and selected metadata
+        run: python etl/ssb_research_catalogue.py --output /tmp/ssb-catalogue --metadata 13953 14533 12441 14789 14022 13942 14534 14123 11996 12292 12293
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ssb-catalogue
+          path: /tmp/ssb-catalogue/
+          if-no-files-found: error
+          retention-days: 30
       - run: pip install -r etl/requirements.txt
       - run: python -m pytest etl/tests/test_ssb_research.py -q -s
         env:
           SSB_LIVE_TEST: '1'
       - run: node --test web/tests/ssb-research.test.mjs
+      - run: node --test scripts/analyser/test-health-revision.mjs
+

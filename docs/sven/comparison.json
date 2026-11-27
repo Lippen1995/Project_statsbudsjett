@@ -1,0 +1,87 @@
+[
+  {
+    "case": "health",
+    "reportHash": "3bb0954f2d884aea192d42b58c3c7248822025b256893450232b6bf99a45a37d",
+    "sameFrozenReport": true,
+    "before": {
+      "title": "Flere eldre, nesten like mange sykepleiere. Dette må helsereformen løse.",
+      "sections": 9,
+      "words": 1475,
+      "graphs": 5
+    },
+    "after": {
+      "title": "Flere eldre, nesten like mange sykepleiere",
+      "sections": 6,
+      "words": 706,
+      "graphs": 2,
+      "withdrawnSelfScore": 91.7
+    },
+    "evaluation": "Historical self-scores are withdrawn as approval evidence. Current text has no independent editorial attestation and is for human review; technical tests do not measure journalistic quality."
+  },
+  {
+    "case": "students",
+    "reportHash": "4cf9e64dfdf5955adc1fa314cd1a96b5e88a9242eb9eff15bf751069836b3e94",
+    "sameFrozenReport": true,
+    "before": {
+      "title": "Universitetene har fått mindre å rutte med per student",
+      "sections": 6,
+      "words": 606,
+      "graphs": 2
+    },
+    "after": {
+      "title": "Universitetene har fått mindre å rutte med per student",
+      "sections": 3,
+      "words": 327,
+      "graphs": 1,
+      "withdrawnSelfScore": 91.95
+    },
+    "evaluation": "Historical self-scores are withdrawn as approval evidence. Current text has no independent editorial attestation and is for human review; technical tests do not measure journalistic quality.",
+    "visualCaptures": [
+      {
+        "device": "desktop",
+        "manifestHash": "eb02b94be68f7091b7cbfae634de27299bfff1b72de29d4fde77d92920623c0c",
+        "rendererHash": "39c4350bfd7dfff6c2beacf842490af06bf18e120a7bcd2889d30d3997d76dd8",
+        "critique": "Bildet er sett: perioden er komplett, etiketter og akser klippes ikke, og grafen ligger etter teksten den dokumenterer. Farger og typografi følger eksisterende Fellestall-visning."
+      },
+      {
+        "device": "mobile",
+        "manifestHash": "974f0a253bfaf8ac2c9d82e4c1aaa949ed571d08a123614673243fbed13bcb0a",
+        "rendererHash": "39c4350bfd7dfff6c2beacf842490af06bf18e120a7bcd2889d30d3997d76dd8",
+        "critique": "Bildet er sett: overskrift, enhet, nullpunkt eller synlig avkortet akse og hele den korte tidsperioden er lesbare. Endepunktene krever ikke vannrett rulling. Datatabellen er tilgjengelig under grafen."
+      }
+    ]
+  },
+  {
+    "case": "family",
+    "reportHash": "afe4a3ff38babf2ad16a43da315588124a9fa3e019b52d3749fad7da9110b8d2",
+    "sameFrozenReport": true,
+    "before": {
+      "title": "Færre barn. Likevel økte barnetrygden med {{fact:barnetrygdLastAnnualChangeAmount}}",
+      "sections": 5,
+      "words": 724,
+      "graphs": 2
+    },
+    "after": {
+      "title": "Færre barn. Likevel økte barnetrygden med {{fact:barnetrygdLastAnnualChangeAmount}}",
+      "sections": 3,
+      "words": 463,
+      "graphs": 1,
+      "withdrawnSelfScore": 91.8
+    },
+    "evaluation": "Historical self-scores are withdrawn as approval evidence. Current text has no independent editorial attestation and is for human review; technical tests do not measure journalistic quality.",
+    "visualCaptures": [
+      {
+        "device": "desktop",
+        "manifestHash": "093fc29b84ed892a1b299bc597e4dbb7e7339154649c6eaaf4dca7df4cdf8721",
+        "rendererHash": "39c4350bfd7dfff6c2beacf842490af06bf18e120a7bcd2889d30d3997d76dd8",
+        "critique": "Bildet er sett: perioden er komplett, etiketter og akser klippes ikke, og grafen ligger etter teksten den dokumenterer. Farger og typografi følger eksisterende Fellestall-visning."
+      },
+      {
+        "device": "mobile",
+        "manifestHash": "07970fd83cc4ff7d037843a9e5cdd3e43eb035a3bf3f369d20a009796d9bf660",
+        "rendererHash": "39c4350bfd7dfff6c2beacf842490af06bf18e120a7bcd2889d30d3997d76dd8",
+        "critique": "Bildet er sett: overskrift, enhet, nullpunkt eller synlig avkortet akse og hele den korte tidsperioden er lesbare. Endepunktene krever ikke vannrett rulling. Datatabellen er tilgjengelig under grafen."
+      }
+    ]
+  }
+]

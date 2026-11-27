@@ -293,15 +293,86 @@
       "note": "PR #86 venter på menneskelig gjennomgang. Ingen nye endringsønsker i GitHub. KDD-temaet blir stående i køen.",
       "updatedAt": "2026-11-16T08:10:02.920Z",
       "finishedAt": "2026-11-16T08:10:02.920Z"
+    },
+    {
+      "id": "96d2fd3c-c80b-4e13-bdd2-4d6b2642c58a",
+      "startedAt": "2026-11-17T08:02:32.659Z",
+      "instructionCommit": "00e2a5ba04207a08df01b06745d3e906dd7662aa",
+      "state": "failed",
+      "note": "Autorisert endringsønske på PR #86 krever utvidet tallgrunnlag. SSBs sykefraværstall er kontrollert som innledende kildearbeid. Revisjonsscriptets GitHub CLI mangler innlogging og kunne ikke hente den åpne PR-en. Ingen ny versjon levert. Neste analysetema blir stående i køen.",
+      "updatedAt": "2026-11-17T08:03:03.113Z",
+      "finishedAt": "2026-11-17T08:03:03.113Z"
+    },
+    {
+      "id": "c1aa0dae-ff47-49b7-88a0-af10525a212b",
+      "startedAt": "2026-11-18T08:09:41.781Z",
+      "instructionCommit": "41916b734353457d80234c313472691f439d36ec",
+      "state": "failed",
+      "note": "PR #86 er fortsatt åpen med ubehandlet endringsønske. GitHub-integrasjonen kan lese PR-en, men GitHub CLI mangler innlogging og den lokale prosjektkopien for revisjon er borte. Ingen ny versjon levert. Neste tema beholdes i køen.",
+      "updatedAt": "2026-11-18T08:09:42.950Z",
+      "finishedAt": "2026-11-18T08:09:42.950Z"
+    },
+    {
+      "id": "16b42c4c-048e-4c9f-87e4-e8f541145e32",
+      "startedAt": "2026-11-19T08:00:03.204Z",
+      "state": "failed",
+      "note": "PR #86 har samme head og ubehandlet endringsønske. GitHub CLI mangler fortsatt innlogging. Ingen lokal prosjektkopi funnet. GitHub-integrasjonen kan lese PR-en; ingen ny revisjon eller analyse er levert. Pipelinekøen er beholdt.",
+      "updatedAt": "2026-11-19T08:00:04.776Z",
+      "finishedAt": "2026-11-19T08:00:04.776Z"
+    },
+    {
+      "id": "0a2981b2-ba63-4fa0-a312-2c605dbdb7e5",
+      "startedAt": "2026-11-19T14:49:47.262Z",
+      "instructionCommit": "215f72c58355eec10cac5edfed86de8baf820c71",
+      "state": "review",
+      "note": "Revidert helsereformanalyse levert av boten. Ny head, fungerende versjonsbundet forhåndsvisning og review request til Lippen1995 er kontrollert. Ingen publisering.",
+      "updatedAt": "2026-11-20T07:22:22.179Z",
+      "review": "https://github.com/Lippen1995/Project_statsbudsjett/pull/86",
+      "finishedAt": "2026-11-20T07:22:22.179Z"
+    },
+    {
+      "id": "8c4d96dd-8806-449e-b85c-01efde8cc807",
+      "startedAt": "2026-11-20T07:58:30.545Z",
+      "instructionCommit": "e3f2bbf233fca08b9e30f22edad72275f0454e0b",
+      "state": "waiting",
+      "note": "PR #86 venter på menneskelig gjennomgang av head 6e8627eb. Revisjonskommentaren er behandlet, og ingen nye autoriserte innspill eller inline-kommentarer finnes. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
+      "updatedAt": "2026-11-20T08:01:04.221Z",
+      "finishedAt": "2026-11-20T08:01:04.221Z"
+    },
+    {
+      "id": "43a1a0e3-06a4-4931-981e-622f086fff7b",
+      "startedAt": "2026-11-21T08:01:53.825Z",
+      "instructionCommit": "55cd85ff1b46f4adc933fa8995a578eb62d9b4c4",
+      "state": "waiting",
+      "note": "Fersk main og PR #86 kontrollert. Head 6e8627eb venter fortsatt på menneskelig gjennomgang. Ingen ubehandlede revisjonsønsker eller inline-kommentarer. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
+      "updatedAt": "2026-11-21T08:03:42.141Z",
+      "finishedAt": "2026-11-21T08:03:42.141Z"
+    },
+    {
+      "id": "fe999f02-3c71-4b28-adeb-39cc35b131d7",
+      "startedAt": "2026-11-22T08:01:48.161Z",
+      "instructionCommit": "b053f719c802b6aa6190e8bad1139b8b5cfdcfd6",
+      "state": "waiting",
+      "note": "Fersk main og PR #86 kontrollert. Head 6e8627eb venter på menneskelig gjennomgang. Ingen ubehandlede revisjonsønsker eller inline-kommentarer. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
+      "updatedAt": "2026-11-22T08:04:08.121Z",
+      "finishedAt": "2026-11-22T08:04:08.121Z"
+    },
+    {
+      "id": "59d61d7e-fc0f-4220-8d4f-79d49d3dfdc5",
+      "startedAt": "2026-11-23T08:00:46.744Z",
+      "instructionCommit": "c7a04804538534d686cc746c61d40d4c6213ba01",
+      "state": "researching",
+      "note": "Kontrollerer kø og åpne gjennomganger",
+      "updatedAt": "2026-11-23T08:00:46.744Z"
     }
   ],
   "current": {
-    "id": "96d2fd3c-c80b-4e13-bdd2-4d6b2642c58a",
-    "startedAt": "2026-11-17T08:02:32.659Z",
-    "instructionCommit": "00e2a5ba04207a08df01b06745d3e906dd7662aa",
-    "state": "failed",
-    "note": "Autorisert endringsønske på PR #86 krever utvidet tallgrunnlag. SSBs sykefraværstall er kontrollert som innledende kildearbeid. Revisjonsscriptets GitHub CLI mangler innlogging og kunne ikke hente den åpne PR-en. Ingen ny versjon levert. Neste analysetema blir stående i køen.",
-    "updatedAt": "2026-11-17T08:03:03.113Z",
-    "finishedAt": "2026-11-17T08:03:03.113Z"
+    "id": "924bb6e6-5de1-49cd-8209-f7030bfe9fbd",
+    "startedAt": "2026-11-26T08:01:09.190Z",
+    "instructionCommit": "6b20b892cbe3e458c196da45e58df5068e7cfa14",
+    "state": "waiting",
+    "note": "Fersk main og PR #86 kontrollert. Head 6e8627eb venter på menneskelig gjennomgang. Ingen ubehandlede revisjonsønsker eller inline-kommentarer. prepare.mjs stoppet som forventet ved åpen gjennomgang. KDD-temaet beholdes i køen. Ingen ny tekst eller publisering.",
+    "updatedAt": "2026-11-26T08:03:01.498Z",
+    "finishedAt": "2026-11-26T08:03:01.498Z"
   }
 }

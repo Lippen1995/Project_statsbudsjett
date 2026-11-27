@@ -142,8 +142,8 @@ def archive(data_dir, request):
     index = json.loads(index_path.read_text()) if index_path.exists() else {'version': 1, 'extracts': []}
     entry = {k: request[k] for k in ['id', 'scope', 'purpose']};entry.update({'hash': digest, 'path': 'ssb-research/' + digest + '.json'})
     index['extracts'] = [e for e in index['extracts'] if (e['id'], e['scope']) != (entry['id'], entry['scope'])] + [entry]
-    if sum(e['scope'] == entry['scope'] for e in index['extracts']) > 5:
-        raise ValueError('At most five SSB series per analysis scope')
+    if sum(e['scope'] == entry['scope'] for e in index['extracts']) > 20:
+        raise ValueError('At most twenty SSB series per analysis scope')
     index_path.write_bytes(encode(index))
     return entry
 

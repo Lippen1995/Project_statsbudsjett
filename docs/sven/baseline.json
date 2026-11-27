@@ -1,0 +1,133 @@
+{
+  "commit": "14e3d3b2961710e1ef87798add8388db33d9b0f5",
+  "articleRegistrySHA256": "e418e04ac1ba660749f6817fe2365051ca685eb04f3b2c52c60ea5535e22ad45",
+  "articles": [
+    {
+      "slug": "utgifter-per-innbygger-state-2014-2025-2026-10-04",
+      "title": "Statens regning har vokst {{fact:nominalGrowth}}. Hva holder den oppe?",
+      "sections": 6,
+      "words": 879,
+      "paragraphs": 18,
+      "graphs": "automatic-three",
+      "caveatExamples": [
+        "Utgiftene har økt med {{fact:nominalGrowth}} i løpende kroner. Det er et tall som tar plass. Men en gammel krone og en ny krone kjøper ikke nødvendigvis det samme, og flere innbyggere deler regningen. Hvor mye av økningen står igjen når vi tar hensyn til begge deler?"
+      ]
+    },
+    {
+      "slug": "utgifter-per-innbygger-u-01-2020-2025-2026-10-05",
+      "title": "Utenriksregningen steg {{fact:nominalGrowth}}. Ukraina snudde opp ned på regnestykket.",
+      "sections": 6,
+      "words": 471,
+      "paragraphs": 12,
+      "graphs": "automatic-three",
+      "caveatExamples": []
+    },
+    {
+      "slug": "utgifter-per-innbygger-state-2014-2025-2026-10-05",
+      "title": "Statens regning steg {{fact:nominalGrowth}}. Hvor mye kan dyrtid forklare?",
+      "sections": 6,
+      "words": 613,
+      "paragraphs": 12,
+      "graphs": "automatic-three",
+      "caveatExamples": [
+        "Den gjenværende økningen på {{fact:realPerCapitaGrowth}} per innbygger etter KPI-justering er et funn som trenger en forklaring. Den er ikke i seg selv bevis på ineffektivitet. Flere mottakere av pensjon, endret sammensetning av oppgaver, nye politiske prioriteringer og andre kostnadsforløp enn husholdningenes kan trekke utgiftene opp uten at samme tjeneste blir tilsvarende dyrere."
+      ]
+    },
+    {
+      "slug": "utgifter-per-innbygger-u-01-2020-2025-2026-10-06-revision-82fb4f03",
+      "title": "Utenriksregningen steg {{fact:nominalGrowth}}. Men ikke alle milliardhopp er det de ser ut som.",
+      "sections": 9,
+      "words": 1363,
+      "paragraphs": 29,
+      "graphs": 6,
+      "caveatExamples": [
+        "Heller ikke dette er et mål på hvor mye mer hjelp eller sikkerhet Norge fikk. Utenriksregnskapet består i stor grad av overføringer og tilskudd, og mange mottakere bor utenfor Norge. Norske innbyggere er her en målestokk for regningens størrelse, ikke en opptelling av dem som mottar tjenestene. KPI setter kroner på sammenlignbart prisnivå, men treffer heller ikke nødvendigvis departementets kostnader i andre valutaer.",
+        "Kapital til et investeringsfond og løpende hjelpetiltak bør heller ikke vurderes som helt like utgiftstyper. Begge vises som bokførte beløp i denne avgrensningen, men pengenes formål, risiko og tidshorisont er forskjellige. En høyere utbetaling sier ikke i seg selv hva investeringen eller hjelpen vil gi igjen."
+      ]
+    },
+    {
+      "slug": "utgifter-per-innbygger-state-2014-2025-2026-10-06-revision-2abd7a2f",
+      "title": "Statens regning steg {{fact:nominalGrowth}}. Hvor mye kan dyrtid forklare?",
+      "sections": 6,
+      "words": 625,
+      "paragraphs": 12,
+      "graphs": 4,
+      "caveatExamples": [
+        "Den gjenværende økningen på {{fact:realPerCapitaGrowth}} per innbygger etter KPI-justering er et funn som trenger en forklaring. Den er ikke i seg selv bevis på ineffektivitet. Flere mottakere av pensjon, endret sammensetning av oppgaver, nye politiske prioriteringer og andre kostnadsforløp enn husholdningenes kan trekke utgiftene opp uten at samme tjeneste blir tilsvarende dyrere."
+      ]
+    },
+    {
+      "slug": "oljepengebruk-2027-2026-10-07",
+      "title": "Oljepengebruken når {{fact:total}}. Hvor varig er regningen?",
+      "sections": 5,
+      "words": 586,
+      "paragraphs": 11,
+      "graphs": 2,
+      "caveatExamples": [
+        "Forsvar og beredskap kan kreve mer personell, materiell og langsiktige driftsmidler. Flere eldre kan øke behovet for pensjoner og helsetjenester. Det første spørsmålet er hvor mye som er midlertidig, og hvor mye som skaper forpliktelser for kommende budsjetter. Investeringer og reformer kan styrke produktiviteten eller redusere fremtidige kostnader; løpende drift krever fortsatt finansiering. Mer penger alene dokumenterer ikke bedre tjenester."
+      ]
+    },
+    {
+      "slug": "budsjett-budget-2027-initial-proposal-f637a7c6-2026-2027-2026-10-07",
+      "title": "{{fact:absoluteChange}} mer: Her havner milliardene",
+      "sections": 7,
+      "words": 696,
+      "paragraphs": 14,
+      "graphs": 7,
+      "caveatExamples": []
+    },
+    {
+      "slug": "budsjett-budget-2027-initial-proposal-f637a7c6-2026-2027-budget-negotiations-2026-10-07",
+      "title": "Ap må betale for flertallet",
+      "sections": 8,
+      "words": 2267,
+      "paragraphs": 45,
+      "graphs": 4,
+      "caveatExamples": [
+        "Grafen nedenfor viser hvor pengene beveger seg, men de største bevegelsene er ikke nødvendigvis de mest tilgjengelige. Regjeringens underliggende realvekst bruker en annen avgrensning enn Fellestalls nominelle postsammenligning. Sykehusenes finansiering inneholder dessuten store overføringer mellom poster. Et forlik trenger midler som kan omprioriteres, ikke store tall som bare ser ut som en reserve."
+      ]
+    },
+    {
+      "slug": "oljepengebruk-2027-2026-10-07-revision-252b0595",
+      "title": "Oljepengebruken øker lite. Fondsoverføringen øker langt mer.",
+      "sections": 5,
+      "words": 660,
+      "paragraphs": 10,
+      "graphs": 2,
+      "caveatExamples": []
+    },
+    {
+      "slug": "utgifter-per-innbygger-u-02-2020-2025-2026-10-19",
+      "title": "Universitetene har fått mindre å rutte med per student",
+      "sections": 6,
+      "words": 606,
+      "paragraphs": 17,
+      "graphs": 2,
+      "caveatExamples": []
+    },
+    {
+      "slug": "utgifter-per-innbygger-u-08-2020-2025-2026-10-28",
+      "title": "Færre barn. Likevel økte barnetrygden med {{fact:barnetrygdLastAnnualChangeAmount}}",
+      "sections": 5,
+      "words": 724,
+      "paragraphs": 18,
+      "graphs": 2,
+      "caveatExamples": []
+    }
+  ],
+  "healthReformAvailable": true,
+  "chatImplementationFound": true,
+  "originalWorkspaceCommit": "14e3d3b2961710e1ef87798add8388db33d9b0f5",
+  "mainCommit": "9796060",
+  "existingSvenPR": {
+    "url": "https://github.com/Lippen1995/Project_statsbudsjett/pull/90",
+    "head": "dbedc77b8a3d586a26b810b98fb50261f73c5bd0"
+  },
+  "healthBaseline": {
+    "url": "https://github.com/Lippen1995/Project_statsbudsjett/pull/86",
+    "head": "6e8627eb320d37913a1bc92816cff9166c0b0433",
+    "path": "editorial/drafts/helsereformen-forslag-og-regnestykke-2026-11-09.json",
+    "reportHash": "3bb0954f2d884aea192d42b58c3c7248822025b256893450232b6bf99a45a37d"
+  },
+  "note": "Initial 11-version metrics reflect the original mounted checkout. Current main has 12 versions and the separate health draft. See comparison.json and architecture.md for corrected scope."
+}

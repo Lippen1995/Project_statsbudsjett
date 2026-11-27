@@ -184,6 +184,11 @@ export function Jobs({ compact = false }) {
                 <dt>Neste køkontroll</dt>
                 <dd>Daglig kl. 09.00, norsk tid</dd>
               </div>
+              {d.native?.current?.editorial && <div>
+                <dt>Redaksjonell kontroll</dt>
+                <dd>{d.native.current.editorial.stage} · {d.native.current.editorial.status} · {d.native.current.editorial.workUnits} arbeidsenheter</dd>
+                <dd>{d.native.current.editorial.angle || d.native.current.editorial.reason}</dd>
+              </div>}
             </dl>
             <Table
               rows={d.runs.slice(0, compact ? 5 : 30)}

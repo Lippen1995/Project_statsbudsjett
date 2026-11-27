@@ -49,10 +49,18 @@ jobs:
       - name: Kontroller åpning, mobil, refresh og tilgjengelighet
         working-directory: web
         run: PLAYWRIGHT_MODULE_PATH="$RUNNER_TEMP/fellestall-browser/node_modules/playwright/index.mjs" npm run test:browser
+      - name: Kontroller faktiske redaksjonelle artikler på mobil og desktop
+        env:
+          PLAYWRIGHT_MODULE_PATH: ${{ runner.temp }}/fellestall-browser/node_modules/playwright/index.mjs
+        run: |
+          export CHROMIUM_PATH="$(node --input-type=module -e 'const m=await import(process.env.PLAYWRIGHT_MODULE_PATH); process.stdout.write(m.chromium.executablePath())')"
+          npm run test:editorial:browser
       - name: Behold visuelle kontroller
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: startup-intro-browser
-          path: web/browser-artifacts/
+          path: |
+            web/browser-artifacts/
+            editorial/runs/browser-verification/
           if-no-files-found: ignore

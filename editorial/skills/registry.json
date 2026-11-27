@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "skills": {
+    "research": {
+      "version": 1,
+      "file": "research-v1.md",
+      "hash": "8785214c9a3cc95bfeba356d18d035567f8e2e4b8a42a984879d049e3c2637d7"
+    },
+    "storytelling": {
+      "version": 1,
+      "file": "storytelling-v1.md",
+      "hash": "257b0ce3f2f18f50ce19228166888f7d8121095de3c2dd43dc445320c93bb705"
+    },
+    "language": {
+      "version": 2,
+      "file": "language-v2.md",
+      "hash": "9c50754a65eab57fd7e1dc2a920070f6bc94ac48dc76783a48febd1ee55750dc"
+    },
+    "visual": {
+      "version": 1,
+      "file": "visual-v1.md",
+      "hash": "06f4c3645a1d93aba8a57e09677a02787996566a557a7b439791fbf48420d65b"
+    },
+    "review": {
+      "version": 1,
+      "file": "review-v1.md",
+      "hash": "d8d929e3b7c853a8921473051b94b9195adbeff605a5b13583d7441faf6132f0"
+    },
+    "learning": {
+      "version": 1,
+      "file": "learning-v1.md",
+      "hash": "30dfd6b7a8e546b97f7f1474d3a4c59a99f99d94e8ee1274779afda050b71e36"
+    }
+  },
+  "history": [
+    {
+      "skill": "language",
+      "version": 2,
+      "at": "2026-11-27T05:53:28.391Z",
+      "action": "maintainer-revision",
+      "before": {
+        "version": 1,
+        "file": "language-v1.md",
+        "hash": "ff8e1094e35cdb23d4cb0239188657a2722a11549b88071b7514e8af3a783f6a"
+      },
+      "after": {
+        "version": 2,
+        "file": "language-v2.md",
+        "hash": "9c50754a65eab57fd7e1dc2a920070f6bc94ac48dc76783a48febd1ee55750dc"
+      },
+      "reason": "Brukeren ba om å rette manglende flyt og overflødige forbehold. Ingen påstått uavhengig kvalitetsmåling."
+    }
+  ],
+  "revision": 1
+}

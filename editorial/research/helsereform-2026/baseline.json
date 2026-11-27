@@ -12,16 +12,31 @@
   "sourceHashes": {
     "web/public/data/kpi.json": "aef8b5a18708eeab3efa76d8cf263c9473efca33ce9b43c0e54a93992afc1bbc",
     "web/public/data/befolkning.json": "2a238938a43b4485666897bfd625568ae0f50def82538e0035af3bdc49223c47",
-    "web/public/data/utgifter.json": "2d80587a970345503a041391b392b9cb4598827ab30e4b6b25ca95df9a036365",
+    "web/public/data/utgifter.json": "495e84586083d7ac90663618f3c6a701095dfcd869224f37c0ea4e068f2ad85e",
     "web/public/data/kostra/entities/municipality-0301.json": "137b5a5f9fb953cd4dfd55199ff25cd0accab0d083dd9586fc182735fb4e4db9",
     "web/public/data/kostra/entities/municipality-4601.json": "18ca1f086ca34fb357ef6153627d442313727c1991978eb7842fe0fad559062c",
     "web/public/data/kostra/entities/municipality-5001.json": "8e93b2a440bfdb29fe5381b9645ebdccddfada47183260aa680bb93f359effd5",
-    "web/public/data/ssb-research/index.json": "0eac7b46e6e9af99d58e709c7170ab42cc567119b4173c3dbb03458b489f5742",
+    "web/public/data/ssb-research/index.json": "d3d72ece3b19c4cbdda214e9ef6e5a772b0fbf75c207d4e6834b3963d0236c3b",
     "web/public/data/ssb-research/51f9aa4469dc3468bc4132dfae7ca2c87a5d41e8e0f793d41b08050580294012.json": "51f9aa4469dc3468bc4132dfae7ca2c87a5d41e8e0f793d41b08050580294012",
     "web/public/data/ssb-research/3401b6b5da59f52853278372ace274be8f38226e473b7b27feb50e73bdc7b019.json": "3401b6b5da59f52853278372ace274be8f38226e473b7b27feb50e73bdc7b019",
     "web/public/data/ssb-research/7a617b07a65d9cf0fd11265ef709b27337ce360a2e993a5b7e7bd15b7cb1804d.json": "7a617b07a65d9cf0fd11265ef709b27337ce360a2e993a5b7e7bd15b7cb1804d",
     "web/public/data/ssb-research/11ac61989e1d334300dd5e768f45ef0d98457eabc8f1ab70b9b32ad5712f7ff1.json": "11ac61989e1d334300dd5e768f45ef0d98457eabc8f1ab70b9b32ad5712f7ff1",
-    "web/public/data/ssb-research/4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01.json": "4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01"
+    "web/public/data/ssb-research/4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01.json": "4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01",
+    "web/public/data/ssb-research/434bffa8ed7493c2558b8d1ee37d9481884aa71cc512d78080ea90d46d208eff.json": "434bffa8ed7493c2558b8d1ee37d9481884aa71cc512d78080ea90d46d208eff",
+    "web/public/data/ssb-research/a82c4c82f9894185af1ef5d62806a971a10b7dbb3ba85145d2b8be9a834150ca.json": "a82c4c82f9894185af1ef5d62806a971a10b7dbb3ba85145d2b8be9a834150ca",
+    "web/public/data/ssb-research/67e18d98ea8481712bd75e7f417dfe436f04410576eb39b04c24d5b8eb2d6e8b.json": "67e18d98ea8481712bd75e7f417dfe436f04410576eb39b04c24d5b8eb2d6e8b",
+    "web/public/data/ssb-research/bf12659a6f11d25e1b60bcaaea04a1b9c761eea7281a194665edaf2f189af07c.json": "bf12659a6f11d25e1b60bcaaea04a1b9c761eea7281a194665edaf2f189af07c",
+    "web/public/data/ssb-research/a24c3d86ed340c2027123dbf3117c97e7c4cbf83048e9388e69d2acb21cd9251.json": "a24c3d86ed340c2027123dbf3117c97e7c4cbf83048e9388e69d2acb21cd9251",
+    "web/public/data/ssb-research/6a6d9750d1250f84941816755a7e7d0a2a13ae2a2799cad6f0c8d8a4e962284f.json": "6a6d9750d1250f84941816755a7e7d0a2a13ae2a2799cad6f0c8d8a4e962284f",
+    "web/public/data/ssb-research/a3b95930b113265e2ffa2358ae08c42bfd6f7c92ce961f0b2de73b0f683f3cef.json": "a3b95930b113265e2ffa2358ae08c42bfd6f7c92ce961f0b2de73b0f683f3cef",
+    "web/public/data/ssb-research/454dd75a0086f274a3593a97880140166e4d2a47d360df189fe75af9964976fa.json": "454dd75a0086f274a3593a97880140166e4d2a47d360df189fe75af9964976fa",
+    "web/public/data/ssb-research/a653a15a08d777d0bb0ec57c53a2b92414047e30a9bac21ed5f2d949ee9b2d64.json": "a653a15a08d777d0bb0ec57c53a2b92414047e30a9bac21ed5f2d949ee9b2d64",
+    "web/public/data/ssb-research/4a562cfa1d2793860cf81d545c3eb8ec54e2d62225b04873b97e14ee2e4ce63d.json": "4a562cfa1d2793860cf81d545c3eb8ec54e2d62225b04873b97e14ee2e4ce63d",
+    "web/public/data/ssb-research/c4577b900e1141004fe675f4f7fdf7b31da995d7e4a973d859e7097b231c3188.json": "c4577b900e1141004fe675f4f7fdf7b31da995d7e4a973d859e7097b231c3188",
+    "web/public/data/ssb-research/ed0f870ae334544a24e33f48816464e68274c8d54598c581b8a1a8fd51bff04c.json": "ed0f870ae334544a24e33f48816464e68274c8d54598c581b8a1a8fd51bff04c",
+    "web/public/data/ssb-research/250b542db6616132cf78bd7c652928338628ca184cbfec9352327e14e63f59db.json": "250b542db6616132cf78bd7c652928338628ca184cbfec9352327e14e63f59db",
+    "web/public/data/ssb-research/5a8ffe6c43b52cea3036bf5d7ab944482cd85868419eed4063d3d743ab81f76f.json": "5a8ffe6c43b52cea3036bf5d7ab944482cd85868419eed4063d3d743ab81f76f",
+    "web/public/data/ssb-research/53d9af92a3f03040acfb1385417c28eac4ae1a2f3ca9bbcac7a6b844a5cc7676.json": "53d9af92a3f03040acfb1385417c28eac4ae1a2f3ca9bbcac7a6b844a5cc7676"
   },
   "state": [
     {
@@ -829,6 +844,768 @@
       "sourceHash": "4b222c704e7809bf8d08c912bca7ccd41fb395ec5c7c069cb82f38067c1a2f01",
       "table": "07459",
       "growthPct": 12.065499443953343
+    },
+    "Sykepleiere": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Arsverk",
+          "label": "Avtalte årsverk"
+        },
+        "HelseReg": {
+          "code": "H00",
+          "label": "Hele landet"
+        },
+        "HelseTjenomr": {
+          "code": "TOT",
+          "label": "I alt"
+        },
+        "Yrke": {
+          "aggregation": "sum",
+          "codes": [
+            "01",
+            "02"
+          ],
+          "labels": [
+            "Spesialsykepleiere",
+            "Sykepleiere"
+          ]
+        }
+      },
+      "rows": [
+        {
+          "value": 39542,
+          "year": 2020
+        },
+        {
+          "value": 40070,
+          "year": 2021
+        },
+        {
+          "value": 40585,
+          "year": 2022
+        },
+        {
+          "value": 41011,
+          "year": 2023
+        },
+        {
+          "value": 41375,
+          "year": 2024
+        },
+        {
+          "value": 41774,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-10-01T06:00:00Z",
+      "sourceHash": "434bffa8ed7493c2558b8d1ee37d9481884aa71cc512d78080ea90d46d208eff",
+      "table": "13953",
+      "growthPct": 5.6446310252389775
+    },
+    "Leger": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Arsverk",
+          "label": "Avtalte årsverk"
+        },
+        "HelseReg": {
+          "code": "H00",
+          "label": "Hele landet"
+        },
+        "HelseTjenomr": {
+          "code": "TOT",
+          "label": "I alt"
+        },
+        "Yrke": {
+          "aggregation": "sum",
+          "codes": [
+            "05",
+            "06"
+          ],
+          "labels": [
+            "Legespesialister ",
+            "Andre leger "
+          ]
+        }
+      },
+      "rows": [
+        {
+          "value": 17770,
+          "year": 2020
+        },
+        {
+          "value": 18181,
+          "year": 2021
+        },
+        {
+          "value": 18559,
+          "year": 2022
+        },
+        {
+          "value": 19000,
+          "year": 2023
+        },
+        {
+          "value": 19288,
+          "year": 2024
+        },
+        {
+          "value": 19710,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-10-01T06:00:00Z",
+      "sourceHash": "a82c4c82f9894185af1ef5d62806a971a10b7dbb3ba85145d2b8be9a834150ca",
+      "table": "13953",
+      "growthPct": 10.917276308384928
+    },
+    "Somatikk": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Arsverk",
+          "label": "Avtalte årsverk"
+        },
+        "HelseReg": {
+          "code": "H00",
+          "label": "Hele landet"
+        },
+        "HelseTjenomr": {
+          "code": "SOM",
+          "label": "Somatisk behandling"
+        },
+        "Yrke": {
+          "code": "TOT",
+          "label": "I alt"
+        }
+      },
+      "rows": [
+        {
+          "value": 68201,
+          "year": 2020
+        },
+        {
+          "value": 69590,
+          "year": 2021
+        },
+        {
+          "value": 70899,
+          "year": 2022
+        },
+        {
+          "value": 72182,
+          "year": 2023
+        },
+        {
+          "value": 73155,
+          "year": 2024
+        },
+        {
+          "value": 74255,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-10-01T06:00:00Z",
+      "sourceHash": "67e18d98ea8481712bd75e7f417dfe436f04410576eb39b04c24d5b8eb2d6e8b",
+      "table": "13953",
+      "growthPct": 8.876702687643867
+    },
+    "PsykiskVoksne": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Arsverk",
+          "label": "Avtalte årsverk"
+        },
+        "HelseReg": {
+          "code": "H00",
+          "label": "Hele landet"
+        },
+        "HelseTjenomr": {
+          "code": "VOP",
+          "label": "Psykisk helsevern for voksne"
+        },
+        "Yrke": {
+          "code": "TOT",
+          "label": "I alt"
+        }
+      },
+      "rows": [
+        {
+          "value": 15089,
+          "year": 2020
+        },
+        {
+          "value": 15124,
+          "year": 2021
+        },
+        {
+          "value": 15441,
+          "year": 2022
+        },
+        {
+          "value": 15444,
+          "year": 2023
+        },
+        {
+          "value": 15812,
+          "year": 2024
+        },
+        {
+          "value": 15997,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-10-01T06:00:00Z",
+      "sourceHash": "bf12659a6f11d25e1b60bcaaea04a1b9c761eea7281a194665edaf2f189af07c",
+      "table": "13953",
+      "growthPct": 6.017628736165426
+    },
+    "PsykiskBarn": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Arsverk",
+          "label": "Avtalte årsverk"
+        },
+        "HelseReg": {
+          "code": "H00",
+          "label": "Hele landet"
+        },
+        "HelseTjenomr": {
+          "code": "BUP",
+          "label": "Psykisk helsevern for barn og unge"
+        },
+        "Yrke": {
+          "code": "TOT",
+          "label": "I alt"
+        }
+      },
+      "rows": [
+        {
+          "value": 3353,
+          "year": 2020
+        },
+        {
+          "value": 3656,
+          "year": 2021
+        },
+        {
+          "value": 3818,
+          "year": 2022
+        },
+        {
+          "value": 3797,
+          "year": 2023
+        },
+        {
+          "value": 3874,
+          "year": 2024
+        },
+        {
+          "value": 3883,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-10-01T06:00:00Z",
+      "sourceHash": "a24c3d86ed340c2027123dbf3117c97e7c4cbf83048e9388e69d2acb21cd9251",
+      "table": "13953",
+      "growthPct": 15.806740232627492
+    },
+    "FravarAlle": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Sykdom",
+          "label": "Sykefraværsprosent"
+        },
+        "Kjonn": {
+          "code": "0",
+          "label": "Begge kjønn"
+        },
+        "NACE2007": {
+          "code": "00-99",
+          "label": "Alle næringer"
+        },
+        "Sykefraver2": {
+          "code": "Alt",
+          "label": "Egenmeldt og legemeldt"
+        }
+      },
+      "rows": [
+        {
+          "value": 6,
+          "year": 2020
+        },
+        {
+          "value": 6.1,
+          "year": 2021
+        },
+        {
+          "value": 6.7,
+          "year": 2022
+        },
+        {
+          "value": 6.7,
+          "year": 2023
+        },
+        {
+          "value": 6.8,
+          "year": 2024
+        },
+        {
+          "value": 6.6,
+          "year": 2025
+        }
+      ],
+      "unit": "prosent",
+      "updated": "2026-11-05T07:00:00Z",
+      "sourceHash": "6a6d9750d1250f84941816755a7e7d0a2a13ae2a2799cad6f0c8d8a4e962284f",
+      "table": "12441",
+      "growthPct": 9.999999999999986
+    },
+    "RhfKostnad": {
+      "categories": {
+        "ContentsCode": {
+          "code": "LopendePriser",
+          "label": "Løpende priser (mill. kr)"
+        },
+        "HelseReg": {
+          "code": "H00",
+          "label": "Hele landet"
+        },
+        "HelseTjenomr": {
+          "code": "ADM",
+          "label": "RHF-administrasjon og fellesfunksjoner"
+        },
+        "InntektKostnad": {
+          "code": "K00",
+          "label": "Totale driftskostnader"
+        }
+      },
+      "rows": [
+        {
+          "value": 1740,
+          "year": 2020
+        },
+        {
+          "value": 1676,
+          "year": 2021
+        },
+        {
+          "value": 2277,
+          "year": 2022
+        },
+        {
+          "value": 2221,
+          "year": 2023
+        },
+        {
+          "value": 2517,
+          "year": 2024
+        },
+        {
+          "value": 2345,
+          "year": 2025
+        }
+      ],
+      "unit": "mill. kr",
+      "updated": "2026-06-23T06:00:00Z",
+      "sourceHash": "a3b95930b113265e2ffa2358ae08c42bfd6f7c92ce961f0b2de73b0f683f3cef",
+      "table": "14022",
+      "growthPct": 34.77011494252873
+    },
+    "Personalkostnad": {
+      "categories": {
+        "ContentsCode": {
+          "code": "LopendePriser",
+          "label": "Løpende priser (mill. kr)"
+        },
+        "HelseReg": {
+          "code": "H00",
+          "label": "Hele landet"
+        },
+        "HelseTjenomr": {
+          "code": "TOT",
+          "label": "I alt"
+        },
+        "InntektKostnad": {
+          "code": "K05",
+          "label": "Lønn og andre personalkostnader, ekskl. pensjonskostnader"
+        }
+      },
+      "rows": [
+        {
+          "value": 87852,
+          "year": 2020
+        },
+        {
+          "value": 93396,
+          "year": 2021
+        },
+        {
+          "value": 99761,
+          "year": 2022
+        },
+        {
+          "value": 106776,
+          "year": 2023
+        },
+        {
+          "value": 114034,
+          "year": 2024
+        },
+        {
+          "value": 120389,
+          "year": 2025
+        }
+      ],
+      "unit": "mill. kr",
+      "updated": "2026-06-23T06:00:00Z",
+      "sourceHash": "454dd75a0086f274a3593a97880140166e4d2a47d360df189fe75af9964976fa",
+      "table": "14022",
+      "growthPct": 37.03615170969356
+    },
+    "OmsorgSykepleiere": {
+      "categories": {
+        "ContentsCode": {
+          "code": "KOSARBAARSVERKST0000",
+          "label": "Avtalte årsverk (årsverk)"
+        },
+        "KOKkommuneregion0000": {
+          "code": "EAK",
+          "label": "Landet"
+        },
+        "KOKyrker0000": {
+          "aggregation": "sum",
+          "codes": [
+            "01",
+            "02"
+          ],
+          "labels": [
+            "Sykepleiere",
+            "Spesialsykepleiere"
+          ]
+        }
+      },
+      "rows": [
+        {
+          "value": 26934,
+          "year": 2020
+        },
+        {
+          "value": 26671,
+          "year": 2021
+        },
+        {
+          "value": 26511,
+          "year": 2022
+        },
+        {
+          "value": 27036,
+          "year": 2023
+        },
+        {
+          "value": 27160,
+          "year": 2024
+        },
+        {
+          "value": 27786,
+          "year": 2025
+        }
+      ],
+      "unit": "årsverk",
+      "updated": "2026-06-15T06:00:00Z",
+      "sourceHash": "a653a15a08d777d0bb0ec57c53a2b92414047e30a9bac21ed5f2d949ee9b2d64",
+      "table": "14533",
+      "growthPct": 3.163288037424805
+    },
+    "Hjemmetimer": {
+      "categories": {
+        "ContentsCode": {
+          "code": "KOSgjtimerhjsyk0000",
+          "label": "Gjennomsnittlig antall tildelte timer i uken, helsetjenester i hjemmet (antall)"
+        },
+        "KOKkommuneregion0000": {
+          "code": "EAK",
+          "label": "Landet"
+        }
+      },
+      "rows": [
+        {
+          "value": 5,
+          "year": 2020
+        },
+        {
+          "value": 5,
+          "year": 2021
+        },
+        {
+          "value": 5.1,
+          "year": 2022
+        },
+        {
+          "value": 5,
+          "year": 2023
+        },
+        {
+          "value": 4.9,
+          "year": 2024
+        },
+        {
+          "value": 5,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-06-15T06:00:00Z",
+      "sourceHash": "4a562cfa1d2793860cf81d545c3eb8ec54e2d62225b04873b97e14ee2e4ce63d",
+      "table": "12292",
+      "growthPct": 0.0
+    },
+    "Rusbehandling": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Arsverk",
+          "label": "Avtalte årsverk"
+        },
+        "HelseReg": {
+          "code": "H00",
+          "label": "Hele landet"
+        },
+        "HelseTjenomr": {
+          "code": "TSB",
+          "label": "Tverrfaglig spesialisert rusbehandling"
+        },
+        "Yrke": {
+          "code": "TOT",
+          "label": "I alt"
+        }
+      },
+      "rows": [
+        {
+          "value": 3698,
+          "year": 2020
+        },
+        {
+          "value": 3690,
+          "year": 2021
+        },
+        {
+          "value": 3628,
+          "year": 2022
+        },
+        {
+          "value": 3650,
+          "year": 2023
+        },
+        {
+          "value": 3648,
+          "year": 2024
+        },
+        {
+          "value": 3683,
+          "year": 2025
+        }
+      ],
+      "unit": "antall",
+      "updated": "2026-10-01T06:00:00Z",
+      "sourceHash": "c4577b900e1141004fe675f4f7fdf7b31da995d7e4a973d859e7097b231c3188",
+      "table": "13953",
+      "growthPct": -0.40562466197945346
+    },
+    "FravarSykepleiere": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Sykefraversprosent",
+          "label": "Sykefraværsprosent (legemeldt)"
+        },
+        "Kjonn": {
+          "code": "0",
+          "label": "Begge kjønn"
+        },
+        "Yrke": {
+          "code": "222",
+          "label": "Sykepleiere og spesialsykepleiere"
+        }
+      },
+      "rows": [
+        {
+          "value": 8,
+          "year": 2020
+        },
+        {
+          "value": 8.4,
+          "year": 2021
+        },
+        {
+          "value": 8.4,
+          "year": 2022
+        },
+        {
+          "value": 8.5,
+          "year": 2023
+        },
+        {
+          "value": 8.7,
+          "year": 2024
+        },
+        {
+          "value": 8.5,
+          "year": 2025
+        }
+      ],
+      "unit": "prosent",
+      "updated": "2026-05-13T06:00:00Z",
+      "sourceHash": "ed0f870ae334544a24e33f48816464e68274c8d54598c581b8a1a8fd51bff04c",
+      "table": "14789",
+      "growthPct": 6.25
+    },
+    "FravarLeger": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Sykefraversprosent",
+          "label": "Sykefraværsprosent (legemeldt)"
+        },
+        "Kjonn": {
+          "code": "0",
+          "label": "Begge kjønn"
+        },
+        "Yrke": {
+          "code": "221",
+          "label": "Leger"
+        }
+      },
+      "rows": [
+        {
+          "value": 3.2,
+          "year": 2020
+        },
+        {
+          "value": 3.3,
+          "year": 2021
+        },
+        {
+          "value": 3.8,
+          "year": 2022
+        },
+        {
+          "value": 3.9,
+          "year": 2023
+        },
+        {
+          "value": 3.9,
+          "year": 2024
+        },
+        {
+          "value": 3.7,
+          "year": 2025
+        }
+      ],
+      "unit": "prosent",
+      "updated": "2026-05-13T06:00:00Z",
+      "sourceHash": "250b542db6616132cf78bd7c652928338628ca184cbfec9352327e14e63f59db",
+      "table": "14789",
+      "growthPct": 15.625
+    },
+    "FravarHelsefag": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Sykefraversprosent",
+          "label": "Sykefraværsprosent (legemeldt)"
+        },
+        "Kjonn": {
+          "code": "0",
+          "label": "Begge kjønn"
+        },
+        "Yrke": {
+          "code": "5321",
+          "label": "Helsefagarbeidere"
+        }
+      },
+      "rows": [
+        {
+          "value": 9.9,
+          "year": 2020
+        },
+        {
+          "value": 10.1,
+          "year": 2021
+        },
+        {
+          "value": 9.9,
+          "year": 2022
+        },
+        {
+          "value": 10.1,
+          "year": 2023
+        },
+        {
+          "value": 10.4,
+          "year": 2024
+        },
+        {
+          "value": 10.3,
+          "year": 2025
+        }
+      ],
+      "unit": "prosent",
+      "updated": "2026-05-13T06:00:00Z",
+      "sourceHash": "5a8ffe6c43b52cea3036bf5d7ab944482cd85868419eed4063d3d743ab81f76f",
+      "table": "14789",
+      "growthPct": 4.040404040404044
+    },
+    "FravarHelse": {
+      "categories": {
+        "ContentsCode": {
+          "code": "Sykdom",
+          "label": "Sykefraværsprosent"
+        },
+        "Kjonn": {
+          "code": "0",
+          "label": "Begge kjønn"
+        },
+        "NACE2007": {
+          "code": "86-88",
+          "label": "Helse- og sosialtjenester"
+        },
+        "Sykefraver2": {
+          "code": "Alt",
+          "label": "Egenmeldt og legemeldt"
+        }
+      },
+      "rows": [
+        {
+          "value": 8.9,
+          "year": 2020
+        },
+        {
+          "value": 9.3,
+          "year": 2021
+        },
+        {
+          "value": 9.7,
+          "year": 2022
+        },
+        {
+          "value": 9.5,
+          "year": 2023
+        },
+        {
+          "value": 9.6,
+          "year": 2024
+        },
+        {
+          "value": 9.4,
+          "year": 2025
+        }
+      ],
+      "unit": "prosent",
+      "updated": "2026-11-05T07:00:00Z",
+      "sourceHash": "53d9af92a3f03040acfb1385417c28eac4ae1a2f3ca9bbcac7a6b844a5cc7676",
+      "table": "12441",
+      "growthPct": 5.617977528089879
     }
   },
   "elderly80Plus": {

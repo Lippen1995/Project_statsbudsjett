@@ -1,4 +1,4 @@
-import React, { useId } from 'react'
+import React, { useId, useRef, useState, useEffect } from 'react'
 import { number } from './model'
 import { plotScale, periodChange } from './analysis-plot'
 
@@ -6,12 +6,22 @@ export const analysisColors = ['#C5452E', '#14594F', '#858077', '#715196', '#B07
 
 export { plotScale as integerScale } from './analysis-plot'
 export default function AnalysisBars({ years, series, label, forecastFrom, chartType = 'bar', axis = 'zero', annotation, activeSeries = 0 }) {
+  const container = useRef(null)
+  const [availableWidth, setAvailableWidth] = useState(null)
+  useEffect(() => {
+    if (!container.current) return
+    const observer = new ResizeObserver(([entry]) => setAvailableWidth(Math.round(entry.contentRect.width)))
+    observer.observe(container.current)
+    return () => observer.disconnect()
+  }, [])
   const markerId = `period-arrow-${useId().replace(/:/g, '')}`
   const selected = series[activeSeries] ?? series[0]
   const growth = annotation === 'period-change' ? periodChange(selected.values) : null
   const signedGrowth = growth === null ? null : `${growth > 0 ? '+' : ''}${number(growth, 1)} %`
   const arrowColor = chartType === 'bar' ? '#14161A' : selected.color ?? analysisColors[activeSeries]
-  const W = Math.max(540, years.length * Math.max(52, series.length * 18 + 18) + 86)
+  const denseBars = chartType === 'bar' && years.length * series.length > 24
+  const W = denseBars ? Math.max(540, years.length * Math.max(52, series.length * 18 + 18) + 86)
+    : Math.max(300, availableWidth ?? 680)
   const H = 290, left = 72, right = chartType === 'line' && series.length === 1 ? 68 : 18, top = 20, bottom = 38
   const { min, max, ticks } = plotScale(series.flatMap(s => s.values), chartType === 'bar' || axis !== 'focused')
   const step = (W - left - right) / years.length
@@ -24,7 +34,8 @@ export default function AnalysisBars({ years, series, label, forecastFrom, chart
   const offset = { x: -(last.y-first.y)/distance, y: (last.x-first.x)/distance }
   const arrow = { x1: first.x+offset.x*12, y1: first.y+offset.y*12, x2: last.x+offset.x*12, y2: last.y+offset.y*12 }
   const badge = { x: (first.x+last.x)/2+offset.x*30, y: (first.y+last.y)/2+offset.y*30 }
-  return <div className="an-bars-scroll" tabIndex={0} role="region" aria-label={`${label}. Alle år vises; grafen kan rulles vannrett på små skjermer.`}>
+  const tickEvery = Math.max(1, Math.ceil(years.length / Math.max(2, Math.floor((W-left-right)/45))))
+  return <div ref={container} className="an-bars-scroll" tabIndex={0} role="region" aria-label={`${label}. ${denseBars ? 'Grafen kan rulles vannrett; alle tall finnes i tabellen.' : 'Grafen tilpasses skjermbredden; alle tall finnes i tabellen.'}`}>
     <svg viewBox={`0 0 ${W} ${H}`} style={{ minWidth: W, width: '100%' }} role="img" aria-label={label}>
       <defs><marker id={markerId} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M 0 0 L 10 5 L 0 10 z" fill={arrowColor} />
@@ -54,7 +65,8 @@ export default function AnalysisBars({ years, series, label, forecastFrom, chart
           strokeDasharray={forecastFrom !== undefined && year >= forecastFrom ? '3 2' : undefined}>
           <title>{`${year} · ${s.label}: ${number(s.values[i], 2)}`}</title>
         </rect>)}
-        <text x={left+step*(i+.5)} y={H-12} textAnchor="middle" fontSize="12" fill="#706A60">{year}</text>
+        {(i === 0 || i === years.length-1 || (i % tickEvery === 0 && years.length-1-i >= tickEvery)) &&
+          <text x={left+step*(i+.5)} y={H-12} textAnchor="middle" fontSize="12" fill="#706A60">{year}</text>}
       </g>)}
       {growth !== null && <g className="an-period-arrow" pointerEvents="none" aria-label={`${selected.label}: ${signedGrowth} fra ${years[0]} til ${years.at(-1)}`}>
         <title>{`${selected.label}: ${signedGrowth} fra ${years[0]} til ${years.at(-1)}. Samlet endring, ikke årlig vekst.`}</title>

@@ -1,4 +1,5 @@
 import { validateArticle, contentHash } from './schema.mjs'
+import { assertEditorialApproval } from './editorial.mjs'
 export function isDesignatedReviewer(login, configuredReviewer) {
   return (
     typeof login === 'string' &&
@@ -23,6 +24,7 @@ export function reviseArticle(article, copy, { feedbackId, feedbackAt, generated
     lastFeedbackId: feedbackId,
     lastFeedbackAt: feedbackAt,
   }
+  delete next.editorial
   delete next.approval
   delete next.publishedAt
   return validateArticle(next)
@@ -34,6 +36,7 @@ export function approveArticle(
   validateArticle(article)
   if (!reviewer || !commitId || commitId !== currentHead)
     throw Error('Godkjenningen gjelder ikke gjeldende versjon')
+  if (article.copy.format || article.editorial) assertEditorialApproval(article)
   if (pendingFeedback) throw Error('Endringsønsker må behandles før godkjenning')
   const approved = {
     ...article,
